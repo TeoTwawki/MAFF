@@ -120,6 +120,7 @@ MAFProtocol.prototype = {
   },
 
   openArchiveURI: function(uri) {
+    mafdebug("URI called to openArchiveURI is: " + uri);
     var loadURIMafRegExp = new RegExp(MafPreferences.getOpenFilterRegEx(), "i");
 
      if (uri.match(loadURIMafRegExp)) {
@@ -169,6 +170,7 @@ MAFProtocol.prototype = {
           }
      }
   },
+
 
   openFromArchive: function(tempPath, scriptPath, archivePath) {
     var dateTimeExpanded = new Date();
@@ -376,6 +378,36 @@ MAFProtocol.prototype = {
         }
       }
 
+
+      if (!requestURI.toLowerCase().startsWith("file://")) {
+        // A network URI? If so download the file to temp and use that file
+        var oTempFile = Components.classes["@mozilla.org/file/local;1"]
+                           .createInstance(Components.interfaces.nsILocalFile);
+        oTempFile.initWithPath(MafPreferences.temp);
+
+        var oTempFileName = (new Date()).valueOf() + "_" + Math.floor(Math.random() * 1000);
+        oTempFileName += this.getFileExtFromURI(requestURI);
+        oTempFile.append(oTempFileName);
+
+        var netRequest = requestURI;
+
+        if (netRequest.indexOf("!") > -1) {
+          netRequest = netRequest.substring(0, netRequest.indexOf("!"));
+        }
+
+        this.saveURIToFile(netRequest, oTempFile);
+
+        var subPart = "";
+        if (requestURI.indexOf("!") > 0) {
+          subPart = requestURI.substring(requestURI.indexOf("!"), requestURI.length);
+        }
+
+        requestURI = MafUtils.getURI(oTempFile);
+
+        requestURI += subPart;
+
+      }
+
       if (requestURI.indexOf("!") > -1) {
         try {
           var filePart = requestURI.substring(requestURI.indexOf("!") + 1, requestURI.length);
@@ -430,7 +462,78 @@ MAFProtocol.prototype = {
     } else {
       return ios.newChannel("about:blank", null, null);
     }
+  },
+
+  /**
+   * Read the contents of a uri and write the result to a file in a blocking manner
+   */
+  saveURIToFile: function(str_URI, obj_LocalFile) {
+    try {
+      var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                   .getService(Components.interfaces.nsIIOService);
+      var uri = ioService.newURI(str_URI, null, null);
+      var channel = ioService.newChannelFromURI(uri);
+
+      var obj_InputStream = channel.open();
+
+      var obj_BinaryIO = Components.classes["@mozilla.org/binaryinputstream;1"]
+                            .createInstance(Components.interfaces.nsIBinaryInputStream);
+
+      obj_BinaryIO.setInputStream(obj_InputStream);
+
+      if (!obj_LocalFile.exists()) {
+        obj_LocalFile.create(0x00, 0644);
+      }
+
+      var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                          .createInstance(Components.interfaces.nsIFileOutputStream);
+      oTransport.init( obj_LocalFile, 0x04 | 0x08 | 0x10, 064, 0 );
+
+      var obj_BinaryO = Components.classes["@mozilla.org/binaryoutputstream;1"]
+                           .createInstance(Components.interfaces.nsIBinaryOutputStream);
+      obj_BinaryO.setOutputStream(oTransport);
+
+
+    } catch (e) {
+      mafdebug(e);
+    }
+
+    try {
+      while (obj_InputStream.available() > 0) {
+        var str = obj_BinaryIO.readByteArray(obj_InputStream.available());
+        obj_BinaryO.writeByteArray(str, str.length);
+      }
+    } catch (e) {
+
+    }
+
+    try {
+      obj_BinaryIO.close();
+      obj_InputStream.close();
+      oTransport.close();
+    } catch (e) {
+
+    }
+  },
+
+  /**
+   * Todo: Implement. Get the extension to use. By default it assumes that it's a .maff uri
+   */
+  getFileExtFromURI: function(str_URI) {
+    var result = ".maff";
+
+    try {
+      var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                        .getService(Components.interfaces.nsIIOService);
+      var uri = ioService.newURI(str_URI, null, null);
+      var path = uri.path;
+    } catch (e) {
+
+    }
+
+    return result;
   }
+
 }
 
 function mafdebug(text) {

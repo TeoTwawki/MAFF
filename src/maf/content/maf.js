@@ -54,6 +54,7 @@
  * Added native quoted-printable encoder and decoder support.
  * Added Portuguese locale by Jacinto Leal.
  * Added update.rdf related entries for extension manager updates.
+ * Added network url functionality for .maff files.
  * TODO: Add save frame functionality to alternative save component.
  *
  * Changes from 0.4.2 to 0.4.3
