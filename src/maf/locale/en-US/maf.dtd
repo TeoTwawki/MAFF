@@ -56,6 +56,7 @@
 <!ENTITY maf.preferencesdialog.label.enablemafprotocol "Enable MAF Protocol">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Enable document.write override">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alert on single page archive complete">
+<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Use alternative save component">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Browse...">
 
@@ -71,7 +72,7 @@
 <!ENTITY maf.preferencesdialog.openmode.defaultapp "Default MAF Application Hander:">
 
 <!ENTITY maf.preferencesdialog.winop.label "Windows specific options">
-<!ENTITY maf.preferencesdialog.winop.usevbs "Use VBS to run batch files hidden">
+<!ENTITY maf.preferencesdialog.winop.usevbs "Use VBS to hide command window when opening MAFF files">
 
 <!ENTITY maf.preferencesdialog.winop.wscript "Location of WSCRIPT.EXE:">
 <!ENTITY maf.preferencesdialog.winop.invis "Location of invis.vbs:">

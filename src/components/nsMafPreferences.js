@@ -76,7 +76,7 @@ MafPreferencesServiceClass.prototype = {
   saveExtendedMetadata: false,
 
   /** Windows specific preferences. */
-  win_invisible: false,
+  win_invisible: true,
 
   win_wscriptexe: "",
 
@@ -92,7 +92,7 @@ MafPreferencesServiceClass.prototype = {
 
   alertOnArchiveComplete: true,
 
-  // win_associate_maf: false,
+  alternative_save_component: false,
 
   win_associate_maff: false,
 
@@ -418,7 +418,7 @@ MafPreferencesServiceClass.prototype = {
     result.urlRewrite = true;
     result.saveExtendedMetadata = false;
 
-    result.win_invisible = false;
+    result.win_invisible = true;
     result.win_wscriptexe = "";
     result.win_invisiblevbs = "";
     result.clearTempOnClose = true;
@@ -426,7 +426,7 @@ MafPreferencesServiceClass.prototype = {
     result.addDocumentWriteOverride = false;
     result.alertOnArchiveComplete = true;
 
-    // result.win_associate_maf = false;
+    result.alternative_save_component = false;
     result.win_associate_maff = false;
     result.win_associate_mht = false;
 
@@ -503,7 +503,7 @@ MafPreferencesServiceClass.prototype = {
         this.temp = mafParentDir + "\\maf\\maftemp\\";
         this.programExtensions[this.programExtensions.length] = [
            "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.zip.maf", "*.maf.zip"]];
-        this.win_wscriptexe = "c:\\winnt\\system32\\wscript.exe",
+        this.win_wscriptexe = "c:\\windows\\system32\\wscript.exe",
         this.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
       };
 
@@ -522,7 +522,8 @@ MafPreferencesServiceClass.prototype = {
         this.addDocumentWriteOverride = prefs.getBoolPref("addDocumentWriteOverride");
         this.alertOnArchiveComplete = prefs.getBoolPref("alertOnArchiveComplete");
 
-        // this.win_associate_maf = prefs.getBoolPref("winassociatemaf");
+        this.alternative_save_component = prefs.getBoolPref("useAlternativeSaveComponent");
+
         this.win_associate_maff = prefs.getBoolPref("winassociatemaff");
         this.win_associate_mht = prefs.getBoolPref("winassociatemht");
 
@@ -599,7 +600,8 @@ MafPreferencesServiceClass.prototype = {
       prefs.setBoolPref("addDocumentWriteOverride", this.addDocumentWriteOverride);
       prefs.setBoolPref("alertOnArchiveComplete", this.alertOnArchiveComplete);
 
-      // prefs.setBoolPref("winassociatemaf", this.win_associate_maf);
+      prefs.setBoolPref("useAlternativeSaveComponent", this.alternative_save_component);
+
       prefs.setBoolPref("winassociatemaff", this.win_associate_maff);
       prefs.setBoolPref("winassociatemht", this.win_associate_mht);
 

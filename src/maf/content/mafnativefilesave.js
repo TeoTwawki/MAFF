@@ -226,7 +226,10 @@ makeFileURL: function(aFile)
 
 makeWebBrowserPersist: function()
 {
-  const persistContractID = "@mozilla.org/embedding/browser/nsWebBrowserPersist;1";
+  var persistContractID = "@mozilla.org/embedding/browser/nsWebBrowserPersist;1";
+  if (MafPreferences.alternative_save_component) {
+    persistContractID = "@mozilla.org/libmaf/embedding/browser/nsWebBrowserPersist;1";
+  }
   const persistIID = Components.interfaces.nsIWebBrowserPersist;
   return Components.classes[persistContractID].createInstance(persistIID);
 },

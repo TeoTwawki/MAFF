@@ -56,6 +56,7 @@
 <!ENTITY maf.preferencesdialog.label.enablemafprotocol "Włącz obsługę protokołu MAF">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Włącz nadpisywanie document.write">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alert on single page archive complete">
+<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Use alternative save component">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Przeglądaj...">
 

@@ -56,6 +56,7 @@
 <!ENTITY maf.preferencesdialog.label.enablemafprotocol "Activer le protocole MAF">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Activer la réécriture des document.write">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alerter à la fin de l'archivage d'une page unique">
+<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Use alternative save component">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Parcourir...">
 

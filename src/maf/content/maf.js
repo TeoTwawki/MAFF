@@ -40,6 +40,10 @@
  * Fixed bug that ignored processing parts of MHT framed pages if their content type wasn't text/html.
  * Removed preference for windows .maf association to avoid any potential problems with MS Access.
  * Added code to remove 3 byte utf start characters from MHT parts so Mozilla decodes properly.
+ * Modified vbs hide functionality to revert to using command window if wscript or the invis.vbs is not found.
+ * Added preference to use alternative DOM save component.
+ * Preference for using wscript and invis.vbs is now true by default.
+ * Added alternative DOM save component based on the Scrapbook extension by Gomita.
  *
  * Changes from 0.4.2 to 0.4.3
  *
@@ -158,12 +162,21 @@ maf.prototype = {
       MafMHTHandler.extractArchive(archivefile, realDestPath);
     } else {
       /** If program is nothing then don't try to run it. */
-      if (program != "") {
+      if (program.trim() != "") {
         if (MafPreferences.win_invisible) {
-          localProgram = MafPreferences.win_wscriptexe;
-          localProgramArgs = new Array();
-          localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
-          localProgramArgs[localProgramArgs.length] = program;
+          // If wscript and vbs for invisible running exist
+          if (MafPreferences.win_wscriptexe.trim() != "" &&
+              MafPreferences.win_invisiblevbs.trim() != "" &&
+              MafUtils.checkFileExists(MafPreferences.win_wscriptexe) &&
+              MafUtils.checkFileExists(MafPreferences.win_invisiblevbs)) {
+            localProgram = MafPreferences.win_wscriptexe;
+            localProgramArgs = new Array();
+            localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
+            localProgramArgs[localProgramArgs.length] = program;
+          } else {
+            localProgram = program;
+            localProgramArgs = new Array();
+          }
         } else {
           localProgram = program;
           localProgramArgs = new Array();

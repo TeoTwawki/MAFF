@@ -70,7 +70,8 @@
     document.getElementById("chkAddDocumentWriteOverride").checked = MafPreferences.addDocumentWriteOverride;
     document.getElementById("chkAlertOnArchiveComplete").checked = MafPreferences.alertOnArchiveComplete;
 
-    // document.getElementById("winChkAssociateWithMAF").checked = MafPreferences.win_associate_maf;
+    document.getElementById("chkUseAlternativeSaveComponent").checked = MafPreferences.alternative_save_component;
+
     document.getElementById("winChkAssociateWithMAFF").checked = MafPreferences.win_associate_maff;
     document.getElementById("winChkAssociateWithMHT").checked = MafPreferences.win_associate_mht;
 
@@ -102,7 +103,8 @@
     document.getElementById("chkAddDocumentWriteOverride").checked = mpd.addDocumentWriteOverride;
     document.getElementById("chkAlertOnArchiveComplete").checked = mpd.alertOnArchiveComplete;
 
-    // document.getElementById("winChkAssociateWithMAF").checked = mpd.win_associate_maf;
+    document.getElementById("chkUseAlternativeSaveComponent").checked = mpd.alternative_save_component;
+
     document.getElementById("winChkAssociateWithMAFF").checked = mpd.win_associate_maff;
     document.getElementById("winChkAssociateWithMHT").checked = mpd.win_associate_mht;
 
@@ -122,7 +124,6 @@
       document.getElementById("btnBrowseWinScript").disabled = true;
       document.getElementById("winInvisVbsLoc").disabled = true;
       document.getElementById("btnBrowseInvisVbs").disabled = true;
-      // document.getElementById("winChkAssociateWithMAF").disabled = true;
       document.getElementById("winChkAssociateWithMAFF").disabled = true;
       document.getElementById("winChkAssociateWithMHT").disabled = true;
     }
@@ -149,7 +150,8 @@
     MafPreferences.addDocumentWriteOverride = document.getElementById("chkAddDocumentWriteOverride").checked;
     MafPreferences.alertOnArchiveComplete = document.getElementById("chkAlertOnArchiveComplete").checked;
 
-    // MafPreferences.win_associate_maf = document.getElementById("winChkAssociateWithMAF").checked;
+    MafPreferences.alternative_save_component = document.getElementById("chkUseAlternativeSaveComponent").checked;
+
     MafPreferences.win_associate_maff = document.getElementById("winChkAssociateWithMAFF").checked;
     MafPreferences.win_associate_mht = document.getElementById("winChkAssociateWithMHT").checked;
 
@@ -275,7 +277,8 @@
      <checkbox id="chkEnableMafProtocol" checked="false" label="&maf.preferencesdialog.label.enablemafprotocol;" />
      <checkbox id="chkAddDocumentWriteOverride" checked="false" label="&maf.preferencesdialog.label.adddocumentwriteoverride;" />
      <checkbox id="chkAlertOnArchiveComplete" checked="false" label="&maf.preferencesdialog.label.alertonarchivecomplete;" />
-
+     <checkbox id="chkUseAlternativeSaveComponent" checked="false"
+                label="&maf.preferencesdialog.label.usealternativesavecomponent;" />
      <hbox>
        <label control="selDefaultApp" value="&maf.preferencesdialog.openmode.defaultapp;"/>
        <menulist id="selDefaultApp">
