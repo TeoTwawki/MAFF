@@ -128,11 +128,11 @@
          ondblclick="openTreeRowInTab(event);">
   <treecols>
     <treecol id="title" label="&maf.browseOpenArchivesDialog.tree.title;" primary="true" flex="1" persist="width ordinal hidden"/>
-    <splitter/>
+    <splitter class="tree-splitter"/>
     <treecol id="archivetime" label="&maf.browseOpenArchivesDialog.tree.archivetime;" flex="1" persist="width ordinal hidden"/>
-    <splitter/>
+    <splitter class="tree-splitter"/>
     <treecol id="originalurl" label="&maf.browseOpenArchivesDialog.tree.originalurl;" flex="1" persist="width ordinal hidden"/>
-    <splitter/>
+    <splitter class="tree-splitter"/>
     <treecol id="localurl" label="&maf.browseOpenArchivesDialog.tree.localurl;" flex="1" persist="width ordinal hidden"/>
   </treecols>
 

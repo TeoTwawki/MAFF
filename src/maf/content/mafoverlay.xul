@@ -23,6 +23,15 @@
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+  <script src="chrome://maf/content/mafarchiver.js"/>
+  <script src="chrome://maf/content/mafpreferences.js"/>
+  <script src="chrome://maf/content/mafgui.js"/>
+  <script src="chrome://maf/content/mafnativefilesave.js"/>
+  <script src="chrome://maf/content/mafstate.js"/>
+  <script src="chrome://maf/content/maftabarchiver.js"/>
+  <script src="chrome://maf/content/maftabexpander.js"/>
+  <script src="chrome://maf/content/mafmhthandler.js"/>
+  <script src="chrome://maf/content/mafutils.js"/>
   <script src="chrome://maf/content/maf.js"/>
 
   <menupopup id="menu_FilePopup">

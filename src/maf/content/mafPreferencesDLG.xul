@@ -31,6 +31,8 @@
          onload="onLoad()">
 
 <script type="application/x-javascript" src="maf.js"/>
+<script type="application/x-javascript" src="mafpreferences.js"/>
+<script type="application/x-javascript" src="mafgui.js"/>
 
 <script>
 

@@ -32,6 +32,7 @@
 
   var ma=window.arguments[0];
   ma.setProgressUpdater(updateProgress);
+  ma.start();
 
   function doCancel() {
     ma.stop();
