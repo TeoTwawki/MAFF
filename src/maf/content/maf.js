@@ -32,15 +32,16 @@
  * Changes from 0.2.18 to 0.2.19
  *
  * Fixed preferences bug that occurred on Mozilla when selecting options.
- * Added URL rewrite functionality - URLs in new tabs are replaced by local URLs using currently open archives
- * Optimized MHT decoding to use DOM tree for URL substitution.
+ * Added base URL rewrite functionality - URLs in new tabs are replaced by local URLs using currently open archives
+ * Optimized MHT decoding to use Regular Expression for URL substitution.
+ * Added base tag for relative URLs existing in decoded MHT files.
+ * Fixed save as text, Missing meta-data no longer stops archiving process.
+ * Saving works on Mozilla for Windows now.
  *
  */
 
 /**
  * TODO:
- *   Fix save as text
- *     http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/DOM2-Events.txt
  *   Implement open archive functionality
  *     - Based on preferences
  *       - Dialog box showing all archived files, select to open - DONE
@@ -183,31 +184,6 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
     }
   },
 
-  /*
-  this.downloadProgressListener = {
-    onStateChange: function(webProgress, request, stateFlags, status) { },
-    onProgressChange: function(webProgress, request, curSelfProgress,
-                                maxSelfProgress, curTotalProgress, maxTotalProgress) {
-
-          if (maxTotalProgress == -1) {
-            this._checkDownloadComplete(this);
-          }
-          alert("onProgressChange, curSelfProgress: " + curSelfProgress +
-                       " maxSelfProgress: " + maxSelfProgress +
-                       " curTotalProgress: " + curTotalProgress +
-                       " maxTotalProgress: " + maxTotalProgress);
-    },
-    onStatusChange: function(webProgress, request, status, message) { },
-    onSecurityChange: function(webProgress, request, state) { },
-    QueryInterface: function(iid) {
-      if(!iid.equals(Components.interfaces.nsIWebProgressListener) &&
-         !iid.equals(Components.interfaces.nsISupportsWeakReference)) {
-           throw Components.results.NS_ERROR_NO_INTERFACE;
-      }
-      return this;
-    }
-  }, */
-
   /**
    * Clears the interval timer if the download is complete.
    * Also triggers the archive download function.
@@ -259,15 +235,24 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
     // Get a referance to index.rdf's data source
     var indexDS = MafUtils.createRDF(destMetaDataFolder, "index.rdf");
 
-    // Add url data
-    MafUtils.addStringData(indexDS, "originalurl", objMafArchiver.aDocument.location.href);
-    // Add title
-    MafUtils.addStringData(indexDS, "title", objMafArchiver.aDocument.title);
-    // Add Date/Time archived data
-    MafUtils.addStringData(indexDS, "archivetime", objMafArchiver.dateTimeArchived);
-    // Add index file data
-    MafUtils.addStringData(indexDS, "indexfilename", objMafArchiver.indexfilename);
+    try {
+      // Add url data
+      MafUtils.addStringData(indexDS, "originalurl", objMafArchiver.aDocument.location.href);
 
+      if (objMafArchiver.aDocument.title != "") {
+        // Add title
+        MafUtils.addStringData(indexDS, "title", objMafArchiver.aDocument.title);
+      } else {
+        MafUtils.addStringData(indexDS, "title", "Unknown");
+      }
+      // Add Date/Time archived data
+      MafUtils.addStringData(indexDS, "archivetime", objMafArchiver.dateTimeArchived);
+      // Add index file data
+      MafUtils.addStringData(indexDS, "indexfilename", objMafArchiver.indexfilename);
+
+    } catch(e) {
+
+    }
     // Write changes to physical file
     indexDS.Flush();
 
@@ -343,7 +328,13 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
     };
 
     /** Change the header sniffer callback to use the this._ns_foundHeaderInfo function instead */
-    var sniffer = new nsHeaderSniffer(aDocument.location.href, this._ns_foundHeaderInfo, data, true);
+    /** If there's a constant kSaveAsType_Complete, then we're in Firefox or something in which
+        the original code works, otherwise use the Mozilla 1.7 RC2 for windows code. */
+    if (typeof(kSaveAsType_Complete) !== "undefined") {
+      var sniffer = new nsHeaderSniffer(aDocument.location.href, this._ns_foundHeaderInfo, data, true);
+    } else {
+      var sniffer = new nsHeaderSniffer(aDocument.location.href, this._ns_foundHeaderInfoAlternate, data, true);
+    }
   },
 
   /**
@@ -446,20 +437,10 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
 
       const kWrapColumn = 80;
       aData.objMafArchiver.dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
-      // The progress listener isn't working!
-      // The progress finishes but the download window comes up and says "starting..."
-      //var dlListener = aData.objMafArchiver.downloadProgressListener;
-      //dlListener = dlListener.QueryInterface(Components.interfaces.nsIWebProgressListener);
-      //persist.progressListener = dlListener;
       persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
                          persistArgs.contentType, encodingFlags, kWrapColumn);
     } else {
       aData.objMafArchiver.dl.init(source, persistArgs.target, null, null, null, persist);
-      // The progress listener isn't working!
-      // The progress finishes but the download window comes up and says "starting..."
-      //var dlListener = aData.objMafArchiver.downloadProgressListener;
-      //dlListener = dlListener.QueryInterface(Components.interfaces.nsIWebProgressListener);
-      //persist.progressListener = dlListener;
       persist.saveURI(source, null, null, persistArgs.postData, null, persistArgs.target);
     }
 
@@ -476,7 +457,9 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
    * Instead uses values stored in the aData record structure.
    */
   this._ns_getTargetFile = function(aData, aSniffer, aContentType, aIsDocument, aSkipPrompt, aSaveAsTypeResult) {
+    if (typeof(kSaveAsType_Complete) !== "undefined") {
   aSaveAsTypeResult.rv = kSaveAsType_Complete;
+    }
 
   // Determine what the 'default' string to display in the File Picker dialog
   // should be.
@@ -539,8 +522,155 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
 
   return file;
 
-  }
+  },
 
+  /**
+   * Based on code found in foundHeaderInfo in contentAreaUtils.js
+   * Quick fix to get it working on Mozilla for windows
+   * Removed code prompting user for location to save file to.
+   * Why take out aSkipPrompt?!?.
+   */
+  this._ns_foundHeaderInfoAlternate = function(aSniffer, aData, aSkipPrompt) {
+
+    try {
+
+    var contentType = aSniffer.contentType;
+    var contentEncodingType = aSniffer.contentEncodingType;
+
+    var shouldDecode = false;
+    var urlExt = null;
+
+    // Are we allowed to decode?
+    try {
+      const helperAppService =
+        Components.classes["@mozilla.org/uriloader/external-helper-app-service;1"].
+          getService(Components.interfaces.nsIExternalHelperAppService);
+      var url = aSniffer.uri.QueryInterface(Components.interfaces.nsIURL);
+      urlExt = url.fileExtension;
+      if (contentEncodingType &&
+          helperAppService.applyDecodingForExtension(urlExt,
+                                                     contentEncodingType)) {
+        shouldDecode = true;
+      }
+    }
+    catch (e) {
+    }
+
+    var bundle = getStringBundle();
+
+    var saveMode = GetSaveModeForContentType(contentType);
+    var isDocument = aData.document != null && saveMode;
+    if (!isDocument && !shouldDecode && contentEncodingType) {
+      // The data is encoded, we are not going to decode it, and this is not a
+      // document save so we won't be doing a "save as, complete" (which would
+      // break if we reset the type here).  So just set our content type to
+      // correspond to the outermost encoding so we get extensions and the like
+      // right.
+      contentType = contentEncodingType;
+    }
+
+    // Determine what the 'default' string to display in the File Picker dialog
+    // should be.
+    var defaultFileName = getDefaultFileName(aData.fileName,
+                                             aSniffer.suggestedFileName,
+                                             aSniffer.uri,
+                                             aData.document);
+    var defaultExtension = getDefaultExtension(defaultFileName, aSniffer.uri, contentType);
+
+    // XXX We depend on the following holding true in appendFiltersForContentType():
+    // If we should save as a complete page, the filterIndex is 0.
+    // If we should save as text, the filterIndex is 2.
+    /***
+    var useSaveDocument = isDocument &&
+                        ((saveMode & SAVEMODE_COMPLETE_DOM && fp.filterIndex == 0) ||
+                         (saveMode & SAVEMODE_COMPLETE_TEXT && fp.filterIndex == 2));
+    ***/
+    var useSaveDocument = isDocument &&
+                        ((saveMode & SAVEMODE_COMPLETE_DOM) ||
+                         (saveMode & SAVEMODE_COMPLETE_TEXT));
+
+    var file = null;
+    try {
+      var saveAsTypeResult = { rv: 0 };
+      file = aData.objMafArchiver._ns_getTargetFile(aData, aSniffer, contentType, isDocument, aSkipPrompt, saveAsTypeResult);
+      saveAsType = saveAsTypeResult.rv;
+    } catch(e) {
+      alert(e);
+    }
+
+
+    // If we're saving a document, and are saving either in complete mode or
+    // as converted text, pass the document to the web browser persist component.
+    // If we're just saving the HTML (second option in the list), send only the URI.
+    var source = useSaveDocument ? aData.document : aSniffer.uri;
+    var persistArgs = {
+      source      : source,
+      contentType : contentType,
+      target      : makeFileURL(file),
+      postData    : isDocument ? getPostData() : null,
+      bypassCache : aData.bypassCache
+    };
+
+    // contentType : (useSaveDocument && fp.filterIndex == 2) ? "text/plain" : contentType,
+    // target      : makeFileURL(file),
+
+    var persist = makeWebBrowserPersist();
+
+    // Calculate persist flags.
+    const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
+    const flags = nsIWBP.PERSIST_FLAGS_NO_CONVERSION | nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
+    if (aData.bypassCache)
+      persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_BYPASS_CACHE;
+    else
+      persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_FROM_CACHE;
+
+    if (shouldDecode)
+      persist.persistFlags &= ~nsIWBP.PERSIST_FLAGS_NO_CONVERSION;
+
+    // Create download and initiate it (below)
+    aData.objMafArchiver.dl = Components.classes["@mozilla.org/download;1"].createInstance(Components.interfaces.nsIDownload);
+
+    if (useSaveDocument) {
+      // Saving a Document, not a URI:
+      var filesFolder = null;
+      if (persistArgs.contentType != "text/plain") {
+        // Create the local directory into which to save associated files.
+        filesFolder = file.clone();
+
+        var nameWithoutExtension = filesFolder.leafName.replace(/\.[^.]*$/, "");
+        var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
+                                                                         [nameWithoutExtension],
+                                                                         1);
+
+        filesFolder.leafName = filesFolderLeafName;
+      }
+
+      var encodingFlags = 0;
+      if (persistArgs.contentType == "text/plain") {
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_FORMATTED;
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_ABSOLUTE_LINKS;
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_NOFRAMES_CONTENT;
+      }
+      else {
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES;
+      }
+
+      const kWrapColumn = 80;
+      aData.objMafArchiver.dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
+      persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
+                           persistArgs.contentType, encodingFlags, kWrapColumn);
+    } else {
+      aData.objMafArchiver.dl.init(source, persistArgs.target, null, null, null, persist);
+      var referer = getReferrer(document);
+      persist.saveURI(source, null, referer, persistArgs.postData, null, persistArgs.target);
+    }
+
+
+    } catch(exc) {
+      alert(exc);
+    }
+
+  }
 
 };
 
@@ -1723,9 +1853,10 @@ var MafUtils = {
       }
 
       try {
-        var div = hiddenWnd.document.createElement("div");
-        hiddenWnd.document.documentElement.appendChild(div);
-        DomRoot = div;
+        //var div = hiddenWnd.document.createElement("iframe");
+        //hiddenWnd.document.documentElement.appendChild(div);
+        //DomRoot = div;
+        DomRoot = hiddenWnd.document;
       } catch(e) {
         alert(e);
       }
@@ -1748,6 +1879,36 @@ var MafUtils = {
         }
       }
     }
+  },
+
+  addBaseHref: function(sourceString, indexOriginalURL) {
+    var resultString = "";
+    var baseHrefString = "<base href=\"" + indexOriginalURL + "\" />";
+    try {
+      var headRe = new RegExp("<[^>]*head[^<]*>", "i"); // Match head tag
+      var htmlRe = new RegExp("<[^>]*html[^<]*>", "i"); // Match html tag
+
+      var headMatch = headRe.exec(sourceString);
+      var htmlMatch = htmlRe.exec(sourceString);
+
+      // If match head tag, place base href tag right after open head
+      if (headMatch != null) {
+        resultString = sourceString.substring(0, headMatch.index + headMatch.toString().length);
+        resultString += baseHrefString;
+        resultString += sourceString.substring(headMatch.index + headMatch.toString().length, sourceString.length);
+      } else if(htmlMatch != null) {
+        // If no head tag, place after html tag
+        resultString = sourceString.substring(0, htmlMatch.index + htmlMatch.toString().length);
+        resultString += baseHrefString;
+        resultString += sourceString.substring(htmlMatch.index + htmlMatch.toString().length, sourceString.length);
+      } else {
+        // If no html tag (uhm, ok then) append to top
+        resultString = baseHrefString + sourceString;
+      }
+    } catch(e) {
+
+    }
+    return resultString;
   }
 
 };
@@ -2128,33 +2289,8 @@ var MafMHTHander = {
 
       try {
 
-        DomRoot.innerHTML = contents;
-
-        var images = DomRoot.ownerDocument.images;
-
-        for (var j=0; j < images.length; j++) {
-          if (typeof(urlToLocalFilenameMap[images[j].src]) != "undefined") {
-            images[j].src=MafUtils.getURIFromFilename(urlToLocalFilenameMap[images[j].src]);
-          }
-        }
-
-        var links = DomRoot.ownerDocument.links;
-
-        for (var j=0; j < links.length; j++) {
-          var originalLink = links[j].href;
-          var baseLink = originalLink.split("#")[0];
-
-          var leftOver = originalLink.split("#")[1];
-
-          if (typeof(urlToLocalFilenameMap[baseLink]) != "undefined") {
-            links[j].href=MafUtils.getURIFromFilename(urlToLocalFilenameMap[baseLink]);
-            if (leftOver != "") {
-              links[j].href += "#" + leftOver;
-            }
-          }
-        }
-
-        contents = DomRoot.innerHTML;
+        contents = this.replaceUrls(contents, urlToLocalFilenameMap);
+        contents = MafUtils.addBaseHref(contents, indexOriginalURL);
 
       } catch(e) {
         alert(e);
@@ -2174,6 +2310,40 @@ var MafMHTHander = {
 
   },
 
+
+  replaceUrls: function(sourceString, urlToLocalFilenameMap) {
+    var resultString = "";
+    var unprocessedString = sourceString;
+    var re = new RegExp("[a-z]+://[^>\"']+", "i"); // Absolute URL regular expression
+
+    var m = re.exec(unprocessedString);
+    while (m != null) {
+      resultString += unprocessedString.substring(0, m.index);
+      var originalUrl = m.toString();
+
+      // Todo, decode anything else that might give trouble
+      originalUrl = originalUrl.replaceAll("&amp;", "&");
+
+      // Cater for Hashes
+      var baseUrl = originalUrl.split("#")[0];
+      var leftOver = originalUrl.split("#")[1];
+
+      if (typeof(urlToLocalFilenameMap[baseUrl]) != "undefined") {
+        resultString += MafUtils.getURIFromFilename(urlToLocalFilenameMap[baseUrl]);
+        if (typeof(leftOver) != "undefined") {
+          resultString += "#" + leftOver;
+        }
+      } else {
+        resultString += m.toString();
+      }
+
+      unprocessedString = unprocessedString.substring(m.index + m.toString().length, unprocessedString.length);
+      m = re.exec(unprocessedString);
+    }
+
+    resultString += unprocessedString;
+    return resultString;
+  },
 
   _updateMetaData: function(headers, originalURL, datasource) {
     var result = "";
@@ -2322,3 +2492,4 @@ String.prototype.replaceAll = function(needle, newneedle) {
   x=x.split(needle).join(newneedle);
   return x;
 };
+
