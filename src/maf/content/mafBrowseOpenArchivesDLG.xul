@@ -33,6 +33,7 @@
   var ms = window.arguments[0];
   var win = window.arguments[1];
   var mGUI = window.arguments[2];
+  var mUtils = window.arguments[3];
 
   function onLoad() {
     window.sizeToContent();
@@ -50,7 +51,7 @@
       var end = new Object();
       var numRanges = document.getElementById("open-archives-tree").view.selection.getRangeCount();
 
-      var oBrowser = win.getBrowser();
+      var urlList = new Array();
 
       for (var t=0; t &lt; numRanges; t++) {
         document.getElementById("open-archives-tree").view.selection.getRangeAt(t,start,end);
@@ -59,7 +60,7 @@
           var level = document.getElementById("open-archives-tree").view.getLevel(v);
 
           if (level == 1) {
-            var newTab = oBrowser.addTab(url);
+            urlList[urlList.length] = url;
           } else if (level == 0 ) {
 
             var levelZeroV = v + 1;
@@ -69,7 +70,7 @@
               while ((document.getElementById("open-archives-tree").view.getLevel(levelZeroV) == 1) &amp;&amp;
                      (levelZeroV &lt; document.getElementById("open-archives-tree").view.rowCount)) {
                 var levelZeroUrl = document.getElementById("open-archives-tree").view.getCellText(levelZeroV, urlsource);
-                var newLevelZeroTab = oBrowser.addTab(levelZeroUrl);
+                urlList[urlList.length] = levelZeroUrl;
                 levelZeroV++;
               }
             } catch(e) {
@@ -79,6 +80,8 @@
           }
         }
       }
+
+      mUtils.openListInTabs(urlList);
 
     } catch (e)  {
       alert(e);
@@ -108,7 +111,9 @@
       level = document.getElementById("open-archives-tree").view.getLevel(v);
 
       if (level == 1) {
-        var newTab = win.getBrowser().addTab(url);
+        var urlList = new Array();
+        urlList[urlList.length] = url;
+        mUtils.openListInTabs(urlList);
       }
     } catch (e) {
 

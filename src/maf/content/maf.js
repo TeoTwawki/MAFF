@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.2.19
+ * Version: 0.2.20
  *
  * Author: Christopher Ottley
  *
@@ -29,7 +29,13 @@
 
 /**
  *
- * Changes from 0.2.18 to 0.2.19
+ * Changes from 0.2.19 to 0.2.20 - Due 1st July
+ *
+ * Optional function that is executed when a single page is added to archive - An alert telling the user archive is complete
+ * Opening tabs from browse dialog now uses blank tab if possible.
+ *
+ *
+ * Changes from 0.2.18 to 0.2.19 - Completed
  *
  * Fixed preferences bug that occurred on Mozilla when selecting options.
  * Added base URL rewrite functionality - URLs in new tabs are replaced by local URLs using currently open archives
@@ -46,43 +52,12 @@
  */
 
 /**
- * TODO:
- *   Implement open archive functionality
- *     - Based on preferences
- *       - Dialog box showing all archived files, select to open - DONE
- *       - Open all in new tabs - DONE
- *     - URL Rewrite preference
- *       - As tabs are loaded, search for URLs that match archived URLs and replace with local file:// URLs.
- *     - Show loading dialog until archives have decompressed - DONE
- *
- *   Implement save archive functionality
- *     - Save additional meta data (search for METAXXX).
- *
- *   Implement Preferences functionality
- *     - Settings to create the script used in archiving - INCLUDED IN INSTALLER
- *     - Whole Prefences GUI and logic insanity
- *       - Browse button for existing files should change to the directory (if possible)
- *
- *   Optimizations:
- *     - Look at implementing an Observer object for the download instead of a timer on a 1 second delay.
- *     - Look also for javascript observer for the save tabs dialog
- *
- *   Additional Planned Features:
- *     - MHT File support via a pseudo-app that is responsible for MHT decoding (and encoding?)
- *     - Save all history entries for a specific tab in an archive
- *       - Save all tabs and all history entries for all tabs
- *     - Option to close tab as it is saved
- *     - Most recently opened archive functionality
- *     - Remember when last MAF file was opened
- *     - Open all MAF archives in a directory
- *
  *
  *   Known Bugs:
  *     - Other content types (like PDF) haven't been tested
  *     - The GUI does not have the ability to add more archive app scripts or extensions
  *     - If there is a : in the title of something, the RDF reader freaks out
  */
-
 
 /**
  * Contracts and interfaces used in the source.
@@ -211,6 +186,9 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
 
         // Remove it after 5 seconds
         setTimeout(objMafArchiver._removeFolder, 5000, tempArchiveFolder);
+        if (typeof(objMafArchiver.oncomplete) != "undefined") {
+          objMafArchiver.oncomplete();
+        }
       }
     }
   },
@@ -885,7 +863,15 @@ var Maf = {
     var dateTimeArchived = new Date();
 
     var objMafArchiver = new MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchived);
+    objMafArchiver.oncomplete = Maf.onSaveAsWebPageComplete;
     objMafArchiver.start();
+  },
+
+  /**
+   * If a single page is saved, this is called as visual feedback to the user.
+   */
+  onSaveAsWebPageComplete: function() {
+    alert("Archive operation complete");
   },
 
   /**
@@ -1708,7 +1694,7 @@ var MafUtils = {
 
     var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
                     ",width="+ w +",height=" + h;
-    window.openDialog(url, "_blank", win_prefs, MafState, window, MafGUI);
+    window.openDialog(url, "_blank", win_prefs, MafState, window, MafGUI, MafUtils);
   },
 
   /**
@@ -2172,7 +2158,18 @@ var MafMHTHander = {
 
   MHT_EXTRACT_PROG_ID: "Internal MHT Program Extract Handler",
 
+  APPSIGNATURE: navigator.appCodeName + " " + navigator.appVersion,
+
   base64s: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+
+  /** Characters that are to be unaltered during quoted printable encoding */
+  QPENCODE_UNALTERED: String.fromCharCode(32) + String.fromCharCode(60) + String.fromCharCode(62) + String.fromCharCode(126),
+
+  /** Characters that are to be unaltered during quoted printable encoding if they are the last char*/
+  QPENCODE_UNALTEREDEND: String.fromCharCode(33) + String.fromCharCode(60) + String.fromCharCode(62) + String.fromCharCode(126),
+
+  /** The maximum number of characters before line wrap */
+  QPENCODE_MAXLINESIZE: 76,
 
   extractFromArchive: function(archivefile, destpath) {
     // Create destpath
@@ -2480,6 +2477,82 @@ var MafMHTHander = {
     return newresult;
   },
 
+  /**
+   * Encode text to be quoted printable.
+   * Based on code from: http://sourceforge.net/snippet/detail.php?type=snippet&id=101156
+   * Original author: samray
+   */
+  _encodeQuotedPrintable: function(srcString) {
+    var result;
+    result = "";
+
+    var textLines = srcString.split(new RegExp("\r\n","g"));
+    for (var i=0; i<textLines.length; ++i) {
+      result += this._encodeQuotedPrintableLine(textLines[i]) + "\r\n";
+    }
+
+    return result;
+  },
+
+
+  /**
+   * Encode a single line of text to be quoted printable.
+   * Based on code from: http://sourceforge.net/snippet/detail.php?type=snippet&id=101156
+   * Original author: samray
+   */
+  _encodeQuotedPrintableLine: function(srcLineString) {
+    var result;
+    result = "";
+
+    if (srcLineString.length > 0) {
+      var s = "";
+
+      for (var i = 0; i<srcLineString.length-1; ++i) {
+        s += this._encodeQuotedPrintableCharacter(srcLineString.charCodeAt(i), this.QPENCODE_UNALTERED);
+      }
+
+      // Encode last character; if space, encode it
+      s += this._encodeQuotedPrintableCharacter(srcLineString.charCodeAt(srcLineString.length-1), this.QPENCODE_UNALTEREDEND);
+
+      result = s;
+
+      if (s.length > this.QPENCODE_MAXLINESIZE) {
+
+        // Split into lines of QPENCODE_MAXLINESIZE characters or less
+        result = s.slice(0, this.QPENCODE_MAXLINESIZE);
+        i = this.QPENCODE_MAXLINESIZE;
+        while (i < s.length) {
+          result += "=\r\n" + s.slice(i, i + this.QPENCODE_MAXLINESIZE);
+          i += this.QPENCODE_MAXLINESIZE;
+        }
+      }
+
+    }
+
+    return result;
+  },
+
+
+  /**
+   * Encode a character that isn't in range as a hex string
+   * Based on code from: http://sourceforge.net/snippet/detail.php?type=snippet&id=101156
+   * Original author: samray
+   */
+  _encodeQuotedPrintableCharacter: function(Character, UnAltered) {
+    var x, Alter=true;
+    for (var i=0; i<UnAltered.length; i+=2) {
+      if (Character >= UnAltered.charCodeAt(i) && Character <= UnAltered.charCodeAt(i+1)) {
+        Alter=false;
+      }
+    }
+
+    if (!Alter) {
+      return String.fromCharCode(Character);
+    }
+
+    x = Character.toString(16).toUpperCase();
+    return (x.length == 1) ? "=0" + x : "=" + x;
+  },
 
   /**
    * Convert a hex digit into decimal
@@ -2496,9 +2569,46 @@ var MafMHTHander = {
   },
 
   /**
-   * Might do this eventually, for now, not supported
+   * Might do this eventually, for now, not supported XXXMHT
+   * To implement:
+   *  Make sure all available meta data is present
+   *    - Missing some from MAF - Original URLs of saved resources
+   *                            - Content types of saved resources
+   *  Load RDF of saved archive files
+   *  Content types of each resource file
+   *  Original URL of each file
+   *  Generate boundary string
+   *  Get subject (title)
+   *  Base 64 encode binary data
+   *  Quoted print html, css
+   *
    */
   archiveDownload: function(archivefile, sourcepath) {
+   /*
+    var MHTContentString = "";
+    var mainfileSubject = "Unknown";
+    var dateArchived = "Unknown";
+
+    var hasSupportingFiles = true;
+
+    var boundaryString = "";
+
+    MHTContentString += "From: <Saved by " + this.APPSIGNATURE + ">\r\n";
+    MHTContentString += "Subject: " + mainfileSubject + "\r\n";
+    MHTContentString += "Date: " + dateArchived + "\r\n";
+    MHTContentString += "MIME-Version: 1.0\r\n";
+
+    if (hasSupportingFiles) {
+      var boundaryString = "=_NextPart_000_0000_01C42E9C.DB99EB90";
+      MHTContentString += "Content-Type: multipart/related;\r\n";
+      MHTContentString += "\tboundary=\"----" + boundaryString + "\";\r\n"
+      MHTContentString += "\ttype=\"text/html\"\r\n";
+      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.2.20\r\n";
+      MHTContentString += "\r\nThis is a multi-part message in MIME format.\r\n";
+    }
+
+    MafUtils.createFile(archivefile, MHTContentString);
+    */
     alert("Saving as MHT is not supported.");
   }
 };
