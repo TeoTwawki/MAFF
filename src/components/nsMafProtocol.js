@@ -120,7 +120,6 @@ MAFProtocol.prototype = {
   },
 
   openArchiveURI: function(uri) {
-    mafdebug("URI called to openArchiveURI is: " + uri);
     var loadURIMafRegExp = new RegExp(MafPreferences.getOpenFilterRegEx(), "i");
 
      if (uri.match(loadURIMafRegExp)) {
@@ -343,7 +342,7 @@ MAFProtocol.prototype = {
         }
       }
     } catch (e) {
-      mafdebug("Error in converting unicode arguments to native charset: " + e);
+      mafdebug(MafStrBundle.GetStringFromName("errorconvertingunicodetonative") + e);
     }
   },
 

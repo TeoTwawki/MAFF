@@ -27,6 +27,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 /**
+ * TODO: Add save frame functionality to alternative save component.
+ */
+/**
  *
  * Changes from 0.4.3 to 0.5.0
  *
@@ -57,7 +60,7 @@
  * Added network url functionality for .maff files.
  * Added preferences entries that have the major, minor and minor minor version of MAF installed.
  * Fixed bug 8897 - Title in browse archive dialog now displays unicode characters.
- * TODO: Add save frame functionality to alternative save component.
+ * Added additional properties entries for localization of some error messages.
  *
  * Changes from 0.4.2 to 0.4.3
  *
@@ -386,7 +389,7 @@ maf.prototype = {
         }
       }
     } catch (e) {
-      mafdebug("Error in converting unicode arguments to native charset: " + e);
+      mafdebug(MafStrBundle.GetStringFromName("errorconvertingunicodetonative") + e);
     }
   },
 

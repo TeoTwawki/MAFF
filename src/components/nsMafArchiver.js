@@ -132,7 +132,7 @@ MafArchiverClass.prototype = {
                          .createInstance(Components.interfaces.nsITimer);
          this.timer.initWithCallback(this, 100, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
        } else {
-         mafdebug("Error: After " + this.maxDownloadCompleteTries + " tries still could not find index file.");
+         mafdebug(MafStrBundle.GetStringFromName("errorafterstart") + " " + this.maxDownloadCompleteTries + " " + MafStrBundle.GetStringFromName("errorafterend"));
        }
     }
   },

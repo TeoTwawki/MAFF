@@ -13,7 +13,7 @@
 <!ENTITY maf.saveTabsDialogTitle "Progresso do Salvamento das Abas Abertas">
 <!ENTITY maf.openTabsDialogTitle "Progresso da Abertura das Abas">
 
-<!ENTITY maf.menuLabel "Mozilla Archive Format - MAF">
+<!ENTITY maf.menuLabel "Mozilla Archive Format">
 
 <!ENTITY maf.preferences "Preferências">
 <!ENTITY maf.preferencesKey "f">
