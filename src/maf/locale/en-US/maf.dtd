@@ -55,6 +55,7 @@
 <!ENTITY maf.preferencesdialog.label.cleartemp "Clear Temporary folder when browser exits">
 <!ENTITY maf.preferencesdialog.label.enablemafprotocol "Enable MAF Protocol">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Enable document.write override">
+<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alert on single page archive complete">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Browse...">
 
@@ -90,7 +91,6 @@
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
 <!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Save Selected in Archive">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Close">
-
 
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
 <!ENTITY maf.addToArchiveAccessKey "P">

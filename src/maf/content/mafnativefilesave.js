@@ -102,7 +102,9 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
   var isFF08OrLower = false;
   if ((navigator.vendor != null) && (navigator.vendorSub != null)) {
     if (navigator.vendor.toLowerCase() == "firefox") {
-      isFF08OrLower = (parseFloat(navigator.vendorSub.substring(navigator.vendorSub.indexOf(".") + 1, navigator.vendorSub.length)) <= 8);
+      isFF08OrLower = (parseFloat(navigator.vendorSub.substring(navigator.vendorSub.indexOf(".") + 1,
+                       navigator.vendorSub.length)) + (parseFloat(navigator.vendorSub.substring(0,
+                       navigator.vendorSub.indexOf("."))) * 100) <= 8);
     }
   }
   var persistArgs = {

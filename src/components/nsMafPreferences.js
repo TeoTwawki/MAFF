@@ -90,6 +90,8 @@ MafPreferencesServiceClass.prototype = {
 
   addDocumentWriteOverride: false,
 
+  alertOnArchiveComplete: true,
+
   getRecordsLength: function() {
     return this.programExtensions.length;
   },
@@ -416,6 +418,7 @@ MafPreferencesServiceClass.prototype = {
     result.clearTempOnClose = true;
     result.enableMafProtocol = false;
     result.addDocumentWriteOverride = false;
+    result.alertOnArchiveComplete = true;
 
       var mafParentDir = this._getProfileDir();
       // Default if there's no stored prefs
@@ -507,6 +510,7 @@ MafPreferencesServiceClass.prototype = {
         this.clearTempOnClose = prefs.getBoolPref("clearTempOnClose");
         this.enableMafProtocol = prefs.getBoolPref("enableMafProtocol");
         this.addDocumentWriteOverride = prefs.getBoolPref("addDocumentWriteOverride");
+        this.alertOnArchiveComplete = prefs.getBoolPref("alertOnArchiveComplete");
 
         var noOfExtensions = prefs.getIntPref("noofextensions");
 
@@ -579,6 +583,7 @@ MafPreferencesServiceClass.prototype = {
       prefs.setBoolPref("clearTempOnClose", this.clearTempOnClose);
       prefs.setBoolPref("enableMafProtocol", this.enableMafProtocol);
       prefs.setBoolPref("addDocumentWriteOverride", this.addDocumentWriteOverride);
+      prefs.setBoolPref("alertOnArchiveComplete", this.alertOnArchiveComplete);
 
       // Subtract 1 because MHT hander not counted
       prefs.setIntPref("noofextensions", this.programExtensions.length-1);

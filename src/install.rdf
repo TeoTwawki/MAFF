@@ -5,15 +5,25 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>{7f57cf46-4467-4c2d-adfa-0cba7c507e54}</em:id>
-    <em:version>0.4.1</em:version>
+    <em:version>0.4.3</em:version>
 
     <!-- Target Application this extension can install into,
         with minimum and maximum supported versions. -->
+     <!-- Firefox -->
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>.9</em:minVersion>
-        <em:maxVersion>.10+</em:maxVersion>
+        <em:minVersion>0.9</em:minVersion>
+        <em:maxVersion>1.0</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+     <!-- Mozilla -->   
+    <em:targetApplication>
+      <Description>
+        <em:id>{86c18b42-e466-45a9-ae7a-9b95ba6f5640}</em:id>
+        <em:minVersion>1.7</em:minVersion>
+        <em:maxVersion>1.8</em:maxVersion>
       </Description>
     </em:targetApplication>
 
@@ -23,6 +33,8 @@
     <em:creator>Christopher Ottley</em:creator>
     <em:contributor>Gioxx: eXtenZilla.it</em:contributor>
     <em:contributor>Xavier Robin</em:contributor>
+    <em:contributor>Юрий Меркулов, ArtLonger (русский перевод)</em:contributor>
+    <em:contributor>Tłumaczenie: Bartosz Piec</em:contributor>
     <em:homepageURL>http://maf.mozdev.org/</em:homepageURL>
 
 
@@ -38,6 +50,8 @@
         <em:locale>locale/en-US/</em:locale>
         <em:locale>locale/it-IT/</em:locale>
         <em:locale>locale/fr-FR/</em:locale>
+        <em:locale>locale/ru-RU/</em:locale>
+        <em:locale>locale/pl-PL/</em:locale>
         <!-- <em:skin>skin/classic/maf/</em:skin> -->
       </Description>
     </em:file>

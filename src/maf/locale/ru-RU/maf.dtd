@@ -1,0 +1,96 @@
+<!ENTITY maf.loadArchive "Открыть архив">
+<!ENTITY maf.loadArchiveKey "О">
+
+<!ENTITY maf.addToArchive "Сохранить страницу в архив">
+<!ENTITY maf.addToArchiveKey "С">
+
+<!ENTITY maf.addSelectedTabsToArchive "Save Tabs In Archive">
+<!ENTITY maf.addSelectedTabsToArchiveKey "b">
+
+<!ENTITY maf.addAllTabsToArchive "Сохранить все вкладки в архив">
+<!ENTITY maf.addAllTabsToArchiveKey "в">
+
+<!ENTITY maf.saveTabsDialogTitle "Сохранение открытых вкладок...">
+<!ENTITY maf.openTabsDialogTitle "Открывается во вкладках...">
+
+<!ENTITY maf.menuLabel "Настройка архиватора MAF">
+
+<!ENTITY maf.preferences "Конфигурация">
+<!ENTITY maf.preferencesKey "К">
+
+<!ENTITY maf.about "О расширении MAF...">
+<!ENTITY maf.aboutKey "M">
+
+<!ENTITY maf.browseOpenArchives "Просмотр архивов">
+<!ENTITY maf.browseOpenArchivesKey "П">
+
+<!ENTITY maf.aboutdlg.title "О расширении">
+<!ENTITY maf.aboutdlg.description "Расширение MAF сохраняет HTML-страницы в zip-совместимом архиве с помощью внешнего архиватора.  Также сохраняются метаданные страниц, к примеру адрес источника и дата/время.">
+<!ENTITY maf.version "MAF версия 0.4.3">
+<!ENTITY maf.aboutdlg.copyright "(c) 2004 Christopher Ottley">
+<!ENTITY maf.aboutdlg.license "Лицензия GNU GPL 2.0">
+<!ENTITY maf.aboutdlg.home "http://maf.mozdev.org">
+
+<!ENTITY maf.browseOpenArchivesDialog.title "Просмотр архивов">
+
+<!ENTITY maf.browseOpenArchivesDialog.tree.title "Заголовок">
+<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Время архивации">
+<!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "Адрес источника">
+<!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Локальный адрес">
+
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Открыть во вкладках">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Открыть во вкладках, используя maf://"> 
+<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Открыть оригинал во вкладках">
+<!ENTITY maf.browseOpenArchivesDialog.btnclose "Закрыть">
+
+<!ENTITY maf.preferencesdialog.title "Конфигурация">
+
+<!ENTITY maf.preferencesdialog.tabsoptions "Параметры">
+<!ENTITY maf.preferencesdialog.tabsregprogs "Внешние программы">
+<!ENTITY maf.preferencesdialog.tabswinoptions "Параметры Windows">
+
+<!ENTITY maf.preferencesdialog.options.description "Основные параметры работы расширения с архивами MAF">
+
+<!ENTITY maf.preferencesdialog.label.temp "Временная папка:">
+<!ENTITY maf.preferencesdialog.label.cleartemp "Очищать временную папку при выходе из браузера">
+<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Использовать протокол MAF">
+<!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Разрешить сброс document.write">
+<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alert on single page archive complete">
+
+<!ENTITY maf.preferencesdialog.btnbrowse "Обзор...">
+
+<!ENTITY maf.preferencesdialog.openmode "При открытии архивов:">
+
+<!ENTITY maf.preferencesdialog.openmode.showopen "Показывать диалог ''Открыть''">
+<!ENTITY maf.preferencesdialog.openmode.tabs "Открывать все HTML- файлы в новых вкладках">
+<!ENTITY maf.preferencesdialog.openmode.nothing "Не выполнять никаких действий">
+
+<!ENTITY maf.preferencesdialog.openmode.urlrewrite "Перезаписывать адреса в архивных документах">
+<!ENTITY maf.preferencesdialog.openmode.savexmeta "Сохранять в архивах расширенные метаданные">
+
+<!ENTITY maf.preferencesdialog.openmode.defaultapp "Программа, по умолчанию обрабатывающая архивы MAF:">
+
+<!ENTITY maf.preferencesdialog.winop.label "Настройка дополнительных параметров, зависящих от Windows:">
+<!ENTITY maf.preferencesdialog.winop.usevbs "Использовать VBS для скрытого запуска командных bat-файлов">
+
+<!ENTITY maf.preferencesdialog.winop.wscript "Расположение wscript.exe:">
+<!ENTITY maf.preferencesdialog.winop.invis "Расположение invis.vbs:    ">
+
+<!ENTITY maf.preferencesdialog.progs.description "Скрипты, подключающие к обработке архивов MAF внешние программы:">
+
+<!ENTITY maf.preferencesdialog.progs.archive "Сценарий упаковки:    ">
+<!ENTITY maf.preferencesdialog.progs.expand "Сценарий распаковки:">
+
+<!ENTITY maf.preferencesdialog.btnloaddefault "По умолчанию">
+<!ENTITY maf.preferencesdialog.btnsave " Сохранить ">
+<!ENTITY maf.preferencesdialog.btnrevert "Предыдущее сохранение">
+<!ENTITY maf.preferencesdialog.btnclose "  Закрыть  ">
+
+<!ENTITY maf.saveSelectedTabsDialog.title "Select tabs to save in archive">
+<!ENTITY maf.saveSelectedTabsDialog.tree.title "Title">
+<!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
+<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Save Selected in Archive">
+<!ENTITY maf.saveSelectedTabsDialog.btnclose "Close">
+
+<!ENTITY maf.browseOpenArchivesAccessKey "M">
+<!ENTITY maf.addToArchiveAccessKey "P">

@@ -32,7 +32,12 @@
  * Added save selected tabs functionality.
  * Fixed bug that reset save archive type index when save dialog box was cancelled.
  * Fixed bug that stopped tab saving if an event handler couldn't be removed.
- * Fixed bug that resolved to the wrong base url if the page had a base url tag.
+ * Fixed bug that resolved relative links to the wrong base url if the page had a base url tag.
+ * Added Russian locale contributed by the ArtLonger: Mozilla.ru team.
+ * Added Polish locale contributed by Bartosz Piec: Mozillapl.org team.
+ * Updated Post Install code to work with FF RC1
+ * Added preference to disable the window alert when a single page has been saved.
+ * Updated Post Install code to update new vbs scripts for windows filetype associations.
  *
  *
  * Changes from 0.4.1 to 0.4.2
@@ -52,6 +57,7 @@
  * Added file filters to save drop down box filter names if on Windows.
  * Saving a page opened from an archive now saves the real original url in metadata.
  * Added capability to open archive pages from the browse window using the maf:// protocol if the protocol is enabled.
+ *
  *
  *
  * Changes from 0.3.0 to 0.4.0
@@ -258,7 +264,11 @@ maf.prototype = {
    */
   progressUpdater: function(progress) {
     if (progress == 100) {
-      browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationcomplete"));
+      if (MafPreferences.alertOnArchiveComplete) {
+        browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationcomplete"));
+      } else {
+        browserWindow.status = MafStrBundle.GetStringFromName("archiveoperationcomplete");
+      }
     }
   },
 
@@ -398,7 +408,7 @@ maf.prototype = {
 
         MafPostSetup.complete();
 
-        var MafArchivePostProcessor = Components.classes["@mozilla.org/maf/archive-postprocessor-service;1"]
+        var MafArchivePostProcessor = Components.classes["@mozilla.org/blocking-observer-service;1"]
                                           .createInstance(Components.interfaces.nsIObserver);
         MafBlockingObserver.addObserver(MafArchivePostProcessor, "maf-open-archive-complete", false);
       }
@@ -406,7 +416,15 @@ maf.prototype = {
       if (event.originalTarget == "[object HTMLDocument]") {
         // New tab
 
-        if (MafPreferences.urlRewrite) {
+        // Get the original url
+        var originalURL = event.originalTarget.location.href;
+
+        // Remove the hash if any
+        if (originalURL.indexOf("#") > 0) {
+          originalURL = originalURL.substring(0, originalURL.indexOf("#"));
+        }
+
+        if ((MafPreferences.urlRewrite) && (MafState.isArchiveURL(originalURL))) {
           var doc = event.originalTarget;
           var baseUrl = doc.location.href;
 
@@ -425,15 +443,6 @@ maf.prototype = {
           }
           Maf._makeLocalLinksAbsolute(doc, baseUrl, "index_files");
           Maf._makeLocalLinksAbsolute(doc, MafState.getOriginalURL(baseUrl), "");
-
-
-          // Get the original url
-          var originalURL = event.originalTarget.location.href;
-
-          // Remove the hash if any
-          if (originalURL.indexOf("#") > 0) {
-            originalURL = originalURL.substring(0, originalURL.indexOf("#"));
-          }
 
           // If the url is an archive url
           if (MafState.isArchiveURL(originalURL)) {
@@ -529,7 +538,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.3.0", // 0.4.1 Doesn't have new scripts, so leave this
+  postsetupversion: "0.4.3", // 0.4.3 Does have new scripts, so changed
 
   _getSaveFilters: function() {
     var filterresult = new Array();
@@ -657,6 +666,44 @@ var MafPostSetup = {
     return result;
   },
 
+
+  /**
+   * @returns A string representing the location of the browser executable on disk
+   */
+  _getMozillaInstance: function() {
+    try {
+      var result = Components.classes["@mozilla.org/file/directory_service;1"]
+                      .getService(Components.interfaces.nsIProperties)
+                      .get("CurProcD", Components.interfaces.nsIFile);
+
+      if ((navigator.vendor != null) && (navigator.vendor.toLowerCase() == "firefox")) {
+        // If not on windows
+        if (navigator.userAgent.indexOf("Windows") == -1) {
+          // Append firefox
+          result.append("firefox");
+        } else {
+          // Append firefox.exe
+          result.append("firefox.exe");
+        }
+      } else {
+        // If not on windows
+        if (navigator.userAgent.indexOf("Windows") == -1) {
+          // Append mozilla
+          result.append("mozilla");
+        } else {
+          // Append mozilla.exe
+          result.append("mozilla.exe");
+        }
+      }
+
+      result = result.path;
+
+    } catch (e) {
+      result = "";
+    }
+    return result;
+  },
+
   /**
    * @returns an array of files in a directory
    */
@@ -704,7 +751,9 @@ var MafPostSetup = {
     var isFF09OrHigher = false;
     if ((navigator.vendor != null) && (navigator.vendorSub != null)) {
       if (navigator.vendor.toLowerCase() == "firefox") {
-        isFF09OrHigher = (parseFloat(navigator.vendorSub.substring(navigator.vendorSub.indexOf(".") + 1, navigator.vendorSub.length)) >= 9);
+        isFF09OrHigher = (parseFloat(navigator.vendorSub.substring(navigator.vendorSub.indexOf(".") + 1,
+                         navigator.vendorSub.length)) + (parseFloat(navigator.vendorSub.substring(0,
+                         navigator.vendorSub.indexOf("."))) * 100) >= 9);
       }
     }
 
@@ -735,6 +784,7 @@ var MafPostSetup = {
    */
   updateScriptContents: function() {
     var profileDir = this._getProfileDir();
+    var mozillaInstance = this._getMozillaInstance();
 
     // If not on windows
     if (navigator.userAgent.indexOf("Windows") == -1) {
@@ -766,6 +816,34 @@ var MafPostSetup = {
         mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
         MafUtils.deleteFile(profileDir + "\\maf\\mafunzip.bat");
         MafUtils.createExecutableFile(profileDir + "\\maf\\mafunzip.bat", mafunzipStr);
+      }
+
+      if (MafUtils.checkFileExists(profileDir + "\\maf\\setmafffiletype.vbs")) {
+        var mafsetMaffStr = MafUtils.readFile(profileDir + "\\maf\\setmafffiletype.vbs");
+        mafsetMaffStr = mafsetMaffStr.replaceAll("%%MOZILLA_EXE%%", mozillaInstance);
+        MafUtils.deleteFile(profileDir + "\\maf\\setmafffiletype.vbs");
+        MafUtils.createExecutableFile(profileDir + "\\maf\\setmafffiletype.vbs", mafsetMaffStr);
+      }
+
+      if (MafUtils.checkFileExists(profileDir + "\\maf\\setmaffiletype.vbs")) {
+        var mafsetMafStr = MafUtils.readFile(profileDir + "\\maf\\setmaffiletype.vbs");
+        mafsetMafStr = mafsetMafStr.replaceAll("%%MOZILLA_EXE%%", mozillaInstance);
+        MafUtils.deleteFile(profileDir + "\\maf\\setmaffiletype.vbs");
+        MafUtils.createExecutableFile(profileDir + "\\maf\\setmafffiletype.vbs", mafsetMafStr);
+      }
+
+      if (MafUtils.checkFileExists(profileDir + "\\maf\\setmhtfiletype.vbs")) {
+        var mafsetMhtStr = MafUtils.readFile(profileDir + "\\maf\\setmhtfiletype.vbs");
+        mafsetMhtStr = mafsetMhtStr.replaceAll("%%MOZILLA_EXE%%", mozillaInstance);
+        MafUtils.deleteFile(profileDir + "\\maf\\setmhtfiletype.vbs");
+        MafUtils.createExecutableFile(profileDir + "\\maf\\setmhtfiletype.vbs", mafsetMhtStr);
+      }
+
+      if (MafUtils.checkFileExists(profileDir + "\\maf\\unsetallfiletypes.vbs")) {
+        var mafunsetAllStr = MafUtils.readFile(profileDir + "\\maf\\unsetallfiletypes.vbs");
+        mafunsetAllStr = mafunsetAllStr.replaceAll("%%MOZILLA_EXE%%", mozillaInstance);
+        MafUtils.deleteFile(profileDir + "\\maf\\unsetallfiletypes.vbs");
+        MafUtils.createExecutableFile(profileDir + "\\maf\\unsetallfiletypes.vbs", mafunsetAllStr);
       }
 
     }
