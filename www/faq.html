@@ -1,72 +1,17 @@
 <!-- MAIN CONTENT -->
 <h5 class="page-header">Frequently Asked Questions</h5>
 
-<p>Below are some of the more frequently asked questions so far about this project.</p>
+<p>Below are some of the more frequently asked questions so far about this project organized by categories:
+<ol>
+  <li>Functional</li>
+  <li>Website</li>
+  <li>Advocacy</li>
+  <li>Development</li>
+  <li>Personal</li>
+</ol>
+</p>
 
-<table border="0" cellpadding="5" cellspacing="5" valign="top">
-  <tr>
-    <td align="right">Question:</td>
-    <td>So, is this like MHT?</td>
-  </tr>
-  <tr>
-    <td align="right">Answer:</td>
-    <td>No. It's better. I am, of course, biased.</td>
-  </tr>
-</table>
-
-<br /><br />
-
-<table border="0" cellpadding="5" cellspacing="5" valign="top">
-  <tr>
-    <td align="right">Question:</td>
-    <td>Why can't I download anything?</td>
-  </tr>
-  <tr>
-    <td align="right">Answer:</td>
-    <td>There's probably some trouble with the download servers or I haven't uploaded the file you're trying to get. Please try again sometime later.</td>
-  </tr>
-</table>
-
-<br /><br />
-
-<table border="0" cellpadding="5" cellspacing="5" valign="top">
-  <tr>
-    <td align="right">Question:</td>
-    <td>Who are you?</td>
-  </tr>
-  <tr>
-    <td align="right">Answer:</td>
-    <td>As of this writing, an unemployed OSS developer with some (read a lot of) free time on his hands. I also just recently got an M.Sc. with distinction from the local university, congratulate me!</td>
-  </tr>
-</table>
-
-<br /><br />
-
-<table border="0" cellpadding="5" cellspacing="5" valign="top">
-  <tr>
-    <td align="right">Question:</td>
-    <td>Why use scripts? Why not create an XPCOM component?</td>
-  </tr>
-  <tr>
-    <td align="right">Answer:</td>
-    <td>No-one actually asked this, but I'll answer it anyway. Mozilla's source is a huge download for someone who's still on a 14.4 modem. Heh. That and I recently started playing around with Mozilla based development. This is only my second Mozilla-based project. Also, scripts allow users more control over what archive applications they want to use. Choice is always good.</td>
-  </tr>
-</table>
-
-<br /><br />
-
-<table border="0" cellpadding="5" cellspacing="5" valign="top">
-  <tr>
-    <td align="right">Question:</td>
-    <td>Is this really better than MHT?</td>
-  </tr>
-  <tr>
-    <td align="right">Answer:</td>
-    <td>It's cross platform, lets you use whatever archive format you want, stores meta-data in XML-based RDF files and integrates almost seamlessly into Mozilla based browsers like Firefox. Hmmm. I don't rightly know. It depends on who you ask.</td>
-  </tr>
-</table>
-
-<br /><br />
+<h2>Functional</h2>
 
 <table border="0" cellpadding="5" cellspacing="5" valign="top">
   <tr>
@@ -102,6 +47,19 @@
   <tr>
     <td align="right">Answer:</td>
     <td>MAF uses some (very) mangled code version of the File -> Save as -> Web page Complete code, so if it works properly when not using MAF then I've mangled it too much. If that's the case, eMail the URL you're trying to save to me with a brief description of your browser version, platform and what's not right.</td>
+  </tr>
+</table>
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>MAF doesn't save international characters in a page properly. What's going on? (Related to the above question).</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>I've done some not-so-intensive testing of this and it seems to be an issue with the Mozilla DOM serialization and not MAF specifically. Wait for the component to be fixed in Mozilla and it should be fixed in MAF automatically.</td>
   </tr>
 </table>
 
@@ -149,6 +107,20 @@
 <table border="0" cellpadding="5" cellspacing="5" valign="top">
   <tr>
     <td align="right">Question:</td>
+    <td>I opened an archive and nothing happened. Why?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>There could be various reasons, but odds are your <a href="/preferences.html">preferences</a> are set to do nothing on an archive opening. If you can browse the open archives and it's there, then the preference setting is the issue.</td>
+  </tr>
+</table>
+
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
     <td>Why can't I save as MHT?</td>
   </tr>
   <tr>
@@ -182,6 +154,98 @@
 <table border="0" cellpadding="5" cellspacing="5" valign="top">
   <tr>
     <td align="right">Question:</td>
+    <td>I tried to save all the open tabs in an MHT archive. What did it do?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>It appended each MHT page it generated to the file you specified. Basically, don't try this with the current released version (0.2.20).</td>
+  </tr>
+</table>
+
+<h2>Website</h2>
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>Why can't I download anything?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>There's probably some trouble with the download servers or I haven't uploaded the file you're trying to get. Please try again sometime later.</td>
+  </tr>
+</table>
+
+<h2>Advocacy</h2>
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>So, is this like MHT?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>No. It's better. I am, of course, biased.</td>
+  </tr>
+</table>
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>Is this really better than MHT?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>It's cross platform, lets you use whatever archive format you want, stores meta-data in XML-based RDF files and integrates almost seamlessly into Mozilla based browsers like Firefox. Hmmm. I don't rightly know. It depends on who you ask.</td>
+  </tr>
+</table>
+
+<h2>Development</h2>
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>Why use scripts? Why not create an XPCOM component?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>No-one actually asked this, but I'll answer it anyway. Mozilla's source is a huge download for someone who's still on a 14.4 modem. Heh. That and I recently started playing around with Mozilla based development. This is only my second Mozilla-based project. Also, scripts allow users more control over what archive applications they want to use. Choice is always good.</td>
+  </tr>
+</table>
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>What other Mozilla-based projects are you working on?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>I'm experimenting with XPCOM library development tools. Thus, the FAXP project (nowhere to host it currently - it might end up on sourceforge). Basically it's an ANT-based build of the fastcomponent <a href="http://fastcomponent.mozdev.org/">project</a>. FAXP - Fast Ant XPcom framework. It uses ant-contrib and beanshell to download template files via cvs and fill out the template information. The aim is to make it easily usable across platforms and allow developers to use either the gecko sdk or mozilla source for development.</td>
+  </tr>
+</table>
+
+
+<h2>Personal</h2>
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>Who are you?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>As of this writing, an unemployed OSS developer with some (read a lot of) free time on his hands. I also just recently got an M.Sc. with distinction from the local <a href="http://www.uwi.tt/">university</a>, congratulate me!</td>
+  </tr>
+</table>
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
     <td>Why are you unemployed?</td>
   </tr>
   <tr>
@@ -190,4 +254,3 @@
   </tr>
 </table>
 
-<br /><br />
