@@ -31,6 +31,8 @@
  *
  * Added save selected tabs functionality.
  * Fixed bug that reset save archive type index when save dialog box was cancelled.
+ * Fixed bug that stopped tab saving if an event handler couldn't be removed.
+ * Fixed bug that resolved to the wrong base url if the page had a base url tag.
  *
  *
  * Changes from 0.4.1 to 0.4.2
@@ -404,11 +406,27 @@ maf.prototype = {
       if (event.originalTarget == "[object HTMLDocument]") {
         // New tab
 
-        var doc = event.originalTarget;
-        Maf._makeLocalLinksAbsolute(doc, doc.location.href, "index_files");
-        Maf._makeLocalLinksAbsolute(doc, MafState.getOriginalURL(doc.location.href), "");
-
         if (MafPreferences.urlRewrite) {
+          var doc = event.originalTarget;
+          var baseUrl = doc.location.href;
+
+          try {
+           var baseTag = doc.getElementsByTagName("base")[0];
+           var baseTagAttribs = baseTag.attributes;
+           for (var i=0; i<baseTagAttribs.length; i++) {
+             var attribName = baseTagAttribs[i].name.toLowerCase();
+             if (attribName == "href") {
+               baseUrl = baseTagAttribs[i].value;
+             }
+           }
+
+          } catch(e) {
+
+          }
+          Maf._makeLocalLinksAbsolute(doc, baseUrl, "index_files");
+          Maf._makeLocalLinksAbsolute(doc, MafState.getOriginalURL(baseUrl), "");
+
+
           // Get the original url
           var originalURL = event.originalTarget.location.href;
 

@@ -244,16 +244,20 @@ MafArchiverOnComplete.prototype = {
 
   observe: function(subject, topic, data) {
     if (topic == "mht-encoder-finished") {
-      var obs = Components.classes["@mozilla.org/observer-service;1"]
-                               .getService(Components.interfaces.nsIObserverService);
-      obs.removeObserver(this, "mht-encoder-finished");
-      obs.removeObserver(this, "maf-archiver-finished");
+      try {
+        var obs = Components.classes["@mozilla.org/observer-service;1"]
+                                 .getService(Components.interfaces.nsIObserverService);
+        obs.removeObserver(this, "mht-encoder-finished");
+        obs.removeObserver(this, "maf-archiver-finished");
+      } catch(e) { }
       this.onComplete();
     } else {
       if (topic == "maf-archiver-finished") {
-        var obs = Components.classes["@mozilla.org/observer-service;1"]
-                                 .getService(Components.interfaces.nsIObserverService);
-        obs.removeObserver(this, "maf-archiver-finished");
+        try {
+          var obs = Components.classes["@mozilla.org/observer-service;1"]
+                                   .getService(Components.interfaces.nsIObserverService);
+          obs.removeObserver(this, "maf-archiver-finished");
+        } catch(e) { }
         this.onComplete();
       }
     }
