@@ -628,7 +628,7 @@ MafPreferencesServiceClass.prototype = {
       var result = (new DIR_SERVICE()).get("ProfD", Components.interfaces.nsIFile).path;
     } catch (e) {
       result = "";
-      debug(e);
+      mafdebug(e);
     }
     return result;
   },

@@ -40,6 +40,7 @@
  * Updated Post Install code to update new vbs scripts for windows filetype associations.
  * Fixed bug that stopped URL rewriting if there was an error accessing a DOM Attribute Node value.
  * Fixed bug that caused MHT decoding to fail if the root part was of type multipart/alternative.
+ * Added functionality to execute filetype VBS when preferences are saved.
  *
  *
  * Changes from 0.4.1 to 0.4.2
@@ -834,7 +835,7 @@ var MafPostSetup = {
         var mafsetMafStr = MafUtils.readFile(profileDir + "\\maf\\setmaffiletype.vbs");
         mafsetMafStr = mafsetMafStr.replaceAll("%%MOZILLA_EXE%%", mozillaInstance);
         MafUtils.deleteFile(profileDir + "\\maf\\setmaffiletype.vbs");
-        MafUtils.createExecutableFile(profileDir + "\\maf\\setmafffiletype.vbs", mafsetMafStr);
+        MafUtils.createExecutableFile(profileDir + "\\maf\\setmaffiletype.vbs", mafsetMafStr);
       }
 
       if (MafUtils.checkFileExists(profileDir + "\\maf\\setmhtfiletype.vbs")) {
