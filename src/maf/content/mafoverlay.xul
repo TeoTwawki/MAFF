@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+ *  Copyright (c) 2004 Christopher Ottley.
+ *
+ *  This file is part of MAF.
+ *
+ *  MAF is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  MAF is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with MAF; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<!DOCTYPE window SYSTEM "chrome://maf/locale/maf.dtd">
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script src="chrome://maf/content/maf.js"/>
+
+  <menupopup id="menu_FilePopup">
+    <menuitem id="maf-load-archive" label="&maf.loadArchive;" insertbefore="menu_close"
+               accesskey="&maf.loadArchiveKey;"
+               oncommand="MafGUI.loadArchive();" />
+    <menuitem id="maf-save-all-tabs-archive" label="&maf.addAllTabsToArchive;" insertbefore="menu_sendLink"
+               accesskey="&maf.addAllTabsToArchiveKey;"
+               oncommand="MafGUI.addAllTabsToArchive();" />
+    <menuitem id="maf-save-archive" label="&maf.addToArchive;" insertbefore="menu_sendLink"
+               accesskey="&maf.addToArchiveKey;"
+               oncommand="MafGUI.addToArchive();" />
+  </menupopup>
+
+  <!-- firefox tools menu -->
+  <menupopup id="menu_ToolsPopup">
+
+    <menu id="maf-firefox-menu" label="&maf.menuLabel;" position="4">
+      <menupopup>
+        <menuitem id="maf-firefox-preferences" label="&maf.preferences;"
+                   accesskey="&maf.preferencesKey;"
+                   oncommand="MafGUI.showPreferences();" />
+        <menuitem id="maf-firefox-browse-open-archives" label="&maf.browseOpenArchives;"
+                   accesskey="&maf.browseOpenArchivesKey;"
+                   oncommand="MafGUI.browseOpenArchives();" />
+        <menuitem id="maf-firefox-about" label="&maf.about;"
+                   accesskey="&maf.aboutKey;"
+                   oncommand="MafGUI.showAbout();" />
+      </menupopup>
+    </menu>
+  </menupopup>
+
+  <!-- mozilla tools menu -->
+  <menupopup id="taskPopup">
+    <menu id="maf-mozilla-menu" label="&maf.menuLabel;" position="8">
+      <menupopup>
+        <menuitem id="maf-mozilla-preferences" label="&maf.preferences;"
+                   accesskey="&maf.preferencesKey;"
+                   oncommand="MafGUI.showPreferences();" />
+        <menuitem id="maf-mozilla-browse-open-archives" label="&maf.browseOpenArchives;"
+                   accesskey="&maf.browseOpenArchivesKey;"
+                   oncommand="MafGUI.browseOpenArchives();" />
+        <menuitem id="maf-mozilla-about" label="&maf.about;"
+                   accesskey="&maf.aboutKey;"
+                   oncommand="MafGUI.showAbout();" />
+      </menupopup>
+    </menu>
+  </menupopup>
+
+</overlay>

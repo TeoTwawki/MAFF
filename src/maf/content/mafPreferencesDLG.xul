@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<!--
+ *  Copyright (c) 2004 Christopher Ottley.
+ *
+ *  This file is part of MAF.
+ *
+ *  MAF is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  MAF is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with MAF; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<!DOCTYPE window SYSTEM "chrome://maf/locale/maf.dtd">
+
+<window id="preferencesdlg"
+         title="&maf.preferencesdialog.title;"
+         orient="horizontal"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         onload="onLoad()">
+
+<script>
+
+  var mp = window.arguments[0];
+  var mGUI = window.arguments[1];
+
+  function onLoad() {
+    loadFromPref();
+    window.sizeToContent();
+    checkWinOnlyPrefs();
+  }
+
+  function loadFromPref() {
+    document.getElementById("txtTempFolder").value = mp.temp;
+    if (mp.archiveOpenMode == mp.OPENMODE_ALLTABS) {
+      document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdOpenTabs");
+    } else if (mp.archiveOpenMode == mp.OPENMODE_SHOWDIALOG) {
+      document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdShowOpen");
+    } else {
+      document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdDoNothing");
+    }
+
+    document.getElementById("chkURLRewrite").checked = mp.urlRewrite;
+    document.getElementById("chkSaveExtended").checked = mp.saveExtendedMetadata;
+    document.getElementById("winChkRunInvisible").checked = mp.win_invisible;
+    document.getElementById("winWscriptLoc").value = mp.win_wscriptexe;
+    document.getElementById("winInvisVbsLoc").value = mp.win_invisiblevbs;
+
+    document.getElementById("txtArchiveScript").value = mp.programExtensions[0][1];
+    document.getElementById("txtExpandScript").value = mp.programExtensions[0][2];
+  }
+
+  function checkWinOnlyPrefs() {
+    // If not windows, disable windows only preferences
+    if (navigator.userAgent.indexOf("Windows") == -1) {
+      document.getElementById("winChkRunInvisible").disabled = true;
+      document.getElementById("winWscriptLoc").disabled = true;
+      document.getElementById("btnBrowseWinScript").disabled = true;
+      document.getElementById("winInvisVbsLoc").disabled = true;
+      document.getElementById("btnBrowseInvisVbs").disabled = true;
+    }
+  }
+
+  function saveToPref() {
+    mp.temp = document.getElementById("txtTempFolder").value;
+
+    if (document.getElementById("rdOpenOptions").selectedItem == document.getElementById("rdOpenTabs")) {
+      mp.archiveOpenMode = mp.OPENMODE_ALLTABS;
+    } else if (document.getElementById("rdOpenOptions").selectedItem == document.getElementById("rdShowOpen")) {
+      mp.archiveOpenMode = mp.OPENMODE_SHOWDIALOG;
+    } else {
+      mp.archiveOpenMode = mp.OPENMODE_NOTHING;
+    }
+
+    mp.urlRewrite = document.getElementById("chkURLRewrite").checked;
+    mp.saveExtendedMetadata = document.getElementById("chkSaveExtended").checked;
+    mp.win_wscriptexe = document.getElementById("winWscriptLoc").value;
+    mp.win_invisiblevbs = document.getElementById("winInvisVbsLoc").value;
+    mp.win_invisible = document.getElementById("winChkRunInvisible").checked;
+
+    mp.programExtensions[0][1] = document.getElementById("txtArchiveScript").value;
+    mp.programExtensions[0][2] = document.getElementById("txtExpandScript").value;
+
+    mp.save();
+  }
+
+  function browse(textFolder) {
+    var initialDir = document.getElementById(textFolder).value;
+    var newDir = mGUI.selectDirectory("Select a folder", initialDir);
+    document.getElementById(textFolder).value = newDir;
+  }
+
+  function browseforfile(textFile, filename) {
+    var initialFile = document.getElementById(textFile).value;
+    var newFile = mGUI.selectSpecificFile("Select file", initialFile, filename);
+    document.getElementById(textFile).value = newFile;
+  }
+
+</script>
+
+<vbox flex="1">
+
+<tabbox flex="1">
+  <tabs>
+    <tab label="&maf.preferencesdialog.tabsoptions;" selected="true"/>
+    <tab label="&maf.preferencesdialog.tabsregprogs;"/>
+  </tabs>
+
+  <tabpanels>
+   <tabpanel id="optionspanel" orient="vertical">
+     <groupbox>
+       <caption label="&maf.preferencesdialog.options.description;" />
+     <hbox>
+       <label control="txtTempFolder" value="&maf.preferencesdialog.label.temp;"/>
+       <textbox id="txtTempFolder" flex="1" />
+       <button label="&maf.preferencesdialog.btnbrowse;" oncommand="browse('txtTempFolder')" />
+     </hbox>
+
+     <groupbox>
+       <caption label="&maf.preferencesdialog.openmode;" />
+       <radiogroup id="rdOpenOptions">
+         <radio id="rdShowOpen" value="0" label="&maf.preferencesdialog.openmode.showopen;"/>
+         <radio id="rdOpenTabs" value="1" label="&maf.preferencesdialog.openmode.tabs;"/>
+         <radio id="rdDoNothing" value="2" label="&maf.preferencesdialog.openmode.nothing;"/>
+       </radiogroup>
+     </groupbox>
+
+     <checkbox id="chkURLRewrite" checked="false" label="&maf.preferencesdialog.openmode.urlrewrite;" />
+     <checkbox id="chkSaveExtended" checked="false" label="&maf.preferencesdialog.openmode.savexmeta;" />
+
+     <hbox>
+       <label control="selDefaultApp" value="&maf.preferencesdialog.openmode.defaultapp;"/>
+       <menulist id="selDefaultApp">
+         <menupopup>
+           <menuitem label="Zip" selected="true"/>
+         </menupopup>
+       </menulist>
+     </hbox>
+     </groupbox>
+
+     <groupbox>
+       <caption label="&maf.preferencesdialog.winop.label;" />
+       <checkbox id="winChkRunInvisible" checked="false" label="&maf.preferencesdialog.winop.usevbs;" />
+       <hbox>
+         <label control="winWscriptLoc" value="&maf.preferencesdialog.winop.wscript;"/>
+         <textbox id="winWscriptLoc" flex="1"/>
+         <button id="btnBrowseWinScript" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winWscriptLoc', 'wscript.exe')"/>
+       </hbox>
+       <hbox>
+         <label control="winInvisVbsLoc" value="&maf.preferencesdialog.winop.invis;"/>
+         <textbox id="winInvisVbsLoc" flex="1"/>
+         <button id="btnBrowseInvisVbs" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winInvisVbsLoc', 'invis.vbs')"/>
+       </hbox>
+     </groupbox>
+   </tabpanel>
+
+   <tabpanel id="registeredprogramspanel" orient="vertical">
+     <description>
+       &maf.preferencesdialog.progs.description;
+     </description>
+
+     <!-- label: drop down box with all the formats (zip, 7z, etc)-->
+     <tabbox flex="1">
+       <tabs>
+         <tab label="Zip"/>
+       </tabs>
+       <tabpanel>
+         <vbox>
+         <hbox>
+           <label control="txtArchiveScript" value="&maf.preferencesdialog.progs.archive;"/>
+           <textbox id="txtArchiveScript" flex="1" />
+           <button label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('txtArchiveScript', '*.*')" />
+         </hbox>
+
+         <hbox>
+           <label control="txtExpandScript" value="&maf.preferencesdialog.progs.expand;"/>
+           <textbox id="txtExpandScript" flex="1" />
+           <button label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('txtExpandScript', '*.*')" />
+         </hbox>
+
+         <!-- TODO: Add extension control *.maf.zip for example -->
+
+         </vbox>
+       </tabpanel>
+     </tabbox>
+   </tabpanel>
+
+ </tabpanels>
+</tabbox>
+
+  <hbox>
+    <spacer flex="1"/>
+    <button id="maf-prefs-save-button" label="&maf.preferencesdialog.btnsave;" default="true" oncommand="saveToPref();"/>
+    <button id="maf-prefs-revert-button" label="&maf.preferencesdialog.btnrevert;" oncommand="loadFromPref();"/>
+    <button id="maf-prefs-close-button" label="&maf.preferencesdialog.btnclose;" oncommand="window.close();"/>
+  </hbox>
+</vbox>
+
+</window>
+

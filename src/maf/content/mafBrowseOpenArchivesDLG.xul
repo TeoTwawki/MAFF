@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<!--
+ *  Copyright (c) 2004 Christopher Ottley.
+ *
+ *  This file is part of MAF.
+ *
+ *  MAF is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  MAF is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with MAF; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+<!DOCTYPE window SYSTEM "chrome://maf/locale/maf.dtd">
+
+<window id="browseopenarchivesdlg"
+         title="&maf.browseOpenArchivesDialog.title;"
+         orient="horizontal"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         persist="width height screenX screenY"
+         onload="onLoad()">
+
+<script>
+
+  var ms = window.arguments[0];
+  var win = window.arguments[1];
+
+
+  function onLoad() {
+    window.sizeToContent();
+    document.getElementById("open-archives-tree").database.AddDataSource(ms.datasource);
+    document.getElementById("open-archives-tree").builder.rebuild();
+  }
+
+  function openSelectedInTabs(urlsource) {
+    try {
+      var start = new Object();
+      var end = new Object();
+      var numRanges = document.getElementById("open-archives-tree").view.selection.getRangeCount();
+
+      var oBrowser = win.getBrowser();
+
+      for (var t=0; t &lt; numRanges; t++) {
+        document.getElementById("open-archives-tree").view.selection.getRangeAt(t,start,end);
+        for (var v=start.value; v &lt;= end.value; v++) {
+          url = document.getElementById("open-archives-tree").view.getCellText(v, urlsource);
+          level = document.getElementById("open-archives-tree").view.getLevel(v);
+
+          if (level == 1) {
+            var newTab = oBrowser.addTab(url);
+          }
+        }
+      }
+
+    } catch (e)  {
+
+    }
+  }
+
+  /**
+   * Opens a url if a row is double clicked
+   */
+  function openTreeRowInTab(event) {
+    try {
+      // If target is a treechildren, process
+      if (event.originalTarget.localName == "treechildren") {
+
+        var oRow = new Object;
+
+        // Get cell at event's coordinates
+        document.getElementById("open-archives-tree").treeBoxObject.getCellAt(event.clientX,
+                                                        event.clientY, oRow, new Object, new Object);
+
+        // If -1, row not in this tree
+        if (oRow.value == -1) return;
+      }
+      v = oRow.value;
+
+      url = document.getElementById("open-archives-tree").view.getCellText(v, "localurl");
+      level = document.getElementById("open-archives-tree").view.getLevel(v);
+
+      if (level == 1) {
+        var newTab = win.getBrowser().addTab(url);
+      }
+    } catch (e) {
+
+    }
+  }
+
+</script>
+
+<vbox flex="1">
+  <tree id="open-archives-tree" flex="1" rows="15" datasources="rdf:null"
+         ref="http://maf.mozdev.org/metadata/rdf/open-archives" flags="dont-build-content"
+         ondblclick="openTreeRowInTab(event);">
+  <treecols>
+    <treecol id="title" label="&maf.browseOpenArchivesDialog.tree.title;" primary="true" flex="1" persist="width ordinal hidden"/>
+    <splitter/>
+    <treecol id="archivetime" label="&maf.browseOpenArchivesDialog.tree.archivetime;" flex="1" persist="width ordinal hidden"/>
+    <splitter/>
+    <treecol id="originalurl" label="&maf.browseOpenArchivesDialog.tree.originalurl;" flex="1" persist="width ordinal hidden"/>
+    <splitter/>
+    <treecol id="localurl" label="&maf.browseOpenArchivesDialog.tree.localurl;" flex="1" persist="width ordinal hidden"/>
+  </treecols>
+
+    <template>
+      <rule>
+        <treechildren flex="1">
+          <treeitem uri="rdf:*">
+            <treerow>
+              <treecell label="rdf:http://maf.mozdev.org/metadata/rdf#title"/>
+              <treecell label="rdf:http://maf.mozdev.org/metadata/rdf#archivetime"/>
+              <treecell label="rdf:http://maf.mozdev.org/metadata/rdf#originalurl"/>
+              <treecell label="rdf:http://maf.mozdev.org/metadata/rdf#localurl"/>
+            </treerow>
+          </treeitem>
+        </treechildren>
+      </rule>
+    </template>
+  </tree>
+
+  <hbox>
+    <spacer flex="1"/>
+    <button id="maf-browse-archives-tabopen-button" label="&maf.browseOpenArchivesDialog.btnopentabs;" default="true" oncommand="openSelectedInTabs('localurl');"/>
+    <button id="maf-browse-archives-tabopenorig-button" label="&maf.browseOpenArchivesDialog.btnopenorig;" oncommand="openSelectedInTabs('originalurl');"/>
+    <button id="maf-prefs-close-button" label="&maf.browseOpenArchivesDialog.btnclose;" oncommand="window.close();"/>
+  </hbox>
+</vbox>
+
+</window>
+
