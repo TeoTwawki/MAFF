@@ -1,0 +1,19 @@
+<html>
+ <head>
+  <title>Mozilla Archive Format</title>
+<script>
+function doneFn(name, result) { }
+
+function doInstall() {
+  var xpi=new Object();
+  xpi["maf"] = 'maf-0.4.0.xpi';
+  InstallTrigger.install(xpi, doneFn);
+}
+</script>
+</head>
+
+<body>
+<h2>Install Mozilla Archive Format - Version 0.4.0</h2>
+<a href="about:blank" onclick="doInstall(); return false;">Install Mozilla Archive Format</a>
+</body>
+</html>
