@@ -33,6 +33,9 @@
  *
  * Optional function that is executed when a single page is added to archive - An alert telling the user archive is complete
  * Opening tabs from browse dialog now uses blank tab if possible.
+ * MHT decoder parses headers properly to use boundary string instead of regular expression. - TODO
+ * Main page content type is saved in archive. - TODO
+ * Original URLs and content types of linked files. - TODO
  *
  *
  * Changes from 0.2.18 to 0.2.19 - Completed
@@ -97,6 +100,8 @@ const rdfXMLSerializerContractID = "@mozilla.org/rdf/xml-serializer;1";
 const rdfXMLSerializerIID = Components.interfaces.nsIRDFXMLSerializer;
 const urlContractID = "@mozilla.org/network/standard-url;1";
 const urlIID = Components.interfaces.nsIURL;
+const mimeServiceContractID = "@mozilla.org/mime;1";
+const mimeServiceIID = Components.interfaces.nsIMIMEService;
 
 const webBrowserPersistIID = Components.interfaces.nsIWebBrowserPersist;
 const rdfDatasourceIID = Components.interfaces.nsIRDFDataSource;
@@ -1928,7 +1933,28 @@ var MafUtils = {
 
     }
     return resultString;
+  },
+
+  /**
+   * Get the mime type for a URI using the MIME service
+   */
+  getMIMETypeForURI: function(url) {
+    var result = null;
+    try {
+      // Create URI object from url string
+      var ioService = Components.classes[ioServiceNetworkContractID].getService(ioServiceNetworkIID);
+      var aURI = ioService.newURI(url, null, null);
+
+      // Query MIME service
+      var mimeSvc = Components.classes[mimeServiceContractID].getService(mimeServiceIID);
+      result = mimeSvc.getTypeFromURI(aURI);
+
+    } catch (e) {
+      // Not available, network url and offline?
+    }
+    return result;
   }
+
 
 };
 
@@ -2455,6 +2481,43 @@ var MafMHTHander = {
   },
 
   /**
+   * Copied from FAQTs Knowledge Base
+   * Source: http://www.faqts.com/knowledge_base/view.phtml/aid/1748
+   * Authors: Jeff Wong, Thomas Loo, Louise Tolman, Martin Honnen, jsWalter
+   */
+  _encodeBase64: function(decStr) {
+    var result = "";
+
+    try {
+      decStr = escape(decStr);  //line add for chinese char
+      var bits, dual, i = 0, encOut = '';
+
+      while(decStr.length >= i + 3) {
+        bits = (decStr.charCodeAt(i++) & 0xff) <<16 |
+               (decStr.charCodeAt(i++) & 0xff) <<8  |
+                decStr.charCodeAt(i++) & 0xff;
+        encOut += this.base64s.charAt((bits & 0x00fc0000) >>18) +
+                  this.base64s.charAt((bits & 0x0003f000) >>12) +
+                  this.base64s.charAt((bits & 0x00000fc0) >> 6) +
+                  this.base64s.charAt((bits & 0x0000003f));
+      }
+      if (decStr.length -i > 0 && decStr.length - i < 3) {
+        dual = Boolean(decStr.length -i -1);
+        bits = ((decStr.charCodeAt(i++) & 0xff) <<16) |
+                (dual ? (decStr.charCodeAt(i) & 0xff) <<8 : 0);
+        encOut += this.base64s.charAt((bits & 0x00fc0000) >>18) +
+                  this.base64s.charAt((bits & 0x0003f000) >>12) +
+                  (dual ? base64s.charAt((bits & 0x00000fc0) >>6) : '=') + '=';
+      }
+      result = encOut;
+    } catch(e) {
+      alert(e);
+    }
+
+    return result;
+  },
+
+  /**
    * Decode quoted printable text.
    */
   _decodeQuotedPrintable: function(encodedString) {
@@ -2487,13 +2550,12 @@ var MafMHTHander = {
     result = "";
 
     var textLines = srcString.split(new RegExp("\r\n","g"));
-    for (var i=0; i<textLines.length; ++i) {
+    for (var i=0; i<textLines.length; i++) {
       result += this._encodeQuotedPrintableLine(textLines[i]) + "\r\n";
     }
 
     return result;
   },
-
 
   /**
    * Encode a single line of text to be quoted printable.
@@ -2507,7 +2569,7 @@ var MafMHTHander = {
     if (srcLineString.length > 0) {
       var s = "";
 
-      for (var i = 0; i<srcLineString.length-1; ++i) {
+      for (var i = 0; i<srcLineString.length-1; i++) {
         s += this._encodeQuotedPrintableCharacter(srcLineString.charCodeAt(i), this.QPENCODE_UNALTERED);
       }
 
@@ -2572,15 +2634,14 @@ var MafMHTHander = {
    * Might do this eventually, for now, not supported XXXMHT
    * To implement:
    *  Make sure all available meta data is present
-   *    - Missing some from MAF - Original URLs of saved resources
-   *                            - Content types of saved resources
-   *  Load RDF of saved archive files
-   *  Content types of each resource file
-   *  Original URL of each file
-   *  Generate boundary string
-   *  Get subject (title)
-   *  Base 64 encode binary data
-   *  Quoted print html, css
+   *    - Missing some from MAF - Original URLs of saved resources - Not present. Arrg. Necessary?
+   *                            - Content types of saved resources - Can be determined using MIME service
+   *  Load RDF of saved archive files - DONE
+   *  Content types of each resource file - DONE
+   *  Generate boundary string - DONE
+   *  Get subject (title) - DONE
+   *  Base 64 encode binary data - NOT TESTED
+   *  Quoted print html, css - DONE
    *
    */
   archiveDownload: function(archivefile, sourcepath) {
@@ -2588,8 +2649,19 @@ var MafMHTHander = {
     var MHTContentString = "";
     var mainfileSubject = "Unknown";
     var dateArchived = "Unknown";
+    var originalUrl = "";
+    var indexfilename = "";
 
-    var hasSupportingFiles = true;
+    var rdfdataresult = this._getMainFileMetaData(sourcepath);
+    if (rdfdataresult["title"] != "") { mainfileSubject = rdfdataresult["title"]; }
+    if (rdfdataresult["archivetime"] != "") { dateArchived = rdfdataresult["archivetime"]; }
+
+    if (rdfdataresult["originalurl"] != "") { originalurl = rdfdataresult["originalurl"]; }
+    if (rdfdataresult["indexfilename"] != "") { indexfilename = rdfdataresult["indexfilename"]; }
+
+    var hasSupportingFiles = this._getHasSupportingFiles(sourcepath);
+
+    var indexContentType = this._getFileContentType(sourcepath, indexfilename);
 
     var boundaryString = "";
 
@@ -2599,18 +2671,195 @@ var MafMHTHander = {
     MHTContentString += "MIME-Version: 1.0\r\n";
 
     if (hasSupportingFiles) {
-      var boundaryString = "=_NextPart_000_0000_01C42E9C.DB99EB90";
+      boundaryString = this._getBoundaryString();
       MHTContentString += "Content-Type: multipart/related;\r\n";
-      MHTContentString += "\tboundary=\"----" + boundaryString + "\";\r\n"
-      MHTContentString += "\ttype=\"text/html\"\r\n";
+      MHTContentString += "\tboundary=\"" + boundaryString + "\";\r\n"
+      MHTContentString += "\ttype=\"" + indexContentType + "\"\r\n";
       MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.2.20\r\n";
       MHTContentString += "\r\nThis is a multi-part message in MIME format.\r\n";
+      MHTContentString += this._addFileToMHT(boundaryString, sourcepath, indexfilename, originalurl);
+
+      try {
+        var supportFileList = this._getSupportingFilesList(sourcepath);
+        // For each file supporting, add it
+        for (var i=0; i<supportFileList.length; i++) {
+          MHTContentString += this._addFileToMHT(boundaryString, sourcepath,
+                                        supportFileList[i][0], supportFileList[i][1], "index_files");
+        }
+      } catch(e) {
+
+      }
+
+      // End file content
+      MHTContentString += "\r\n--" + boundaryString + "--\r\n";
     }
 
     MafUtils.createFile(archivefile, MHTContentString);
-    */
+   */
+
     alert("Saving as MHT is not supported.");
+  },
+
+  /**
+   * Returns an array of supporting index files
+   */
+  _getSupportingFilesList: function(sourcepath) {
+    var result = new Array();
+
+    var oDir = Components.classes[localFileContractID].getService(localFileIID);
+    oDir.initWithPath(MafPreferences.temp);
+    oDir.append(sourcepath);
+    oDir.append("index_files");
+
+    if (oDir.exists() && oDir.isDirectory()) {
+      var entries = oDir.directoryEntries;
+
+      while (entries.hasMoreElements()) {
+        var currFile = entries.getNext();
+        currFile.QueryInterface(localFileIID);
+
+        result[result.length] = [currFile.leafName, "index_files/" + currFile.leafName];
+
+      }
+    }
+    return result;
+  },
+
+  _addFileToMHT: function(boundaryString, sourcepath, filename, originalUrl, subdir) {
+    var result = "";
+    try {
+      var thisFileContentType = this._getFileContentType(sourcepath, filename);
+      var thisFileContentEncoding = this._getContentEncodingByType(thisFileContentType);
+
+      result += "\r\n--" + boundaryString + "\r\n";
+      result += "Content-Type: " + thisFileContentType + "\r\n";
+      result += "Content-Transfer-Encoding: " + thisFileContentEncoding + "\r\n";
+      result += "Content-Location: " + originalUrl + "\r\n\r\n";
+
+
+      var fullSourcePath = MafUtils.appendToDir(MafPreferences.temp, sourcepath);
+      if (subdir != null) {
+        fullSourcePath = MafUtils.appendToDir(fullSourcePath, subdir);
+      }
+      var fullFilename = MafUtils.appendToDir(fullSourcePath, filename);
+
+      var srcFile =  MafUtils.readFile(fullFilename);
+
+      if (thisFileContentEncoding == "quoted-printable") {
+        result += this._encodeQuotedPrintable(srcFile);
+      } else { // Base64
+        result += this._encodeBase64(srcFile);
+      }
+
+      result += "\r\n";
+    } catch(e) {
+      alert(e);
+    }
+    return result;
+  },
+
+  /**
+   * Determine the MIME encoding to used based on the content type
+   */
+  _getContentEncodingByType: function(fileContentType) {
+    var result = "base64";
+    if (fileContentType == "text/html") { result = "quoted-printable"; }
+    if (fileContentType == "text/css") { result = "quoted-printable"; }
+    return result;
+  },
+
+  /**
+   * Loads meta-data available from the saved archive
+   */
+  _getMainFileMetaData: function(sourcepath) {
+    var indexrdffile = Components.classes[localFileContractID].getService(localFileIID);
+    indexrdffile.initWithPath(MafPreferences.temp);
+    indexrdffile.append(sourcepath);
+
+    var uriPath = MafUtils.getURI(indexrdffile.nsIFile);
+
+    indexrdffile.append("index.rdf");
+
+    return MafState.getMetaDataFrom(indexrdffile, uriPath);
+  },
+
+  /**
+   * Generates the boundary string used to seperate MIME parts
+   */
+  _getBoundaryString: function() {
+    var result = "----=_NextPart_";
+    for (var j=0; j<2; j++) {
+      for (var i=0; i<3; i++) {
+        result += Math.floor(Math.random()*9) + "";
+      }
+      result += "_";
+    }
+
+    for (var i=0; i<8; i++) {
+      result += this._hex(Math.floor(Math.random()*15));
+    }
+    result += ".";
+
+    for (var i=0; i<8; i++) {
+      result += this._hex(Math.floor(Math.random()*15));
+    }
+    return result;
+  },
+
+  /**
+   * Convert a single decimal digit (0 to 15) into hex
+   */
+  _hex: function(decDigit) {
+    if (decDigit >=0 && decDigit <= 15) {
+      return("0123456789ABCDEF".charAt(decDigit));
+    } else {
+      return "0";
+    }
+  },
+
+  /**
+   * @return true if there are supporting files in archive file folder
+   */
+  _getHasSupportingFiles: function(sourcepath) {
+    var result = false;
+    var supportingFilesDirName = "index_files";
+
+    try {
+      var iDir = Components.classes[localFileContractID].getService(localFileIID);
+      iDir.initWithPath(MafPreferences.temp);
+      iDir.append(sourcepath);
+      iDir.append(supportingFilesDirName);
+
+      result = iDir.exists();
+    } catch(e) {
+
+    }
+
+    return result;
+  },
+
+  /**
+   * @return The content type for whatever file specified.
+   */
+  _getFileContentType: function(sourcepath, filename, subdir) {
+    var result = null;
+    try {
+      var ifile = Components.classes[localFileContractID].getService(localFileIID);
+      ifile.initWithPath(MafPreferences.temp);
+      ifile.append(sourcepath);
+      if (subdir != null) {
+        ifile.append(subdir);
+      }
+      ifile.append(filename);
+
+      result = MafUtils.getMIMETypeForURI(MafUtils.getURI(ifile.nsIFile));
+    } catch(e) {
+      alert(e);
+    }
+
+    return result;
   }
+
 };
 
 // Setup the RDF in memory data source for the current state
