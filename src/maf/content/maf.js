@@ -33,10 +33,9 @@
  *
  * Optional function that is executed when a single page is added to archive - An alert telling the user archive is complete
  * Opening tabs from browse dialog now uses blank tab if possible.
+ * Binary Streams are now used for MHT encoding and decoding.
  * Fixed reader bug when reading file using MafUtils.
- * MHT decoder parses headers properly to use boundary string instead of regular expression. - TODO
- * Main page content type is saved in archive. - TODO
- * Original URLs and content types of linked files. - TODO
+ * Fixed Quoted Printable encoding to not split = escaped codes across new lines when line length limit exists.
  *
  *
  * Changes from 0.2.18 to 0.2.19 - Completed
@@ -105,7 +104,8 @@ const mimeServiceContractID = "@mozilla.org/mime;1";
 const mimeServiceIID = Components.interfaces.nsIMIMEService;
 const binaryInputStreamContractID = "@mozilla.org/binaryinputstream;1";
 const binaryInputStreamIID = Components.interfaces.nsIBinaryInputStream;
-
+const binaryOutputStreamContractID = "@mozilla.org/binaryoutputstream;1";
+const binaryOutputStreamIID = Components.interfaces.nsIBinaryOutputStream;
 
 const webBrowserPersistIID = Components.interfaces.nsIWebBrowserPersist;
 const rdfDatasourceIID = Components.interfaces.nsIRDFDataSource;
@@ -1471,6 +1471,35 @@ var MafUtils = {
 
 
   /**
+   * Create binary file
+   */
+  createBinaryFile: function(fileToCreate, contents) {
+    try {
+      var oFile = Components.classes[localFileContractID].createInstance(localFileIID);
+      oFile.initWithPath(fileToCreate);
+      if (!oFile.exists()) {
+        oFile.create(0x00, 0644);
+      }
+    } catch (e) {
+      alert(e);
+    }
+
+    try {
+      var oTransport = Components.classes[fileOutputStreamContractID].createInstance(fileOutputStreamIID);
+      oTransport.init( oFile, 0x04 | 0x08 | 0x10, 064, 0 );
+
+      var obj_BinaryIO = Components.classes[binaryOutputStreamContractID].createInstance(binaryOutputStreamIID);
+      obj_BinaryIO.setOutputStream(oTransport);
+
+      obj_BinaryIO.writeByteArray(contents, contents.length);
+      oTransport.close();
+    } catch (e) {
+      alert(e);
+    }
+  },
+
+
+  /**
    * Delete file
    */
   deleteFile: function(fileToDelete) {
@@ -1580,9 +1609,12 @@ var MafUtils = {
     }
 
     try {
-      var str = obj_BinaryIO.readBytes(obj_File.fileSize);
-    } catch (e) {
+      //var str = obj_BinaryIO.readBytes(obj_File.fileSize);
 
+      var str = obj_BinaryIO.readByteArray(obj_File.fileSize);
+
+    } catch (e) {
+      alert(e);
     }
     obj_BinaryIO.close();
     obj_InputStream.close();
@@ -2229,7 +2261,7 @@ var MafMHTHander = {
   QPENCODE_UNALTEREDEND: String.fromCharCode(33) + String.fromCharCode(60) + String.fromCharCode(62) + String.fromCharCode(126),
 
   /** The maximum number of characters before line wrap */
-  QPENCODE_MAXLINESIZE: 74,
+  QPENCODE_MAXLINESIZE: 76,
 
   extractFromArchive: function(archivefile, destpath) {
     // Create destpath
@@ -2342,7 +2374,7 @@ var MafMHTHander = {
 
           // Create The decoded file
           //  Decode the part and save as the filename in index_files
-          MafUtils.createFile(MafUtils.appendToDir(index_filesDir,localFilename), this._decodeBase64(bodyData));
+          MafUtils.createBinaryFile(MafUtils.appendToDir(index_filesDir,localFilename), this._decodeBase64(bodyData));
 
         } else if (headerDetails["content-transfer-encoding"] == "quoted-printable") {
 
@@ -2490,29 +2522,33 @@ var MafMHTHander = {
    * Authors: Jeff Wong, Thomas Loo, Louise Tolman, Martin Honnen, jsWalter
    */
   _decodeBase64: function(encodedString) {
-    var result = "";
+    var result = new Array();
 
     try {
-      var bits, decOut = '', i = 0;
+      var bits, decOut = new Array(), i = 0;
       for(; i<encodedString.length; i += 4) {
         bits = (this.base64s.indexOf(encodedString.charAt(i)) & 0xff) <<18 |
                (this.base64s.indexOf(encodedString.charAt(i +1)) & 0xff) <<12 |
                (this.base64s.indexOf(encodedString.charAt(i +2)) & 0xff) << 6 |
                this.base64s.indexOf(encodedString.charAt(i +3)) & 0xff;
-        decOut += String.fromCharCode( (bits & 0xff0000) >>16, (bits & 0xff00) >>8, bits & 0xff );
+
+        decOut.push((bits & 0xff0000) >>16);
+        decOut.push((bits & 0xff00) >>8);
+        decOut.push(bits & 0xff);
       }
       if(encodedString.charCodeAt(i -2) == 61)
-        undecOut=decOut.substring(0, decOut.length -2);
+        undecOut=decOut.slice(0, decOut.length -2);
       else if(encodedString.charCodeAt(i -1) == 61)
-        undecOut=decOut.substring(0, decOut.length -1);
+        undecOut=decOut.slice(0, decOut.length -1);
       else undecOut=decOut;
 
-      result = unescape(undecOut); //line add for chinese char
+      result = undecOut;
     } catch(e) {
       alert(e);
     }
     return result;
   },
+
 
   /**
    * Copied from FAQTs Knowledge Base
@@ -2523,13 +2559,12 @@ var MafMHTHander = {
     var result = "";
 
     try {
-      decStr = escape(decStr);  //line add for chinese char
       var bits, dual, i = 0, encOut = '';
 
       while(decStr.length >= i + 3) {
-        bits = (decStr.charCodeAt(i++) & 0xff) <<16 |
-               (decStr.charCodeAt(i++) & 0xff) <<8  |
-                decStr.charCodeAt(i++) & 0xff;
+        bits = (decStr[i++] & 0xff) <<16 |
+               (decStr[i++] & 0xff) <<8  |
+                decStr[i++] & 0xff;
         encOut += this.base64s.charAt((bits & 0x00fc0000) >>18) +
                   this.base64s.charAt((bits & 0x0003f000) >>12) +
                   this.base64s.charAt((bits & 0x00000fc0) >> 6) +
@@ -2537,8 +2572,8 @@ var MafMHTHander = {
       }
       if (decStr.length -i > 0 && decStr.length - i < 3) {
         dual = Boolean(decStr.length -i -1);
-        bits = ((decStr.charCodeAt(i++) & 0xff) <<16) |
-                (dual ? (decStr.charCodeAt(i) & 0xff) <<8 : 0);
+        bits = ((decStr[i++] & 0xff) <<16) |
+                (dual ? (decStr[i] & 0xff) <<8 : 0);
         encOut += this.base64s.charAt((bits & 0x00fc0000) >>18) +
                   this.base64s.charAt((bits & 0x0003f000) >>12) +
                   (dual ? this.base64s.charAt((bits & 0x00000fc0) >>6) : '=') + '=';
@@ -2622,14 +2657,39 @@ var MafMHTHander = {
 
       result = s;
 
+      // TODO - Fix this split code
+      // To stop == from occuring
+      // Go back to either
+      //   1) A space
+      //   2) An = sign
       if (s.length > this.QPENCODE_MAXLINESIZE) {
 
         // Split into lines of QPENCODE_MAXLINESIZE characters or less
         result = s.slice(0, this.QPENCODE_MAXLINESIZE);
         i = this.QPENCODE_MAXLINESIZE;
+
+        // If either the last character, character before or character before that is =
+        //   then we've split across a code - Bad idea for compatibility with
+        //   streaming decoders who may see == or =A= or such and upchuck.
+        if (result.charAt(result.length-1) == "=") {
+          result = result.slice(0, result.length - 1);
+          i -= 1;
+        } else if (result.charAt(result.length-2) == "=") {
+          result = result.slice(0, result.length - 2);
+          i -= 2;
+        }
+
         while (i < s.length) {
           result += "=\r\n" + s.slice(i, i + this.QPENCODE_MAXLINESIZE);
           i += this.QPENCODE_MAXLINESIZE;
+
+          if (result.charAt(result.length-1) == "=") {
+            result = result.slice(0, result.length - 1);
+            i -= 1;
+          } else if (result.charAt(result.length-2) == "=") {
+            result = result.slice(0, result.length - 2);
+            i -= 2;
+          }
         }
       }
 
@@ -2684,7 +2744,7 @@ var MafMHTHander = {
    *  Content types of each resource file - DONE
    *  Generate boundary string - DONE
    *  Get subject (title) - DONE
-   *  Base 64 encode binary data - NOT TESTED
+   *  Base 64 encode binary data - DONE
    *  Quoted print html, css - DONE
    *
    */
@@ -2810,7 +2870,7 @@ var MafMHTHander = {
       var thisFileContentEncoding = this._getContentEncodingByType(thisFileContentType);
 
       result += "\r\n--" + boundaryString + "\r\n";
-      if ((subdir != null) && (thisFileContentEncoding == "base64")) {
+      if ((subdir != null) && (thisFileContentType == "text/html")) {
         result += "Content-Type: application/octet-stream\r\n";
       } else {
         result += "Content-Type: " + thisFileContentType + "\r\n";
@@ -2825,9 +2885,10 @@ var MafMHTHander = {
       }
       var fullFilename = MafUtils.appendToDir(fullSourcePath, filename);
 
-      var srcFile =  MafUtils.readBinaryFile(fullFilename);
+      var srcFile;
 
       if (thisFileContentEncoding == "quoted-printable") {
+        srcFile =  MafUtils.readFile(fullFilename);
         // If it isn't a supporting file, replace all relative
         //   supporting files urls with absolute urls
         if (subdir == null) {
@@ -2836,6 +2897,7 @@ var MafMHTHander = {
         }
         result += this._encodeQuotedPrintable(srcFile);
       } else { // Base64
+        srcFile = MafUtils.readBinaryFile(fullFilename);
         result += this._encodeBase64(srcFile);
       }
 
@@ -2891,13 +2953,7 @@ var MafMHTHander = {
    * Generates the boundary string used to seperate MIME parts
    */
   _getBoundaryString: function() {
-    var result = "----=_NextPart_";
-    for (var j=0; j<2; j++) {
-      for (var i=0; i<3; i++) {
-        result += Math.floor(Math.random()*9) + "";
-      }
-      result += "_";
-    }
+    var result = "----=_NextPart_000_0000_";
 
     for (var i=0; i<8; i++) {
       result += this._hex(Math.floor(Math.random()*15));
@@ -2999,4 +3055,3 @@ String.prototype.replaceAll = function(needle, newneedle) {
   x=x.split(needle).join(newneedle);
   return x;
 };
-
