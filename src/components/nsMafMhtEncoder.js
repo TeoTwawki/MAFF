@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4
+ * Version: 0.4.0
  *
  * Author: Christopher Ottley
  *

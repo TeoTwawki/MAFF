@@ -2,7 +2,7 @@
 #include "nsIFile.idl"
 #include "nsIURL.idl"
 #include "nsISimpleEnumerator.idl"
-#include "nsIMafMhtDecoderPart.idl"
+#include "nsIMafMhtDecoderContentHandler.idl"
 
 [scriptable, uuid(3814ca79-30bc-4ad3-a005-488f05a1dd87)]
 interface nsIMafMhtDecoder : nsISupports
@@ -13,9 +13,12 @@ interface nsIMafMhtDecoder : nsISupports
     void initWithURL(in nsIURL url);
     void init(in string content);
 
-    nsISimpleEnumerator headerNames();
+    nsISimpleEnumerator getHeaders();
     string getHeaderValue(in string headerName);
 
     short noOfParts();
-    nsIMafMhtDecoderPart getPartNo(in short index);
+    nsIMafMhtDecoder getPartNo(in short index);
+    short rootPartNo();
+
+    void getContent(in nsIMafMhtDecoderContentHandler callback);
 };

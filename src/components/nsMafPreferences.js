@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4
+ * Version: 0.4.0
  *
  * Author: Christopher Ottley
  *
@@ -511,14 +511,18 @@ MafPreferencesServiceClass.prototype = {
 
     // Add MHT as the last archive format supported
 
-      this.programExtensions[this.programExtensions.length] = [
-          "MHT",
-           Components.classes["@mozilla.org/libmaf/encoder;1?name=mht"]
-             .createInstance(Components.interfaces.nsIMafMhtEncoder).PROGID,
-           Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
-             .createInstance(Components.interfaces.nsIMafMhtDecoder).PROGID,
-           ["*.mht"]];
-
+      try {
+        this.programExtensions[this.programExtensions.length] = [
+            "MHT",
+              Components.classes["@mozilla.org/libmaf/encoder;1?name=mht"]
+               .createInstance(Components.interfaces.nsIMafMhtEncoder).PROGID,
+             Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
+               .createInstance(Components.interfaces.nsIMafMhtDecoder).PROGID,
+             ["*.mht"]];
+      } catch(e) {
+        mafdebug(e);
+      }
+      
       this.isLoaded = true;
     }
   },

@@ -27,47 +27,25 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-// Provides MAF Preferences Record Object
+// Provides MAF String Value Object
 
-const mafPreferencesRecContractID = "@mozilla.org/maf/preferences_rec;1";
-const mafPreferencesRecCID = Components.ID("{5cba4706-ec80-416f-b1e3-2724a023f996}");
-const mafPreferencesRecIID = Components.interfaces.nsIMafPreferencesRec;
+const mafStringValueContractID = "@mozilla.org/libmaf/stringvalue;1";
+const mafStringValueCID = Components.ID("{c0a56181-8907-40d3-937b-dc060ea0217e}");
+const mafStringValueIID = Components.interfaces.nsIMafStringValue;
 
 /**
- * The MAF Preferences Record.
+ * The MAF String Value.
  */
-function MafPreferencesRecClass() {
-  this.id = "";
-  this.archivescript = "";
-  this.extractscript = "";
-  this.extensions = new Array();
+
+function MafStringValueClass() {
+
 }
 
-MafPreferencesRecClass.prototype = {
-
-  getExtensionsLength: function() {
-    return this.extensions.length;
-  },
-
-  getExtensionAt: function(index) {
-    return this.extensions[index];
-  },
-
-  addExtension: function(newExtension) {
-    this.extensions[this.extensions.length] = newExtension;
-  },
-
-  updateExtensionAt: function(index, newExtension) {
-    this.extensions[index] = newExtension;
-  },
-
-  removeExtensionAt: function(index) {
-    this.extensions = this.extensions.splice(index, 1);
-  },
+MafStringValueClass.prototype = {
 
   QueryInterface: function(iid) {
 
-    if (!iid.equals(mafPreferencesRecIID) &&
+    if (!iid.equals(mafStringValueIID) &&
         !iid.equals(Components.interfaces.nsISupports)) {
       throw Components.results.NS_ERROR_NO_INTERFACE;
     }
@@ -83,40 +61,57 @@ function mafdebug(text) {
   cs.logStringMessage(text);
 };
 
+String.prototype.trim = function() {
+  // skip leading and trailing whitespace
+  // and return everything in between
+  var x = this;
+  x = x.replace(/^\s*(.*)/, "$1");
+  x = x.replace(/(.*?)\s*$/, "$1");
+  return x;
+};
 
-var MAFPreferencesRecFactory = new Object();
+/**
+ * Replace all needles with newneedles
+ */
+String.prototype.replaceAll = function(needle, newneedle) {
+  var x = this;
+  x = x.split(needle).join(newneedle);
+  return x;
+};
 
-MAFPreferencesRecFactory.createInstance = function (outer, iid) {
+var MAFStringValueFactory = new Object();
+
+MAFStringValueFactory.createInstance = function (outer, iid) {
   if (outer != null) {
     throw Components.results.NS_ERROR_NO_AGGREGATION;
   }
 
-  if (!iid.equals(mafPreferencesRecIID) &&
+  if (!iid.equals(mafStringValueIID) &&
       !iid.equals(Components.interfaces.nsISupports)) {
     throw Components.results.NS_ERROR_NO_INTERFACE;
   }
 
-  return (new MafPreferencesRecClass()).QueryInterface(iid);
+  return (new MafStringValueClass()).QueryInterface(iid);
 };
 
 
 /**
  * XPCOM component registration
  */
-var MAFPreferencesRecModule = new Object();
+var MAFStringValueModule = new Object();
 
-MAFPreferencesRecModule.registerSelf = function (compMgr, fileSpec, location, type) {
+MAFStringValueModule.registerSelf = function (compMgr, fileSpec, location, type) {
   compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafPreferencesRecCID,
-                                  "Maf Preference Extension Record JS Component",
-                                  mafPreferencesRecContractID,
+  compMgr.registerFactoryLocation(mafStringValueCID,
+                                  "Maf String Value JS Component",
+                                  mafStringValueContractID,
                                   fileSpec,
                                   location,
                                   type);
 };
 
-MAFPreferencesRecModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafPreferencesRecCID)) {
+MAFStringValueModule.getClassObject = function(compMgr, cid, iid) {
+  if (!cid.equals(mafStringValueCID)) {
     throw Components.results.NS_ERROR_NO_INTERFACE;
   }
 
@@ -124,14 +119,14 @@ MAFPreferencesRecModule.getClassObject = function(compMgr, cid, iid) {
     throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
   }
 
-  return MAFPreferencesRecFactory;
+  return MAFStringValueFactory;
 };
 
-MAFPreferencesRecModule.canUnload = function (compMgr) {
+MAFStringValueModule.canUnload = function (compMgr) {
   return true;
 };
 
 function NSGetModule(compMgr, fileSpec) {
-  return MAFPreferencesRecModule;
+  return MAFStringValueModule;
 };
 
