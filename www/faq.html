@@ -95,11 +95,11 @@
 <table border="0" cellpadding="5" cellspacing="5" valign="top">
   <tr>
     <td align="right">Question:</td>
-    <td>Why can't I save as MHT?</td>
+    <td>Can I save as MHT?</td>
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>Sheer boredom and still being unemployed was enough of an inspiration for me to do this for MAF 0.2.20. Guess what? That's right, now you <i>can</i> save as MHT. It's not 100% standards compliant, but the saved pages should open properly in IE (which is what you really want it for, right?).</td>
+    <td>As of 0.4.0 MHT Encoding and Decoding is now 99.99% standards compliant. The 0.01% is a sentance I probably missed in all the MHTML related RFCs I read. To save as a MHT archive (compatible with IE) then save the page as a MAF MHT Archive.</td>
   </tr>
 </table>
 
@@ -118,7 +118,7 @@
         <li>Find some way to tell the current thread to sleep</li>
         <li>Implement the code in an XPCOM component</li>
       </ol>
-    The second solution, if available is the easiest and the third solution is the best. We'll see what happens in the next version.
+    I've created an XPCOM component in Javascript that uses mangled setTimeout code to avoid the prompt. It's not faster, but you shouldn't see the prompt coming up (if you do, press cancel like before). If I have the inclination I can re-write the encoder using C++ and replace the javascript component for an instant speed boost. The C++ component isn't in my project plan though, so don't hold your breath. :).
     </td>
   </tr>
 </table>
@@ -176,7 +176,7 @@
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>No-one actually asked this, but I'll answer it anyway. Mozilla's source is a huge download for someone who's still on a 14.4 modem. Heh. That and I recently started playing around with Mozilla based development. This is only my second Mozilla-based project. Also, scripts allow users more control over what archive applications they want to use. Choice is always good.</td>
+    <td>No-one actually asked this, but I'll answer it anyway. Mozilla's source is a huge download for someone who's still on a 14.4 modem. Heh. That and I recently started playing around with Mozilla based development. This is only my second Mozilla-based project. Also, scripts allow users more control over what archive applications they want to use. Choice is always good. Most of the code now provides XPCOM component interfaces though.</td>
   </tr>
 </table>
 
@@ -189,7 +189,8 @@
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>I'm experimenting with XPCOM library development tools. Thus, the FAXP project (nowhere to host it currently - it might end up on sourceforge). Basically it's an ANT-based build of the fastcomponent <a href="http://fastcomponent.mozdev.org/">project</a>. FAXP - Fast Ant XPcom framework. It uses ant-contrib and beanshell to download template files via cvs and fill out the template information. The aim is to make it easily usable across platforms and allow developers to use either the gecko sdk or mozilla source for development.</td>
+    <td>I'm experimenting with XPCOM library development tools. Thus, the FAXP project (nowhere to host it currently - it might end up on sourceforge). Basically it's an ANT-based build of the fastcomponent <a href="http://fastcomponent.mozdev.org/">project</a>. FAXP - Fast Ant XPcom framework. It uses ant-contrib and beanshell to download template files via cvs and fill out the template information. The aim is to make it easily usable across platforms and allow developers to use either the gecko sdk or mozilla source for development.<br /><br />
+    Another project I'm working on is the mafsearch project (I know, needs a cooler name). It's a front end installed in Firefox that lets you search indexed MAF files for content. It uses the Apache Lucene search engine library and filters that hook into Mozilla preferences. Currently unreleased.</td>
   </tr>
 </table>
 

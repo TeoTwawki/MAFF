@@ -49,3 +49,8 @@ This feature is available from MAF version 0.2.20 and higher. With this preferen
 <br/><br/>
 This feature is has been made available from MAF version 0.2.20 and higher. With this preference enabled, additional page information such as history, text zoom and scroll position is saved for each page. There is currently no preference to restore this saved information as yet.
 </p>
+
+<p><b>Preferences: Enable MAF Protocol</b>
+<br/><br/>
+This feature is has been made available from MAF version 0.4.0 and higher. With this preference enabled, users may access resources within maf archives with the maf:// protocol specification. The format of the MAF protocol is maf:// followed by a URI of a MAF file, followed by an exclamation mark, followed by the resource. As an example maf://file:///home/cottley/mafs/parse.html.maff!1092306423080_665/index.html indicates that the parse.html.maff file's resource 1092306423080_665/index.html is to be displayed. If the archive is not opened before this protocol is specified, it is opened silently in the background. Currently this protocol only works with file URIs.
+</p>

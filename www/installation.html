@@ -1,29 +1,48 @@
 <!-- MAIN CONTENT -->
 <h5 class="page-header"><a id="content" name="content">Installation</a></h5>
 
-<p>Below you will find links to the latest XPI installer packages. If this is your first time installing MAF select a operating system specific package. If you have previously installed MAF and there is an XPI upgrade available, then install the upgrade. If you have previously installed MAF but there is no XPI upgrade for your version, please uninstall MAF and then install the latest operating system specific package.</p>
+<p>Below you will find links to the latest XPI installer package. The installer packages have been merged so there is one XPI for both Linux and Windows installations. If you have previously installed MAF in Mozilla, please uninstall MAF and then install the latest package.</p>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.3.0.xpi">0.3.0 for Linux</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.0.xpi">0.4.0 for Linux and Windows</a></p>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.3.0.xpi">0.3.0 for Windows</a></p>
-
-<!-- p>Latest XPI Upgrade - <a href="http://downloads.mozdev.org/maf/maf-0.3.1.xpi">from 0.3.0 to 0.3.1 platform independent</a></p -->
-
-<p>Please note, if you have previously installed MAF and are installing the 0.3.0 version, the location of scripts and some settings have changed. In order to use the new scripts, go to the <a href="preferences.html">preferences</a>, click on the "Load defaults" button and save the new preferences.</p>
+<p>Please note, if you have previously installed MAF and are installing the 0.3.0 version or higher, the location of scripts and some settings have changed. In order to use the new scripts, go to the <a href="preferences.html">preferences</a>, click on the "Load defaults" button and save the new preferences.</p>
 
 <p>The XPI also sets up the scripts that would be used to perform the actual archiving. This only has to be done once. This is not done if a platform independent upgrade is used. After this is done, the preferences for the MAF extension should be set. MAF is configured by default to work with Infozip's Zip and Unzip programs.</p>
 
 <p>After MAF has been setup, complete the configuration by checking the <a href="preferences.html">preferences</a>.</p>
 
-<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.2.20.xpi">0.2.20 for Linux</a></p>
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.3.0.xpi">0.3.0 for Linux</a></p>
 
-<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.2.20.xpi">0.2.20 for Windows</a></p>
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.3.0.xpi">0.3.0 for Windows</a></p>
 
-<p>Previous XPI Upgrade - <a href="http://downloads.mozdev.org/maf/maf-0.2.20.xpi">from 0.2.19 to 0.2.20 platform independent</a></p>
 
 
 <h5 class="page-header"><a id="changelog" name="changelog">Changes</a></h5>
 <pre>
+ *
+ * Changes from 0.3.0 to 0.4.0
+ *
+ * Merged all the installers. Now a single XPI for Mozilla/Firefox on Windows/Linux.
+ * Changed the default file extension for MAF files to *.maff to avoid extension clashes with MS Access on Windows.
+ * Added French Locale contributed by Xavier Robin.
+ * Added Italian Locale contributed by Gioxx Solone: eXtenZilla.it.
+ * Fixed GUI bug to allow mafsearch extension to work properly.
+ * Fixed bug in post setup version check code to make it work in Firefox 1.0PR.
+ * Fixed bug in clear temp on close so it now leaves temp folder and deletes entries in it.
+ * MHTs now encoded using timeouts to reduce / avoid script speed warnings.
+ * MHT encoding/decoding now 99.99% standards compliant. :).
+ * Converted most Javascript objects and services into XPCOM components.
+ * Added user agent string in preferences to allow access by XPCOM components.
+ * Added code to make URLs absolute when HTML document loads so that form submissions, etc work.
+ * Added Save in Archive context menu entry.
+ * Added new MIME type "application/maf" for better handler support.
+ * Removed the MAF Open archive entry from the file menu. Open file now has all the necessary functionality.
+ * Added maf:// protocol that allows resource viewing of local maf archives (not designed for use with MHT archives).
+ * When saving the document title of the selected tab is used for the default maf archive name.
+ * Created string bundle of english text in code for better localization.
+ * Added preference for disabling the maf:// protocol
+ *
+ *
  * Changes from 0.2.20 to 0.3.0
  *
  * Styled the tree splitters in the browse open archives.

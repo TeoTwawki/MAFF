@@ -4,7 +4,7 @@
 <div class="infoTab" id="whats-new">
 <h5 class="infoHeader">What's New</h5>
 <ul>
-<li>MAF 0.3.0 released.</li>
+<li>MAF 0.4.0 released.</li>
 </ul>
 </div>
 
@@ -15,8 +15,10 @@
 <li>Archive saved pages using a registered archive application</li>
 <li>Shortcut keys for opening and browsing open archives</li>
 <li>URLs in archive documents can be replaced if there's a local version in an open archive</li>
-<li>MHTML read and write support partially implemented</li>
+<li>MHTML read and write support implemented</li>
 <li>Store more than one saved page in an archive</li>
+<li>Localized in French and Italian</li>
+<li>maf:// protocol capability</li>
 </ul>
 </div>
 
@@ -47,13 +49,17 @@
 <!-- MAIN CONTENT -->
 <p>The <b><?php echo ucwords($project); ?></b> project is an archive extension that allows complete web pages to be saved in a single archive file. MAF stands for Mozilla Archive Format and the extension uses RDF to save page meta-data such as the original URL of the page and the date/time the page was put in the archive. Starting with the 0.2.20 release a seperate <a href="bugs.html">bugs</a> page has been setup for known bugs in the release. Please check there first before reporting any bugs.</p>
 
+<p>
+If you use MAF and like it, please consider a <a href="donate.html">donation</a>.
+</p>
+
 <p><b>License:</b> The MAF extension is released under the <a href="license.html">GNU GPL</a>.</p>
 
 <p><b>Author:</b> Christopher Ottley.</p>
 
 <p><b>Aim:</b> To provide a Firefox (and Mozilla) extension which allows web pages to be saved easily in an archive.</p>
 
-<p><b>Design:</b> To provide maximum flexibility, registered external programs are used to perform the archiving and expansion process. The extension *.MAF refers to files which can be processed using the default registered file archive program (for example Zip). File archive specific extensions may be used to indicate which program to use with the archive, example *.MAF.ZIP for a Zip archive, *.MAF.7Z for a 7Zip archive.</p>
+<p><b>Design:</b> To provide maximum flexibility, registered external programs are used to perform the archiving and expansion process. The extension *.MAFF refers to files which can be processed using the default registered file archive program (for example Zip). File archive specific extensions may be used to indicate which program to use with the archive, example *.MAF.ZIP for a Zip archive, *.MAF.7Z for a 7Zip archive.</p>
 
 <p><b>Archive Application Requirements:</b> To be able to use a particular archive application the application must support:
 <ul>
@@ -70,16 +76,12 @@
 
 <p><b>Tested on:</b>
   <ul>
-   <li>FireFox 0.9, Mozilla 1.7, Linux i686.</li>
-   <li>FireFox 0.9, Mozilla 1.7, Windows 2000.</li>
+   <li>FireFox 1.0PR, Mozilla 1.7.3, Linux i686.</li>
+   <li>FireFox 1.0PR, Mozilla 1.7.3, Windows 2000.</li>
   </ul>
 </p>
 
 <p><b>Note:</b> As of version 0.3.0 MAF is officially out of beta.</p>
-
-<p>
-If you use MAF and like it, please consider a <a href="donate.html">donation</a>.
-</p>
 
 <p>
 <script language="Javascript" src="http://nextgenstats.com/cgi-bin/log.pl?site=13263490&amp;style=text&amp;offset=0"></script>
