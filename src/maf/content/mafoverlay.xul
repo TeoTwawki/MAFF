@@ -20,7 +20,6 @@
 -->
 <!DOCTYPE window SYSTEM "chrome://maf/locale/maf.dtd">
 
-
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script src="chrome://maf/content/mafnativefilesave.js"/>

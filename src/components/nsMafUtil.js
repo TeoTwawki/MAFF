@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.0
+ * Version: 0.4.1
  *
  * Author: Christopher Ottley
  *
@@ -414,6 +414,7 @@ MafUtilServiceClass.prototype = {
    * Add string data to the data source.
    */
   addStringData: function(datasource, name, value) {
+    try {
     var rootSubject = gRDFService.GetResource("urn:root");
     var predicate = gRDFService.GetResource(MAFNamespace + name);
     var object = gRDFService.GetResource(value);
@@ -422,6 +423,9 @@ MafUtilServiceClass.prototype = {
     modDataSource = datasource.QueryInterface(Components.interfaces.nsIRDFDataSource);
 
     modDataSource.Assert(rootSubject, predicate, object, true);
+    } catch(e) {
+      mafdebug(e);
+    }
   },
 
   /**

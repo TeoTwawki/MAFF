@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.0
+ * Version: 0.4.1
  *
  * Author: Christopher Ottley
  *
@@ -327,7 +327,7 @@ MafStateServiceClass.prototype = {
       }
 
     } catch (e) {
-
+      mafdebug(e);
     }
 
     return result;

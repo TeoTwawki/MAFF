@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.0
+ * Version: 0.4.1
  *
  * Author: Christopher Ottley
  *
@@ -27,6 +27,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 /**
+ * Changes from 0.4.0 to 0.4.1
+ *
+ * Fixed UTF String conversion bug affecting non-english character sets.
+ * Updated Italian locale contributed by Gioxx Solone: eXtenZilla.it.
+ * Fixed Archive Timing bug that caused some complex pages not to be archived.
+ *
  *
  * Changes from 0.3.0 to 0.4.0
  *
@@ -476,7 +482,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.3.0", // 0.4.0 Doesn't have new scripts, so leave this
+  postsetupversion: "0.3.0", // 0.4.1 Doesn't have new scripts, so leave this
 
   _getSaveFilters: function() {
     var filterresult = new Array();

@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.0
+ * Version: 0.4.1
  *
  * Author: Christopher Ottley
  *
@@ -515,6 +515,12 @@ MafMhtDecoderClass.prototype = {
     }
   },
 
+  decodeQuotedPrintableString: function(source) {
+    var decoder = new contentDecoderClass(null, null, null);
+    return decoder._decodeQuotedPrintable(source);
+  },
+
+
   QueryInterface: function(iid) {
 
     if (!iid.equals(mafMhtDecoderIID) &&
@@ -592,8 +598,11 @@ contentDecoderClass.prototype = {
     if (this.encoding == "base64") {
       this.callback.onBinaryContent(this._decodeBase64((this.content.split(/\r?\n/)).join("")));
     }
+    try {
+      this.callback.onContentComplete();
+    } catch(e) {
 
-    this.callback.onContentComplete();
+    }
   },
 
   /**

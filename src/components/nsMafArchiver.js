@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.0
+ * Version: 0.4.1
  *
  * Author: Christopher Ottley
  *
@@ -55,6 +55,10 @@ MafArchiverClass.prototype = {
 
   downloadComplete: false,
 
+  downloadCompleteTries: 0,
+
+  maxDownloadCompleteTries: 100,
+
   init: function(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived, Maf) {
     /** The browser containing the data archive. */
     this.aBrowser = aBrowser;
@@ -100,7 +104,7 @@ MafArchiverClass.prototype = {
 
   onDownloadComplete: function() {
     var tempArchiveFolder = MafUtils.appendToDir(this.tempPath, this.folderNumber);
-
+    
     if (MafUtils.checkFileExists(MafUtils.appendToDir(tempArchiveFolder, this.indexfilename))) {
 
         var ocHandler = new MafArchiverOnComplete();
@@ -119,7 +123,23 @@ MafArchiverClass.prototype = {
                                   this.archivePath,
                                   this.folderNumber);
 
-      }
+    } else {
+       if (this.downloadCompleteTries < this.maxDownloadCompleteTries) {
+         this.downloadCompleteTries++;
+         this.timer = Components.classes["@mozilla.org/timer;1"]
+                         .createInstance(Components.interfaces.nsITimer);
+         this.timer.initWithCallback(this, 100, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+       } else {
+         mafdebug("Error: After " + this.maxDownloadCompleteTries + " tries still could not find index file.");
+       }
+    }
+  },
+
+  notify: function(expiredtimer) {
+    if (this.timer == expiredtimer) {
+      this.onDownloadComplete();
+      this.timer = null;
+    }
   },
 
   /**
@@ -139,8 +159,9 @@ MafArchiverClass.prototype = {
       MafUtils.addStringData(indexDS, "originalurl", this.aDocument.location.href);
 
       if (this.aDocument.title != "") {
+        var titleToUse = this.aDocument.title;
         // Add title
-        MafUtils.addStringData(indexDS, "title", this.aDocument.title);
+        MafUtils.addStringData(indexDS, "title", titleToUse);
       } else {
         MafUtils.addStringData(indexDS, "title", "Unknown");
       }
@@ -196,6 +217,7 @@ MafArchiverClass.prototype = {
   QueryInterface: function(iid) {
 
     if (!iid.equals(mafArchiverIID) &&
+        !iid.equals(Components.interfaces.nsITimerCallback) &&
         !iid.equals(Components.interfaces.nsISupports)) {
       throw Components.results.NS_ERROR_NO_INTERFACE;
     }

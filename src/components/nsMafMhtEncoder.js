@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.0
+ * Version: 0.4.1
  *
  * Author: Christopher Ottley
  *
@@ -118,7 +118,7 @@ MafMhtEncoderClass.prototype = {
           MHTContentString += "Content-Type: multipart/related;\r\n";
           MHTContentString += "\tboundary=\"" + boundaryString + "\";\r\n"
           MHTContentString += "\ttype=\"" + this.filelist[0].type + "\"\r\n";
-          MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.4.0\r\n";
+          MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.4.1\r\n";
           MHTContentString += "\r\nThis is a multi-part message in MIME format.\r\n";
 
           oTransport.write(MHTContentString, MHTContentString.length);
@@ -127,7 +127,7 @@ MafMhtEncoderClass.prototype = {
           state.boundaryString = boundaryString;
 
         } else {
-          MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.4.0\r\n";
+          MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.4.1\r\n";
           oTransport.write(MHTContentString, MHTContentString.length);
           MHTContentString = "";
 
@@ -392,6 +392,32 @@ MafMhtEncoderClass.prototype = {
     return result;
   },
 
+
+  /**
+   * Encode a single line of text to be quoted printable.
+   * Based on code from: http://sourceforge.net/snippet/detail.php?type=snippet&id=101156
+   * Original author: samray
+   */
+  encodeQuotedPrintableString: function(srcLineString) {
+    var result;
+    result = "";
+
+    if (srcLineString.length > 0) {
+      var s = "";
+
+      for (var i = 0; i<srcLineString.length-1; i++) {
+        s += this._encodeQuotedPrintableCharacter(srcLineString.charCodeAt(i), this.QPENCODE_UNALTERED);
+      }
+
+      // Encode last character; if space, encode it
+      s += this._encodeQuotedPrintableCharacter(srcLineString.charCodeAt(srcLineString.length-1),
+                                                 this.QPENCODE_UNALTEREDEND);
+
+      result = s;
+    }
+
+    return result;
+  },
 
   /**
    * Encode a character that isn't in range as a hex string
