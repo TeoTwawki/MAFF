@@ -42,9 +42,7 @@
  *                           - Temporarily disables download window showing up using a preference value.
  * Added MHT encoding code - Now possible to save as MHT and have the file display in IE.
  * Extended Meta-Data save implementation - Text zoom, Scroll position and URL History can be saved.
- *
- * TODO: Get scripts to work from profile directory
- * TODO: Setup function with preference - Silly 0.9 limitations
+ * Added support for post install setup - For new firefox 0.9 installations.
  *
  *
  * Changes from 0.2.18 to 0.2.19 - Completed
@@ -2125,6 +2123,8 @@ var MafUtils = {
           }
         }
 
+        MafPostSetup.complete();
+
       } else {
         MafState = hiddenWnd.MafState;
       }
@@ -2232,6 +2232,144 @@ var MafUtils = {
     return result;
   }
 
+
+};
+
+
+/**
+ * Attempts to complete the setup for browsers that don't use the install.js
+ * - Life firefox 0.9
+ */
+var MafPostSetup = {
+
+  progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
+
+  /**
+   * Complete the setup, if necessary
+   */
+  complete: function() {
+    // If firefox 0.9 or higher
+    var isFF09OrHigher = false;
+    if (navigator.ua["firefox"] != null) {
+      isFF09OrHigher = (parseFloat(navigator.ua["firefox"]) >= 0.9);
+    }
+
+    if (isFF09OrHigher) {
+      // Get preference maf.postsetup.complete
+      var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
+
+      try {
+        var setupComplete = prefs.getBoolPref("postsetup.complete");
+      } catch(e) { setupComplete = false; }
+
+      if (!setupComplete) {
+        // Make temp directory
+        this.makeTempDirectory();
+        // Copy files
+        this.copyFiles();
+
+        // Set preference maf.postsetup.complete
+        prefs.setBoolPref("postsetup.complete", true);
+      }
+    }
+  },
+
+  /**
+   * Create the MAF temporary directory structure.
+   */
+  makeTempDirectory: function() {
+    try {
+    // If not on windows
+    if (navigator.userAgent.indexOf("Windows") == -1) {
+      // Make directory /tmp
+      MafUtils.createDir("/tmp");
+      // Make directory /tmp/maf/
+      MafUtils.createDir("/tmp/maf");
+      // Make directory /tmp/maf/maftemp
+      MafUtils.createDir("/tmp/maf/maftemp");
+    } else {
+      // Make directory c:\temp
+      MafUtils.createDir("c:\\temp");
+      // Make directory c:\temp\maf
+      MafUtils.createDir("c:\\temp\\maf");
+      // Make directory c:\temp\maf\maftemp
+      MafUtils.createDir("c:\\temp\\maf\\maftemp");
+    }
+
+    } catch(e) { alert(e); }
+  },
+
+
+  /**
+   * @returns A string representing the location of the user's profile directory
+   */
+  _getProfileDir: function() {
+    const DIR_SERVICE = new Components.Constructor("@mozilla.org/file/directory_service;1","nsIProperties");
+    try {
+      var result = (new DIR_SERVICE()).get("ProfD", Components.interfaces.nsIFile).path;
+    } catch (e) {
+      result = "";
+    }
+    return result;
+  },
+
+  /**
+   * @returns an array of files in a directory
+   */
+  _getFilesList: function(sourcepath) {
+    var result = new Array();
+
+    var oDir = Components.classes[localFileContractID].getService(localFileIID);
+    oDir.initWithPath(sourcepath);
+
+    if (oDir.exists() && oDir.isDirectory()) {
+      var entries = oDir.directoryEntries;
+
+      while (entries.hasMoreElements()) {
+        var currFile = entries.getNext();
+        currFile.QueryInterface(localFileIID);
+
+        result[result.length] = currFile.leafName;
+      }
+    }
+    return result;
+  },
+
+  /**
+   * Copy an individual file
+   */
+  _copyFile: function(source, dest) {
+    try {
+      // Make sure source exists and dest doesn't
+      if (MafUtils.checkFileExists(source) && !MafUtils.checkFileExists(dest)) {
+        MafUtils.createBinaryFile(dest, MafUtils.readBinaryFile(source));
+      }
+    } catch(e) { alert(e); }
+  },
+
+  /**
+   * Copy a set of files from the extensions, scripts directory
+   */
+  copyFiles: function() {
+    var sourceDir = this._getProfileDir();
+    sourceDir = MafUtils.appendToDir(sourceDir, "extensions");
+    sourceDir = MafUtils.appendToDir(sourceDir, this.progid);
+    sourceDir = MafUtils.appendToDir(sourceDir, "scripts");
+
+    var destDir;
+
+    // If not on windows
+    if (navigator.userAgent.indexOf("Windows") == -1) {
+      destDir = "/tmp/maf"
+    } else {
+      destDir = "c:\\temp\\maf"
+    }
+
+    var filesList = this._getFilesList(sourceDir);
+    for (var i=0; i<filesList.length; i++) {
+       this._copyFile(MafUtils.appendToDir(sourceDir, filesList[i]), MafUtils.appendToDir(destDir, filesList[i]));
+    }
+  }
 
 };
 
