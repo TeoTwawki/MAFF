@@ -37,6 +37,7 @@
  * Fixed reader bug when reading file using MafUtils.
  * Fixed Quoted Printable encoding to not split = escaped codes across new lines when a line length limit exists.
  * MHT decoding now explicitly caters for parts having content type multipart/alternative
+ * Updated URL rewrite functionality - Support for rewritting urls that contain # for internal links
  *
  *
  * Changes from 0.2.18 to 0.2.19 - Completed
@@ -1276,6 +1277,11 @@ var MafState = {
     // Add the info to a searchable URL map.
     this.localFileToUrlMap[localurl] = originalurl;
     this.urlToLocalFileMap[originalurl] = localurl;
+
+    // If the original url has a # sign, add the original url without the # sign to the list
+    if (originalurl.indexOf("#") > 0) {
+      this.urlToLocalFileMap[originalurl.substring(0,originalurl.indexOf("#"))] = localurl;
+    }
   },
 
   /**
@@ -1961,6 +1967,16 @@ var MafUtils = {
         for (var j=0; j < links.length; j++) {
           if (typeof(MafState.urlToLocalFileMap[links[j].href]) != "undefined") {
             links[j].href=MafState.urlToLocalFileMap[links[j].href];
+          } else {
+            // See if it is hashed
+            if (links[j].href.indexOf("#") > 0) {
+              var hashPart = links[j].href.substring(links[j].href.indexOf("#"), links[j].href.length);
+              var nonHashPart = links[j].href.substring(0, links[j].href.indexOf("#"));
+
+              if (typeof(MafState.urlToLocalFileMap[nonHashPart]) != "undefined") {
+                links[j].href=MafState.urlToLocalFileMap[nonHashPart] + hashPart;
+              }
+            }
           }
         }
       }
@@ -2399,7 +2415,9 @@ var MafMHTHander = {
 
 
   /**
-   * TODO: Use object structure to store result.
+   * Recursive function which decodes Multipart mime content
+   * It creates the decoded files in the specified index files directory
+   *   and stores meta-data in a result structure for post decoding processing
    */
   _decodeMultipartMimeFiles: function(headerDetails, MHTFile, index_filesDir, urlToLocalFilenameMap, quotedPrintableMap) {
     var result = {
@@ -2421,7 +2439,7 @@ var MafMHTHander = {
     result.headers = singleFiles[0];
 
     // For each part
-    for (var i=1; i<singleFiles.length; i++) { //
+    for (var i=1; i<singleFiles.length; i++) {
 
       try {
         //  Get the content type and content location
@@ -2746,7 +2764,7 @@ var MafMHTHander = {
         result = s.slice(0, this.QPENCODE_MAXLINESIZE);
         i = this.QPENCODE_MAXLINESIZE;
 
-        // If either the last character, character before or character before that is =
+        // If either the last character, character before is =
         //   then we've split across a code - Bad idea for compatibility with
         //   streaming decoders who may see == or =A= or such and upchuck.
         if (result.charAt(result.length-1) == "=") {
