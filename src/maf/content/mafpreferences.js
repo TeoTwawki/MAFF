@@ -37,12 +37,15 @@ var MafPreferences = {
      /** 0 - Do nothing. */
      /** 1 - Open all in new tabs. */
      /** 2 - Dialog box showing all archived files, select to open. */
+     /** 3 - The first page in a tab. Used if the first page is known to be a TOC, index or main page. */
 
   OPENMODE_NOTHING: 0,
 
   OPENMODE_ALLTABS: 1,
 
   OPENMODE_SHOWDIALOG: 2,
+
+  OPENMODE_FIRSTPAGE: 3,
 
   /** URL Rewrite enabled. */
   urlRewrite: true,
@@ -58,6 +61,8 @@ var MafPreferences = {
   win_invisiblevbs: "",
 
   isLoaded: false,
+
+  clearTempOnClose: true,
 
   /**
    * Creates a multi-dimensional array holding info on each registered program
@@ -181,6 +186,45 @@ var MafPreferences = {
   },
 
   /**
+   * Returns a structure holding the default values of the prefs.
+   */
+  defaultValues: function() {
+    var result;
+    result = { };
+
+    result.programExtensions = new Array();
+    result.archiveOpenMode = 1;
+    result.urlRewrite = true;
+    result.saveExtendedMetadata = false;
+
+    result.win_invisible = false;
+    result.win_wscriptexe = "";
+    result.win_invisiblevbs = "";
+    result.clearTempOnClose = true;
+
+      var mafParentDir = this._getProfileDir();
+      // Default if there's no stored prefs
+
+      result.defaultMAFExtensionIndex = 0;
+
+      // If not on windows
+      if (navigator.userAgent.indexOf("Windows") == -1) {
+        result.temp = mafParentDir + "/maf/maftemp/";
+        result.programExtensions[result.programExtensions.length] = [
+           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.zip.maf", "*.maf.zip"]];
+      } else {
+        result.temp = mafParentDir + "\\maf\\maftemp\\";
+        result.programExtensions[result.programExtensions.length] = [
+           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.zip.maf", "*.maf.zip"]];
+        result.win_wscriptexe = "c:\\winnt\\system32\\wscript.exe",
+        result.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
+      };
+
+
+    return result;
+  },
+
+  /**
    * Load the preferences from the user prefs.
    */
   load: function() {
@@ -226,6 +270,8 @@ var MafPreferences = {
         this.win_invisible = prefs.getBoolPref("wininvisible");
         this.win_wscriptexe = prefs.getCharPref("winwscriptexe");
         this.win_invisiblevbs = prefs.getCharPref("wininvisiblevbs");
+
+        this.clearTempOnClose = prefs.getBoolPref("clearTempOnClose");
 
         var noOfExtensions = prefs.getIntPref("noofextensions");
 
@@ -282,6 +328,8 @@ var MafPreferences = {
       prefs.setBoolPref("wininvisible", this.win_invisible);
       prefs.setCharPref("winwscriptexe", this.win_wscriptexe);
       prefs.setCharPref("wininvisiblevbs", this.win_invisiblevbs);
+
+      prefs.setBoolPref("clearTempOnClose", this.clearTempOnClose);
 
       // Subtract 1 because MHT hander not counted
       prefs.setIntPref("noofextensions", this.programExtensions.length-1);

@@ -23,7 +23,7 @@
 
 <!ENTITY maf.aboutdlg.title "About MAF">
 <!ENTITY maf.aboutdlg.description "MAF is a Mozilla based Extension that allows you to call an external archive application for collecting complete HTML documents. It also stores saved page meta-data such as the original URL and the date/time.">
-<!ENTITY maf.version "MAF v 0.2.19">
+<!ENTITY maf.version "MAF v 0.3.0">
 <!ENTITY maf.aboutdlg.copyright "(c) 2004 Christopher Ottley">
 <!ENTITY maf.aboutdlg.license "Released under the GNU GPL 2.0">
 <!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">
@@ -43,10 +43,12 @@
 
 <!ENTITY maf.preferencesdialog.tabsoptions "Options">
 <!ENTITY maf.preferencesdialog.tabsregprogs "Registered Programs">
+<!ENTITY maf.preferencesdialog.tabswinoptions "Windows options">
 
 <!ENTITY maf.preferencesdialog.options.description "The general options of how MAF archives are worked with in the extension">
 
 <!ENTITY maf.preferencesdialog.label.temp "Temporary folder:">
+<!ENTITY maf.preferencesdialog.label.cleartemp "Clear Temporary folder when browser exits">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Browse...">
 
@@ -61,7 +63,7 @@
 
 <!ENTITY maf.preferencesdialog.openmode.defaultapp "Default MAF Application Hander:">
 
-<!ENTITY maf.preferencesdialog.winop.label "Windows Specific Options">
+<!ENTITY maf.preferencesdialog.winop.label "Windows specific options">
 <!ENTITY maf.preferencesdialog.winop.usevbs "Use VBS to run batch files hidden">
 
 <!ENTITY maf.preferencesdialog.winop.wscript "Location of WSCRIPT.EXE:">
@@ -72,6 +74,7 @@
 <!ENTITY maf.preferencesdialog.progs.archive "Archive Script:">
 <!ENTITY maf.preferencesdialog.progs.expand "Expand Script:">
 
+<!ENTITY maf.preferencesdialog.btnloaddefault "Load defaults">
 <!ENTITY maf.preferencesdialog.btnsave "Save">
 <!ENTITY maf.preferencesdialog.btnrevert "Revert to last saved">
 <!ENTITY maf.preferencesdialog.btnclose "Close">

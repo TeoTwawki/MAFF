@@ -79,10 +79,36 @@
     document.getElementById("winChkRunInvisible").checked = mp.win_invisible;
     document.getElementById("winWscriptLoc").value = mp.win_wscriptexe;
     document.getElementById("winInvisVbsLoc").value = mp.win_invisiblevbs;
+    document.getElementById("chkClearTempOnClose").checked = mp.clearTempOnClose;
+
 
     document.getElementById("txtArchiveScript").value = mp.programExtensions[0][1];
     document.getElementById("txtExpandScript").value = mp.programExtensions[0][2];
   }
+
+
+  function loadDefaultPref() {
+    var mpd = mp.defaultValues();
+    document.getElementById("txtTempFolder").value = mpd.temp;
+    if (mpd.archiveOpenMode == mp.OPENMODE_ALLTABS) {
+      document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdOpenTabs");
+    } else if (mpd.archiveOpenMode == mp.OPENMODE_SHOWDIALOG) {
+      document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdShowOpen");
+    } else {
+      document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdDoNothing");
+    }
+
+    document.getElementById("chkURLRewrite").checked = mpd.urlRewrite;
+    document.getElementById("chkSaveExtended").checked = mpd.saveExtendedMetadata;
+    document.getElementById("winChkRunInvisible").checked = mpd.win_invisible;
+    document.getElementById("winWscriptLoc").value = mpd.win_wscriptexe;
+    document.getElementById("winInvisVbsLoc").value = mpd.win_invisiblevbs;
+    document.getElementById("chkClearTempOnClose").checked = mpd.clearTempOnClose;
+
+    document.getElementById("txtArchiveScript").value = mpd.programExtensions[0][1];
+    document.getElementById("txtExpandScript").value = mpd.programExtensions[0][2];
+  }
+
 
   function checkWinOnlyPrefs() {
     // If not windows, disable windows only preferences
@@ -111,6 +137,7 @@
     mp.win_wscriptexe = document.getElementById("winWscriptLoc").value;
     mp.win_invisiblevbs = document.getElementById("winInvisVbsLoc").value;
     mp.win_invisible = document.getElementById("winChkRunInvisible").checked;
+    mp.clearTempOnClose = document.getElementById("chkClearTempOnClose").checked;
 
     mp.programExtensions[0][1] = document.getElementById("txtArchiveScript").value;
     mp.programExtensions[0][2] = document.getElementById("txtExpandScript").value;
@@ -138,17 +165,22 @@
   <tabs>
     <tab label="&maf.preferencesdialog.tabsoptions;" selected="true"/>
     <tab label="&maf.preferencesdialog.tabsregprogs;"/>
+    <tab label="&maf.preferencesdialog.tabswinoptions;"/>
   </tabs>
 
   <tabpanels>
    <tabpanel id="optionspanel" orient="vertical">
      <groupbox>
        <caption label="&maf.preferencesdialog.options.description;" />
+
+     <groupbox>
      <hbox>
        <label control="txtTempFolder" value="&maf.preferencesdialog.label.temp;"/>
        <textbox id="txtTempFolder" flex="1" />
        <button label="&maf.preferencesdialog.btnbrowse;" oncommand="browse('txtTempFolder')" />
      </hbox>
+     <checkbox id="chkClearTempOnClose" checked="true" label="&maf.preferencesdialog.label.cleartemp;" />
+     </groupbox>
 
      <groupbox>
        <caption label="&maf.preferencesdialog.openmode;" />
@@ -170,21 +202,6 @@
          </menupopup>
        </menulist>
      </hbox>
-     </groupbox>
-
-     <groupbox>
-       <caption label="&maf.preferencesdialog.winop.label;" />
-       <checkbox id="winChkRunInvisible" checked="false" label="&maf.preferencesdialog.winop.usevbs;" />
-       <hbox>
-         <label control="winWscriptLoc" value="&maf.preferencesdialog.winop.wscript;"/>
-         <textbox id="winWscriptLoc" flex="1"/>
-         <button id="btnBrowseWinScript" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winWscriptLoc', 'wscript.exe')"/>
-       </hbox>
-       <hbox>
-         <label control="winInvisVbsLoc" value="&maf.preferencesdialog.winop.invis;"/>
-         <textbox id="winInvisVbsLoc" flex="1"/>
-         <button id="btnBrowseInvisVbs" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winInvisVbsLoc', 'invis.vbs')"/>
-       </hbox>
      </groupbox>
    </tabpanel>
 
@@ -219,10 +236,36 @@
      </tabbox>
    </tabpanel>
 
+   <tabpanel id="windowsspecificoptionspanel" orient="vertical">
+     <description>
+       &maf.preferencesdialog.winop.label;
+     </description>
+
+     <!--
+     <groupbox>
+       <caption label="&maf.preferencesdialog.winop.label;" />
+     </groupbox>
+     -->
+       <checkbox id="winChkRunInvisible" checked="false" label="&maf.preferencesdialog.winop.usevbs;" />
+       <hbox>
+         <label control="winWscriptLoc" value="&maf.preferencesdialog.winop.wscript;"/>
+         <textbox id="winWscriptLoc" flex="1"/>
+         <button id="btnBrowseWinScript" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winWscriptLoc', 'wscript.exe')"/>
+       </hbox>
+       <hbox>
+         <label control="winInvisVbsLoc" value="&maf.preferencesdialog.winop.invis;"/>
+         <textbox id="winInvisVbsLoc" flex="1"/>
+         <button id="btnBrowseInvisVbs" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winInvisVbsLoc', 'invis.vbs')"/>
+       </hbox>
+
+   </tabpanel>
+
+
  </tabpanels>
 </tabbox>
 
   <hbox>
+    <button id="maf-prefs-loaddefault-button" label="&maf.preferencesdialog.btnloaddefault;" default="true" oncommand="loadDefaultPref();"/>
     <spacer flex="1"/>
     <button id="maf-prefs-save-button" label="&maf.preferencesdialog.btnsave;" default="true" oncommand="saveToPref();"/>
     <button id="maf-prefs-revert-button" label="&maf.preferencesdialog.btnrevert;" oncommand="loadFromPref();"/>

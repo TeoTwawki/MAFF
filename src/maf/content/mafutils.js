@@ -567,19 +567,45 @@ var MafUtils = {
 
     // If it's the last window
     if (numberOfOpenWindows < 2) {
-      // Get the temp folders used by open archive functions
-      // delete each of those folders
 
-      for (var i=0; i<MafState.openArchives.length; i++) {
+      if (MafPreferences.clearTempOnClose) {
+        // Remove everything in the temp directory
         try {
           var oDir = Components.classes[localFileContractID].getService(localFileIID);
-          oDir.initWithPath(MafState.openArchives[i]);
+          oDir.initWithPath(MafPreferences.temp);
 
           if (oDir.exists() && oDir.isDirectory()) {
-            oDir.remove(true);
+            var entries = oDir.directoryEntries;
+
+            // If there's something to delete
+            if (entries.hasMoreElements()) {
+              // Remove temp directory
+              oDir.remove(true);
+
+              // Re-create temp directory
+              oDir.create(0x01, 0777);
+            }
           }
         } catch(e) {
 
+        }
+      } else {
+        // Just close open archives
+
+        // Get the temp folders used by open archive functions
+        // delete each of those folders
+
+        for (var i=0; i<MafState.openArchives.length; i++) {
+          try {
+            var oDir = Components.classes[localFileContractID].getService(localFileIID);
+            oDir.initWithPath(MafState.openArchives[i]);
+
+            if (oDir.exists() && oDir.isDirectory()) {
+              oDir.remove(true);
+            }
+          } catch(e) {
+
+          }
         }
       }
 
@@ -749,8 +775,7 @@ var MafUtils = {
 
 
 /**
- * Attempts to complete the setup for browsers that don't use the install.js
- * - Like firefox 0.9
+ * Attempts to complete the setup.
  */
 var MafPostSetup = {
 
@@ -783,7 +808,6 @@ var MafPostSetup = {
 
   /**
    * Update the scripts to use the new directory
-   * TODO: Finish XXX
    */
   updateScriptContents: function() {
     var profileDir = this._getProfileDir();
@@ -895,6 +919,7 @@ var MafPostSetup = {
 
   /**
    * Copy a set of files from the extensions, scripts directory
+   * Only copy if FF 0.9 or higher
    */
   copyFiles: function() {
     var profileDir = this._getProfileDir();
@@ -912,23 +937,22 @@ var MafPostSetup = {
       sourceDir = MafUtils.appendToDir(sourceDir, "extensions");
       sourceDir = MafUtils.appendToDir(sourceDir, this.progid);
       sourceDir = MafUtils.appendToDir(sourceDir, "scripts");
-    } else {
-      // Source is chrome dir? XXXComplete
+
+      var destDir;
+
+      // If not on windows
+      if (navigator.userAgent.indexOf("Windows") == -1) {
+        destDir = profileDir + "/maf";
+      } else {
+        destDir = profileDir + "\\maf";
+      }
+
+      var filesList = this._getFilesList(sourceDir);
+      for (var i=0; i<filesList.length; i++) {
+        this._copyFile(MafUtils.appendToDir(sourceDir, filesList[i]), MafUtils.appendToDir(destDir, filesList[i]));
+      }
     }
 
-    var destDir;
-
-    // If not on windows
-    if (navigator.userAgent.indexOf("Windows") == -1) {
-      destDir = profileDir + "/maf";
-    } else {
-      destDir = profileDir + "\\maf";
-    }
-
-    var filesList = this._getFilesList(sourceDir);
-    for (var i=0; i<filesList.length; i++) {
-       this._copyFile(MafUtils.appendToDir(sourceDir, filesList[i]), MafUtils.appendToDir(destDir, filesList[i]));
-    }
   }
 
 };

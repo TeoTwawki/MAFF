@@ -44,6 +44,8 @@
  * Filter index saved as a preference for MAF open and save archive dialogs.
  * Fixed GUI file select bug and default preference loading bug.
  * Post-install script run feature added - Can now run scripts from profile in FF.
+ * Can now load default preferences from dialog.
+ * Added preference to clear the temp folder when the browser closes.
  *
  *
  * Changes from 0.2.19 to 0.2.20 - Completed
