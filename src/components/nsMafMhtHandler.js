@@ -682,7 +682,9 @@ function extractContentHandlerClass(destpath, state, datasource, isindex, handle
 
 extractContentHandlerClass.prototype = {
 
-  onContentStart: function(contentType, contentId, contentLocation) {
+  onContentStart: function(contentType, contentId, contentLocation, relativeContentLocation) {
+    this.destPathWithFolder = this.destpath;
+
     var extensionType = "";
     if (this.isindex) {
       if (contentType != "") { // If there's a type use it
@@ -713,7 +715,35 @@ extractContentHandlerClass.prototype = {
                      .createInstance(Components.interfaces.nsIURL);
         url.spec = contentLocation;
 
+        var relativeIndexFilesUsed = false;
+
+        if (relativeContentLocation.startsWith("index_files/")) {
+          relativeContentLocation = relativeContentLocation.substring("index_files/".length,
+                                    relativeContentLocation.length);
+          relativeIndexFilesUsed = true;
+        }
+
+
         var defaultFilename = MafUtils.getDefaultFileName("", url);
+
+        if (relativeIndexFilesUsed) {
+          var subFolders = relativeContentLocation;
+
+          var subDir = this.destPathWithFolder;
+
+          while (subFolders.indexOf("/") > -1) {
+            var subFolder = subFolders.substring(0, subFolders.indexOf("/"));
+            subFolders = subFolders.substring(subFolders.indexOf("/") + 1, subFolders.length);
+
+            subDir = MafUtils.appendToDir(subDir, subFolder);
+            MafUtils.createDir(subDir);
+          }
+
+          this.destPathWithFolder = subDir;
+
+          defaultFilename = subFolders;
+        }
+
         // If there's no extension, add one based on type
         if (defaultFilename.indexOf(".") == -1) {
           extensionType = MafUtils.getExtensionByType(contentType);
@@ -723,17 +753,17 @@ extractContentHandlerClass.prototype = {
                             defaultFilename.length).toLowerCase();
         }
 
-        this.filename = MafUtils.getUniqueFilename(this.destpath, defaultFilename);
+        this.filename = MafUtils.getUniqueFilename(this.destPathWithFolder, defaultFilename);
 
       } else {
         // Otherwise base it on the content type
         extensionType = MafUtils.getExtensionByType(contentType);
-        this.filename = MafUtils.getUniqueFilename(this.destpath,
+        this.filename = MafUtils.getUniqueFilename(this.destPathWithFolder,
                             "index" + extensionType);
       }
     }
 
-    this.destfile = MafUtils.appendToDir(this.destpath, this.filename);
+    this.destfile = MafUtils.appendToDir(this.destPathWithFolder, this.filename);
 
     // In framed pages the content type may be application/octet-stream instead of
     // text/html. To cater for this assume the MIME service is working and has

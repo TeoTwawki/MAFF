@@ -427,6 +427,8 @@ MafMhtDecoderClass.prototype = {
 
       //  If there's a content location
       if (partContentLocation != "") {
+        var relativeContentLocation = partContentLocation;
+
         // Resolve against the baseContentLocation
         partContentLocation = obj_baseUrl.resolve(partContentLocation);
 
@@ -436,6 +438,7 @@ MafMhtDecoderClass.prototype = {
           var entry = headers[i];
           if ((entry.name).trim().toLowerCase() == "content-location") {
             headerStr += entry.name + ": " + partContentLocation + "\r\n";
+            headerStr += "x-maf-content-location: " + relativeContentLocation + "\r\n";
           } else {
             headerStr += entry.name + ": " + entry.value + "\r\n";
           }
@@ -549,7 +552,9 @@ MafMhtDecoderClass.prototype = {
        var contentId = this.getHeaderValue("Content-Id");
        contentId = contentId.replaceAll(">", "").replaceAll("<", "");
        var contentLocation = this.getHeaderValue("Content-Location");
-       callback.onContentStart(contentType, contentId, contentLocation);
+       var relativeContentLocation = this.getHeaderValue("x-maf-content-location");
+
+       callback.onContentStart(contentType, contentId, contentLocation, relativeContentLocation);
 
        var encoding = this.getHeaderValue("Content-Transfer-Encoding").trim().toLowerCase();
 

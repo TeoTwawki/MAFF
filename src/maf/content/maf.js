@@ -40,6 +40,8 @@
  * Changed the MAF content type from application/maf to application/x-maf.
  * Added ability to copy displayed meta-data from browse open archives dialog.
  * Fixed bug 9303 - Removed .bin extension from being appended for unknown file types.
+ * Fixed bug 9630 - Non latin character set filenames in "Save Page As..." dialog now show up in unicode.
+ * Fixed bug 9629 - Relative content locations misses resources when MAF file optimization is on.
  *
  *
  * Changes from 0.4.3 to 0.5.0
@@ -1396,13 +1398,16 @@ function getDefaultFileName(aDefaultFileName, aNameFromHeaders, aDocumentURI, aD
 
     var uctitle = aDocument.title;
 
-    try {
-      var uconv = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-                    .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-      uconv.charset = "UTF-8";
-      uctitle = uconv.ConvertToUnicode(aDocument.title);
-    } catch (e) {
-      // Error converting to unicode - Might be in unicode already
+    if (aDocument.characterSet != "UTF-8") {
+      // Convert
+      try {
+        var uconv = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                      .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+        uconv.charset = "UTF-8";
+        uctitle = uconv.ConvertToUnicode(aDocument.title);
+      } catch (e) {
+        // Error converting to unicode - Might be in unicode already
+      }
     }
 
     var docTitle = validateFileName(uctitle).replace(/^\s+|\s+$/g, "");
