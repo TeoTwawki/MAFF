@@ -36,8 +36,10 @@
  * Binary Streams are now used for MHT encoding and decoding.
  * Fixed reader bug when reading file using MafUtils.
  * Fixed Quoted Printable encoding to not split = escaped codes across new lines when a line length limit exists.
- * MHT decoding now explicitly caters for parts having content type multipart/alternative
- * Updated URL rewrite functionality - Support for rewritting urls that contain # for internal links
+ * MHT decoding now explicitly caters for parts having content type multipart/alternative.
+ * Updated URL rewrite functionality - Support for rewritting urls that contain # for internal links.
+ * Isolated native save code - Saving should work without modification across firefox and mozilla browsers.
+ *                           - Temporarily disables download window showing up using prefence before saving.
  *
  *
  * Changes from 0.2.18 to 0.2.19 - Completed
@@ -170,7 +172,7 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
   this.start = function() {
     if (!this.started) {
       this.started = true;
-      this._ns_sniffHeader(this.aDocument, MafUtils.appendToDir(this.tempPath, this.folderNumber), "index.html");
+      MafNativeFileSave.saveFile(this.aDocument, MafUtils.appendToDir(this.tempPath, this.folderNumber), "index.html", this);
       this.timerId = setInterval(this._checkDownloadComplete, 1000, this);
     }
   },
@@ -303,12 +305,29 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
     }
 
     }
-  },
+  }
+
+};
+
+
+/**
+ * An object responsible for performing the calls to save complete pages
+ * duplicated from existing code in chrome://browser/content/contentAreaUtils.js
+ * It is becoming increasingly difficult to integrate with the native call to
+ * the code, so duplicate it, adjust it and use it instead of the original.
+ */
+var MafNativeFileSave = {
+
+  kSaveAsType_Complete: 0,   // Save document with attached objects
+
+  kSaveAsType_URL: 1,        // Save document or URL by itself
+
+  kSaveAsType_Text: 2,       // Save document, converting to plain text.
 
   /**
    * Trigger the file save process with the specified data structure.
    */
-  this._ns_sniffHeader = function(aDocument, aSaveDocPath, aSaveDocFileName) {
+  saveFile: function(aDocument, aSaveDocPath, aSaveDocFileName, aObjMafArchiver) {
     var data = {
       url: aDocument.location.href,
       fileName: null,
@@ -318,142 +337,230 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
       window: window,
       saveDocPath: aSaveDocPath,
       saveDocFileName: aSaveDocFileName,
-      objMafArchiver: this
+      objMafArchiver: aObjMafArchiver
     };
 
-    /** Change the header sniffer callback to use the this._ns_foundHeaderInfo function instead */
-    /** If there's a constant kSaveAsType_Complete, then we're in Firefox or something in which
-        the original code works, otherwise use the Mozilla 1.7 RC2 for windows code. */
-    if (typeof(kSaveAsType_Complete) !== "undefined") {
-      var sniffer = new nsHeaderSniffer(aDocument.location.href, this._ns_foundHeaderInfo, data, true);
-    } else {
-      var sniffer = new nsHeaderSniffer(aDocument.location.href, this._ns_foundHeaderInfoAlternate, data, true);
-    }
+    var sniffer = new MafNativeFileSave_nsHeaderSniffer(aDocument.location.href, this.foundHeaderInfo, data, true);
   },
 
-  /**
-   * Based on code found in foundHeaderInfo in contentAreaUtils.js
-   * except this._ns_getTargetFile is called instead.
-   * Changed contract ids and interface references to use global constants.
-   */
-  this._ns_foundHeaderInfo = function(aSniffer, aData, aSkipPrompt) {
-    var contentType = aSniffer.contentType;
-    var contentEncodingType = aSniffer.contentEncodingType;
+foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
 
-    var shouldDecode = false;
-    // Are we allowed to decode?
-    try {
-      const helperAppService =
-        Components.classes[externalHelperAppServiceContractID].getService(externalHelperAppServiceIID);
-      var url = aSniffer.uri.QueryInterface(urlIID);
-      var urlExt = url.fileExtension;
-      if (helperAppService.applyDecodingForExtension(urlExt,
+  var contentType = aSniffer.contentType;
+  var contentEncodingType = aSniffer.contentEncodingType;
+
+  var shouldDecode = false;
+  // Are we allowed to decode?
+  try {
+    const helperAppService =
+      Components.classes["@mozilla.org/uriloader/external-helper-app-service;1"].
+        getService(Components.interfaces.nsIExternalHelperAppService);
+    var url = aSniffer.uri.QueryInterface(Components.interfaces.nsIURL);
+    var urlExt = url.fileExtension;
+    if (helperAppService.applyDecodingForExtension(urlExt,
                                                    contentEncodingType)) {
-        shouldDecode = true;
-      }
+      shouldDecode = true;
     }
-    catch (e) {
-    }
+  }
+  catch (e) {
+  }
 
-    var isDocument = aData.document != null && isDocumentType(contentType);
-    if (!isDocument && !shouldDecode && contentEncodingType) {
-      // The data is encoded, we are not going to decode it, and this is not a
-      // document save so we won't be doing a "save as, complete" (which would
-      // break if we reset the type here).  So just set our content type to
-      // correspond to the outermost encoding so we get extensions and the like
-      // right.
-      contentType = contentEncodingType;
-    }
+  var isDocument = aData.document != null && MafNativeFileSave.isDocumentType(contentType);
+  if (!isDocument && !shouldDecode && contentEncodingType) {
+    // The data is encoded, we are not going to decode it, and this is not a
+    // document save so we won't be doing a "save as, complete" (which would
+    // break if we reset the type here).  So just set our content type to
+    // correspond to the outermost encoding so we get extensions and the like
+    // right.
+    contentType = contentEncodingType;
+  }
 
-    var file = null;
-    var saveAsType = kSaveAsType_URL;
-    try {
-      file = aData.fileName.QueryInterface(localFileIID);
-    }
-    catch (e) {
-      var saveAsTypeResult = { rv: 0 };
-      file = aData.objMafArchiver._ns_getTargetFile(aData, aSniffer, contentType, isDocument, aSkipPrompt, saveAsTypeResult);
-      saveAsType = saveAsTypeResult.rv;
-    }
+  var file = null;
+  var saveAsType = MafNativeFileSave.kSaveAsType_URL;
+  try {
+    file = aData.fileName.QueryInterface(Components.interfaces.nsILocalFile);
+  }
+  catch (e) {
+    var saveAsTypeResult = { rv: 0 };
+    file = MafNativeFileSave.getTargetFile(aData, aSniffer, contentType, isDocument, aSkipPrompt, saveAsTypeResult);
+    if (!file)
+      return;
+    saveAsType = saveAsTypeResult.rv;
+  }
 
-    // If we're saving a document, and are saving either in complete mode or
-    // as converted text, pass the document to the web browser persist component.
-    // If we're just saving the HTML (second option in the list), send only the URI.
-    var source = (isDocument && saveAsType != kSaveAsType_URL) ? aData.document : aSniffer.uri;
-    var persistArgs = {
-      source      : source,
-      contentType : (isDocument && saveAsType == kSaveAsType_Text) ? "text/plain" : contentType,
-      target      : file,
-      postData    : aData.document ? getPostData() : null,
-      bypassCache : aData.bypassCache
-    };
+  // If we're saving a document, and are saving either in complete mode or
+  // as converted text, pass the document to the web browser persist component.
+  // If we're just saving the HTML (second option in the list), send only the URI.
+  var source = (isDocument && saveAsType != MafNativeFileSave.kSaveAsType_URL) ? aData.document : aSniffer.uri;
+  var persistArgs = {
+    source      : source,
+    contentType : (isDocument && saveAsType == MafNativeFileSave.kSaveAsType_Text) ? "text/plain" : contentType,
+    target      : MafNativeFileSave.makeFileURL(file),
+    postData    : aData.document ? MafNativeFileSave.getPostData() : null,
+    bypassCache : aData.bypassCache
+  };
 
-    var persist = makeWebBrowserPersist();
+  var persist = MafNativeFileSave.makeWebBrowserPersist();
 
-    // Calculate persist flags.
-    const flags = webBrowserPersistIID.PERSIST_FLAGS_NO_CONVERSION | webBrowserPersistIID.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
-    if (aData.bypassCache)
-      persist.persistFlags = flags | webBrowserPersistIID.PERSIST_FLAGS_BYPASS_CACHE;
-    else
-      persist.persistFlags = flags | webBrowserPersistIID.PERSIST_FLAGS_FROM_CACHE;
+  // Calculate persist flags.
+  const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
+  const flags = nsIWBP.PERSIST_FLAGS_NO_CONVERSION | nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
+  if (aData.bypassCache)
+    persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_BYPASS_CACHE;
+  else
+    persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_FROM_CACHE;
 
-    if (shouldDecode)
-      persist.persistFlags &= ~webBrowserPersistIID.PERSIST_FLAGS_NO_CONVERSION;
+  if (shouldDecode)
+    persist.persistFlags &= ~nsIWBP.PERSIST_FLAGS_NO_CONVERSION;
 
-    // Create download and initiate it (below)
-    aData.objMafArchiver.dl = Components.classes[downloadContractID].createInstance(downloadIID);
+  // Create download and initiate it (below)
+  aData.objMafArchiver.dl = Components.classes["@mozilla.org/download;1"].createInstance(Components.interfaces.nsIDownload);
 
-    try {
+  if (isDocument && saveAsType != this.kSaveAsType_URL) {
+    // Saving a Document, not a URI:
+    var filesFolder = null;
+    if (persistArgs.contentType != "text/plain") {
+      // Create the local directory into which to save associated files.
+      filesFolder = file.clone();
 
-    if (isDocument && saveAsType != kSaveAsType_URL) {
-      // Saving a Document, not a URI:
-      var filesFolder = null;
-      if (persistArgs.contentType != "text/plain") {
-        // Create the local directory into which to save associated files.
-        filesFolder = Components.classes[localFileContractID].createInstance(localFileIID);
-        filesFolder.initWithPath(persistArgs.target.path);
-
-        var nameWithoutExtension = filesFolder.leafName;
-        nameWithoutExtension = nameWithoutExtension.substring(0, nameWithoutExtension.lastIndexOf("."));
-        var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
+      var nameWithoutExtension = filesFolder.leafName;
+      nameWithoutExtension = nameWithoutExtension.substring(0, nameWithoutExtension.lastIndexOf("."));
+      var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
                                                                        [nameWithoutExtension],
                                                                        1);
 
-        filesFolder.leafName = filesFolderLeafName;
-      }
+      filesFolder.leafName = filesFolderLeafName;
+    }
 
-      var encodingFlags = 0;
-      if (persistArgs.contentType == "text/plain") {
-        encodingFlags |= webBrowserPersistIID.ENCODE_FLAGS_FORMATTED;
-        encodingFlags |= webBrowserPersistIID.ENCODE_FLAGS_ABSOLUTE_LINKS;
-        encodingFlags |= webBrowserPersistIID.ENCODE_FLAGS_NOFRAMES_CONTENT;
-      }
+    var encodingFlags = 0;
+    if (persistArgs.contentType == "text/plain") {
+      encodingFlags |= nsIWBP.ENCODE_FLAGS_FORMATTED;
+      encodingFlags |= nsIWBP.ENCODE_FLAGS_ABSOLUTE_LINKS;
+      encodingFlags |= nsIWBP.ENCODE_FLAGS_NOFRAMES_CONTENT;
+    }
 
-      const kWrapColumn = 80;
-      aData.objMafArchiver.dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
-      persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
+    // Save preference to show download window
+    var dwprefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.download.manager.");
+
+    var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
+
+    // Set to false
+    dwprefs.setBoolPref("showWhenStarting", false);
+
+    const kWrapColumn = 80;
+    aData.objMafArchiver.dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
+    persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
                          persistArgs.contentType, encodingFlags, kWrapColumn);
-    } else {
-      aData.objMafArchiver.dl.init(source, persistArgs.target, null, null, null, persist);
-      persist.saveURI(source, null, null, persistArgs.postData, null, persistArgs.target);
+
+    // Return download window preference to saved value
+    dwprefs.setBoolPref("showWhenStarting", showWhenStarting);
+
+  } else {
+    // Save preference to show download window
+    var dwprefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.download.manager.");
+
+    var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
+
+    // Set to false
+    dwprefs.setBoolPref("showWhenStarting", false);
+
+    aData.objMafArchiver.dl.init(source, persistArgs.target, null, null, null, persist);
+    persist.saveURI(source, null, MafNativeFileSave.getReferrer(document), persistArgs.postData, null, persistArgs.target);
+
+    // Return download window preference to saved value
+    dwprefs.setBoolPref("showWhenStarting", showWhenStarting);
+  }
+},
+
+makeURL: function(aURL)
+{
+  var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                            .getService(Components.interfaces.nsIIOService);
+  return ioService.newURI(aURL, null, null);
+},
+
+makeFileURL: function(aFile)
+{
+  var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                .getService(Components.interfaces.nsIIOService);
+  return ioService.newFileURI(aFile);
+},
+
+makeWebBrowserPersist: function()
+{
+  const persistContractID = "@mozilla.org/embedding/browser/nsWebBrowserPersist;1";
+  const persistIID = Components.interfaces.nsIWebBrowserPersist;
+  return Components.classes[persistContractID].createInstance(persistIID);
+},
+
+isDocumentType: function(aContentType)
+{
+  switch (aContentType) {
+  case "text/html":
+    return true;
+  case "text/xml":
+  case "application/xhtml+xml":
+  case "application/xml":
+    return false; // XXX Disables Save As Complete until it works for XML
+  }
+  return false;
+},
+
+isContentFrame: function(aFocusedWindow)
+{
+  if (!aFocusedWindow)
+    return false;
+
+  var focusedTop = Components.lookupMethod(aFocusedWindow, 'top')
+                             .call(aFocusedWindow);
+
+  return (focusedTop == window.content);
+},
+
+getContentFrameURI: function(aFocusedWindow)
+{
+  var contentFrame = MafNativeFileSave.isContentFrame(aFocusedWindow) ? aFocusedWindow : window.content;
+  if (contentFrame)
+    return Components.lookupMethod(contentFrame, 'location').call(contentFrame).href;
+  else
+    return null;
+},
+
+getReferrer: function(doc)
+{
+  var focusedWindow = doc.commandDispatcher.focusedWindow;
+  var sourceURL = MafNativeFileSave.getContentFrameURI(focusedWindow);
+
+  if (sourceURL) {
+    try {
+      return MafNativeFileSave.makeURL(sourceURL);
     }
+    catch (e) { }
+  }
+  return null;
+},
 
-    } catch(e) {
-
-    }
-
-
-  },
+getPostData: function()
+{
+  try {
+    var sessionHistory = getWebNavigation().sessionHistory;
+    entry = sessionHistory.getEntryAtIndex(sessionHistory.index, false);
+    entry = entry.QueryInterface(Components.interfaces.nsISHEntry);
+    return entry.postData;
+  }
+  catch (e) {
+  }
+  return null;
+},
 
   /**
    * Based on code found in getTargetFile in contentAreaUtils.js
    * except it does not prompt the user for the file name and path.
    * Instead uses values stored in the aData record structure.
    */
-  this._ns_getTargetFile = function(aData, aSniffer, aContentType, aIsDocument, aSkipPrompt, aSaveAsTypeResult) {
-    if (typeof(kSaveAsType_Complete) !== "undefined") {
-  aSaveAsTypeResult.rv = kSaveAsType_Complete;
-    }
+getTargetFile: function(aData, aSniffer, aContentType, aIsDocument, aSkipPrompt, aSaveAsTypeResult)
+{
+
+  aSaveAsTypeResult.rv = MafNativeFileSave.kSaveAsType_Complete;
 
   // Determine what the 'default' string to display in the File Picker dialog
   // should be.
@@ -516,156 +623,162 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
 
   return file;
 
+}
+
+};
+
+
+/**
+ * Code copied wholesale from contentAreaUtils.js
+ * Name changed.
+ */
+function MafNativeFileSave_nsHeaderSniffer(aURL, aCallback, aData, aSkipPrompt)
+{
+  this.mCallback = aCallback;
+  this.mData = aData;
+  this.mSkipPrompt = aSkipPrompt;
+
+  this.uri = makeURL(aURL);
+
+  this.linkChecker = Components.classes["@mozilla.org/network/urichecker;1"]
+    .createInstance(Components.interfaces.nsIURIChecker);
+  this.linkChecker.init(this.uri);
+
+  var flags;
+  if (aData.bypassCache) {
+    flags = Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
+  } else {
+    flags = Components.interfaces.nsIRequest.LOAD_FROM_CACHE;
+  }
+  this.linkChecker.loadFlags = flags;
+
+  this.linkChecker.asyncCheck(this, null);
+};
+
+/**
+ * Code copied wholesale from contentAreaUtils.js
+ */
+MafNativeFileSave_nsHeaderSniffer.prototype = {
+
+  // ---------- nsISupports methods ----------
+  QueryInterface: function (iid) {
+    if (!iid.equals(Components.interfaces.nsIRequestObserver) &&
+        !iid.equals(Components.interfaces.nsISupports) &&
+        !iid.equals(Components.interfaces.nsIInterfaceRequestor)) {
+      throw Components.results.NS_ERROR_NO_INTERFACE;
+    }
+    return this;
   },
 
-  /**
-   * Based on code found in foundHeaderInfo in contentAreaUtils.js
-   * Quick fix to get it working on Mozilla for windows
-   * Removed code prompting user for location to save file to.
-   * Why take out aSkipPrompt?!?.
-   */
-  this._ns_foundHeaderInfoAlternate = function(aSniffer, aData, aSkipPrompt) {
+  // ---------- nsIInterfaceRequestor methods ----------
+  getInterface : function(iid) {
+    if (iid.equals(Components.interfaces.nsIAuthPrompt)) {
+      // use the window watcher service to get a nsIAuthPrompt impl
+      var ww = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
+                         .getService(Components.interfaces.nsIWindowWatcher);
+      return ww.getNewAuthPrompter(window);
+    }
+    Components.returnCode = Components.results.NS_ERROR_NO_INTERFACE;
+    return null;
+  },
 
+  // ---------- nsIRequestObserver methods ----------
+  onStartRequest: function (aRequest, aContext) { },
+
+  onStopRequest: function (aRequest, aContext, aStatus) {
     try {
-
-    var contentType = aSniffer.contentType;
-    var contentEncodingType = aSniffer.contentEncodingType;
-
-    var shouldDecode = false;
-    var urlExt = null;
-
-    // Are we allowed to decode?
-    try {
-      const helperAppService =
-        Components.classes["@mozilla.org/uriloader/external-helper-app-service;1"].
-          getService(Components.interfaces.nsIExternalHelperAppService);
-      var url = aSniffer.uri.QueryInterface(Components.interfaces.nsIURL);
-      urlExt = url.fileExtension;
-      if (contentEncodingType &&
-          helperAppService.applyDecodingForExtension(urlExt,
-                                                     contentEncodingType)) {
-        shouldDecode = true;
+      if (aStatus == 0) { // NS_BINDING_SUCCEEDED, so there's something there
+        var linkChecker = aRequest.QueryInterface(Components.interfaces.nsIURIChecker);
+        var channel = linkChecker.baseChannel;
+        this.contentType = channel.contentType;
+        try {
+          var httpChannel = channel.QueryInterface(Components.interfaces.nsIHttpChannel);
+          var encodedChannel = channel.QueryInterface(Components.interfaces.nsIEncodedChannel);
+          this.contentEncodingType = null;
+          // There may be content-encodings on the channel.  Multiple content
+          // encodings are allowed, eg "Content-Encoding: gzip, uuencode".  This
+          // header would mean that the content was first gzipped and then
+          // uuencoded.  The encoding enumerator returns MIME types
+          // corresponding to each encoding starting from the end, so the first
+          // thing it returns corresponds to the outermost encoding.
+          var encodingEnumerator = encodedChannel.contentEncodings;
+          if (encodingEnumerator && encodingEnumerator.hasMore()) {
+            try {
+              this.contentEncodingType = encodingEnumerator.getNext();
+            } catch (e) {
+            }
+          }
+          this.mContentDisposition = httpChannel.getResponseHeader("content-disposition");
+        }
+        catch (e) {
+        }
+        if (!this.contentType || this.contentType == "application/x-unknown-content-type") {
+          // We didn't get a type from the server.  Fall back on other type detection mechanisms
+          throw "Unknown Type";
+        }
+      }
+      else {
+        dump("Error saving link aStatus = 0x" + aStatus.toString(16) + "\n");
+        var bundle = getStringBundle();
+        var errorTitle = bundle.GetStringFromName("saveLinkErrorTitle");
+        var errorMsg = bundle.GetStringFromName("saveLinkErrorMsg");
+        const promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+        promptService.alert(this.mData.window, errorTitle, errorMsg);
+        return;
       }
     }
     catch (e) {
+      if (this.mData.document) {
+        this.contentType = this.mData.document.contentType;
+      } else {
+        var type = getMIMETypeForURI(this.uri);
+        if (type)
+          this.contentType = type;
+      }
     }
+    this.mCallback(this, this.mData, this.mSkipPrompt);
+  },
 
-    var bundle = getStringBundle();
+  // ------------------------------------------------
 
-    var saveMode = GetSaveModeForContentType(contentType);
-    var isDocument = aData.document != null && saveMode;
-    if (!isDocument && !shouldDecode && contentEncodingType) {
-      // The data is encoded, we are not going to decode it, and this is not a
-      // document save so we won't be doing a "save as, complete" (which would
-      // break if we reset the type here).  So just set our content type to
-      // correspond to the outermost encoding so we get extensions and the like
-      // right.
-      contentType = contentEncodingType;
-    }
-
-    // Determine what the 'default' string to display in the File Picker dialog
-    // should be.
-    var defaultFileName = getDefaultFileName(aData.fileName,
-                                             aSniffer.suggestedFileName,
-                                             aSniffer.uri,
-                                             aData.document);
-    var defaultExtension = getDefaultExtension(defaultFileName, aSniffer.uri, contentType);
-
-    // XXX We depend on the following holding true in appendFiltersForContentType():
-    // If we should save as a complete page, the filterIndex is 0.
-    // If we should save as text, the filterIndex is 2.
-    /***
-    var useSaveDocument = isDocument &&
-                        ((saveMode & SAVEMODE_COMPLETE_DOM && fp.filterIndex == 0) ||
-                         (saveMode & SAVEMODE_COMPLETE_TEXT && fp.filterIndex == 2));
-    ***/
-    var useSaveDocument = isDocument &&
-                        ((saveMode & SAVEMODE_COMPLETE_DOM) ||
-                         (saveMode & SAVEMODE_COMPLETE_TEXT));
-
-    var file = null;
+  get promptService()
+  {
+    var promptSvc;
     try {
-      var saveAsTypeResult = { rv: 0 };
-      file = aData.objMafArchiver._ns_getTargetFile(aData, aSniffer, contentType, isDocument, aSkipPrompt, saveAsTypeResult);
-      saveAsType = saveAsTypeResult.rv;
-    } catch(e) {
-      alert(e);
+      promptSvc = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService();
+      promptSvc = promptSvc.QueryInterface(Components.interfaces.nsIPromptService);
     }
+    catch (e) {}
+    return promptSvc;
+  },
 
+  get suggestedFileName()
+  {
+    var fileName = "";
 
-    // If we're saving a document, and are saving either in complete mode or
-    // as converted text, pass the document to the web browser persist component.
-    // If we're just saving the HTML (second option in the list), send only the URI.
-    var source = useSaveDocument ? aData.document : aSniffer.uri;
-    var persistArgs = {
-      source      : source,
-      contentType : contentType,
-      target      : makeFileURL(file),
-      postData    : isDocument ? getPostData() : null,
-      bypassCache : aData.bypassCache
-    };
+    if (this.mContentDisposition) {
+      const mhpContractID = "@mozilla.org/network/mime-hdrparam;1"
+      const mhpIID = Components.interfaces.nsIMIMEHeaderParam;
+      const mhp = Components.classes[mhpContractID].getService(mhpIID);
+      var dummy = { value: null }; // To make JS engine happy.
+      var charset = getCharsetforSave(null);
 
-    // contentType : (useSaveDocument && fp.filterIndex == 2) ? "text/plain" : contentType,
-
-    var persist = makeWebBrowserPersist();
-
-    // Calculate persist flags.
-    const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
-    const flags = nsIWBP.PERSIST_FLAGS_NO_CONVERSION | nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
-    if (aData.bypassCache)
-      persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_BYPASS_CACHE;
-    else
-      persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_FROM_CACHE;
-
-    if (shouldDecode)
-      persist.persistFlags &= ~nsIWBP.PERSIST_FLAGS_NO_CONVERSION;
-
-    // Create download and initiate it (below)
-    aData.objMafArchiver.dl = Components.classes["@mozilla.org/download;1"].createInstance(Components.interfaces.nsIDownload);
-
-    if (useSaveDocument) {
-      // Saving a Document, not a URI:
-      var filesFolder = null;
-      if (persistArgs.contentType != "text/plain") {
-        // Create the local directory into which to save associated files.
-        filesFolder = file.clone();
-
-        var nameWithoutExtension = filesFolder.leafName.replace(/\.[^.]*$/, "");
-        var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
-                                                                         [nameWithoutExtension],
-                                                                         1);
-
-        filesFolder.leafName = filesFolderLeafName;
+      try {
+        fileName = mhp.getParameter(this.mContentDisposition, "filename", charset, true, dummy);
       }
-
-      var encodingFlags = 0;
-      if (persistArgs.contentType == "text/plain") {
-        encodingFlags |= nsIWBP.ENCODE_FLAGS_FORMATTED;
-        encodingFlags |= nsIWBP.ENCODE_FLAGS_ABSOLUTE_LINKS;
-        encodingFlags |= nsIWBP.ENCODE_FLAGS_NOFRAMES_CONTENT;
+      catch (e) {
+        try {
+          fileName = mhp.getParameter(this.mContentDisposition, "name", charset, true, dummy);
+        }
+        catch (e) {
+        }
       }
-      else {
-        encodingFlags |= nsIWBP.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES;
-      }
-
-      const kWrapColumn = 80;
-      aData.objMafArchiver.dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
-      persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
-                           persistArgs.contentType, encodingFlags, kWrapColumn);
-    } else {
-      aData.objMafArchiver.dl.init(source, persistArgs.target, null, null, null, persist);
-      var referer = getReferrer(document);
-      persist.saveURI(source, null, referer, persistArgs.postData, null, persistArgs.target);
     }
-
-
-    } catch(exc) {
-      alert(exc);
-    }
-
+    fileName = fileName.replace(/^"|"$/g, "");
+    return fileName;
   }
-
 };
+
 
 /**
  * Allows the archiving of multiple tabs.
