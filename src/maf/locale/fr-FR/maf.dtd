@@ -4,7 +4,7 @@
 <!ENTITY maf.addToArchive "Enregistrer la page dans une archive">
 <!ENTITY maf.addToArchiveKey "I">
 
-<!ENTITY maf.addSelectedTabsToArchive "Save Tabs In Archive">
+<!ENTITY maf.addSelectedTabsToArchive "Enregistrer les onglets dans une archive">
 <!ENTITY maf.addSelectedTabsToArchiveKey "b">
 
 <!ENTITY maf.addAllTabsToArchive "Enregistrer tous les onglets dans une archive">
@@ -28,7 +28,7 @@
 <!ENTITY maf.aboutdlg.description "MAF est une extension pour Mozilla qui permet d'appeler une application d'archivage externe pour assembler des documents HTML complets en un seul fichier. Elle enregistre également des métadonnées de la page comme l'URL originale et la date et l'heure.">
 <!ENTITY maf.version "MAF v 0.4.3">
 <!ENTITY maf.aboutdlg.copyright "(c) 2004 Christopher Ottley">
-<!ENTITY maf.aboutdlg.license "Released under the GNU GPL 2.0">
+<!ENTITY maf.aboutdlg.license "Distribué sous licence GNU GPL 2.0">
 <!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">
 
 <!ENTITY maf.browseOpenArchivesDialog.title "Explorer les archives ouvertes">
@@ -39,7 +39,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "URL locale">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Ouvrir dans des onglets">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Ouvrir dans des onglets using maf://">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Ouvrir dans des onglets en utilisant maf://">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Ouvrir les URLs d'origine dans des onglets">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Fermer">
 
@@ -54,8 +54,8 @@
 <!ENTITY maf.preferencesdialog.label.temp "Dossier temporaire :">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Vider le dossier temporaire en quittant le navigateur">
 <!ENTITY maf.preferencesdialog.label.enablemafprotocol "Activer le protocole MAF">
-<!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Activer document.write override">
-<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alert on single page archive complete">
+<!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Activer la réécriture des document.write">
+<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alerter à la fin de l'archivage d'une page unique">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Parcourir...">
 
@@ -76,10 +76,10 @@
 <!ENTITY maf.preferencesdialog.winop.wscript "Emplacement de WSCRIPT.EXE:">
 <!ENTITY maf.preferencesdialog.winop.invis "Emplacement de invis.vbs:">
 
-<!ENTITY maf.preferencesdialog.winop.filetypelabel "File type associations">
-<!ENTITY maf.preferencesdialog.winop.filetypemaf "Associate MAF with .maf extensions">
-<!ENTITY maf.preferencesdialog.winop.filetypemaff "Associate MAF with .maff extensions">
-<!ENTITY maf.preferencesdialog.winop.filetypemht "Associate MAF with .mht extensions">
+<!ENTITY maf.preferencesdialog.winop.filetypelabel "Association des fichiers">
+<!ENTITY maf.preferencesdialog.winop.filetypemaf "Associer MAF avec les fichiers .maf">
+<!ENTITY maf.preferencesdialog.winop.filetypemaff "Associer MAF avec les fichiers .maff">
+<!ENTITY maf.preferencesdialog.winop.filetypemht "Associer MAF avec les fichiers .mht">
 
 <!ENTITY maf.preferencesdialog.progs.description "Scripts correspondant aux applications externes pour manipuler les archive MAF.">
 
@@ -91,11 +91,11 @@
 <!ENTITY maf.preferencesdialog.btnrevert "Restaurer la dernière sauvegarde">
 <!ENTITY maf.preferencesdialog.btnclose "Fermer">
 
-<!ENTITY maf.saveSelectedTabsDialog.title "Select tabs to save in archive">
-<!ENTITY maf.saveSelectedTabsDialog.tree.title "Title">
+<!ENTITY maf.saveSelectedTabsDialog.title "Sélectionner les onglets à sauvegarder dans l'archive">
+<!ENTITY maf.saveSelectedTabsDialog.tree.title "Titre">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Save Selected in Archive">
-<!ENTITY maf.saveSelectedTabsDialog.btnclose "Close">
+<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Sauvegarder la sélection dans l'archive">
+<!ENTITY maf.saveSelectedTabsDialog.btnclose "Fermer">
 
 <!ENTITY maf.browseOpenArchivesAccessKey "R">
 <!ENTITY maf.addToArchiveAccessKey "P">
