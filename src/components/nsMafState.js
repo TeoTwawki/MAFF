@@ -302,6 +302,13 @@ MafStateServiceClass.prototype = {
         }
       }
 
+      // Convert the title to unicode
+      // Bug ref#: 8897
+      var oConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                        .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+      oConverter.charset = "UTF-8";
+      result["title"] = oConverter.ConvertToUnicode(result["title"]);
+
       // Get the original url
       predicate = gRDFService.GetResource(MAFNamespace + "originalurl");
 

@@ -169,6 +169,7 @@ MafArchiverClass.prototype = {
 
       if (this.aDocument.title != "") {
         var titleToUse = this.aDocument.title;
+        
         // Add title
         MafUtils.addStringData(indexDS, "title", titleToUse);
       } else {
@@ -178,6 +179,8 @@ MafArchiverClass.prototype = {
       MafUtils.addStringData(indexDS, "archivetime", new Date());
       // Add index file data
       MafUtils.addStringData(indexDS, "indexfilename", this.indexfilename);
+      // Add document source character set
+      MafUtils.addStringData(indexDS, "charset", this.aDocument.characterSet);
 
       if (MafPreferences.saveExtendedMetadata) {
         // Add text zoom data

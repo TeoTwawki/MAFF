@@ -56,6 +56,7 @@
  * Added update.rdf related entries for extension manager updates.
  * Added network url functionality for .maff files.
  * Added preferences entries that have the major, minor and minor minor version of MAF installed.
+ * Fixed bug 8897 - Title in browse archive dialog now displays unicode characters.
  * TODO: Add save frame functionality to alternative save component.
  *
  * Changes from 0.4.2 to 0.4.3
