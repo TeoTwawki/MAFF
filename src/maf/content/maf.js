@@ -26,7 +26,6 @@
  *  along with MAF; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 /**
  *
  * Changes from 0.2.19 to 0.2.20 - Due 1st July
@@ -38,8 +37,14 @@
  * Fixed Quoted Printable encoding to not split = escaped codes across new lines when a line length limit exists.
  * MHT decoding now explicitly caters for parts having content type multipart/alternative.
  * Updated URL rewrite functionality - Support for rewritting urls that contain # for internal links.
+ *                                   - URL rewrite only on pages that are in an archive.
  * Isolated native save code - Saving should work without modification across firefox and mozilla browsers.
- *                           - Temporarily disables download window showing up using prefence before saving.
+ *                           - Temporarily disables download window showing up using a preference value.
+ * Added MHT encoding code - Now possible to save as MHT and have the file display in IE.
+ * Extended Meta-Data save implementation - Text zoom, Scroll position and URL History can be saved.
+ *
+ * TODO: Get scripts to work from profile directory
+ * TODO: Setup function with preference - Silly 0.9 limitations
  *
  *
  * Changes from 0.2.18 to 0.2.19 - Completed
@@ -139,9 +144,12 @@ var gRDFCService = Components.classes[rdfRDFCServiceContractID].getService(rdfRD
  * so an object with its own timer is used to check the status
  * of the download before an archive script is invoked.
  */
-function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchived) {
+function MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived) {
+  /** The browser containing the data archive. */
+  this.aBrowser = aBrowser,
+
   /** The document to archive. */
-  this.aDocument = aDocument,
+  this.aDocument = aBrowser.contentDocument,
 
   /** The path of the temp folder to use. */
   this.tempPath = tempPath,
@@ -246,6 +254,17 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
       // Add index file data
       MafUtils.addStringData(indexDS, "indexfilename", objMafArchiver.indexfilename);
 
+      if (MafPreferences.saveExtendedMetadata) {
+        // Add text zoom data
+        MafUtils.addStringData(indexDS, "textzoom", objMafArchiver.aBrowser.markupDocumentViewer.textZoom);
+
+        // Add horizontal scroll data
+        MafUtils.addStringData(indexDS, "scrollx", objMafArchiver.aBrowser.contentWindow.scrollX);
+
+        // Add vertical scroll data
+        MafUtils.addStringData(indexDS, "scrolly", objMafArchiver.aBrowser.contentWindow.scrollY);
+      }
+
     } catch(e) {
 
     }
@@ -253,14 +272,29 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
     indexDS.Flush();
 
 
-    // Create history.rdf in the folderNumber and
-    // Get a reference to history.rdf
-    //var historyDS = MafUtils.createRDF(destMetaDataFolder, "history.rdf");
+    if (MafPreferences.saveExtendedMetadata) {
+      // Create history.rdf in the folderNumber
+      try {
+        // Get a reference to history.rdf
+        var historyDS = MafUtils.createRDF(destMetaDataFolder, "history.rdf");
 
-    // Add history information
+        // Add history information
+        var historyData = objMafArchiver.aBrowser.sessionHistory;
 
-    // Write changes to physical file
-    //historyDS.Flush();
+        if (historyData.count > 0) {
+          MafUtils.addStringData(historyDS, "current", historyData.index);
+          MafUtils.addStringData(historyDS, "noofentries", historyData.count);
+            for (var i=0; i<historyData.count; i++) {
+               MafUtils.addStringData(historyDS, "entry" + i, historyData.getEntryAtIndex(i, false).URI.spec);
+            }
+        }
+
+        // Write changes to physical file
+        historyDS.Flush();
+      } catch(e) {
+
+      }
+    }
   },
 
   /**
@@ -344,7 +378,6 @@ var MafNativeFileSave = {
   },
 
 foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
-
   var contentType = aSniffer.contentType;
   var contentEncodingType = aSniffer.contentEncodingType;
 
@@ -391,10 +424,14 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
   // as converted text, pass the document to the web browser persist component.
   // If we're just saving the HTML (second option in the list), send only the URI.
   var source = (isDocument && saveAsType != MafNativeFileSave.kSaveAsType_URL) ? aData.document : aSniffer.uri;
+  var isFF08OrLower = false;
+  if (navigator.ua["firefox"] != null) {
+    isFF08OrLower = (parseFloat(navigator.ua["firefox"]) <= 0.8);
+  }
   var persistArgs = {
     source      : source,
     contentType : (isDocument && saveAsType == MafNativeFileSave.kSaveAsType_Text) ? "text/plain" : contentType,
-    target      : MafNativeFileSave.makeFileURL(file),
+    target      : (isFF08OrLower) ? file : MafNativeFileSave.makeFileURL(file),
     postData    : aData.document ? MafNativeFileSave.getPostData() : null,
     bypassCache : aData.bypassCache
   };
@@ -438,37 +475,54 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
       encodingFlags |= nsIWBP.ENCODE_FLAGS_NOFRAMES_CONTENT;
     }
 
-    // Save preference to show download window
-    var dwprefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.download.manager.");
 
-    var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
+    try {
+      // Save preference to show download window
+      var dwprefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.download.manager.");
 
-    // Set to false
-    dwprefs.setBoolPref("showWhenStarting", false);
+      var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
+
+      // Set to false
+      dwprefs.setBoolPref("showWhenStarting", false);
+    } catch (e) {
+      // If the preference doesn't exist - eg. Mozilla
+    }
 
     const kWrapColumn = 80;
     aData.objMafArchiver.dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
     persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
                          persistArgs.contentType, encodingFlags, kWrapColumn);
 
-    // Return download window preference to saved value
-    dwprefs.setBoolPref("showWhenStarting", showWhenStarting);
+    try {
+      // Return download window preference to saved value
+      dwprefs.setBoolPref("showWhenStarting", showWhenStarting);
+    } catch(e) {
+
+    }
 
   } else {
-    // Save preference to show download window
-    var dwprefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.download.manager.");
+    try {
+      // Save preference to show download window
+      var dwprefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.download.manager.");
 
-    var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
+      var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
 
-    // Set to false
-    dwprefs.setBoolPref("showWhenStarting", false);
+      // Set to false
+      dwprefs.setBoolPref("showWhenStarting", false);
+    } catch(e) { }
 
     aData.objMafArchiver.dl.init(source, persistArgs.target, null, null, null, persist);
     persist.saveURI(source, null, MafNativeFileSave.getReferrer(document), persistArgs.postData, null, persistArgs.target);
 
-    // Return download window preference to saved value
-    dwprefs.setBoolPref("showWhenStarting", showWhenStarting);
+    try {
+      // Return download window preference to saved value
+      dwprefs.setBoolPref("showWhenStarting", showWhenStarting);
+    } catch(e) {
+
+    }
   }
+
+
 },
 
 makeURL: function(aURL)
@@ -559,7 +613,6 @@ getPostData: function()
    */
 getTargetFile: function(aData, aSniffer, aContentType, aIsDocument, aSkipPrompt, aSaveAsTypeResult)
 {
-
   aSaveAsTypeResult.rv = MafNativeFileSave.kSaveAsType_Complete;
 
   // Determine what the 'default' string to display in the File Picker dialog
@@ -821,7 +874,7 @@ function MafTabArchiver(browsers, tempPath, scriptPath, archivePath) {
       this.started = true;
       // Should always be true, but eh.
       if (browsers.length>0) {
-        this.MafArchivers[this.MafArchivers.length] = new MafArchiver(browsers[0].contentDocument, tempPath, scriptPath, archivePath, new Date());
+        this.MafArchivers[this.MafArchivers.length] = new MafArchiver(browsers[0], tempPath, scriptPath, archivePath, new Date());
         this.MafArchivers[this.currentMafArchiverIndex].start();
         this.timerId = setInterval(this._checkDownloadComplete, 1000, this);
       }
@@ -848,7 +901,7 @@ function MafTabArchiver(browsers, tempPath, scriptPath, archivePath) {
             objMafTabArchiver.fnProgressUpdater(percentage);
           }
           objMafTabArchiver.currentMafArchiverIndex += 1;
-          objMafTabArchiver.MafArchivers[objMafTabArchiver.MafArchivers.length] = new MafArchiver(objMafTabArchiver.browsers[objMafTabArchiver.currentMafArchiverIndex].contentDocument, tempPath, scriptPath, archivePath, new Date());
+          objMafTabArchiver.MafArchivers[objMafTabArchiver.MafArchivers.length] = new MafArchiver(objMafTabArchiver.browsers[objMafTabArchiver.currentMafArchiverIndex], tempPath, scriptPath, archivePath, new Date());
           objMafTabArchiver.MafArchivers[objMafTabArchiver.currentMafArchiverIndex].start();
         }
       } else {
@@ -983,10 +1036,10 @@ var Maf = {
   /**
    * Save a single web page in an archive
    */
-  saveAsWebPageComplete: function(aDocument, tempPath, scriptPath, archivePath) {
+  saveAsWebPageComplete: function(aBrowser, tempPath, scriptPath, archivePath) {
     var dateTimeArchived = new Date();
 
-    var objMafArchiver = new MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchived);
+    var objMafArchiver = new MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived);
     objMafArchiver.oncomplete = Maf.onSaveAsWebPageComplete;
     objMafArchiver.start();
   },
@@ -1058,7 +1111,7 @@ var MafGUI = {
   addToArchive: function() {
     var archiveToAddTo = this.selectFileSave();
 
-    Maf.saveAsWebPageComplete(window._content.document, MafPreferences.temp,
+    Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, MafPreferences.temp,
                               MafPreferences.programFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
   },
 
@@ -2058,6 +2111,20 @@ var MafUtils = {
       // Store global MafState in hidden window
       if (typeof(hiddenWnd.MafState) == "undefined") {
         hiddenWnd.MafState = MafState;
+
+        /**
+         * Structure some information in the navigator object
+         */
+        var uaData = navigator.userAgent.split(" ");
+        navigator.ua = new Array();
+        for (var i=0; i<uaData.length; i++) {
+          if (uaData[i].indexOf("/") > 0) {
+            var name = uaData[i].substring(0, uaData[i].indexOf("/")).trim().toLowerCase();
+            var value = uaData[i].substring(uaData[i].indexOf("/") + 1, uaData[i].length).trim();
+            navigator.ua[name] = value;
+          }
+        }
+
       } else {
         MafState = hiddenWnd.MafState;
       }
@@ -2074,23 +2141,37 @@ var MafUtils = {
     if (evt.originalTarget == "[object HTMLDocument]") {
       // New tab
       if (MafPreferences.urlRewrite) {
-        // We have some work to do
-        var links = evt.originalTarget.links;
 
-        for (var j=0; j < links.length; j++) {
-          if (typeof(MafState.urlToLocalFileMap[links[j].href]) != "undefined") {
-            links[j].href=MafState.urlToLocalFileMap[links[j].href];
-          } else {
-            // See if it is hashed
-            if (links[j].href.indexOf("#") > 0) {
-              var hashPart = links[j].href.substring(links[j].href.indexOf("#"), links[j].href.length);
-              var nonHashPart = links[j].href.substring(0, links[j].href.indexOf("#"));
+        // Get the original url
+        var originalURL = evt.originalTarget.location.href;
 
-              if (typeof(MafState.urlToLocalFileMap[nonHashPart]) != "undefined") {
-                links[j].href=MafState.urlToLocalFileMap[nonHashPart] + hashPart;
+        // Remove the hash if any
+        if (originalURL.indexOf("#") > 0) {
+          originalURL = originalURL.substring(0, originalURL.indexOf("#"));
+        }
+
+        // If the url is an archive url
+        if (typeof(MafState.localFileToUrlMap[originalURL]) != "undefined") {
+
+          // We have some work to do
+          var links = evt.originalTarget.links;
+
+          for (var j=0; j < links.length; j++) {
+            if (typeof(MafState.urlToLocalFileMap[links[j].href]) != "undefined") {
+              links[j].href=MafState.urlToLocalFileMap[links[j].href];
+            } else {
+              // See if it is hashed
+              if (links[j].href.indexOf("#") > 0) {
+                var hashPart = links[j].href.substring(links[j].href.indexOf("#"), links[j].href.length);
+                var nonHashPart = links[j].href.substring(0, links[j].href.indexOf("#"));
+
+                if (typeof(MafState.urlToLocalFileMap[nonHashPart]) != "undefined") {
+                  links[j].href=MafState.urlToLocalFileMap[nonHashPart] + hashPart;
+                }
               }
             }
           }
+
         }
       }
     }
@@ -2646,7 +2727,7 @@ var MafMHTHander = {
       resultString += unprocessedString.substring(0, m.index);
       var originalUrl = m.toString();
 
-      // Todo, decode anything else that might give trouble
+      // TODO, decode anything else that might give trouble
       originalUrl = originalUrl.replaceAll("&amp;", "&");
 
       // Cater for Hashes
@@ -3006,15 +3087,18 @@ var MafMHTHander = {
       // End file content
       MHTContentString += "\r\n--" + boundaryString + "--\r\n";
     } else {
-
-      // TODO!!! Don't forget
-
+      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.2.20\r\n";
+      MHTContentString += this._addFileToMHT("", sourcepath, indexfilename, originalurl);
     }
 
     MafUtils.createFile(archivefile, MHTContentString);
   },
 
   /**
+   * Bad hack. Need to modify the persist object code to return a list of the absolute urls replaced and their
+   * new local urls. If there's an easier (and as reliable a) way to do this, someone please tell me.
+   * In the mean time, make up a url so that IE and MAF decoding routines don't upchuck.
+   *
    * @return a fake url where resources were found
    */
   _getBaseFakeUrl: function(originalurl) {
@@ -3041,6 +3125,7 @@ var MafMHTHander = {
   /**
    * Returns an array of supporting index files
    * Does not generate real original addresses of index files - TODO FIX, somehow
+   *   - See _getBaseFakeUrl
    */
   _getSupportingFilesList: function(sourcepath, originalurl) {
     var result = new Array();
@@ -3075,7 +3160,10 @@ var MafMHTHander = {
       var thisFileContentType = this._getFileContentType(sourcepath, filename);
       var thisFileContentEncoding = this._getContentEncodingByType(thisFileContentType);
 
-      result += "\r\n--" + boundaryString + "\r\n";
+      if (boundaryString != "") {
+        result += "\r\n--" + boundaryString + "\r\n";
+      }
+
       if ((subdir != null) && (thisFileContentType == "text/html")) {
         result += "Content-Type: application/octet-stream\r\n";
       } else {
@@ -3097,7 +3185,7 @@ var MafMHTHander = {
         srcFile =  MafUtils.readFile(fullFilename);
         // If it isn't a supporting file, replace all relative
         //   supporting files urls with absolute urls
-        if (subdir == null) {
+        if ((subdir == null) && (boundaryString != "")) {
           var supportFileList = this._getSupportingFilesList(sourcepath, originalurl);
           srcFile = this._updateRelativeResourceLinks(srcFile, supportFileList);
         }
