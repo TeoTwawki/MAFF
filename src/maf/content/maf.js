@@ -28,7 +28,7 @@
  */
 /**
  *
- * Changes from 0.2.19 to 0.2.20 - Due 1st July
+ * Changes from 0.2.19 to 0.2.20 - Completed
  *
  * Optional function that is executed when a single page is added to archive - An alert telling the user archive is complete
  * Opening tabs from browse dialog now uses blank tab if possible.
@@ -2238,7 +2238,7 @@ var MafUtils = {
 
 /**
  * Attempts to complete the setup for browsers that don't use the install.js
- * - Life firefox 0.9
+ * - Like firefox 0.9
  */
 var MafPostSetup = {
 
