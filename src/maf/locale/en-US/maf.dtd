@@ -23,7 +23,7 @@
 
 <!ENTITY maf.aboutdlg.title "About MAF">
 <!ENTITY maf.aboutdlg.description "MAF is a Mozilla based Extension that allows you to call an external archive application for collecting complete HTML documents. It also stores saved page meta-data such as the original URL and the date/time.">
-<!ENTITY maf.version "MAF v 0.3.0">
+<!ENTITY maf.version "MAF v 0.4.0">
 <!ENTITY maf.aboutdlg.copyright "(c) 2004 Christopher Ottley">
 <!ENTITY maf.aboutdlg.license "Released under the GNU GPL 2.0">
 <!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">
@@ -49,6 +49,7 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "Temporary folder:">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Clear Temporary folder when browser exits">
+<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Enable MAF Protocol">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Browse...">
 
@@ -79,3 +80,5 @@
 <!ENTITY maf.preferencesdialog.btnrevert "Revert to last saved">
 <!ENTITY maf.preferencesdialog.btnclose "Close">
 
+<!ENTITY maf.browseOpenArchivesAccessKey "M">
+<!ENTITY maf.addToArchiveAccessKey "P">
