@@ -666,7 +666,13 @@ extractContentHandlerClass.prototype = {
   onContentStart: function(contentType, contentId, contentLocation) {
     if (this.isindex) {
       if (contentType != "") { // If there's a type use it
-        this.filename = "index" + MafUtils.getExtensionByType(contentType);
+        var extensionType = MafUtils.getExtensionByType(contentType);
+        // If the service has no idea what the extension should be
+        if (extensionType == ".bin") {
+          // Assume html
+          extensionType = ".html";
+        }
+        this.filename = "index" + extensionType;
       } else { // Otherwise assume it's html
         this.filename = "index.html";
       }

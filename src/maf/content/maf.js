@@ -33,6 +33,8 @@
  * Disabling document write also disables document.writeln.
  * Changed the default wscript directory preference from winnt to windows.
  * Fixed bug that ignored content location when selecting root nodes for MHT decoding.
+ * Updated Italian locale contributed by Gioxx Solone: eXtenZilla.it.
+ * When MHT decoding, the index content type will now be assumed to be html, not bin by default.
  *
  * Changes from 0.4.2 to 0.4.3
  *
