@@ -39,6 +39,7 @@
  * Integrated Save page as MAFF archive into default save dialog for Firefox 1.0 and Mozilla 1.7.3.
  * Fixed bug that ignored processing parts of MHT framed pages if their content type wasn't text/html.
  * Removed preference for windows .maf association to avoid any potential problems with MS Access.
+ * Added code to remove 3 byte utf start characters from MHT parts so Mozilla decodes properly.
  *
  * Changes from 0.4.2 to 0.4.3
  *

@@ -552,7 +552,7 @@ MafMhtDecoderClass.prototype = {
 
        if ((encoding == "quoted-printable") || (encoding == "base64")) {
          // Decode with encoding and callback
-         new contentDecoderClass(encoding, this.body[0], callback);
+         new contentDecoderClass(encoding, this.body[0], contentType, callback);
        } else {
          // No decoding
          callback.onContent(this.body[0]);
@@ -562,7 +562,7 @@ MafMhtDecoderClass.prototype = {
   },
 
   decodeQuotedPrintableString: function(source) {
-    var decoder = new contentDecoderClass(null, null, null);
+    var decoder = new contentDecoderClass(null, null, null, null);
     return decoder._decodeQuotedPrintable(source);
   },
 
@@ -624,10 +624,11 @@ headerRecClass.prototype = {
   }
 };
 
-function contentDecoderClass(encoding, content, callback) {
+function contentDecoderClass(encoding, content, contentType, callback) {
   this.encoding = encoding;
   this.content = content;
   this.callback = callback;
+  this.contentType = contentType;
 
   this.startDecoding();
 };
@@ -694,6 +695,19 @@ contentDecoderClass.prototype = {
     // = sign followed by new line, replaced by nothing.
     result = result.replace(/=\r?\n/g, "");
 
+    if (this.contentType != null) {
+      // Loose check to see if charset is UTF
+      // Should really parse contentType, get charset and check that.
+      if (this.contentType.toLowerCase().indexOf("utf-") > -1) {
+        if (result.startsWith("=EF=BB=BF")) {
+          // Remove the three bytes
+          result = result.substring("=EF=BB=BF".length, result.length);
+        }
+      }
+      // Only do this content type check once.
+      this.contentType = null;
+    }
+
     var equalsArray = result.split("=");
     var newresult = equalsArray[0];
     for (var i=1; i<equalsArray.length; i++) {
@@ -745,6 +759,10 @@ String.prototype.replaceAll = function(needle, newneedle) {
   var x = this;
   x = x.split(needle).join(newneedle);
   return x;
+};
+
+String.prototype.startsWith = function(needle) {
+  return (this.substring(0, needle.length) == needle);
 };
 
 var MAFMhtDecoderFactory = new Object();
