@@ -235,9 +235,13 @@ MAFProtocol.prototype = {
 
         oProcess.run(true, localProgramArgs, localProgramArgs.length);
 
+        var observerData = new Array();
+        observerData[observerData.length] = oProcess.exitValue;
+        observerData[observerData.length] = destpath;
+
         var obs = Components.classes["@mozilla.org/observer-service;1"]
                      .getService(Components.interfaces.nsIObserverService);
-        obs.notifyObservers(null, "maf-extract-finished", destpath);
+        obs.notifyObservers(null, "maf-extract-finished", observerData);
 
       }
     }

@@ -44,6 +44,8 @@
  * Added preference to use alternative DOM save component.
  * Preference for using wscript and invis.vbs is now true by default.
  * Added alternative DOM save component based on the Scrapbook extension by Gomita.
+ * Added script failure notification code from process exit value.
+ * Modified invis.vbs to return process exit value contributed by Allister.
  *
  * Changes from 0.4.2 to 0.4.3
  *
@@ -206,7 +208,12 @@ maf.prototype = {
 
         var obs = Components.classes["@mozilla.org/observer-service;1"]
                      .getService(Components.interfaces.nsIObserverService);
-        obs.notifyObservers(null, "maf-extract-finished", destpath);
+
+        var observerData = new Array();
+        observerData[observerData.length] = oProcess.exitValue;
+        observerData[observerData.length] = destpath;
+
+        obs.notifyObservers(null, "maf-extract-finished", observerData);
       }
     }
   },
@@ -228,10 +235,20 @@ maf.prototype = {
       /** If program is nothing then don't try to run it. */
       if (program != "") {
         if (MafPreferences.win_invisible) {
-          localProgram = MafPreferences.win_wscriptexe;
-          localProgramArgs = new Array();
-          localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
-          localProgramArgs[localProgramArgs.length] = program;
+
+          // If wscript and vbs for invisible running exist
+          if (MafPreferences.win_wscriptexe.trim() != "" &&
+              MafPreferences.win_invisiblevbs.trim() != "" &&
+              MafUtils.checkFileExists(MafPreferences.win_wscriptexe) &&
+              MafUtils.checkFileExists(MafPreferences.win_invisiblevbs)) {
+            localProgram = MafPreferences.win_wscriptexe;
+            localProgramArgs = new Array();
+            localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
+            localProgramArgs[localProgramArgs.length] = program;
+          } else {
+            localProgram = program;
+            localProgramArgs = new Array();
+          }
         } else {
           localProgram = program;
           localProgramArgs = new Array();
@@ -259,9 +276,13 @@ maf.prototype = {
 
         oProcess.run(true, localProgramArgs, localProgramArgs.length);
 
+        var observerData = new Array();
+        observerData[observerData.length] = oProcess.exitValue;
+        observerData[observerData.length] = archivefile;
+
         var obs = Components.classes["@mozilla.org/observer-service;1"]
                      .getService(Components.interfaces.nsIObserverService);
-        obs.notifyObservers(null, "maf-archiver-finished", archivefile);
+        obs.notifyObservers(null, "maf-archiver-finished", observerData);
       }
     }
   },
@@ -292,12 +313,20 @@ maf.prototype = {
   /**
    * If a single page is saved, this is called as visual feedback to the user.
    */
-  progressUpdater: function(progress) {
+  progressUpdater: function(progress, code) {
     if (progress == 100) {
-      if (MafPreferences.alertOnArchiveComplete) {
-        browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationcomplete"));
+      if (code == 0) {
+        if (MafPreferences.alertOnArchiveComplete) {
+          browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationcomplete"));
+        } else {
+          browserWindow.status = MafStrBundle.GetStringFromName("archiveoperationcomplete");
+        }
       } else {
-        browserWindow.status = MafStrBundle.GetStringFromName("archiveoperationcomplete");
+        if (MafPreferences.alertOnArchiveComplete) {
+          browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationfailed") + code);
+        } else {
+          browserWindow.status = MafStrBundle.GetStringFromName("archiveoperationfailed") + code;
+        }
       }
     }
   },
@@ -571,7 +600,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.4.3", // 0.5.0 Does not have new scripts, so don't change
+  postsetupversion: "0.5.0", // 0.5.0 has a new invis.vbs
 
   _getSaveFilters: function() {
     var filterresult = new Array();

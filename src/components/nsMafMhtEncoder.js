@@ -513,45 +513,49 @@ encodingTimerState.prototype = {
   notify: function(expiredtimer) {
     if (this.timer == expiredtimer) {
 
-    if (this.i < this.encoder.filelist.length) {
-      var obs = Components.classes["@mozilla.org/observer-service;1"]
-                   .getService(Components.interfaces.nsIObserverService);
-      obs.addObserver(this, "encoding-mht-encoder-finished", false);
+      if (this.i < this.encoder.filelist.length) {
+        var obs = Components.classes["@mozilla.org/observer-service;1"]
+                    .getService(Components.interfaces.nsIObserverService);
+        obs.addObserver(this, "encoding-mht-encoder-finished", false);
 
-      if (this.boundaryString == "") {
+        if (this.boundaryString == "") {
 
-        this.encoder._getEncodedFile(this.i, this.oTransport);
+          this.encoder._getEncodedFile(this.i, this.oTransport);
 
-      } else {
-        var MHTContentString = "\r\n\--" + this.boundaryString + "\r\n";
-        this.oTransport.write(MHTContentString, MHTContentString.length);
-        MHTContentString = "";
+        } else {
+          var MHTContentString = "\r\n\--" + this.boundaryString + "\r\n";
+          this.oTransport.write(MHTContentString, MHTContentString.length);
+          MHTContentString = "";
 
-        this.encoder._getEncodedFile(this.i, this.oTransport);
+          this.encoder._getEncodedFile(this.i, this.oTransport);
+        }
+
+        //mafdebug("Called getEncodedFile " + this.i);
+
+      } else { // Finished
+
+        //mafdebug("Finished encoding!");
+
+        if (this.boundaryString != "") {
+          // End file content
+          var MHTContentString = "\r\n--" + this.boundaryString + "--\r\n";
+          this.oTransport.write(MHTContentString, MHTContentString.length);
+        }
+
+        this.oTransport.close();
+
+        this.encoder.filelist.clear();
+        this.timer = null;
+
+        var observerData = new Array();
+        observerData[observerData.length] = 0;
+        observerData[observerData.length] = this.dest.path;
+
+        var obs = Components.classes["@mozilla.org/observer-service;1"]
+                  .getService(Components.interfaces.nsIObserverService);
+        obs.notifyObservers(null, "mht-encoder-finished", observerData);
+
       }
-
-      //mafdebug("Called getEncodedFile " + this.i);
-
-    } else { // Finished
-
-      //mafdebug("Finished encoding!");
-
-      if (this.boundaryString != "") {
-        // End file content
-        var MHTContentString = "\r\n--" + this.boundaryString + "--\r\n";
-        this.oTransport.write(MHTContentString, MHTContentString.length);
-      }
-
-      this.oTransport.close();
-
-      this.encoder.filelist.clear();
-      this.timer = null;
-      
-      var obs = Components.classes["@mozilla.org/observer-service;1"]
-                 .getService(Components.interfaces.nsIObserverService);
-      obs.notifyObservers(null, "mht-encoder-finished", this.dest.path);
-
-    }
     }
   },
 

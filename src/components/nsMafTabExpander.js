@@ -97,7 +97,7 @@ MafTabExpanderClass.prototype = {
       this.Maf.extractFromArchive(this.scriptPath, this.archivePath,
                                    MafUtils.appendToDir(this.tempPath, this.folderNumber));
       if (this.objWith_fnProgressUpdater != null) {
-        this.objWith_fnProgressUpdater.progressUpdater(100);
+        this.objWith_fnProgressUpdater.progressUpdater(100, 0);
       }
     }
   },

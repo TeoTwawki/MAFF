@@ -250,7 +250,7 @@ MafArchiverOnComplete.prototype = {
         obs.removeObserver(this, "mht-encoder-finished");
         obs.removeObserver(this, "maf-archiver-finished");
       } catch(e) { }
-      this.onComplete();
+      this.onComplete(data[0]);
     } else {
       if (topic == "maf-archiver-finished") {
         try {
@@ -258,7 +258,7 @@ MafArchiverOnComplete.prototype = {
                                    .getService(Components.interfaces.nsIObserverService);
           obs.removeObserver(this, "maf-archiver-finished");
         } catch(e) { }
-        this.onComplete();
+        this.onComplete(data[0]);
       }
     }
   },
@@ -282,7 +282,7 @@ MafArchiverOnComplete.prototype = {
     }
   },
 
-  onComplete: function() {
+  onComplete: function(code) {
     try {
       // Remove Folder after 5 seconds
       this.timer = Components.classes["@mozilla.org/timer;1"]
@@ -291,7 +291,7 @@ MafArchiverOnComplete.prototype = {
 
 
       if (this.objWith_fnProgressUpdater != null) {
-        this.objWith_fnProgressUpdater.progressUpdater(100);
+        this.objWith_fnProgressUpdater.progressUpdater(100, code);
       }
     } catch(e) {
       mafdebug(e);

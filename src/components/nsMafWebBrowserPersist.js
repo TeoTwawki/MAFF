@@ -93,6 +93,7 @@ MafWebBrowserPersistClass.prototype = {
     this.baselocation = document.location.href;
     this.fileList = new Array();
     this.request = 0;
+    this.characterSet = document.characterSet;
 
     // TODO: Cater for base tags
     // document.getElementsByTagName("base")[0].src
@@ -148,10 +149,25 @@ MafWebBrowserPersistClass.prototype = {
     var mainContent = this.doctypeToString(document.doctype) + this.surroundByTags(rootNode, rootNode.innerHTML);
 
     // Write main content to index file
+    Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+       .getService(Components.interfaces.nsIScriptableUnicodeConverter)
+       .charset = this.characterSet;
+    mainContent = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                     .getService(Components.interfaces.nsIScriptableUnicodeConverter)
+                     .ConvertFromUnicode(mainContent);
+
     MafUtils.createFile(indexFile.path, mainContent);
 
     if (mafCSScontent != "") {
       // Write CSS to css file
+
+      Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+        .getService(Components.interfaces.nsIScriptableUnicodeConverter)
+        .charset = this.characterSet;
+      mafCSScontent = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                         .getService(Components.interfaces.nsIScriptableUnicodeConverter)
+                         .ConvertFromUnicode(mafCSScontent);
+
       MafUtils.createFile(MafUtils.appendToDir(dataPathFile.path, "mafindex.css"), mafCSScontent);
     }
 
@@ -282,6 +298,11 @@ MafWebBrowserPersistClass.prototype = {
         aNode.setAttribute("src", aNode.src);
         break;
 
+      case "frame":
+        aNode = this.saveFrame(aNode);
+        return aNode;
+        break;
+
       case "form" :
         aNode.setAttribute("action", this.resolveURL(this.baselocation, aNode.action));
         break;
@@ -294,6 +315,58 @@ MafWebBrowserPersistClass.prototype = {
     aNode.removeAttribute("onmouseout");
 
     return aNode;
+  },
+
+  saveFrame: function(aNode) {
+    var result = aNode;
+    // Get the frame's filename
+
+    // Resolve URL against the location href
+    aURLString = this.resolveURL(this.baselocation, aNode.contentDocument.location.href);
+
+    var aURL = Components.classes["@mozilla.org/network/standard-url;1"]
+                  .createInstance(Components.interfaces.nsIURL);
+    aURL.spec = aURLString;
+    var newFileName = aURL.fileName;
+
+    if ( !newFileName ) newFileName = "untitled";
+    // Validate filename
+    newFileName = this.validateFileName(newFileName);
+
+
+    if ( this.fileList[newFileName] != undefined ) {
+      if ( this.fileList[newFileName] != aURLString ) {
+        var seq = 1;
+        var fileLR = this.splitFileName(newFileName);
+        while ( this.fileList[ fileLR[0] + "_" + this.leftZeroPad3(seq) + "." + fileLR[1] ] != undefined ) { seq++; }
+        newFileName = fileLR[0] + "_" + this.leftZeroPad3(seq) + "." + fileLR[1];
+      }
+    }
+
+    this.fileList[newFileName] = aURLString;
+
+    var savedFrameFilename = MafUtils.appendToDir(this.dataPathFile.path, newFileName);
+
+    var oFrameFile = Components.classes["@mozilla.org/file/local;1"]
+                       .createInstance(Components.interfaces.nsILocalFile);
+    oFrameFile.initWithPath(savedFrameFilename);
+
+
+    // Create the local directory into which to save associated files.
+    filesFolder = oFrameFile.clone();
+
+    var nameWithoutExtension = filesFolder.leafName;
+    nameWithoutExtension = nameWithoutExtension.substring(0, nameWithoutExtension.lastIndexOf("."));
+    var filesFolderLeafName = nameWithoutExtension + "_files";
+
+    filesFolder.leafName = filesFolderLeafName;
+
+    var framePersist = new MafWebBrowserPersistClass();
+    framePersist.saveDocument(result.contentDocument, oFrameFile, filesFolder, null, null, null);
+
+    result.setAttribute("src", oFrameFile.leafName);
+
+    return result;
   },
 
   getFileName : function(aURI)
@@ -336,6 +409,32 @@ MafWebBrowserPersistClass.prototype = {
     return aFileName;
   },
 
+  getCacheEntry: function(url) {
+    var result = null;
+
+    try {
+      var cacheService = Components.classes["@mozilla.org/network/cache-service;1"]
+                            .getService(Components.interfaces.nsICacheService);
+      var httpCacheSession = cacheService.createSession("HTTP", Components.interfaces.nsICache.STORE_ANYWHERE, true);
+      httpCacheSession.doomEntriesIfExpired = false;
+
+      var cacheEntryDescriptor = httpCacheSession.openCacheEntry(url, Components.interfaces.nsICache.ACCESS_READ, false);
+      if (cacheEntryDescriptor) {
+        result = cacheEntryDescriptor;
+      }
+    } catch(e) {
+      result = null;
+    }
+    return result;
+  },
+
+  getSizeOfCacheEntry: function(cacheEntry) {
+    var result = 0;
+
+    return result;
+  },
+
+
   saveURLtoFile : function(aURLString) {
     if ( !aURLString ) return;
 
@@ -368,37 +467,94 @@ MafWebBrowserPersistClass.prototype = {
     }
 
     if ( !aURL.schemeIs("file") ) {
-      try {
-        var targetFile = this.dataPathFile.clone();
-        targetFile.append(newFileName);
+      // Is it cached?
+      var cacheEntry = this.getCacheEntry(aURL.spec);
 
-        var WBP = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
-                     .createInstance(Components.interfaces.nsIWebBrowserPersist);
-        this.request++;
-        var progressListenerHandler = {
-          onStateChange : function()
-          {
-            if ( WBP.currentState == WBP.PERSIST_STATE_FINISHED )
-            {
-              this.parent.request--;
+      if (cacheEntry != null) {
+        try {
+          var haveAFile = false;
+
+          try {
+            if (cacheEntry.file != null) {
+              haveAFile = true;
             }
-          },
-          onProgressChange : function() {},
-          onStatusChange   : function() {},
-          onLocationChange : function() {},
-          onSecurityChange : function() {}
-        };
-        progressListenerHandler.parent = this;
-        WBP.progressListener = progressListenerHandler;
-        WBP.saveURI(aURL, null, this.referrer, null, null, targetFile);
-        this.fileList[newFileName] = aURLString;
-        return this.dataPathStr + newFileName;
-      }
-      catch(err)
-      {
-        mafdebug(err);
-        this.request--;
-        return "";
+          } catch (ex) {
+
+          }
+
+          if (haveAFile) {
+            // TODO: Copy file?
+
+          } else { // Read from stream
+            var cacheItemInputStream = cacheEntry.openInputStream(0);
+
+            var obj_BinaryI = Components.classes["@mozilla.org/binaryinputstream;1"]
+                                  .createInstance(Components.interfaces.nsIBinaryInputStream);
+
+            obj_BinaryI.setInputStream(cacheItemInputStream);
+
+            var contents = obj_BinaryI.readByteArray(obj_BinaryI.available());
+
+            obj_BinaryI.close();
+
+            // Write to target
+            var targetFile = this.dataPathFile.clone();
+            targetFile.append(newFileName);
+
+            if (!targetFile.exists()) {
+              targetFile.create(0x00, 0644);
+            }
+
+            var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                                .createInstance(Components.interfaces.nsIFileOutputStream);
+            oTransport.init( targetFile, 0x04 | 0x08 | 0x10, 064, 0 );
+
+            var obj_BinaryO = Components.classes["@mozilla.org/binaryoutputstream;1"]
+                                .createInstance(Components.interfaces.nsIBinaryOutputStream);
+            obj_BinaryO.setOutputStream(oTransport);
+
+            obj_BinaryO.writeByteArray(contents, contents.length);
+            oTransport.close();
+
+            return this.dataPathStr + newFileName;
+          }
+        } catch (e) {
+          mafdebug(e);
+        }
+
+      } else {
+        try {
+          var targetFile = this.dataPathFile.clone();
+          targetFile.append(newFileName);
+
+          var WBP = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
+                      .createInstance(Components.interfaces.nsIWebBrowserPersist);
+          this.request++;
+          var progressListenerHandler = {
+            onStateChange : function()
+            {
+              if ( WBP.currentState == WBP.PERSIST_STATE_FINISHED )
+              {
+                this.parent.request--;
+              }
+            },
+            onProgressChange : function() {},
+            onStatusChange   : function() {},
+            onLocationChange : function() {},
+            onSecurityChange : function() {}
+          };
+          progressListenerHandler.parent = this;
+          WBP.progressListener = progressListenerHandler;
+          WBP.saveURI(aURL, null, this.referrer, null, null, targetFile);
+          this.fileList[newFileName] = aURLString;
+          return this.dataPathStr + newFileName;
+        }
+        catch(err)
+        {
+          mafdebug(err);
+          this.request--;
+          return aURL.spec;
+        }
       }
    } else {
     try {
@@ -494,8 +650,13 @@ MafWebBrowserPersistClass.prototype = {
       if ( ++i > 10 ) break;
       var imgURL  = this.resolveURL(aCSShref, RegExp.$1);
       var imgFile = this.saveURLtoFile(imgURL);
-      // Since the css is in the same folder as the other data
-      imgFile = imgFile.substring(this.dataPathStr.length, imgFile.length);
+
+      if (this.dataPathStr.length > 0) {
+        // Since the css is in the same folder as the other data
+        if (imgFile.startsWith(this.dataPathStr)) {
+          imgFile = imgFile.substring(this.dataPathStr.length, imgFile.length);
+        }
+      }
       aCSStext = aCSStext.replace(RE, " url('" + imgFile + "')");
     }
     aCSStext = aCSStext.replace(/\r|\n/g, "\\A");
@@ -569,6 +730,9 @@ function mafdebug(text) {
   cs.logStringMessage(text);
 };
 
+String.prototype.startsWith = function(needle) {
+  return (this.substring(0, needle.length) == needle);
+};
 
 var MAFWebBrowserPersistFactory = new Object();
 

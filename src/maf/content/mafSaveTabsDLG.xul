@@ -32,7 +32,7 @@
 
   var objUpdateProgress = {
 
-    progressUpdater: function(percentage) {
+    progressUpdater: function(percentage, code) {
       document.getElementById("savetabsprogmeter").setAttribute("value", percentage);
       if (percentage==100) {
         setTimeout("window.close()", 1000);

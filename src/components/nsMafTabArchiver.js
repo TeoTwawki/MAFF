@@ -130,7 +130,7 @@ MafTabArchiverClass.prototype = {
     this.objWith_fnProgressUpdater = objWith_fnProgressUpdater;
   },
 
-  progressUpdater: function(progress) {
+  progressUpdater: function(progress, code) {
     if (progress == 100) {
       // Finished saving single tab
 
@@ -139,7 +139,7 @@ MafTabArchiverClass.prototype = {
 
           if (this.objWith_fnProgressUpdater != null) {
             var percentage = Math.floor((this.currentMafArchiverIndex/this.browsersInclude.length)*100);
-            this.objWith_fnProgressUpdater.progressUpdater(percentage);
+            this.objWith_fnProgressUpdater.progressUpdater(percentage, 0);
           }
 
           this.currentMafArchiverIndex += 1;
@@ -158,7 +158,7 @@ MafTabArchiverClass.prototype = {
             this.MafArchivers[this.currentMafArchiverIndex].start();
           } else {
             if (this.objWith_fnProgressUpdater != null) {
-              this.objWith_fnProgressUpdater.progressUpdater(100);
+              this.objWith_fnProgressUpdater.progressUpdater(100, 0);
             }
             this.downloadComplete = true;
             var obs = Components.classes["@mozilla.org/observer-service;1"]
@@ -169,7 +169,7 @@ MafTabArchiverClass.prototype = {
         }
       } else {
         if (this.objWith_fnProgressUpdater != null) {
-          this.objWith_fnProgressUpdater.progressUpdater(100);
+          this.objWith_fnProgressUpdater.progressUpdater(100, 0);
         }
         this.downloadComplete = true;
         var obs = Components.classes["@mozilla.org/observer-service;1"]

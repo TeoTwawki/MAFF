@@ -58,7 +58,7 @@
 
   var objUpdateProgress = {
 
-    progressUpdater: function(progress) {
+    progressUpdater: function(progress, code) {
       updateProgress(progress);
     },
 
