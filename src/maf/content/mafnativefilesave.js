@@ -70,6 +70,7 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
     }
   }
   catch (e) {
+
   }
 
   var isDocument = aData.document != null && MafNativeFileSave.isDocumentType(contentType);
@@ -81,6 +82,7 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
     // right.
     contentType = contentEncodingType;
   }
+
 
   var file = null;
   var saveAsType = MafNativeFileSave.kSaveAsType_URL;
@@ -94,6 +96,7 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
       return;
     saveAsType = saveAsTypeResult.rv;
   }
+
 
   // If we're saving a document, and are saving either in complete mode or
   // as converted text, pass the document to the web browser persist component.
@@ -115,6 +118,7 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
     bypassCache : aData.bypassCache
   };
 
+
   var persist = MafNativeFileSave.makeWebBrowserPersist();
 
   // Calculate persist flags.
@@ -127,6 +131,7 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
 
   if (shouldDecode)
     persist.persistFlags &= ~nsIWBP.PERSIST_FLAGS_NO_CONVERSION;
+
 
   // Create download and initiate it (below)
   aData.dl = Components.classes["@mozilla.org/download;1"].createInstance(Components.interfaces.nsIDownload);
@@ -305,16 +310,24 @@ getTargetFile: function(aData, aSniffer, aContentType, aIsDocument, aSkipPrompt,
 
   // Determine what the 'default' string to display in the File Picker dialog
   // should be.
-  var defaultFileName = getDefaultFileName(aData.fileName,
-                                           aSniffer.suggestedFileName,
-                                           aSniffer.uri,
-                                           aData.document);
+
+  var defaultFileName;
+  try {
+    defaultFileName = getDefaultFileName(aData.fileName,
+                                         aSniffer.suggestedFileName,
+                                         aSniffer.uri,
+                                         aData.document);
+  } catch (e) {
+    defaultFileName = "index";
+  }
 
   var defaultExtension = getDefaultExtension(defaultFileName, aSniffer.uri, aContentType);
 
   var defaultString = getNormalizedLeafName("index", defaultExtension);
 
   aData.objMafArchiver.indexfilename = defaultString;
+
+
 
     /** Used to be the default download folder preference. Now it's whatever folder was specified in the
         data structure. */
@@ -362,6 +375,7 @@ getTargetFile: function(aData, aSniffer, aContentType, aIsDocument, aSkipPrompt,
     }
 
 
+
   return file;
 
 }
@@ -394,7 +408,6 @@ function MafNativeFileSave_nsHeaderSniffer(aURL, aCallback, aData, aSkipPrompt)
   this.linkChecker.loadFlags = flags;
 
   this.linkChecker.asyncCheck(this, null);
-
 };
 
 /**

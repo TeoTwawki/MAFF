@@ -61,6 +61,8 @@
  * Added preferences entries that have the major, minor and minor minor version of MAF installed.
  * Fixed bug 8897 - Title in browse archive dialog now displays unicode characters.
  * Added additional properties entries for localization of some error messages.
+ * Fixed unicode document title conversion bug in getDefaultFileName - Died if title was already unicode.
+ *
  *
  * Changes from 0.4.2 to 0.4.3
  *
@@ -1318,10 +1320,16 @@ function getDefaultFileName(aDefaultFileName, aNameFromHeaders, aDocumentURI, aD
 {
   if (aDocument) {
 
-    var uconv = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-                  .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-    uconv.charset = "UTF-8";
-    var uctitle = uconv.ConvertToUnicode(aDocument.title);
+    var uctitle = aDocument.title;
+
+    try {
+      var uconv = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                    .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+      uconv.charset = "UTF-8";
+      uctitle = uconv.ConvertToUnicode(aDocument.title);
+    } catch (e) {
+      // Error converting to unicode - Might be in unicode already
+    }
 
     var docTitle = validateFileName(uctitle).replace(/^\s+|\s+$/g, "");
 
