@@ -20,13 +20,14 @@
 -->
 <!DOCTYPE window SYSTEM "chrome://maf/locale/maf.dtd">
 
+
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script src="chrome://maf/content/maf.js"/>
 
   <menupopup id="menu_FilePopup">
     <menuitem id="maf-load-archive" label="&maf.loadArchive;" insertbefore="menu_close"
-               accesskey="&maf.loadArchiveKey;"
+               accesskey="&maf.loadArchiveKey;" key="maf-firefox-openArchive-cmd"
                oncommand="MafGUI.loadArchive();" />
     <menuitem id="maf-save-all-tabs-archive" label="&maf.addAllTabsToArchive;" insertbefore="menu_sendLink"
                accesskey="&maf.addAllTabsToArchiveKey;"
@@ -45,7 +46,7 @@
                    accesskey="&maf.preferencesKey;"
                    oncommand="MafGUI.showPreferences();" />
         <menuitem id="maf-firefox-browse-open-archives" label="&maf.browseOpenArchives;"
-                   accesskey="&maf.browseOpenArchivesKey;"
+                   accesskey="&maf.browseOpenArchivesKey;" key="maf-firefox-browseOpenArchives-cmd"
                    oncommand="MafGUI.browseOpenArchives();" />
         <menuitem id="maf-firefox-about" label="&maf.about;"
                    accesskey="&maf.aboutKey;"
@@ -53,6 +54,12 @@
       </menupopup>
     </menu>
   </menupopup>
+
+  <!-- firefox keyset -->
+  <keyset id="mainKeyset">
+    <key id="maf-firefox-openArchive-cmd" modifiers="alt" key="J" oncommand="MafGUI.loadArchive();"/>
+    <key id="maf-firefox-browseOpenArchives-cmd" modifiers="alt" key="M" oncommand="MafGUI.browseOpenArchives();"/>
+  </keyset>
 
   <!-- mozilla tools menu -->
   <menupopup id="taskPopup">
@@ -62,7 +69,7 @@
                    accesskey="&maf.preferencesKey;"
                    oncommand="MafGUI.showPreferences();" />
         <menuitem id="maf-mozilla-browse-open-archives" label="&maf.browseOpenArchives;"
-                   accesskey="&maf.browseOpenArchivesKey;"
+                   accesskey="&maf.browseOpenArchivesKey;" key="browseOpenArchives_cmd"
                    oncommand="MafGUI.browseOpenArchives();" />
         <menuitem id="maf-mozilla-about" label="&maf.about;"
                    accesskey="&maf.aboutKey;"
@@ -71,4 +78,9 @@
     </menu>
   </menupopup>
 
+  <!-- mozilla keyset -->
+  <keyset id="navKeys">
+    <key id="maf-firefox-openArchive-cmd" modifiers="alt" key="J" oncommand="MafGUI.loadArchive();"/>
+    <key id="maf-mozilla-browseOpenArchives-cmd" modifiers="alt" key="M" oncommand="MafGUI.browseOpenArchives();"/>
+  </keyset>
 </overlay>

@@ -21,16 +21,27 @@
 -->
 <!DOCTYPE window SYSTEM "chrome://maf/locale/maf.dtd">
 
+
+
 <window id="preferencesdlg"
          title="&maf.preferencesdialog.title;"
          orient="horizontal"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         persist="screenX screenY"
          onload="onLoad()">
+
+<script type="application/x-javascript" src="maf.js"/>
 
 <script>
 
-  var mp = window.arguments[0];
-  var mGUI = window.arguments[1];
+  // Include maf.js and set variables to global objects
+  //   to allow for preferences to be displayed in
+  //   Firefox tools -> options panel properly.
+  //var mp = window.arguments[0];
+  //var mGUI = window.arguments[1];
+
+  var mp = MafPreferences;
+  var mGUI = MafGUI;
 
   function onLoad() {
     loadFromPref();

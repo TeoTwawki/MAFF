@@ -32,12 +32,16 @@
 
   var ms = window.arguments[0];
   var win = window.arguments[1];
-
+  var mGUI = window.arguments[2];
 
   function onLoad() {
     window.sizeToContent();
     document.getElementById("open-archives-tree").database.AddDataSource(ms.datasource);
     document.getElementById("open-archives-tree").builder.rebuild();
+  }
+
+  function loadArchive() {
+    mGUI.loadArchive();
   }
 
   function openSelectedInTabs(urlsource) {
@@ -51,17 +55,33 @@
       for (var t=0; t &lt; numRanges; t++) {
         document.getElementById("open-archives-tree").view.selection.getRangeAt(t,start,end);
         for (var v=start.value; v &lt;= end.value; v++) {
-          url = document.getElementById("open-archives-tree").view.getCellText(v, urlsource);
-          level = document.getElementById("open-archives-tree").view.getLevel(v);
+          var url = document.getElementById("open-archives-tree").view.getCellText(v, urlsource);
+          var level = document.getElementById("open-archives-tree").view.getLevel(v);
 
           if (level == 1) {
             var newTab = oBrowser.addTab(url);
+          } else if (level == 0 ) {
+
+            var levelZeroV = v + 1;
+
+            try {
+              // While we're on a sub-level, and there are still rows
+              while ((document.getElementById("open-archives-tree").view.getLevel(levelZeroV) == 1) &amp;&amp;
+                     (levelZeroV &lt; document.getElementById("open-archives-tree").view.rowCount)) {
+                var levelZeroUrl = document.getElementById("open-archives-tree").view.getCellText(levelZeroV, urlsource);
+                var newLevelZeroTab = oBrowser.addTab(levelZeroUrl);
+                levelZeroV++;
+              }
+            } catch(e) {
+
+            }
+
           }
         }
       }
 
     } catch (e)  {
-
+      alert(e);
     }
   }
 
@@ -128,6 +148,7 @@
   </tree>
 
   <hbox>
+    <button id="maf-open-archive-button" label="&maf.loadArchive;" oncommand="loadArchive();"/>
     <spacer flex="1"/>
     <button id="maf-browse-archives-tabopen-button" label="&maf.browseOpenArchivesDialog.btnopentabs;" default="true" oncommand="openSelectedInTabs('localurl');"/>
     <button id="maf-browse-archives-tabopenorig-button" label="&maf.browseOpenArchivesDialog.btnopenorig;" oncommand="openSelectedInTabs('originalurl');"/>

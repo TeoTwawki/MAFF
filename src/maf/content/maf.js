@@ -37,6 +37,11 @@
  * Added base tag for relative URLs existing in decoded MHT files.
  * Fixed save as text, Missing meta-data no longer stops archiving process.
  * Saving works on Mozilla for Windows now.
+ * GUI cleanup code - Show entry in Firefox's Tools -> Options -> Extensions
+ *                  - Preferences can now be launched from Extensions -> Options
+ * Open all entries in an archive by selecting the archive name and open in tabs.
+ * Added capability to open archive from browse dialog.
+ * Added shortcut keys alt-j for open archive, alt-m for browse open archives.
  *
  */
 
@@ -612,7 +617,6 @@ function MafArchiver(aDocument, tempPath, scriptPath, archivePath, dateTimeArchi
     };
 
     // contentType : (useSaveDocument && fp.filterIndex == 2) ? "text/plain" : contentType,
-    // target      : makeFileURL(file),
 
     var persist = makeWebBrowserPersist();
 
@@ -914,7 +918,9 @@ var Maf = {
     }
 
     if (MafPreferences.archiveOpenMode == MafPreferences.OPENMODE_SHOWDIALOG) {
-      MafGUI.browseOpenArchives();
+      if (!MafUtils.isWindowOpen("chrome://maf/content/mafBrowseOpenArchivesDLG.xul")) {
+        MafGUI.browseOpenArchives();
+      }
     }
   }
 
@@ -1363,6 +1369,9 @@ var MafState = {
   },
 
 
+  /**
+   * Creates an in memory RDF data source
+   */
   setupDataSource: function() {
     var ds = Components.classes[rdfDatasourceInMemoryContractID].createInstance();
     this.datasource = ds.QueryInterface(rdfDatasourceIID);
@@ -1699,7 +1708,7 @@ var MafUtils = {
 
     var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
                     ",width="+ w +",height=" + h;
-    window.openDialog(url, "_blank", win_prefs, MafState, window);
+    window.openDialog(url, "_blank", win_prefs, MafState, window, MafGUI);
   },
 
   /**
@@ -1794,6 +1803,30 @@ var MafUtils = {
   },
 
   /**
+   * Returns true if a window with that id is open
+   */
+  isWindowOpen: function(needleLocation) {
+    var result = false;
+
+    try {
+      var wmI = Components.classes[asWinMedContractID].getService(asWinMedIID);
+      var entries = wmI.getEnumerator(null);
+
+      while (entries.hasMoreElements()) {
+        currWindow = entries.getNext();
+        if (currWindow.location == needleLocation) {
+          result = true;
+          break;
+        }
+      }
+    } catch (e) {
+      alert(e);
+    }
+
+    return result;
+  },
+
+  /**
    * Registered trigger event whenever a window is closed.
    */
   onWindowClose: function(evt) {
@@ -1852,19 +1885,14 @@ var MafUtils = {
         MafState = hiddenWnd.MafState;
       }
 
-      try {
-        //var div = hiddenWnd.document.createElement("iframe");
-        //hiddenWnd.document.documentElement.appendChild(div);
-        //DomRoot = div;
-        DomRoot = hiddenWnd.document;
-      } catch(e) {
-        alert(e);
-      }
-
     }
 
   },
 
+  /**
+   * Fired when a new tab is loaded.
+   * Replaces original links in the tab being loaded with local links if possible.
+   */
   onTabLoad: function(evt) {
     if (evt.originalTarget == "[object HTMLDocument]") {
       // New tab
@@ -1881,6 +1909,11 @@ var MafUtils = {
     }
   },
 
+  /**
+   * Adds a base tag to HTML.
+   * Important so that relative urls not converted by save (such as paths to embedded objects,
+   * relative form submit paths, javascripts, etc) can go online to get the missing data.
+   */
   addBaseHref: function(sourceString, indexOriginalURL) {
     var resultString = "";
     var baseHrefString = "<base href=\"" + indexOriginalURL + "\" />";
@@ -2311,6 +2344,10 @@ var MafMHTHander = {
   },
 
 
+  /**
+   * Use a regular expression to replace absolute URLs with relative ones.
+   * O(n) algorithm now instead of O(n^2).
+   */
   replaceUrls: function(sourceString, urlToLocalFilenameMap) {
     var resultString = "";
     var unprocessedString = sourceString;
@@ -2345,6 +2382,9 @@ var MafMHTHander = {
     return resultString;
   },
 
+  /**
+   * Adds meta data gathered from the MHT to the RDF datasource used by MAF
+   */
   _updateMetaData: function(headers, originalURL, datasource) {
     var result = "";
     var headerLines = headers.split(/\n/);
@@ -2365,6 +2405,9 @@ var MafMHTHander = {
     return result;
   },
 
+  /**
+   * Tries to create an associative array of header => value pairs by parsing text.
+   */
   _getHeaders: function(headerLines) {
     var result = new Array();
     result["date"] = "Unknown";
@@ -2420,6 +2463,7 @@ var MafMHTHander = {
   _decodeQuotedPrintable: function(encodedString) {
     var result;
     result = encodedString;
+    // = sign followed by new line, replaced by nothing.
     result = result.replace(/=\r?\n/g, "");
 
     var equalsArray = result.split("=");
