@@ -31,25 +31,35 @@
 <script>
 
   var ma=window.arguments[0];
+  var currentIdlePercentage = 1;
+  var idleTimer = setInterval(idleUpdate, 50);
+
   ma.setProgressUpdater(updateProgress);
 
   function doCancel() {
     ma.stop();
+    clearInterval(idleTimer);
     window.close();
     return true;
   };
 
+  function idleUpdate() {
+    document.getElementById("opentabsprogmeter").setAttribute("value", currentIdlePercentage);
+    currentIdlePercentage++;
+    currentIdlePercentage %= 100;
+  };
+
   function updateProgress(percentage) {
     if (percentage==100) {
-      document.getElementById("opentabsprogmeter").setAttribute("mode", "determined");
       document.getElementById("opentabsprogmeter").setAttribute("value", percentage);
       setTimeout("window.close()", 100);
+      clearInterval(idleTimer);
     }
   };
 
 </script>
 
-  <progressmeter id="opentabsprogmeter" mode="undetermined" />
+  <progressmeter id="opentabsprogmeter" value="0%" />
 
 </dialog>
 

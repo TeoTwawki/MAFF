@@ -37,6 +37,9 @@
  * Retrofitted the download and archive code to use an observer event instead of interval timers. Should seem faster.
  * Added drag and drop archive support.
  * Added file association support and ability to open archives from Open File menu entry.
+ * Added an idle update function which gives the user some visual feedback when an archive is opened.
+ * Updated the MHT Handler to cater for saving multiple tabs.
+ * Fixed bug with file association and loading of preferences.
  *
  *
  * Changes from 0.2.19 to 0.2.20 - Completed
@@ -292,43 +295,70 @@ String.prototype.replaceAll = function(needle, newneedle) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+var loadURIios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+    // If we're being called before windows start appearing, we haven't loaded anything as yet
+    // TODO: Add an APPSTART observer that takes care of this kind of stuff
+    //       Also make all the objects classes and create instances of them in hidden window
+    //         on APPSTART
+if (!MafPreferences.isLoaded) { MafPreferences.load(); }
+
+var loadURIMafRegExp = MafPreferences.getOpenFilterRegEx();
 
 /**
  * Redefine the loadURI code to check and see if it's a MAF file first
  */
 function loadURI(uri, referrer, postData)
 {
-  var ismaf = false;
 
-  var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-  var ouri = ios.newURI(uri, "", null);    // Create URI object
-
-  try {
-    var file = ouri.QueryInterface(Components.interfaces.nsIFileURL).file;
-  } catch(e) {
-
-    // It wasn't a URL of the form file://, let's try again, shall we?
+  if (!uri.match(loadURIMafRegExp)) {
+    // Original loadURI function
     try {
-      var file = Components.classes[localFileContractID].createInstance(localFileIID);
-      file.initWithPath(uri);
-    } catch(ex) {
-      // Give up
-      debug("MAF LoadURI has given up:" + ex);
+      if (postData === undefined)
+        postData = null;
+      getWebNavigation().loadURI(uri, nsIWebNavigation.LOAD_FLAGS_NONE, referrer, postData, null);
+    } catch (e) {
     }
-  }
-
-  try {
+  } else {
 
     // Get leaf name
-    // If file extension match any of the filters MAF handles
-    var filterIndex = MafPreferences.getOpenFilterIndexFromFilename(file.leafName);
+    try {
+      var ouri = loadURIios.newURI(uri, "", null);    // Create URI object
+      var file = ouri.QueryInterface(Components.interfaces.nsIFileURL).file;
+    } catch(e) {
+      debug(e);
 
-    // Get matching filter
-    if (filterIndex != -1) {
-      ismaf = true;
+      // It wasn't a URL of the form file://, let's try again, shall we?
+      try {
+        var file = Components.classes[localFileContractID].createInstance(localFileIID);
+        file.initWithPath(uri);
+      } catch(ex) {
+        // Give up
+        debug("MAF LoadURI has given up:" + ex);
+      }
     }
 
-    if (ismaf) {
+    var ismaf = false;
+
+    try {
+      // If file extension match any of the filters MAF handles
+      var filterIndex = MafPreferences.getOpenFilterIndexFromFilename(file.leafName);
+
+      // Get matching filter
+      ismaf = (filterIndex != -1);
+    } catch(e) {
+
+    }
+
+    if (!ismaf) {
+      // Original loadURI function
+      try {
+        if (postData === undefined)
+          postData = null;
+        getWebNavigation().loadURI(uri, nsIWebNavigation.LOAD_FLAGS_NONE, referrer, postData, null);
+      } catch (e) {
+      }
+    } else {
       // Get original url's to local file path
       var localFilePath = file.path;
 
@@ -344,18 +374,6 @@ function loadURI(uri, referrer, postData)
         // Queue, load request from command line
         MafOpenQueue.add(localFilePath, filterIndex);
       }
-    }
-  } catch(e) {
-    debug(e);
-  }
-
-  if (!ismaf) {
-    // Original loadURI function
-    try {
-      if (postData === undefined)
-        postData = null;
-      getWebNavigation().loadURI(uri, nsIWebNavigation.LOAD_FLAGS_NONE, referrer, postData, null);
-    } catch (e) {
     }
   }
 }

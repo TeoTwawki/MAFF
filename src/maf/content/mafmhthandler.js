@@ -661,7 +661,7 @@ var MafMHTHander = {
       MHTContentString += this._addFileToMHT("", sourcepath, indexfilename, originalurl);
     }
 
-    MafUtils.createFile(archivefile, MHTContentString);
+    MafUtils.createFile(MafUtils.getFullUniqueFilename(archivefile), MHTContentString);
   },
 
   /**

@@ -57,6 +57,8 @@ var MafPreferences = {
 
   win_invisiblevbs: "c:\\temp\\maf\\invis.vbs",
 
+  isLoaded: false,
+
   /**
    * Creates a multi-dimensional array holding info on each registered program
    */
@@ -80,6 +82,23 @@ var MafPreferences = {
       result[result.length] = entry;
     }
     return result;
+  },
+
+  /**
+   * Creates a regular expression that matches registered MAF application extensions
+   */
+  getOpenFilterRegEx: function() {
+    var regExStr = "^.+\\.maf$"; // Matches *.maf
+
+    for (var i=0; i<this.programExtensions.length; i++) {
+      for (var j=0; j<this.programExtensions[i][3].length; j++) {
+        var progRegEx = this.programExtensions[i][3][j];
+        progRegEx = progRegEx.replaceAll(".", "\\.").replaceAll("*", ".+");
+        regExStr += "|^" + progRegEx + "$";
+      }
+    }
+
+    return new RegExp(regExStr, "i");
   },
 
   /**
@@ -150,6 +169,7 @@ var MafPreferences = {
       } else {
         // Simple mask
         // Assume that first character is a *
+        debug(suffix);
         var suffix = mask.substring(1, mask.length);
         if (suffix == lcFilename.substring(lcFilename.length - suffix.length, lcFilename.length)) {
           result = i;
@@ -229,6 +249,7 @@ var MafPreferences = {
     // Add MHT as the last archive format supported
     this.programExtensions[this.programExtensions.length] = [
        "MHT", MafMHTHander.MHT_ARCHIVE_PROG_ID, MafMHTHander.MHT_EXTRACT_PROG_ID, ["*.mht"]];
+    this.isLoaded = true;
   },
 
   /**
