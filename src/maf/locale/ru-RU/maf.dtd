@@ -48,6 +48,7 @@
 <!ENTITY maf.preferencesdialog.tabsoptions "Параметры">
 <!ENTITY maf.preferencesdialog.tabsregprogs "Внешние программы">
 <!ENTITY maf.preferencesdialog.tabswinoptions "Параметры Windows">
+<!ENTITY maf.preferencesdialog.tabadvanced "Advanced options">
 
 <!ENTITY maf.preferencesdialog.options.description "Основные параметры работы расширения с архивами MAF">
 
@@ -86,6 +87,9 @@
 
 <!ENTITY maf.preferencesdialog.progs.archive "Сценарий упаковки:    ">
 <!ENTITY maf.preferencesdialog.progs.expand "Сценарий распаковки:">
+
+<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiving">
+<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Expanding">
 
 <!ENTITY maf.preferencesdialog.btnloaddefault "По умолчанию">
 <!ENTITY maf.preferencesdialog.btnsave " Сохранить ">

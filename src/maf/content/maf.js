@@ -46,6 +46,7 @@
  * Added alternative DOM save component based on the Scrapbook extension by Gomita.
  * Added script failure notification code from process exit value.
  * Modified invis.vbs to return process exit value contributed by Allister.
+ * Added advanced panel in preferences window.
  *
  * Changes from 0.4.2 to 0.4.3
  *

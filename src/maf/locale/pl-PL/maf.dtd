@@ -48,6 +48,7 @@
 <!ENTITY maf.preferencesdialog.tabsoptions "Opcje">
 <!ENTITY maf.preferencesdialog.tabsregprogs "Zarejestrowane programy">
 <!ENTITY maf.preferencesdialog.tabswinoptions "Opcje okien">
+<!ENTITY maf.preferencesdialog.tabadvanced "Advanced options">
 
 <!ENTITY maf.preferencesdialog.options.description "Ogólne opcje współpracy archiwów MAF z rozszerzeniem">
 
@@ -86,6 +87,9 @@
 
 <!ENTITY maf.preferencesdialog.progs.archive "Skrypt archiwizujący:">
 <!ENTITY maf.preferencesdialog.progs.expand "Skrypt rozpakowujący:">
+
+<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiving">
+<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Expanding">
 
 <!ENTITY maf.preferencesdialog.btnloaddefault "Wczytaj domyślne">
 <!ENTITY maf.preferencesdialog.btnsave "Zapisz">

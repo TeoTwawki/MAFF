@@ -48,6 +48,7 @@
 <!ENTITY maf.preferencesdialog.tabsoptions "Opzioni">
 <!ENTITY maf.preferencesdialog.tabsregprogs "Programmi registrati">
 <!ENTITY maf.preferencesdialog.tabswinoptions "Opzioni per Windows">
+<!ENTITY maf.preferencesdialog.tabadvanced "Advanced options">
 
 <!ENTITY maf.preferencesdialog.options.description "Opzioni generali di MAF per la gestione degli archivi">
 
@@ -86,6 +87,9 @@
 
 <!ENTITY maf.preferencesdialog.progs.archive "Script di archiviazione:">
 <!ENTITY maf.preferencesdialog.progs.expand "Script di estrazione:">
+
+<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiving">
+<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Expanding">
 
 <!ENTITY maf.preferencesdialog.btnloaddefault "Carica predefiniti">
 <!ENTITY maf.preferencesdialog.btnsave "Salva">

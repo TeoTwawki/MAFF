@@ -247,6 +247,7 @@
     <tab label="&maf.preferencesdialog.tabsoptions;" selected="true"/>
     <tab label="&maf.preferencesdialog.tabsregprogs;"/>
     <tab label="&maf.preferencesdialog.tabswinoptions;"/>
+    <tab label="&maf.preferencesdialog.tabadvanced;" />
   </tabs>
 
   <tabpanels>
@@ -272,13 +273,6 @@
        </radiogroup>
      </groupbox>
 
-     <checkbox id="chkURLRewrite" checked="false" label="&maf.preferencesdialog.openmode.urlrewrite;" />
-     <checkbox id="chkSaveExtended" checked="false" label="&maf.preferencesdialog.openmode.savexmeta;" />
-     <checkbox id="chkEnableMafProtocol" checked="false" label="&maf.preferencesdialog.label.enablemafprotocol;" />
-     <checkbox id="chkAddDocumentWriteOverride" checked="false" label="&maf.preferencesdialog.label.adddocumentwriteoverride;" />
-     <checkbox id="chkAlertOnArchiveComplete" checked="false" label="&maf.preferencesdialog.label.alertonarchivecomplete;" />
-     <checkbox id="chkUseAlternativeSaveComponent" checked="false"
-                label="&maf.preferencesdialog.label.usealternativesavecomponent;" />
      <hbox>
        <label control="selDefaultApp" value="&maf.preferencesdialog.openmode.defaultapp;"/>
        <menulist id="selDefaultApp">
@@ -352,6 +346,25 @@
 
    </tabpanel>
 
+   <tabpanel id="advancedoptionspanel" orient="vertical">
+     <groupbox>
+       <caption label="&maf.preferencesdialog.advanced.archivinglabel;" />
+       <checkbox id="chkSaveExtended" checked="false" label="&maf.preferencesdialog.openmode.savexmeta;" />
+       <checkbox id="chkUseAlternativeSaveComponent" checked="false"
+                  label="&maf.preferencesdialog.label.usealternativesavecomponent;" />
+       <checkbox id="chkAlertOnArchiveComplete" checked="false"
+                  label="&maf.preferencesdialog.label.alertonarchivecomplete;" />
+     </groupbox>
+
+     <groupbox>
+       <caption label="&maf.preferencesdialog.advanced.extractinglabel;" />
+       <checkbox id="chkURLRewrite" checked="false" label="&maf.preferencesdialog.openmode.urlrewrite;" />
+       <checkbox id="chkEnableMafProtocol" checked="false" label="&maf.preferencesdialog.label.enablemafprotocol;" />
+       <checkbox id="chkAddDocumentWriteOverride" checked="false"
+                  label="&maf.preferencesdialog.label.adddocumentwriteoverride;" />
+     </groupbox>
+
+   </tabpanel>
 
  </tabpanels>
 </tabbox>
