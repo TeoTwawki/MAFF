@@ -781,6 +781,8 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
+  postsetupversion: "0.3.0",
+
   /**
    * Complete the setup, if necessary
    */
@@ -789,7 +791,7 @@ var MafPostSetup = {
     var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
 
     try {
-      var setupComplete = prefs.getBoolPref("postsetup.complete");
+      var setupComplete = prefs.getBoolPref("postsetup." + this.postsetupversion + ".complete");
     } catch(e) { setupComplete = false; }
 
     if (!setupComplete) {
@@ -801,7 +803,7 @@ var MafPostSetup = {
       this.updateScriptContents();
 
       // Set preference maf.postsetup.complete
-      prefs.setBoolPref("postsetup.complete", true);
+      prefs.setBoolPref("postsetup." + this.postsetupversion + ".complete", true);
     }
   },
 
