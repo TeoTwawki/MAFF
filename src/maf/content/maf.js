@@ -49,8 +49,6 @@
  * When saving the document title of the selected tab is used for the default maf archive name.
  * Created string bundle of english text in code for better localization.
  * Added preference for disabling the maf:// protocol
- * TODO: Test in Mozilla 1.7.3
- * TODO: Test on Firefox 1.0PR and Mozilla 1.7.3 in Windows
  *
  */
 
