@@ -3,23 +3,23 @@
 
 <p>The preferences are available from the <i>Tools</i> menu and the <i>Mozilla Archive Format</i> submenu.</p>
 
-<p>The additional available preferences for Windows that do not apply to Linux, the execution of VBS script to hide the dos box that appears during batch file execution, are disabled on other platforms.</p>
+<p>The additional available preferences for Windows are disabled on other platforms. The only preference like this thus far is the ability to execute a VBS script to hide the dos box that appears during batch file execution.</p>
 
-<p>Below are screen shots of the preferences dialog on linux. In Linux ensure that the temporary directory to use is set to <b>/tmp/maftmp/</b> or whatever temporary directory your script uses as seen in the figure below.</p>
+<p>Below are screen shots of the preferences dialog on Linux. In Linux ensure that the temporary directory to use is set to <b>/tmp/maf/maftemp/</b> or whatever temporary directory your script uses as seen in the figure below.</p>
 
 <img src="images/linuxprefs1.png" alt="Linux preferences dialog - Tab 1" />
 
 <br />
 
-<p>Also ensure (by selecting the registered programs tab) that the handler scripts for the archiving and expansion tasks are setup properly as seen in the figure below. The archive script is set to <b>/tmp/mafzip.sh</b> and the expansion script is set to <b>/tmp/mafunzip.sh</b>.</p>
+<p>Also ensure (by selecting the registered programs tab) that the handler scripts for the archiving and expansion tasks are setup properly as seen in the figure below. The archive script is set to <b>/tmp/maf/mafzip.sh</b> and the expansion script is set to <b>/tmp/maf/mafunzip.sh</b>.</p>
 
 <img src="images/linuxprefs2.png" alt="Linux preferences dialog - Tab 2" />
 
 <br />
 
-<p>The windows preference configuration is similar. The temporary directory to use would be <b>c:\temp\maftemp\</b> and the scripts to use for archiving and expansion would be <b>c:\temp\mafzip.bat</b> and <b>c:\temp\mafunzip.bat</b> respectively.</p>
+<p>The windows preference configuration is similar. The temporary directory to use would be <b>c:\temp\maf\maftemp\</b> and the scripts to use for archiving and expansion would be <b>c:\temp\maf\mafzip.bat</b> and <b>c:\temp\maf\mafunzip.bat</b> respectively.</p>
 
-<p>If you are a windows user and wish to use the VBS option <i>ENSURE</i> that the script archive and expansion processes are working first. After that is confirmed (by saving to an archive and opening it back) you can safely enable the VBS option. Browse to the location of wscript.exe (usually in the %WINDIR%\system32 directory). You also must correctly set the location of invis.vbs which is provided in the winutils.zip file.</p>
+<p>If you are a windows user and wish to use the VBS option <i>ENSURE</i> that the script archive and expansion processes are working first. After that is confirmed (by saving to an archive and opening it back) you can safely enable the VBS option. Browse to the location of wscript.exe (usually in the %WINDIR%\system32 directory). You also must correctly set the location of invis.vbs which should be at <b>c:\temp\maf\invis.vbs</b>.</p>
 
 <p><b>Preferences: Open Archive Mode</b>
 <br/><br/>
