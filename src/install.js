@@ -1,4 +1,4 @@
-initInstall("Mozilla Archive Format","/Christopher Ottley/Mozilla Archive Format","0.5.0");
+initInstall("Mozilla Archive Format","/Christopher Ottley/Mozilla Archive Format","0.5.1");
 
 var jarFile = "maf.jar";
 
@@ -21,13 +21,14 @@ registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/it-IT/");
 registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/fr-FR/");
 registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/ru-RU/");
 registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/pl-PL/");
-registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/pt-BR/"); 
+registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/pt-BR/");
+registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/da-DK/");
 
 var componentsDir = getFolder("Components");  //getFolder("Profile", "components");
 setPackageFolder(componentsDir);
 
 // add the components and typelib
-addFile("components/maf.0.5.0.xpt");
+addFile("components/maf.0.5.1.xpt");
 addFile("components/nsMafArchivePostProcessor.js");
 addFile("components/nsMafArchiver.js");
 addFile("components/nsMafBlockingObserverService.js");
@@ -69,7 +70,7 @@ addFile("scripts/unsetallfiletypes.vbs");
 
 var err = performInstall();
 if (err == SUCCESS || err == 999) {
-  alert("MAF 0.5.0 is now installed.\nPlease restart your browser to activate it.");
+  alert("MAF 0.5.1 is now installed.\nPlease restart your browser to activate it.");
 } else {
   alert("Install failed. Error code:" + err + "\nTry installing it again");
 }

@@ -2,13 +2,13 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.5.0
+ * Version: 0.5.1
  *
  * Author: Christopher Ottley
  *
  * Description: The MAF extension for Firefox and Mozilla integrates page archive functionality in the browser
  *
- *  Copyright (c) 2004 Christopher Ottley.
+ *  Copyright (c) 2005 Christopher Ottley.
  *
  *  This file is part of MAF.
  *
@@ -28,7 +28,7 @@
  */
 
 // Provides MAF Document Viewer Factory
-const mafDocumentViewerFactoryContractID = "@mozilla.org/content-viewer-factory/view;1?type=application/maf";
+const mafDocumentViewerFactoryContractID = "@mozilla.org/content-viewer-factory/view;1?type=application/x-maf";
 const mafDocumentViewerFactoryCID = Components.ID("{af7b4b58-cf98-49c7-81df-feb3b75659fe}");
 const mafDocumentViewerFactoryIID = Components.interfaces.nsIMafDocumentViewerFactory;
 

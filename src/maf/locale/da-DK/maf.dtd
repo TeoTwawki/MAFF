@@ -1,0 +1,106 @@
+<!ENTITY maf.loadArchive "Åbn Arkiv">
+<!ENTITY maf.loadArchiveKey "v">
+
+<!ENTITY maf.addToArchive "Gem Side i Arkiv">
+<!ENTITY maf.addToArchiveKey "I">
+
+<!ENTITY maf.addSelectedTabsToArchive "Gem Faneblade i Arkiv">
+<!ENTITY maf.addSelectedTabsToArchiveKey "b">
+
+<!ENTITY maf.addAllTabsToArchive "Gem Alle Faneblade i Arkiv">
+<!ENTITY maf.addAllTabsToArchiveKey "k">
+
+<!ENTITY maf.saveTabsDialogTitle "Gem Åbne Faneblade Status">
+<!ENTITY maf.openTabsDialogTitle "Åbn i Faneblade Status">
+
+<!ENTITY maf.menuLabel "Mozilla Arkiv Format">
+
+<!ENTITY maf.preferences "Indstillinger">
+<!ENTITY maf.preferencesKey "I">
+
+<!ENTITY maf.about "Om">
+<!ENTITY maf.aboutKey "O">
+
+<!ENTITY maf.browseOpenArchives "Gennemse Åbne Arkiver">
+<!ENTITY maf.browseOpenArchivesKey "G">
+
+<!ENTITY maf.aboutdlg.title "Om MAF">
+<!ENTITY maf.aboutdlg.description "MAF er en Mozilla udvidelse som giver dig mulighed for at samle komplette HTML dokumenter i én fil. MAF gemmer udover f.eks. billeder også meta-data om gemte sider, såsom den oprindelige URL og tidspunktet for arkiveringen.">
+<!ENTITY maf.version "MAF v 0.5.1">
+<!ENTITY maf.aboutdlg.copyright "(c) 2005 Christopher Ottley">
+<!ENTITY maf.aboutdlg.license "Frigivet under GNU GPL 2.0">
+<!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">
+
+<!ENTITY maf.browseOpenArchivesDialog.title "Gennemse Åbne Arkiver">
+
+<!ENTITY maf.browseOpenArchivesDialog.tree.title "Titel">
+<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Arkiveringstidspunkt">
+<!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "Oprindelig URL">
+<!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Lokal URL">
+
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Åbn i Faneblade">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Åbn i Faneblade med maf://">
+<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Åbn Oprindelige URLs i Faneblade">
+<!ENTITY maf.browseOpenArchivesDialog.btnclose "Luk">
+
+<!ENTITY maf.preferencesdialog.title "Indstillinger">
+
+<!ENTITY maf.preferencesdialog.tabsoptions "Opsætning">
+<!ENTITY maf.preferencesdialog.tabsregprogs "Registrerede Programmer">
+<!ENTITY maf.preferencesdialog.tabswinoptions "Windows indstillinger">
+<!ENTITY maf.preferencesdialog.tabadvanced "Avancerede indstillinger">
+
+<!ENTITY maf.preferencesdialog.options.description "Hvordan MAF arkiver generelt håndteres">
+
+<!ENTITY maf.preferencesdialog.label.temp "Midlertidig folder:">
+<!ENTITY maf.preferencesdialog.label.cleartemp "Ryd midlertidig folder når browseren lukkes">
+<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Brug MAF Protokol">
+<!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Brug omgåelse af document.write">
+<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Advar når enkeltsidede arkiver er færdige">
+<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Brug alternativ lagrings komponent">
+
+<!ENTITY maf.preferencesdialog.btnbrowse "Gennemse...">
+
+<!ENTITY maf.preferencesdialog.openmode "Arkiv Åbning">
+
+<!ENTITY maf.preferencesdialog.openmode.showopen "Vis åbn dialogen">
+<!ENTITY maf.preferencesdialog.openmode.tabs "Åben alt HTML i nye faneblade">
+<!ENTITY maf.preferencesdialog.openmode.nothing "Gør intet">
+
+<!ENTITY maf.preferencesdialog.openmode.urlrewrite "Omskriv Arkiv Dokument URLs">
+<!ENTITY maf.preferencesdialog.openmode.savexmeta "Gem Udvidet Meta-Data">
+
+<!ENTITY maf.preferencesdialog.openmode.defaultapp "Standard MAF håndteringsprogram:">
+
+<!ENTITY maf.preferencesdialog.winop.label "Windows specifikke indstillinger">
+<!ENTITY maf.preferencesdialog.winop.usevbs "Brug VBS til at skjule konsol vinduet når MAFF filer åbnes">
+
+<!ENTITY maf.preferencesdialog.winop.wscript "Lokation af WSCRIPT.EXE:">
+<!ENTITY maf.preferencesdialog.winop.invis "Lokation af invis.vbs:">
+
+<!ENTITY maf.preferencesdialog.winop.filetypelabel "Filtype associationer">
+<!ENTITY maf.preferencesdialog.winop.filetypemaf "Associér MAF med .maf filer">
+<!ENTITY maf.preferencesdialog.winop.filetypemaff "Associér MAF med .maff filer">
+<!ENTITY maf.preferencesdialog.winop.filetypemht "Associér MAF med .mht filer">
+
+<!ENTITY maf.preferencesdialog.progs.description "Opsætning af scripts til at komprimere MAF indhold">
+
+<!ENTITY maf.preferencesdialog.progs.archive "Komprimerings Script:">
+<!ENTITY maf.preferencesdialog.progs.expand "Dekomprimerings Script:">
+
+<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Komprimering">
+<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Dekomprimering">
+
+<!ENTITY maf.preferencesdialog.btnloaddefault "Gendan standard">
+<!ENTITY maf.preferencesdialog.btnsave "Gem">
+<!ENTITY maf.preferencesdialog.btnrevert "Indlæs sidst gemte">
+<!ENTITY maf.preferencesdialog.btnclose "Luk">
+
+<!ENTITY maf.saveSelectedTabsDialog.title "Vælg faneblade til arkivering">
+<!ENTITY maf.saveSelectedTabsDialog.tree.title "Titel">
+<!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
+<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Gem Valgte i Arkiv">
+<!ENTITY maf.saveSelectedTabsDialog.btnclose "Luk">
+
+<!ENTITY maf.browseOpenArchivesAccessKey "m">
+<!ENTITY maf.addToArchiveAccessKey "I">

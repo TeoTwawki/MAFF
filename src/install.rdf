@@ -5,7 +5,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>{7f57cf46-4467-4c2d-adfa-0cba7c507e54}</em:id>
-    <em:version>0.5.0</em:version>
+    <em:version>0.5.1</em:version>
     <em:updateURL>http://maf.mozdev.org/update.rdf</em:updateURL>
 
     <!-- Target Application this extension can install into,
@@ -38,6 +38,7 @@
     <em:contributor>Sergey N UshaKov</em:contributor>
     <em:contributor>Tłumaczenie: Bartosz Piec</em:contributor>
     <em:contributor>Jacinto Leal</em:contributor>
+    <em:contributor>Molle Bestefich</em:contributor>
     <em:homepageURL>http://maf.mozdev.org/</em:homepageURL>
 
 
@@ -56,6 +57,7 @@
         <em:locale>locale/ru-RU/</em:locale>
         <em:locale>locale/pl-PL/</em:locale>
         <em:locale>locale/pt-BR/</em:locale>
+        <em:locale>locale/da-DK/</em:locale>
         <!-- <em:skin>skin/classic/maf/</em:skin> -->
       </Description>
     </em:file>

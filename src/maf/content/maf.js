@@ -2,13 +2,13 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.5.0
+ * Version: 0.5.1
  *
  * Author: Christopher Ottley
  *
  * Description: The MAF extension for Firefox and Mozilla integrates page archive functionality in the browser
  *
- *  Copyright (c) 2004 Christopher Ottley.
+ *  Copyright (c) 2005 Christopher Ottley.
  *
  *  This file is part of MAF.
  *
@@ -30,6 +30,16 @@
  * TODO: Add save frame functionality to alternative save component.
  */
 /**
+ *
+ * Changes from 0.5.0 to 0.5.1
+ *
+ * Added Danish locale by Molle Bestefich.
+ * Fixed bug 7913 - Modified batch files should work correctly with Win95/98/ME.
+ * Fixed bug that incorrectly resolved supporting files folder relative URLs when using localized browsers.
+ * Added non-functional context menu for browse open archives dialog.
+ * Changed the MAF content type from application/maf to application/x-maf.
+ * Added ability to copy displayed meta-data from browse open archives dialog.
+ *
  *
  * Changes from 0.4.3 to 0.5.0
  *
@@ -511,11 +521,20 @@ maf.prototype = {
 
   },
 
-  _makeLocalLinksAbsolute: function(domDoc, baseUrl, index_files) {
+  _makeLocalLinksAbsolute: function(domDoc, baseUrl, originalURL) {
     if (baseUrl != "") {
-      var obj_baseUrl =  Components.classes["@mozilla.org/network/standard-url;1"]
-                            .createInstance(Components.interfaces.nsIURL);
+      var obj_baseUrl = Components.classes["@mozilla.org/network/standard-url;1"]
+                           .createInstance(Components.interfaces.nsIURL);
       obj_baseUrl.spec = baseUrl;
+
+      var obj_originalURL = Components.classes["@mozilla.org/network/standard-url;1"]
+                              .createInstance(Components.interfaces.nsIURL);
+      if (originalURL != "") {
+        obj_originalURL.spec = originalURL;
+      }
+
+      var loadURIios = Components.classes["@mozilla.org/network/io-service;1"]
+                          .getService(Components.interfaces.nsIIOService);
 
       var alltags = domDoc.getElementsByTagName("*");
       for (var i=0; i<alltags.length; i++) {
@@ -535,8 +554,26 @@ maf.prototype = {
               (attribName == "usemap")) {
 
               try {
-                if (tagattrib[j].value.startsWith(index_files)) {
-                  tagattrib[j].value = obj_baseUrl.resolve(tagattrib[j].value);
+                if (originalURL != "") {
+                  var testURL = obj_originalURL.resolve(tagattrib[j].value);
+
+                  var isLocalURL = false;
+
+                  try {
+                    if (testURL != originalURL) {
+                      var ouri = loadURIios.newURI(testURL, "", null);    // Create URI object
+                      var file = ouri.QueryInterface(Components.interfaces.nsIFileURL).file;
+                      if (file.exists()) {
+                        isLocalURL = true;
+                      }
+                    }
+                  } catch(ex) {
+
+                  }
+
+                  if (isLocalURL) { // testURL is a URL of a file that exists
+                    tagattrib[j].value = testURL;
+                  }
                 }
               } catch(e) {  }
           }
@@ -612,7 +649,7 @@ maf.prototype = {
           }
 
           try {
-            Maf._makeLocalLinksAbsolute(doc, baseUrl, "index_files");
+            Maf._makeLocalLinksAbsolute(doc, baseUrl, originalURL);
             Maf._makeLocalLinksAbsolute(doc, MafState.getOriginalURL(baseUrl), "");
           } catch(e) {
             mafdebug(e);
@@ -676,9 +713,13 @@ maf.prototype = {
 
   onWindowFocus: function(event) {
     if (event.originalTarget == "[object XULDocument]") {
-      var MafDocumentViewer =  Components.classes["@mozilla.org/content-viewer-factory/view;1?type=application/maf"]
-                                  .getService(Components.interfaces.nsIMafDocumentViewerFactory);
+      var MafDocumentViewer = Components.classes["@mozilla.org/content-viewer-factory/view;1?type=application/x-maf"]
+                                .getService(Components.interfaces.nsIMafDocumentViewerFactory);
       MafDocumentViewer.init(Maf);
+
+      var MafContentHandler = Components.classes["@mozilla.org/uriloader/content-handler;1?type=application/x-maf"]
+                                .getService(Components.interfaces.nsIMafDocumentViewerFactory);
+      MafContentHandler.init(Maf);
     }
   },
 
@@ -708,7 +749,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.5.0", // 0.5.0 has a new invis.vbs
+  postsetupversion: "0.5.1", // 0.5.1 has new batch files
 
   _getSaveFilters: function() {
     var filterresult = new Array();
@@ -735,8 +776,8 @@ var MafPostSetup = {
       // will be invoked.
       var catMan = Components.classes["@mozilla.org/categorymanager;1"]
                       .getService(Components.interfaces.nsICategoryManager);
-      var result  = catMan.addCategoryEntry("Gecko-Content-Viewers", "application/maf",
-                      "@mozilla.org/content-viewer-factory/view;1?type=application/maf", true, true);
+      var result  = catMan.addCategoryEntry("Gecko-Content-Viewers", "application/x-maf",
+                      "@mozilla.org/content-viewer-factory/view;1?type=application/x-maf", true, true);
 
       const mimeTypes = "UMimTyp";
       var fileLocator = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -749,7 +790,7 @@ var MafPostSetup = {
       var fileHandler = ioService.getProtocolHandler("file").QueryInterface(Components.interfaces.nsIFileProtocolHandler);
       var gDS = gRDF.GetDataSourceBlocking(fileHandler.getURLSpecFromFile(file));
 
-      var mime = "application/maf";
+      var mime = "application/x-maf";
 
       var handler = new HandlerOverride(MIME_URI(mime), gDS);
 
@@ -765,8 +806,8 @@ var MafPostSetup = {
       }
       handler.isEditable = true;
       handler.saveToDisk = false;
-      handler.handleInternal = false;
-      handler.alwaysAsk = true;
+      handler.handleInternal = false; //false
+      handler.alwaysAsk = false; // true
       handler.appDisplayName = "MAF";
 
       handler.buildLinks();
@@ -792,7 +833,7 @@ var MafPostSetup = {
     try {
       prefs.setIntPref("version.major", 0);
       prefs.setIntPref("version.minor", 5);
-      prefs.setIntPref("version.minorminor", 0);
+      prefs.setIntPref("version.minorminor", 1);
     } catch(e) { }
 
     if (!setupComplete) {
@@ -807,6 +848,7 @@ var MafPostSetup = {
       prefs.setBoolPref("postsetup." + this.postsetupversion + ".complete", true);
     }
   },
+
 
   /**
    * Create the MAF temporary directory structure.
@@ -962,6 +1004,8 @@ var MafPostSetup = {
   updateScriptContents: function() {
     var profileDir = this._getProfileDir();
     var mozillaInstance = this._getMozillaInstance();
+    var profileDirDrive = profileDir.substring(0, 2);
+    var profileDirNoDrive = profileDir.substring(2, profileDir.length);
 
     // If not on windows
     if (navigator.userAgent.indexOf("Windows") == -1) {
@@ -984,6 +1028,8 @@ var MafPostSetup = {
       if (MafUtils.checkFileExists(profileDir + "\\maf\\mafzip.bat")) {
         var mafzipStr = MafUtils.readFile(profileDir + "\\maf\\mafzip.bat");
         mafzipStr = mafzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIRDRIVE%%", profileDirDrive);
+        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIRNODRIVE%%", profileDirNoDrive);
         MafUtils.deleteFile(profileDir + "\\maf\\mafzip.bat");
         MafUtils.createExecutableFile(profileDir + "\\maf\\mafzip.bat", mafzipStr);
       }
@@ -991,6 +1037,8 @@ var MafPostSetup = {
       if (MafUtils.checkFileExists(profileDir + "\\maf\\mafunzip.bat")) {
         var mafunzipStr = MafUtils.readFile(profileDir + "\\maf\\mafunzip.bat");
         mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIRDRIVE%%", profileDirDrive);
+        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIRNODRIVE%%", profileDirNoDrive);
         MafUtils.deleteFile(profileDir + "\\maf\\mafunzip.bat");
         MafUtils.createExecutableFile(profileDir + "\\maf\\mafunzip.bat", mafunzipStr);
       }
@@ -1045,9 +1093,34 @@ browserWindow.addEventListener("popupshown", Maf.onPopupShown, true);
 }
 
 function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
+//  var contents = "" + (new Date()).getTime() + ": " + text;
+
+  Components.classes["@mozilla.org/consoleservice;1"]
+    .getService(Components.interfaces.nsIConsoleService)
+    .logStringMessage(text);
+
+/*
+  var logFile = Components.classes["@mozilla.org/file/directory_service;1"]
+                  .getService(Components.interfaces.nsIProperties)
+                  .get("ProfD", Components.interfaces.nsIFile);
+  logFile.append("mafdebug.log");
+
+  if (!logFile.exists()) {
+    logFile.create(0x00, 0644);
+  }
+
+  contents += "\r\n";
+
+  try {
+    var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                        .createInstance(Components.interfaces.nsIFileOutputStream);
+    oTransport.init( logFile, 0x04 | 0x08 | 0x10, 064, 0 );
+    oTransport.write(contents, contents.length);
+    oTransport.close();
+  } catch (e) {
+    alert(e);
+  }
+*/
 };
 
 /**

@@ -29,7 +29,7 @@
          onload="onLoad()">
 
 <script src="chrome://maf/content/maf.js"/>
-<script>
+<script><![CDATA[
  browserWindow = window.arguments[0];
 
  MafGUI.init(browserWindow);
@@ -56,9 +56,9 @@
 
       var urlList = new Array();
 
-      for (var t=0; t &lt; numRanges; t++) {
+      for (var t=0; t < numRanges; t++) {
         document.getElementById("open-archives-tree").view.selection.getRangeAt(t,start,end);
-        for (var v=start.value; v &lt;= end.value; v++) {
+        for (var v=start.value; v <= end.value; v++) {
           var url = document.getElementById("open-archives-tree").view.getCellText(v, urlsource);
           var level = document.getElementById("open-archives-tree").view.getLevel(v);
 
@@ -70,8 +70,8 @@
 
             try {
               // While we're on a sub-level, and there are still rows
-              while ((document.getElementById("open-archives-tree").view.getLevel(levelZeroV) == 1) &amp;&amp;
-                     (levelZeroV &lt; document.getElementById("open-archives-tree").view.rowCount)) {
+              while ((document.getElementById("open-archives-tree").view.getLevel(levelZeroV) == 1) &&
+                     (levelZeroV < document.getElementById("open-archives-tree").view.rowCount)) {
                 var levelZeroUrl = document.getElementById("open-archives-tree").view.getCellText(levelZeroV, urlsource);
                 urlList[urlList.length] = levelZeroUrl;
                 levelZeroV++;
@@ -100,9 +100,9 @@
 
       var urlList = new Array();
 
-      for (var t=0; t &lt; numRanges; t++) {
+      for (var t=0; t < numRanges; t++) {
         document.getElementById("open-archives-tree").view.selection.getRangeAt(t,start,end);
-        for (var v=start.value; v &lt;= end.value; v++) {
+        for (var v=start.value; v <= end.value; v++) {
           var url = document.getElementById("open-archives-tree").view.getCellText(v, urlsource);
           var level = document.getElementById("open-archives-tree").view.getLevel(v);
 
@@ -114,8 +114,8 @@
 
             try {
               // While we're on a sub-level, and there are still rows
-              while ((document.getElementById("open-archives-tree").view.getLevel(levelZeroV) == 1) &amp;&amp;
-                     (levelZeroV &lt; document.getElementById("open-archives-tree").view.rowCount)) {
+              while ((document.getElementById("open-archives-tree").view.getLevel(levelZeroV) == 1) &&
+                     (levelZeroV < document.getElementById("open-archives-tree").view.rowCount)) {
                 var levelZeroUrl = document.getElementById("open-archives-tree").view.getCellText(levelZeroV, urlsource);
                 urlList[urlList.length] = MafState.getMafURL(levelZeroUrl);
                 levelZeroV++;
@@ -167,12 +167,113 @@
     }
   }
 
+  var contextMenuSelectedRow = null;
+
+  /**
+   * Displays a context menu for a selected row in the tree
+   */
+  function showContextMenuForRowInTab(event) {
+    if ((event.target) && (event.target.nodeName == "treechildren")) {
+      // Didn't click on empty space
+
+      var oRow = new Object;
+
+      // Get cell at event's coordinates
+      document.getElementById("open-archives-tree").treeBoxObject.getCellAt(event.clientX,
+                                                      event.clientY, oRow, new Object, new Object);
+
+      // If not -1, row in this tree
+      if (oRow.value != -1) {
+        // Only show the context menu if the element is not level 0.
+
+        var level = document.getElementById("open-archives-tree").view.getLevel(oRow.value);
+
+        if (level != 0) {
+
+          contextMenuSelectedRow = oRow.value;
+
+          document.getElementById("maf-browsearchives-contextmenu")
+            .showPopup(event.target, event.screenX, event.screenY);
+        }
+
+      }
+
+    }
+  }
+
+  /**
+   * For the selected row, if the column is being displayed, copy the data at that row to the clipboard.
+   */
+  function copyMetaData() {
+    var resultStr = "";
+
+    if (contextMenuSelectedRow != null) {
+      var v = contextMenuSelectedRow;
+      resultStr = document.getElementById("open-archives-tree").view.getCellText(v, "title");
+      if (document.getElementById("archivetime").getAttribute("hidden") != "true") {
+        resultStr += " " + document.getElementById("open-archives-tree").view.getCellText(v, "archivetime");
+      }
+
+      if (document.getElementById("originalurl").getAttribute("hidden") != "true") {
+        resultStr += " " + document.getElementById("open-archives-tree").view.getCellText(v, "originalurl");
+      }
+
+      if (document.getElementById("localurl").getAttribute("hidden") != "true") {
+        resultStr += " " + document.getElementById("open-archives-tree").view.getCellText(v, "localurl");
+      }
+      _copyTextToClipboard(resultStr);
+
+    }
+  }
+
+  /**
+   * Put the text in the parameter on the clipboard.
+   */
+  function _copyTextToClipboard(copytext) {
+    var result = true;
+
+    try {
+      var str = Components.classes["@mozilla.org/supports-string;1"]
+                  .createInstance(Components.interfaces.nsISupportsString);
+
+      str.data = copytext;
+
+      var trans = Components.classes["@mozilla.org/widget/transferable;1"]
+                    .createInstance(Components.interfaces.nsITransferable);
+
+      trans.addDataFlavor("text/unicode");
+      trans.setTransferData("text/unicode", str, copytext.length*2);
+
+      Components.classes["@mozilla.org/widget/clipboard;1"]
+        .getService(Components.interfaces.nsIClipboard)
+        .setData(trans, null, Components.interfaces.nsIClipboard.kGlobalClipboard);
+
+    } catch (e) {
+      result = false;
+    }
+
+    return result;
+  }
+
+]]>
 </script>
+
+<!-- context-menu -->
+<menupopup id="maf-browsearchives-contextmenu">
+  <menuitem id="maf-browsearchives-contextmenu-edit" label="Edit Meta-data" oncommand="editMetaData();"/>
+  <menuitem id="maf-browsearchives-contextmenu-copy" label="Copy Meta-data" oncommand="copyMetaData();"/>
+  <menuseparator />
+  <menuitem id="maf-browsearchives-contextmenu-refresh" label="Refresh archive" oncommand="refresh();"/>
+  <menuitem id="maf-browsearchives-contextmenu-setindexpage" label="Set as Index" oncommand="setAsIndexMetaData();"/>
+  <menuseparator />
+  <menuitem id="maf-browsearchives-contextmenu-delete" label="Delete from archive" oncommand="deleteFromArchive();"/>
+</menupopup>
+<!-- context-menu -->
 
 <vbox flex="1">
   <tree id="open-archives-tree" flex="1" rows="15" datasources="rdf:null"
          ref="http://maf.mozdev.org/metadata/rdf/open-archives" flags="dont-build-content"
-         ondblclick="openTreeRowInTab(event);">
+         ondblclick="openTreeRowInTab(event);" oncontextmenu="showContextMenuForRowInTab(event);">
   <treecols>
     <treecol id="title" label="&maf.browseOpenArchivesDialog.tree.title;" primary="true" flex="1"
               persist="width ordinal hidden"/>
