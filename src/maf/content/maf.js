@@ -33,6 +33,7 @@
  *
  * Optional function that is executed when a single page is added to archive - An alert telling the user archive is complete
  * Opening tabs from browse dialog now uses blank tab if possible.
+ * Fixed reader bug when reading file using MafUtils.
  * MHT decoder parses headers properly to use boundary string instead of regular expression. - TODO
  * Main page content type is saved in archive. - TODO
  * Original URLs and content types of linked files. - TODO
@@ -102,6 +103,9 @@ const urlContractID = "@mozilla.org/network/standard-url;1";
 const urlIID = Components.interfaces.nsIURL;
 const mimeServiceContractID = "@mozilla.org/mime;1";
 const mimeServiceIID = Components.interfaces.nsIMIMEService;
+const binaryInputStreamContractID = "@mozilla.org/binaryinputstream;1";
+const binaryInputStreamIID = Components.interfaces.nsIBinaryInputStream;
+
 
 const webBrowserPersistIID = Components.interfaces.nsIWebBrowserPersist;
 const rdfDatasourceIID = Components.interfaces.nsIRDFDataSource;
@@ -1546,11 +1550,41 @@ var MafUtils = {
     }
 
     try {
-      var str = obj_ScriptableIO.read(obj_File.fileSize-1);
+      var str = obj_ScriptableIO.read(obj_File.fileSize);
     } catch (e) {
 
     }
     obj_ScriptableIO.close();
+    obj_InputStream.close();
+
+    return str;
+  },
+
+
+  /**
+   * Read the contents of a file as bytes
+   */
+  readBinaryFile: function(str_Filename) {
+    try {
+      var obj_File = Components.classes[localFileContractID].createInstance(localFileIID);
+      obj_File.initWithPath(str_Filename);
+
+      var obj_InputStream = Components.classes[fileInputStreamContractID].createInstance(fileInputStreamIID);
+      obj_InputStream.init(obj_File, 0x01, 0444, null);
+
+      var obj_BinaryIO = Components.classes[binaryInputStreamContractID].createInstance(binaryInputStreamIID);
+
+      obj_BinaryIO.setInputStream(obj_InputStream);
+    } catch (e) {
+      alert(e);
+    }
+
+    try {
+      var str = obj_BinaryIO.readBytes(obj_File.fileSize);
+    } catch (e) {
+
+    }
+    obj_BinaryIO.close();
     obj_InputStream.close();
 
     return str;
@@ -2195,7 +2229,7 @@ var MafMHTHander = {
   QPENCODE_UNALTEREDEND: String.fromCharCode(33) + String.fromCharCode(60) + String.fromCharCode(62) + String.fromCharCode(126),
 
   /** The maximum number of characters before line wrap */
-  QPENCODE_MAXLINESIZE: 76,
+  QPENCODE_MAXLINESIZE: 74,
 
   extractFromArchive: function(archivefile, destpath) {
     // Create destpath
@@ -2507,11 +2541,21 @@ var MafMHTHander = {
                 (dual ? (decStr.charCodeAt(i) & 0xff) <<8 : 0);
         encOut += this.base64s.charAt((bits & 0x00fc0000) >>18) +
                   this.base64s.charAt((bits & 0x0003f000) >>12) +
-                  (dual ? base64s.charAt((bits & 0x00000fc0) >>6) : '=') + '=';
+                  (dual ? this.base64s.charAt((bits & 0x00000fc0) >>6) : '=') + '=';
       }
       result = encOut;
     } catch(e) {
       alert(e);
+    }
+
+    if (encOut.length > this.QPENCODE_MAXLINESIZE) {
+      // Split into lines of QPENCODE_MAXLINESIZE characters or less
+      result = encOut.slice(0, this.QPENCODE_MAXLINESIZE);
+      i = this.QPENCODE_MAXLINESIZE;
+      while (i < encOut.length) {
+        result += "\r\n" + encOut.slice(i, i + this.QPENCODE_MAXLINESIZE);
+        i += this.QPENCODE_MAXLINESIZE;
+      }
     }
 
     return result;
@@ -2549,7 +2593,7 @@ var MafMHTHander = {
     var result;
     result = "";
 
-    var textLines = srcString.split(new RegExp("\r\n","g"));
+    var textLines = srcString.split(new RegExp("\r?\n","g"));
     for (var i=0; i<textLines.length; i++) {
       result += this._encodeQuotedPrintableLine(textLines[i]) + "\r\n";
     }
@@ -2645,7 +2689,7 @@ var MafMHTHander = {
    *
    */
   archiveDownload: function(archivefile, sourcepath) {
-   /*
+
     var MHTContentString = "";
     var mainfileSubject = "Unknown";
     var dateArchived = "Unknown";
@@ -2680,7 +2724,7 @@ var MafMHTHander = {
       MHTContentString += this._addFileToMHT(boundaryString, sourcepath, indexfilename, originalurl);
 
       try {
-        var supportFileList = this._getSupportingFilesList(sourcepath);
+        var supportFileList = this._getSupportingFilesList(sourcepath, originalurl);
         // For each file supporting, add it
         for (var i=0; i<supportFileList.length; i++) {
           MHTContentString += this._addFileToMHT(boundaryString, sourcepath,
@@ -2692,19 +2736,50 @@ var MafMHTHander = {
 
       // End file content
       MHTContentString += "\r\n--" + boundaryString + "--\r\n";
+    } else {
+
+      // TODO!!! Don't forget
+
     }
 
     MafUtils.createFile(archivefile, MHTContentString);
-   */
 
-    alert("Saving as MHT is not supported.");
+
+    //alert("Saving as MHT is not supported.");
+  },
+
+  /**
+   * @return a fake url where resources were found
+   */
+  _getBaseFakeUrl: function(originalurl) {
+    var baseUrl = "";
+
+    // Get a url without querystring or hash
+    baseUrl = originalurl.trim();
+    if (baseUrl.indexOf("?") > 0) {
+      baseUrl = baseUrl.substring(0, baseUrl.indexOf("?"));
+    }
+    if (baseUrl.indexOf("#") > 0) {
+      baseUrl = baseUrl.substring(0, baseUrl.indexOf("#"));
+    }
+
+    // If the last character isn't a /
+    if (baseUrl.charAt(baseUrl.length-1) != "/") {
+      // Append / to end
+      baseUrl += "/";
+    }
+
+    return baseUrl;
   },
 
   /**
    * Returns an array of supporting index files
+   * Does not generate real original addresses of index files - TODO FIX, somehow
    */
-  _getSupportingFilesList: function(sourcepath) {
+  _getSupportingFilesList: function(sourcepath, originalurl) {
     var result = new Array();
+
+    var baseUrl = this._getBaseFakeUrl(originalurl);
 
     var oDir = Components.classes[localFileContractID].getService(localFileIID);
     oDir.initWithPath(MafPreferences.temp);
@@ -2718,13 +2793,16 @@ var MafMHTHander = {
         var currFile = entries.getNext();
         currFile.QueryInterface(localFileIID);
 
-        result[result.length] = [currFile.leafName, "index_files/" + currFile.leafName];
+        result[result.length] = [currFile.leafName, baseUrl + "index_files/" + currFile.leafName];
 
       }
     }
     return result;
   },
 
+  /**
+   * Add a supporting binary file to the MHT encoding
+   */
   _addFileToMHT: function(boundaryString, sourcepath, filename, originalUrl, subdir) {
     var result = "";
     try {
@@ -2732,7 +2810,11 @@ var MafMHTHander = {
       var thisFileContentEncoding = this._getContentEncodingByType(thisFileContentType);
 
       result += "\r\n--" + boundaryString + "\r\n";
-      result += "Content-Type: " + thisFileContentType + "\r\n";
+      if ((subdir != null) && (thisFileContentEncoding == "base64")) {
+        result += "Content-Type: application/octet-stream\r\n";
+      } else {
+        result += "Content-Type: " + thisFileContentType + "\r\n";
+      }
       result += "Content-Transfer-Encoding: " + thisFileContentEncoding + "\r\n";
       result += "Content-Location: " + originalUrl + "\r\n\r\n";
 
@@ -2743,9 +2825,15 @@ var MafMHTHander = {
       }
       var fullFilename = MafUtils.appendToDir(fullSourcePath, filename);
 
-      var srcFile =  MafUtils.readFile(fullFilename);
+      var srcFile =  MafUtils.readBinaryFile(fullFilename);
 
       if (thisFileContentEncoding == "quoted-printable") {
+        // If it isn't a supporting file, replace all relative
+        //   supporting files urls with absolute urls
+        if (subdir == null) {
+          var supportFileList = this._getSupportingFilesList(sourcepath, originalurl);
+          srcFile = this._updateRelativeResourceLinks(srcFile, supportFileList);
+        }
         result += this._encodeQuotedPrintable(srcFile);
       } else { // Base64
         result += this._encodeBase64(srcFile);
@@ -2757,6 +2845,22 @@ var MafMHTHander = {
     }
     return result;
   },
+
+
+  /**
+   * For each resource, search and replace all
+   * @return srcFile with absolute links.
+   */
+  _updateRelativeResourceLinks: function(srcFile, supportFileList) {
+    var result = srcFile;
+
+    for (var i=0; i<supportFileList.length; i++) {
+      result = result.replaceAll("index_files/" + supportFileList[i][0], supportFileList[i][1]);
+    }
+
+    return result;
+  },
+
 
   /**
    * Determine the MIME encoding to used based on the content type
@@ -2842,7 +2946,7 @@ var MafMHTHander = {
    * @return The content type for whatever file specified.
    */
   _getFileContentType: function(sourcepath, filename, subdir) {
-    var result = null;
+    var result = "application/octet-stream";
     try {
       var ifile = Components.classes[localFileContractID].getService(localFileIID);
       ifile.initWithPath(MafPreferences.temp);
