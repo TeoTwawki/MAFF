@@ -68,9 +68,19 @@ var MafGUI = {
   selectFileSave: function() {
     var filters = MafPreferences.getSaveFilters();
 
+    var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
+    try {
+      // Check pref for index and set it
+      var defaultFilterIndex = prefs.getIntPref("savearchive.filterindex");
+    } catch(e) { }
+
     var result = this.selectFile("Select MAF Archive:",
                                   filePickerIID.modeSave,
-                                  filters);
+                                  filters,
+                                  null,
+                                  defaultFilterIndex);
+
+    prefs.setIntPref("savearchive.filterindex", result[1]);
 
     var selectedFileType = filters[result[1]][1];
 
@@ -94,9 +104,19 @@ var MafGUI = {
   selectFileOpen: function() {
     var filters = MafPreferences.getOpenFilters();
 
+    var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
+    try {
+      // Check pref for index and set it
+      var defaultFilterIndex = prefs.getIntPref("openarchive.filterindex");
+    } catch(e) { }
+
     var result = this.selectFile("Select MAF Archive:",
                                   filePickerIID.modeOpen,
-                                  filters);
+                                  filters,
+                                  null,
+                                  defaultFilterIndex);
+
+    prefs.setIntPref("openarchive.filterindex", result[1]);
 
     return [result[1], result[0].path];
   },
@@ -105,7 +125,7 @@ var MafGUI = {
    * Shows the filepicker dialog with the appropriate filters.
    * @return The file selected.
    */
-  selectFile: function(windowTitle, filePickerMode, filters, initialDirectory) {
+  selectFile: function(windowTitle, filePickerMode, filters, initialDirectory, defaultFilterIndex) {
     var fp = Components.classes[filePickerContractID].createInstance(filePickerIID);
     fp.init(window, windowTitle, filePickerMode);
 
@@ -131,6 +151,11 @@ var MafGUI = {
     if (filters.length==0) {
       fp.appendFilters(nsIFilePicker.filterAll);
     }
+
+    try {
+      fp.filterIndex = defaultFilterIndex;
+    } catch(e) { }
+
     var res=fp.show();
     return [fp.file, fp.filterIndex];
   },

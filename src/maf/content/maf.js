@@ -41,6 +41,7 @@
  * Updated the MHT Handler to cater for saving multiple tabs.
  * Fixed bug with file association and loading of preferences.
  * MHT archive handler no longer dies on pages with frames.
+ * Filter index saved as a preference for MAF open and save archive dialogs.
  *
  *
  * Changes from 0.2.19 to 0.2.20 - Completed
@@ -296,6 +297,12 @@ String.prototype.replaceAll = function(needle, newneedle) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * This, by the way, is *NOT* the best way to get this functionality done.
+ * Better way - URI load watcher or some such service that intercepts the load before the
+ *              default action is performed.
+ */
+
 var loadURIios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
     // If we're being called before windows start appearing, we haven't loaded anything as yet
@@ -402,8 +409,19 @@ function BrowserOpenFileWindow()
 
     fp.appendFilters(nsIFilePicker.filterAll);
 
-    if (fp.show() == nsIFilePicker.returnOK)
+    var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.");
+
+    try {
+      // Check pref for index and set it
+      var filterIndex = prefs.getIntPref("openfile.filterindex");
+      fp.filterIndex = filterIndex;
+    } catch(e) { }
+
+
+    if (fp.show() == nsIFilePicker.returnOK) {
+      prefs.setIntPref("openfile.filterindex", fp.filterIndex);
       openTopWin(fp.fileURL.spec);
+    }
   } catch (ex) {
   }
 }
