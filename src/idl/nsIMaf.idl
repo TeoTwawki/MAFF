@@ -1,0 +1,13 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(53898f06-03f1-4473-b3a5-9b0008b83b2f)]
+interface nsIMaf : nsISupports
+{
+  void extractFromArchive(in string program, in string archivefile, in string destpath);
+  void archiveDownload(in string program, in string archivefile, in string sourcepath);
+  void saveAsWebPageComplete(in nsISupports aBrowser, in string tempPath, in string scriptPath, in string archivePath);
+  void nativeSaveFile(in nsISupports aDocument, in string aSaveDocPath, in string aSaveDocFileName, in nsISupports aObjMafArchiver);
+  void saveAllTabsComplete(in nsISupports browsers, in string tempPath, in string scriptPath, in string archivePath);
+  void openFromArchive(in string tempPath, in string scriptPath, in string archivePath);
+  void openListInTabs(in nsISupports urlList);
+};

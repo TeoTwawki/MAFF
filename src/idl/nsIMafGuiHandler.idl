@@ -1,0 +1,22 @@
+#include "nsISupports.idl"
+#include "nsIMaf.idl"
+#include "nsIMafTabExpander.idl"
+#include "nsIMafTabArchiver.idl"
+
+[scriptable, uuid(4a5db9f8-35d0-4cc0-91b6-681cd698495a)]
+interface nsIMafGuiHandler : nsISupports
+{
+  void init(in nsISupports window);
+  void showAbout();
+  void loadArchive(in nsIMaf maf);
+  void addAllTabsToArchive(in nsIMaf maf);
+  void addToArchive(in nsIMaf maf);
+  void showPreferences();
+  void browseOpenArchives();
+  nsISupports getOpenFilters();
+  string selectDirectory(in string title, in string initialdir);
+  string selectSpecificFile(in string title, in string initialdir, in string filterfilename);
+  void showDownloadTabsDLG(in nsIMafTabArchiver objTabArchiver);
+  void showOpenTabsDLG(in nsIMafTabExpander objMafExpander);
+  void showBrowseOpenArchivesDLG();
+};

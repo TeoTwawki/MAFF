@@ -1,0 +1,15 @@
+#include "nsISupports.idl"
+#include "nsIMaf.idl"
+#include "nsIMafProgressUpdater.idl"
+
+[scriptable, uuid(c154eb5d-9d62-40c5-a694-618b55e509a5)]
+interface nsIMafTabArchiver : nsISupports
+{
+  attribute boolean downloadComplete;
+
+  void init(in nsISupports browsers, in string tempPath, in string scriptPath, in string archivePath, in nsIMaf maf);
+  void start();
+  void stop();
+  void setProgressUpdater(in nsIMafProgressUpdater updater);
+  void progressUpdater(in short progress);
+};

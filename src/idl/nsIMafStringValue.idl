@@ -1,0 +1,7 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(c0a56181-8907-40d3-937b-dc060ea0217e)]
+interface nsIMafStringValue : nsISupports
+{
+    attribute string value;
+};

@@ -1,0 +1,7 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(ec40a06e-7864-4f72-b6f7-bc5fedef95dd)]
+interface nsIMafOnComplete : nsISupports
+{
+  void onComplete();
+};

@@ -1,0 +1,14 @@
+#include "nsISupports.idl"
+#include "nsIFile.idl"
+
+[scriptable, uuid(1a5c8698-b7a4-44af-87f4-38831fb369df)]
+interface nsIMafMhtEncoder : nsISupports
+{
+    readonly attribute string PROGID;
+    attribute string from;
+    attribute string subject;
+    attribute string date;
+
+    void addFile(in string source, in string type, in string location, in string id);
+    void encodeTo(in nsIFile dest);
+};

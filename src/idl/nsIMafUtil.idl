@@ -1,0 +1,41 @@
+#include "nsISupports.idl"
+#include "nsILocalFile.idl"
+#include "nsIURL.idl"
+
+[scriptable, uuid(6e08b6a2-7d43-4cc8-90fc-4fe468a41b93)]
+interface nsIMafUtil : nsISupports
+{
+  string appendToDir(in string initialDir, in string subDir);
+  nsILocalFile createDir(in string dirName);
+  void createFile(in string fileToCreate, in string contents);
+  void createExecutableFile(in string fileToCreate, in string contents);
+
+  void copyBinaryFile(in string source, in string dest);
+
+  void deleteFile(in string fileToDelete);
+  boolean checkFileExists(in string filePathToCheck);
+  string getUniqueFilename(in string destDir, in string suggestedFilename);
+  string getFullUniqueFilename(in string suggestedPathAndFilename);
+  string readFile(in string filename);
+
+  nsISupports readBinaryFile(in string filename);
+
+  /* nsIRDFRemoteDataSource */
+  nsISupports createRDF(in string path, in string filename);
+
+  string getURI(in nsILocalFile file);
+  string getURIFromFilename(in string filename);
+
+  void addStringData(in nsISupports datasource, in string name, in string value);
+  void openListInTabs(in nsISupports urlList, in nsISupports oBrowser);
+
+  short getNumberOfOpenWindows();
+  boolean isWindowOpen(in string location);
+  string addBaseHref(in string source, in string baseURL);
+  string getMIMETypeForURI(in string url);
+
+  string getDefaultFileName(in string aDefaultFileName, in nsIURL aDocumentURI);
+  string validateFileName(in string aFileName);
+  string getExtensionByType(in string contentType);
+
+};

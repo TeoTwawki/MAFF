@@ -1,0 +1,8 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(36f6398b-372c-4a25-8881-01dbe1d8195c)]
+interface nsIMafMhtHeaderRec : nsISupports
+{
+    attribute string name;
+    attribute string value;
+};

@@ -1,0 +1,14 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(de7a59d9-4857-4a8e-9455-61e1c990d6ea)]
+interface nsIMafState : nsISupports
+{
+  void addArchiveInfo(in string tempPath, in string foldernum, in string archivePath, out PRUint32 count, [array, size_is(count)] out string localUrls);
+  nsISupports getDatasource();
+  boolean isArchiveURL(in string url);
+  boolean isLocallyMappableURL(in string url);
+  string getLocalURL(in string url);
+  string getOriginalURL(in string url);
+  boolean isArchiveURIOpen(in string url);
+  string expandedArchiveURIPath(in string url);
+};
