@@ -24,7 +24,6 @@
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script src="chrome://maf/content/mafarchiver.js"/>
-  <script src="chrome://maf/content/mafpreferences.js"/>
   <script src="chrome://maf/content/mafgui.js"/>
   <script src="chrome://maf/content/mafnativefilesave.js"/>
   <script src="chrome://maf/content/mafstate.js"/>
@@ -32,7 +31,7 @@
   <script src="chrome://maf/content/maftabexpander.js"/>
   <script src="chrome://maf/content/mafmhthandler.js"/>
   <script src="chrome://maf/content/mafutils.js"/>
-  <script src="chrome://maf/content/mafopenqueue.js"/>  
+  <script src="chrome://maf/content/mafopenqueue.js"/>
   <script src="chrome://maf/content/maf.js"/>
 
   <menupopup id="menu_FilePopup">
@@ -51,7 +50,7 @@
   <menupopup id="menu_ToolsPopup">
 
     <menu id="maf-firefox-menu" label="&maf.menuLabel;" position="4">
-      <menupopup>
+      <menupopup id="maf-firefox-menupopup">
         <menuitem id="maf-firefox-preferences" label="&maf.preferences;"
                    accesskey="&maf.preferencesKey;"
                    oncommand="MafGUI.showPreferences();" />
@@ -74,7 +73,7 @@
   <!-- mozilla tools menu -->
   <menupopup id="taskPopup">
     <menu id="maf-mozilla-menu" label="&maf.menuLabel;" position="8">
-      <menupopup>
+      <menupopup id="maf-mozilla-menupopup">
         <menuitem id="maf-mozilla-preferences" label="&maf.preferences;"
                    accesskey="&maf.preferencesKey;"
                    oncommand="MafGUI.showPreferences();" />

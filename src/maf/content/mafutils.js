@@ -422,7 +422,7 @@ var MafUtils = {
 
     var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
                     ",width="+ w +",height=" + h;
-    window.openDialog(url, "_blank", win_prefs, MafPreferences, MafGUI);
+    window.openDialog(url, "_blank", win_prefs);
   },
 
   /**
@@ -567,6 +567,8 @@ var MafUtils = {
 
     // If it's the last window
     if (numberOfOpenWindows < 2) {
+      var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                             .getService(Components.interfaces.nsIMafPreferences);
 
       if (MafPreferences.clearTempOnClose) {
         // Remove everything in the temp directory
@@ -644,18 +646,14 @@ var MafUtils = {
         // Setup the RDF in memory data source for the current state
         hiddenWnd.MafState.setupDataSource();
 
-
-        hiddenWnd.MafPreferences = MafPreferences;
-
-        // Load the last stored preferences into the object.
-        hiddenWnd.MafPreferences.load();
-
         MafPostSetup.complete();
 
       } else {
         MafState = hiddenWnd.MafState;
-        MafPreferences = hiddenWnd.MafPreferences;
       }
+
+      var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                             .getService(Components.interfaces.nsIMafPreferences);
 
       /**
        * Hack until find an event like onChromeLoad
@@ -676,6 +674,9 @@ var MafUtils = {
    */
   onTabLoad: function(evt) {
     if (evt.originalTarget == "[object HTMLDocument]") {
+      var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                             .getService(Components.interfaces.nsIMafPreferences);
+
       // New tab
       if (MafPreferences.urlRewrite) {
 
@@ -742,7 +743,7 @@ var MafUtils = {
         resultString += sourceString.substring(htmlMatch.index + htmlMatch.toString().length, sourceString.length);
       } else {
         // If no html tag (uhm, ok then) not html?
-
+        resultString = sourceString;
       }
     } catch(e) {
 
@@ -781,7 +782,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.3.0",
+  postsetupversion: "0.3.0", // 0.4.0 Doesn't have new scripts, so leave this
 
   /**
    * Complete the setup, if necessary
@@ -931,7 +932,7 @@ var MafPostSetup = {
     var isFF09OrHigher = false;
     if ((navigator.vendor != null) && (navigator.vendorSub != null)) {
       if (navigator.vendor.toLowerCase() == "firefox") {
-        isFF09OrHigher = (parseFloat(navigator.vendorSub) >= 0.9);
+        isFF09OrHigher = (parseFloat(navigator.vendorSub.substring(navigator.vendorSub.indexOf(".") + 1, navigator.vendorSub.length)) >= 9);
       }
     }
 

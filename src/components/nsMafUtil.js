@@ -56,9 +56,7 @@ var gRDFCService = Components.classes["@mozilla.org/rdf/container-utils;1"]
  * The MAF Util Service.
  */
 function MafUtilServiceClass() {
-  this.navigator = Components.classes["@mozilla.org/appshell/appShellService;1"]
-                        .getService(Components.interfaces.nsIAppShellService)
-                        .hiddenDOMWindow.navigator;
+
 }
 
 MafUtilServiceClass.prototype = {
@@ -572,6 +570,12 @@ MafUtilServiceClass.prototype = {
   },
 
   validateFileName: function(aFileName) {
+    if (!this.navigator) {
+      this.navigator = Components.classes["@mozilla.org/appshell/appShellService;1"]
+                            .getService(Components.interfaces.nsIAppShellService)
+                            .hiddenDOMWindow.navigator;
+    }
+
     var re = /[\/]+/g;
     if (this.navigator.appVersion.indexOf("Windows") != -1) {
       re = /[\\\/\|]+/g;
@@ -612,7 +616,11 @@ MafUtilServiceClass.prototype = {
 
 };
 
-var MafUtilService = new MafUtilServiceClass();
+try {
+  var MafUtilService = new MafUtilServiceClass();
+} catch(e) {
+  mafdebug(e);
+}
 
 function mafdebug(text) {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];

@@ -30,6 +30,9 @@ var MafGUI = {
   loadArchive: function() {
     var archiveToOpen = this.selectFileOpen();
 
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                           .getService(Components.interfaces.nsIMafPreferences);
+
     Maf.openFromArchive(MafPreferences.temp,
                         MafPreferences.programFromOpenIndex(archiveToOpen[0]), archiveToOpen[1]);
   },
@@ -40,6 +43,9 @@ var MafGUI = {
   addToArchive: function() {
     var archiveToAddTo = this.selectFileSave();
 
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                           .getService(Components.interfaces.nsIMafPreferences);
+
     Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, MafPreferences.temp,
                               MafPreferences.programFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
   },
@@ -49,6 +55,9 @@ var MafGUI = {
    */
   addAllTabsToArchive: function() {
     var archiveToAddTo = this.selectFileSave();
+
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                           .getService(Components.interfaces.nsIMafPreferences);
 
     Maf.saveAllTabsComplete(window.getBrowser().browsers, MafPreferences.temp,
                             MafPreferences.programFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
@@ -61,14 +70,40 @@ var MafGUI = {
     MafUtils.showPreferencesDLG();
   },
 
+
+
+  getSaveFilters: function() {
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                           .getService(Components.interfaces.nsIMafPreferences);
+
+    var filterresult = new Array();
+    var prefsSaveFilterLength = MafPreferences.getSaveFiltersLength();
+
+    for (var i=0; i<prefsSaveFilterLength; i++) {
+
+      var count = {};
+      var result = {};
+      MafPreferences.getSaveFilterAt(i, count, result);
+
+      if (count.value == 3) {
+        var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
+
+        filterresult[filterresult.length] = entry;
+      }
+    }
+
+    return filterresult;
+  },
+
   /**
    * Opens a File choose dialog with a save mode.
    * @return The file selected.
    */
   selectFileSave: function() {
-    var filters = MafPreferences.getSaveFilters();
+    var filters = this.getSaveFilters();
 
-    var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                   .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
     try {
       // Check pref for index and set it
       var defaultFilterIndex = prefs.getIntPref("savearchive.filterindex");
@@ -97,14 +132,40 @@ var MafGUI = {
     return [result[1], filename];
   },
 
+
+  getOpenFilters: function() {
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                           .getService(Components.interfaces.nsIMafPreferences);
+
+    var filterresult = new Array();
+    var prefsOpenFilterLength = MafPreferences.getOpenFiltersLength();
+    
+    for (var i=0; i<prefsOpenFilterLength; i++) {
+
+      var count = {};
+      var result = {};
+      MafPreferences.getOpenFilterAt(i, count, result);
+
+      if (count.value == 3) {
+        var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
+
+        filterresult[filterresult.length] = entry;
+      }
+    }
+
+    return filterresult;
+  },
+
+
   /**
    * Opens a File choose dialog with a open mode.
    * @return The file selected.
    */
   selectFileOpen: function() {
-    var filters = MafPreferences.getOpenFilters();
+    var filters = this.getOpenFilters();
 
-    var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                  .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
     try {
       // Check pref for index and set it
       var defaultFilterIndex = prefs.getIntPref("openarchive.filterindex");
@@ -126,14 +187,16 @@ var MafGUI = {
    * @return The file selected.
    */
   selectFile: function(windowTitle, filePickerMode, filters, initialDirectory, defaultFilterIndex) {
-    var fp = Components.classes[filePickerContractID].createInstance(filePickerIID);
+    var fp = Components.classes["@mozilla.org/filepicker;1"]
+               .createInstance(Components.interfaces.nsIFilePicker);
     fp.init(window, windowTitle, filePickerMode);
 
 
     try {
       if (initialDirectory != null) {
         // Create a directory reference to use
-        var dir = Components.classes[localFileContractID].getService(localFileIID);
+        var dir = Components.classes["@mozilla.org/file/local;1"]
+                    .createInstance(Components.interfaces.nsILocalFile);
         dir.initWithPath(initialDirectory);
 
         fp.displayDirectory = dir;
@@ -173,13 +236,15 @@ var MafGUI = {
   selectDirectory: function(windowTitle, initialDirectory) {
     var result = initialDirectory;
 
-    var fp = Components.classes[filePickerContractID].createInstance(filePickerIID);
-    fp.init(window, windowTitle, filePickerIID.modeGetFolder);
+    var fp = Components.classes["@mozilla.org/filepicker;1"]
+               .createInstance(Components.interfaces.nsIFilePicker);
+    fp.init(window, windowTitle, Components.interfaces.nsIFilePicker.modeGetFolder);
 
     try {
       if (initialDirectory != null) {
         // Create a directory reference to use
-        var dir = Components.classes[localFileContractID].getService(localFileIID);
+        var dir = Components.classes["@mozilla.org/file/local;1"]
+                    .createInstance(Components.interfaces.nsILocalFile);
         dir.initWithPath(initialDirectory);
 
         fp.displayDirectory = dir;
@@ -190,8 +255,8 @@ var MafGUI = {
 
     var res = fp.show();
 
-    if (res == filePickerIID.returnOK) {
-      var selDir = fp.file.QueryInterface(localFileIID);
+    if (res == Components.interfaces.nsIFilePicker.returnOK) {
+      var selDir = fp.file.QueryInterface(Components.interfaces.nsILocalFile);
       result = selDir.path;
     }
 
@@ -209,7 +274,8 @@ var MafGUI = {
 
     try {
       // Create a directory reference to use
-      var filedir = Components.classes[localFileContractID].getService(localFileIID);
+      var filedir = Components.classes["@mozilla.org/file/local;1"]
+                      .createInstance(Components.interfaces.nsILocalFile);
       filedir.initWithPath(initialFilePath);
 
       defaultPath = filedir.path;
@@ -225,7 +291,7 @@ var MafGUI = {
     try {
       var filter = [ [filterFilename, filterFilename] ];
       var fresult = this.selectFile(windowTitle,
-                                     filePickerIID.modeOpen,
+                                     Components.interfaces.nsIFilePicker.modeOpen,
                                      filter,
                                      defaultPath);
       result = fresult[0].path;

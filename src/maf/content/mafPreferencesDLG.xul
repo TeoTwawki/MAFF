@@ -21,7 +21,9 @@
 -->
 <!DOCTYPE window SYSTEM "chrome://maf/locale/maf.dtd">
 
-
+<!--
+  TODO: Interface for getting and setting scripts for filetype.
+-->
 
 <window id="preferencesdlg"
          title="&maf.preferencesdialog.title;"
@@ -31,7 +33,6 @@
          onload="onLoad()">
 
 <script type="application/x-javascript" src="chrome://maf/content/maf.js"/>
-<script type="application/x-javascript" src="chrome://maf/content/mafpreferences.js"/>
 <script type="application/x-javascript" src="chrome://maf/content/mafgui.js"/>
 <script type="application/x-javascript" src="chrome://maf/content/mafarchiver.js"/>
 <script type="application/x-javascript" src="chrome://maf/content/mafnativefilesave.js"/>
@@ -47,28 +48,28 @@
   // Include maf.js and set variables to global objects
   //   to allow for preferences to be displayed in
   //   Firefox tools -> options panel properly.
-  //var mp = window.arguments[0];
-  //var mGUI = window.arguments[1];
 
-  var mp = MafPreferences;
-  var mGUI = MafGUI;
+  var mp;
+  var mGUI;
 
   function onLoad() {
-    // Use global preference object if available
-    gMP = Components.classes[appShellContractID].getService(appShellIID).hiddenDOMWindow.MafPreferences;
-    if (gMP != null) {
-      mp = gMP;
+    try {
+      mp = Components.classes["@mozilla.org/maf/preferences_service;1"]
+             .getService(Components.interfaces.nsIMafPreferences);
+      mGUI = MafGUI;
+      loadFromPref();
+      window.sizeToContent();
+      checkWinOnlyPrefs();
+    } catch(e) {
+      mafdebug(e);
     }
-    loadFromPref();
-    window.sizeToContent();
-    checkWinOnlyPrefs();
   }
 
   function loadFromPref() {
     document.getElementById("txtTempFolder").value = mp.temp;
-    if (mp.archiveOpenMode == mp.OPENMODE_ALLTABS) {
+    if (mp.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS) {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdOpenTabs");
-    } else if (mp.archiveOpenMode == mp.OPENMODE_SHOWDIALOG) {
+    } else if (mp.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_SHOWDIALOG) {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdShowOpen");
     } else {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdDoNothing");
@@ -82,17 +83,19 @@
     document.getElementById("chkClearTempOnClose").checked = mp.clearTempOnClose;
 
 
-    document.getElementById("txtArchiveScript").value = mp.programExtensions[0][1];
-    document.getElementById("txtExpandScript").value = mp.programExtensions[0][2];
+    var mprec = mp.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
+
+    document.getElementById("txtArchiveScript").value = mprec.archivescript;
+    document.getElementById("txtExpandScript").value = mprec.extractscript;
   }
 
 
   function loadDefaultPref() {
     var mpd = mp.defaultValues();
     document.getElementById("txtTempFolder").value = mpd.temp;
-    if (mpd.archiveOpenMode == mp.OPENMODE_ALLTABS) {
+    if (mpd.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS) {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdOpenTabs");
-    } else if (mpd.archiveOpenMode == mp.OPENMODE_SHOWDIALOG) {
+    } else if (mpd.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_SHOWDIALOG) {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdShowOpen");
     } else {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdDoNothing");
@@ -105,8 +108,12 @@
     document.getElementById("winInvisVbsLoc").value = mpd.win_invisiblevbs;
     document.getElementById("chkClearTempOnClose").checked = mpd.clearTempOnClose;
 
-    document.getElementById("txtArchiveScript").value = mpd.programExtensions[0][1];
-    document.getElementById("txtExpandScript").value = mpd.programExtensions[0][2];
+
+    var mprec = mpd.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
+
+    document.getElementById("txtArchiveScript").value = mprec.archivescript;
+    document.getElementById("txtExpandScript").value = mprec.extractscript;
+
   }
 
 
@@ -125,11 +132,11 @@
     mp.temp = document.getElementById("txtTempFolder").value;
 
     if (document.getElementById("rdOpenOptions").selectedItem == document.getElementById("rdOpenTabs")) {
-      mp.archiveOpenMode = mp.OPENMODE_ALLTABS;
+      mp.archiveOpenMode = Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS;
     } else if (document.getElementById("rdOpenOptions").selectedItem == document.getElementById("rdShowOpen")) {
-      mp.archiveOpenMode = mp.OPENMODE_SHOWDIALOG;
+      mp.archiveOpenMode = Components.interfaces.nsIMafPreferences.OPENMODE_SHOWDIALOG;
     } else {
-      mp.archiveOpenMode = mp.OPENMODE_NOTHING;
+      mp.archiveOpenMode = Components.interfaces.nsIMafPreferences.OPENMODE_NOTHING;
     }
 
     mp.urlRewrite = document.getElementById("chkURLRewrite").checked;
@@ -139,8 +146,13 @@
     mp.win_invisible = document.getElementById("winChkRunInvisible").checked;
     mp.clearTempOnClose = document.getElementById("chkClearTempOnClose").checked;
 
-    mp.programExtensions[0][1] = document.getElementById("txtArchiveScript").value;
-    mp.programExtensions[0][2] = document.getElementById("txtExpandScript").value;
+
+    var mprec = mp.getRecordAt(0);
+
+    mprec.archivescript = document.getElementById("txtArchiveScript").value;
+    mprec.extractscript = document.getElementById("txtExpandScript").value;
+
+    mp.updateRecordAt(0, mprec);
 
     mp.save();
   }
@@ -156,6 +168,12 @@
     var newFile = mGUI.selectSpecificFile("Select file", initialFile, filename);
     document.getElementById(textFile).value = newFile;
   }
+
+  function mafdebug(text) {
+    var csClass = Components.classes['@mozilla.org/consoleservice;1'];
+    var cs = csClass.getService(Components.interfaces.nsIConsoleService);
+    cs.logStringMessage(text);
+  };
 
 </script>
 

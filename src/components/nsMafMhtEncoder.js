@@ -45,6 +45,57 @@ MafMhtEncoderClass.prototype = {
 
   PROGID : "Internal MHT Program Archive Handler",
 
+  from : "maf@mozdev.org",
+
+  subject : "",
+
+  date : "",
+
+  filelist: new Array(),
+
+  addFile: function(source, type, location, id) {
+    var record = { };
+    record.source = source;
+    record.type = type;
+    record.location = location;
+    record.id = id;
+    filelist.push(record);
+  },
+
+  encodeTo: function(dest) {
+    if (this.filelist.length > 0) {
+
+      if (!dest.exists()) {
+        dest.create(0x00, 0644);
+      }
+
+      try {
+        var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                            .createInstance(Components.interfaces.nsIFileOutputStream);
+        oTransport.init( dest, 0x04 | 0x08 | 0x10, 064, 0 );
+
+        var MHTContentString = "";
+        if (this.from != "" ) { MHTContentString += "From: " + this.from + "\r\n"; }
+        if (this.subject != "") { MHTContentString += "Subject: " + this.subject + "\r\n"; }
+        if (this.date != "") { MHTContentString += "Date: " + this.date + "\r\n"; }
+        MHTContentString += "MIME-Version: 1.0\r\n";
+
+        if (this.filelist.length > 1) {
+          MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.4.0\r\n";
+          MHTContentString += "\r\nThis is a multi-part message in MIME format.\r\n";
+        } else {
+          MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.4.0\r\n";
+        }
+
+        oTransport.write(MHTContentString, MHTContentString.length);
+
+        oTransport.close();
+      } catch (e) {
+        mafdebug(e);
+      }
+    }
+  },
+
   QueryInterface: function(iid) {
 
     if (!iid.equals(mafMhtEncoderIID) &&

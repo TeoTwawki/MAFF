@@ -599,7 +599,11 @@ MafPreferencesServiceClass.prototype = {
 
 };
 
-var MafPreferencesService = new MafPreferencesServiceClass();
+try {
+  var MafPreferencesService = new MafPreferencesServiceClass();
+} catch(e) {
+  mafdebug(e);
+}
 
 function mafdebug(text) {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];

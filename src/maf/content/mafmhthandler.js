@@ -639,7 +639,7 @@ var MafMHTHander = {
       MHTContentString += "Content-Type: multipart/related;\r\n";
       MHTContentString += "\tboundary=\"" + boundaryString + "\";\r\n"
       MHTContentString += "\ttype=\"" + indexContentType + "\"\r\n";
-      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.3.0\r\n";
+      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.3.1\r\n";
       MHTContentString += "\r\nThis is a multi-part message in MIME format.\r\n";
       MHTContentString += this._addFileToMHT(boundaryString, sourcepath, indexfilename, originalurl);
 
@@ -657,7 +657,7 @@ var MafMHTHander = {
       // End file content
       MHTContentString += "\r\n--" + boundaryString + "--\r\n";
     } else {
-      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.3.0\r\n";
+      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.3.1\r\n";
       MHTContentString += this._addFileToMHT("", sourcepath, indexfilename, originalurl);
     }
 
@@ -704,6 +704,9 @@ var MafMHTHander = {
 
     var subDirList = new Array();
     subDirList[subDirList.length] = ["index_files"];
+
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                            .getService(Components.interfaces.nsIMafPreferences);
 
     while (subDirList.length > 0) {
       var subDirEntry = subDirList.pop();
@@ -766,6 +769,8 @@ var MafMHTHander = {
       result += "Content-Transfer-Encoding: " + thisFileContentEncoding + "\r\n";
       result += "Content-Location: " + originalUrl + "\r\n\r\n";
 
+      var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                              .getService(Components.interfaces.nsIMafPreferences);
 
       var fullSourcePath = MafUtils.appendToDir(MafPreferences.temp, sourcepath);
       if (subdir != null) {
@@ -828,6 +833,9 @@ var MafMHTHander = {
    * Loads meta-data available from the saved archive
    */
   _getMainFileMetaData: function(sourcepath) {
+      var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                            .getService(Components.interfaces.nsIMafPreferences);
+
     var indexrdffile = Components.classes[localFileContractID].getService(localFileIID);
     indexrdffile.initWithPath(MafPreferences.temp);
     indexrdffile.append(sourcepath);
@@ -874,6 +882,9 @@ var MafMHTHander = {
     var result = false;
     var supportingFilesDirName = "index_files";
 
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                            .getService(Components.interfaces.nsIMafPreferences);
+
     try {
       var iDir = Components.classes[localFileContractID].getService(localFileIID);
       iDir.initWithPath(MafPreferences.temp);
@@ -893,6 +904,10 @@ var MafMHTHander = {
    */
   _getFileContentType: function(sourcepath, filename, subdir) {
     var result = "application/octet-stream";
+
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                            .getService(Components.interfaces.nsIMafPreferences);
+
     try {
       var ifile = Components.classes[localFileContractID].getService(localFileIID);
       ifile.initWithPath(MafPreferences.temp);

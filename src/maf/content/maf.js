@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.3.0
+ * Version: 0.3.1
  *
  * Author: Christopher Ottley
  *
@@ -28,7 +28,20 @@
  */
 /**
  *
- * Changes from 0.2.20 to 0.3.0
+ * Changes from 0.3.0 to 0.3.1
+ *
+ * Fixed GUI bug to allow mafsearch extension to work properly.
+ * Added Italian Locale contributed by Gioxx: eXtenZilla.it.
+ * Changed the default file extension for MAF files to *.maff to avoid extension clashes with MS Access on Windows.
+ * TODO: Add preference to use the title as the default name when saving MAFs
+ * TODO: Add default maf auto save directory support
+ * TODO: Add preference that will redefine document.write so that dynamic content doesn't show up twice
+ *         - For all the html docs recurse and add script after head
+ *         - If no head, then after HTML
+ *         - If no HTML, not an HTML doc, don't bother.
+ *
+ *
+ * Changes from 0.2.20 to 0.3.0 - Completed
  *
  * Styled the tree splitters in the browse open archives.
  * Split javascript objects into seperate files. There is now also a global preference state.
@@ -165,11 +178,27 @@ var Maf = {
    * Extract the archive using the specified program
    */
   extractFromArchive: function(program, archivefile, destpath) {
-    if (program == MafMHTHander.MHT_EXTRACT_PROG_ID) {
-      MafMHTHander.extractFromArchive(archivefile, destpath);
+    if (program == Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
+                     .createInstance(Components.interfaces.nsIMafMhtDecoder).PROGID) {
+
+      var m = Components.classes["@mozilla.org/maf/mhthandler_service;1"]
+                  .getService(Components.interfaces.nsIMafMhtHandler);
+
+      var MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
+                        .getService(Components.interfaces.nsIMafUtil);
+
+      var dateTimeExpanded = new Date();
+      var folderNumber = dateTimeExpanded.valueOf()+"_"+Math.floor(Math.random()*1000);
+
+      var realDestPath = MafUtils.appendToDir(destpath, folderNumber);
+
+      m.extractArchive(archivefile, realDestPath);
+
     } else {
     /** If program is nothing then don't try to run it. */
     if (program != "") {
+      var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                             .getService(Components.interfaces.nsIMafPreferences);
 
       if (MafPreferences.win_invisible) {
         localProgram = MafPreferences.win_wscriptexe;
@@ -182,16 +211,18 @@ var Maf = {
       }
 
       try {
-        var oProgram = Components.classes[localFileContractID].getService(localFileIID);
+        var oProgram = Components.classes["@mozilla.org/file/local;1"]
+                         .getService(Components.interfaces.nsILocalFile);
         oProgram.initWithPath(localProgram);
       } catch(e) {
-        alert("Could not find program: " + program + " \n" + e);
+        mafdebug("Could not find program: " + program + " \n" + e);
       }
 
       try {
-        var oProcess = Components.classes[processContractID].createInstance(processIID);
+        var oProcess = Components.classes["@mozilla.org/process/util;1"]
+                         .createInstance(Components.interfaces.nsIProcess);
       } catch (e) {
-        alert("Could not create process:\n" + e);
+        mafdebug("Could not create process:\n" + e);
       }
 
       oProcess.init(oProgram);
@@ -248,11 +279,14 @@ var Maf = {
 
     var archiveLocalURLs = MafState.addArchiveInfo(tempPath, folderNumber, archivePath);
 
-    if (MafPreferences.archiveOpenMode == MafPreferences.OPENMODE_ALLTABS) {
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                             .getService(Components.interfaces.nsIMafPreferences);
+
+    if (MafPreferences.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS) {
       MafUtils.openListInTabs(archiveLocalURLs);
     }
 
-    if (MafPreferences.archiveOpenMode == MafPreferences.OPENMODE_SHOWDIALOG) {
+    if (MafPreferences.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_SHOWDIALOG) {
       if (!MafUtils.isWindowOpen("chrome://maf/content/mafBrowseOpenArchivesDLG.xul")) {
         MafGUI.browseOpenArchives();
       }
@@ -266,7 +300,7 @@ window.addEventListener("close", MafUtils.onWindowClose, true);
 window.addEventListener("load", MafUtils.onWindowLoad, true);
 window.addEventListener("load", MafUtils.onTabLoad, true);
 
-function debug(text) {
+function mafdebug(text) {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];
   var cs = csClass.getService(Components.interfaces.nsIConsoleService);
   cs.logStringMessage(text);
@@ -309,13 +343,10 @@ String.prototype.replaceAll = function(needle, newneedle) {
 
 var loadURIios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
-    // If we're being called before windows start appearing, we haven't loaded anything as yet
-    // TODO: Add an APPSTART observer that takes care of this kind of stuff
-    //       Also make all the objects classes and create instances of them in hidden window
-    //         on APPSTART
-if (!MafPreferences.isLoaded) { MafPreferences.load(); }
 
-var loadURIMafRegExp = MafPreferences.getOpenFilterRegEx();
+var loadURIMafRegExp = new RegExp(Components.classes["@mozilla.org/maf/preferences_service;1"]
+                                     .getService(Components.interfaces.nsIMafPreferences)
+                                     .getOpenFilterRegEx(), "i");
 
 /**
  * Redefine the loadURI code to check and see if it's a MAF file first
@@ -330,6 +361,7 @@ function loadURI(uri, referrer, postData)
         postData = null;
       getWebNavigation().loadURI(uri, nsIWebNavigation.LOAD_FLAGS_NONE, referrer, postData, null);
     } catch (e) {
+      mafdebug(e);
     }
   } else {
 
@@ -338,17 +370,19 @@ function loadURI(uri, referrer, postData)
       var ouri = loadURIios.newURI(uri, "", null);    // Create URI object
       var file = ouri.QueryInterface(Components.interfaces.nsIFileURL).file;
     } catch(e) {
-      debug(e);
-
       // It wasn't a URL of the form file://, let's try again, shall we?
       try {
-        var file = Components.classes[localFileContractID].createInstance(localFileIID);
+        var file = Components.classes["@mozilla.org/file/local;1"]
+                     .createInstance(Components.interfaces.nsILocalFile);
         file.initWithPath(uri);
       } catch(ex) {
         // Give up
-        debug("MAF LoadURI has given up:" + ex);
+        mafdebug("MAF LoadURI has given up:" + ex);
       }
     }
+
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                             .getService(Components.interfaces.nsIMafPreferences);
 
     var ismaf = false;
 
@@ -359,7 +393,7 @@ function loadURI(uri, referrer, postData)
       // Get matching filter
       ismaf = (filterIndex != -1);
     } catch(e) {
-
+      mafdebug(e);
     }
 
     if (!ismaf) {
@@ -369,6 +403,7 @@ function loadURI(uri, referrer, postData)
           postData = null;
         getWebNavigation().loadURI(uri, nsIWebNavigation.LOAD_FLAGS_NONE, referrer, postData, null);
       } catch (e) {
+        mafdebug(e);
       }
     } else {
       // Get original url's to local file path
@@ -404,7 +439,7 @@ function BrowserOpenFileWindow()
     fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterImages |
                      nsIFilePicker.filterXML | nsIFilePicker.filterHTML);
 
-    var filters = MafPreferences.getOpenFilters();
+    var filters = MafGUI.getOpenFilters();
     for (var i=0; i<filters.length; i++) {
       var title = filters[i][0];
       var mask = filters[i][1];
@@ -413,7 +448,8 @@ function BrowserOpenFileWindow()
 
     fp.appendFilters(nsIFilePicker.filterAll);
 
-    var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.");
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                  .getService(Components.interfaces.nsIPrefService).getBranch("browser.");
 
     try {
       // Check pref for index and set it
@@ -427,5 +463,6 @@ function BrowserOpenFileWindow()
       openTopWin(fp.fileURL.spec);
     }
   } catch (ex) {
+    mafdebug(ex);
   }
 }

@@ -122,6 +122,9 @@ function MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchiv
     // Get a referance to index.rdf's data source
     var indexDS = MafUtils.createRDF(destMetaDataFolder, "index.rdf");
 
+    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                           .getService(Components.interfaces.nsIMafPreferences);
+
     try {
       // Add url data
       MafUtils.addStringData(indexDS, "originalurl", objMafArchiver.aDocument.location.href);
@@ -189,6 +192,8 @@ function MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchiv
     } else {
     /** If program is nothing then don't try to run it. */
     if (program != "") {
+      var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                             .getService(Components.interfaces.nsIMafPreferences);
 
       if (MafPreferences.win_invisible) {
         localProgram = MafPreferences.win_wscriptexe;

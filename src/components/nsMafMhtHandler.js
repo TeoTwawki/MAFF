@@ -28,16 +28,17 @@
  */
 
 // Provides MAF MHT Handler services
-/*
-  TODO: Level 2 and 3 Compliance - URLs with # signs should have content replaced properly
-*/
 
 const mafMhtHandlerContractID = "@mozilla.org/maf/mhthandler_service;1";
 const mafMhtHandlerCID = Components.ID("{2a64aca8-a16d-4b6d-937a-ab1977854568}");
 const mafMhtHandlerIID = Components.interfaces.nsIMafMhtHandler;
 
-var MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                  .getService(Components.interfaces.nsIMafUtil);
+try {
+  var MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
+                    .getService(Components.interfaces.nsIMafUtil);
+} catch(e) {
+  mafdebug(e);
+}
 
 /**
  * The MAF MHT Handler.
@@ -126,24 +127,20 @@ MafMhtHandlerServiceClass.prototype = {
     }
 
     // Change all the UIDs to local urls
-    // DOM Parse all the html, get all the tags, check the state, replace if attribute has key value
+    // Original plan: DOM Parse all the html, get all the tags, check the state, replace if attribute has key value
+    //    Issues: DOM Parsing dies due to security exceptions and is not easily synchronous
+    // New plan: Use regular expressions
+    //              - O(3n*m) algorithm. - Can optimize to make it O(n*m)
     for (var i=0; i<state.htmlFiles.length; i++) {
 
        var thisPage = MafUtils.readFile(state.htmlFiles[i]);
 
-       var webShell = Components.classes["@mozilla.org/webshell;1"].createInstance();
-       webShell.QueryInterface(Components.interfaces.nsIWebNavigation);
-       webShell.loadURI("about:blank", Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE, null, null, null);
-
        try {
-         var doc = webShell.document;
-         doc.clear();
-         doc.write(thisPage);
-         doc.close();
-         this._makeLinksAbsolute(doc, state.baseUrl[i]);
-         this._updateLinks(doc, state);
+         thisPage = this._makeUrlsAbsolute(thisPage, state.baseUrl[i]);
+         thisPage = this._replaceCids(thisPage, state);
+         thisPage = this._replaceUrls(thisPage, state);
          MafUtils.deleteFile(state.htmlFiles[i]);
-         MafUtils.createFile(state.htmlFiles[i], "<html>" + doc.documentElement.innerHTML + "</html>");
+         MafUtils.createFile(state.htmlFiles[i], thisPage);
        } catch(e) {
          mafdebug(e);
        }
@@ -151,69 +148,181 @@ MafMhtHandlerServiceClass.prototype = {
 
   },
 
-  _makeLinksAbsolute: function(domDoc, baseUrl) {
+  _makeUrlsAbsolute: function(sourceString, baseUrl) {
+    var resultString = "";
+    var unprocessedString = sourceString;
+
     if (baseUrl != "") {
       var obj_baseUrl =  Components.classes["@mozilla.org/network/standard-url;1"]
                             .createInstance(Components.interfaces.nsIURL);
       obj_baseUrl.spec = baseUrl;
 
-      var alltags = domDoc.getElementsByTagName("*");
-      for (var i=0; i<alltags.length; i++) {
-        var tagattrib = alltags[i].attributes;
-        for (var j=0; j<tagattrib.length; j++) {
-          var attribName = tagattrib[j].name.toLowerCase();
-          if ((attribName == "action") ||
-              (attribName == "background") ||
-              (attribName == "cite") ||
-              (attribName == "classid") ||
-              (attribName == "codebase") ||
-              (attribName == "data") ||
-              (attribName == "href") ||
-              (attribName == "longdesc") ||
-              (attribName == "profile") ||
-              (attribName == "src") ||
-              (attribName == "usemap")) {
+      var tagre = new RegExp("<[\s]*[a-z]+[^><]*>", "i");
+      var urlattribre = new RegExp("(action|background|cite|classid|codebase|data|href|longdesc|profile|src|usemap){1}"
+                                  + "[\s]*=[\s]*(('[^'<>]+')|(\"[^\"<>]+\")|([^'\"<>\s]+)){1}", "i");
+      var m = tagre.exec(unprocessedString);
+      while (m != null) {
+        resultString += unprocessedString.substring(0, m.index);
+        var tagstr = m.toString();
 
-                tagattrib[j].value = obj_baseUrl.resolve(tagattrib[j].value);
+        // Now we have the tag, find the attribute in it that has a url
+        var newTagstr = "";
+
+        var u = urlattribre.exec(tagstr);
+        while (u != null) {
+          newTagstr += tagstr.substring(0, u.index);
+          var urlattribstr = u[0].toString();
+
+          var newUrlattribstr = urlattribstr.substring(0, urlattribstr.indexOf("=") + 1);
+
+          newTagstr += newUrlattribstr;
+
+          var attribstr = urlattribstr.substring(urlattribstr.indexOf("=") + 1, urlattribstr.length).trim();
+
+          var quote = "";
+          var unquotedattrib = attribstr;
+          // If the attribute is quoted, store the quote and remove it
+          if (attribstr.startsWith("\"") || attribstr.startsWith("'")) {
+            quote = attribstr.substring(0, 1);
+            unquotedattrib = attribstr.substring(1, attribstr.length -1);
           }
+
+          unquotedattrib = obj_baseUrl.resolve(unquotedattrib);
+
+          newTagstr += quote + unquotedattrib + quote;
+
+          tagstr = tagstr.substring(u.index + urlattribstr.length, tagstr.length);
+          u = urlattribre.exec(tagstr);
         }
+
+        newTagstr += tagstr;
+
+        resultString += newTagstr;
+
+        unprocessedString = unprocessedString.substring(m.index + m.toString().length, unprocessedString.length);
+        m = tagre.exec(unprocessedString);
       }
+
+
     }
+
+    resultString += unprocessedString;
+    return resultString;
   },
 
-  _updateLinks: function(domDoc, state) {
-    var alltags = domDoc.getElementsByTagName("*");
-    for (var i=0; i<alltags.length; i++) {
-      var tagattrib = alltags[i].attributes;
-      for (var j=0; j<tagattrib.length; j++) {
-        var attribName = tagattrib[j].name.toLowerCase();
-        if ((attribName == "action") ||
-            (attribName == "background") ||
-            (attribName == "cite") ||
-            (attribName == "classid") ||
-            (attribName == "codebase") ||
-            (attribName == "data") ||
-            (attribName == "href") ||
-            (attribName == "longdesc") ||
-            (attribName == "profile") ||
-            (attribName == "src") ||
-            (attribName == "usemap")) {
+  /**
+   * Use a regular expression to replace cid URLs with ones from the archive
+   */
+  _replaceCids: function(sourceString, state) {
+    var resultString = "";
+    var unprocessedString = sourceString;
 
-            var currentURL = tagattrib[j].value;
+    var re = new RegExp("cid:[^>\"']+", "i"); // Absolute URL regular expression
 
-            if (currentURL.toLowerCase().startsWith("cid:")) {
-              // Make sure Content ID spec is lower case
-              currentURL = "cid:" + currentURL.substring("cid:".length, currentURL.length);
-            }
-            if (state.uidToLocalFilenameMap.hasKey(currentURL)) {
-              tagattrib[j].value = MafUtils.getURIFromFilename(
-                                     getStringValue(state.uidToLocalFilenameMap.getValue(currentURL)));
-            }
+    var m = re.exec(unprocessedString);
+    while (m != null) {
+      resultString += unprocessedString.substring(0, m.index);
+      var originalUrl = m.toString();
 
+      // TODO, decode anything else that might give trouble
+      originalUrl = originalUrl.replaceAll("&amp;", "&");
+
+      // Cater for Hashes
+      var baseUrl = originalUrl.split("#")[0];
+      var leftOver = originalUrl.split("#")[1];
+
+      baseUrl = "cid:" + baseUrl.substring("cid:".length, baseUrl.length);
+
+      if (state.uidToLocalFilenameMap.hasKey(baseUrl)) {
+        resultString += MafUtils.getURIFromFilename(
+                                     getStringValue(state.uidToLocalFilenameMap.getValue(baseUrl)));
+        if (typeof(leftOver) != "undefined") {
+          resultString += "#" + leftOver;
         }
+      } else {
+        resultString += m.toString();
       }
+
+      unprocessedString = unprocessedString.substring(m.index + m.toString().length, unprocessedString.length);
+      m = re.exec(unprocessedString);
     }
+
+    resultString += unprocessedString;
+    return resultString;
   },
+
+  /**
+   * Use a regular expression to replace URLs with ones from the archive
+   */
+  _replaceUrls: function(sourceString, state) {
+    var resultString = "";
+    var unprocessedString = sourceString;
+
+      var tagre = new RegExp("<[\s]*[a-z]+[^><]*>", "i");
+      var urlattribre = new RegExp("(action|background|cite|classid|codebase|data|href|longdesc|profile|src|usemap){1}"
+                                  + "[\s]*=[\s]*(('[^'<>]+')|(\"[^\"<>]+\")|([^'\"<>\s]+)){1}", "i");
+      var m = tagre.exec(unprocessedString);
+      while (m != null) {
+        resultString += unprocessedString.substring(0, m.index);
+        var tagstr = m.toString();
+
+        // Now we have the tag, find the attribute in it that has a url
+        var newTagstr = "";
+
+        var u = urlattribre.exec(tagstr);
+        while (u != null) {
+          newTagstr += tagstr.substring(0, u.index);
+          var urlattribstr = u[0].toString();
+
+          var newUrlattribstr = urlattribstr.substring(0, urlattribstr.indexOf("=") + 1);
+
+          newTagstr += newUrlattribstr;
+
+          var attribstr = urlattribstr.substring(urlattribstr.indexOf("=") + 1, urlattribstr.length).trim();
+
+          var quote = "";
+          var unquotedattrib = attribstr;
+          // If the attribute is quoted, store the quote and remove it
+          if (attribstr.startsWith("\"") || attribstr.startsWith("'")) {
+            quote = attribstr.substring(0, 1);
+            unquotedattrib = attribstr.substring(1, attribstr.length -1);
+          }
+
+          var originalUrl = unquotedattrib.trim();
+
+          // TODO, decode anything else that might give trouble
+          originalUrl = originalUrl.replaceAll("&amp;", "&");
+
+          // Cater for Hashes
+          var baseUrl = originalUrl.split("#")[0];
+          var leftOver = originalUrl.split("#")[1];
+
+          if (state.uidToLocalFilenameMap.hasKey(baseUrl)) {
+            originalUrl = MafUtils.getURIFromFilename(
+                                   getStringValue(state.uidToLocalFilenameMap.getValue(baseUrl)));
+            if (typeof(leftOver) != "undefined") {
+              originalUrl += "#" + leftOver;
+            }
+          }
+
+          newTagstr += quote + originalUrl + quote;
+
+          tagstr = tagstr.substring(u.index + urlattribstr.length, tagstr.length);
+          u = urlattribre.exec(tagstr);
+        }
+
+        newTagstr += tagstr;
+
+        resultString += newTagstr;
+
+        unprocessedString = unprocessedString.substring(m.index + m.toString().length, unprocessedString.length);
+        m = tagre.exec(unprocessedString);
+      }
+
+    resultString += unprocessedString;
+    return resultString;
+  },
+
 
   _addSubjectAndDateMetaData: function(decoder, datasource) {
     var subject = "Unknown";
@@ -437,7 +546,11 @@ extractContentHandlerClass.prototype = {
   }
 };
 
-var MafMhtHandlerService = new MafMhtHandlerServiceClass();
+try {
+  var MafMhtHandlerService = new MafMhtHandlerServiceClass();
+} catch(e) {
+  mafdebug(e);
+}
 
 function asStringValue(str) {
   var result = Components.classes["@mozilla.org/libmaf/stringvalue;1"]
