@@ -122,9 +122,9 @@
       document.getElementById("btnBrowseWinScript").disabled = true;
       document.getElementById("winInvisVbsLoc").disabled = true;
       document.getElementById("btnBrowseInvisVbs").disabled = true;
-      //document.getElementById("winChkAssociateWithMAF").disabled = true;
-      //document.getElementById("winChkAssociateWithMAFF").disabled = true;
-      //document.getElementById("winChkAssociateWithMHT").disabled = true;
+      document.getElementById("winChkAssociateWithMAF").disabled = true;
+      document.getElementById("winChkAssociateWithMAFF").disabled = true;
+      document.getElementById("winChkAssociateWithMHT").disabled = true;
     }
   }
 
@@ -186,7 +186,7 @@
     }
   }
 
-  _execVBS: function(scriptPath) {
+  function _execVBS(scriptPath) {
     try {
       var localProgram = MafPreferences.win_wscriptexe;
       var localProgramArgs = new Array();
@@ -201,17 +201,17 @@
       oProcess.init(oProgram);
       oProcess.run(true, localProgramArgs, localProgramArgs.length);
     } catch(e) {
-
+      mafdebug(e);
     }
   }
 
-  _getProfileDir: function() {
+  function _getProfileDir() {
     const DIR_SERVICE = new Components.Constructor("@mozilla.org/file/directory_service;1","nsIProperties");
     try {
       var result = (new DIR_SERVICE()).get("ProfD", Components.interfaces.nsIFile).path;
     } catch (e) {
       result = "";
-      debug(e);
+      mafdebug(e);
     }
     return result;
   }
@@ -339,10 +339,10 @@
        </hbox>
 
        <groupbox>
-         <caption label="File type associations" />
-         <checkbox id="winChkAssociateWithMAF" checked="false" label="Associate MAF with .maf extensions" />
-         <checkbox id="winChkAssociateWithMAFF" checked="false" label="Associate MAF with .maff extensions" />
-         <checkbox id="winChkAssociateWithMHT" checked="false" label="Associate MAF with .mht extensions" />
+         <caption label="&maf.preferencesdialog.winop.filetypelabel;" />
+         <checkbox id="winChkAssociateWithMAF" checked="false" label="&maf.preferencesdialog.winop.filetypemaf;" />
+         <checkbox id="winChkAssociateWithMAFF" checked="false" label="&maf.preferencesdialog.winop.filetypemaff;" />
+         <checkbox id="winChkAssociateWithMHT" checked="false" label="&maf.preferencesdialog.winop.filetypemht;" />
        </groupbox>
 
    </tabpanel>
@@ -361,4 +361,3 @@
 </vbox>
 
 </window>
-

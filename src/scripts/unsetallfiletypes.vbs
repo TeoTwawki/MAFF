@@ -17,4 +17,5 @@ WShell.RegDelete "HKCR\MozillaMAF\"
 
 'Restore previous program back to .mht files
 WShell.RegWrite "HKCR\mhtmlfile\shell\", "open", "REG_SZ"
+WShell.RegDelete "HKCR\mhtmlfile\shell\OpenWithMAF\command\"
 WShell.RegDelete "HKCR\mhtmlfile\shell\OpenWithMAF\"

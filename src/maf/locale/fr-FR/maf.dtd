@@ -76,6 +76,11 @@
 <!ENTITY maf.preferencesdialog.winop.wscript "Emplacement de WSCRIPT.EXE:">
 <!ENTITY maf.preferencesdialog.winop.invis "Emplacement de invis.vbs:">
 
+<!ENTITY maf.preferencesdialog.winop.filetypelabel "File type associations">
+<!ENTITY maf.preferencesdialog.winop.filetypemaf "Associate MAF with .maf extensions">
+<!ENTITY maf.preferencesdialog.winop.filetypemaff "Associate MAF with .maff extensions">
+<!ENTITY maf.preferencesdialog.winop.filetypemht "Associate MAF with .mht extensions">
+
 <!ENTITY maf.preferencesdialog.progs.description "Scripts correspondant aux applications externes pour manipuler les archive MAF.">
 
 <!ENTITY maf.preferencesdialog.progs.archive "Script pour l'archivage :">
