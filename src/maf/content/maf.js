@@ -55,6 +55,7 @@
  * Added Portuguese locale by Jacinto Leal.
  * Added update.rdf related entries for extension manager updates.
  * Added network url functionality for .maff files.
+ * Added preferences entries that have the major, minor and minor minor version of MAF installed.
  * TODO: Add save frame functionality to alternative save component.
  *
  * Changes from 0.4.2 to 0.4.3
@@ -780,6 +781,13 @@ var MafPostSetup = {
     try {
       var setupComplete = prefs.getBoolPref("postsetup." + this.postsetupversion + ".complete");
     } catch(e) { setupComplete = false; }
+
+
+    try {
+      prefs.setIntPref("version.major", 0);
+      prefs.setIntPref("version.minor", 5);
+      prefs.setIntPref("version.minorminor", 0);
+    } catch(e) { }
 
     if (!setupComplete) {
       // Make temp directory
