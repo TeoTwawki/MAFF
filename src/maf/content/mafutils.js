@@ -84,7 +84,29 @@ var MafUtils = {
     }
   },
 
+  /**
+   * Create file with the user executable flag set
+   */
+  createExecutableFile: function(fileToCreate, contents) {
+    try {
+      var oFile = Components.classes[localFileContractID].createInstance(localFileIID);
+      oFile.initWithPath(fileToCreate);
+      if (!oFile.exists()) {
+        oFile.create(0x00, 0744);
+      }
+    } catch (e) {
+      alert(e);
+    }
 
+    try {
+      var oTransport = Components.classes[fileOutputStreamContractID].createInstance(fileOutputStreamIID);
+      oTransport.init( oFile, 0x04 | 0x08 | 0x10, 064, 0 );
+      oTransport.write(contents, contents.length);
+      oTransport.close();
+    } catch (e) {
+      alert(e);
+    }
+  },
   /**
    * Create binary file
    */
@@ -738,31 +760,66 @@ var MafPostSetup = {
    * Complete the setup, if necessary
    */
   complete: function() {
-    // If firefox 0.9 or higher
-    var isFF09OrHigher = false;
-    if ((navigator.vendor != null) && (navigator.vendorSub != null)) {
-      if (navigator.vendor.toLowerCase() == "firefox") {
-        isFF09OrHigher = (parseFloat(navigator.vendorSub) >= 0.9);
-      }
+    // Get preference maf.postsetup.complete
+    var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
+
+    try {
+      var setupComplete = prefs.getBoolPref("postsetup.complete");
+    } catch(e) { setupComplete = false; }
+
+    if (!setupComplete) {
+      // Make temp directory
+      this.makeTempDirectory();
+      // Copy files
+      this.copyFiles();
+      // Update script contents
+      this.updateScriptContents();
+
+      // Set preference maf.postsetup.complete
+      prefs.setBoolPref("postsetup.complete", true);
     }
+  },
 
-    if (isFF09OrHigher) {
-      // Get preference maf.postsetup.complete
-      var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
 
-      try {
-        var setupComplete = prefs.getBoolPref("postsetup.complete");
-      } catch(e) { setupComplete = false; }
+  /**
+   * Update the scripts to use the new directory
+   * TODO: Finish XXX
+   */
+  updateScriptContents: function() {
+    var profileDir = this._getProfileDir();
 
-      if (!setupComplete) {
-        // Make temp directory
-        this.makeTempDirectory();
-        // Copy files
-        this.copyFiles();
-
-        // Set preference maf.postsetup.complete
-        prefs.setBoolPref("postsetup.complete", true);
+    // If not on windows
+    if (navigator.userAgent.indexOf("Windows") == -1) {
+      if (MafUtils.checkFileExists(profileDir + "/maf/mafzip.sh")) {
+        var mafzipStr = MafUtils.readFile(profileDir + "/maf/mafzip.sh");
+        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        MafUtils.deleteFile(profileDir + "/maf/mafzip.sh");
+        MafUtils.createExecutableFile(profileDir + "/maf/mafzip.sh", mafzipStr);
       }
+
+      if (MafUtils.checkFileExists(profileDir + "/maf/mafunzip.sh")) {
+        var mafunzipStr = MafUtils.readFile(profileDir + "/maf/mafunzip.sh");
+        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        MafUtils.deleteFile(profileDir + "/maf/mafunzip.sh");
+        MafUtils.createExecutableFile(profileDir + "/maf/mafunzip.sh", mafunzipStr);
+      }
+
+    } else {
+
+      if (MafUtils.checkFileExists(profileDir + "\\maf\\mafzip.bat")) {
+        var mafzipStr = MafUtils.readFile(profileDir + "\\maf\\mafzip.bat");
+        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        MafUtils.deleteFile(profileDir + "\\maf\\mafzip.bat");
+        MafUtils.createExecutableFile(profileDir + "\\maf\\mafzip.bat", mafzipStr);
+      }
+
+      if (MafUtils.checkFileExists(profileDir + "\\maf\\mafunzip.bat")) {
+        var mafunzipStr = MafUtils.readFile(profileDir + "\\maf\\mafunzip.bat");
+        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        MafUtils.deleteFile(profileDir + "\\maf\\mafunzip.bat");
+        MafUtils.createExecutableFile(profileDir + "\\maf\\mafunzip.bat", mafunzipStr);
+      }
+
     }
   },
 
@@ -771,21 +828,18 @@ var MafPostSetup = {
    */
   makeTempDirectory: function() {
     try {
+    var profileDir = this._getProfileDir();
     // If not on windows
     if (navigator.userAgent.indexOf("Windows") == -1) {
-      // Make directory /tmp
-      MafUtils.createDir("/tmp");
-      // Make directory /tmp/maf/
-      MafUtils.createDir("/tmp/maf");
-      // Make directory /tmp/maf/maftemp
-      MafUtils.createDir("/tmp/maf/maftemp");
+      // Make directory {profileDir}/maf/
+      MafUtils.createDir(profileDir + "/maf");
+      // Make directory {profileDir}/maf/maftemp
+      MafUtils.createDir(profileDir + "/maf/maftemp");
     } else {
-      // Make directory c:\temp
-      MafUtils.createDir("c:\\temp");
-      // Make directory c:\temp\maf
-      MafUtils.createDir("c:\\temp\\maf");
+      // Make directory {profileDir}\\maf
+      MafUtils.createDir(profileDir + "\\maf");
       // Make directory c:\temp\maf\maftemp
-      MafUtils.createDir("c:\\temp\\maf\\maftemp");
+      MafUtils.createDir(profileDir + "\\maf\\maftemp");
     }
 
     } catch(e) { alert(e); }
@@ -843,18 +897,32 @@ var MafPostSetup = {
    * Copy a set of files from the extensions, scripts directory
    */
   copyFiles: function() {
-    var sourceDir = this._getProfileDir();
-    sourceDir = MafUtils.appendToDir(sourceDir, "extensions");
-    sourceDir = MafUtils.appendToDir(sourceDir, this.progid);
-    sourceDir = MafUtils.appendToDir(sourceDir, "scripts");
+    var profileDir = this._getProfileDir();
+    var sourceDir = profileDir;
+
+    // If firefox 0.9 or higher
+    var isFF09OrHigher = false;
+    if ((navigator.vendor != null) && (navigator.vendorSub != null)) {
+      if (navigator.vendor.toLowerCase() == "firefox") {
+        isFF09OrHigher = (parseFloat(navigator.vendorSub) >= 0.9);
+      }
+    }
+
+    if (isFF09OrHigher) {
+      sourceDir = MafUtils.appendToDir(sourceDir, "extensions");
+      sourceDir = MafUtils.appendToDir(sourceDir, this.progid);
+      sourceDir = MafUtils.appendToDir(sourceDir, "scripts");
+    } else {
+      // Source is chrome dir? XXXComplete
+    }
 
     var destDir;
 
     // If not on windows
     if (navigator.userAgent.indexOf("Windows") == -1) {
-      destDir = "/tmp/maf"
+      destDir = profileDir + "/maf";
     } else {
-      destDir = "c:\\temp\\maf"
+      destDir = profileDir + "\\maf";
     }
 
     var filesList = this._getFilesList(sourceDir);

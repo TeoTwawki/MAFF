@@ -42,6 +42,8 @@
  * Fixed bug with file association and loading of preferences.
  * MHT archive handler no longer dies on pages with frames.
  * Filter index saved as a preference for MAF open and save archive dialogs.
+ * Fixed GUI file select bug and default preference loading bug.
+ * Post-install script run feature added - Can now run scripts from profile in FF.
  *
  *
  * Changes from 0.2.19 to 0.2.20 - Completed

@@ -157,7 +157,12 @@ var MafGUI = {
     } catch(e) { }
 
     var res=fp.show();
-    return [fp.file, fp.filterIndex];
+    if (res == Components.interfaces.nsIFilePicker.returnOK ||
+        res == Components.interfaces.nsIFilePicker.returnReplace) {
+      return [fp.file, fp.filterIndex];
+    } else { // Cancelled
+      return [null, 0];
+    }
   },
 
 

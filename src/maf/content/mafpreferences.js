@@ -33,7 +33,7 @@ var MafPreferences = {
   /** The extension that handles *.maf by default. */
   defaultMAFExtensionIndex: 0,
 
-  archiveOpenMode: 0,
+  archiveOpenMode: 1,
      /** 0 - Do nothing. */
      /** 1 - Open all in new tabs. */
      /** 2 - Dialog box showing all archived files, select to open. */
@@ -45,17 +45,17 @@ var MafPreferences = {
   OPENMODE_SHOWDIALOG: 2,
 
   /** URL Rewrite enabled. */
-  urlRewrite: false,
+  urlRewrite: true,
 
   /** Save extended metadata. */
-  saveExtendedMetadata: true,
+  saveExtendedMetadata: false,
 
   /** Windows specific preferences. */
   win_invisible: false,
 
-  win_wscriptexe: "c:\\winnt\\system32\\wscript.exe",
+  win_wscriptexe: "",
 
-  win_invisiblevbs: "c:\\temp\\maf\\invis.vbs",
+  win_invisiblevbs: "",
 
   isLoaded: false,
 
@@ -169,7 +169,6 @@ var MafPreferences = {
       } else {
         // Simple mask
         // Assume that first character is a *
-        debug(suffix);
         var suffix = mask.substring(1, mask.length);
         if (suffix == lcFilename.substring(lcFilename.length - suffix.length, lcFilename.length)) {
           result = i;
@@ -185,20 +184,24 @@ var MafPreferences = {
    * Load the preferences from the user prefs.
    */
   load: function() {
-    // Default if there's no stored prefs
+    if (!this.isLoaded) {
+      var mafParentDir = this._getProfileDir();
+      // Default if there's no stored prefs
 
-    this.defaultMAFExtensionIndex = 0;
+      this.defaultMAFExtensionIndex = 0;
 
-    // If not on windows
-    if (navigator.userAgent.indexOf("Windows") == -1) {
-      this.temp = "/tmp/maf/maftemp/";
-      this.programExtensions[this.programExtensions.length] = [
-         "Zip", "/tmp/maf/mafzip.sh", "/tmp/maf/mafunzip.sh", ["*.zip.maf", "*.maf.zip"]];
-    } else {
-      this.temp = "c:\\temp\\maf\\maftemp\\";
-      this.programExtensions[this.programExtensions.length] = [
-         "Zip", "c:\\temp\\maf\\mafzip.bat", "c:\\temp\\maf\\mafunzip.bat", ["*.zip.maf", "*.maf.zip"]];
-    };
+      // If not on windows
+      if (navigator.userAgent.indexOf("Windows") == -1) {
+        this.temp = mafParentDir + "/maf/maftemp/";
+        this.programExtensions[this.programExtensions.length] = [
+           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.zip.maf", "*.maf.zip"]];
+      } else {
+        this.temp = mafParentDir + "\\maf\\maftemp\\";
+        this.programExtensions[this.programExtensions.length] = [
+           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.zip.maf", "*.maf.zip"]];
+        this.win_wscriptexe = "c:\\winnt\\system32\\wscript.exe",
+        this.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
+      };
 
     // Load the temp path
     // Load the defaultMAFExtensionIndex
@@ -210,46 +213,47 @@ var MafPreferences = {
         // Load each of the extensions wildcard file matches
       // end-for
 
-    try {
+      try {
 
-      var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
+        var prefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("maf.");
 
-      this.temp = prefs.getCharPref("temp");
-      this.urlRewrite = prefs.getBoolPref("urlrewrite");
-      this.saveExtendedMetadata = prefs.getBoolPref("saveextendedmetadata");
-      this.defaultMAFExtensionIndex = prefs.getIntPref("defaultmafhandler");
-      this.archiveOpenMode = prefs.getIntPref("archiveopenmode");
+        this.temp = prefs.getCharPref("temp");
+        this.urlRewrite = prefs.getBoolPref("urlrewrite");
+        this.saveExtendedMetadata = prefs.getBoolPref("saveextendedmetadata");
+        this.defaultMAFExtensionIndex = prefs.getIntPref("defaultmafhandler");
+        this.archiveOpenMode = prefs.getIntPref("archiveopenmode");
 
-      this.win_invisible = prefs.getBoolPref("wininvisible");
-      this.win_wscriptexe = prefs.getCharPref("winwscriptexe");
-      this.win_invisiblevbs = prefs.getCharPref("wininvisiblevbs");
+        this.win_invisible = prefs.getBoolPref("wininvisible");
+        this.win_wscriptexe = prefs.getCharPref("winwscriptexe");
+        this.win_invisiblevbs = prefs.getCharPref("wininvisiblevbs");
 
-      var noOfExtensions = prefs.getIntPref("noofextensions");
+        var noOfExtensions = prefs.getIntPref("noofextensions");
 
-      this.programExtensions = new Array();
+        this.programExtensions = new Array();
 
-      for (var i=0; i<noOfExtensions; i++) {
-        currEntry = new Array();
-        currEntry[0] = prefs.getCharPref("ext." + i + ".id");
-        currEntry[1] = prefs.getCharPref("ext." + i + ".archive");
-        currEntry[2] = prefs.getCharPref("ext." + i + ".extract");
-        var noOfMasks = prefs.getIntPref("ext." + i + ".masklength");
-        maskEntry = new Array();
-        for (var j=0; j<noOfMasks; j++) {
-          maskEntry[j] = prefs.getCharPref("ext." + i + ".mask." + j);
+        for (var i=0; i<noOfExtensions; i++) {
+          currEntry = new Array();
+          currEntry[0] = prefs.getCharPref("ext." + i + ".id");
+          currEntry[1] = prefs.getCharPref("ext." + i + ".archive");
+          currEntry[2] = prefs.getCharPref("ext." + i + ".extract");
+          var noOfMasks = prefs.getIntPref("ext." + i + ".masklength");
+          maskEntry = new Array();
+          for (var j=0; j<noOfMasks; j++) {
+            maskEntry[j] = prefs.getCharPref("ext." + i + ".mask." + j);
+          }
+          currEntry[3] = maskEntry;
+          this.programExtensions[this.programExtensions.length] = currEntry;
         }
-        currEntry[3] = maskEntry;
-        this.programExtensions[this.programExtensions.length] = currEntry;
+
+      } catch(e) {
+      // alert(e);
       }
 
-    } catch(e) {
-      // alert(e);
-    }
-
     // Add MHT as the last archive format supported
-    this.programExtensions[this.programExtensions.length] = [
-       "MHT", MafMHTHander.MHT_ARCHIVE_PROG_ID, MafMHTHander.MHT_EXTRACT_PROG_ID, ["*.mht"]];
-    this.isLoaded = true;
+      this.programExtensions[this.programExtensions.length] = [
+         "MHT", MafMHTHander.MHT_ARCHIVE_PROG_ID, MafMHTHander.MHT_EXTRACT_PROG_ID, ["*.mht"]];
+      this.isLoaded = true;
+    }
   },
 
   /**
@@ -279,7 +283,8 @@ var MafPreferences = {
       prefs.setCharPref("winwscriptexe", this.win_wscriptexe);
       prefs.setCharPref("wininvisiblevbs", this.win_invisiblevbs);
 
-      prefs.setIntPref("noofextensions", this.programExtensions.length);
+      // Subtract 1 because MHT hander not counted
+      prefs.setIntPref("noofextensions", this.programExtensions.length-1);
       for (var i=0; i<this.programExtensions.length; i++) {
         if (this.programExtensions[i][0] != "MHT") {
           prefs.setCharPref("ext." + i + ".id", this.programExtensions[i][0]);
@@ -295,8 +300,17 @@ var MafPreferences = {
     } catch(e) {
       alert(e);
     }
+  },
+
+  _getProfileDir: function() {
+    const DIR_SERVICE = new Components.Constructor("@mozilla.org/file/directory_service;1","nsIProperties");
+    try {
+      var result = (new DIR_SERVICE()).get("ProfD", Components.interfaces.nsIFile).path;
+    } catch (e) {
+      result = "";
+      debug(e);
+    }
+    return result;
   }
 
 };
-
-MafPreferences.load();
