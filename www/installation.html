@@ -3,7 +3,7 @@
 
 <p>Below you will find links to the latest XPI installer package. The installer packages have been merged so there is one XPI for both Linux and Windows installations. If you have previously installed MAF in Mozilla, please uninstall MAF and then install the latest package.</p>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.3.xpi">0.4.3 for Linux and Windows</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-0.5.0.xpi">0.5.0 for Linux and Windows</a></p>
 
 <p>Please note, if you have previously installed MAF and are installing the 0.3.0 version or higher, the location of scripts and some settings have changed. In order to use the new scripts, go to the <a href="preferences.html">preferences</a>, click on the "Load defaults" button and save the new preferences.</p>
 
@@ -11,11 +11,46 @@
 
 <p>After MAF has been setup, complete the configuration by checking the <a href="preferences.html">preferences</a>.</p>
 
-<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.2.xpi">0.4.2 for Linux and Windows</a></p>
+<p>Also released is <a href="http://downloads.mozdev.org/maf/penmaf-0.5.0b1.xpi">PenMAF 0.5.0 Beta 1</a> for Linux and Windows. This package resets MAF's post-install state so that scripts still work when MAF is installed on a Browser running on a pen drive. Currently it only works for MAF 0.5.0 and Firefox 1.0.</p>
+
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.3.xpi">0.4.3 for Linux and Windows</a></p>
 
 
 <h5 class="page-header"><a id="changelog" name="changelog">Changes</a></h5>
 <pre>
+ *
+ * Changes from 0.4.3 to 0.5.0
+ *
+ * Disabling document write also disables document.writeln.
+ * Changed the default wscript directory preference from winnt to windows.
+ * Fixed bug that ignored content location when selecting root nodes for MHT decoding.
+ * Updated Italian locale contributed by Gioxx Solone: eXtenZilla.it.
+ * When MHT decoding, the index content type will now be assumed to be html, not bin by default.
+ * Moved the save page in archive entries to the Mozilla Archive Format menu.
+ * Integrated Save page as MAFF archive into default save dialog for Firefox 1.0 and Mozilla 1.7.3.
+ * Fixed bug that ignored processing parts of MHT framed pages if their content type wasn't text/html.
+ * Removed preference for windows .maf association to avoid any potential problems with MS Access.
+ * Added code to remove 3 byte utf start characters from MHT parts so Mozilla decodes properly.
+ * Modified vbs hide functionality to revert to using command window if wscript or the invis.vbs is not found.
+ * Added preference to use alternative DOM save component.
+ * Preference for using wscript and invis.vbs is now true by default.
+ * Added alternative DOM save component based on the Scrapbook extension by Gomita.
+ * Added script failure notification code from process exit value.
+ * Modified invis.vbs to return process exit value contributed by Allister.
+ * Added advanced panel in preferences window.
+ * Fixed bug in MAF protocol handler that broke silent opening of MAF archives.
+ * Fixed bug in MafState.isArchiveURL(originalURL) that didn't return true for framed archive documents.
+ * Added unicode to native locale conversion function for program arguments.
+ * Added decoder optimization for MHT MAF files.
+ * Added native quoted-printable encoder and decoder support.
+ * Added Portuguese locale by Jacinto Leal.
+ * Added update.rdf related entries for extension manager updates.
+ * Added network url functionality for .maff files.
+ * Added preferences entries that have the major, minor and minor minor version of MAF installed.
+ * Fixed bug 8897 - Title in browse archive dialog now displays unicode characters.
+ * Added additional properties entries for localization of some error messages.
+ * Fixed unicode document title conversion bug in getDefaultFileName - Died if title was already unicode.
+ *
  *
  * Changes from 0.4.2 to 0.4.3
  *
