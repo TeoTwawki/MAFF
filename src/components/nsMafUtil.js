@@ -44,13 +44,11 @@ const MAFRDFTemplate = '<?xml version="1.0"?>\n' +
   '  </RDF:Description>\n' +
   '</RDF:RDF>\n';
 
-/** The global RDF service object. */
-var gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
-                    .getService(Components.interfaces.nsIRDFService);
+var gRDFService = null;
+var gRDFCService = null;
+var MafUtilService = null;
 
-/** The global RDF Container Service object. */
-var gRDFCService = Components.classes["@mozilla.org/rdf/container-utils;1"]
-                      .getService(Components.interfaces.nsIRDFContainerUtils);
+var MafStrBundle = null;
 
 /**
  * The MAF Util Service.
@@ -154,7 +152,7 @@ MafUtilServiceClass.prototype = {
   /**
    * Create binary file
    */
-  createBinaryFile: function(fileToCreate, contents) {
+  copyBinaryFile: function(source, fileToCreate) {
     try {
       var oFile = Components.classes["@mozilla.org/file/local;1"]
                      .createInstance(Components.interfaces.nsILocalFile);
@@ -175,16 +173,9 @@ MafUtilServiceClass.prototype = {
                            .createInstance(Components.interfaces.nsIBinaryOutputStream);
       obj_BinaryIO.setOutputStream(oTransport);
 
-      //mafdebug(contents);
-      /*
-      var arrayContents = contents.split(",");
-      for (var i=0; i<arrayContents.length; i++) {
-        arrayContents[i] = String.fromCharCode(parseInt(arrayContents[i]));
-      }
-      */
+      var contents = this.readBinaryFile(source);
+
       obj_BinaryIO.writeByteArray(contents, contents.length);
-      // writeWStringZ
-      //  writeUtf8Z
       oTransport.close();
     } catch (e) {
       mafdebug(e);
@@ -479,6 +470,31 @@ MafUtilServiceClass.prototype = {
     return numberOfOpenWindows;
   },
 
+  /**
+   * Returns true if a window with that id is open
+   */
+  isWindowOpen: function(needleLocation) {
+    var result = false;
+
+    try {
+      var wmI = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                   .getService(Components.interfaces.nsIWindowMediator);
+      var entries = wmI.getEnumerator(null);
+
+      while (entries.hasMoreElements()) {
+        currWindow = entries.getNext();
+        if (currWindow.location == needleLocation) {
+          result = true;
+          break;
+        }
+      }
+    } catch (e) {
+      mafdebug(e);
+    }
+
+    return result;
+  },
+
 
   /**
    * Adds a base tag to HTML.
@@ -576,7 +592,7 @@ MafUtilServiceClass.prototype = {
                             .hiddenDOMWindow.navigator;
     }
 
-    var re = /[\/]+/g;
+    var re = /[\/\|]+/g;
     if (this.navigator.appVersion.indexOf("Windows") != -1) {
       re = /[\\\/\|]+/g;
       aFileName = aFileName.replace(/[\"]+/g, "'");
@@ -616,11 +632,6 @@ MafUtilServiceClass.prototype = {
 
 };
 
-try {
-  var MafUtilService = new MafUtilServiceClass();
-} catch(e) {
-  mafdebug(e);
-}
 
 function mafdebug(text) {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];
@@ -639,6 +650,26 @@ MafUtilFactory.createInstance = function (outer, iid) {
   if (!iid.equals(mafUtilIID) &&
       !iid.equals(Components.interfaces.nsISupports)) {
     throw Components.results.NS_ERROR_NO_INTERFACE;
+  }
+
+  if (gRDFService == null) {
+    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
+                     .getService(Components.interfaces.nsIRDFService);
+  }
+
+  if (gRDFCService == null) {
+    gRDFCService = Components.classes["@mozilla.org/rdf/container-utils;1"]
+                     .getService(Components.interfaces.nsIRDFContainerUtils);
+  }
+
+  if (MafStrBundle == null) {
+    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                      .getService(Components.interfaces.nsIStringBundleService)
+                      .createBundle("chrome://maf/locale/maf.properties");
+  }  
+
+  if (MafUtilService == null) {
+    MafUtilService = new MafUtilServiceClass();
   }
 
   return MafUtilService.QueryInterface(iid);

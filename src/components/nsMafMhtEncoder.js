@@ -37,6 +37,8 @@ const qpEncodeTimerDelay = 10;
 const fileEncodeTimerDelay = 100;
 const readBufferSize = 1024 * 10; // 10K Read buffer
 
+var MafStrBundle = null;
+
 /**
  * The MAF Mht Encoder.
  */
@@ -514,14 +516,15 @@ encodingTimerState.prototype = {
         this.oTransport.write(MHTContentString, MHTContentString.length);
       }
 
-      var obs = Components.classes["@mozilla.org/observer-service;1"]
-                 .getService(Components.interfaces.nsIObserverService);
-      obs.notifyObservers(null, "mht-encoder-finished", this.dest.path);
-
       this.oTransport.close();
 
       this.encoder.filelist.clear();
       this.timer = null;
+      
+      var obs = Components.classes["@mozilla.org/observer-service;1"]
+                 .getService(Components.interfaces.nsIObserverService);
+      obs.notifyObservers(null, "mht-encoder-finished", this.dest.path);
+
     }
     }
   },
@@ -700,6 +703,12 @@ MAFMhtEncoderFactory.createInstance = function (outer, iid) {
     throw Components.results.NS_ERROR_NO_INTERFACE;
   }
 
+  if (MafStrBundle == null) {
+    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                      .getService(Components.interfaces.nsIStringBundleService)
+                      .createBundle("chrome://maf/locale/maf.properties");
+  }
+  
   return (new MafMhtEncoderClass()).QueryInterface(iid);
 };
 

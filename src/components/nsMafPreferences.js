@@ -33,6 +33,10 @@ const mafPreferencesContractID = "@mozilla.org/maf/preferences_service;1";
 const mafPreferencesCID = Components.ID("{34ea8b6d-e6c3-47e3-83ae-03e3b97dbb56}");
 const mafPreferencesIID = Components.interfaces.nsIMafPreferences;
 
+var MafPreferencesService = null;
+
+var MafStrBundle = null;
+
 /**
  * The MAF preferences.
  */
@@ -82,6 +86,7 @@ MafPreferencesServiceClass.prototype = {
 
   clearTempOnClose: true,
 
+  enableMafProtocol: false,
 
   getRecordsLength: function() {
     return this.programExtensions.length;
@@ -152,7 +157,7 @@ MafPreferencesServiceClass.prototype = {
       mafdebug(e);
     }
   },
-  
+
 /*
   removeRecordAt: function(index) {
     this.programExtensions = this.programExtensions.slice(index, 1);
@@ -169,7 +174,7 @@ MafPreferencesServiceClass.prototype = {
     if (index >= 0) {
       if (index == 0) {
         var outarray = new Array();
-        outarray.push("MAF Archives");
+        outarray.push("MAF " + MafStrBundle.GetStringFromName("archives"));
         outarray.push("*.maff; *.maf");
         outarray.push("" + this.defaultMAFExtensionIndex);
 
@@ -181,7 +186,7 @@ MafPreferencesServiceClass.prototype = {
           var i = index - 1;
 
           var outarray = new Array();
-          outarray.push("MAF " + this.programExtensions[i][0] + " Archives");
+          outarray.push("MAF " + this.programExtensions[i][0] + " " + MafStrBundle.GetStringFromName("archives"));
 
           // Construct a string like "*.zip.maf; *.maf.zip"
           var additionalExts = "";
@@ -217,9 +222,9 @@ MafPreferencesServiceClass.prototype = {
    * Creates a multi-dimensional array holding info on each registered program
    */
   getOpenFilters: function() {
-    var result = [ ["MAF Archives", "*.maff; *.maf", this.defaultMAFExtensionIndex] ];
+    var result = [ ["MAF " + MafStrBundle.GetStringFromName("archives"), "*.maff; *.maf", this.defaultMAFExtensionIndex] ];
     for (var i=0; i<this.programExtensions.length; i++) {
-      var entry = ["MAF " + this.programExtensions[i][0] + " Archives"];
+      var entry = ["MAF " + this.programExtensions[i][0] + " " + MafStrBundle.GetStringFromName("archives")];
 
       // Construct a string like "*.zip.maf; *.maf.zip"
       var additionalExts = "";
@@ -271,7 +276,7 @@ MafPreferencesServiceClass.prototype = {
     if (index >= 0) {
       if (index == 0) {
         var outarray = new Array();
-        outarray.push("MAF Archives");
+        outarray.push("MAF " + MafStrBundle.GetStringFromName("archives"));
         outarray.push("*.maff");
         outarray.push("" + this.defaultMAFExtensionIndex);
 
@@ -286,7 +291,7 @@ MafPreferencesServiceClass.prototype = {
             total += 1;
             if (index == total) {
               var outarray = new Array();
-              outarray.push("MAF " + this.programExtensions[i][0] + " Archives");
+              outarray.push("MAF " + this.programExtensions[i][0] + " " + MafStrBundle.GetStringFromName("archives"));
               outarray.push(this.programExtensions[i][3][j]);
               outarray.push("" + i);
 
@@ -310,12 +315,12 @@ MafPreferencesServiceClass.prototype = {
    * Creates a multi-dimensional array holding info on each registered program
    */
   getSaveFilters: function() {
-    var result = [ ["MAF Archives", "*.maff", this.defaultMAFExtensionIndex] ];
+    var result = [ ["MAF " + MafStrBundle.GetStringFromName("archives"), "*.maff", this.defaultMAFExtensionIndex] ];
 
     // Each unique extension has its own entry
     for (var i=0; i<this.programExtensions.length; i++) {
       for (var j=0; j<this.programExtensions[i][3].length; j++) {
-        var entry = ["MAF " + this.programExtensions[i][0] + " Archives", this.programExtensions[i][3][j], i];
+        var entry = ["MAF " + this.programExtensions[i][0] + " " + MafStrBundle.GetStringFromName("archives"), this.programExtensions[i][3][j], i];
         result[result.length] = entry;
       }
     }
@@ -401,21 +406,24 @@ MafPreferencesServiceClass.prototype = {
     result.win_wscriptexe = "";
     result.win_invisiblevbs = "";
     result.clearTempOnClose = true;
+    result.enableMafProtocol = false;
 
       var mafParentDir = this._getProfileDir();
       // Default if there's no stored prefs
 
       result.defaultMAFExtensionIndex = 0;
 
-      // Get hidden window
-      var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
-                        .getService(Components.interfaces.nsIAppShellService);
-      var hiddenWnd = appShell.hiddenDOMWindow;
+      try {
+        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                      .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
 
-      var navigator = hiddenWnd.navigator;
+        var navigatorUserAgent = prefs.getCharPref("general.useragent");
+      } catch(e) {
+        navigatorUserAgent = " Windows ";
+      }
 
       // If not on windows
-      if (navigator.userAgent.indexOf("Windows") == -1) {
+      if (navigatorUserAgent.indexOf("Windows") == -1) {
         result.temp = mafParentDir + "/maf/maftemp/";
         result.programExtensions[result.programExtensions.length] = [
            "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.zip.maf", "*.maf.zip"]];
@@ -434,31 +442,14 @@ MafPreferencesServiceClass.prototype = {
    * Load the preferences from the user prefs.
    */
   load: function() {
-    if (!this.isLoaded) {
+    // if (!this.isLoaded) {
+    this.programExtensions = new Array();
+
       var mafParentDir = this._getProfileDir();
       // Default if there's no stored prefs
 
       this.defaultMAFExtensionIndex = 0;
 
-      // Get hidden window
-      var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
-                        .getService(Components.interfaces.nsIAppShellService);
-      var hiddenWnd = appShell.hiddenDOMWindow;
-
-      var navigator = hiddenWnd.navigator;
-
-      // If not on windows
-      if (navigator.userAgent.indexOf("Windows") == -1) {
-        this.temp = mafParentDir + "/maf/maftemp/";
-        this.programExtensions[this.programExtensions.length] = [
-           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.zip.maf", "*.maf.zip"]];
-      } else {
-        this.temp = mafParentDir + "\\maf\\maftemp\\";
-        this.programExtensions[this.programExtensions.length] = [
-           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.zip.maf", "*.maf.zip"]];
-        this.win_wscriptexe = "c:\\winnt\\system32\\wscript.exe",
-        this.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
-      };
 
     // Load the temp path
     // Load the defaultMAFExtensionIndex
@@ -471,9 +462,28 @@ MafPreferencesServiceClass.prototype = {
       // end-for
 
       try {
-
         var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                       .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
+
+        var navigatorUserAgent = prefs.getCharPref("general.useragent");
+      } catch(e) {
+        navigatorUserAgent = " Windows ";
+      }
+
+      try {
+
+      // If not on windows
+      if (navigatorUserAgent.indexOf("Windows") == -1) {
+        this.temp = mafParentDir + "/maf/maftemp/";
+        this.programExtensions[this.programExtensions.length] = [
+           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.zip.maf", "*.maf.zip"]];
+      } else {
+        this.temp = mafParentDir + "\\maf\\maftemp\\";
+        this.programExtensions[this.programExtensions.length] = [
+           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.zip.maf", "*.maf.zip"]];
+        this.win_wscriptexe = "c:\\winnt\\system32\\wscript.exe",
+        this.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
+      };
 
         this.temp = prefs.getCharPref("temp");
         this.urlRewrite = prefs.getBoolPref("urlrewrite");
@@ -486,6 +496,7 @@ MafPreferencesServiceClass.prototype = {
         this.win_invisiblevbs = prefs.getCharPref("wininvisiblevbs");
 
         this.clearTempOnClose = prefs.getBoolPref("clearTempOnClose");
+        this.enableMafProtocol = prefs.getBoolPref("enableMafProtocol");
 
         var noOfExtensions = prefs.getIntPref("noofextensions");
 
@@ -506,7 +517,7 @@ MafPreferencesServiceClass.prototype = {
         }
 
       } catch(e) {
-        mafdebug(e);
+        // mafdebug(e);
       }
 
     // Add MHT as the last archive format supported
@@ -522,9 +533,9 @@ MafPreferencesServiceClass.prototype = {
       } catch(e) {
         mafdebug(e);
       }
-      
-      this.isLoaded = true;
-    }
+
+    //  this.isLoaded = true;
+    //}
   },
 
   /**
@@ -556,6 +567,7 @@ MafPreferencesServiceClass.prototype = {
       prefs.setCharPref("wininvisiblevbs", this.win_invisiblevbs);
 
       prefs.setBoolPref("clearTempOnClose", this.clearTempOnClose);
+      prefs.setBoolPref("enableMafProtocol", this.enableMafProtocol);
 
       // Subtract 1 because MHT hander not counted
       prefs.setIntPref("noofextensions", this.programExtensions.length-1);
@@ -599,11 +611,6 @@ MafPreferencesServiceClass.prototype = {
 
 };
 
-try {
-  var MafPreferencesService = new MafPreferencesServiceClass();
-} catch(e) {
-  mafdebug(e);
-}
 
 function mafdebug(text) {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];
@@ -639,6 +646,16 @@ MAFPreferencesFactory.createInstance = function (outer, iid) {
   if (!iid.equals(mafPreferencesIID) &&
       !iid.equals(Components.interfaces.nsISupports)) {
     throw Components.results.NS_ERROR_NO_INTERFACE;
+  }
+
+  if (MafPreferencesService == null) {
+    MafPreferencesService = new MafPreferencesServiceClass();
+  }
+
+  if (MafStrBundle == null) {
+    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                      .getService(Components.interfaces.nsIStringBundleService)
+                      .createBundle("chrome://maf/locale/maf.properties");
   }
 
   try {

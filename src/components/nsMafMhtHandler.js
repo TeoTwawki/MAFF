@@ -35,17 +35,11 @@ const mafMhtHandlerIID = Components.interfaces.nsIMafMhtHandler;
 
 const MAFNamespace = "http://maf.mozdev.org/metadata/rdf#";
 
-try {
+var gRDFService = null;
+var MafUtils = null;
+var MafMhtHandlerService = null;
 
-  /** The global RDF service object. */
-  var gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
-                       .getService(Components.interfaces.nsIRDFService);
-
-  var MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                    .getService(Components.interfaces.nsIMafUtil);
-} catch(e) {
-  mafdebug(e);
-}
+var MafStrBundle = null;
 
 /**
  * The MAF MHT Handler.
@@ -141,7 +135,7 @@ MafMhtHandlerServiceClass.prototype = {
     // Original plan: DOM Parse all the html, get all the tags, check the state, replace if attribute has key value
     //    Issues: DOM Parsing dies due to security exceptions and is not easily synchronous
     // New plan: Use regular expressions
-    //              - O(3n*m) algorithm. - Can optimize to make it O(n*m)
+    //              - O(3n*m) algorithm. - Can optimize to make it O(n*m) but harder to manage
     for (var i=0; i<state.htmlFiles.length; i++) {
 
        var thisPage = MafUtils.readFile(state.htmlFiles[i]);
@@ -157,6 +151,9 @@ MafMhtHandlerServiceClass.prototype = {
        }
     }
 
+    var obs = Components.classes["@mozilla.org/observer-service;1"]
+                 .getService(Components.interfaces.nsIObserverService);
+    obs.notifyObservers(null, "mht-decoder-finished", destpath);
   },
 
   _makeUrlsAbsolute: function(sourceString, baseUrl) {
@@ -682,10 +679,8 @@ extractContentHandlerClass.prototype = {
 
   onContentComplete: function() {
     if (this.binaryContent) {
-      //this.createBinaryFile(this.destfile, this.bindata);
       this.createBinaryFile();
     } else {
-      //this.createFile(this.destfile, this.data);
       this.createFile();
     }
   },
@@ -764,11 +759,6 @@ extractContentHandlerClass.prototype = {
   }
 };
 
-try {
-  var MafMhtHandlerService = new MafMhtHandlerServiceClass();
-} catch(e) {
-  mafdebug(e);
-}
 
 function asStringValue(str) {
   var result = Components.classes["@mozilla.org/libmaf/stringvalue;1"]
@@ -822,6 +812,27 @@ MafMhtHandlerFactory.createInstance = function (outer, iid) {
   if (!iid.equals(mafMhtHandlerIID) &&
       !iid.equals(Components.interfaces.nsISupports)) {
     throw Components.results.NS_ERROR_NO_INTERFACE;
+  }
+
+
+  if (gRDFService == null) {
+    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
+                     .getService(Components.interfaces.nsIRDFService);
+  }
+
+  if (MafUtils == null) {
+    MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
+                  .getService(Components.interfaces.nsIMafUtil);
+  }
+
+  if (MafMhtHandlerService == null) {
+    MafMhtHandlerService = new MafMhtHandlerServiceClass();
+  }
+
+  if (MafStrBundle == null) {
+    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                      .getService(Components.interfaces.nsIStringBundleService)
+                      .createBundle("chrome://maf/locale/maf.properties");
   }
 
   return MafMhtHandlerService.QueryInterface(iid);

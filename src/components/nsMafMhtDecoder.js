@@ -36,6 +36,8 @@ const mafMhtDecoderIID = Components.interfaces.nsIMafMhtDecoder;
 
 const mafMhtDecoderHeaderRecIID = Components.interfaces.nsIMafMhtHeaderRec;
 
+var MafStrBundle = null;
+
 /**
  * The MAF Mht Decoder.
  */
@@ -702,6 +704,12 @@ MAFMhtDecoderFactory.createInstance = function (outer, iid) {
     throw Components.results.NS_ERROR_NO_INTERFACE;
   }
 
+  if (MafStrBundle == null) {
+    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                      .getService(Components.interfaces.nsIStringBundleService)
+                      .createBundle("chrome://maf/locale/maf.properties");
+  }
+    
   return (new MafMhtDecoderClass()).QueryInterface(iid);
 };
 
