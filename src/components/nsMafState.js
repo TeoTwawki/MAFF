@@ -46,6 +46,10 @@ var MafLibMHTDecoder = null;
 
 var MafStrBundle = null;
 
+var gNETIOService = null;
+
+
+
 /**
  * The MAF State Service.
  */
@@ -350,6 +354,33 @@ MafStateServiceClass.prototype = {
     if (typeof(this.localFileToUrlMap[url]) != "undefined") {
       result = true;
     }
+
+    if (!result) {
+
+      // Could be a document in a frame
+      try {
+        // Try to get the file object's parent
+        var ouri = gNETIOService.newURI(url, "", null);    // Create URI object
+        var parent = ouri.QueryInterface(Components.interfaces.nsIFileURL).file.parent;
+
+        while ((parent != null) && (!result)) {
+          // If the parent index.htm or index.html is in the map, it's an archive url
+          var uri1 = MafUtils.getURIFromFilename(MafUtils.appendToDir(parent.path, "index.html"));
+          var uri2 = MafUtils.getURIFromFilename(MafUtils.appendToDir(parent.path, "index.htm"));
+          if ((typeof(this.localFileToUrlMap[uri1]) != "undefined") ||
+              (typeof(this.localFileToUrlMap[uri2]) != "undefined")) {
+            result = true;
+          }
+
+          parent = parent.parent;
+        }
+
+      } catch(e) {
+        // For URIs that are not files, exceptions are ignored.
+
+      }
+    }
+
     return result;
   },
 
@@ -429,6 +460,11 @@ MafStateFactory.createInstance = function (outer, iid) {
   if (gRDFCService == null) {
     gRDFCService = Components.classes["@mozilla.org/rdf/container-utils;1"]
                      .getService(Components.interfaces.nsIRDFContainerUtils);
+  }
+
+  if (gNETIOService == null) {
+    gNETIOService = Components.classes["@mozilla.org/network/io-service;1"]
+                      .getService(Components.interfaces.nsIIOService);
   }
 
   if (MafUtils == null) {

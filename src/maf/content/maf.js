@@ -47,6 +47,9 @@
  * Added script failure notification code from process exit value.
  * Modified invis.vbs to return process exit value contributed by Allister.
  * Added advanced panel in preferences window.
+ * Fixed bug in MAF protocol handler that broke silent opening of MAF archives.
+ * Fixed bug in MafState.isArchiveURL(originalURL) that didn't return true for framed archive documents.
+ * TODO: Add save frame functionality to alternative save component.
  *
  * Changes from 0.4.2 to 0.4.3
  *
@@ -205,6 +208,8 @@ maf.prototype = {
         localProgramArgs[localProgramArgs.length] = archivefile;
         localProgramArgs[localProgramArgs.length] = destpath;
 
+        this._arguments2Native(localProgramArgs);
+
         oProcess.run(true, localProgramArgs, localProgramArgs.length);
 
         var obs = Components.classes["@mozilla.org/observer-service;1"]
@@ -275,6 +280,8 @@ maf.prototype = {
         localProgramArgs[localProgramArgs.length] = archivefile;
         localProgramArgs[localProgramArgs.length] = sourcepath;
 
+        this._arguments2Native(localProgramArgs);
+
         oProcess.run(true, localProgramArgs, localProgramArgs.length);
 
         var observerData = new Array();
@@ -285,6 +292,44 @@ maf.prototype = {
                      .getService(Components.interfaces.nsIObserverService);
         obs.notifyObservers(null, "maf-archiver-finished", observerData);
       }
+    }
+  },
+
+  /**
+   * Convert unicode arguments to native charset
+   * Contributed by: glassprogrammer
+   * Bug ref#: 7995
+   */
+  _arguments2Native: function (args){
+    try {
+    //Check current locale
+      var oLocaleSrv = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
+                         .createInstance(Components.interfaces.nsILocaleService);
+      var sLocale = oLocaleSrv.getLocaleComponentForUserAgent();
+
+      //Get the correct charset
+      var sCharset = null;
+      switch (sLocale) {
+        case "zh-CN": sCharset = "GBK";
+                      break;
+        case "zh-TW": sCharset="BIG5";
+                      break;
+        default: sCharset = null;
+                  break;
+      }
+
+      //Convert
+      if (sCharset != null) {
+        var oConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                           .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+
+        oConverter.charset = sCharset;
+        for(var i = 0; i < args.length; i++) {
+          args[i] = oConverter.ConvertFromUnicode(args[i]);
+        }
+      }
+    } catch (e) {
+      mafdebug("Error in converting unicode arguments to native charset: " + e);
     }
   },
 

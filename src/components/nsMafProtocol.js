@@ -202,12 +202,21 @@ MAFProtocol.prototype = {
       MafMHTHandler.extractArchive(archivefile, realDestPath);
     } else {
       /** If program is nothing then don't try to run it. */
-      if (program != "") {
+      if (program.trim() != "") {
         if (MafPreferences.win_invisible) {
-          localProgram = MafPreferences.win_wscriptexe;
-          localProgramArgs = new Array();
-          localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
-          localProgramArgs[localProgramArgs.length] = program;
+          // If wscript and vbs for invisible running exist
+          if (MafPreferences.win_wscriptexe.trim() != "" &&
+              MafPreferences.win_invisiblevbs.trim() != "" &&
+              MafUtils.checkFileExists(MafPreferences.win_wscriptexe) &&
+              MafUtils.checkFileExists(MafPreferences.win_invisiblevbs)) {
+            localProgram = MafPreferences.win_wscriptexe;
+            localProgramArgs = new Array();
+            localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
+            localProgramArgs[localProgramArgs.length] = program;
+          } else {
+            localProgram = program;
+            localProgramArgs = new Array();
+          }
         } else {
           localProgram = program;
           localProgramArgs = new Array();
@@ -225,7 +234,7 @@ MAFProtocol.prototype = {
           var oProcess = Components.classes["@mozilla.org/process/util;1"]
                            .createInstance(Components.interfaces.nsIProcess);
         } catch (e) {
-          mafdebug(MafStrBundle.GetStringFromName("couldnotcreateprocess") + "\n" + e);
+          mafdebug(MafStrBundle.GetStringFromName("couldnotcreateprocess") + e);
         }
 
         oProcess.init(oProgram);
@@ -233,20 +242,59 @@ MAFProtocol.prototype = {
         localProgramArgs[localProgramArgs.length] = archivefile;
         localProgramArgs[localProgramArgs.length] = destpath;
 
+        this._arguments2Native(localProgramArgs);
+
         oProcess.run(true, localProgramArgs, localProgramArgs.length);
+
+        var obs = Components.classes["@mozilla.org/observer-service;1"]
+                     .getService(Components.interfaces.nsIObserverService);
 
         var observerData = new Array();
         observerData[observerData.length] = oProcess.exitValue;
         observerData[observerData.length] = destpath;
 
-        var obs = Components.classes["@mozilla.org/observer-service;1"]
-                     .getService(Components.interfaces.nsIObserverService);
         obs.notifyObservers(null, "maf-extract-finished", observerData);
-
       }
     }
   },
 
+  /**
+   * Convert unicode arguments to native charset
+   * Contributed by: glassprogrammer
+   * Bug ref#: 7995
+   */
+  _arguments2Native: function (args){
+    try {
+    //Check current locale
+      var oLocaleSrv = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
+                         .createInstance(Components.interfaces.nsILocaleService);
+      var sLocale = oLocaleSrv.getLocaleComponentForUserAgent();
+
+      //Get the correct charset
+      var sCharset = null;
+      switch (sLocale) {
+        case "zh-CN": sCharset = "GBK";
+                      break;
+        case "zh-TW": sCharset="BIG5";
+                      break;
+        default: sCharset = null;
+                  break;
+      }
+
+      //Convert
+      if (sCharset != null) {
+        var oConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                           .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+
+        oConverter.charset = sCharset;
+        for(var i = 0; i < args.length; i++) {
+          args[i] = oConverter.ConvertFromUnicode(args[i]);
+        }
+      }
+    } catch (e) {
+      mafdebug("Error in converting unicode arguments to native charset: " + e);
+    }
+  },
 
   newChannel: function(aURI) {
     var ios = Components.classes["@mozilla.org/network/io-service;1"]
@@ -340,6 +388,15 @@ function mafdebug(text) {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];
   var cs = csClass.getService(Components.interfaces.nsIConsoleService);
   cs.logStringMessage(text);
+};
+
+String.prototype.trim = function() {
+  // skip leading and trailing whitespace
+  // and return everything in between
+  var x=this;
+  x=x.replace(/^\s*(.*)/, "$1");
+  x=x.replace(/(.*?)\s*$/, "$1");
+  return x;
 };
 
 String.prototype.startsWith = function(needle) {
