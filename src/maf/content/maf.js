@@ -50,6 +50,10 @@
  * Fixed bug in MAF protocol handler that broke silent opening of MAF archives.
  * Fixed bug in MafState.isArchiveURL(originalURL) that didn't return true for framed archive documents.
  * Added unicode to native locale conversion function for program arguments.
+ * Added decoder optimization for MHT MAF files.
+ * Added native quoted-printable encoder and decoder support.
+ * Added Portuguese locale by Jacinto Leal.
+ * Added update.rdf related entries for extension manager updates.
  * TODO: Add save frame functionality to alternative save component.
  *
  * Changes from 0.4.2 to 0.4.3

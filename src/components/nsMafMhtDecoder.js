@@ -148,7 +148,6 @@ MafMhtDecoderClass.prototype = {
         }
       }
     }
-
   },
 
   _parseOutHeadersAndBody: function(content) {
@@ -251,6 +250,7 @@ MafMhtDecoderClass.prototype = {
       result[result.length] = currentHeader + ": " + currentContent;
       //mafdebug(currentHeader + ": " + currentContent);
     }
+
     return result;
   },
 
@@ -260,6 +260,7 @@ MafMhtDecoderClass.prototype = {
     if (header.indexOf(":") > 0) {
       result = header.substring(0, header.indexOf(":"));
     }
+
     return result;
   },
 
@@ -268,6 +269,7 @@ MafMhtDecoderClass.prototype = {
     if (header.indexOf(":") > 0) {
       result = header.substring(header.indexOf(":") + 1, header.length);
     }
+
     return result;
   },
 
@@ -357,8 +359,6 @@ MafMhtDecoderClass.prototype = {
       }
     }
 
-
-
     this.body = abody;
     this.contentBody = "";
   },
@@ -397,6 +397,7 @@ MafMhtDecoderClass.prototype = {
         result = headerStr + "\r\n" + headersAndBody[1];
       }
     }
+
     return result;
   },
 
@@ -444,6 +445,7 @@ MafMhtDecoderClass.prototype = {
         result = headerStr + "\r\n" + headersAndBody[1];
       }
     }
+
     return result;
   },
 
@@ -472,6 +474,7 @@ MafMhtDecoderClass.prototype = {
     } catch(e) {
 
     }
+
     return result;
   },
 
@@ -495,7 +498,6 @@ MafMhtDecoderClass.prototype = {
     return result;
   },
 
-
   getHeaders: function() {
     // Result is a nsISimpleEnumerator
     return (new headerEnumerator(this.headers)).QueryInterface(Components.interfaces.nsISimpleEnumerator);
@@ -515,6 +517,7 @@ MafMhtDecoderClass.prototype = {
     } catch(e) {
       mafdebug(e);
     }
+
     return result;
   },
 
@@ -691,9 +694,10 @@ contentDecoderClass.prototype = {
    */
   _decodeQuotedPrintable: function(encodedString) {
     var result;
+
+    var decodedStrObj = new Object();
+
     result = encodedString;
-    // = sign followed by new line, replaced by nothing.
-    result = result.replace(/=\r?\n/g, "");
 
     if (this.contentType != null) {
       // Loose check to see if charset is UTF
@@ -708,18 +712,46 @@ contentDecoderClass.prototype = {
       this.contentType = null;
     }
 
-    var equalsArray = result.split("=");
-    var newresult = equalsArray[0];
-    for (var i=1; i<equalsArray.length; i++) {
-      if (equalsArray[i].length >= 2) {
-        newresult += this._hexToDec(equalsArray[i].substring(0,2));
-        if (equalsArray[i].length > 2) {
-          newresult += equalsArray[i].substring(2,equalsArray[i].length);
+    if (!this.canNativeDecodeQuotedPrintable(result, decodedStrObj)) {
+
+      // = sign followed by new line, replaced by nothing.
+      result = result.replace(/=\r?\n/g, "");
+
+      var equalsArray = result.split("=");
+      var newresult = equalsArray[0];
+       for (var i=1; i<equalsArray.length; i++) {
+        if (equalsArray[i].length >= 2) {
+          newresult += this._hexToDec(equalsArray[i].substring(0,2));
+          if (equalsArray[i].length > 2) {
+            newresult += equalsArray[i].substring(2,equalsArray[i].length);
+          }
         }
       }
+
+      return newresult;
+    } else {
+      return decodedStrObj.content;
+    }
+  },
+
+  canNativeDecodeQuotedPrintable: function(source, decodedStrObj) {
+    var result = true;
+
+    try {
+      // Instantiate a native decoder
+      var nativeDecoderObj = Components.classes["@ottley.org/libmafbin/mhtmlcoders;1"]
+                                .createInstance(Components.interfaces.nsIMafMhtmlCoder);
+
+      decodedStrObj.content = nativeDecoderObj.decodeQuotedPrintable(source);
+
+      nativeDecoderObj = null;
+
+    } catch (e) {
+      // If anything goes wrong use the non-native decoder
+      result = false;
     }
 
-    return newresult;
+    return result;
   },
 
   /**

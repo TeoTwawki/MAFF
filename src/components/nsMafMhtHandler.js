@@ -51,6 +51,8 @@ function MafMhtHandlerServiceClass() {
 MafMhtHandlerServiceClass.prototype = {
 
   extractArchive: function(archivefile, destpath) {
+    var end;
+
     // MafUtil service - Create destpath
     MafUtils.createDir(destpath);
 
@@ -71,8 +73,8 @@ MafMhtHandlerServiceClass.prototype = {
       mafdebug(e);
     }
 
+    this.xmafused = false;
     this._addSubjectAndDateMetaData(decoder, datasource);
-
 
     var state = new extractContentHandlerStateClass();
 
@@ -159,19 +161,21 @@ MafMhtHandlerServiceClass.prototype = {
     //    Issues: DOM Parsing dies due to security exceptions and is not easily synchronous
     // New plan: Use regular expressions
     //              - O(3n*m) algorithm. - Can optimize to make it O(n*m) but harder to manage
-    for (var i=0; i<state.htmlFiles.length; i++) {
+    if (!this.xmafused) {
+      for (var i=0; i<state.htmlFiles.length; i++) {
 
-       var thisPage = MafUtils.readFile(state.htmlFiles[i]);
+        var thisPage = MafUtils.readFile(state.htmlFiles[i]);
 
-       try {
-         thisPage = this._makeUrlsAbsolute(thisPage, state.baseUrl[i]);
-         thisPage = this._replaceCids(thisPage, state);
-         thisPage = this._replaceUrls(thisPage, state);
-         MafUtils.deleteFile(state.htmlFiles[i]);
-         MafUtils.createFile(state.htmlFiles[i], thisPage);
-       } catch(e) {
-         mafdebug(e);
-       }
+        try {
+          thisPage = this._makeUrlsAbsolute(thisPage, state.baseUrl[i]);
+          thisPage = this._replaceCids(thisPage, state);
+          thisPage = this._replaceUrls(thisPage, state);
+          MafUtils.deleteFile(state.htmlFiles[i]);
+          MafUtils.createFile(state.htmlFiles[i], thisPage);
+        } catch(e) {
+          mafdebug(e);
+        }
+      }
     }
 
     var observerData = new Array();
@@ -242,6 +246,7 @@ MafMhtHandlerServiceClass.prototype = {
     }
 
     resultString += unprocessedString;
+
     return resultString;
   },
 
@@ -295,6 +300,7 @@ MafMhtHandlerServiceClass.prototype = {
     }
 
     resultString += unprocessedString;
+
     return resultString;
   },
 
@@ -379,6 +385,7 @@ MafMhtHandlerServiceClass.prototype = {
       }
 
     resultString += unprocessedString;
+
     return resultString;
   },
 
@@ -397,6 +404,10 @@ MafMhtHandlerServiceClass.prototype = {
         }
         if (name == "date") {
            dateTimeArchived = header.value;
+        }
+        if (name == "x-maf") {
+           this.xmafused = true;
+           this.xmafversion = header.value;
         }
       } catch (e) {
         // The interface may not be available as yet?

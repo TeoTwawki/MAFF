@@ -251,21 +251,69 @@ MafMhtEncoderClass.prototype = {
       mafdebug(e);
     }
 
-    var eqtState = new encodeQuotedPrintableTimerState();
+    if (!this.canNativeEncodeQuotedPrintable(obj_File, obj_InputStream, obj_ScriptableIO, oTransport)) {
 
-    eqtState.totalFileSize = obj_File.fileSize;
-    eqtState.charsToRead = this.READ_BUFFER_SIZE;
-    eqtState.str = "";
-    eqtState.obj_ScriptableIO = obj_ScriptableIO;
-    eqtState.obj_InputStream = obj_InputStream;
-    eqtState.obj_File = obj_File;
-    eqtState.encoder = this;
-    eqtState.oTransport = oTransport;
+      var eqtState = new encodeQuotedPrintableTimerState();
 
-    var timer = Components.classes["@mozilla.org/timer;1"]
-                   .createInstance(Components.interfaces.nsITimer);
-    eqtState.timer = timer;
-    timer.initWithCallback(eqtState, qpEncodeTimerDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+      eqtState.totalFileSize = obj_File.fileSize;
+      eqtState.charsToRead = this.READ_BUFFER_SIZE;
+      eqtState.str = "";
+      eqtState.obj_ScriptableIO = obj_ScriptableIO;
+      eqtState.obj_InputStream = obj_InputStream;
+      eqtState.obj_File = obj_File;
+      eqtState.encoder = this;
+      eqtState.oTransport = oTransport;
+
+      var timer = Components.classes["@mozilla.org/timer;1"]
+                    .createInstance(Components.interfaces.nsITimer);
+      eqtState.timer = timer;
+      timer.initWithCallback(eqtState, qpEncodeTimerDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+
+    }
+  },
+
+  canNativeEncodeQuotedPrintable: function(obj_File, obj_InputStream, obj_ScriptableIO, oTransport) {
+    var result = true;
+
+    try {
+      // Instantiate a native encoder
+      var nativeEncoderObj = Components.classes["@ottley.org/libmafbin/mhtmlcoders;1"]
+                                .createInstance(Components.interfaces.nsIMafMhtmlCoder);
+
+    } catch (e) {
+      // If anything goes wrong use the non-native encoder
+      result = false;
+    }
+
+    // If things went smoothly
+    if (result) {
+      try {
+        // Read the entire file in as a string
+        var str = obj_ScriptableIO.read(obj_File.fileSize);
+
+        // Encode it
+        var encodedStr = nativeEncoderObj.encodeQuotedPrintable(str);
+
+        // Write it out to the transport
+        oTransport.write(encodedStr, encodedStr.length);
+
+      } catch (e) { }
+
+      try {
+        obj_ScriptableIO.close();
+        obj_InputStream.close();
+      } catch (e) { }
+
+      // Notify observing functions
+      var obs = Components.classes["@mozilla.org/observer-service;1"]
+                .getService(Components.interfaces.nsIObserverService);
+      obs.notifyObservers(null, "encoding-mht-encoder-finished", "quoted-printable");
+
+    }
+
+    nativeEncoderObj = null;
+
+    return result;
   },
 
   /**

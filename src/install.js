@@ -21,6 +21,7 @@ registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/it-IT/");
 registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/fr-FR/");
 registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/ru-RU/");
 registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/pl-PL/");
+registerChrome( LOCALE | PROFILE_CHROME, jarPath, "locale/pt-BR/"); 
 
 var componentsDir = getFolder("Components");  //getFolder("Profile", "components");
 setPackageFolder(componentsDir);
