@@ -3,8 +3,8 @@
 [scriptable, uuid(895f6166-d106-44c0-a6c0-4b5cbccd9b27)]
 interface nsIMafMhtDecoderContentHandler : nsISupports
 {
-    void onContentStart(in string contentType, in string contentId, in string contentLocation);
-    void onContent(in string data);
-    void onBinaryContent(in string data);
+    void onContentStart(in wstring contentType, in wstring contentId, in wstring contentLocation);
+    void onContent(in wstring data);
+    void onBinaryContent(in wstring data);
     void onContentComplete();
 };

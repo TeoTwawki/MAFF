@@ -5,37 +5,37 @@
 [scriptable, uuid(6e08b6a2-7d43-4cc8-90fc-4fe468a41b93)]
 interface nsIMafUtil : nsISupports
 {
-  string appendToDir(in string initialDir, in string subDir);
-  nsILocalFile createDir(in string dirName);
-  void createFile(in string fileToCreate, in string contents);
-  void createExecutableFile(in string fileToCreate, in string contents);
+  wstring appendToDir(in wstring initialDir, in wstring subDir);
+  nsILocalFile createDir(in wstring dirName);
+  void createFile(in wstring fileToCreate, in wstring contents);
+  void createExecutableFile(in wstring fileToCreate, in wstring contents);
 
-  void copyBinaryFile(in string source, in string dest);
+  void copyBinaryFile(in wstring source, in wstring dest);
 
-  void deleteFile(in string fileToDelete);
-  boolean checkFileExists(in string filePathToCheck);
-  string getUniqueFilename(in string destDir, in string suggestedFilename);
-  string getFullUniqueFilename(in string suggestedPathAndFilename);
-  string readFile(in string filename);
+  void deleteFile(in wstring fileToDelete);
+  boolean checkFileExists(in wstring filePathToCheck);
+  wstring getUniqueFilename(in wstring destDir, in wstring suggestedFilename);
+  wstring getFullUniqueFilename(in wstring suggestedPathAndFilename);
+  wstring readFile(in wstring filename);
 
-  nsISupports readBinaryFile(in string filename);
+  nsISupports readBinaryFile(in wstring filename);
 
   /* nsIRDFRemoteDataSource */
-  nsISupports createRDF(in string path, in string filename);
+  nsISupports createRDF(in wstring path, in wstring filename);
 
-  string getURI(in nsILocalFile file);
-  string getURIFromFilename(in string filename);
+  wstring getURI(in nsILocalFile file);
+  wstring getURIFromFilename(in wstring filename);
 
-  void addStringData(in nsISupports datasource, in string name, in string value);
+  void addStringData(in nsISupports datasource, in wstring name, in wstring value);
   void openListInTabs(in nsISupports urlList, in nsISupports oBrowser);
 
   short getNumberOfOpenWindows();
-  boolean isWindowOpen(in string location);
-  string addBaseHref(in string source, in string baseURL);
-  string getMIMETypeForURI(in string url);
+  boolean isWindowOpen(in wstring location);
+  wstring addBaseHref(in wstring source, in wstring baseURL);
+  wstring getMIMETypeForURI(in wstring url);
 
-  string getDefaultFileName(in string aDefaultFileName, in nsIURL aDocumentURI);
-  string validateFileName(in string aFileName);
-  string getExtensionByType(in string contentType);
+  wstring getDefaultFileName(in wstring aDefaultFileName, in nsIURL aDocumentURI);
+  wstring validateFileName(in wstring aFileName);
+  wstring getExtensionByType(in wstring contentType);
 
 };

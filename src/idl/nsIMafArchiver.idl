@@ -6,10 +6,10 @@
 interface nsIMafArchiver : nsISupports
 {
   attribute short downloadPercentComplete;
-  attribute string indexfilename;
+  attribute wstring indexfilename;
   attribute boolean downloadComplete;
 
-  void init(in nsISupports aBrowser, in string tempPath, in string scriptPath, in string archivePath, in string folderNumber, in nsIMaf maf);
+  void init(in nsISupports aBrowser, in wstring tempPath, in wstring scriptPath, in wstring archivePath, in wstring folderNumber, in nsIMaf maf);
   void start();
   void onDownloadComplete();
   void setProgressUpdater(in nsIMafProgressUpdater updater);

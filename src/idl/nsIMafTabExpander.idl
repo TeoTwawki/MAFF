@@ -5,7 +5,7 @@
 [scriptable, uuid(4383b20a-7cdf-4c82-90ee-74ee29d2ffce)]
 interface nsIMafTabExpander : nsISupports
 {
-  void init(in string tempPath, in string scriptPath, in string archivePath, in string folderNumber, in nsIMaf maf);
+  void init(in wstring tempPath, in wstring scriptPath, in wstring archivePath, in wstring folderNumber, in nsIMaf maf);
   void start();
   void startBlocking();
   void stop();

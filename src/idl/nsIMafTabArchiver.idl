@@ -7,7 +7,7 @@ interface nsIMafTabArchiver : nsISupports
 {
   attribute boolean downloadComplete;
 
-  void init(in nsISupports browsers, in string tempPath, in string scriptPath, in string archivePath, in nsIMaf maf);
+  void init(in nsISupports browsers, in wstring tempPath, in wstring scriptPath, in wstring archivePath, in nsIMaf maf);
   void start();
   void stop();
   void setProgressUpdater(in nsIMafProgressUpdater updater);

@@ -14,8 +14,8 @@ interface nsIMafGuiHandler : nsISupports
   void showPreferences();
   void browseOpenArchives();
   nsISupports getOpenFilters();
-  string selectDirectory(in string title, in string initialdir);
-  string selectSpecificFile(in string title, in string initialdir, in string filterfilename);
+  wstring selectDirectory(in wstring title, in wstring initialdir);
+  wstring selectSpecificFile(in wstring title, in wstring initialdir, in wstring filterfilename);
   void showDownloadTabsDLG(in nsIMafTabArchiver objTabArchiver);
   void showOpenTabsDLG(in nsIMafTabExpander objMafExpander);
   void showBrowseOpenArchivesDLG();

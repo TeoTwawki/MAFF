@@ -3,13 +3,13 @@
 [scriptable, uuid(5cba4706-ec80-416f-b1e3-2724a023f996)]
 interface nsIMafPreferencesRec : nsISupports
 {
-    attribute string id;
-    attribute string archivescript;
-    attribute string extractscript;
+    attribute wstring id;
+    attribute wstring archivescript;
+    attribute wstring extractscript;
 
     short getExtensionsLength();
-    string getExtensionAt(in short index);
-    void addExtension(in string newExtension);
-    void updateExtensionAt(in short index, in string newExtension);
+    wstring getExtensionAt(in short index);
+    void addExtension(in wstring newExtension);
+    void updateExtensionAt(in short index, in wstring newExtension);
     void removeExtensionAt(in short index);
 };
