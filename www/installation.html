@@ -3,7 +3,7 @@
 
 <p>Below you will find links to the latest XPI installer package. The installer packages have been merged so there is one XPI for both Linux and Windows installations. If you have previously installed MAF in Mozilla, please uninstall MAF and then install the latest package.</p>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.2.xpi">0.4.2 for Linux and Windows</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.3.xpi">0.4.3 for Linux and Windows</a></p>
 
 <p>Please note, if you have previously installed MAF and are installing the 0.3.0 version or higher, the location of scripts and some settings have changed. In order to use the new scripts, go to the <a href="preferences.html">preferences</a>, click on the "Load defaults" button and save the new preferences.</p>
 
@@ -11,14 +11,27 @@
 
 <p>After MAF has been setup, complete the configuration by checking the <a href="preferences.html">preferences</a>.</p>
 
-<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.3.0.xpi">0.3.0 for Linux</a></p>
-
-<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.3.0.xpi">0.3.0 for Windows</a></p>
-
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.2.xpi">0.4.2 for Linux and Windows</a></p>
 
 
 <h5 class="page-header"><a id="changelog" name="changelog">Changes</a></h5>
 <pre>
+ *
+ * Changes from 0.4.2 to 0.4.3
+ *
+ * Added save selected tabs functionality.
+ * Fixed bug that reset save archive type index when save dialog box was cancelled.
+ * Fixed bug that stopped tab saving if an event handler couldn't be removed.
+ * Fixed bug that resolved relative links to the wrong base url if the page had a base url tag.
+ * Added Russian locale contributed by the ArtLonger: Mozilla.ru team.
+ * Added Polish locale contributed by Bartosz Piec: Mozillapl.org team.
+ * Updated Post Install code to work with FF RC1.
+ * Added preference to disable the window alert when a single page has been saved.
+ * Updated Post Install code to update new vbs scripts for windows filetype associations.
+ * Fixed bug that stopped URL rewriting if there was an error accessing a DOM Attribute Node value.
+ * Fixed bug that caused MHT decoding to fail if the root part was of type multipart/alternative.
+ * Added functionality to execute filetype VBS when preferences are saved.
+ *
  *
  * Changes from 0.4.1 to 0.4.2
  *
