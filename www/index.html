@@ -4,17 +4,15 @@
 <div class="infoTab" id="whats-new">
 <h5 class="infoHeader">What's New</h5>
 <ul>
-<li>News item goes here</li>
-<li>More news item goes here</li>
-<li><a href="http://mozdev.org/">mozdev.org</a></li>
+<li>MAF 0.2.17 released.</li>
 </ul>
 </div>
 
 <div class="infoTab" id="other-stuff">
-<h5 class="infoHeader">Other Stuff</h5>
+<h5 class="infoHeader">Planned features</h5>
 <ul>
-<li>stuff goes here</li>
-<li>more stuff goes here</li>
+<li>MHT read support</li>
+<li>GUI to register more than one archive application</li>
 </ul>
 </div>
 
@@ -33,7 +31,34 @@
 <!-- ***************** INFO/NEWS *************** -->
 
 <!-- MAIN CONTENT -->
-<p>The <strong><?php echo ucwords($project); ?></strong> project content goes here.</p>
+<p>The <b><?php echo ucwords($project); ?></b> project is an archive extension that allows complete web pages to be saved in a single archive file. MAF stands for Mozilla Archive Format and the extension uses RDF to save page meta-data such as the original URL of the page and the date/time the page was put in the archive.</p>
 
-<p><strong>Note:</strong> If you want to add an area for user feedback to any of your pages, take a look at the <a href="notes.html">notes.html</a>
-template.</p>
+<p><b>License:</b> The MAF extension is released under the <a href="license.html">GNU GPL</a>.</p>
+
+<p><b>Author:</b> Christopher Ottley.</p>
+
+<p><b>Aim:</b> To provide a Firefox (and Mozilla) extension which allows web pages to be saved easily in an archive.</p>
+
+<p>Design: To provide maximum flexibility, registered external programs are used to prerform the archiving and expansion process. The extension *.MFA refers to files which can be processed using the default registered file archive program (for example Zip). File archive specific extensions may be used to indicate which program to use with the archive, example *.MFA.ZIP for a Zip archive, *.MFA.7Z for a 7Zip archive.</p>
+
+<p><b>Archive Application Requirements:</b> To be able to use a particular archive application the application must support:
+<ul>
+  <li>The ability to add individual files to an existing archive file</li>
+  <li>The ability to recursively add directories to an existing archive file</li>
+  <li>Long file names</li>
+  <li>The ability to extract files from an archive</li>
+</ul>
+</p>
+
+<p><b>Method:</b> An IPC process is created that executes the archive or expand script with the specified parameters.</p>
+
+<p><b>Format:</b> Each archive has a list of numbered folders. In each folder is an index.rdf file which holds the meta-data relating the saved page. There is also another index file with the related content type that was saved (index.html if an html page was saved, index.png if a png image was saved etc.). The RDF file holds the name of the index file to use.</p>
+
+<p><b>Tested on:</b>
+  <ul>
+   <li>FireFox 0.8, Linux i686.</li>
+   <li>FireFox 0.8, Windows 2000.</li>
+  </ul>
+</p>
+
+<p><b>Note:</b> This is beta software, use at your own risk.</p>

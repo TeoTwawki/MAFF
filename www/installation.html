@@ -1,4 +1,27 @@
 <!-- MAIN CONTENT -->
 <h5 class="page-header"><a id="content" name="content">Installation</a></h5>
 
-<p><a href="http://downloads.mozdev.org/maf/FILENAME.xpi">XPI INSTALL LINK</a></p>
+<p><a href="http://downloads.mozdev.org/maf/maf-0.2.17.xpi">Latest XPI - 0.2.17</a></p>
+
+<p>Installing the XPI is only half of the process. The next step is to setup the scripts that would be used to perform the actual archiving. This only has to be done once. After this is done, the preferences for the MAF extension should be set. Below are ultities and setup instructions for configuring MAF to work with Infozip's Zip and Unzip programs.</p>
+
+<p><b>Sample scripts and utilities:</b> For windows and linux.
+<br/><br/>
+Windows utilities setup:
+
+<ol>
+  <li>Todo</li>
+</ol>
+
+<br/><br/>
+Linux utilities setup:
+
+<ol>
+  <li>Create a temporary directory /tmp/maftmp.</li>
+  <li>Place the mafzip.sh and mafunzip.sh scripts in the /tmp directory.</li>
+  <li>Make the scripts executable (chmod +x maf*.sh in a shell).</li>
+  <li>Ensure /usr/bin/zip and /usr/bin/unzip are available for the scripts to execute. If the location of either zip or unzip is different, change the scripts.</li>
+</ol>
+</p>
+
+<p>After the utilities have been setup, complete the configuration by checking the <a href="preferences.html">preferences</a>.</p>
