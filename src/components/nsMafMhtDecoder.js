@@ -132,31 +132,7 @@ MafMhtDecoderClass.prototype = {
     // Ensure that values that cross lines end up on only one line
     var normalizedHeaderLines = new Array();
 
-    for (var i=0; i<headerLines.length; i++) {
-      // Remove any comments
-      if (headerLines[i].indexOf(";") == 0) {
-        headerLines[i] = headerLines[i].substring(0, headerLines[i].indexOf(";"));
-      }
-
-      if (headerLines[i].indexOf(":") > 0) {
-        if (normalizedHeaderLines.length == 0) {
-          normalizedHeaderLines[normalizedHeaderLines.length] = headerLines[i].trim();
-        } else {
-
-          // If there is no value for the previous header, this is the value
-          var prevHeader = normalizedHeaderLines[normalizedHeaderLines.length - 1];
-          if (prevHeader.substring(prevHeader.indexOf(":") + 1, prevHeader.length).trim() == "") {
-            normalizedHeaderLines[normalizedHeaderLines.length - 1] += headerLines[i].trim();
-          } else {
-            normalizedHeaderLines[normalizedHeaderLines.length] = headerLines[i].trim();
-          }
-        }
-      } else {
-        if (normalizedHeaderLines.length > 0) {
-          normalizedHeaderLines[normalizedHeaderLines.length - 1] += headerLines[i].trim();
-        }
-      }
-    }
+    normalizedHeaderLines = this._normalizeHeaders(headerLines);
 
     var aheaders = new Array();
 
@@ -172,6 +148,98 @@ MafMhtDecoderClass.prototype = {
     }
 
     return aheaders;
+  },
+
+  /**
+   * Puts headers on a single line with content and removes comments
+   */
+  _normalizeHeaders: function(headers) {
+    var result = new Array();
+    var currentHeader = "";
+    var currentContent = "";
+    var newHeader = "";
+    var newContent = "";
+
+    for (var i=0; i<headers.length; i++) {
+      newHeader = this._normalizeHeadersGetName(headers[i]).trim();
+      newContent = this._normalizeHeadersGetValue(headers[i]).trim();
+      //mafdebug("[" + i + "] newHeader:" + newHeader);
+      //mafdebug("[" + i + "] newContent:" + newHeader);
+
+      if ((currentHeader == "") && (currentContent == "")) {
+        // First header
+        //mafdebug("[" + i + "] Current header and content are empty");
+        currentHeader = newHeader;
+        currentContent = this._removeCommentFromHeader(newHeader, newContent);
+      } else {
+        if ((currentHeader != "") && (currentContent == "")) {
+          //mafdebug("[" + i + "] Current header not empty but content is empty");
+          //mafdebug("[" + i + "] Current header:" + currentHeader);
+          // Header with empty content
+          currentContent = this._removeCommentFromHeader(currentHeader, headers[i].trim());
+          //mafdebug("[" + i + "] Current header new content:" + currentContent);
+        } else {
+          if ((currentHeader != "") && (newHeader == "")) {
+            //mafdebug("[" + i + "] Current header not empty but new header is");
+            // Content continues
+            currentContent += this._removeCommentFromHeader(currentHeader, newContent);
+            //mafdebug("[" + i + "] Current header new content:" + currentContent);
+          } else {
+            if ((currentHeader != "") && (newHeader != "")) {
+              //mafdebug("[" + i + "] Current header and new header not empty. Save current, resetting new.");
+              // We have a new current
+              result[result.length] = currentHeader + ": " + currentContent;
+              //mafdebug(currentHeader + ": " + currentContent);
+              currentHeader = newHeader;
+              currentContent = this._removeCommentFromHeader(newHeader, newContent);
+              newHeader = "";
+              newContent = "";
+            }
+          }
+        }
+      }
+    }
+
+    //mafdebug("Out of loop");
+    //mafdebug("currentHeader: " + currentHeader);
+    //mafdebug("currentContent: " + currentContent);
+    //mafdebug("newHeader: " + newHeader);
+    //mafdebug("newContent: " + newContent);
+    if (currentHeader != "") {
+      result[result.length] = currentHeader + ": " + currentContent;
+      //mafdebug(currentHeader + ": " + currentContent);
+    }
+    return result;
+  },
+
+
+  _normalizeHeadersGetName: function(header) {
+    var result = "";
+    if (header.indexOf(":") > 0) {
+      result = header.substring(0, header.indexOf(":"));
+    }
+    return result;
+  },
+
+  _normalizeHeadersGetValue: function(header) {
+    var result = header;
+    if (header.indexOf(":") > 0) {
+      result = header.substring(header.indexOf(":") + 1, header.length);
+    }
+    return result;
+  },
+
+  _removeCommentFromHeader: function(headerName, headerValue) {
+    var result = headerValue;
+
+    // Everything after the ; is gone
+    if (headerName.trim().toLowerCase() != "content-type") {
+      if (result.indexOf(";") > -1) {
+        result = result.substring(0, result.indexOf(";"));
+      }
+    }
+
+    return result;
   },
 
   parseBody: function() {
@@ -428,6 +496,7 @@ MafMhtDecoderClass.prototype = {
        callback.QueryInterface(Components.interfaces.nsIMafMhtDecoderContentHandler);
        var contentType = this.getHeaderValue("Content-Type");
        var contentId = this.getHeaderValue("Content-Id");
+       contentId = contentId.replaceAll(">", "").replaceAll("<", "");
        var contentLocation = this.getHeaderValue("Content-Location");
        callback.onContentStart(contentType, contentId, contentLocation);
 

@@ -182,9 +182,17 @@ MafMhtHandlerServiceClass.prototype = {
             (attribName == "src") ||
             (attribName == "usemap")) {
 
-            if (state.uidToLocalFilenameMap.hasKey(tagattrib[j].value)) {
+            var currentURL = tagattrib[j].value;
+
+            if (currentURL.toLowerCase().startsWith("cid:")) {
+              mafdebug(currentURL + " Starts with cid:");
+              // Make sure Content ID spec is lower case
+              currentURL = "cid:" + currentURL.substring("cid:".length, currentURL.length);
+              mafdebug("New current: " + currentURL);
+            }
+            if (state.uidToLocalFilenameMap.hasKey(currentURL)) {
               tagattrib[j].value = MafUtils.getURIFromFilename(
-                                     getStringValue(state.uidToLocalFilenameMap.getValue(tagattrib[j].value)));
+                                     getStringValue(state.uidToLocalFilenameMap.getValue(currentURL)));
             }
 
         }
@@ -316,6 +324,7 @@ extractContentHandlerClass.prototype = {
 
     if (contentId != "") {
       this.state.uidToLocalFilenameMap.setValue("cid:" + contentId, asStringValue(this.destfile));
+      mafdebug("Added content id: " + "cid:" + contentId);
     }
   },
 
@@ -447,6 +456,10 @@ String.prototype.replaceAll = function(needle, newneedle) {
   var x = this;
   x = x.split(needle).join(newneedle);
   return x;
+};
+
+String.prototype.startsWith = function(needle) {
+  return (this.substring(0, needle.length) == needle);
 };
 
 var MafMhtHandlerFactory = new Object();
