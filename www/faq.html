@@ -140,7 +140,40 @@
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>I could code this, but I currently have no real inspiration to do so.</td>
+    <td>Sheer boredom and still being unemployed was enough of an inspiration for me to do this for MAF 0.2.20. Guess what? That's right, now you <i>can</i> save as MHT. It's not 100% standards compliant, but the saved pages should open properly in IE (which is what you really want it for, right?).</td>
+  </tr>
+</table>
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>When I try to save as MHT or open an MHT I get a prompt saying "A script on this page is causing mozilla to run slowly. If it continues to run, your computer may become unresponsive. Do you want to abort the script?". Why?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>I'm doing a bit-o-magic implementing the MHT encoding and decoding purely in javascript. Basically, there's one thread running all the javascript and UI code. The MHT routines are so processor intensive that it might look like the script has hung the browser (as if someone coded an infinite loop, say). If you keep pressing cancel at the prompt, eventually it would finish. To fix this I have one of three choices:
+      <ol>
+        <li>Mangle the code even more and make liberal use of something called setTimeout</li>
+        <li>Find some way to tell the current thread to sleep</li>
+        <li>Implement the code in an XPCOM component</li>
+      </ol>
+    The second solution, if available is the easiest and the third solution is the best. We'll see what happens in the next version.
+    </td>
+  </tr>
+</table>
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>Why are you unemployed?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>Beats me. :).</td>
   </tr>
 </table>
 
