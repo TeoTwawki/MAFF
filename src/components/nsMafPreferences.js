@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.1
+ * Version: 0.4.3
  *
  * Author: Christopher Ottley
  *
@@ -91,6 +91,12 @@ MafPreferencesServiceClass.prototype = {
   addDocumentWriteOverride: false,
 
   alertOnArchiveComplete: true,
+
+  win_associate_maf: false,
+
+  win_associate_maff: false,
+
+  win_associate_mht: false,
 
   getRecordsLength: function() {
     return this.programExtensions.length;
@@ -420,6 +426,10 @@ MafPreferencesServiceClass.prototype = {
     result.addDocumentWriteOverride = false;
     result.alertOnArchiveComplete = true;
 
+    result.win_associate_maf = false;
+    result.win_associate_maff = false;
+    result.win_associate_mht = false;
+
       var mafParentDir = this._getProfileDir();
       // Default if there's no stored prefs
 
@@ -512,6 +522,10 @@ MafPreferencesServiceClass.prototype = {
         this.addDocumentWriteOverride = prefs.getBoolPref("addDocumentWriteOverride");
         this.alertOnArchiveComplete = prefs.getBoolPref("alertOnArchiveComplete");
 
+        this.win_associate_maf = prefs.getBoolPref("winassociatemaf");
+        this.win_associate_maff = prefs.getBoolPref("winassociatemaff");
+        this.win_associate_mht = prefs.getBoolPref("winassociatemht");
+
         var noOfExtensions = prefs.getIntPref("noofextensions");
 
         this.programExtensions = new Array();
@@ -584,6 +598,10 @@ MafPreferencesServiceClass.prototype = {
       prefs.setBoolPref("enableMafProtocol", this.enableMafProtocol);
       prefs.setBoolPref("addDocumentWriteOverride", this.addDocumentWriteOverride);
       prefs.setBoolPref("alertOnArchiveComplete", this.alertOnArchiveComplete);
+
+      prefs.setBoolPref("winassociatemaf", this.win_associate_maf);
+      prefs.setBoolPref("winassociatemaff", this.win_associate_maff);
+      prefs.setBoolPref("winassociatemht", this.win_associate_mht);
 
       // Subtract 1 because MHT hander not counted
       prefs.setIntPref("noofextensions", this.programExtensions.length-1);

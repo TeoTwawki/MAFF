@@ -38,6 +38,8 @@
  * Updated Post Install code to work with FF RC1
  * Added preference to disable the window alert when a single page has been saved.
  * Updated Post Install code to update new vbs scripts for windows filetype associations.
+ * Fixed bug that stopped URL rewriting if there was an error accessing a DOM Attribute Node value.
+ * Fixed bug that caused MHT decoding to fail if the root part was of type multipart/alternative.
  *
  *
  * Changes from 0.4.1 to 0.4.2
@@ -367,9 +369,11 @@ maf.prototype = {
               (attribName == "src") ||
               (attribName == "usemap")) {
 
-              if (tagattrib[j].value.startsWith(index_files)) {
-                tagattrib[j].value = obj_baseUrl.resolve(tagattrib[j].value);
-              }
+              try {
+                if (tagattrib[j].value.startsWith(index_files)) {
+                  tagattrib[j].value = obj_baseUrl.resolve(tagattrib[j].value);
+                }
+              } catch(e) {  }
           }
         }
       }
@@ -408,7 +412,7 @@ maf.prototype = {
 
         MafPostSetup.complete();
 
-        var MafArchivePostProcessor = Components.classes["@mozilla.org/blocking-observer-service;1"]
+        var MafArchivePostProcessor = Components.classes["@mozilla.org/maf/archive-postprocessor;1"]
                                           .createInstance(Components.interfaces.nsIObserver);
         MafBlockingObserver.addObserver(MafArchivePostProcessor, "maf-open-archive-complete", false);
       }
@@ -441,27 +445,28 @@ maf.prototype = {
           } catch(e) {
 
           }
-          Maf._makeLocalLinksAbsolute(doc, baseUrl, "index_files");
-          Maf._makeLocalLinksAbsolute(doc, MafState.getOriginalURL(baseUrl), "");
 
-          // If the url is an archive url
-          if (MafState.isArchiveURL(originalURL)) {
+          try {
+            Maf._makeLocalLinksAbsolute(doc, baseUrl, "index_files");
+            Maf._makeLocalLinksAbsolute(doc, MafState.getOriginalURL(baseUrl), "");
+          } catch(e) {
+            mafdebug(e);
+          }
 
-            // We have some work to do
-            var links = event.originalTarget.links;
+          // We have some work to do
+          var links = event.originalTarget.links;
 
-            for (var j=0; j < links.length; j++) {
-              if (MafState.isLocallyMappableURL(links[j].href)) {
-                links[j].href=MafState.getLocalURL(links[j].href);
-              } else {
-                // See if it is hashed
-                if (links[j].href.indexOf("#") > 0) {
-                  var hashPart = links[j].href.substring(links[j].href.indexOf("#"), links[j].href.length);
-                  var nonHashPart = links[j].href.substring(0, links[j].href.indexOf("#"));
+          for (var j=0; j < links.length; j++) {
+            if (MafState.isLocallyMappableURL(links[j].href)) {
+              links[j].href=MafState.getLocalURL(links[j].href);
+            } else {
+              // See if it is hashed
+              if (links[j].href.indexOf("#") > 0) {
+                var hashPart = links[j].href.substring(links[j].href.indexOf("#"), links[j].href.length);
+                var nonHashPart = links[j].href.substring(0, links[j].href.indexOf("#"));
 
-                  if (MafState.isLocallyMappableURL(nonHashPart)) {
-                    links[j].href=MafState.getLocalURL(nonHashPart) + hashPart;
-                  }
+                if (MafState.isLocallyMappableURL(nonHashPart)) {
+                  links[j].href=MafState.getLocalURL(nonHashPart) + hashPart;
                 }
               }
             }

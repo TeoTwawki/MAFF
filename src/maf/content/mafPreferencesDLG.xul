@@ -70,6 +70,10 @@
     document.getElementById("chkAddDocumentWriteOverride").checked = MafPreferences.addDocumentWriteOverride;
     document.getElementById("chkAlertOnArchiveComplete").checked = MafPreferences.alertOnArchiveComplete;
 
+    document.getElementById("winChkAssociateWithMAF").checked = MafPreferences.win_associate_maf;
+    document.getElementById("winChkAssociateWithMAFF").checked = MafPreferences.win_associate_maff;
+    document.getElementById("winChkAssociateWithMHT").checked = MafPreferences.win_associate_mht;
+
     var mprec = MafPreferences.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
 
     document.getElementById("txtArchiveScript").value = mprec.archivescript;
@@ -98,6 +102,10 @@
     document.getElementById("chkAddDocumentWriteOverride").checked = mpd.addDocumentWriteOverride;
     document.getElementById("chkAlertOnArchiveComplete").checked = mpd.alertOnArchiveComplete;
 
+    document.getElementById("winChkAssociateWithMAF").checked = mpd.win_associate_maf;
+    document.getElementById("winChkAssociateWithMAFF").checked = mpd.win_associate_maff;
+    document.getElementById("winChkAssociateWithMHT").checked = mpd.win_associate_mht;
+
     var mprec = mpd.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
 
     document.getElementById("txtArchiveScript").value = mprec.archivescript;
@@ -114,6 +122,9 @@
       document.getElementById("btnBrowseWinScript").disabled = true;
       document.getElementById("winInvisVbsLoc").disabled = true;
       document.getElementById("btnBrowseInvisVbs").disabled = true;
+      //document.getElementById("winChkAssociateWithMAF").disabled = true;
+      //document.getElementById("winChkAssociateWithMAFF").disabled = true;
+      //document.getElementById("winChkAssociateWithMHT").disabled = true;
     }
   }
 
@@ -138,6 +149,10 @@
     MafPreferences.addDocumentWriteOverride = document.getElementById("chkAddDocumentWriteOverride").checked;
     MafPreferences.alertOnArchiveComplete = document.getElementById("chkAlertOnArchiveComplete").checked;
 
+    MafPreferences.win_associate_maf = document.getElementById("winChkAssociateWithMAF").checked;
+    MafPreferences.win_associate_maff = document.getElementById("winChkAssociateWithMAFF").checked;
+    MafPreferences.win_associate_mht = document.getElementById("winChkAssociateWithMHT").checked;
+
     var mprec = MafPreferences.getRecordAt(0);
 
     mprec.archivescript = document.getElementById("txtArchiveScript").value;
@@ -146,6 +161,31 @@
     MafPreferences.updateRecordAt(0, mprec);
 
     MafPreferences.save();
+
+    if (navigator.userAgent.indexOf("Windows") != -1) {
+      // Execute the VBS to update the associations.
+
+      // Execute VBS that removes all associations
+      // MafPreferences.win_wscriptexe
+      //   unsetallfiletypes.vbs
+
+      // Execute individual VBS that adds associations.
+      if (MafPreferences.win_associate_maf) {
+        // MafPreferences.win_wscriptexe
+        //   setmaffiletype.vbs
+      }
+
+      if (MafPreferences.win_associate_maff) {
+        // MafPreferences.win_wscriptexe
+        //   setmafffiletype.vbs
+      }
+
+      if (MafPreferences.win_associate_mht) {
+        // MafPreferences.win_wscriptexe
+        //   setmhtfiletype.vbs
+      }
+
+    }
   }
 
   function browse(textFolder) {
@@ -269,6 +309,13 @@
          <textbox id="winInvisVbsLoc" flex="1"/>
          <button id="btnBrowseInvisVbs" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winInvisVbsLoc', 'invis.vbs')"/>
        </hbox>
+
+       <groupbox>
+         <caption label="File type associations" />
+         <checkbox id="winChkAssociateWithMAF" checked="false" label="Associate MAF with .maf extensions" />
+         <checkbox id="winChkAssociateWithMAFF" checked="false" label="Associate MAF with .maff extensions" />
+         <checkbox id="winChkAssociateWithMHT" checked="false" label="Associate MAF with .mht extensions" />
+       </groupbox>
 
    </tabpanel>
 

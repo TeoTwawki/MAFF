@@ -26,6 +26,10 @@ interface nsIMafPreferences : nsISupports
     attribute boolean addDocumentWriteOverride;
     attribute boolean alertOnArchiveComplete;
 
+    attribute boolean win_associate_maf;
+    attribute boolean win_associate_maff;
+    attribute boolean win_associate_mht;
+
     short getOpenFiltersLength();
     void getOpenFilterAt(in short index, out PRUint32 count, [array, size_is(count)] out wstring result);
 

@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.1
+ * Version: 0.4.3
  *
  * Author: Christopher Ottley
  *
@@ -58,6 +58,8 @@ MafMhtDecoderClass.prototype = {
 
   rootLocation : 0,
 
+  rootLocationSet : false,
+
   body : new Array(),
 
   headers : new Array(),
@@ -109,6 +111,44 @@ MafMhtDecoderClass.prototype = {
     this.headers = this.parseHeaders(this.contentHeaders);
     this.contentHeaders = "";
     this.parseBody();
+    this.checkRootLocation();
+  },
+
+  checkRootLocation: function() {
+    // If the root location wasn't explicitly set using
+    // content location or id, see if there is more than
+    // one part to be decoded and try to find the root part
+    // using the content type.
+    if ((!this.rootLocationSet) && (this.body.length > 1)) {
+      var thisContentType = this.getHeaderValue("content-type");
+
+      var ctData = this._convertContentType(thisContentType);
+      var needleType = "";
+
+      for (var i=0; i<ctData.length; i++) {
+        var entry = ctData[i];
+        if ((entry.name).trim().toLowerCase() == "type") {
+          needleType = entry.value.trim().toLowerCase();
+        }
+      }
+
+      if (needleType != "") {
+        // Looking for body part with type: needleType
+        for (var i=0; i<this.body.length; i++) {
+          var bodyContentType = this.getPartNo(i).getHeaderValue("content-type");
+          var bodyContentTypeArray = bodyContentType.split(";");
+          for (var j=0; j<bodyContentTypeArray.length; j++) {
+             // Found needleType
+             if ((bodyContentTypeArray[j].trim().toLowerCase()) == needleType) {
+               this.rootLocation = i;
+               this.rootLocationSet = true;
+               break; break;
+             }
+          }
+        }
+      }
+    }
+
   },
 
   _parseOutHeadersAndBody: function(content) {
@@ -295,6 +335,7 @@ MafMhtDecoderClass.prototype = {
           if (start != "") {
             if (this._isStartPart(currentPart, start)) {
               this.rootLocation = i;
+              this.rootLocationSet = true;
             }
           }
 

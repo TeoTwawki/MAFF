@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.1
+ * Version: 0.4.3
  *
  * Author: Christopher Ottley
  *
@@ -101,15 +101,38 @@ MafMhtHandlerServiceClass.prototype = {
     while (multipartDecodeList.length > 0) {
       decoder = multipartDecodeList.pop();
 
-      if (!decodedRoot) { // The root is assumed not to be another multipart part
+      if (!decodedRoot) {
         // Decode the root
         var rootPartNo = decoder.rootPartNo();
         var rootPart = decoder.getPartNo(rootPartNo);
-        var contentHandler = new extractContentHandlerClass(destpath, state, datasource, true, this);
-        rootPart.getContent(contentHandler);
-        decodedRoot = true;
+
+        // The root is not a multipart part
+        if (rootPart.noOfParts() == 1) {
+          var contentHandler = new extractContentHandlerClass(destpath, state, datasource, true, this);
+          rootPart.getContent(contentHandler);
+          decodedRoot = true;
+        } else {
+          // Multipart
+          // Not currently catering for recursion (Multipart inside multipart)
+          // TODO: Cater for recursion? Check spec.
+          var mRootPartNo = rootPart.rootPartNo();
+          var mRootPart = rootPart.getPartNo(mRootPartNo);
+          var contentHandler = new extractContentHandlerClass(destpath, state, datasource, true, this);
+          mRootPart.getContent(contentHandler);
+          decodedRoot = true;
+
+          // Add the rest of the parts from the root to the decode list
+          for (var i=0; i<rootPart.noOfParts(); i++) {
+            if (i != mRootPartNo) {
+              multipartDecodeList.push(rootPart.getPartNo(i));
+            }
+          }
+
+        }
       } else {
-        var rootPartNo = -1;
+        // No root part number to cater for.
+        // If this is not done, then multipart/related decoding may fail.
+        rootPartNo = -1;
       }
 
       // For each other part, decode
