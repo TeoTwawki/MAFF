@@ -35,7 +35,8 @@
  * Opening tabs from browse dialog now uses blank tab if possible.
  * Binary Streams are now used for MHT encoding and decoding.
  * Fixed reader bug when reading file using MafUtils.
- * Fixed Quoted Printable encoding to not split = escaped codes across new lines when line length limit exists.
+ * Fixed Quoted Printable encoding to not split = escaped codes across new lines when a line length limit exists.
+ * MHT decoding now explicitly caters for parts having content type multipart/alternative
  *
  *
  * Changes from 0.2.18 to 0.2.19 - Completed
@@ -1992,8 +1993,8 @@ var MafUtils = {
         resultString += baseHrefString;
         resultString += sourceString.substring(htmlMatch.index + htmlMatch.toString().length, sourceString.length);
       } else {
-        // If no html tag (uhm, ok then) append to top
-        resultString = baseHrefString + sourceString;
+        // If no html tag (uhm, ok then) not html?
+
       }
     } catch(e) {
 
@@ -2263,6 +2264,9 @@ var MafMHTHander = {
   /** The maximum number of characters before line wrap */
   QPENCODE_MAXLINESIZE: 76,
 
+  /**
+   * TODO: QP original url storage / usage
+   */
   extractFromArchive: function(archivefile, destpath) {
     // Create destpath
     MafUtils.createDir(destpath);
@@ -2284,154 +2288,218 @@ var MafMHTHander = {
     // Read file
     var MHTFile = MafUtils.readFile(archivefile);
 
-    // Split using regular expression
-    var singleFiles = MHTFile.split(/------=_NextPart_[0-9,A-Z]+_[0-9,A-Z]+_[0-9,A-Z]+.[0-9,A-Z]+/);
+    // Get headers
+    var headerStr = "";
+    var bodyStr = "";
+    if (MHTFile.indexOf("\r\n\r\n") != -1) {
+      headerStr = MHTFile.substring(0, MHTFile.indexOf("\r\n\r\n"));
+      bodyStr = MHTFile.substring(MHTFile.indexOf("\r\n\r\n") + 4, MHTFile.length);
+    } else if (MHTFile.indexOf("\n\n") != -1) {
+      headerStr = MHTFile.substring(0, MHTFile.indexOf("\n\n"));
+      bodyStr = MHTFile.substring(MHTFile.indexOf("\n\n") + 2, MHTFile.length);
+    }
+
+    var headerLines = headerStr.split(/\n/);
+    var headerDetails = this._getHeaders(headerLines);
 
     var urlToLocalFilenameMap = new Array();
-
-    var url = Components.classes[urlContractID].createInstance();
-    url = url.QueryInterface(urlIID);
 
     var indexOriginalURL = "Unknown";
 
     var quotedPrintableMap = new Array();
 
-    // If there is only one part then not a multipart message
-    if (singleFiles.length == 1) {
+    if (headerDetails["content-type"].indexOf("multipart/") == -1) {
+      // Single file decoding
       try {
-      //  Get the content type and content location
-      var one_headersAndBody = new Array();
+        if (headerDetails["content-transfer-encoding"] == "quoted-printable") {
 
-      if (singleFiles[0].indexOf("\r\n\r\n")!=-1) {
-        one_headersAndBody[0] = singleFiles[0].substring(0, singleFiles[0].indexOf("\r\n\r\n"));
-        one_headersAndBody[1] = singleFiles[0].substring(singleFiles[0].indexOf("\r\n\r\n")+4, singleFiles[0].length);
-      } else {
-        one_headersAndBody[0] = singleFiles[0].substring(0, singleFiles[0].indexOf("\n\n"));
-        one_headersAndBody[1] = singleFiles[0].substring(singleFiles[0].indexOf("\n\n")+2, singleFiles[0].length);
-      }
+          if (headerDetails["content-type"]!=null && headerDetails["content-type"].indexOf("text/html") >= 0) {
+            // Create index.html
+            MafUtils.createFile(MafUtils.appendToDir(realDestPath,"index.html"), this._decodeQuotedPrintable(bodyStr));
+            urlToLocalFilenameMap[headerDetails["content-location"]] = MafUtils.appendToDir(realDestPath,"index.html");
 
-      var one_headerLines = one_headersAndBody[0].split(/\n/);
-
-      var one_headerDetails = this._getHeaders(one_headerLines);
-
-      if (one_headerDetails["content-transfer-encoding"] == "quoted-printable") {
-
-        if (one_headerDetails["content-type"]!=null && one_headerDetails["content-type"].indexOf("text/html") >= 0) {
-          // Create index.html
-          MafUtils.createFile(MafUtils.appendToDir(realDestPath,"index.html"), this._decodeQuotedPrintable(one_headersAndBody[1]));
-          urlToLocalFilenameMap[one_headerDetails["content-location"]] = MafUtils.appendToDir(realDestPath,"index.html");
-
-          indexOriginalURL = one_headerDetails["content-location"];
+            indexOriginalURL = headerDetails["content-location"];
+          }
         }
-      }
 
-      this._updateMetaData(one_headersAndBody[0], indexOriginalURL, datasource);
-
+        this._updateMetaData(headerStr, indexOriginalURL, datasource);
       } catch(e) {
         alert(e);
       }
 
     } else {
+      // Multiple file decoding
+      var decodeResult = this._decodeMultipartMimeFiles(headerDetails, MHTFile, index_filesDir, urlToLocalFilenameMap, quotedPrintableMap);
+
+      indexOriginalURL = decodeResult.indexOriginalURL;
+      urlToLocalFilenameMap = decodeResult.urlToLocalFilenameMap;
+      quotedPrintableMap = decodeResult.quotedPrintableMap;
+
+      // Rationalize absolute URLs to relative URLs
+      for (var i=0; i<quotedPrintableMap.length; i++) {
+        // For each quoted printable file
+        var filename =  quotedPrintableMap[i];
+
+        // Load the page contents in a string
+        var contents = MafUtils.readFile(filename);
+
+        try {
+          contents = this.replaceUrls(contents, urlToLocalFilenameMap);
+          // TODO: If the content type is text/html, get the original url of each page (could be framed)
+          //       and add the original url as the base href
+          // TODO: Save original url of every quoted printable object
+          //contents = MafUtils.addBaseHref(contents, indexOriginalURL);
+        } catch(e) {
+          alert(e);
+        }
+
+        // Remove file
+        MafUtils.deleteFile(filename);
+
+        // Save page back
+        MafUtils.createFile(filename, contents);
+      }
+
+      this._updateMetaData(decodeResult.headers, indexOriginalURL, datasource);
+    }
+
+  },
+
+  /**
+   * Get the boundary string used to separate MIME content from the content-type header
+   */
+  _getBoundaryStringFromHeader: function(ctheaderDetails) {
+    // Get the boundary string
+    var result = "";
+
+    var contentTypeValues = ctheaderDetails.split(";");
+
+      for (var i=0; i<contentTypeValues.length; i++) {
+        if (contentTypeValues[i].indexOf("=") != -1) {
+          // We have a name=value pair
+          var name = contentTypeValues[i].substring(0, contentTypeValues[i].indexOf("=")).trim();
+          var value = contentTypeValues[i].substring(contentTypeValues[i].indexOf("=") + 1,
+                                                     contentTypeValues[i].length).trim();
+
+          if (value.length > 1) {
+            // Value should be quoted, unquote
+            value = value.substring(1, value.length - 1);
+          }
+
+          if (name == "boundary") {
+            result = value;
+            break;
+          }
+        }
+
+      }
+
+    return result;
+  },
+
+
+  /**
+   * TODO: Use object structure to store result.
+   */
+  _decodeMultipartMimeFiles: function(headerDetails, MHTFile, index_filesDir, urlToLocalFilenameMap, quotedPrintableMap) {
+    var result = {
+      indexOriginalURL: "Unknown",
+      urlToLocalFilenameMap: urlToLocalFilenameMap,
+      quotedPrintableMap: quotedPrintableMap,
+      headers: ""
+    };
+
+    var url = Components.classes[urlContractID].createInstance();
+    url = url.QueryInterface(urlIID);
+
+    var boundaryString = this._getBoundaryStringFromHeader(headerDetails["content-type"]);
+
+    // Split using boundary string
+    // End of part (--) and beginning of another (boundaryString)
+    var singleFiles = MHTFile.split("--" + boundaryString);
+
+    result.headers = singleFiles[0];
 
     // For each part
     for (var i=1; i<singleFiles.length; i++) { //
 
       try {
-      //  Get the content type and content location
-      var headersAndBody = new Array();
+        //  Get the content type and content location
+        var headersAndBody = new Array();
 
-      if (singleFiles[i].indexOf("\r\n\r\n")!=-1) {
-        headersAndBody[0] = singleFiles[i].substring(0, singleFiles[i].indexOf("\r\n\r\n"));
-        headersAndBody[1] = singleFiles[i].substring(singleFiles[i].indexOf("\r\n\r\n")+4, singleFiles[i].length);
-      } else {
-        headersAndBody[0] = singleFiles[i].substring(0, singleFiles[i].indexOf("\n\n"));
-        headersAndBody[1] = singleFiles[i].substring(singleFiles[i].indexOf("\n\n")+2, singleFiles[i].length);
-      }
+        if (singleFiles[i].indexOf("\r\n\r\n")!=-1) {
+          headersAndBody[0] = singleFiles[i].substring(0, singleFiles[i].indexOf("\r\n\r\n"));
+          headersAndBody[1] = singleFiles[i].substring(singleFiles[i].indexOf("\r\n\r\n")+4, singleFiles[i].length);
+        } else {
+          headersAndBody[0] = singleFiles[i].substring(0, singleFiles[i].indexOf("\n\n"));
+          headersAndBody[1] = singleFiles[i].substring(singleFiles[i].indexOf("\n\n")+2, singleFiles[i].length);
+        }
 
-      var headerLines = headersAndBody[0].split(/\n/);
-      var headerDetails = this._getHeaders(headerLines);
+          var headerLines = headersAndBody[0].split(/\n/);
+          var headerDetails = this._getHeaders(headerLines);
 
-      if (typeof(headerDetails["content-location"]) != "undefined") {
+          if (typeof(headerDetails["content-location"]) != "undefined") {
 
-        url.spec = headerDetails["content-location"];
+            url.spec = headerDetails["content-location"];
 
-        //  Based on location guess the filename
-        var localFilename = MafUtils.getUniqueFilename(index_filesDir ,getDefaultFileName(null, null, url, null));
+            //  Based on location guess the filename
+            var localFilename = MafUtils.getUniqueFilename(index_filesDir ,getDefaultFileName(null, null, url, null));
 
-        urlToLocalFilenameMap[headerDetails["content-location"]] = MafUtils.appendToDir(index_filesDir,localFilename);
+            result.urlToLocalFilenameMap[headerDetails["content-location"]] = MafUtils.appendToDir(index_filesDir,localFilename);
 
-        if (headerDetails["content-transfer-encoding"] == "base64") {
+            if (headerDetails["content-transfer-encoding"] == "base64") {
 
-          // Get rid of the newlines
-          var bodyLines = headersAndBody[1].split(/\r?\n/);
+              // Get rid of the newlines
+              var bodyLines = headersAndBody[1].split(/\r?\n/);
 
-          var bodyData = "";
-          for (var j=0; j<bodyLines.length; j++) {
-            bodyData += bodyLines[j];
+              var bodyData = "";
+              for (var j=0; j<bodyLines.length; j++) {
+                bodyData += bodyLines[j];
+              }
+
+              bodyLines = null;
+
+              // Create The decoded file
+              //  Decode the part and save as the filename in index_files
+              MafUtils.createBinaryFile(MafUtils.appendToDir(index_filesDir,localFilename), this._decodeBase64(bodyData));
+
+            } else if (headerDetails["content-transfer-encoding"] == "quoted-printable") {
+
+                if (headerDetails["content-type"]!=null && headerDetails["content-type"].indexOf("text/html") >= 0) {
+                  // Create index.html
+                  MafUtils.createFile(MafUtils.appendToDir(realDestPath,"index.html"),
+                                      this._decodeQuotedPrintable(headersAndBody[1]));
+                  result.urlToLocalFilenameMap[headerDetails["content-location"]] =
+                     MafUtils.appendToDir(realDestPath,"index.html");
+
+                  result.indexOriginalURL = headerDetails["content-location"];
+                } else {
+                  //  Decode the part and save as the filename in index_files
+                  MafUtils.createFile(MafUtils.appendToDir(index_filesDir,localFilename),
+                                      this._decodeQuotedPrintable(headersAndBody[1]));
+                }
+
+                result.quotedPrintableMap[result.quotedPrintableMap.length] = result.urlToLocalFilenameMap[headerDetails["content-location"]];
+
+            }
+
+          } else if ((typeof(headerDetails["content-type"]) != "undefined") &&
+                      (headerDetails["content-type"].indexOf("multipart/") >= 0)) {
+              var multipartResult = this._decodeMultipartMimeFiles(headerDetails, headersAndBody[1], index_filesDir, result.urlToLocalFilenameMap, result.quotedPrintableMap);
+              result.urlToLocalFilenameMap = multipartResult.urlToLocalFilenameMap;
+              result.quotedPrintableMap = multipartResult.quotedPrintableMap;
+              if (result.indexOriginalURL == "Unknown") {
+                result.indexOriginalURL = multipartResult.indexOriginalURL;
+              }
           }
 
-          bodyLines = null;
-
-          // Create The decoded file
-          //  Decode the part and save as the filename in index_files
-          MafUtils.createBinaryFile(MafUtils.appendToDir(index_filesDir,localFilename), this._decodeBase64(bodyData));
-
-        } else if (headerDetails["content-transfer-encoding"] == "quoted-printable") {
-
-        if (headerDetails["content-type"]!=null && headerDetails["content-type"].indexOf("text/html") >= 0) {
-          // Create index.html
-          MafUtils.createFile(MafUtils.appendToDir(realDestPath,"index.html"), this._decodeQuotedPrintable(headersAndBody[1]));
-          urlToLocalFilenameMap[headerDetails["content-location"]] = MafUtils.appendToDir(realDestPath,"index.html");
-
-          indexOriginalURL = headerDetails["content-location"];
-        } else {
-          //  Decode the part and save as the filename in index_files
-          MafUtils.createFile(MafUtils.appendToDir(index_filesDir,localFilename), this._decodeQuotedPrintable(headersAndBody[1]));
-        }
-
-        quotedPrintableMap[quotedPrintableMap.length] = urlToLocalFilenameMap[headerDetails["content-location"]];
-
-        }
-
-      }
-
       } catch(e) {
         alert(e);
       }
     }
 
-
-    // Rationalize absolute URLs to relative URLs
-    for (var i=0; i<quotedPrintableMap.length; i++) {
-      // For each quoted printable file
-      var filename =  quotedPrintableMap[i];
-
-      // Load the page contents in a string
-      var contents = MafUtils.readFile(filename);
-
-      try {
-
-        contents = this.replaceUrls(contents, urlToLocalFilenameMap);
-        contents = MafUtils.addBaseHref(contents, indexOriginalURL);
-
-      } catch(e) {
-        alert(e);
-      }
-
-      // Remove file
-      MafUtils.deleteFile(filename);
-
-      // Save page back
-      MafUtils.createFile(filename, contents);
-    }
-
-    this._updateMetaData(singleFiles[0], indexOriginalURL, datasource);
-
-
-    }
-
+    return result;
   },
-
 
   /**
    * Use a regular expression to replace absolute URLs with relative ones.
@@ -2496,13 +2564,28 @@ var MafMHTHander = {
 
   /**
    * Tries to create an associative array of header => value pairs by parsing text.
+   * Now cater for multi-line header values
    */
   _getHeaders: function(headerLines) {
+
+    // Ensure that values that cross lines end up on only one line
+    var normalizedHeaderLines = new Array();
+
+    for (var i=0; i<headerLines.length; i++) {
+      if (headerLines[i].indexOf(":") > 0) {
+        normalizedHeaderLines[normalizedHeaderLines.length] = headerLines[i];
+      } else {
+        if (normalizedHeaderLines.length > 0) {
+          normalizedHeaderLines[normalizedHeaderLines.length-1] += headerLines[i].trim();
+        }
+      }
+    }
+
     var result = new Array();
     result["date"] = "Unknown";
     result["subject"] = "Unknown";
-    for (var i=0; i<headerLines.length; i++) {
-      var headerInfo = headerLines[i].split(/\:/);
+    for (var i=0; i<normalizedHeaderLines.length; i++) {
+      var headerInfo = normalizedHeaderLines[i].split(/\:/);
       if (headerInfo.length>1) {
         // We have a header
         var headerInfoValue = headerInfo[1];
@@ -2657,11 +2740,6 @@ var MafMHTHander = {
 
       result = s;
 
-      // TODO - Fix this split code
-      // To stop == from occuring
-      // Go back to either
-      //   1) A space
-      //   2) An = sign
       if (s.length > this.QPENCODE_MAXLINESIZE) {
 
         // Split into lines of QPENCODE_MAXLINESIZE characters or less
@@ -2803,9 +2881,6 @@ var MafMHTHander = {
     }
 
     MafUtils.createFile(archivefile, MHTContentString);
-
-
-    //alert("Saving as MHT is not supported.");
   },
 
   /**
