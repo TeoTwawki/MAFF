@@ -49,8 +49,6 @@ function MafMhtHandlerServiceClass() {
 MafMhtHandlerServiceClass.prototype = {
 
   extractArchive: function(archivefile, destpath) {
-    mafdebug("Extracting archive " + archivefile + " to " + destpath);
-
     // MafUtil service - Create destpath
     MafUtils.createDir(destpath);
 
@@ -83,6 +81,10 @@ MafMhtHandlerServiceClass.prototype = {
       decoder.getContent(contentHandler);
     }
 
+    var multipartDecodeList = new Array();
+
+    var decodedRoot = false;
+
     // If there is more than one part, we have supporting files.
     if (decoder.noOfParts() > 1) {
 
@@ -91,45 +93,60 @@ MafMhtHandlerServiceClass.prototype = {
       // Create index_files
       MafUtils.createDir(index_filesDir);
 
-      // Decode the root
-      var rootPartNo = decoder.rootPartNo();
-      var rootPart = decoder.getPartNo(rootPartNo);
-      var contentHandler = new extractContentHandlerClass(destpath, state, datasource, true, this);
-      rootPart.getContent(contentHandler);
+      multipartDecodeList.push(decoder);
+    }
+
+    while (multipartDecodeList.length > 0) {
+      decoder = multipartDecodeList.pop();
+
+      if (!decodedRoot) { // The root is assumed not to be another multipart part
+        // Decode the root
+        var rootPartNo = decoder.rootPartNo();
+        var rootPart = decoder.getPartNo(rootPartNo);
+        var contentHandler = new extractContentHandlerClass(destpath, state, datasource, true, this);
+        rootPart.getContent(contentHandler);
+        decodedRoot = true;
+      } else {
+        var rootPartNo = -1;
+      }
 
       // For each other part, decode
       for (var i=0; i<decoder.noOfParts(); i++) {
         if (i != rootPartNo) {
           // Decode this part
           var thisPart = decoder.getPartNo(i);
-          var thisContentHandler = new extractContentHandlerClass(index_filesDir, state, datasource, false, this);
-          thisPart.getContent(thisContentHandler);
+          if (thisPart.noOfParts() > 1) {
+            multipartDecodeList.push(thisPart);
+          } else {
+            var thisContentHandler = new extractContentHandlerClass(index_filesDir, state, datasource, false, this);
+            thisPart.getContent(thisContentHandler);
+          }
         }
       }
+    }
 
-      // Change all the UIDs to local urls
-      // DOM Parse all the html, get all the tags, check the state, replace if attribute has key value
-      for (var i=0; i<state.htmlFiles.length; i++) {
+    // Change all the UIDs to local urls
+    // DOM Parse all the html, get all the tags, check the state, replace if attribute has key value
+    for (var i=0; i<state.htmlFiles.length; i++) {
 
-         var thisPage = MafUtils.readFile(state.htmlFiles[i]);
+       var thisPage = MafUtils.readFile(state.htmlFiles[i]);
 
-         var webShell = Components.classes["@mozilla.org/webshell;1"].createInstance();
-         webShell.QueryInterface(Components.interfaces.nsIWebNavigation);
-         webShell.loadURI("about:blank", Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE, null, null, null);
+       var webShell = Components.classes["@mozilla.org/webshell;1"].createInstance();
+       webShell.QueryInterface(Components.interfaces.nsIWebNavigation);
+       webShell.loadURI("about:blank", Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE, null, null, null);
 
-         try {
-           var doc = webShell.document;
-           doc.clear();
-           doc.write(thisPage);
-           doc.close();
-           this._makeLinksAbsolute(doc, state.baseUrl[i]);
-           this._updateLinks(doc, state);
-           MafUtils.deleteFile(state.htmlFiles[i]);
-           MafUtils.createFile(state.htmlFiles[i], "<html>" + doc.documentElement.innerHTML + "</html>");
-         } catch(e) {
-           mafdebug(e);
-         }
-      }
+       try {
+         var doc = webShell.document;
+         doc.clear();
+         doc.write(thisPage);
+         doc.close();
+         this._makeLinksAbsolute(doc, state.baseUrl[i]);
+         this._updateLinks(doc, state);
+         MafUtils.deleteFile(state.htmlFiles[i]);
+         MafUtils.createFile(state.htmlFiles[i], "<html>" + doc.documentElement.innerHTML + "</html>");
+       } catch(e) {
+         mafdebug(e);
+       }
     }
 
   },
@@ -185,10 +202,8 @@ MafMhtHandlerServiceClass.prototype = {
             var currentURL = tagattrib[j].value;
 
             if (currentURL.toLowerCase().startsWith("cid:")) {
-              mafdebug(currentURL + " Starts with cid:");
               // Make sure Content ID spec is lower case
               currentURL = "cid:" + currentURL.substring("cid:".length, currentURL.length);
-              mafdebug("New current: " + currentURL);
             }
             if (state.uidToLocalFilenameMap.hasKey(currentURL)) {
               tagattrib[j].value = MafUtils.getURIFromFilename(
@@ -285,6 +300,12 @@ extractContentHandlerClass.prototype = {
         this.filename = "index.html";
       }
       this.handler._updateMetaData(this.datasource, "indexfilename", this.filename);
+
+      if (contentLocation != "") {
+        this.handler._updateMetaData(this.datasource, "originalurl", contentLocation);
+      } else {
+        this.handler._updateMetaData(this.datasource, "originalurl", "Unknown");
+      }
     } else {
       // We need to generate a filename
 
@@ -299,6 +320,7 @@ extractContentHandlerClass.prototype = {
         if (defaultFilename.indexOf(".") == -1) {
           defaultFilename += MafUtils.getExtensionByType(contentType);
         }
+
         this.filename = MafUtils.getUniqueFilename(this.destpath, defaultFilename);
 
       } else {
@@ -317,14 +339,10 @@ extractContentHandlerClass.prototype = {
 
     if (contentLocation != "") {
       this.state.uidToLocalFilenameMap.setValue(contentLocation, asStringValue(this.destfile));
-      this.handler._updateMetaData(this.datasource, "originalurl", contentLocation);
-    } else {
-      this.handler._updateMetaData(this.datasource, "originalurl", "Unknown");
     }
 
     if (contentId != "") {
       this.state.uidToLocalFilenameMap.setValue("cid:" + contentId, asStringValue(this.destfile));
-      mafdebug("Added content id: " + "cid:" + contentId);
     }
   },
 
