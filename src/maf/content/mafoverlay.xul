@@ -23,27 +23,16 @@
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script src="chrome://maf/content/mafarchiver.js"/>
-  <script src="chrome://maf/content/mafgui.js"/>
   <script src="chrome://maf/content/mafnativefilesave.js"/>
-  <script src="chrome://maf/content/mafstate.js"/>
-  <script src="chrome://maf/content/maftabarchiver.js"/>
-  <script src="chrome://maf/content/maftabexpander.js"/>
-  <script src="chrome://maf/content/mafmhthandler.js"/>
-  <script src="chrome://maf/content/mafutils.js"/>
-  <script src="chrome://maf/content/mafopenqueue.js"/>
   <script src="chrome://maf/content/maf.js"/>
 
   <menupopup id="menu_FilePopup">
-    <menuitem id="maf-load-archive" label="&maf.loadArchive;" insertbefore="menu_close"
-               accesskey="&maf.loadArchiveKey;" key="maf-firefox-openArchive-cmd"
-               oncommand="MafGUI.loadArchive();" />
     <menuitem id="maf-save-all-tabs-archive" label="&maf.addAllTabsToArchive;" insertbefore="menu_sendLink"
                accesskey="&maf.addAllTabsToArchiveKey;"
-               oncommand="MafGUI.addAllTabsToArchive();" />
+               oncommand="MafGUI.addAllTabsToArchive(Maf);" />
     <menuitem id="maf-save-archive" label="&maf.addToArchive;" insertbefore="menu_sendLink"
                accesskey="&maf.addToArchiveKey;"
-               oncommand="MafGUI.addToArchive();" />
+               oncommand="MafGUI.addToArchive(Maf);" />
   </menupopup>
 
   <!-- firefox tools menu -->
@@ -66,8 +55,7 @@
 
   <!-- firefox keyset -->
   <keyset id="mainKeyset">
-    <key id="maf-firefox-openArchive-cmd" modifiers="alt" key="J" oncommand="MafGUI.loadArchive();"/>
-    <key id="maf-firefox-browseOpenArchives-cmd" modifiers="alt" key="M" oncommand="MafGUI.browseOpenArchives();"/>
+    <key id="maf-firefox-browseOpenArchives-cmd" modifiers="alt" key="&maf.browseOpenArchivesAccessKey;" oncommand="MafGUI.browseOpenArchives();"/>
   </keyset>
 
   <!-- mozilla tools menu -->
@@ -89,7 +77,16 @@
 
   <!-- mozilla keyset -->
   <keyset id="navKeys">
-    <key id="maf-firefox-openArchive-cmd" modifiers="alt" key="J" oncommand="MafGUI.loadArchive();"/>
-    <key id="maf-mozilla-browseOpenArchives-cmd" modifiers="alt" key="M" oncommand="MafGUI.browseOpenArchives();"/>
+    <key id="maf-mozilla-browseOpenArchives-cmd" modifiers="alt" key="&maf.browseOpenArchivesAccessKey;" oncommand="MafGUI.browseOpenArchives();"/>
   </keyset>
+
+  <!-- Common popup menu -->
+  <popup id="contentAreaContextMenu">
+    <menuitem id="maf-save-in-archive-menuitem"
+               label="&maf.addToArchive;..."
+               oncommand="MafGUI.addToArchive(Maf);"
+               insertafter="context-savepage"
+               accesskey="&maf.addToArchiveAccessKey;" />
+  </popup>
+
 </overlay>

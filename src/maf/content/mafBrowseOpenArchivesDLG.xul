@@ -28,21 +28,21 @@
          persist="width height screenX screenY"
          onload="onLoad()">
 
+<script src="chrome://maf/content/maf.js"/>
 <script>
+ browserWindow = window.arguments[0];
 
-  var ms = window.arguments[0];
-  var win = window.arguments[1];
-  var mGUI = window.arguments[2];
-  var mUtils = window.arguments[3];
+ MafGUI.init(browserWindow);
 
   function onLoad() {
     window.sizeToContent();
-    document.getElementById("open-archives-tree").database.AddDataSource(ms.datasource);
+    document.getElementById("open-archives-tree").database.AddDataSource(
+           MafState.getDatasource().QueryInterface(Components.interfaces.nsIRDFDataSource));
     document.getElementById("open-archives-tree").builder.rebuild();
   }
 
   function loadArchive() {
-    mGUI.loadArchive();
+    MafGUI.loadArchive(Maf);
   }
 
   function openSelectedInTabs(urlsource) {
@@ -81,7 +81,7 @@
         }
       }
 
-      mUtils.openListInTabs(urlList);
+      Maf.openListInTabs(urlList);
 
     } catch (e)  {
       alert(e);
@@ -113,7 +113,7 @@
       if (level == 1) {
         var urlList = new Array();
         urlList[urlList.length] = url;
-        mUtils.openListInTabs(urlList);
+        Maf.openListInTabs(urlList);
       }
     } catch (e) {
 
@@ -127,11 +127,14 @@
          ref="http://maf.mozdev.org/metadata/rdf/open-archives" flags="dont-build-content"
          ondblclick="openTreeRowInTab(event);">
   <treecols>
-    <treecol id="title" label="&maf.browseOpenArchivesDialog.tree.title;" primary="true" flex="1" persist="width ordinal hidden"/>
+    <treecol id="title" label="&maf.browseOpenArchivesDialog.tree.title;" primary="true" flex="1"
+              persist="width ordinal hidden"/>
     <splitter class="tree-splitter"/>
-    <treecol id="archivetime" label="&maf.browseOpenArchivesDialog.tree.archivetime;" flex="1" persist="width ordinal hidden"/>
+    <treecol id="archivetime" label="&maf.browseOpenArchivesDialog.tree.archivetime;" flex="1"
+              persist="width ordinal hidden"/>
     <splitter class="tree-splitter"/>
-    <treecol id="originalurl" label="&maf.browseOpenArchivesDialog.tree.originalurl;" flex="1" persist="width ordinal hidden"/>
+    <treecol id="originalurl" label="&maf.browseOpenArchivesDialog.tree.originalurl;" flex="1"
+              persist="width ordinal hidden"/>
     <splitter class="tree-splitter"/>
     <treecol id="localurl" label="&maf.browseOpenArchivesDialog.tree.localurl;" flex="1" persist="width ordinal hidden"/>
   </treecols>
@@ -155,11 +158,12 @@
   <hbox>
     <button id="maf-open-archive-button" label="&maf.loadArchive;" oncommand="loadArchive();"/>
     <spacer flex="1"/>
-    <button id="maf-browse-archives-tabopen-button" label="&maf.browseOpenArchivesDialog.btnopentabs;" default="true" oncommand="openSelectedInTabs('localurl');"/>
-    <button id="maf-browse-archives-tabopenorig-button" label="&maf.browseOpenArchivesDialog.btnopenorig;" oncommand="openSelectedInTabs('originalurl');"/>
+    <button id="maf-browse-archives-tabopen-button" label="&maf.browseOpenArchivesDialog.btnopentabs;" default="true"
+             oncommand="openSelectedInTabs('localurl');"/>
+    <button id="maf-browse-archives-tabopenorig-button" label="&maf.browseOpenArchivesDialog.btnopenorig;"
+             oncommand="openSelectedInTabs('originalurl');"/>
     <button id="maf-prefs-close-button" label="&maf.browseOpenArchivesDialog.btnclose;" oncommand="window.close();"/>
   </hbox>
 </vbox>
 
 </window>
-

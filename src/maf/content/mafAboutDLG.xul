@@ -23,7 +23,6 @@
 
 <dialog title="&maf.aboutdlg.title;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
         width="400"
         height="200"
         persist="screenX screenY"

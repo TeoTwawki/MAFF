@@ -28,10 +28,28 @@
          ondialogcancel="return doCancel();"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-<script>
+<script><![CDATA[
+
+  var objUpdateProgress = {
+
+    progressUpdater: function(percentage) {
+      document.getElementById("savetabsprogmeter").setAttribute("value", percentage);
+      if (percentage==100) {
+        setTimeout("window.close()", 1000);
+      }
+    },
+
+    QueryInterface: function(iid) {
+      if (!iid.equals(Components.interfaces.nsIMafProgressUpdater) &&
+          !iid.equals(Components.interfaces.nsISupports)) {
+        throw Components.results.NS_ERROR_NO_INTERFACE;
+      }
+      return this;
+    }
+  };
 
   var ma=window.arguments[0];
-  ma.setProgressUpdater(updateProgress);
+  ma.setProgressUpdater(objUpdateProgress);
   ma.start();
 
   function doCancel() {
@@ -40,14 +58,7 @@
     return true;
   };
 
-  function updateProgress(percentage) {
-    document.getElementById("savetabsprogmeter").setAttribute("value", percentage);
-    if (percentage==100) {
-      setTimeout("window.close()", 1000);
-    }
-  };
-
-</script>
+]]></script>
 
   <progressmeter id="savetabsprogmeter" value="0%" />
 

@@ -28,13 +28,12 @@
          ondialogcancel="return doCancel();"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-<script>
+<script><![CDATA[
 
-  var ma=window.arguments[0];
+  var ma = window.arguments[0];
   var currentIdlePercentage = 1;
   var idleTimer = setInterval(idleUpdate, 50);
 
-  ma.setProgressUpdater(updateProgress);
 
   function doCancel() {
     ma.stop();
@@ -57,7 +56,26 @@
     }
   };
 
-</script>
+  var objUpdateProgress = {
+
+    progressUpdater: function(progress) {
+      updateProgress(progress);
+    },
+
+    QueryInterface: function(iid) {
+
+      if (!iid.equals(Components.interfaces.nsIMafProgressUpdater) &&
+          !iid.equals(Components.interfaces.nsISupports)) {
+        throw Components.results.NS_ERROR_NO_INTERFACE;
+      }
+
+      return this;
+    }
+  };
+
+  ma.setProgressUpdater(objUpdateProgress);
+
+]]></script>
 
   <progressmeter id="opentabsprogmeter" value="0%" />
 

@@ -127,7 +127,7 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
     persist.persistFlags &= ~nsIWBP.PERSIST_FLAGS_NO_CONVERSION;
 
   // Create download and initiate it (below)
-  aData.objMafArchiver.dl = Components.classes["@mozilla.org/download;1"].createInstance(Components.interfaces.nsIDownload);
+  aData.dl = Components.classes["@mozilla.org/download;1"].createInstance(Components.interfaces.nsIDownload);
 
   if (isDocument && saveAsType != this.kSaveAsType_URL) {
     // Saving a Document, not a URI:
@@ -155,7 +155,8 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
 
     try {
       // Save preference to show download window
-      var dwprefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.download.manager.");
+      var dwprefs = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefService).getBranch("browser.download.manager.");
 
       var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
 
@@ -167,10 +168,11 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
 
     const kWrapColumn = 80;
 
-    aData.objMafArchiver.dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
+    aData.dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
     persist.progressListener = new DownloadArchiveStateListener(persist.progressListener, aData);
     persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
                          persistArgs.contentType, encodingFlags, kWrapColumn);
+
 
     try {
       // Return download window preference to saved value
@@ -182,7 +184,8 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
   } else {
     try {
       // Save preference to show download window
-      var dwprefs = Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch("browser.download.manager.");
+      var dwprefs = Components.classes["@mozilla.org/preferences-service;1"]
+                       .getService(Components.interfaces.nsIPrefService).getBranch("browser.download.manager.");
 
       var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
 
@@ -190,7 +193,7 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
       dwprefs.setBoolPref("showWhenStarting", false);
     } catch(e) { }
 
-    aData.objMafArchiver.dl.init(source, persistArgs.target, null, null, null, persist);
+    aData.dl.init(source, persistArgs.target, null, null, null, persist);
     persist.progressListener = new DownloadArchiveStateListener(persist.progressListener, aData);
     persist.saveURI(source, null, MafNativeFileSave.getReferrer(document), persistArgs.postData, null, persistArgs.target);
 
@@ -312,7 +315,7 @@ getTargetFile: function(aData, aSniffer, aContentType, aIsDocument, aSkipPrompt,
         data structure. */
   var dir = null;
   try {
-    dir = Components.classes[localFileContractID].getService(localFileIID);
+    dir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
     dir.initWithPath(aData.saveDocPath);
 
     // Make the directory!!!
@@ -521,6 +524,7 @@ function DownloadArchiveStateListener(originalListener, aData)
 {
   this.listener = originalListener;
   this.aData = aData;
+
 }
 
 DownloadArchiveStateListener.prototype = {
@@ -528,6 +532,7 @@ DownloadArchiveStateListener.prototype = {
   QueryInterface: function(aIID) {
     if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
         aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+        aIID.equals(Components.interfaces.nsITimerCallback) ||
         aIID.equals(Components.interfaces.nsISupports))
       return this;
     throw Components.results.NS_NOINTERFACE;
@@ -542,16 +547,18 @@ DownloadArchiveStateListener.prototype = {
   onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
     this.listener.onStateChange(aWebProgress, aRequest, aStateFlags, aStatus);
 
-    this.aData.objMafArchiver._checkDownloadComplete(this.aData.objMafArchiver);
-
-    /*
-    if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP &&
-        aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK) {
-          // Done - Call the checkdownload complete code
-
+    if (this.aData.dl.percentComplete == 100) {
+      this.timer = Components.classes["@mozilla.org/timer;1"]
+                      .createInstance(Components.interfaces.nsITimer);
+      this.timer.initWithCallback(this, 100, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
     }
-    */
+  },
 
+  notify: function(expiredtimer) {
+    if (this.timer == expiredtimer) {
+      this.timer = null;
+      this.aData.objMafArchiver.onDownloadComplete();
+    }
   },
 
   onLocationChange: function(aWebProgress, aRequest, aLocation) {

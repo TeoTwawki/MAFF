@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.3.1
+ * Version: 0.4.0
  *
  * Author: Christopher Ottley
  *
@@ -28,211 +28,178 @@
  */
 /**
  *
- * Changes from 0.3.0 to 0.3.1
+ * Changes from 0.3.0 to 0.4.0
  *
- * Fixed GUI bug to allow mafsearch extension to work properly.
- * Added Italian Locale contributed by Gioxx: eXtenZilla.it.
+ * Merged all the installers. Now a single XPI for Mozilla/Firefox on Windows/Linux.
  * Changed the default file extension for MAF files to *.maff to avoid extension clashes with MS Access on Windows.
- * TODO: Add preference to use the title as the default name when saving MAFs
- * TODO: Add default maf auto save directory support
- * TODO: Add preference that will redefine document.write so that dynamic content doesn't show up twice
- *         - For all the html docs recurse and add script after head
- *         - If no head, then after HTML
- *         - If no HTML, not an HTML doc, don't bother.
- *
- *
- * Changes from 0.2.20 to 0.3.0 - Completed
- *
- * Styled the tree splitters in the browse open archives.
- * Split javascript objects into seperate files. There is now also a global preference state.
- * Selecting file from browse dialog should now start in directory if possible.
- * Fixed bug that did not allow saving pages in an archive if the pages were in a new window.
- * Retrofitted the download and archive code to use an observer event instead of interval timers. Should seem faster.
- * Added drag and drop archive support.
- * Added file association support and ability to open archives from Open File menu entry.
- * Added an idle update function which gives the user some visual feedback when an archive is opened.
- * Updated the MHT Handler to cater for saving multiple tabs.
- * Fixed bug with file association and loading of preferences.
- * MHT archive handler no longer dies on pages with frames.
- * Filter index saved as a preference for MAF open and save archive dialogs.
- * Fixed GUI file select bug and default preference loading bug.
- * Post-install script run feature added - Can now run scripts from profile in FF.
- * Can now load default preferences from dialog.
- * Added preference to clear the temp folder when the browser closes.
- *
- *
- * Changes from 0.2.19 to 0.2.20 - Completed
- *
- * Optional function that is executed when a single page is added to archive - An alert telling the user archive is complete
- * Opening tabs from browse dialog now uses blank tab if possible.
- * Binary Streams are now used for MHT encoding and decoding.
- * Fixed reader bug when reading file using MafUtils.
- * Fixed Quoted Printable encoding to not split = escaped codes across new lines when a line length limit exists.
- * MHT decoding now explicitly caters for parts having content type multipart/alternative.
- * Updated URL rewrite functionality - Support for rewritting urls that contain # for internal links.
- *                                   - URL rewrite only on pages that are in an archive.
- * Isolated native save code - Saving should work without modification across firefox and mozilla browsers.
- *                           - Temporarily disables download window showing up using a preference value.
- * Added MHT encoding code - Now possible to save as MHT and have the file display in IE.
- * Extended Meta-Data save implementation - Text zoom, Scroll position and URL History can be saved.
- * Added support for post install setup - For new firefox 0.9 installations.
- *
- *
- * Changes from 0.2.18 to 0.2.19 - Completed
- *
- * Fixed preferences bug that occurred on Mozilla when selecting options.
- * Added base URL rewrite functionality - URLs in new tabs are replaced by local URLs using currently open archives
- * Optimized MHT decoding to use Regular Expression for URL substitution.
- * Added base tag for relative URLs existing in decoded MHT files.
- * Fixed save as text, Missing meta-data no longer stops archiving process.
- * Saving works on Mozilla for Windows now.
- * GUI cleanup code - Show entry in Firefox's Tools -> Options -> Extensions
- *                  - Preferences can now be launched from Extensions -> Options
- * Open all entries in an archive by selecting the archive name and open in tabs.
- * Added capability to open archive from browse dialog.
- * Added shortcut keys alt-j for open archive, alt-m for browse open archives.
+ * Added French Locale contributed by Xavier Robin.
+ * Added Italian Locale contributed by Gioxx Solone: eXtenZilla.it.
+ * Fixed GUI bug to allow mafsearch extension to work properly.
+ * Fixed bug in post setup version check code to make it work in Firefox 1.0PR.
+ * Fixed bug in clear temp on close so it now leaves temp folder and deletes entries in it.
+ * MHTs now encoded using timeouts to reduce / avoid script speed warnings.
+ * MHT encoding/decoding now 99.99% standards compliant. :).
+ * Converted most Javascript objects and services into XPCOM components.
+ * Added user agent string in preferences to allow access by XPCOM components.
+ * Added code to make URLs absolute when HTML document loads so that form submissions, etc work.
+ * Added Save in Archive context menu entry.
+ * Added new MIME type "application/maf" for better handler support.
+ * Removed the MAF Open archive entry from the file menu. Open file now has all the necessary functionality.
+ * Added maf:// protocol that allows resource viewing of local maf archives (not designed for use with MHT archives).
+ * When saving the document title of the selected tab is used for the default maf archive name.
+ * Created string bundle of english text in code for better localization.
+ * Added preference for disabling the maf:// protocol
+ * TODO: Test in Mozilla 1.7.3
+ * TODO: Test on Firefox 1.0PR and Mozilla 1.7.3 in Windows
  *
  */
 
-/**
- *
- *   Known Bugs:
- *     - Other content types (like PDF) haven't been tested
- *     - The GUI does not have the ability to add more archive app scripts or extensions
- *     - If there is a : in the title of something, the RDF reader freaks out
- */
+try {
 
-/**
- * Contracts and interfaces used in the source.
- */
-const localFileContractID = "@mozilla.org/file/local;1";
-const localFileIID = Components.interfaces.nsILocalFile;
-const processContractID = "@mozilla.org/process/util;1";
-const processIID = Components.interfaces.nsIProcess;
-const filePickerContractID = "@mozilla.org/filepicker;1";
-const filePickerIID = Components.interfaces.nsIFilePicker;
-const fileOutputStreamContractID = "@mozilla.org/network/file-output-stream;1";
-const fileOutputStreamIID = Components.interfaces.nsIFileOutputStream;
-const fileInputStreamContractID = "@mozilla.org/network/file-input-stream;1";
-const fileInputStreamIID = Components.interfaces.nsIFileInputStream;
-const scriptableInputStreamContractID = "@mozilla.org/scriptableinputstream;1";
-const scriptableInputStreamIID = Components.interfaces.nsIScriptableInputStream;
-const externalHelperAppServiceContractID = "@mozilla.org/uriloader/external-helper-app-service;1";
-const externalHelperAppServiceIID = Components.interfaces.nsIExternalHelperAppService;
-const downloadContractID = "@mozilla.org/download;1";
-const downloadIID = Components.interfaces.nsIDownload;
-const ioServiceNetworkContractID = "@mozilla.org/network/io-service;1";
-const ioServiceNetworkIID = Components.interfaces.nsIIOService;
-const xmlRDFDatasourceContractID = "@mozilla.org/rdf/datasource;1?name=xml-datasource";
-const xmlRDFDatasourceIID = Components.interfaces.nsIRDFRemoteDataSource;
-const rdfRDFServiceContractID = "@mozilla.org/rdf/rdf-service;1";
-const rdfRDFServiceIID = Components.interfaces.nsIRDFService;
-const prefSvcContractID = "@mozilla.org/preferences-service;1";
-const prefSvcIID = Components.interfaces.nsIPrefService;
-const rdfRDFCServiceContractID = "@mozilla.org/rdf/container-utils;1";
-const rdfRDFCServiceIID = Components.interfaces.nsIRDFContainerUtils;
-const appShellContractID = "@mozilla.org/appshell/appShellService;1";
-const appShellIID = Components.interfaces.nsIAppShellService;
-const asWinMedContractID = "@mozilla.org/appshell/window-mediator;1";
-const asWinMedIID = Components.interfaces.nsIWindowMediator;
-const rdfDatasourceInMemoryContractID = "@mozilla.org/rdf/datasource;1?name=in-memory-datasource";
-const rdfXMLSerializerContractID = "@mozilla.org/rdf/xml-serializer;1";
-const rdfXMLSerializerIID = Components.interfaces.nsIRDFXMLSerializer;
-const urlContractID = "@mozilla.org/network/standard-url;1";
-const urlIID = Components.interfaces.nsIURL;
-const mimeServiceContractID = "@mozilla.org/mime;1";
-const mimeServiceIID = Components.interfaces.nsIMIMEService;
-const binaryInputStreamContractID = "@mozilla.org/binaryinputstream;1";
-const binaryInputStreamIID = Components.interfaces.nsIBinaryInputStream;
-const binaryOutputStreamContractID = "@mozilla.org/binaryoutputstream;1";
-const binaryOutputStreamIID = Components.interfaces.nsIBinaryOutputStream;
+var browserWindow = window;
 
-const webBrowserPersistIID = Components.interfaces.nsIWebBrowserPersist;
-const rdfDatasourceIID = Components.interfaces.nsIRDFDataSource;
-const rdfResourceIID = Components.interfaces.nsIRDFResource;
-const rdfXMLSourceIID = Components.interfaces.nsIRDFXMLSource;
+var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                        .getService(Components.interfaces.nsIMafPreferences);
 
-const MAFNamespaceId = "MAF";
-const MAFNamespace = "http://maf.mozdev.org/metadata/rdf#";
+var MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
+                  .getService(Components.interfaces.nsIMafUtil);
 
-const MAFRDFTemplate = '<?xml version="1.0"?>\n' +
-  '<RDF:RDF xmlns:'+ MAFNamespaceId +'="'+ MAFNamespace +'"\n' +
-  '     xmlns:NC="http://home.netscape.com/NC-rdf#"\n' +
-  '     xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n' +
-  '  <RDF:Description about="urn:root">\n'+
-  '  </RDF:Description>\n' +
-  '</RDF:RDF>\n';
+var MafMHTHandler = Components.classes["@mozilla.org/maf/mhthandler_service;1"]
+                       .getService(Components.interfaces.nsIMafMhtHandler);
 
-/** The global RDF service object. */
-var gRDFService = Components.classes[rdfRDFServiceContractID].getService(rdfRDFServiceIID);
+var MafLibMHTDecoder = Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
+                          .createInstance(Components.interfaces.nsIMafMhtDecoder);
 
-/** The global RDF Container Service object. */
-var gRDFCService = Components.classes[rdfRDFCServiceContractID].getService(rdfRDFCServiceIID);
+var MafLibMHTEncoder = Components.classes["@mozilla.org/libmaf/encoder;1?name=mht"]
+                          .createInstance(Components.interfaces.nsIMafMhtEncoder);
 
-/**
- * Main object
- */
-var Maf = {
+var MafGUI = Components.classes["@mozilla.org/maf/guihandler;1"]
+                .createInstance(Components.interfaces.nsIMafGuiHandler);
+MafGUI.init(browserWindow);
+
+var MafState = Components.classes["@mozilla.org/maf/state_service;1"]
+                  .getService(Components.interfaces.nsIMafState);
+
+var MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                      .getService(Components.interfaces.nsIStringBundleService)
+                      .createBundle("chrome://maf/locale/maf.properties");
+
+} catch(e) {
+  mafdebug(e);
+}
+
+function maf() {
+
+};
+
+maf.prototype = {
 
   /**
    * Extract the archive using the specified program
    */
   extractFromArchive: function(program, archivefile, destpath) {
-    if (program == Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
-                     .createInstance(Components.interfaces.nsIMafMhtDecoder).PROGID) {
-
-      var m = Components.classes["@mozilla.org/maf/mhthandler_service;1"]
-                  .getService(Components.interfaces.nsIMafMhtHandler);
-
-      var MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                        .getService(Components.interfaces.nsIMafUtil);
+    if (program == MafLibMHTDecoder.PROGID) {
 
       var dateTimeExpanded = new Date();
-      var folderNumber = dateTimeExpanded.valueOf()+"_"+Math.floor(Math.random()*1000);
+      var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random() * 1000);
 
       var realDestPath = MafUtils.appendToDir(destpath, folderNumber);
 
-      m.extractArchive(archivefile, realDestPath);
+      MafMHTHandler.extractArchive(archivefile, realDestPath);
+    } else {
+      /** If program is nothing then don't try to run it. */
+      if (program != "") {
+        if (MafPreferences.win_invisible) {
+          localProgram = MafPreferences.win_wscriptexe;
+          localProgramArgs = new Array();
+          localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
+          localProgramArgs[localProgramArgs.length] = program;
+        } else {
+          localProgram = program;
+          localProgramArgs = new Array();
+        }
+
+        try {
+          var oProgram = Components.classes["@mozilla.org/file/local;1"]
+                           .createInstance(Components.interfaces.nsILocalFile);
+          oProgram.initWithPath(localProgram);
+        } catch(e) {
+          mafdebug(MafStrBundle.GetStringFromName("couldnotfindprogram") + program + " \n" + e);
+        }
+
+        try {
+          var oProcess = Components.classes["@mozilla.org/process/util;1"]
+                           .createInstance(Components.interfaces.nsIProcess);
+        } catch (e) {
+          mafdebug(MafStrBundle.GetStringFromName("couldnotcreateprocess") + e);
+        }
+
+        oProcess.init(oProgram);
+
+        localProgramArgs[localProgramArgs.length] = archivefile;
+        localProgramArgs[localProgramArgs.length] = destpath;
+
+        oProcess.run(true, localProgramArgs, localProgramArgs.length);
+
+        var obs = Components.classes["@mozilla.org/observer-service;1"]
+                     .getService(Components.interfaces.nsIObserverService);
+        obs.notifyObservers(null, "maf-extract-finished", destpath);
+      }
+    }
+  },
+
+
+  /**
+   * Archives the downloaded file(s).
+   */
+  archiveDownload: function(program, archivefile, sourcepath) {
+    if (program == MafLibMHTEncoder.PROGID) {
+
+      var temppath = MafPreferences.temp;
+
+      var realSourcePath = MafUtils.appendToDir(temppath, sourcepath);
+
+      MafMHTHandler.createArchive(archivefile, realSourcePath);
 
     } else {
-    /** If program is nothing then don't try to run it. */
-    if (program != "") {
-      var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                             .getService(Components.interfaces.nsIMafPreferences);
+      /** If program is nothing then don't try to run it. */
+      if (program != "") {
+        if (MafPreferences.win_invisible) {
+          localProgram = MafPreferences.win_wscriptexe;
+          localProgramArgs = new Array();
+          localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
+          localProgramArgs[localProgramArgs.length] = program;
+        } else {
+          localProgram = program;
+          localProgramArgs = new Array();
+        }
 
-      if (MafPreferences.win_invisible) {
-        localProgram = MafPreferences.win_wscriptexe;
-        localProgramArgs = new Array();
-        localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
-        localProgramArgs[localProgramArgs.length] = program;
-      } else {
-        localProgram = program;
-        localProgramArgs = new Array();
+        try {
+          var oProgram = Components.classes["@mozilla.org/file/local;1"]
+                            .createInstance(Components.interfaces.nsILocalFile);
+          oProgram.initWithPath(localProgram);
+        } catch(e) {
+          mafdebug(MafStrBundle.GetStringFromName("couldnotfindprogram") + program + " \n" + e);
+        }
+
+        try {
+          var oProcess = Components.classes["@mozilla.org/process/util;1"]
+                            .createInstance(Components.interfaces.nsIProcess);
+        } catch (e) {
+          mafdebug(MafStrBundle.GetStringFromName("couldnotcreateprocess") + e);
+        }
+
+        oProcess.init(oProgram);
+
+        localProgramArgs[localProgramArgs.length] = archivefile;
+        localProgramArgs[localProgramArgs.length] = sourcepath;
+
+        oProcess.run(true, localProgramArgs, localProgramArgs.length);
+
+        var obs = Components.classes["@mozilla.org/observer-service;1"]
+                     .getService(Components.interfaces.nsIObserverService);
+        obs.notifyObservers(null, "maf-archiver-finished", archivefile);
       }
-
-      try {
-        var oProgram = Components.classes["@mozilla.org/file/local;1"]
-                         .getService(Components.interfaces.nsILocalFile);
-        oProgram.initWithPath(localProgram);
-      } catch(e) {
-        mafdebug("Could not find program: " + program + " \n" + e);
-      }
-
-      try {
-        var oProcess = Components.classes["@mozilla.org/process/util;1"]
-                         .createInstance(Components.interfaces.nsIProcess);
-      } catch (e) {
-        mafdebug("Could not create process:\n" + e);
-      }
-
-      oProcess.init(oProgram);
-
-      localProgramArgs[localProgramArgs.length] = archivefile;
-      localProgramArgs[localProgramArgs.length] = destpath;
-
-      oProcess.run(true, localProgramArgs, localProgramArgs.length);
-    }
-
     }
   },
 
@@ -242,26 +209,40 @@ var Maf = {
   saveAsWebPageComplete: function(aBrowser, tempPath, scriptPath, archivePath) {
     var dateTimeArchived = new Date();
 
-    var objMafArchiver = new MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived);
-
-    objMafArchiver.oncomplete = Maf.onSaveAsWebPageComplete;
+    var objMafArchiver = Components.classes["@mozilla.org/libmaf/archiver;1"]
+                            .createInstance(Components.interfaces.nsIMafArchiver);
+    objMafArchiver.init(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived.valueOf() + "", Maf);
+    objMafArchiver.setProgressUpdater(Maf);
     objMafArchiver.start();
+  },
 
+
+  nativeSaveFile: function(aDocument, aSaveDocPath, aSaveDocFileName, aObjMafArchiver) {
+    try {
+     MafNativeFileSave.saveFile(aDocument, aSaveDocPath, aSaveDocFileName,
+                                aObjMafArchiver.QueryInterface(Components.interfaces.nsIMafArchiver));
+    } catch(e) {
+      mafdebug(e);
+    }
   },
 
   /**
    * If a single page is saved, this is called as visual feedback to the user.
    */
-  onSaveAsWebPageComplete: function() {
-    alert("Archive operation complete");
+  progressUpdater: function(progress) {
+    if (progress == 100) {
+      browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationcomplete"));
+    }
   },
 
   /**
    * Save all open tabs in an archive
    */
   saveAllTabsComplete: function(browsers, tempPath, scriptPath, archivePath) {
-    var objMafTabArchiver = new MafTabArchiver(browsers, tempPath, scriptPath, archivePath);
-    MafUtils.showDownloadTabsDLG(objMafTabArchiver);
+    var objMafTabArchiver = Components.classes["@mozilla.org/libmaf/tabarchiver;1"]
+                               .createInstance(Components.interfaces.nsIMafTabArchiver);
+    objMafTabArchiver.init(browsers, tempPath, scriptPath, archivePath, Maf);
+    MafGUI.showDownloadTabsDLG(objMafTabArchiver);
   },
 
   /**
@@ -270,21 +251,22 @@ var Maf = {
   openFromArchive: function(tempPath, scriptPath, archivePath) {
     var dateTimeExpanded = new Date();
 
-    var folderNumber = dateTimeExpanded.valueOf()+"_"+Math.floor(Math.random()*1000);
+    var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random()*1000);
 
-    var objMafTabExpander = new MafTabExpander(tempPath, scriptPath, archivePath, folderNumber);
+    var objMafTabExpander = Components.classes["@mozilla.org/libmaf/tabexpander;1"]
+                                 .createInstance(Components.interfaces.nsIMafTabExpander);
+
+    objMafTabExpander.init(tempPath, scriptPath, archivePath, folderNumber, Maf);
     objMafTabExpander.start();
-    MafUtils.showOpenTabsDLG(objMafTabExpander);
+    MafGUI.showOpenTabsDLG(objMafTabExpander);
 
-    MafState.openArchives.push(MafUtils.appendToDir(tempPath, folderNumber));
+    var count = {};
+    var archiveLocalURLs = {};
 
-    var archiveLocalURLs = MafState.addArchiveInfo(tempPath, folderNumber, archivePath);
-
-    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                             .getService(Components.interfaces.nsIMafPreferences);
+    MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
 
     if (MafPreferences.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS) {
-      MafUtils.openListInTabs(archiveLocalURLs);
+      this.openListInTabs(archiveLocalURLs.value);
     }
 
     if (MafPreferences.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_SHOWDIALOG) {
@@ -292,20 +274,475 @@ var Maf = {
         MafGUI.browseOpenArchives();
       }
     }
+  },
+
+  /**
+   * Opens a list of URLs in tabs.
+   */
+  openListInTabs: function(urlList) {
+    var oBrowser = browserWindow.getBrowser();
+
+    try {
+      var triedFirstTab = false;
+      for (var i=0; i < urlList.length; i++) {
+        if (triedFirstTab) {
+          oBrowser.addTab(urlList[i]);
+        } else {
+          triedFirstTab = true;
+          if ((oBrowser.browsers.length == 1) && (oBrowser.currentURI.spec == "about:blank")) {
+            oBrowser.loadURI(urlList[i], null, null);
+          } else {
+            oBrowser.addTab(urlList[i]);
+          }
+
+        }
+      }
+    } catch(e) {
+      mafdebug(e);
+    }
+
+  },
+
+  _makeLocalLinksAbsolute: function(domDoc, baseUrl, index_files) {
+    if (baseUrl != "") {
+      var obj_baseUrl =  Components.classes["@mozilla.org/network/standard-url;1"]
+                            .createInstance(Components.interfaces.nsIURL);
+      obj_baseUrl.spec = baseUrl;
+
+      var alltags = domDoc.getElementsByTagName("*");
+      for (var i=0; i<alltags.length; i++) {
+        var tagattrib = alltags[i].attributes;
+        for (var j=0; j<tagattrib.length; j++) {
+          var attribName = tagattrib[j].name.toLowerCase();
+          if ((attribName == "action") ||
+              (attribName == "background") ||
+              (attribName == "cite") ||
+              (attribName == "classid") ||
+              (attribName == "codebase") ||
+              (attribName == "data") ||
+              (attribName == "href") ||
+              (attribName == "longdesc") ||
+              (attribName == "profile") ||
+              (attribName == "src") ||
+              (attribName == "usemap")) {
+
+              if (tagattrib[j].value.startsWith(index_files)) {
+                tagattrib[j].value = obj_baseUrl.resolve(tagattrib[j].value);
+              }
+          }
+        }
+      }
+    }
+  },
+
+  onWindowLoad: function(event) {
+    if (event.originalTarget == "[object XULDocument]") {
+      // New window
+
+      // Get hidden window
+      var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
+                        .getService(Components.interfaces.nsIAppShellService);
+      var hiddenWnd = appShell.hiddenDOMWindow;
+
+      if (typeof(hiddenWnd.loaded) == "undefined") {
+        hiddenWnd.loaded = true;
+
+        var prefExists = false;
+        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
+
+        try {
+          var navigatorUserAgent = prefs.getCharPref("general.useragent");
+          prefExists = true;
+        } catch(e) {
+          prefExists = false;
+        }
+
+        prefs.setCharPref("general.useragent", navigator.userAgent);
+
+        if (!prefExists) {
+          // Preferences Service would freak out, load it again
+          MafPreferences.load();
+        }
+
+        MafPostSetup.complete();
+      }
+    } else {
+      if (event.originalTarget == "[object HTMLDocument]") {
+        // New tab
+
+        var doc = event.originalTarget;
+        Maf._makeLocalLinksAbsolute(doc, doc.location.href, "index_files");
+        Maf._makeLocalLinksAbsolute(doc, MafState.getOriginalURL(doc.location.href), "");
+
+        if (MafPreferences.urlRewrite) {
+          // Get the original url
+          var originalURL = event.originalTarget.location.href;
+
+          // Remove the hash if any
+          if (originalURL.indexOf("#") > 0) {
+            originalURL = originalURL.substring(0, originalURL.indexOf("#"));
+          }
+
+          // If the url is an archive url
+          if (MafState.isArchiveURL(originalURL)) {
+
+            // We have some work to do
+            var links = event.originalTarget.links;
+
+            for (var j=0; j < links.length; j++) {
+              if (MafState.isLocallyMappableURL(links[j].href)) {
+                links[j].href=MafState.getLocalURL(links[j].href);
+              } else {
+                // See if it is hashed
+                if (links[j].href.indexOf("#") > 0) {
+                  var hashPart = links[j].href.substring(links[j].href.indexOf("#"), links[j].href.length);
+                  var nonHashPart = links[j].href.substring(0, links[j].href.indexOf("#"));
+
+                  if (MafState.isLocallyMappableURL(nonHashPart)) {
+                    links[j].href=MafState.getLocalURL(nonHashPart) + hashPart;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  onWindowClose: function(event) {
+    // Check to see it's the last open window
+    var numberOfOpenWindows = MafUtils.getNumberOfOpenWindows();
+
+    // If it's the last window
+    if (numberOfOpenWindows < 2) {
+
+      if (MafPreferences.clearTempOnClose) {
+        // Remove everything in the temp directory
+        try {
+          var oDir = Components.classes["@mozilla.org/file/local;1"]
+                        .createInstance(Components.interfaces.nsILocalFile);
+          oDir.initWithPath(MafPreferences.temp);
+
+          if (oDir.exists() && oDir.isDirectory()) {
+            var entries = oDir.directoryEntries;
+
+            // If there's something to delete
+            while (entries.hasMoreElements()) {
+              // Remove entry
+              var currFile = entries.getNext();
+              currFile.QueryInterface(Components.interfaces.nsILocalFile);
+              currFile.remove(true);
+            }
+          }
+        } catch(e) {
+
+        }
+      }
+    }
+
+  },
+
+  onWindowFocus: function(event) {
+    if (event.originalTarget == "[object XULDocument]") {
+      var MafDocumentViewer =  Components.classes["@mozilla.org/content-viewer-factory/view;1?type=application/maf"]
+                                  .getService(Components.interfaces.nsIMafDocumentViewerFactory);
+      MafDocumentViewer.init(Maf);
+    }
+  },
+
+  onPopupShown: function(event) {
+    if (event.target.id != "contentAreaContextMenu") return;
+
+    gContextMenu.showItem("maf-save-in-archive-menuitem",
+                         !( gContextMenu.inDirList || gContextMenu.isTextSelected || gContextMenu.onTextInput ||
+                            gContextMenu.onLink || gContextMenu.onImage ));
+  },
+
+  QueryInterface: function(iid) {
+
+    if (!iid.equals(Components.interfaces.nsIMaf) &&
+        !iid.equals(Components.interfaces.nsIMafProgressUpdater) &&
+        !iid.equals(Components.interfaces.nsISupports)) {
+      throw Components.results.NS_ERROR_NO_INTERFACE;
+    }
+
+    return this;
   }
 
 };
 
 
-window.addEventListener("close", MafUtils.onWindowClose, true);
-window.addEventListener("load", MafUtils.onWindowLoad, true);
-window.addEventListener("load", MafUtils.onTabLoad, true);
+var MafPostSetup = {
+
+  progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
+
+  postsetupversion: "0.3.0", // 0.4.0 Doesn't have new scripts, so leave this
+
+  _getSaveFilters: function() {
+    var filterresult = new Array();
+    var prefsSaveFilterLength = MafPreferences.getSaveFiltersLength();
+
+    for (var i=0; i<prefsSaveFilterLength; i++) {
+
+      var count = {};
+      var result = {};
+      MafPreferences.getSaveFilterAt(i, count, result);
+
+      if (count.value == 3) {
+        filterresult[filterresult.length] = result.value[1].substring(2, result.value[1].length);
+      }
+    }
+
+    return filterresult;
+  },
+
+  setupMafContentType: function() {
+    try {
+      // Add the content type to the category manager
+      // so that when it is encountered the viewer factory
+      // will be invoked.
+      var catMan = Components.classes["@mozilla.org/categorymanager;1"]
+                      .getService(Components.interfaces.nsICategoryManager);
+      var result  = catMan.addCategoryEntry("Gecko-Content-Viewers", "application/maf",
+                      "@mozilla.org/content-viewer-factory/view;1?type=application/maf", true, true);
+
+      const mimeTypes = "UMimTyp";
+      var fileLocator = Components.classes["@mozilla.org/file/directory_service;1"]
+                           .getService(Components.interfaces.nsIProperties);
+
+      var file = fileLocator.get(mimeTypes, Components.interfaces.nsIFile);
+
+      var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                          .getService(Components.interfaces.nsIIOService);
+      var fileHandler = ioService.getProtocolHandler("file").QueryInterface(Components.interfaces.nsIFileProtocolHandler);
+      var gDS = gRDF.GetDataSourceBlocking(fileHandler.getURLSpecFromFile(file));
+
+      var mime = "application/maf";
+
+      var handler = new HandlerOverride(MIME_URI(mime), gDS);
+
+      handler.mUpdateMode = false;
+
+      handler.mimeType = mime;
+      handler.description = "Mozilla Archive Format";
+
+      var handledExtensions = this._getSaveFilters();
+      handler.addExtension("maf"); // Legacy maf support
+      for (var i=0; i<handledExtensions.length; i++) {
+         handler.addExtension(handledExtensions[i]);
+      }
+      handler.isEditable = true;
+      handler.saveToDisk = false;
+      handler.handleInternal = false;
+      handler.alwaysAsk = true;
+      handler.appDisplayName = "MAF";
+
+      handler.buildLinks();
+
+      gDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
+    } catch(e) {
+      mafdebug(e);
+    }
+  },
+
+  complete: function() {
+    this.setupMafContentType();
+
+    // Get preference maf.postsetup.complete
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                   .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
+
+    try {
+      var setupComplete = prefs.getBoolPref("postsetup." + this.postsetupversion + ".complete");
+    } catch(e) { setupComplete = false; }
+
+    if (!setupComplete) {
+      // Make temp directory
+      this.makeTempDirectory();
+      // Copy files
+      this.copyFiles();
+      // Update script contents
+      this.updateScriptContents();
+
+      // Set preference maf.postsetup.complete
+      prefs.setBoolPref("postsetup." + this.postsetupversion + ".complete", true);
+    }
+  },
+
+  /**
+   * Create the MAF temporary directory structure.
+   */
+  makeTempDirectory: function() {
+    try {
+      var profileDir = this._getProfileDir();
+      // If not on windows
+      if (navigator.userAgent.indexOf("Windows") == -1) {
+        // Make directory {profileDir}/maf/
+        MafUtils.createDir(profileDir + "/maf");
+        // Make directory {profileDir}/maf/maftemp
+        MafUtils.createDir(profileDir + "/maf/maftemp");
+      } else {
+        // Make directory {profileDir}\\maf
+        MafUtils.createDir(profileDir + "\\maf");
+        // Make directory c:\temp\maf\maftemp
+        MafUtils.createDir(profileDir + "\\maf\\maftemp");
+      }
+    } catch(e) { mafdebug(e); }
+  },
+
+  /**
+   * @returns A string representing the location of the user's profile directory
+   */
+  _getProfileDir: function() {
+    try {
+      var result = Components.classes["@mozilla.org/file/directory_service;1"]
+                      .getService(Components.interfaces.nsIProperties)
+                      .get("ProfD", Components.interfaces.nsIFile).path;
+    } catch (e) {
+      result = "";
+    }
+    return result;
+  },
+
+  /**
+   * @returns an array of files in a directory
+   */
+  _getFilesList: function(sourcepath) {
+    var result = new Array();
+
+    var oDir = Components.classes["@mozilla.org/file/local;1"]
+                  .createInstance(Components.interfaces.nsILocalFile);
+    oDir.initWithPath(sourcepath);
+
+    if (oDir.exists() && oDir.isDirectory()) {
+      var entries = oDir.directoryEntries;
+
+      while (entries.hasMoreElements()) {
+        var currFile = entries.getNext();
+        currFile.QueryInterface(Components.interfaces.nsILocalFile);
+
+        result[result.length] = currFile.leafName;
+      }
+    }
+    return result;
+  },
+
+    /**
+   * Copy an individual file
+   */
+  _copyFile: function(source, dest) {
+    try {
+      // Make sure source exists and dest doesn't
+      if (MafUtils.checkFileExists(source) && !MafUtils.checkFileExists(dest)) {
+        MafUtils.copyBinaryFile(source, dest);
+      }
+    } catch(e) { mafdebug(e); }
+  },
+
+  /**
+   * Copy a set of files from the extensions, scripts directory
+   * Only copy if FF 0.9 or higher
+   */
+  copyFiles: function() {
+    var profileDir = this._getProfileDir();
+    var sourceDir = profileDir;
+
+    // If firefox 0.9 or higher
+    var isFF09OrHigher = false;
+    if ((navigator.vendor != null) && (navigator.vendorSub != null)) {
+      if (navigator.vendor.toLowerCase() == "firefox") {
+        isFF09OrHigher = (parseFloat(navigator.vendorSub.substring(navigator.vendorSub.indexOf(".") + 1, navigator.vendorSub.length)) >= 9);
+      }
+    }
+
+    if (isFF09OrHigher) {
+      sourceDir = MafUtils.appendToDir(sourceDir, "extensions");
+      sourceDir = MafUtils.appendToDir(sourceDir, this.progid);
+      sourceDir = MafUtils.appendToDir(sourceDir, "scripts");
+
+      var destDir;
+
+      // If not on windows
+      if (navigator.userAgent.indexOf("Windows") == -1) {
+        destDir = profileDir + "/maf";
+      } else {
+        destDir = profileDir + "\\maf";
+      }
+
+      var filesList = this._getFilesList(sourceDir);
+      for (var i=0; i<filesList.length; i++) {
+        this._copyFile(MafUtils.appendToDir(sourceDir, filesList[i]), MafUtils.appendToDir(destDir, filesList[i]));
+      }
+    }
+
+  },
+
+  /**
+   * Update the scripts to use the new directory
+   */
+  updateScriptContents: function() {
+    var profileDir = this._getProfileDir();
+
+    // If not on windows
+    if (navigator.userAgent.indexOf("Windows") == -1) {
+      if (MafUtils.checkFileExists(profileDir + "/maf/mafzip.sh")) {
+        var mafzipStr = MafUtils.readFile(profileDir + "/maf/mafzip.sh");
+        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        MafUtils.deleteFile(profileDir + "/maf/mafzip.sh");
+        MafUtils.createExecutableFile(profileDir + "/maf/mafzip.sh", mafzipStr);
+      }
+
+      if (MafUtils.checkFileExists(profileDir + "/maf/mafunzip.sh")) {
+        var mafunzipStr = MafUtils.readFile(profileDir + "/maf/mafunzip.sh");
+        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        MafUtils.deleteFile(profileDir + "/maf/mafunzip.sh");
+        MafUtils.createExecutableFile(profileDir + "/maf/mafunzip.sh", mafunzipStr);
+      }
+
+    } else {
+
+      if (MafUtils.checkFileExists(profileDir + "\\maf\\mafzip.bat")) {
+        var mafzipStr = MafUtils.readFile(profileDir + "\\maf\\mafzip.bat");
+        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        MafUtils.deleteFile(profileDir + "\\maf\\mafzip.bat");
+        MafUtils.createExecutableFile(profileDir + "\\maf\\mafzip.bat", mafzipStr);
+      }
+
+      if (MafUtils.checkFileExists(profileDir + "\\maf\\mafunzip.bat")) {
+        var mafunzipStr = MafUtils.readFile(profileDir + "\\maf\\mafunzip.bat");
+        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
+        MafUtils.deleteFile(profileDir + "\\maf\\mafunzip.bat");
+        MafUtils.createExecutableFile(profileDir + "\\maf\\mafunzip.bat", mafunzipStr);
+      }
+
+    }
+  }
+}
+
+
+try {
+
+/**
+ * Main object
+ */
+var Maf = new maf();
+
+browserWindow.addEventListener("close", Maf.onWindowClose, true);
+browserWindow.addEventListener("load", Maf.onWindowLoad, true);
+browserWindow.addEventListener("focus", Maf.onWindowFocus, true);
+browserWindow.addEventListener("popupshown", Maf.onPopupShown, true);
+
+} catch(e) {
+  mafdebug(e);
+}
 
 function mafdebug(text) {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];
   var cs = csClass.getService(Components.interfaces.nsIConsoleService);
   cs.logStringMessage(text);
-}
+};
 
 /**
  * Copied from JS-Examples archives
@@ -330,122 +767,58 @@ String.prototype.replaceAll = function(needle, newneedle) {
   return x;
 };
 
+String.prototype.startsWith = function(needle) {
+  return (this.substring(0, needle.length) == needle);
+};
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 //////////////  Redefine global functions - 'cuz it's open source and fun!!!  //////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * This, by the way, is *NOT* the best way to get this functionality done.
- * Better way - URI load watcher or some such service that intercepts the load before the
- *              default action is performed.
- */
 
-var loadURIios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+function getMafOpenFilters() {
+  var filterresult = new Array();
+  var prefsOpenFilterLength = MafPreferences.getOpenFiltersLength();
 
+  for (var i=0; i<prefsOpenFilterLength; i++) {
 
-var loadURIMafRegExp = new RegExp(Components.classes["@mozilla.org/maf/preferences_service;1"]
-                                     .getService(Components.interfaces.nsIMafPreferences)
-                                     .getOpenFilterRegEx(), "i");
+    var count = {};
+    var result = {};
+    MafPreferences.getOpenFilterAt(i, count, result);
 
-/**
- * Redefine the loadURI code to check and see if it's a MAF file first
- */
-function loadURI(uri, referrer, postData)
-{
+    if (count.value == 3) {
+      var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
 
-  if (!uri.match(loadURIMafRegExp)) {
-    // Original loadURI function
-    try {
-      if (postData === undefined)
-        postData = null;
-      getWebNavigation().loadURI(uri, nsIWebNavigation.LOAD_FLAGS_NONE, referrer, postData, null);
-    } catch (e) {
-      mafdebug(e);
-    }
-  } else {
-
-    // Get leaf name
-    try {
-      var ouri = loadURIios.newURI(uri, "", null);    // Create URI object
-      var file = ouri.QueryInterface(Components.interfaces.nsIFileURL).file;
-    } catch(e) {
-      // It wasn't a URL of the form file://, let's try again, shall we?
-      try {
-        var file = Components.classes["@mozilla.org/file/local;1"]
-                     .createInstance(Components.interfaces.nsILocalFile);
-        file.initWithPath(uri);
-      } catch(ex) {
-        // Give up
-        mafdebug("MAF LoadURI has given up:" + ex);
-      }
-    }
-
-    var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                             .getService(Components.interfaces.nsIMafPreferences);
-
-    var ismaf = false;
-
-    try {
-      // If file extension match any of the filters MAF handles
-      var filterIndex = MafPreferences.getOpenFilterIndexFromFilename(file.leafName);
-
-      // Get matching filter
-      ismaf = (filterIndex != -1);
-    } catch(e) {
-      mafdebug(e);
-    }
-
-    if (!ismaf) {
-      // Original loadURI function
-      try {
-        if (postData === undefined)
-          postData = null;
-        getWebNavigation().loadURI(uri, nsIWebNavigation.LOAD_FLAGS_NONE, referrer, postData, null);
-      } catch (e) {
-        mafdebug(e);
-      }
-    } else {
-      // Get original url's to local file path
-      var localFilePath = file.path;
-
-      // Get hidden window
-      var appShell = Components.classes[appShellContractID].getService(appShellIID);
-      var hiddenWnd = appShell.hiddenDOMWindow;
-
-      if (hiddenWnd.loaded) {
-        // Open as a MAF with registered filter
-        setTimeout(Maf.openFromArchive, 100, MafPreferences.temp,
-                            MafPreferences.programFromOpenIndex(filterIndex), localFilePath);
-      } else {
-        // Queue, load request from command line
-        MafOpenQueue.add(localFilePath, filterIndex);
-      }
+      filterresult[filterresult.length] = entry;
     }
   }
-}
+  return filterresult;
+};
 
 /**
  * A new and improved open. With MAF support.
  */
-function BrowserOpenFileWindow()
-{
+function BrowserOpenFileWindow() {
   // Get filepicker component.
   try {
     const nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, gNavigatorBundle.getString("openFile"), nsIFilePicker.modeOpen);
+    fp.init(browserWindow, gNavigatorBundle.getString("openFile"), nsIFilePicker.modeOpen);
 
     fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterImages |
                      nsIFilePicker.filterXML | nsIFilePicker.filterHTML);
 
-    var filters = MafGUI.getOpenFilters();
-    for (var i=0; i<filters.length; i++) {
-      var title = filters[i][0];
-      var mask = filters[i][1];
-      fp.appendFilter(title, mask);
-    }
+    try {
+      var filters = getMafOpenFilters();
+      for (var i=0; i<filters.length; i++) {
+        var title = filters[i][0];
+        var mask = filters[i][1];
+        fp.appendFilter(title, mask);
+      }
+    } catch(e) { }
 
     fp.appendFilters(nsIFilePicker.filterAll);
 
@@ -466,4 +839,316 @@ function BrowserOpenFileWindow()
   } catch (ex) {
     mafdebug(ex);
   }
+};
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////  Copied from helperApps.js  ////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Datasource initialization
+ **/
+var gRDF = Components.classes["@mozilla.org/rdf/rdf-service;1"]
+            .getService(Components.interfaces.nsIRDFService);
+
+///////////////////////////////////////////////////////////////////////////////
+// MIME Types DataSource Wrapper
+
+function NC_URI(aProperty)
+{
+  return "http://home.netscape.com/NC-rdf#" + aProperty;
 }
+
+function MIME_URI(aType)
+{
+  return "urn:mimetype:" + aType;
+}
+
+function HANDLER_URI(aHandler)
+{
+  return "urn:mimetype:handler:" + aHandler;
+}
+
+function APP_URI(aType)
+{
+  return "urn:mimetype:externalApplication:" + aType;
+}
+
+
+/**
+ * Handler Override class
+ **/
+function HandlerOverride(aURI, aDatasource)
+{
+  this.URI = aURI;
+  this._DS = aDatasource;
+}
+
+HandlerOverride.prototype = {
+  // general information
+  get mimeType()
+  {
+    return this.getLiteralForContentType(this.URI, "value");
+  },
+
+  set mimeType(aMIMETypeString)
+  {
+    this.changeMIMEStuff(MIME_URI(aMIMETypeString), "value", aMIMETypeString.toLowerCase());
+    return aMIMETypeString;
+  },
+
+  get description()
+  {
+    return this.getLiteralForContentType(this.URI, "description");
+  },
+
+  set description(aDescriptionString)
+  {
+    this.changeMIMEStuff(MIME_URI(this.mimeType), "description", aDescriptionString);
+    return aDescriptionString;
+  },
+
+  get isEditable()
+  {
+    return this.getLiteralForContentType(this.URI, "editable");
+  },
+
+  set isEditable(aIsEditableString)
+  {
+    this.changeMIMEStuff(MIME_URI(this.mimeType), "editable", aIsEditableString);
+    return aIsEditableString;
+  },
+
+  get extensions()
+  {
+    var extensionResource = gRDF.GetUnicodeResource(NC_URI("fileExtensions"));
+    var contentTypeResource = gRDF.GetUnicodeResource(MIME_URI(this.mimeType));
+    var extensionTargets = this._DS.GetTargets(contentTypeResource, extensionResource, true);
+    var extString = "";
+    if (extensionTargets) {
+      while (extensionTargets.hasMoreElements()) {
+        var currentExtension = extensionTargets.getNext();
+        if (currentExtension) {
+          currentExtension = currentExtension.QueryInterface(Components.interfaces.nsIRDFLiteral);
+          if (extString != "") {
+            extString += " ";
+          }
+          extString += currentExtension.Value.toLowerCase();
+        }
+      }
+    }
+    return extString;
+  },
+
+  addExtension: function (aExtensionString)
+  {
+    this.assertMIMEStuff(MIME_URI(this.mimeType), "fileExtensions", aExtensionString.toLowerCase());
+  },
+
+  removeExtension: function (aExtensionString)
+  {
+    this.unassertMIMEStuff(MIME_URI(this.mimeType), "fileExtensions", aExtensionString.toLowerCase());
+  },
+
+  clearExtensions: function ()
+  {
+    var extArray = this.extensions.split(" ");
+    for (i = extArray.length - 1; i >= 0; --i) {
+      this.removeExtension(extArray[i]);
+    }
+  },
+
+  // content handling
+  get saveToDisk()
+  {
+    return this.getHandlerInfoForType(this.URI, "saveToDisk");
+  },
+
+  set saveToDisk(aSavedToDisk)
+  {
+    this.changeMIMEStuff(HANDLER_URI(this.mimeType), "saveToDisk", aSavedToDisk);
+    this.setHandlerProcedure("handleInternal", "false");
+    this.setHandlerProcedure("useSystemDefault", "false");
+    return aSavedToDisk;
+ },
+
+  get useSystemDefault()
+  {
+    return this.getHandlerInfoForType(this.URI, "useSystemDefault");
+  },
+
+  set useSystemDefault(aUseSystemDefault)
+  {
+    this.changeMIMEStuff(HANDLER_URI(this.mimeType), "useSystemDefault", aUseSystemDefault);
+    this.setHandlerProcedure("handleInternal", "false");
+    this.setHandlerProcedure("saveToDisk", "false");
+    return aUseSystemDefault;
+  },
+
+  get handleInternal()
+  {
+    return this.getHandlerInfoForType(this.URI, "handleInternal");
+  },
+
+  set handleInternal(aHandledInternally)
+  {
+    this.changeMIMEStuff(HANDLER_URI(this.mimeType), "handleInternal", aHandledInternally);
+    this.setHandlerProcedure("saveToDisk", "false");
+    this.setHandlerProcedure("useSystemDefault", "false");
+    return aHandledInternally;
+  },
+
+  setHandlerProcedure: function (aHandlerProcedure, aValue)
+  {
+    var handlerSource = gRDF.GetUnicodeResource(HANDLER_URI(this.mimeType));
+    var handlerProperty = gRDF.GetUnicodeResource(NC_URI(aHandlerProcedure));
+    var oppositeValue = aValue == "false" ? "true" : "false";
+    var trueLiteral = gRDF.GetLiteral(oppositeValue);
+    var hasCounterpart = this._DS.HasAssertion(handlerSource, handlerProperty, trueLiteral, true);
+    if (hasCounterpart) {
+      var falseLiteral = gRDF.GetLiteral(aValue);
+      this._DS.Change(handlerSource, handlerProperty, trueLiteral, falseLiteral);
+    }
+  },
+
+  get alwaysAsk()
+  {
+    return this.getHandlerInfoForType(this.URI, "alwaysAsk");
+  },
+
+  set alwaysAsk(aAlwaysAsk)
+  {
+    this.changeMIMEStuff(HANDLER_URI(this.mimeType), "alwaysAsk", aAlwaysAsk);
+    return aAlwaysAsk;
+  },
+
+  // helper application
+  get appDisplayName()
+  {
+    return getHelperAppInfoForType(this.URI, "prettyName");
+  },
+
+  set appDisplayName(aDisplayName)
+  {
+    this.changeMIMEStuff(APP_URI(this.mimeType), "prettyName", aDisplayName);
+    return aDisplayName;
+  },
+
+  get appPath()
+  {
+    return this.getHelperAppInfoForType(this.URI, "path");
+  },
+
+  set appPath(aAppPath)
+  {
+    this.changeMIMEStuff(APP_URI(this.mimeType), "path", aAppPath);
+    return aAppPath;
+  },
+
+  /**
+   * After setting the various properties on this override, we need to
+   * build the links between the mime type resource, the handler for that
+   * resource, and the helper app (if any) associated with the resource.
+   * We also need to add this mime type to the RDF seq (list) of types.
+   **/
+  buildLinks: function()
+  {
+    // assert the handler resource
+    var mimeSource = gRDF.GetUnicodeResource(MIME_URI(this.mimeType));
+    var handlerProperty = gRDF.GetUnicodeResource(NC_URI("handlerProp"));
+    var handlerResource = gRDF.GetUnicodeResource(HANDLER_URI(this.mimeType));
+    this._DS.Assert(mimeSource, handlerProperty, handlerResource, true);
+    // assert the helper app resource
+    var helperAppProperty = gRDF.GetUnicodeResource(NC_URI("externalApplication"));
+    var helperAppResource = gRDF.GetUnicodeResource(APP_URI(this.mimeType));
+    this._DS.Assert(handlerResource, helperAppProperty, helperAppResource, true);
+    // add the mime type to the MIME types seq
+    var container = Components.classes["@mozilla.org/rdf/container;1"].createInstance();
+    if (container) {
+      container = container.QueryInterface(Components.interfaces.nsIRDFContainer);
+      if (container) {
+        var containerRes = gRDF.GetUnicodeResource("urn:mimetypes:root");
+        container.Init(this._DS, containerRes);
+        var element = gRDF.GetUnicodeResource(MIME_URI(this.mimeType));
+        if (container.IndexOf(element) == -1)
+          container.AppendElement(element);
+      }
+    }
+  },
+
+  // Implementation helper methods
+
+  getLiteralForContentType: function (aURI, aProperty)
+  {
+    var contentTypeResource = gRDF.GetUnicodeResource(aURI);
+    var propertyResource = gRDF.GetUnicodeResource(NC_URI(aProperty));
+    return this.getLiteral(contentTypeResource, propertyResource);
+  },
+
+  getLiteral: function (aSource, aProperty)
+  {
+    var node = this._DS.GetTarget(aSource, aProperty, true);
+    if (node) {
+      node = node.QueryInterface(Components.interfaces.nsIRDFLiteral);
+      return node.Value;
+    }
+    return "";
+  },
+
+  getHandlerInfoForType: function (aURI, aPropertyString)
+  {
+    // get current selected type
+    var handler = HANDLER_URI(this.getLiteralForContentType(aURI, "value"));
+    var source = gRDF.GetUnicodeResource(handler);
+    var property = gRDF.GetUnicodeResource(NC_URI(aPropertyString));
+    var target = this._DS.GetTarget(source, property, true);
+    if (target) {
+      target = target.QueryInterface(Components.interfaces.nsIRDFLiteral);
+      return target.Value;
+    }
+    return "";
+  },
+
+  getHelperAppInfoForType: function (aURI, aPropertyString)
+  {
+    var appURI      = APP_URI(this.getLiteralForContentType(aURI, "value"));
+    var appRes      = gRDF.GetUnicodeResource(appURI);
+    var appProperty = gRDF.GetUnicodeResource(NC_URI(aPropertyString));
+    return getLiteral(appRes, appProperty);
+  },
+
+  // write to the ds
+  assertMIMEStuff: function (aMIMEString, aPropertyString, aValueString)
+  {
+    var mimeSource = gRDF.GetUnicodeResource(aMIMEString);
+    var valueProperty = gRDF.GetUnicodeResource(NC_URI(aPropertyString));
+    var mimeLiteral = gRDF.GetLiteral(aValueString);
+    this._DS.Assert(mimeSource, valueProperty, mimeLiteral, true);
+  },
+
+  changeMIMEStuff: function(aMIMEString, aPropertyString, aValueString)
+  {
+    var mimeSource = gRDF.GetUnicodeResource(aMIMEString);
+    var valueProperty = gRDF.GetUnicodeResource(NC_URI(aPropertyString));
+    var mimeLiteral = gRDF.GetLiteral(aValueString);
+    var currentValue = this._DS.GetTarget(mimeSource, valueProperty, true);
+    if (currentValue) {
+      this._DS.Change(mimeSource, valueProperty, currentValue, mimeLiteral);
+    } else {
+      this._DS.Assert(mimeSource, valueProperty, mimeLiteral, true);
+    }
+  },
+
+  unassertMIMEStuff: function(aMIMEString, aPropertyString, aValueString)
+  {
+    var mimeSource = gRDF.GetUnicodeResource(aMIMEString);
+    var valueProperty = gRDF.GetUnicodeResource(NC_URI(aPropertyString));
+    var mimeLiteral = gRDF.GetLiteral(aValueString);
+    this._DS.Unassert(mimeSource, valueProperty, mimeLiteral, true);
+  }
+};
+
+
