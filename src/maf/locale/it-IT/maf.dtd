@@ -1,0 +1,84 @@
+<!ENTITY maf.loadArchive "Apri archivio MAF">
+<!ENTITY maf.loadArchiveKey "A">
+
+<!ENTITY maf.addToArchive "Salva pagina come archivio MAF">
+<!ENTITY maf.addToArchiveKey "S">
+
+<!ENTITY maf.addAllTabsToArchive "Salva tutte le schede come archivio MAF">
+<!ENTITY maf.addAllTabsToArchiveKey "T">
+
+<!ENTITY maf.saveTabsDialogTitle "Salvataggio schede aperte in corso...">
+<!ENTITY maf.openTabsDialogTitle "Apertura schede in corso...">
+
+<!ENTITY maf.menuLabel "Mozilla Archive Format">
+
+<!ENTITY maf.preferences "Preferenze...">
+<!ENTITY maf.preferencesKey "f">
+
+<!ENTITY maf.about "Informazioni su...">
+<!ENTITY maf.aboutKey "I">
+
+<!ENTITY maf.browseOpenArchives "Sfoglia archivi aperti">
+<!ENTITY maf.browseOpenArchivesKey "p">
+
+<!ENTITY maf.aboutdlg.title "Informazioni su MAF">
+<!ENTITY maf.aboutdlg.description "MAF e' un'estensione per Mozilla che permette di usare script esterni per archiviare documenti HTML completi. Permette anche di memorizzare informazioni aggiuntive come l'URL originale e l'orario/data di archiviazione.">
+<!ENTITY maf.version "MAF v 0.4.0">
+<!ENTITY maf.aboutdlg.copyright "(c) 2004 Christopher Ottley">
+<!ENTITY maf.aboutdlg.license "Rilasciato sotto licenza GNU GPL 2.0">
+<!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">
+
+<!ENTITY maf.browseOpenArchivesDialog.title "Sfoglia archivi aperti">
+
+<!ENTITY maf.browseOpenArchivesDialog.tree.title "Titolo">
+<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Orario di archiviazione">
+<!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "URL originale">
+<!ENTITY maf.browseOpenArchivesDialog.tree.localurl "URL locale">
+
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Apri in schede">
+<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Apri URL originali in schede">
+<!ENTITY maf.browseOpenArchivesDialog.btnclose "Chiudi">
+
+<!ENTITY maf.preferencesdialog.title "Preferenze">
+
+<!ENTITY maf.preferencesdialog.tabsoptions "Opzioni">
+<!ENTITY maf.preferencesdialog.tabsregprogs "Programmi registrati">
+<!ENTITY maf.preferencesdialog.tabswinoptions "Opzioni per Windows">
+
+<!ENTITY maf.preferencesdialog.options.description "Opzioni generali di MAF per la gestione degli archivi">
+
+<!ENTITY maf.preferencesdialog.label.temp "Cartella temporanei:">
+<!ENTITY maf.preferencesdialog.label.cleartemp "Elimina file temporanei quando si chiude il browser">
+<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Enable MAF Protocol">
+
+<!ENTITY maf.preferencesdialog.btnbrowse "Sfoglia...">
+
+<!ENTITY maf.preferencesdialog.openmode "Modalita' apertura archivi">
+
+<!ENTITY maf.preferencesdialog.openmode.showopen "Mostra la finestra di dialogo apertura file">
+<!ENTITY maf.preferencesdialog.openmode.tabs "Apri tutti gli HTML in nuove schede">
+<!ENTITY maf.preferencesdialog.openmode.nothing "Nessuna operazione">
+
+<!ENTITY maf.preferencesdialog.openmode.urlrewrite "Riscrivi gli URL dei documenti archiviati">
+<!ENTITY maf.preferencesdialog.openmode.savexmeta "Salva dati aggiuntivi estesi">
+
+<!ENTITY maf.preferencesdialog.openmode.defaultapp "Applicazione predefinita MAF:">
+
+<!ENTITY maf.preferencesdialog.winop.label "Opzioni specifiche per Windows">
+<!ENTITY maf.preferencesdialog.winop.usevbs "Usa VBS per avviare i file batch in modo invisibile">
+
+<!ENTITY maf.preferencesdialog.winop.wscript "Posizione di WSCRIPT.EXE:">
+<!ENTITY maf.preferencesdialog.winop.invis "Posizione di invis.vbs:">
+
+<!ENTITY maf.preferencesdialog.progs.description "Gli script esterni di archiviazione usati per gestire gli archivi MAF.">
+
+<!ENTITY maf.preferencesdialog.progs.archive "Script di archiviazione:">
+<!ENTITY maf.preferencesdialog.progs.expand "Script di estrazione:">
+
+<!ENTITY maf.preferencesdialog.btnloaddefault "Carica predefiniti">
+<!ENTITY maf.preferencesdialog.btnsave "Salva">
+<!ENTITY maf.preferencesdialog.btnrevert "Ritorna all'ultima impostazione salvata">
+<!ENTITY maf.preferencesdialog.btnclose "Chiudi">
+
+<!ENTITY maf.browseOpenArchivesAccessKey "M">
+<!ENTITY maf.addToArchiveAccessKey "P">
