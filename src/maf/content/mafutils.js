@@ -550,6 +550,8 @@ var MafUtils = {
       var appShell = Components.classes[appShellContractID].getService(appShellIID);
       var hiddenWnd = appShell.hiddenDOMWindow;
 
+      hiddenWnd.loaded = true;
+
       // Store global MafState in hidden window
       if (typeof(hiddenWnd.MafState) == "undefined") {
         hiddenWnd.MafState = MafState;
@@ -570,6 +572,15 @@ var MafUtils = {
         MafPreferences = hiddenWnd.MafPreferences;
       }
 
+      /**
+       * Hack until find an event like onChromeLoad
+       */
+      if (MafOpenQueue.queue.length > 0) {
+        var entry = MafOpenQueue.queue.pop();
+        // Open as a MAF with registered filter
+        setTimeout(Maf.openFromArchive, 1000, MafPreferences.temp,
+                            MafPreferences.programFromOpenIndex(entry.filterIndex), entry.path);
+      }
     }
 
   },

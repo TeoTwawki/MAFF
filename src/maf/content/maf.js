@@ -35,7 +35,8 @@
  * Selecting file from browse dialog should now start in directory if possible.
  * Fixed bug that did not allow saving pages in an archive if the pages were in a new window.
  * Retrofitted the download and archive code to use an observer event instead of interval timers. Should seem faster.
- * Added drag and drop archive support for firefox.
+ * Added drag and drop archive support.
+ * Added file association support and ability to open archives from Open File menu entry.
  *
  *
  * Changes from 0.2.19 to 0.2.20 - Completed
@@ -256,63 +257,6 @@ window.addEventListener("close", MafUtils.onWindowClose, true);
 window.addEventListener("load", MafUtils.onWindowLoad, true);
 window.addEventListener("load", MafUtils.onTabLoad, true);
 
-/*
-MP = Components.classes[appShellContractID].getService(appShellIID).hiddenDOMWindow.MafPreferences;
-if (MP != null) {
-  MafPreferences = MP;
-}
-*/
-
-var MafDNDObserver = {
-
-  onDrop: function(evt, aXferData, aDragSession) {
-    var url = transferUtils.retrieveURLFromData(aXferData.data, aXferData.flavour.contentType);
-    var ismaf = false;
-
-    var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-    var uri = ios.newURI(url, "", null);    // Create URI object
-
-    var file = uri.QueryInterface(Components.interfaces.nsIFileURL).file;
-
-    // Get leaf name
-    // If regex match any of the filters
-    var filterIndex = MafPreferences.getOpenFilterIndexFromFilename(file.leafName);
-
-    // Get matching filter
-    if (filterIndex != -1) {
-      ismaf = true;
-    }
-
-    if (ismaf) {
-      // Get original url's to local file path
-      var localFilePath = file.path;
-
-      // Open as a MAF with registered filter
-      Maf.openFromArchive(MafPreferences.temp,
-                          MafPreferences.programFromOpenIndex(filterIndex), localFilePath);
-      evt.preventDefault();
-      evt.preventBubble();
-    } else {
-      debug(MafDNDObserver.previousOnDrop);
-      // Call the previous onDrop if we can't handle the data
-      MafDNDObserver.previousOnDrop(evt, aXferData, aDragSession);
-    }
-  }
-
-};
-
-MafDNDObserver.previousOnDrop = contentAreaDNDObserver.onDrop;
-contentAreaDNDObserver.onDrop = MafDNDObserver.onDrop;
-
-/**
- * For Mozilla people?
- */
-//var tabbrowser = document.getElementById("content");
-//tabbrowser.addEventListener('dragover', function(event) {nsDragAndDrop.dragOver(event, contentAreaDNDObserver);} , false);
-//tabbrowser.addEventListener('drop', function(event) {nsDragAndDrop.dragOver(event, contentAreaDNDObserver);} , false);
-
-
-
 function debug(text) {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];
   var cs = csClass.getService(Components.interfaces.nsIConsoleService);
@@ -341,3 +285,106 @@ String.prototype.replaceAll = function(needle, newneedle) {
   x=x.split(needle).join(newneedle);
   return x;
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+//////////////  Redefine global functions - 'cuz it's open source and fun!!!  //////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/**
+ * Redefine the loadURI code to check and see if it's a MAF file first
+ */
+function loadURI(uri, referrer, postData)
+{
+  var ismaf = false;
+
+  var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+  var ouri = ios.newURI(uri, "", null);    // Create URI object
+
+  try {
+    var file = ouri.QueryInterface(Components.interfaces.nsIFileURL).file;
+  } catch(e) {
+
+    // It wasn't a URL of the form file://, let's try again, shall we?
+    try {
+      var file = Components.classes[localFileContractID].createInstance(localFileIID);
+      file.initWithPath(uri);
+    } catch(ex) {
+      // Give up
+      debug("MAF LoadURI has given up:" + ex);
+    }
+  }
+
+  try {
+
+    // Get leaf name
+    // If file extension match any of the filters MAF handles
+    var filterIndex = MafPreferences.getOpenFilterIndexFromFilename(file.leafName);
+
+    // Get matching filter
+    if (filterIndex != -1) {
+      ismaf = true;
+    }
+
+    if (ismaf) {
+      // Get original url's to local file path
+      var localFilePath = file.path;
+
+      // Get hidden window
+      var appShell = Components.classes[appShellContractID].getService(appShellIID);
+      var hiddenWnd = appShell.hiddenDOMWindow;
+
+      if (hiddenWnd.loaded) {
+        // Open as a MAF with registered filter
+        setTimeout(Maf.openFromArchive, 100, MafPreferences.temp,
+                            MafPreferences.programFromOpenIndex(filterIndex), localFilePath);
+      } else {
+        // Queue, load request from command line
+        MafOpenQueue.add(localFilePath, filterIndex);
+      }
+    }
+  } catch(e) {
+    debug(e);
+  }
+
+  if (!ismaf) {
+    // Original loadURI function
+    try {
+      if (postData === undefined)
+        postData = null;
+      getWebNavigation().loadURI(uri, nsIWebNavigation.LOAD_FLAGS_NONE, referrer, postData, null);
+    } catch (e) {
+    }
+  }
+}
+
+/**
+ * A new and improved open. With MAF support.
+ */
+function BrowserOpenFileWindow()
+{
+  // Get filepicker component.
+  try {
+    const nsIFilePicker = Components.interfaces.nsIFilePicker;
+    var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    fp.init(window, gNavigatorBundle.getString("openFile"), nsIFilePicker.modeOpen);
+
+    fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterImages |
+                     nsIFilePicker.filterXML | nsIFilePicker.filterHTML);
+
+    var filters = MafPreferences.getOpenFilters();
+    for (var i=0; i<filters.length; i++) {
+      var title = filters[i][0];
+      var mask = filters[i][1];
+      fp.appendFilter(title, mask);
+    }
+
+    fp.appendFilters(nsIFilePicker.filterAll);
+
+    if (fp.show() == nsIFilePicker.returnOK)
+      openTopWin(fp.fileURL.spec);
+  } catch (ex) {
+  }
+}

@@ -30,9 +30,17 @@
          persist="screenX screenY"
          onload="onLoad()">
 
-<script type="application/x-javascript" src="maf.js"/>
-<script type="application/x-javascript" src="mafpreferences.js"/>
-<script type="application/x-javascript" src="mafgui.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/maf.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/mafpreferences.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/mafgui.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/mafarchiver.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/mafnativefilesave.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/mafstate.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/maftabarchiver.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/maftabexpander.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/mafmhthandler.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/mafutils.js"/>
+<script type="application/x-javascript" src="chrome://maf/content/mafopenqueue.js"/>
 
 <script>
 

@@ -32,6 +32,7 @@
   <script src="chrome://maf/content/maftabexpander.js"/>
   <script src="chrome://maf/content/mafmhthandler.js"/>
   <script src="chrome://maf/content/mafutils.js"/>
+  <script src="chrome://maf/content/mafopenqueue.js"/>  
   <script src="chrome://maf/content/maf.js"/>
 
   <menupopup id="menu_FilePopup">
