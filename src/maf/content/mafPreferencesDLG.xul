@@ -46,6 +46,11 @@
   var mGUI = MafGUI;
 
   function onLoad() {
+    // Use global preference object if available
+    gMP = Components.classes[appShellContractID].getService(appShellIID).hiddenDOMWindow.MafPreferences;
+    if (gMP != null) {
+      mp = gMP;
+    }
     loadFromPref();
     window.sizeToContent();
     checkWinOnlyPrefs();

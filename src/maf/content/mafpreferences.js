@@ -102,8 +102,8 @@ var MafPreferences = {
    * Gets the program to use from the selected index.
    */
   programFromSaveIndex: function(index) {
-    filters = this.getSaveFilters();
-    selProgExt = this.programExtensions[filters[index][2]];
+    var filters = this.getSaveFilters();
+    var selProgExt = this.programExtensions[filters[index][2]];
     return selProgExt[1];
   },
 
@@ -111,9 +111,54 @@ var MafPreferences = {
    * Gets the program to use from the selected index.
    */
   programFromOpenIndex: function(index) {
-    filters = this.getOpenFilters();
-    selProgExt = this.programExtensions[filters[index][2]];
+    var filters = this.getOpenFilters();
+    var selProgExt = this.programExtensions[filters[index][2]];
     return selProgExt[2];
+  },
+
+  /**
+   * Looks for a match in the filters based on the filename
+   * @return -1 if no open filter was found, index of the filter otherwise
+   */
+  getOpenFilterIndexFromFilename: function(filename) {
+    var result = -1;
+    var lcFilename = filename.toLowerCase();
+
+    // Do a simple string comparison search
+    // TODO: Maybe, make this a bit more robust using regular expressions
+    //       Convert the open filter string into a regex dynamically and check
+    //       for a match on the filename.
+    var filters = this.getOpenFilters();
+
+    for (var i=0; i<filters.length; i++) {
+      var mask = filters[i][1].toLowerCase();
+      if (mask.indexOf(";") > 0) {
+        // We have a complex mask
+        var submasks = mask.split(";");
+
+        for (var j=0; j<submasks.length; j++) {
+          var currSubMask = submasks[j].trim();
+          var suffix = currSubMask.substring(1, currSubMask.length);
+          if (suffix == lcFilename.substring(lcFilename.length - suffix.length, lcFilename.length)) {
+            result = i;
+            break;
+          }
+        }
+
+        if (result != -1) { break; }
+
+      } else {
+        // Simple mask
+        // Assume that first character is a *
+        var suffix = mask.substring(1, mask.length);
+        if (suffix == lcFilename.substring(lcFilename.length - suffix.length, lcFilename.length)) {
+          result = i;
+          break;
+        }
+      }
+    }
+
+    return result;
   },
 
   /**

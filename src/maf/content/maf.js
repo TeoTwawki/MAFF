@@ -35,6 +35,7 @@
  * Selecting file from browse dialog should now start in directory if possible.
  * Fixed bug that did not allow saving pages in an archive if the pages were in a new window.
  * Retrofitted the download and archive code to use an observer event instead of interval timers. Should seem faster.
+ * Added drag and drop archive support for firefox.
  *
  *
  * Changes from 0.2.19 to 0.2.20 - Completed
@@ -254,6 +255,63 @@ var Maf = {
 window.addEventListener("close", MafUtils.onWindowClose, true);
 window.addEventListener("load", MafUtils.onWindowLoad, true);
 window.addEventListener("load", MafUtils.onTabLoad, true);
+
+/*
+MP = Components.classes[appShellContractID].getService(appShellIID).hiddenDOMWindow.MafPreferences;
+if (MP != null) {
+  MafPreferences = MP;
+}
+*/
+
+var MafDNDObserver = {
+
+  onDrop: function(evt, aXferData, aDragSession) {
+    var url = transferUtils.retrieveURLFromData(aXferData.data, aXferData.flavour.contentType);
+    var ismaf = false;
+
+    var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+    var uri = ios.newURI(url, "", null);    // Create URI object
+
+    var file = uri.QueryInterface(Components.interfaces.nsIFileURL).file;
+
+    // Get leaf name
+    // If regex match any of the filters
+    var filterIndex = MafPreferences.getOpenFilterIndexFromFilename(file.leafName);
+
+    // Get matching filter
+    if (filterIndex != -1) {
+      ismaf = true;
+    }
+
+    if (ismaf) {
+      // Get original url's to local file path
+      var localFilePath = file.path;
+
+      // Open as a MAF with registered filter
+      Maf.openFromArchive(MafPreferences.temp,
+                          MafPreferences.programFromOpenIndex(filterIndex), localFilePath);
+      evt.preventDefault();
+      evt.preventBubble();
+    } else {
+      debug(MafDNDObserver.previousOnDrop);
+      // Call the previous onDrop if we can't handle the data
+      MafDNDObserver.previousOnDrop(evt, aXferData, aDragSession);
+    }
+  }
+
+};
+
+MafDNDObserver.previousOnDrop = contentAreaDNDObserver.onDrop;
+contentAreaDNDObserver.onDrop = MafDNDObserver.onDrop;
+
+/**
+ * For Mozilla people?
+ */
+//var tabbrowser = document.getElementById("content");
+//tabbrowser.addEventListener('dragover', function(event) {nsDragAndDrop.dragOver(event, contentAreaDNDObserver);} , false);
+//tabbrowser.addEventListener('drop', function(event) {nsDragAndDrop.dragOver(event, contentAreaDNDObserver);} , false);
+
+
 
 function debug(text) {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];

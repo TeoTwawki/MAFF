@@ -618,6 +618,7 @@ var MafUtils = {
     }
   },
 
+
   /**
    * Adds a base tag to HTML.
    * Important so that relative urls not converted by save (such as paths to embedded objects,
@@ -691,8 +692,10 @@ var MafPostSetup = {
   complete: function() {
     // If firefox 0.9 or higher
     var isFF09OrHigher = false;
-    if (navigator.ua["firefox"] != null) {
-      isFF09OrHigher = (parseFloat(navigator.ua["firefox"]) >= 0.9);
+    if ((navigator.vendor != null) && (navigator.vendorSub != null)) {
+      if (navigator.vendor.toLowerCase() == "firefox") {
+        isFF09OrHigher = (parseFloat(navigator.vendorSub) >= 0.9);
+      }
     }
 
     if (isFF09OrHigher) {
