@@ -92,7 +92,7 @@ MafPreferencesServiceClass.prototype = {
 
   alertOnArchiveComplete: true,
 
-  win_associate_maf: false,
+  // win_associate_maf: false,
 
   win_associate_maff: false,
 
@@ -426,7 +426,7 @@ MafPreferencesServiceClass.prototype = {
     result.addDocumentWriteOverride = false;
     result.alertOnArchiveComplete = true;
 
-    result.win_associate_maf = false;
+    // result.win_associate_maf = false;
     result.win_associate_maff = false;
     result.win_associate_mht = false;
 
@@ -522,7 +522,7 @@ MafPreferencesServiceClass.prototype = {
         this.addDocumentWriteOverride = prefs.getBoolPref("addDocumentWriteOverride");
         this.alertOnArchiveComplete = prefs.getBoolPref("alertOnArchiveComplete");
 
-        this.win_associate_maf = prefs.getBoolPref("winassociatemaf");
+        // this.win_associate_maf = prefs.getBoolPref("winassociatemaf");
         this.win_associate_maff = prefs.getBoolPref("winassociatemaff");
         this.win_associate_mht = prefs.getBoolPref("winassociatemht");
 
@@ -599,7 +599,7 @@ MafPreferencesServiceClass.prototype = {
       prefs.setBoolPref("addDocumentWriteOverride", this.addDocumentWriteOverride);
       prefs.setBoolPref("alertOnArchiveComplete", this.alertOnArchiveComplete);
 
-      prefs.setBoolPref("winassociatemaf", this.win_associate_maf);
+      // prefs.setBoolPref("winassociatemaf", this.win_associate_maf);
       prefs.setBoolPref("winassociatemaff", this.win_associate_maff);
       prefs.setBoolPref("winassociatemht", this.win_associate_mht);
 

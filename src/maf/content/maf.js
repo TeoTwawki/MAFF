@@ -37,6 +37,8 @@
  * When MHT decoding, the index content type will now be assumed to be html, not bin by default.
  * Moved the save page in archive entries to the Mozilla Archive Format menu.
  * Integrated Save page as MAFF archive into default save dialog for Firefox 1.0 and Mozilla 1.7.3.
+ * Fixed bug that ignored processing parts of MHT framed pages if their content type wasn't text/html.
+ * Removed preference for windows .maf association to avoid any potential problems with MS Access.
  *
  * Changes from 0.4.2 to 0.4.3
  *

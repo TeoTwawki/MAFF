@@ -385,13 +385,17 @@ MafMhtHandlerServiceClass.prototype = {
 
     var headers = decoder.getHeaders();
     while (headers.hasMoreElements()) {
-      var header = (headers.getNext()).QueryInterface(Components.interfaces.nsIMafMhtHeaderRec);
-      var name = header.name.trim().toLowerCase();
-      if (name == "subject") {
-         subject = header.value;
-      }
-      if (name == "date") {
-         dateTimeArchived = header.value;
+      try {
+        var header = (headers.getNext()).QueryInterface(Components.interfaces.nsIMafMhtHeaderRec);
+        var name = header.name.trim().toLowerCase();
+        if (name == "subject") {
+           subject = header.value;
+        }
+        if (name == "date") {
+           dateTimeArchived = header.value;
+        }
+      } catch (e) {
+        // The interface may not be available as yet?
       }
     }
 
@@ -664,9 +668,10 @@ function extractContentHandlerClass(destpath, state, datasource, isindex, handle
 extractContentHandlerClass.prototype = {
 
   onContentStart: function(contentType, contentId, contentLocation) {
+    var extensionType = "";
     if (this.isindex) {
       if (contentType != "") { // If there's a type use it
-        var extensionType = MafUtils.getExtensionByType(contentType);
+        extensionType = MafUtils.getExtensionByType(contentType);
         // If the service has no idea what the extension should be
         if (extensionType == ".bin") {
           // Assume html
@@ -675,6 +680,7 @@ extractContentHandlerClass.prototype = {
         this.filename = "index" + extensionType;
       } else { // Otherwise assume it's html
         this.filename = "index.html";
+        extensionType = ".html";
       }
       this.handler._updateMetaData(this.datasource, "indexfilename", this.filename);
 
@@ -695,21 +701,31 @@ extractContentHandlerClass.prototype = {
         var defaultFilename = MafUtils.getDefaultFileName("", url);
         // If there's no extension, add one based on type
         if (defaultFilename.indexOf(".") == -1) {
-          defaultFilename += MafUtils.getExtensionByType(contentType);
+          extensionType = MafUtils.getExtensionByType(contentType);
+          defaultFilename += extensionType;
+        } else {
+          extensionType = defaultFilename.substring(defaultFilename.lastIndexOf("."),
+                            defaultFilename.length).toLowerCase();
         }
 
         this.filename = MafUtils.getUniqueFilename(this.destpath, defaultFilename);
 
       } else {
         // Otherwise base it on the content type
+        extensionType = MafUtils.getExtensionByType(contentType);
         this.filename = MafUtils.getUniqueFilename(this.destpath,
-                            "index" + MafUtils.getExtensionByType(contentType));
+                            "index" + extensionType);
       }
     }
 
     this.destfile = MafUtils.appendToDir(this.destpath, this.filename);
 
-    if (contentType.toLowerCase().indexOf("text/html") >= 0) {
+    // In framed pages the content type may be application/octet-stream instead of
+    // text/html. To cater for this assume the MIME service is working and has
+    // identified the extension to use as either html or htm.
+    if ((contentType.toLowerCase().indexOf("text/html") >= 0) ||
+        (extensionType.toLowerCase() == ".html") ||
+        (extensionType.toLowerCase() == ".htm")) {
       this.state.htmlFiles.push(this.destfile);
       this.state.baseUrl.push(contentLocation);
     }

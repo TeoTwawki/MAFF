@@ -5,8 +5,7 @@
 On Error Resume Next
 Set WShell = WScript.CreateObject("WScript.Shell")
 
-'Undo .MAF and .MAFF association with Firefox
-WShell.RegDelete "HKCR\.MAF\" 'Only this needs to be removed for .MAF support
+'Undo .MAFF association with Firefox
 WShell.RegDelete "HKCR\.MAFF\" 'Only this needs to be removed for .MAFF support
 
 WShell.RegDelete "HKCR\MozillaMAF\DefaultIcon\"
