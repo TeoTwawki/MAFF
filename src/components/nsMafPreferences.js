@@ -88,6 +88,8 @@ MafPreferencesServiceClass.prototype = {
 
   enableMafProtocol: false,
 
+  addDocumentWriteOverride: false,
+
   getRecordsLength: function() {
     return this.programExtensions.length;
   },
@@ -341,8 +343,14 @@ MafPreferencesServiceClass.prototype = {
    */
   programFromOpenIndex: function(index) {
     var filters = this.getOpenFilters();
-    var selProgExt = this.programExtensions[filters[index][2]];
-    return selProgExt[2];
+    var result = null;
+    try {
+      var selProgExt = this.programExtensions[filters[index][2]];
+      result = selProgExt[2];
+    } catch(e) {
+
+    }
+    return result;
   },
 
   /**
@@ -407,6 +415,7 @@ MafPreferencesServiceClass.prototype = {
     result.win_invisiblevbs = "";
     result.clearTempOnClose = true;
     result.enableMafProtocol = false;
+    result.addDocumentWriteOverride = false;
 
       var mafParentDir = this._getProfileDir();
       // Default if there's no stored prefs
@@ -497,6 +506,7 @@ MafPreferencesServiceClass.prototype = {
 
         this.clearTempOnClose = prefs.getBoolPref("clearTempOnClose");
         this.enableMafProtocol = prefs.getBoolPref("enableMafProtocol");
+        this.addDocumentWriteOverride = prefs.getBoolPref("addDocumentWriteOverride");
 
         var noOfExtensions = prefs.getIntPref("noofextensions");
 
@@ -568,6 +578,7 @@ MafPreferencesServiceClass.prototype = {
 
       prefs.setBoolPref("clearTempOnClose", this.clearTempOnClose);
       prefs.setBoolPref("enableMafProtocol", this.enableMafProtocol);
+      prefs.setBoolPref("addDocumentWriteOverride", this.addDocumentWriteOverride);
 
       // Subtract 1 because MHT hander not counted
       prefs.setIntPref("noofextensions", this.programExtensions.length-1);

@@ -1,4 +1,4 @@
-initInstall("Mozilla Archive Format","/Christopher Ottley/Mozilla Archive Format","0.4.0");
+initInstall("Mozilla Archive Format","/Christopher Ottley/Mozilla Archive Format","0.4.1");
 
 var jarFile = "maf.jar";
 
@@ -24,8 +24,10 @@ var componentsDir = getFolder("Components");  //getFolder("Profile", "components
 setPackageFolder(componentsDir);
 
 // add the components and typelib
-addFile("components/maf.0.4.0.xpt");
+addFile("components/maf.0.4.1.xpt");
+addFile("components/nsMafArchivePostProcessor.js");
 addFile("components/nsMafArchiver.js");
+addFile("components/nsMafBlockingObserverService.js");
 addFile("components/nsMafDocumentViewerFactory.js");
 addFile("components/nsMafGuiHandler.js");
 addFile("components/nsMafMhtDecoder.js");
@@ -60,7 +62,7 @@ addFile("scripts/zip.license.txt");
 
 var err = performInstall();
 if (err == SUCCESS || err == 999) {
-  alert("MAF 0.4.0 is now installed.\nPlease restart your browser to activate it.");
+  alert("MAF 0.4.1 is now installed.\nPlease restart your browser to activate it.");
 } else {
   alert("Install failed. Error code:" + err + "\nTry installing it again");
 }

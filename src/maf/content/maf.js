@@ -32,6 +32,13 @@
  * Fixed UTF String conversion bug affecting non-english character sets.
  * Updated Italian locale contributed by Gioxx Solone: eXtenZilla.it.
  * Fixed Archive Timing bug that caused some complex pages not to be archived.
+ * maf:// protocol now works with MHT archives.
+ * Added Blocking Observer Service component.
+ * Fixed MHT decoding bug that caused decoding to fail if the remap list said the new value exists, but the value is null.
+ * Added preference to disable javascript document write preference for archive index pages before they open.
+ * Added file filters to save drop down box filter names if on Windows.
+ * Saving a page opened from an archive now saves the real original url in metadata.
+ * Added capability to open archive pages from the browse window using the maf:// protocol if the protocol is enabled.
  *
  *
  * Changes from 0.3.0 to 0.4.0
@@ -87,6 +94,9 @@ var MafState = Components.classes["@mozilla.org/maf/state_service;1"]
 var MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
                       .getService(Components.interfaces.nsIStringBundleService)
                       .createBundle("chrome://maf/locale/maf.properties");
+
+var MafBlockingObserver = Components.classes["@mozilla.org/blocking-observer-service;1"]
+                             .getService(Components.interfaces.nsIObserverService);
 
 } catch(e) {
   mafdebug(e);
@@ -267,6 +277,7 @@ maf.prototype = {
     var count = {};
     var archiveLocalURLs = {};
 
+    MafBlockingObserver.notifyObservers(null, "maf-open-archive-complete", MafUtils.appendToDir(tempPath, folderNumber));
     MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
 
     if (MafPreferences.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS) {
@@ -348,8 +359,8 @@ maf.prototype = {
                         .getService(Components.interfaces.nsIAppShellService);
       var hiddenWnd = appShell.hiddenDOMWindow;
 
-      if (typeof(hiddenWnd.loaded) == "undefined") {
-        hiddenWnd.loaded = true;
+      if (typeof(hiddenWnd.mafloaded) == "undefined") {
+        hiddenWnd.mafloaded = true;
 
         var prefExists = false;
         var prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -370,6 +381,10 @@ maf.prototype = {
         }
 
         MafPostSetup.complete();
+
+        var MafArchivePostProcessor = Components.classes["@mozilla.org/maf/archive-postprocessor-service;1"]
+                                          .createInstance(Components.interfaces.nsIObserver);
+        MafBlockingObserver.addObserver(MafArchivePostProcessor, "maf-open-archive-complete", false);
       }
     } else {
       if (event.originalTarget == "[object HTMLDocument]") {
@@ -633,7 +648,7 @@ var MafPostSetup = {
     return result;
   },
 
-    /**
+  /**
    * Copy an individual file
    */
   _copyFile: function(source, dest) {

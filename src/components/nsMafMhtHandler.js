@@ -242,8 +242,20 @@ MafMhtHandlerServiceClass.prototype = {
       baseUrl = "cid:" + baseUrl.substring("cid:".length, baseUrl.length);
 
       if (state.uidToLocalFilenameMap.hasKey(baseUrl)) {
-        resultString += MafUtils.getURIFromFilename(
-                                     getStringValue(state.uidToLocalFilenameMap.getValue(baseUrl)));
+        try {
+          var newBaseUrlValue = state.uidToLocalFilenameMap.getValue(baseUrl);
+          for (var i=0; i<10000; i++) {
+            if (newBaseUrlValue == null) { // Timing problem getting the object?
+              newBaseUrlValue = state.uidToLocalFilenameMap.getValue(baseUrl);
+            } else {
+              break;
+            }
+          }
+          resultString += MafUtils.getURIFromFilename(
+                                   getStringValue(newBaseUrlValue));
+        } catch(e) {
+          resultString += baseUrl;
+        }
         if (typeof(leftOver) != "undefined") {
           resultString += "#" + leftOver;
         }
@@ -306,8 +318,20 @@ MafMhtHandlerServiceClass.prototype = {
           var leftOver = originalUrl.split("#")[1];
 
           if (state.uidToLocalFilenameMap.hasKey(baseUrl)) {
-            originalUrl = MafUtils.getURIFromFilename(
-                                   getStringValue(state.uidToLocalFilenameMap.getValue(baseUrl)));
+            try {
+              var newBaseUrlValue = state.uidToLocalFilenameMap.getValue(baseUrl);
+              for (var i=0; i<10000; i++) {
+                if (newBaseUrlValue == null) { // Timing problem getting the object?
+                  newBaseUrlValue = state.uidToLocalFilenameMap.getValue(baseUrl);
+                } else {
+                  break;
+                }
+              }
+              originalUrl = MafUtils.getURIFromFilename(
+                                     getStringValue(newBaseUrlValue));
+            } catch(e) {
+              originalUrl = baseUrl;
+            }
             if (typeof(leftOver) != "undefined") {
               originalUrl += "#" + leftOver;
             }

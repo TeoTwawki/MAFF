@@ -67,6 +67,7 @@
     document.getElementById("winInvisVbsLoc").value = MafPreferences.win_invisiblevbs;
     document.getElementById("chkClearTempOnClose").checked = MafPreferences.clearTempOnClose;
     document.getElementById("chkEnableMafProtocol").checked = MafPreferences.enableMafProtocol;
+    document.getElementById("chkAddDocumentWriteOverride").checked = MafPreferences.addDocumentWriteOverride;
 
     var mprec = MafPreferences.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
 
@@ -93,6 +94,7 @@
     document.getElementById("winInvisVbsLoc").value = mpd.win_invisiblevbs;
     document.getElementById("chkClearTempOnClose").checked = mpd.clearTempOnClose;
     document.getElementById("chkEnableMafProtocol").checked = mpd.enableMafProtocol;
+    document.getElementById("chkAddDocumentWriteOverride").checked = mpd.addDocumentWriteOverride;
 
     var mprec = mpd.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
 
@@ -131,6 +133,7 @@
     MafPreferences.win_invisible = document.getElementById("winChkRunInvisible").checked;
     MafPreferences.clearTempOnClose = document.getElementById("chkClearTempOnClose").checked;
     MafPreferences.enableMafProtocol = document.getElementById("chkEnableMafProtocol").checked;
+    MafPreferences.addDocumentWriteOverride = document.getElementById("chkAddDocumentWriteOverride").checked;
 
     var mprec = MafPreferences.getRecordAt(0);
 
@@ -197,6 +200,7 @@
      <checkbox id="chkURLRewrite" checked="false" label="&maf.preferencesdialog.openmode.urlrewrite;" />
      <checkbox id="chkSaveExtended" checked="false" label="&maf.preferencesdialog.openmode.savexmeta;" />
      <checkbox id="chkEnableMafProtocol" checked="false" label="&maf.preferencesdialog.label.enablemafprotocol;" />
+     <checkbox id="chkAddDocumentWriteOverride" checked="false" label="&maf.preferencesdialog.label.adddocumentwriteoverride;" />
 
      <hbox>
        <label control="selDefaultApp" value="&maf.preferencesdialog.openmode.defaultapp;"/>

@@ -193,7 +193,12 @@ MAFGuiHandlerClass.prototype = {
       MafPreferences.getSaveFilterAt(i, count, result);
 
       if (count.value == 3) {
-        var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
+        // If it's on Windows, show the filter string as part of the file type.
+        if (this.window.navigator.userAgent.indexOf("Windows") != -1) {
+          var entry = [result.value[0] + " (" + result.value[1] + ")", result.value[1], parseInt(result.value[2])];
+        } else {
+          var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
+        }
 
         filterresult[filterresult.length] = entry;
       }

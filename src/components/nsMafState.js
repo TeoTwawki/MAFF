@@ -41,6 +41,8 @@ var gRDFService = null;
 var gRDFCService = null;
 var MafStateService = null;
 var MafUtils = null;
+var MafPreferences = null;
+var MafLibMHTDecoder = null;
 
 var MafStrBundle = null;
 
@@ -69,6 +71,8 @@ MafStateServiceClass.prototype = {
   /** A list of network urls and the local file url it maps to */
   urlToLocalFileMap: new Array(),
 
+  /** A list of local file urls and the maf url it maps to */
+  localFileToMafUrlMap: new Array(),
 
   /**
    * Add archive file info to the state.
@@ -128,6 +132,9 @@ MafStateServiceClass.prototype = {
                      .createInstance(Components.interfaces.nsILocalFile);
       oDir.initWithPath(MafUtils.appendToDir(temp, expandedArchiveRoot));
 
+      var isMHTArchive = (MafLibMHTDecoder.PROGID == MafPreferences.programFromOpenIndex(
+                         MafPreferences.getOpenFilterIndexFromFilename(archiveUri)));
+
       if (oDir.exists() && oDir.isDirectory()) {
         var entries = oDir.directoryEntries;
 
@@ -173,7 +180,12 @@ MafStateServiceClass.prototype = {
               }
             }
 
-            var archiveFilePart = currDir.leafName + "/" + indexfilename;
+            // If not mht
+            if (!isMHTArchive) {
+              var archiveFilePart = currDir.leafName + "/" + indexfilename;
+            } else {
+              var archiveFilePart = "/" + indexfilename;
+            }
 
             var indexhtmlfile = Components.classes["@mozilla.org/file/local;1"]
                                   .createInstance(Components.interfaces.nsILocalFile);
@@ -237,8 +249,7 @@ MafStateServiceClass.prototype = {
 
     // Add maf protocol support
     this.localFileToUrlMap["maf://" + archiveUri + "!" + archiveFilePart] = originalurl
-    //this.urlToLocalFileMap[originalurl] = "maf:" + archiveUri + "!" + archiveFilePart;
-
+    this.localFileToMafUrlMap[localurl] = "maf://" + archiveUri + "!" + archiveFilePart;
 
     // If the original url has a # sign, add the original url without the # sign to the list
     if (originalurl.indexOf("#") > 0) {
@@ -369,6 +380,15 @@ MafStateServiceClass.prototype = {
     return result;
   },
 
+  getMafURL: function(url) {
+    var result = url;
+
+    if (typeof(this.localFileToMafUrlMap[url]) != "undefined") {
+      result = this.localFileToMafUrlMap[url];
+    }
+    return result;
+  },
+
   QueryInterface: function(iid) {
 
     if (!iid.equals(mafStateIID) &&
@@ -414,6 +434,16 @@ MafStateFactory.createInstance = function (outer, iid) {
   if (MafUtils == null) {
     MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
                   .getService(Components.interfaces.nsIMafUtil);
+  }
+
+  if (MafPreferences == null) {
+    MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                        .getService(Components.interfaces.nsIMafPreferences);
+  }
+
+  if (MafLibMHTDecoder == null) {
+    MafLibMHTDecoder = Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
+                          .createInstance(Components.interfaces.nsIMafMhtDecoder);
   }
 
   if (MafStrBundle == null) {

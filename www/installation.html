@@ -3,7 +3,7 @@
 
 <p>Below you will find links to the latest XPI installer package. The installer packages have been merged so there is one XPI for both Linux and Windows installations. If you have previously installed MAF in Mozilla, please uninstall MAF and then install the latest package.</p>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.0.xpi">0.4.0 for Linux and Windows</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.1.xpi">0.4.1 for Linux and Windows</a></p>
 
 <p>Please note, if you have previously installed MAF and are installing the 0.3.0 version or higher, the location of scripts and some settings have changed. In order to use the new scripts, go to the <a href="preferences.html">preferences</a>, click on the "Load defaults" button and save the new preferences.</p>
 
@@ -20,10 +20,28 @@
 <h5 class="page-header"><a id="changelog" name="changelog">Changes</a></h5>
 <pre>
  *
+ * Changes from 0.4.0 to 0.4.1
+ *
+ * Fixed UTF String conversion bug affecting non-english character sets.
+ * Updated Italian locale contributed by Gioxx Solone: eXtenZilla.it.
+ * Fixed Archive Timing bug that caused some complex pages not to be archived.
+ * maf:// protocol now works with MHT archives.
+ * Added Blocking Observer Service component.
+ * Fixed MHT decoding bug that caused decoding to fail if the remap list said the new
+ *   value exists, but the value is null.
+ * Added preference to disable javascript document write preference for archive index
+ *   pages before they open.
+ * Added file filters to save drop down box filter names if on Windows.
+ * Saving a page opened from an archive now saves the real original url in metadata.
+ * Added capability to open archive pages from the browse window using the maf://
+ *   protocol if the protocol is enabled.
+ *
+ *
  * Changes from 0.3.0 to 0.4.0
  *
  * Merged all the installers. Now a single XPI for Mozilla/Firefox on Windows/Linux.
- * Changed the default file extension for MAF files to *.maff to avoid extension clashes with MS Access on Windows.
+ * Changed the default file extension for MAF files to *.maff to avoid extension
+ *   clashes with MS Access on Windows.
  * Added French Locale contributed by Xavier Robin.
  * Added Italian Locale contributed by Gioxx Solone: eXtenZilla.it.
  * Fixed GUI bug to allow mafsearch extension to work properly.
@@ -36,8 +54,10 @@
  * Added code to make URLs absolute when HTML document loads so that form submissions, etc work.
  * Added Save in Archive context menu entry.
  * Added new MIME type "application/maf" for better handler support.
- * Removed the MAF Open archive entry from the file menu. Open file now has all the necessary functionality.
- * Added maf:// protocol that allows resource viewing of local maf archives (not designed for use with MHT archives).
+ * Removed the MAF Open archive entry from the file menu. Open file now has
+ *   all the necessary functionality.
+ * Added maf:// protocol that allows resource viewing of local maf archives
+ *   (not designed for use with MHT archives).
  * When saving the document title of the selected tab is used for the default maf archive name.
  * Created string bundle of english text in code for better localization.
  * Added preference for disabling the maf:// protocol

@@ -37,6 +37,8 @@ var MafUtils = null;
 
 var MafPreferences = null;
 
+var MafState = null;
+
 var MafStrBundle = null;
 
 /**
@@ -155,8 +157,15 @@ MafArchiverClass.prototype = {
     indexDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
 
     try {
+      var originalURL = this.aDocument.location.href;
+
+      // If we're saving an archive page, put back the real original url in the metadata
+      if (MafState.isArchiveURL(originalURL)) {
+        originalURL = MafState.getOriginalURL(originalURL);
+      }
+
       // Add url data
-      MafUtils.addStringData(indexDS, "originalurl", this.aDocument.location.href);
+      MafUtils.addStringData(indexDS, "originalurl", originalURL);
 
       if (this.aDocument.title != "") {
         var titleToUse = this.aDocument.title;
@@ -342,6 +351,11 @@ MAFArchiverFactory.createInstance = function (outer, iid) {
   if (MafPreferences == null) {
     MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
                         .getService(Components.interfaces.nsIMafPreferences);
+  }
+
+  if (MafState == null) {
+    MafState = Components.classes["@mozilla.org/maf/state_service;1"]
+                  .getService(Components.interfaces.nsIMafState);
   }
 
   if (MafStrBundle == null) {

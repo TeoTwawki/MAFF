@@ -36,6 +36,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "URL locale">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Ouvrir dans des onglets">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Ouvrir dans des onglets using maf://">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Ouvrir les URLs d'origine dans des onglets">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Fermer">
 
@@ -50,6 +51,7 @@
 <!ENTITY maf.preferencesdialog.label.temp "Dossier temporaire :">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Vider le dossier temporaire en quittant le navigateur">
 <!ENTITY maf.preferencesdialog.label.enablemafprotocol "Activer le protocole MAF">
+<!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Activer document.write override">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Parcourir...">
 

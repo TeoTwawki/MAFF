@@ -36,6 +36,9 @@
 
   function onLoad() {
     window.sizeToContent();
+    if (!MafPreferences.enableMafProtocol) {
+      document.getElementById("maf-browse-archives-tabopen-protocol-button").disabled = true;
+    }
     document.getElementById("open-archives-tree").database.AddDataSource(
            MafState.getDatasource().QueryInterface(Components.interfaces.nsIRDFDataSource));
     document.getElementById("open-archives-tree").builder.rebuild();
@@ -71,6 +74,50 @@
                      (levelZeroV &lt; document.getElementById("open-archives-tree").view.rowCount)) {
                 var levelZeroUrl = document.getElementById("open-archives-tree").view.getCellText(levelZeroV, urlsource);
                 urlList[urlList.length] = levelZeroUrl;
+                levelZeroV++;
+              }
+            } catch(e) {
+
+            }
+
+          }
+        }
+      }
+
+      Maf.openListInTabs(urlList);
+
+    } catch (e)  {
+      alert(e);
+    }
+  }
+
+
+  function openSelectedInTabsUsingMAFProtocol(urlsource) {
+    try {
+      var start = new Object();
+      var end = new Object();
+      var numRanges = document.getElementById("open-archives-tree").view.selection.getRangeCount();
+
+      var urlList = new Array();
+
+      for (var t=0; t &lt; numRanges; t++) {
+        document.getElementById("open-archives-tree").view.selection.getRangeAt(t,start,end);
+        for (var v=start.value; v &lt;= end.value; v++) {
+          var url = document.getElementById("open-archives-tree").view.getCellText(v, urlsource);
+          var level = document.getElementById("open-archives-tree").view.getLevel(v);
+
+          if (level == 1) {
+            urlList[urlList.length] = MafState.getMafURL(url);
+          } else if (level == 0 ) {
+
+            var levelZeroV = v + 1;
+
+            try {
+              // While we're on a sub-level, and there are still rows
+              while ((document.getElementById("open-archives-tree").view.getLevel(levelZeroV) == 1) &amp;&amp;
+                     (levelZeroV &lt; document.getElementById("open-archives-tree").view.rowCount)) {
+                var levelZeroUrl = document.getElementById("open-archives-tree").view.getCellText(levelZeroV, urlsource);
+                urlList[urlList.length] = MafState.getMafURL(levelZeroUrl);
                 levelZeroV++;
               }
             } catch(e) {
@@ -158,6 +205,9 @@
   <hbox>
     <button id="maf-open-archive-button" label="&maf.loadArchive;" oncommand="loadArchive();"/>
     <spacer flex="1"/>
+    <button id="maf-browse-archives-tabopen-protocol-button"
+             label="&maf.browseOpenArchivesDialog.btnopentabsusingprotocol;"
+             oncommand="openSelectedInTabsUsingMAFProtocol('localurl');"/>
     <button id="maf-browse-archives-tabopen-button" label="&maf.browseOpenArchivesDialog.btnopentabs;" default="true"
              oncommand="openSelectedInTabs('localurl');"/>
     <button id="maf-browse-archives-tabopenorig-button" label="&maf.browseOpenArchivesDialog.btnopenorig;"

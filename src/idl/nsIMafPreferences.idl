@@ -23,6 +23,7 @@ interface nsIMafPreferences : nsISupports
     attribute boolean isLoaded;
     attribute boolean clearTempOnClose;
     attribute boolean enableMafProtocol;
+    attribute boolean addDocumentWriteOverride;
 
     short getOpenFiltersLength();
     void getOpenFilterAt(in short index, out PRUint32 count, [array, size_is(count)] out wstring result);

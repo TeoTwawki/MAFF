@@ -9,6 +9,7 @@ interface nsIMafState : nsISupports
   boolean isLocallyMappableURL(in wstring url);
   wstring getLocalURL(in wstring url);
   wstring getOriginalURL(in wstring url);
+  wstring getMafURL(in wstring url);
   boolean isArchiveURIOpen(in wstring url);
   wstring expandedArchiveURIPath(in wstring url);
 };

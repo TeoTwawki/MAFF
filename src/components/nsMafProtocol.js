@@ -39,6 +39,7 @@ var MafUtils = null;
 var MafPreferences = null;
 var MafLibMHTDecoder = null;
 var MafMHTHandler = null;
+var MafBlockingObserver = null;
 
 var MafStrBundle = null;
 
@@ -70,6 +71,53 @@ MAFProtocol.prototype = {
     return uri;
   },
 
+  isMhtArchive: function(uri) {
+    var result = false;
+
+    var loadURIMafRegExp = new RegExp(MafPreferences.getOpenFilterRegEx(), "i");
+
+     if (uri.match(loadURIMafRegExp)) {
+
+         var loadURIios = Components.classes["@mozilla.org/network/io-service;1"]
+                              .getService(Components.interfaces.nsIIOService);
+
+         // Get leaf name
+         try {
+           var ouri = loadURIios.newURI(uri, "", null);    // Create URI object
+           var file = ouri.QueryInterface(Components.interfaces.nsIFileURL).file;
+         } catch(e) {
+           // It wasn't a URL of the form file://, let's try again, shall we?
+           try {
+             var file = Components.classes["@mozilla.org/file/local;1"]
+                           .createInstance(Components.interfaces.nsILocalFile);
+             file.initWithPath(uri);
+           } catch(ex) {
+             // Give up
+             mafdebug(MafStrBundle.GetStringFromName("mafprotocolloadhasgivenup") + ex);
+           }
+         }
+
+          var ismaf = false;
+
+          try {
+            // If file extension match any of the filters MAF handles
+            var filterIndex = MafPreferences.getOpenFilterIndexFromFilename(file.leafName);
+
+            // Get matching filter
+            ismaf = (filterIndex != -1);
+          } catch(e) {
+            mafdebug(e);
+          }
+
+          if (ismaf) {
+            // Get original url's to local file path
+            var localFilePath = file.path;
+
+            result = (MafLibMHTDecoder.PROGID == MafPreferences.programFromOpenIndex(filterIndex));
+          }
+     }
+    return result;
+  },
 
   openArchiveURI: function(uri) {
     var loadURIMafRegExp = new RegExp(MafPreferences.getOpenFilterRegEx(), "i");
@@ -136,6 +184,7 @@ MAFProtocol.prototype = {
     var count = {};
     var archiveLocalURLs = {};
 
+    MafBlockingObserver.notifyObservers(null, "maf-open-archive-complete", MafUtils.appendToDir(tempPath, folderNumber));
     MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
   },
 
@@ -240,7 +289,30 @@ MAFProtocol.prototype = {
           }
 
           if (MafState.isArchiveURIOpen(requestURI)) {
-            var destPath = MafState.expandedArchiveURIPath(requestURI);
+            var destPath = "";
+
+            if (this.isMhtArchive(requestURI)) {
+              destPath = MafState.expandedArchiveURIPath(requestURI);
+
+              var oDir = Components.classes["@mozilla.org/file/local;1"]
+                            .createInstance(Components.interfaces.nsILocalFile);
+              oDir.initWithPath(destPath);
+
+              if (oDir.exists() && oDir.isDirectory()) {
+                var entries = oDir.directoryEntries;
+
+                // If the entry for the MHT archive exists
+                if (entries.hasMoreElements()) {
+                  var currDir = entries.getNext();
+                  currDir.QueryInterface(Components.interfaces.nsILocalFile);
+                  destPath = currDir.path;
+                }
+              }
+
+            } else {
+              destPath = MafState.expandedArchiveURIPath(requestURI);
+            }
+
             for (var i=0; i<fileParts.length; i++) {
               destPath = MafUtils.appendToDir(destPath, fileParts[i]);
             }
@@ -257,7 +329,7 @@ MAFProtocol.prototype = {
     } else {
       return ios.newChannel("about:blank", null, null);
     }
-  },
+  }
 }
 
 function mafdebug(text) {
@@ -306,6 +378,11 @@ MAFProtocolFactory.createInstance = function (outer, iid) {
   if (MafMHTHandler == null) {
     MafMHTHandler = Components.classes["@mozilla.org/maf/mhthandler_service;1"]
                        .getService(Components.interfaces.nsIMafMhtHandler);
+  }
+
+  if (MafBlockingObserver == null) {
+    MafBlockingObserver = Components.classes["@mozilla.org/blocking-observer-service;1"]
+                             .getService(Components.interfaces.nsIObserverService);
   }
 
   if (MafStrBundle == null) {
