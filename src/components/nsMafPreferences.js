@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.3
+ * Version: 0.5.0
  *
  * Author: Christopher Ottley
  *
@@ -453,7 +453,7 @@ MafPreferencesServiceClass.prototype = {
         result.temp = mafParentDir + "\\maf\\maftemp\\";
         result.programExtensions[result.programExtensions.length] = [
            "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.zip.maf", "*.maf.zip"]];
-        result.win_wscriptexe = "c:\\winnt\\system32\\wscript.exe",
+        result.win_wscriptexe = "c:\\windows\\system32\\wscript.exe",
         result.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
       };
 

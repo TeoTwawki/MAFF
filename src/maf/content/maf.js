@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.3
+ * Version: 0.5.0
  *
  * Author: Christopher Ottley
  *
@@ -27,6 +27,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 /**
+ *
+ * Changes from 0.4.3 to 0.5.0
+ *
+ * Disabling document write also disables document.writeln.
+ * Changed the default wscript directory preference from winnt to windows.
+ * Fixed bug that ignored content location when selecting root nodes for MHT decoding.
+ *
  * Changes from 0.4.2 to 0.4.3
  *
  * Added save selected tabs functionality.
@@ -544,7 +551,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.4.3", // 0.4.3 Does have new scripts, so changed
+  postsetupversion: "0.4.3", // 0.5.0 Does not have new scripts, so don't change
 
   _getSaveFilters: function() {
     var filterresult = new Array();

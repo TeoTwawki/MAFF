@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.3
+ * Version: 0.5.0
  *
  * Author: Christopher Ottley
  *
@@ -48,7 +48,7 @@ MafArchivePostProcessorClass.prototype = {
 
   addDocumentWriteOverride: function(source) {
     var result = "";
-    var documentwriteString = "<script language=\"javascript\">document.write = function(s) { }</script>";
+    var documentwriteString = "<script language=\"javascript\">document.write = function(s) { }; document.writeln = function(s) { }; </script>";
     try {
       var scriptRe = new RegExp("<[^>]*script[^<]*>", "i"); // Match script tag
 

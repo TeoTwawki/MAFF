@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.3
+ * Version: 0.5.0
  *
  * Author: Christopher Ottley
  *
@@ -309,6 +309,11 @@ MafMhtDecoderClass.prototype = {
           start = entry.value;
         }
       }
+
+      // If there's no start part set, use the base content location so
+      // the root part would be found using matching content locations first
+      // and matching content types second.
+      if (start == "") { start = baseContentLocation; }
 
       // If we have a boundary, split
       if (boundary != "") {
