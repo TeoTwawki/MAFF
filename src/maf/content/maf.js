@@ -39,6 +39,7 @@
  * Added non-functional context menu for browse open archives dialog.
  * Changed the MAF content type from application/maf to application/x-maf.
  * Added ability to copy displayed meta-data from browse open archives dialog.
+ * Fixed bug 9303 - Removed .bin extension from being appended for unknown file types.
  *
  *
  * Changes from 0.4.3 to 0.5.0
@@ -806,7 +807,7 @@ var MafPostSetup = {
       }
       handler.isEditable = true;
       handler.saveToDisk = false;
-      handler.handleInternal = false; //false
+      handler.handleInternal = true; //false
       handler.alwaysAsk = false; // true
       handler.appDisplayName = "MAF";
 

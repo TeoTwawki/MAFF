@@ -688,7 +688,7 @@ extractContentHandlerClass.prototype = {
       if (contentType != "") { // If there's a type use it
         extensionType = MafUtils.getExtensionByType(contentType);
         // If the service has no idea what the extension should be
-        if (extensionType == ".bin") {
+        if (extensionType == "") {
           // Assume html
           extensionType = ".html";
         }

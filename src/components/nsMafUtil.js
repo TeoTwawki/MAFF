@@ -613,11 +613,13 @@ MafUtilServiceClass.prototype = {
   },
 
   getExtensionByType: function(contentType) {
-    var result = ".bin"; // By default, .bin
+    var result = ""; // By default, unknown
     try {
       result = "." + Components.classes["@mozilla.org/mime;1"]
                         .getService(Components.interfaces.nsIMIMEService)
                         .getPrimaryExtension(contentType, "");
+
+      if (result.toLowerCase() == ".bin") { result = ""; }
     } catch(e) {
       mafdebug(e);
     }
