@@ -35,6 +35,8 @@
  * Fixed bug that ignored content location when selecting root nodes for MHT decoding.
  * Updated Italian locale contributed by Gioxx Solone: eXtenZilla.it.
  * When MHT decoding, the index content type will now be assumed to be html, not bin by default.
+ * Moved the save page in archive entries to the Mozilla Archive Format menu.
+ * Integrated Save page as MAFF archive into default save dialog for Firefox 1.0 and Mozilla 1.7.3.
  *
  * Changes from 0.4.2 to 0.4.3
  *
@@ -922,6 +924,307 @@ String.prototype.startsWith = function(needle) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * In order to modify Firefox / Mozilla without patching, the functions used must be
+ * redefined. Mozilla may have unresolved dependent functions, so those must also be
+ * included for Mozilla to work when using the Firefox functions as a base.
+ */
+function getMafSaveFilters() {
+  var filterresult = new Array();
+  var prefsSaveFilterLength = MafPreferences.getSaveFiltersLength();
+
+  for (var i=0; i<prefsSaveFilterLength; i++) {
+
+    var count = {};
+    var result = {};
+    MafPreferences.getSaveFilterAt(i, count, result);
+
+    if (count.value == 3) {
+      var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
+
+      filterresult[filterresult.length] = entry;
+    }
+  }
+  return filterresult;
+};
+
+/**
+ * A new and improved save. With MAF support.
+ */
+function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, aSaveMode)
+{
+  var bundle = getStringBundle();
+
+  switch (aContentType) {
+  case "text/html":
+    if (aSaveMode == MODE_COMPLETE)
+      aFilePicker.appendFilter(bundle.GetStringFromName("WebPageCompleteFilter"), "*.htm; *.html");
+    aFilePicker.appendFilter(bundle.GetStringFromName("WebPageHTMLOnlyFilter"), "*.htm; *.html");
+    if (aSaveMode == MODE_COMPLETE)
+      aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText);
+
+    // ** MAF Addition start
+    try {
+      var filters = getMafSaveFilters();
+      for (var i=0; i<filters.length; i++) {
+        var title = filters[i][0];
+        var mask = filters[i][1];
+        aFilePicker.appendFilter(title, mask);
+      }
+    } catch(e) { }
+    // ** MAF Addition end
+
+    break;
+  default:
+    var mimeInfo = getMIMEInfoForType(aContentType, aFileExtension);
+    if (mimeInfo) {
+
+      var extEnumerator = mimeInfo.getFileExtensions();
+
+      var extString = "";
+      var defaultDesc = "";
+      var plural = false;
+      while (extEnumerator.hasMore()) {
+        if (defaultDesc) {
+          defaultDesc += ", ";
+          plural = true;
+        }
+        var extension = extEnumerator.getNext();
+        if (extString)
+          extString += "; ";    // If adding more than one extension,
+                                // separate by semi-colon
+        extString += "*." + extension;
+        defaultDesc += extension.toUpperCase();
+      }
+
+      if (extString) {
+        var desc = mimeInfo.Description;
+        if (!desc) {
+          var key = plural ? "unknownDescriptionFilesPluralFilter" :
+                             "unknownDescriptionFilesFilter";
+          desc = getStringBundle().formatStringFromName(key, [defaultDesc], 1);
+        }
+        aFilePicker.appendFilter(desc, extString);
+      } else {
+        aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
+      }
+    }
+    else
+      aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
+    break;
+  }
+}
+
+
+function foundHeaderInfo(aSniffer, aData, aSkipPrompt)
+{
+  var contentType = aSniffer.contentType;
+  var contentEncodingType = aSniffer.contentEncodingType;
+
+  var shouldDecode = false;
+  // Are we allowed to decode?
+  try {
+    const helperAppService =
+      Components.classes["@mozilla.org/uriloader/external-helper-app-service;1"].
+        getService(Components.interfaces.nsIExternalHelperAppService);
+    var url = aSniffer.uri.QueryInterface(Components.interfaces.nsIURL);
+    var urlExt = url.fileExtension;
+    if (helperAppService.applyDecodingForExtension(urlExt,
+                                                   contentEncodingType)) {
+      shouldDecode = true;
+    }
+  }
+  catch (e) {
+  }
+
+  var isDocument = aData.document != null && isDocumentType(contentType);
+  if (!isDocument && !shouldDecode && contentEncodingType) {
+    // The data is encoded, we are not going to decode it, and this is not a
+    // document save so we won't be doing a "save as, complete" (which would
+    // break if we reset the type here).  So just set our content type to
+    // correspond to the outermost encoding so we get extensions and the like
+    // right.
+    contentType = contentEncodingType;
+  }
+
+  var file = null;
+  var saveAsType = kSaveAsType_URL;
+  try {
+    file = aData.fileName.QueryInterface(Components.interfaces.nsILocalFile);
+  }
+  catch (e) {
+    var saveAsTypeResult = { rv: 0 };
+    file = getTargetFile(aData, aSniffer, contentType, isDocument, aSkipPrompt, saveAsTypeResult);
+    if (!file)
+      return;
+    saveAsType = saveAsTypeResult.rv;
+  }
+
+  // ** MAF Addition start
+  if (saveAsType < 3) { // Not a MAF archive
+
+    // This part was in the original FF code
+
+    // If we're saving a document, and are saving either in complete mode or
+    // as converted text, pass the document to the web browser persist component.
+    // If we're just saving the HTML (second option in the list), send only the URI.
+    var source = (isDocument && saveAsType != kSaveAsType_URL) ? aData.document : aSniffer.uri;
+    var persistArgs = {
+      source      : source,
+      contentType : (isDocument && saveAsType == kSaveAsType_Text) ? "text/plain" : contentType,
+      target      : makeFileURL(file),
+      postData    : aData.document ? getPostData() : null,
+      bypassCache : aData.bypassCache
+    };
+
+    var persist = makeWebBrowserPersist();
+
+    // Calculate persist flags.
+    const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
+    const flags = nsIWBP.PERSIST_FLAGS_NO_CONVERSION | nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
+    if (aData.bypassCache)
+      persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_BYPASS_CACHE;
+    else
+      persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_FROM_CACHE;
+
+    if (shouldDecode)
+      persist.persistFlags &= ~nsIWBP.PERSIST_FLAGS_NO_CONVERSION;
+
+    // Create download and initiate it (below)
+    var dl = Components.classes["@mozilla.org/download;1"].createInstance(Components.interfaces.nsIDownload);
+
+    if (isDocument && saveAsType != kSaveAsType_URL) {
+      // Saving a Document, not a URI:
+      var filesFolder = null;
+      if (persistArgs.contentType != "text/plain") {
+        // Create the local directory into which to save associated files.
+        filesFolder = file.clone();
+
+        var nameWithoutExtension = filesFolder.leafName;
+        nameWithoutExtension = nameWithoutExtension.substring(0, nameWithoutExtension.lastIndexOf("."));
+        var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
+                                                                        [nameWithoutExtension],
+                                                                        1);
+
+        filesFolder.leafName = filesFolderLeafName;
+      }
+
+      var encodingFlags = 0;
+      if (persistArgs.contentType == "text/plain") {
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_FORMATTED;
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_ABSOLUTE_LINKS;
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_NOFRAMES_CONTENT;
+      }
+      else {
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES;
+      }
+
+      const kWrapColumn = 80;
+      dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
+      persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
+                          persistArgs.contentType, encodingFlags, kWrapColumn);
+    } else {
+      dl.init(source, persistArgs.target, null, null, null, persist);
+      var referrer = aData.referrer || getReferrer(document)
+      persist.saveURI(source, null, referrer, persistArgs.postData, null, persistArgs.target);
+    }
+  } else {
+    // MAF Archive
+
+    saveAsType = saveAsType - 3;
+
+    var filename = file.path;
+
+    var filters = getMafSaveFilters();
+
+    var selectedFileType = filters[saveAsType][1];
+
+    selectedFileType = selectedFileType.substring(1,selectedFileType.length);
+
+    if (filename.substring(filename.length-selectedFileType.length, filename.length).toLowerCase() !=
+        selectedFileType.toLowerCase()) {
+      filename += selectedFileType;
+    }
+
+    Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, MafPreferences.temp,
+                              MafPreferences.programFromSaveIndex(saveAsType), filename);
+  }
+  // ** MAF Addition end
+}
+
+/**
+ * Redefined to check the document title first and then the headers.
+ * Not re-numbered in comments to show original position.
+ */
+function getDefaultFileName(aDefaultFileName, aNameFromHeaders, aDocumentURI, aDocument)
+{
+  if (aDocument) {
+
+    var uconv = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                  .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+    uconv.charset = "UTF-8";
+    var uctitle = uconv.ConvertToUnicode(aDocument.title);
+
+    var docTitle = validateFileName(uctitle).replace(/^\s+|\s+$/g, "");
+
+    if (docTitle != "") {
+      // 3) Use the document title
+      return docTitle;
+    }
+  }
+
+  if (aNameFromHeaders)
+    // 1) Use the name suggested by the HTTP headers
+    return validateFileName(aNameFromHeaders);
+
+  try {
+    var url = aDocumentURI.QueryInterface(Components.interfaces.nsIURL);
+    if (url.fileName != "") {
+      // 2) Use the actual file name, if present
+      return validateFileName(decodeURIComponent(url.fileName));
+    }
+  } catch (e) {
+    try {
+      // the file name might be non ASCII
+      // try unescape again with a characterSet
+      var textToSubURI = Components.classes["@mozilla.org/intl/texttosuburi;1"]
+                                   .getService(Components.interfaces.nsITextToSubURI);
+      var charset = getCharsetforSave(aDocument);
+      return validateFileName(textToSubURI.unEscapeURIForUI(charset, url.fileName));
+    } catch (e) {
+      // This is something like a wyciwyg:, data:, and so forth
+      // URI... no usable filename here.
+    }
+  }
+
+  if (aDefaultFileName)
+    // 4) Use the caller-provided name, if any
+    return validateFileName(aDefaultFileName);
+
+  // 5) If this is a directory, use the last directory name
+  var re = /\/([^\/]+)\/$/;
+  var path = aDocumentURI.path.match(re);
+  if (path && path.length > 1) {
+      return validateFileName(path[1]);
+  }
+
+  try {
+    if (aDocumentURI.host)
+      // 6) Use the host.
+      return aDocumentURI.host;
+  } catch (e) {
+    // Some files have no information at all, like Javascript generated pages
+  }
+  try {
+    // 7) Use the default file name
+    return getStringBundle().GetStringFromName("DefaultSaveFileName");
+  } catch (e) {
+    //in case localized string cannot be found
+  }
+  // 8) If all else fails, use "index"
+  return "index";
+}
+
 
 function getMafOpenFilters() {
   var filterresult = new Array();
@@ -955,6 +1258,7 @@ function BrowserOpenFileWindow() {
     fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterImages |
                      nsIFilePicker.filterXML | nsIFilePicker.filterHTML);
 
+    // ** MAF Addition start
     try {
       var filters = getMafOpenFilters();
       for (var i=0; i<filters.length; i++) {
@@ -963,6 +1267,7 @@ function BrowserOpenFileWindow() {
         fp.appendFilter(title, mask);
       }
     } catch(e) { }
+    // ** MAF Addition end
 
     fp.appendFilters(nsIFilePicker.filterAll);
 
@@ -1117,7 +1422,7 @@ HandlerOverride.prototype = {
     this.setHandlerProcedure("handleInternal", "false");
     this.setHandlerProcedure("useSystemDefault", "false");
     return aSavedToDisk;
- },
+  },
 
   get useSystemDefault()
   {

@@ -26,15 +26,6 @@
   <script src="chrome://maf/content/maf.js"/>
 
   <menupopup id="menu_FilePopup">
-    <menuitem id="maf-save-archive" label="&maf.addToArchive;" insertbefore="menu_sendLink"
-               accesskey="&maf.addToArchiveKey;"
-               oncommand="MafGUI.addToArchive(Maf);" />
-    <menuitem id="maf-save-selected-tabs-archive" label="&maf.addSelectedTabsToArchive;" insertbefore="menu_sendLink"
-               accesskey="&maf.addSelectedTabsToArchiveKey;"
-               oncommand="MafGUI.addSelectedTabsToArchive(Maf);" />
-    <menuitem id="maf-save-all-tabs-archive" label="&maf.addAllTabsToArchive;" insertbefore="menu_sendLink"
-               accesskey="&maf.addAllTabsToArchiveKey;"
-               oncommand="MafGUI.addAllTabsToArchive(Maf);" />
   </menupopup>
 
   <!-- firefox tools menu -->
@@ -48,6 +39,17 @@
         <menuitem id="maf-firefox-browse-open-archives" label="&maf.browseOpenArchives;"
                    accesskey="&maf.browseOpenArchivesKey;" key="maf-firefox-browseOpenArchives-cmd"
                    oncommand="MafGUI.browseOpenArchives();" />
+        <menuitem id="maf-firefox-save-archive" label="&maf.addToArchive;" insertbefore="menu_sendLink"
+                   accesskey="&maf.addToArchiveKey;"
+                   oncommand="MafGUI.addToArchive(Maf);" />
+        <menuitem id="maf-firefox-save-selected-tabs-archive" label="&maf.addSelectedTabsToArchive;"
+                   insertbefore="menu_sendLink"
+                   accesskey="&maf.addSelectedTabsToArchiveKey;"
+                   oncommand="MafGUI.addSelectedTabsToArchive(Maf);" />
+        <menuitem id="maf-firefox-save-all-tabs-archive" label="&maf.addAllTabsToArchive;"
+                   insertbefore="menu_sendLink"
+                   accesskey="&maf.addAllTabsToArchiveKey;"
+                   oncommand="MafGUI.addAllTabsToArchive(Maf);" />
         <menuitem id="maf-firefox-about" label="&maf.about;"
                    accesskey="&maf.aboutKey;"
                    oncommand="MafGUI.showAbout();" />
@@ -70,6 +72,17 @@
         <menuitem id="maf-mozilla-browse-open-archives" label="&maf.browseOpenArchives;"
                    accesskey="&maf.browseOpenArchivesKey;" key="browseOpenArchives_cmd"
                    oncommand="MafGUI.browseOpenArchives();" />
+        <menuitem id="maf-mozilla-save-archive" label="&maf.addToArchive;" insertbefore="menu_sendLink"
+                   accesskey="&maf.addToArchiveKey;"
+                   oncommand="MafGUI.addToArchive(Maf);" />
+        <menuitem id="maf-mozilla-save-selected-tabs-archive" label="&maf.addSelectedTabsToArchive;"
+                   insertbefore="menu_sendLink"
+                   accesskey="&maf.addSelectedTabsToArchiveKey;"
+                   oncommand="MafGUI.addSelectedTabsToArchive(Maf);" />
+        <menuitem id="maf-mozilla-save-all-tabs-archive" label="&maf.addAllTabsToArchive;"
+                   insertbefore="menu_sendLink"
+                   accesskey="&maf.addAllTabsToArchiveKey;"
+                   oncommand="MafGUI.addAllTabsToArchive(Maf);" />
         <menuitem id="maf-mozilla-about" label="&maf.about;"
                    accesskey="&maf.aboutKey;"
                    oncommand="MafGUI.showAbout();" />
