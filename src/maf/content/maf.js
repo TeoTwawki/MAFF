@@ -40,6 +40,7 @@
  * Added an idle update function which gives the user some visual feedback when an archive is opened.
  * Updated the MHT Handler to cater for saving multiple tabs.
  * Fixed bug with file association and loading of preferences.
+ * MHT archive handler no longer dies on pages with frames.
  *
  *
  * Changes from 0.2.19 to 0.2.20 - Completed

@@ -639,7 +639,7 @@ var MafMHTHander = {
       MHTContentString += "Content-Type: multipart/related;\r\n";
       MHTContentString += "\tboundary=\"" + boundaryString + "\";\r\n"
       MHTContentString += "\ttype=\"" + indexContentType + "\"\r\n";
-      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.2.20\r\n";
+      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.3.0\r\n";
       MHTContentString += "\r\nThis is a multi-part message in MIME format.\r\n";
       MHTContentString += this._addFileToMHT(boundaryString, sourcepath, indexfilename, originalurl);
 
@@ -648,7 +648,7 @@ var MafMHTHander = {
         // For each file supporting, add it
         for (var i=0; i<supportFileList.length; i++) {
           MHTContentString += this._addFileToMHT(boundaryString, sourcepath,
-                                        supportFileList[i][0], supportFileList[i][1], "index_files");
+                                        supportFileList[i][0], supportFileList[i][1], supportFileList[i][2]);
         }
       } catch(e) {
 
@@ -657,7 +657,7 @@ var MafMHTHander = {
       // End file content
       MHTContentString += "\r\n--" + boundaryString + "--\r\n";
     } else {
-      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.2.20\r\n";
+      MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.3.0\r\n";
       MHTContentString += this._addFileToMHT("", sourcepath, indexfilename, originalurl);
     }
 
@@ -702,22 +702,46 @@ var MafMHTHander = {
 
     var baseUrl = this._getBaseFakeUrl(originalurl);
 
-    var oDir = Components.classes[localFileContractID].getService(localFileIID);
-    oDir.initWithPath(MafPreferences.temp);
-    oDir.append(sourcepath);
-    oDir.append("index_files");
+    var subDirList = new Array();
+    subDirList[subDirList.length] = ["index_files"];
 
-    if (oDir.exists() && oDir.isDirectory()) {
-      var entries = oDir.directoryEntries;
+    while (subDirList.length > 0) {
+      var subDirEntry = subDirList.pop();
 
-      while (entries.hasMoreElements()) {
-        var currFile = entries.getNext();
-        currFile.QueryInterface(localFileIID);
+      var oDir = Components.classes[localFileContractID].getService(localFileIID);
+      oDir.initWithPath(MafPreferences.temp);
+      oDir.append(sourcepath);
+      for (var i=0; i<subDirEntry.length; i++) {
+        oDir.append(subDirEntry[i]);
+      }
 
-        result[result.length] = [currFile.leafName, baseUrl + "index_files/" + currFile.leafName];
+      if (oDir.exists() && oDir.isDirectory()) {
+        var entries = oDir.directoryEntries;
+
+        while (entries.hasMoreElements()) {
+          var currFile = entries.getNext();
+          currFile.QueryInterface(localFileIID);
+
+          if (!currFile.isDirectory()) {
+            var originalUrl = baseUrl;
+            for (var j=0; j<subDirEntry.length; j++) {
+              originalUrl += subDirEntry[j] + "/";
+            }
+            originalUrl += currFile.leafName;
+            result[result.length] = [currFile.leafName, originalUrl, subDirEntry];
+          } else {
+            var newSubDir = new Array();
+            for (var j=0; j<subDirEntry.length; j++) {
+              newSubDir[newSubDir.length] = subDirEntry[j];
+            }
+            newSubDir[newSubDir.length] = currFile.leafName;
+            subDirList[subDirList.length] = newSubDir;
+          }
+        }
 
       }
     }
+
     return result;
   },
 
@@ -727,7 +751,7 @@ var MafMHTHander = {
   _addFileToMHT: function(boundaryString, sourcepath, filename, originalUrl, subdir) {
     var result = "";
     try {
-      var thisFileContentType = this._getFileContentType(sourcepath, filename);
+      var thisFileContentType = this._getFileContentType(sourcepath, filename, subdir);
       var thisFileContentEncoding = this._getContentEncodingByType(thisFileContentType);
 
       if (boundaryString != "") {
@@ -745,7 +769,9 @@ var MafMHTHander = {
 
       var fullSourcePath = MafUtils.appendToDir(MafPreferences.temp, sourcepath);
       if (subdir != null) {
-        fullSourcePath = MafUtils.appendToDir(fullSourcePath, subdir);
+        for (var i=0; i<subdir.length; i++) {
+          fullSourcePath = MafUtils.appendToDir(fullSourcePath, subdir[i]);
+        }
       }
       var fullFilename = MafUtils.appendToDir(fullSourcePath, filename);
 
@@ -753,9 +779,8 @@ var MafMHTHander = {
 
       if (thisFileContentEncoding == "quoted-printable") {
         srcFile =  MafUtils.readFile(fullFilename);
-        // If it isn't a supporting file, replace all relative
-        //   supporting files urls with absolute urls
-        if ((subdir == null) && (boundaryString != "")) {
+        // If the content type is text/html, probably has updatable links
+        if (thisFileContentType == "text/html") {
           var supportFileList = this._getSupportingFilesList(sourcepath, originalurl);
           srcFile = this._updateRelativeResourceLinks(srcFile, supportFileList);
         }
@@ -781,7 +806,8 @@ var MafMHTHander = {
     var result = srcFile;
 
     for (var i=0; i<supportFileList.length; i++) {
-      result = result.replaceAll("index_files/" + supportFileList[i][0], supportFileList[i][1]);
+      var subdir = supportFileList[i][2][supportFileList[i][2].length-1];
+      result = result.replaceAll(subdir + "/" + supportFileList[i][0], supportFileList[i][1]);
     }
 
     return result;
@@ -872,7 +898,9 @@ var MafMHTHander = {
       ifile.initWithPath(MafPreferences.temp);
       ifile.append(sourcepath);
       if (subdir != null) {
-        ifile.append(subdir);
+        for (var i=0; i<subdir.length; i++) {
+          ifile.append(subdir[i]);
+        }
       }
       ifile.append(filename);
 
