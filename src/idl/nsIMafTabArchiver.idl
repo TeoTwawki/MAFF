@@ -11,5 +11,6 @@ interface nsIMafTabArchiver : nsISupports
   void start();
   void stop();
   void setProgressUpdater(in nsIMafProgressUpdater updater);
+  void setIncludeList(in wstring includeList);
   void progressUpdater(in short progress);
 };

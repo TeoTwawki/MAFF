@@ -76,7 +76,27 @@ MafTabArchiverClass.prototype = {
     /** The current tab being saved. */
     this.currentMafArchiverIndex = 0;
 
+    /** Which tabs to save. */
+    this.browsersInclude = new Array();
+
+    for (var i=0; i<this.browsers.length; i++) {
+      this.browsersInclude[this.browsersInclude.length] = i;
+    }
+
     this.Maf = Maf;
+  },
+
+  setIncludeList: function(strIncludeList) {
+    this.browsersInclude = new Array();
+
+    var strListIndexes = strIncludeList.split(",");
+
+    for (var i=0; i<strListIndexes.length; i++) {
+      var browserIndex = parseInt(strListIndexes[i]);
+      if ((browserIndex > -1) && (browserIndex < this.browsers.length)) {
+        this.browsersInclude[this.browsersInclude.length] = browserIndex;
+      }
+    }
   },
 
   start: function() {
@@ -92,8 +112,9 @@ MafTabArchiverClass.prototype = {
         this.MafArchivers[this.MafArchivers.length] = objMafArchiver;
       }
 
-      if (this.browsers.length > 0) {
-        this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers[this.currentMafArchiverIndex],
+      if (this.browsersInclude.length > 0) {
+        this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers[
+                              this.browsersInclude[this.currentMafArchiverIndex]],
                             this.tempPath, this.scriptPath, this.archivePath,
                             dateTimeArchived.valueOf() + "", this.Maf);
         this.MafArchivers[this.currentMafArchiverIndex].start();
@@ -113,16 +134,16 @@ MafTabArchiverClass.prototype = {
     if (progress == 100) {
       // Finished saving single tab
 
-      if (this.currentMafArchiverIndex < this.browsers.length) {
+      if (this.currentMafArchiverIndex < this.browsersInclude.length) {
         if (this.MafArchivers[this.currentMafArchiverIndex].downloadComplete == true) {
 
           if (this.objWith_fnProgressUpdater != null) {
-            var percentage = Math.floor((this.currentMafArchiverIndex/this.browsers.length)*100);
+            var percentage = Math.floor((this.currentMafArchiverIndex/this.browsersInclude.length)*100);
             this.objWith_fnProgressUpdater.progressUpdater(percentage);
           }
 
           this.currentMafArchiverIndex += 1;
-          if (this.currentMafArchiverIndex < this.browsers.length) {
+          if (this.currentMafArchiverIndex < this.browsersInclude.length) {
             var dateTimeArchived = new Date();
             var archivePathToUse = this.archivePath;
             // If it's MHT, get unique filename
@@ -130,7 +151,8 @@ MafTabArchiverClass.prototype = {
               archivePathToUse = MafUtils.getFullUniqueFilename(archivePathToUse);
             }
             
-            this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers[this.currentMafArchiverIndex],
+            this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers[
+                               this.browsersInclude[this.currentMafArchiverIndex]],
                                this.tempPath, this.scriptPath, archivePathToUse,
                                dateTimeArchived.valueOf() + "", this.Maf);
             this.MafArchivers[this.currentMafArchiverIndex].start();

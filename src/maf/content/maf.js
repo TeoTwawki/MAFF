@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.4.1
+ * Version: 0.4.3
  *
  * Author: Christopher Ottley
  *
@@ -27,6 +27,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 /**
+ * Changes from 0.4.2 to 0.4.3
+ *
+ * Added save selected tabs functionality.
+ * Fixed bug that reset save archive type index when save dialog box was cancelled.
+ *
+ *
+ * Changes from 0.4.1 to 0.4.2
+ *
+ * Added missing invis.vbs file to installation.
+ *
+ *
  * Changes from 0.4.0 to 0.4.1
  *
  * Fixed UTF String conversion bug affecting non-english character sets.
@@ -252,10 +263,13 @@ maf.prototype = {
   /**
    * Save all open tabs in an archive
    */
-  saveAllTabsComplete: function(browsers, tempPath, scriptPath, archivePath) {
+  saveAllTabsComplete: function(browsers, includeList, tempPath, scriptPath, archivePath) {
     var objMafTabArchiver = Components.classes["@mozilla.org/libmaf/tabarchiver;1"]
                                .createInstance(Components.interfaces.nsIMafTabArchiver);
     objMafTabArchiver.init(browsers, tempPath, scriptPath, archivePath, Maf);
+    if (includeList != "") {
+      objMafTabArchiver.setIncludeList(includeList);
+    }
     MafGUI.showDownloadTabsDLG(objMafTabArchiver);
   },
 

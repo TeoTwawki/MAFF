@@ -7,7 +7,7 @@ interface nsIMaf : nsISupports
   void archiveDownload(in wstring program, in wstring archivefile, in wstring sourcepath);
   void saveAsWebPageComplete(in nsISupports aBrowser, in wstring tempPath, in wstring scriptPath, in wstring archivePath);
   void nativeSaveFile(in nsISupports aDocument, in wstring aSaveDocPath, in wstring aSaveDocFileName, in nsISupports aObjMafArchiver);
-  void saveAllTabsComplete(in nsISupports browsers, in wstring tempPath, in wstring scriptPath, in wstring archivePath);
+  void saveAllTabsComplete(in nsISupports browsers, in wstring includeList, in wstring tempPath, in wstring scriptPath, in wstring archivePath);
   void openFromArchive(in wstring tempPath, in wstring scriptPath, in wstring archivePath);
   void openListInTabs(in nsISupports urlList);
 };

@@ -26,12 +26,15 @@
   <script src="chrome://maf/content/maf.js"/>
 
   <menupopup id="menu_FilePopup">
-    <menuitem id="maf-save-all-tabs-archive" label="&maf.addAllTabsToArchive;" insertbefore="menu_sendLink"
-               accesskey="&maf.addAllTabsToArchiveKey;"
-               oncommand="MafGUI.addAllTabsToArchive(Maf);" />
     <menuitem id="maf-save-archive" label="&maf.addToArchive;" insertbefore="menu_sendLink"
                accesskey="&maf.addToArchiveKey;"
                oncommand="MafGUI.addToArchive(Maf);" />
+    <menuitem id="maf-save-selected-tabs-archive" label="&maf.addSelectedTabsToArchive;" insertbefore="menu_sendLink"
+               accesskey="&maf.addSelectedTabsToArchiveKey;"
+               oncommand="MafGUI.addSelectedTabsToArchive(Maf);" />
+    <menuitem id="maf-save-all-tabs-archive" label="&maf.addAllTabsToArchive;" insertbefore="menu_sendLink"
+               accesskey="&maf.addAllTabsToArchiveKey;"
+               oncommand="MafGUI.addAllTabsToArchive(Maf);" />
   </menupopup>
 
   <!-- firefox tools menu -->

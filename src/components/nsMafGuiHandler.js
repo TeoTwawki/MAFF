@@ -124,7 +124,7 @@ MAFGuiHandlerClass.prototype = {
     var archiveToAddTo = this.selectFileSave(defaultFileName);
 
     if ((typeof(archiveToAddTo) != "undefined") && (archiveToAddTo.length > 1)) {
-      Maf.saveAllTabsComplete(this.window.getBrowser().browsers, MafPreferences.temp,
+      Maf.saveAllTabsComplete(this.window.getBrowser().browsers, "", MafPreferences.temp,
                               MafPreferences.programFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
     }
   },
@@ -161,7 +161,9 @@ MAFGuiHandlerClass.prototype = {
                                   defaultFilterIndex,
                                   defaultFilename);
 
-    prefs.setIntPref("savearchive.filterindex", result[1]);
+    if (result[0] != null) {
+      prefs.setIntPref("savearchive.filterindex", result[1]);
+    }
 
     var selectedFileType = filters[result[1]][1];
 
@@ -180,6 +182,15 @@ MAFGuiHandlerClass.prototype = {
     }
 
     return [result[1], filename];
+  },
+
+  selectFileSaveArchive: function(defaultFilename) {
+    var result = this.selectFileSave(defaultFilename);
+    if (result != null) {
+      return result.toString();
+    } else {
+      return "";
+    }
   },
 
   getSaveFilters: function() {
@@ -360,6 +371,20 @@ MAFGuiHandlerClass.prototype = {
     var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
                     ",width="+ w +",height=" + h;
     this.window.openDialog(url, "_blank", win_prefs, this.window);
+  },
+
+  addSelectedTabsToArchive: function(Maf) {
+    var url = "chrome://maf/content/mafSaveSelectedTabsDLG.xul";
+
+    var w = 500;
+    var h = 500;
+
+    var sX = (this.window.screen.width/2)-(Math.round(w/2));
+    var sY = (this.window.screen.height/2)-(Math.round(h/2));
+
+    var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
+                    ",width="+ w +",height=" + h;
+    this.window.openDialog(url, "_blank", win_prefs, this.window, Maf);
   },
 
   /**
