@@ -1,25 +1,49 @@
 <!-- MAIN CONTENT -->
 <h5 class="page-header"><a id="content" name="content">Installation</a></h5>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.2.20.xpi">0.2.20 for Linux</a></p>
+<p>Below you will find links to the latest XPI installer packages. If this is your first time installing MAF select a operating system specific package. If you have previously installed MAF and there is an XPI upgrade available, then install the upgrade. If you have previously installed MAF but there is no XPI upgrade for your version, please uninstall MAF and then install the latest operating system specific package.</p>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.2.20.xpi">0.2.20 for Windows</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.3.0.xpi">0.3.0 for Linux</a></p>
 
-<p>Latest XPI Upgrade - <a href="http://downloads.mozdev.org/maf/maf-0.2.20.xpi">from 0.2.19 to 0.2.20 platform independent</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.3.0.xpi">0.3.0 for Windows</a></p>
+
+<!-- p>Latest XPI Upgrade - <a href="http://downloads.mozdev.org/maf/maf-0.3.1.xpi">from 0.3.0 to 0.3.1 platform independent</a></p -->
+
+<p>Please note, if you have previously installed MAF and are installing the 0.3.0 version, the location of scripts and some settings have changed. In order to use the new scripts, go to the <a href="preferences.html">preferences</a>, click on the "Load defaults" button and save the new preferences.</p>
 
 <p>The XPI also sets up the scripts that would be used to perform the actual archiving. This only has to be done once. This is not done if a platform independent upgrade is used. After this is done, the preferences for the MAF extension should be set. MAF is configured by default to work with Infozip's Zip and Unzip programs.</p>
 
-<p>After the utilities have been setup, complete the configuration by checking the <a href="preferences.html">preferences</a>.</p>
+<p>After MAF has been setup, complete the configuration by checking the <a href="preferences.html">preferences</a>.</p>
 
-<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.2.19.xpi">0.2.19 for Linux</a></p>
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.2.20.xpi">0.2.20 for Linux</a></p>
 
-<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.2.19.xpi">0.2.19 for Windows</a></p>
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.2.20.xpi">0.2.20 for Windows</a></p>
 
-<p>Previous XPI Upgrade - <a href="http://downloads.mozdev.org/maf/maf-0.2.19.xpi">from 0.2.18 to 0.2.19 platform independent</a></p>
+<p>Previous XPI Upgrade - <a href="http://downloads.mozdev.org/maf/maf-0.2.20.xpi">from 0.2.19 to 0.2.20 platform independent</a></p>
 
 
 <h5 class="page-header"><a id="changelog" name="changelog">Changes</a></h5>
 <pre>
+ * Changes from 0.2.20 to 0.3.0
+ *
+ * Styled the tree splitters in the browse open archives.
+ * Split javascript objects into seperate files. There is now also a global preference state.
+ * Selecting file from browse dialog should now start in directory if possible.
+ * Fixed bug that did not allow saving pages in an archive if the pages were in a new window.
+ * Retrofitted the download and archive code to use an observer event instead of interval timers. Should seem faster.
+ * Added drag and drop archive support.
+ * Added file association support and ability to open archives from Open File menu entry.
+ * Added an idle update function which gives the user some visual feedback when an archive is opened.
+ * Updated the MHT Handler to cater for saving multiple tabs.
+ * Fixed bug with file association and loading of preferences.
+ * MHT archive handler no longer dies on pages with frames.
+ * Filter index saved as a preference for MAF open and save archive dialogs.
+ * Fixed GUI file select bug and default preference loading bug.
+ * Post-install script run feature added - Can now run scripts from profile in FF.
+ * Can now load default preferences from dialog.
+ * Added preference to clear the temp folder when the browser closes.
+ *
+ *
  * Changes from 0.2.19 to 0.2.20
  *
  * Optional function that is executed when a single page is added to archive
