@@ -9,6 +9,6 @@ interface nsIMafMhtEncoder : nsISupports
     attribute string subject;
     attribute string date;
 
-    void addFile(in nsIFile source, in string type, in string location, in string id);
+    void addFile(in string source, in string type, in string location, in string id);
     void encodeTo(in nsIFile dest);
 };

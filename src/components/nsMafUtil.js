@@ -519,7 +519,7 @@ MafUtilServiceClass.prototype = {
    * Get the mime type for a URI using the MIME service
    */
   getMIMETypeForURI: function(url) {
-    var result = null;
+    var result = "application/octet-stream";
     try {
       // Create URI object from url string
       var ioService = Components.classes["@mozilla.org/network/io-service;1"]

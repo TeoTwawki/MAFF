@@ -57,7 +57,8 @@ function MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchiv
   this.start = function() {
     if (!this.started) {
       this.started = true;
-      MafNativeFileSave.saveFile(this.aDocument, MafUtils.appendToDir(this.tempPath, this.folderNumber), "index.html", this);
+      MafNativeFileSave.saveFile(this.aDocument, MafUtils.appendToDir(this.tempPath, this.folderNumber),
+                                 "index.html", this);
     }
   },
 
@@ -73,23 +74,21 @@ function MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchiv
       if ((objMafArchiver.dl.percentComplete == 100) &&
           (MafUtils.checkFileExists(MafUtils.appendToDir(tempArchiveFolder, objMafArchiver.indexfilename)))) {
 
+        var ocHandler = new MafArchiverOnComplete();
+        ocHandler.objMafArchiver = objMafArchiver;
+        ocHandler.tempArchiveFolder = tempArchiveFolder;
+
+        var observerService = Components.classes["@mozilla.org/observer-service;1"]
+                                 .getService(Components.interfaces.nsIObserverService);
+        observerService.addObserver(ocHandler, "mht-encoder-finished", false);
+
         objMafArchiver.dl = null;
         objMafArchiver.downloadComplete = true;
         objMafArchiver.addMetaData(objMafArchiver);
         objMafArchiver.archiveDownload(objMafArchiver.scriptPath,
                                        objMafArchiver.archivePath,
-                                       objMafArchiver.folderNumber);
-
-        // Remove it after 5 seconds
-        setTimeout(objMafArchiver._removeFolder, 5000, tempArchiveFolder);
-        
-        if (typeof(objMafArchiver.oncomplete) != "undefined") {
-          if (typeof(objMafArchiver.oncompleteargs) != "undefined") {
-            objMafArchiver.oncomplete(objMafArchiver.oncompleteargs);
-          } else {
-            objMafArchiver.oncomplete();
-          }
-        }
+                                       objMafArchiver.folderNumber,
+                                       ocHandler);
 
       } else {
         // Download may be complete, but file isn't in proper filesystem location yet
@@ -104,7 +103,8 @@ function MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchiv
    * Removes the specified folder if it exists.
    */
   this._removeFolder = function(folderToRemove) {
-    var oDir = Components.classes[localFileContractID].getService(localFileIID);
+    var oDir = Components.classes["@mozilla.org/file/local;1"]
+                  .createInstance(Components.interfaces.nsILocalFile);
     oDir.initWithPath(folderToRemove);
     if (oDir.exists() && oDir.isDirectory()) {
       oDir.remove(true);
@@ -186,9 +186,26 @@ function MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchiv
   /**
    * Archives the downloaded file(s).
    */
-  this.archiveDownload = function(program, archivefile, sourcepath) {
-    if (program == MafMHTHander.MHT_ARCHIVE_PROG_ID) {
-      MafMHTHander.archiveDownload(archivefile, sourcepath);
+  this.archiveDownload = function(program, archivefile, sourcepath, ocHandler) {
+    if (program == Components.classes["@mozilla.org/libmaf/encoder;1?name=mht"]
+                     .createInstance(Components.interfaces.nsIMafMhtEncoder).PROGID) {
+
+      // MafMHTHander.archiveDownload(archivefile, sourcepath);
+      var m = Components.classes["@mozilla.org/maf/mhthandler_service;1"]
+                  .getService(Components.interfaces.nsIMafMhtHandler);
+
+      var MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
+                        .getService(Components.interfaces.nsIMafUtil);
+
+      var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
+                             .getService(Components.interfaces.nsIMafPreferences);
+
+      var temppath = MafPreferences.temp;
+
+      var realSourcePath = MafUtils.appendToDir(temppath, sourcepath);
+
+      m.createArchive(archivefile, realSourcePath);
+
     } else {
     /** If program is nothing then don't try to run it. */
     if (program != "") {
@@ -206,7 +223,7 @@ function MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchiv
       }
 
       try {
-        var oProgram = Components.classes[localFileContractID].getService(localFileIID);
+        var oProgram = Components.classes[localFileContractID].createInstance(localFileIID);
         oProgram.initWithPath(localProgram);
       } catch(e) {
         alert("Could not find program: " + program + " \n" + e);
@@ -226,7 +243,66 @@ function MafArchiver(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchiv
       oProcess.run(true, localProgramArgs, localProgramArgs.length);
     }
 
+    ocHandler.onComplete();
     }
+  },
+
+  /**
+   * Access method to set the progress update function
+   * This is the function that is called whenever there is a change
+   * in progress
+   */
+  this.setProgressUpdater = function(fnProgressUpdater) {
+    this.fnProgressUpdater = fnProgressUpdater;
   }
 
+};
+
+function MafArchiverOnComplete() {
+
+};
+
+MafArchiverOnComplete.prototype = {
+
+  observe: function(subject, topic, data) {
+    if (topic != "mht-encoder-finished")
+      return;
+
+    this.onComplete();
+
+    var observerService = Components.classes["@mozilla.org/observer-service;1"]
+                             .getService(Components.interfaces.nsIObserverService);
+    observerService.removeObserver(this, "mht-encoder-finished");
+  },
+
+  onComplete: function() {
+    try {
+      // Remove it after 5 seconds
+      setTimeout(this.objMafArchiver._removeFolder, 5000, this.tempArchiveFolder);
+
+      if (typeof(this.objMafArchiver.fnProgressUpdater) != "undefined") {
+        this.objMafArchiver.fnProgressUpdater(100);
+      }
+
+      if (typeof(this.objMafArchiver.oncomplete) != "undefined") {
+        if (typeof(this.objMafArchiver.oncompleteargs) != "undefined") {
+          this.objMafArchiver.oncomplete(this.objMafArchiver.oncompleteargs);
+        } else {
+          this.objMafArchiver.oncomplete();
+        }
+      }
+    } catch(e) {
+      mafdebug(e);
+    }
+  },
+
+  QueryInterface: function(iid) {
+
+    if (!iid.equals(Components.interfaces.nsIObserver) &&
+        !iid.equals(Components.interfaces.nsISupports)) {
+      throw Components.results.NS_ERROR_NO_INTERFACE;
+    }
+
+    return this;
+  }
 };

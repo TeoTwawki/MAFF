@@ -246,6 +246,7 @@ var Maf = {
 
     objMafArchiver.oncomplete = Maf.onSaveAsWebPageComplete;
     objMafArchiver.start();
+
   },
 
   /**

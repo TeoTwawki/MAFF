@@ -33,7 +33,14 @@ const mafMhtHandlerContractID = "@mozilla.org/maf/mhthandler_service;1";
 const mafMhtHandlerCID = Components.ID("{2a64aca8-a16d-4b6d-937a-ab1977854568}");
 const mafMhtHandlerIID = Components.interfaces.nsIMafMhtHandler;
 
+const MAFNamespace = "http://maf.mozdev.org/metadata/rdf#";
+
 try {
+
+  /** The global RDF service object. */
+  var gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
+                       .getService(Components.interfaces.nsIRDFService);
+
   var MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
                     .getService(Components.interfaces.nsIMafUtil);
 } catch(e) {
@@ -114,13 +121,17 @@ MafMhtHandlerServiceClass.prototype = {
       // For each other part, decode
       for (var i=0; i<decoder.noOfParts(); i++) {
         if (i != rootPartNo) {
-          // Decode this part
-          var thisPart = decoder.getPartNo(i);
-          if (thisPart.noOfParts() > 1) {
-            multipartDecodeList.push(thisPart);
-          } else {
-            var thisContentHandler = new extractContentHandlerClass(index_filesDir, state, datasource, false, this);
-            thisPart.getContent(thisContentHandler);
+          try  {
+            // Decode this part
+            var thisPart = decoder.getPartNo(i);
+            if (thisPart.noOfParts() > 1) {
+              multipartDecodeList.push(thisPart);
+            } else {
+              var thisContentHandler = new extractContentHandlerClass(index_filesDir, state, datasource, false, this);
+              thisPart.getContent(thisContentHandler);
+            }
+          } catch(e) {
+
           }
         }
       }
@@ -345,8 +356,215 @@ MafMhtHandlerServiceClass.prototype = {
   },
 
   createArchive: function(archivefile, sourcepath) {
-    mafdebug("Creating archive " + archivefile + " from " + sourcepath);
+    try {
+
+      var encoder = Components.classes["@mozilla.org/libmaf/encoder;1?name=mht"]
+                      .createInstance(Components.interfaces.nsIMafMhtEncoder);
+
+      var mainMetaData = this._getMainFileMetaData(sourcepath);
+
+      // Get hidden window
+      var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
+                        .getService(Components.interfaces.nsIAppShellService);
+      var hiddenWnd = appShell.hiddenDOMWindow;
+
+      var navigator = hiddenWnd.navigator;
+
+      encoder.from = "<Saved by " + navigator.appCodeName + " " + navigator.appVersion + ">";
+      encoder.subject = mainMetaData.title;
+      encoder.date = mainMetaData.archivetime;
+
+      var indexFilename = mainMetaData.indexfilename;
+
+      var indexFile = Components.classes["@mozilla.org/file/local;1"]
+                         .createInstance(Components.interfaces.nsILocalFile);
+      indexFile.initWithPath(sourcepath);
+      indexFile.append(indexFilename);
+
+      var indexFileType = MafUtils.getMIMETypeForURI(MafUtils.getURI(indexFile));
+
+      // Add the index file
+      encoder.addFile(indexFile.path, indexFileType, mainMetaData.originalurl, "");
+
+      // Add supporting files
+      var supportFilesList = this._getSupportingFilesList(sourcepath);
+
+      for (var i=0; i<supportFilesList.length; i++) {
+        var entry = supportFilesList[i];
+        encoder.addFile(entry.filepath, entry.type, entry.originalurl, entry.id);
+      }
+
+      var f = Components.classes["@mozilla.org/file/local;1"]
+                 .createInstance(Components.interfaces.nsILocalFile);
+      f.initWithPath(archivefile);
+      encoder.encodeTo(f);
+    } catch(e) {
+      mafdebug(e);
+    }
   },
+
+
+  /**
+   * Returns an array of supporting index files
+   */
+  _getSupportingFilesList: function(sourcepath) {
+    var result = new Array();
+
+    var subDirList = new Array();
+    subDirList[subDirList.length] = ["index_files"];
+
+    var indexFilesRootURI = "";
+
+    while (subDirList.length > 0) {
+      var subDirEntry = subDirList.pop();
+
+      var oDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+      oDir.initWithPath(sourcepath);
+
+      if (indexFilesRootURI == "") {
+        indexFilesRootURI = MafUtils.getURI(oDir);
+      }
+
+      for (var i=0; i<subDirEntry.length; i++) {
+        oDir.append(subDirEntry[i]);
+      }
+
+      if (oDir.exists() && oDir.isDirectory()) {
+        var entries = oDir.directoryEntries;
+
+        while (entries.hasMoreElements()) {
+          var currFile = entries.getNext();
+          currFile.QueryInterface(Components.interfaces.nsILocalFile);
+
+          if (!currFile.isDirectory()) {
+            var resultRec = {};
+            resultRec.filepath = currFile.path;
+            resultRec.type = MafUtils.getMIMETypeForURI(MafUtils.getURI(currFile));
+            resultRec.originalurl = MafUtils.getURI(currFile);
+            resultRec.originalurl = resultRec.originalurl.substring(indexFilesRootURI.length, resultRec.originalurl.length);
+            resultRec.id = "";
+
+            result.push(resultRec);
+
+          } else {
+            var newSubDir = new Array();
+            for (var j=0; j<subDirEntry.length; j++) {
+              newSubDir[newSubDir.length] = subDirEntry[j];
+            }
+            newSubDir[newSubDir.length] = currFile.leafName;
+            subDirList[subDirList.length] = newSubDir;
+          }
+        }
+
+      }
+    }
+
+    return result;
+  },
+
+  /**
+   * Loads meta-data available from the saved archive
+   */
+  _getMainFileMetaData: function(sourcepath) {
+
+    var indexrdffile = Components.classes["@mozilla.org/file/local;1"]
+                          .createInstance(Components.interfaces.nsILocalFile);
+    indexrdffile.initWithPath(sourcepath);
+
+    var uriPath = MafUtils.getURI(indexrdffile.nsIFile);
+
+    indexrdffile.append("index.rdf");
+
+    return this._getMetaDataFrom(indexrdffile, uriPath);
+  },
+
+  /**
+   * Tries to read the data from the RDF for a specific file.
+   */
+  _getMetaDataFrom: function(sourcefile, resourcePath) {
+    var result = {};
+    result.title = "Unknown";
+    result.originalurl = "Unknown";
+    result.archivetime = "Unknown";
+    result.indexfilename = "index.html";
+
+
+    var mdatasource;
+    // If loading the data source is a problem, we've probably loaded it already
+    try {
+      mdatasource = Components.classes["@mozilla.org/rdf/datasource;1?name=xml-datasource"]
+                        .createInstance(Components.interfaces.nsIRDFRemoteDataSource);
+      mdatasource.Init(MafUtils.getURI(sourcefile.nsIFile));
+      mdatasource.Refresh(true);
+      mdatasource.QueryInterface(Components.interfaces.nsIRDFDataSource);
+    } catch(e) {
+      mdatasource = gRDFService.GetDataSource(MafUtils.getURI(sourcefile.nsIFile));
+    }
+
+
+    try {
+      // This archive's unique archive URL resource
+      var rootSubject = gRDFService.GetResource("urn:root");
+
+      // Get the title
+      var predicate = gRDFService.GetResource(MAFNamespace + "title");
+
+      var titletarget = mdatasource.GetTarget(rootSubject, predicate, true);
+      titletarget = titletarget.QueryInterface(Components.interfaces.nsIRDFResource);
+      result.title = titletarget.Value;
+      if (resourcePath.length < result.title.length) {
+        // If the resource is in the result, remove it
+        if (result.title.substring(0, resourcePath.length) == resourcePath) {
+          result.title = result.title.substring(resourcePath.length, result.title.length);
+        }
+      }
+
+      // Get the original url
+      predicate = gRDFService.GetResource(MAFNamespace + "originalurl");
+
+      var originalurltarget = mdatasource.GetTarget(rootSubject, predicate, true);
+      originalurltarget = originalurltarget.QueryInterface(Components.interfaces.nsIRDFResource);
+      result.originalurl = originalurltarget.Value;
+      if (resourcePath.length < result.originalurl.length) {
+        // If the resource is in the result, remove it
+        if (result.originalurl.substring(0, resourcePath.length) == resourcePath) {
+          result.originalurl = result.originalurl.substring(resourcePath.length, result.originalurl.length);
+        }
+      }
+
+      // Get the archive time
+      predicate = gRDFService.GetResource(MAFNamespace + "archivetime");
+
+      var archivetimetarget = mdatasource.GetTarget(rootSubject, predicate, true);
+      archivetimetarget = archivetimetarget.QueryInterface(Components.interfaces.nsIRDFResource);
+      result.archivetime = archivetimetarget.Value;
+      if (resourcePath.length < result.archivetime.length) {
+        // If the resource is in the result, remove it
+        if (result.archivetime.substring(0, resourcePath.length) == resourcePath) {
+          result.archivetime = result.archivetime.substring(resourcePath.length, result.archivetime.length);
+        }
+      }
+
+      // Get the index file name
+      predicate = gRDFService.GetResource(MAFNamespace + "indexfilename");
+
+      var indexfilenametarget = mdatasource.GetTarget(rootSubject, predicate, true);
+      indexfilenametarget = indexfilenametarget.QueryInterface(Components.interfaces.nsIRDFResource);
+      result.indexfilename = indexfilenametarget.Value;
+      if (resourcePath.length < result.indexfilename.length) {
+        // If the resource is in the result, remove it
+        if (result.indexfilename.substring(0, resourcePath.length) == resourcePath) {
+          result.indexfilename = result.indexfilename.substring(resourcePath.length, result.indexfilename.length);
+        }
+      }
+
+    } catch (e) {
+
+    }
+
+    return result;
+  },
+
 
   /**
    * Adds meta data gathered from the MHT to the RDF datasource used by MAF
@@ -570,6 +788,7 @@ function mafdebug(text) {
   var cs = csClass.getService(Components.interfaces.nsIConsoleService);
   cs.logStringMessage(text);
 };
+
 
 String.prototype.trim = function() {
   // skip leading and trailing whitespace

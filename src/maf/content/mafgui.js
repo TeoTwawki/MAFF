@@ -202,7 +202,7 @@ var MafGUI = {
         fp.displayDirectory = dir;
       }
     } catch(e) {
-      alert(e);
+      mafdebug(e);
     }
 
     for (var i=0; i<filters.length; i++) {
