@@ -1,4 +1,42 @@
 <!-- MAIN CONTENT -->
 <h5 class="page-header">Preferences</h5>
 
-<p>Todo: Prefernces</p>
+<p>The preferences are available from the <i>Tools</i> menu and the <i>Mozilla Archive Format</i> submenu.</p>
+
+<p>The additional available preferences for Windows that do not apply to Linux, the execution of VBS script to hide the dos box that appears during batch file execution, are disabled on other platforms.</p>
+
+<p>Below are screen shots of the preferences dialog on linux. In Linux ensure that the temporary directory to use is set to <b>/tmp/maftmp/</b> or whatever temporary directory your script uses as seen in the figure below.</p>
+
+<img src="images/linuxprefs1.png" alt="Linux preferences dialog - Tab 1" />
+
+<br />
+
+<p>Also ensure (by selecting the registered programs tab) that the handler scripts for the archiving and expansion tasks are setup properly as seen in the figure below. The archive script is set to <b>/tmp/mafzip.sh</b> and the expansion script is set to <b>/tmp/mafunzip.sh</b>.</p>
+
+<img src="images/linuxprefs2.png" alt="Linux preferences dialog - Tab 2" />
+
+<br />
+
+<p>The windows preference configuration is similar. The temporary directory to use would be <b>c:\temp\maftemp\</b> and the scripts to use for archiving and expansion would be <b>c:\temp\mafzip.bat</b> and <b>c:\temp\mafunzip.bat</b> respectively.</p>
+
+<p>If you are a windows user and wish to use the VBS option <i>ENSURE</i> that the script archive and expansion processes are working first. After that is confirmed (by saving to an archive and opening it back) you can safely enable the VBS option. Browse to the location of wscript.exe (usually in the %WINDIR%\system32 directory). You also must correctly set the location of invis.vbs which is provided in the winutils.zip file.</p>
+
+<p><b>Preferences: Open Archive Mode</b>
+<br/><br/>
+There are three open modes available. These configure how MAF behaves once an archive is opened.
+<ol>
+  <li>Show open dialog box - Displays a dialog of all the open archives in a tree form, you select which files you would like displayed in tabs.</li>
+  <li>Open all HTML in new tabs - Opens all resources in new tabs. If there is an entry for it in the archive, it is opened in a tab. If your archive is big, this could cause opening the archive to take a really long time and fill up your window with open tabs.</li>
+  <li>Do nothing - Allows you to open as many archives as you want and browse to display any of the saved resources after complete.</li>
+</ol>
+</p>
+
+<p><b>Preferences: Rewrite Archive Document URLs</b>
+<br/><br/>
+This feature is currently not available. It is planned that with this preference enabled, the DOM tree of expanded archive HTML files would be processed as they finish loading in tabs. The processing would iterate over all the links in the page and replace absolute links to resources in the page with local resources in the archive (if possible).
+</p>
+
+<p><b>Preferences: Save Extended Meta-Data</b>
+<br/><br/>
+This feature is currently not available. It is planned that with this preference enabled, additional page information such as history, text zoom and scroll position would be saved for each page.
+</p>
