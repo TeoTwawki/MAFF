@@ -1,0 +1,48 @@
+#include "nsISupports.idl"
+#include "nsIMafPreferencesRec.idl"
+
+[scriptable, uuid(34ea8b6d-e6c3-47e3-83ae-03e3b97dbb56)]
+interface nsIMafPreferences : nsISupports
+{
+    const short OPENMODE_NOTHING = 0;
+    const short OPENMODE_ALLTABS = 1;
+    const short OPENMODE_SHOWDIALOG = 2;
+    const short OPENMODE_FIRSTPAGE = 3;
+    
+    attribute string temp;
+    attribute short defaultMAFExtensionIndex;
+    attribute short archiveOpenMode;
+
+    attribute boolean urlRewrite;
+    attribute boolean saveExtendedMetadata;
+    attribute boolean win_invisible;
+
+    attribute string win_wscriptexe;
+    attribute string win_invisiblevbs;
+
+    attribute boolean isLoaded;
+    attribute boolean clearTempOnClose;
+
+    short getOpenFiltersLength();
+    void getOpenFilterAt(in short index, out PRUint32 count, [array, size_is(count)] out string result);
+
+    string getOpenFilterRegEx();
+
+    short getSaveFiltersLength();
+    void getSaveFilterAt(in short index, out PRUint32 count, [array, size_is(count)] out string result);
+
+    string programFromSaveIndex(in short index);
+    string programFromOpenIndex(in short index);
+
+    short getOpenFilterIndexFromFilename(in string filename);
+    nsIMafPreferences defaultValues();
+    void load();
+    void save();
+
+    short getRecordsLength();
+    nsIMafPreferencesRec getRecordAt(in short index);
+    void updateRecordAt(in short index, in nsIMafPreferencesRec updatedRec);
+    void addRecord(in nsIMafPreferencesRec newRec);
+    void removeRecordAt(in short index);
+
+};

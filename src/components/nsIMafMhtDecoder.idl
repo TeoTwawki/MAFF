@@ -1,0 +1,21 @@
+#include "nsISupports.idl"
+#include "nsIFile.idl"
+#include "nsIURL.idl"
+#include "nsISimpleEnumerator.idl"
+#include "nsIMafMhtDecoderPart.idl"
+
+[scriptable, uuid(3814ca79-30bc-4ad3-a005-488f05a1dd87)]
+interface nsIMafMhtDecoder : nsISupports
+{
+    readonly attribute string PROGID;
+
+    void initWithFile(in nsIFile file);
+    void initWithURL(in nsIURL url);
+    void init(in string content);
+
+    nsISimpleEnumerator headerNames();
+    string getHeaderValue(in string headerName);
+
+    short noOfParts();
+    nsIMafMhtDecoderPart getPartNo(in short index);
+};
