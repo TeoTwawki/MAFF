@@ -49,6 +49,7 @@
  * Added advanced panel in preferences window.
  * Fixed bug in MAF protocol handler that broke silent opening of MAF archives.
  * Fixed bug in MafState.isArchiveURL(originalURL) that didn't return true for framed archive documents.
+ * Added unicode to native locale conversion function for program arguments.
  * TODO: Add save frame functionality to alternative save component.
  *
  * Changes from 0.4.2 to 0.4.3
@@ -310,11 +311,60 @@ maf.prototype = {
       //Get the correct charset
       var sCharset = null;
       switch (sLocale) {
-        case "zh-CN": sCharset = "GBK";
+        case "cs-CZ":
+        case "hr-HR":
+        case "hu-HU":
+        case "lt-LT":
+        case "lv-LV":
+        case "pl-PL":
+        case "ro-RO":
+        case "sk-SK":
+        case "sl-SI":
+        case "sq-AL":
+                      sCharset = "ISO-8859-2";
                       break;
-        case "zh-TW": sCharset="BIG5";
+
+        case "be-BY":
+        case "bg-BG":
+        case "mk-MK":
+        case "ru-RU":
+        case "sh-YU":
+        case "sr-YU":
+        case "uk-UA":
+                      sCharset = "ISO-8859-5";
                       break;
-        default: sCharset = null;
+
+        case "ar-SA":
+                      sCharset = "ISO-8859-6";
+                      break;
+
+
+        case "el-GR":
+                      sCharset = "ISO-8859-7";
+                      break;
+
+        case "iw-IL":
+                      sCharset = "ISO-8859-8";
+                      break;
+
+        case "tr-TR":
+                      sCharset = "ISO-8859-9";
+                      break;
+
+        case "ja-JP":
+                      sCharset = "Shift_JIS";
+                      break;
+        case "ko-KR":
+                      sCharset = "EUC-KR";
+                      break;
+        case "zh-CN":
+                      sCharset = "GBK";
+                      break;
+        case "zh-TW":
+                      sCharset = "BIG5";
+                      break;
+
+        default: sCharset = null; // "ISO-8859-1"
                   break;
       }
 
