@@ -1,10 +1,35 @@
 <!-- MAIN CONTENT -->
 <h5 class="page-header"><a id="content" name="content">Installation</a></h5>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.2.18.xpi">0.2.18 for Linux</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.2.19.xpi">0.2.19 for Linux</a></p>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.2.18.xpi">0.2.18 for Windows</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.2.19.xpi">0.2.19 for Windows</a></p>
 
-<p>The XPI also sets up the scripts that would be used to perform the actual archiving. This only has to be done once. After this is done, the preferences for the MAF extension should be set. MAF is configured by default to work with Infozip's Zip and Unzip programs.</p>
+<p>Latest XPI Upgrade - <a href="http://downloads.mozdev.org/maf/maf-0.2.19.xpi">from 0.2.18 to 0.2.19 platform independent</a></p>
+
+<p>The XPI also sets up the scripts that would be used to perform the actual archiving. This only has to be done once. This is not done ifa platform independent upgrade is used. After this is done, the preferences for the MAF extension should be set. MAF is configured by default to work with Infozip's Zip and Unzip programs.</p>
 
 <p>After the utilities have been setup, complete the configuration by checking the <a href="preferences.html">preferences</a>.</p>
+
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.2.18.xpi">0.2.18 for Linux</a></p>
+
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-windows-0.2.18.xpi">0.2.18 for Windows</a></p>
+
+
+<h5 class="page-header"><a id="changelog" name="changelog">Changes</a></h5>
+<pre>
+ * Changes from 0.2.18 to 0.2.19
+ *
+ * Fixed preferences bug that occurred on Mozilla when selecting options.
+ * Added base URL rewrite functionality - URLs in new tabs are replaced by local URLs using currently open archives
+ * Optimized MHT decoding to use Regular Expression for URL substitution.
+ * Added base tag for relative URLs existing in decoded MHT files.
+ * Fixed save as text, Missing meta-data no longer stops archiving process.
+ * Saving works on Mozilla for Windows now.
+ * GUI cleanup code - Show entry in Firefox's Tools -> Options -> Extensions
+ *                  - Preferences can now be launched from Extensions -> Options
+ * Open all entries in an archive by selecting the archive name and open in tabs.
+ * Added capability to open archive from browse dialog.
+ * Added shortcut keys alt-j for open archive, alt-m for browse open archives.
+</pre>
+ 
