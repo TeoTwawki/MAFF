@@ -177,6 +177,43 @@ var MafUtils = {
 
 
   /**
+   * Based on the suggested filename, new file names are created so as
+   * not to overwite existing ones.
+   * Code from contentUtils.js
+   */
+  getFullUniqueFilename: function(suggestedPathAndFilename) {
+    var dir = null;
+    try {
+      dir = Components.classes[localFileContractID].getService(localFileIID);
+      dir.initWithPath(suggestedPathAndFilename);
+    } catch (e) {
+
+    }
+
+    var file;
+
+    file = dir;
+
+    while (file.exists()) {
+      var parts = /.+-(\d+)(\..*)?$/.exec(file.leafName);
+      if (parts) {
+        file.leafName = file.leafName.replace(/((\d+)\.)/,
+                                              function (str, p1, part, s) {
+                                                return (parseInt(part) + 1) + ".";
+                                              });
+      }
+      else {
+        file.leafName = file.leafName.replace(/\./, "-1$&");
+      }
+    }
+
+
+    return file.path;
+
+  },
+
+
+  /**
    * Read the contents of a file
    */
   readFile: function(str_Filename) {
