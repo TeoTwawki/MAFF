@@ -4,8 +4,8 @@
 <!ENTITY maf.addToArchive "Zapisz stronę w archiwum">
 <!ENTITY maf.addToArchiveKey "r">
 
-<!ENTITY maf.addSelectedTabsToArchive "Save Tabs In Archive">
-<!ENTITY maf.addSelectedTabsToArchiveKey "b">
+<!ENTITY maf.addSelectedTabsToArchive "Zapisz panele w archiwum">
+<!ENTITY maf.addSelectedTabsToArchiveKey "l">
 
 <!ENTITY maf.addAllTabsToArchive "Zapisz wszystkie panele w archiwum">
 <!ENTITY maf.addAllTabsToArchiveKey "e">
@@ -48,7 +48,7 @@
 <!ENTITY maf.preferencesdialog.tabsoptions "Opcje">
 <!ENTITY maf.preferencesdialog.tabsregprogs "Zarejestrowane programy">
 <!ENTITY maf.preferencesdialog.tabswinoptions "Opcje okien">
-<!ENTITY maf.preferencesdialog.tabadvanced "Advanced options">
+<!ENTITY maf.preferencesdialog.tabadvanced "Opcje zaawansowane">
 
 <!ENTITY maf.preferencesdialog.options.description "Ogólne opcje współpracy archiwów MAF z rozszerzeniem">
 
@@ -56,8 +56,8 @@
 <!ENTITY maf.preferencesdialog.label.cleartemp "Wyczyść katalog tymczasowy podczas zamykania przeglądarki">
 <!ENTITY maf.preferencesdialog.label.enablemafprotocol "Włącz obsługę protokołu MAF">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Włącz nadpisywanie document.write">
-<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alert on single page archive complete">
-<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Use alternative save component">
+<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Informuj o zakończeniu archiwizowania pojedynczej strony">
+<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Użyj alternatywnego sposobu zapisywania">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Przeglądaj...">
 
@@ -78,29 +78,29 @@
 <!ENTITY maf.preferencesdialog.winop.wscript "Położenie pliku WSCRIPT.EXE:">
 <!ENTITY maf.preferencesdialog.winop.invis "Położenie pliku invis.vbs:">
 
-<!ENTITY maf.preferencesdialog.winop.filetypelabel "File type associations">
-<!ENTITY maf.preferencesdialog.winop.filetypemaf "Associate MAF with .maf extensions">
-<!ENTITY maf.preferencesdialog.winop.filetypemaff "Associate MAF with .maff extensions">
-<!ENTITY maf.preferencesdialog.winop.filetypemht "Associate MAF with .mht extensions">
+<!ENTITY maf.preferencesdialog.winop.filetypelabel "Powiązania typów plików">
+<!ENTITY maf.preferencesdialog.winop.filetypemaf "Powiąż MAF z rozszerzeniem .maf">
+<!ENTITY maf.preferencesdialog.winop.filetypemaff "Powiąż MAF z rozszerzeniem .maff">
+<!ENTITY maf.preferencesdialog.winop.filetypemht "Powiąż MAF z rozszerzeniem .mht">
 
 <!ENTITY maf.preferencesdialog.progs.description "Zewnętrzne programy archiwizujące używane do pracy z archiwami MAF">
 
 <!ENTITY maf.preferencesdialog.progs.archive "Skrypt archiwizujący:">
 <!ENTITY maf.preferencesdialog.progs.expand "Skrypt rozpakowujący:">
 
-<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiving">
-<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Expanding">
+<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiwizacja">
+<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Rozszerzanie">
 
 <!ENTITY maf.preferencesdialog.btnloaddefault "Wczytaj domyślne">
 <!ENTITY maf.preferencesdialog.btnsave "Zapisz">
 <!ENTITY maf.preferencesdialog.btnrevert "Przywróc ostatnio zapisane">
 <!ENTITY maf.preferencesdialog.btnclose "Zamknij">
 
-<!ENTITY maf.saveSelectedTabsDialog.title "Select tabs to save in archive">
-<!ENTITY maf.saveSelectedTabsDialog.tree.title "Title">
+<!ENTITY maf.saveSelectedTabsDialog.title "Wybierz panele w celu zapisania w archiwum">
+<!ENTITY maf.saveSelectedTabsDialog.tree.title "Nazwa">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Save Selected in Archive">
-<!ENTITY maf.saveSelectedTabsDialog.btnclose "Close">
+<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Zapisz wybrane w archiwum">
+<!ENTITY maf.saveSelectedTabsDialog.btnclose "Zamknij">
 
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
 <!ENTITY maf.addToArchiveAccessKey "P">

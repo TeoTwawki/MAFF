@@ -48,7 +48,7 @@
 <!ENTITY maf.preferencesdialog.tabsoptions "Opções">
 <!ENTITY maf.preferencesdialog.tabsregprogs "Programas Registrados">
 <!ENTITY maf.preferencesdialog.tabswinoptions "Opções do Windows">
-<!ENTITY maf.preferencesdialog.tabadvanced "Advanced options">
+<!ENTITY maf.preferencesdialog.tabadvanced "Opções Avançadas">
 
 <!ENTITY maf.preferencesdialog.options.description "Opções Gerais de Como os Arquivos MAF São Trabalhados Dentro da Extensão">
 
@@ -57,7 +57,7 @@
 <!ENTITY maf.preferencesdialog.label.enablemafprotocol "Ativar Protocolo MAF">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Ativar a Escrita de Documento Manualmente">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alertar Quando Arquivo de Única Página Estiver Completo">
-<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Use alternative save component">
+<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Usar alternativa exceto o componente">
 
 <!ENTITY maf.preferencesdialog.btnbrowse "Procurar...">
 
@@ -68,7 +68,7 @@
 <!ENTITY maf.preferencesdialog.openmode.nothing "Nada a Fazer">
 
 <!ENTITY maf.preferencesdialog.openmode.urlrewrite "Reescrever Endereço do Arquivo">
-<!ENTITY maf.preferencesdialog.openmode.savexmeta "Savar Extended Meta-Data">
+<!ENTITY maf.preferencesdialog.openmode.savexmeta "Salvar Extended Meta-Data">
 
 <!ENTITY maf.preferencesdialog.openmode.defaultapp "Programa Padrão:">
 
@@ -88,8 +88,8 @@
 <!ENTITY maf.preferencesdialog.progs.archive "Arquivo Script:">
 <!ENTITY maf.preferencesdialog.progs.expand "Exibir Script:">
 
-<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiving">
-<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Expanding">
+<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Arquivando">
+<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Expandindo">
 
 <!ENTITY maf.preferencesdialog.btnloaddefault "Carregar Padrão">
 <!ENTITY maf.preferencesdialog.btnsave "salvar">

@@ -39,7 +39,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "URL locale">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Apri in schede">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Apri in schede using maf://">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Apri in schede quando si usa maf://">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Apri URL originali in schede">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Chiudi">
 
@@ -88,8 +88,8 @@
 <!ENTITY maf.preferencesdialog.progs.archive "Script di archiviazione:">
 <!ENTITY maf.preferencesdialog.progs.expand "Script di estrazione:">
 
-<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiving">
-<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Expanding">
+<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiviazione">
+<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Espansione">
 
 <!ENTITY maf.preferencesdialog.btnloaddefault "Carica predefiniti">
 <!ENTITY maf.preferencesdialog.btnsave "Salva">
