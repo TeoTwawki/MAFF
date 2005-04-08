@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright (c) 2004 Christopher Ottley.
+ *  Copyright (c) 2005 Christopher Ottley.
  *
  *  This file is part of MAF.
  *
@@ -133,9 +133,6 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
     persist.persistFlags &= ~nsIWBP.PERSIST_FLAGS_NO_CONVERSION;
 
 
-  // Create download and initiate it (below)
-  aData.dl = Components.classes["@mozilla.org/download;1"].createInstance(Components.interfaces.nsIDownload);
-
   if (isDocument && saveAsType != this.kSaveAsType_URL) {
     // Saving a Document, not a URI:
     var filesFolder = null;
@@ -160,56 +157,17 @@ foundHeaderInfo: function(aSniffer, aData, aSkipPrompt) {
     }
 
 
-    try {
-      // Save preference to show download window
-      var dwprefs = Components.classes["@mozilla.org/preferences-service;1"]
-                        .getService(Components.interfaces.nsIPrefService).getBranch("browser.download.manager.");
-
-      var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
-
-      // Set to false
-      dwprefs.setBoolPref("showWhenStarting", false);
-    } catch (e) {
-      // If the preference doesn't exist - eg. Mozilla
-    }
-
     const kWrapColumn = 80;
 
-    aData.dl.init(aSniffer.uri, persistArgs.target, null, null, null, persist);
     persist.progressListener = new DownloadArchiveStateListener(persist.progressListener, aData);
     persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
                          persistArgs.contentType, encodingFlags, kWrapColumn);
 
-
-    try {
-      // Return download window preference to saved value
-      dwprefs.setBoolPref("showWhenStarting", showWhenStarting);
-    } catch(e) {
-
-    }
-
   } else {
-    try {
-      // Save preference to show download window
-      var dwprefs = Components.classes["@mozilla.org/preferences-service;1"]
-                       .getService(Components.interfaces.nsIPrefService).getBranch("browser.download.manager.");
 
-      var showWhenStarting = dwprefs.getBoolPref("showWhenStarting");
-
-      // Set to false
-      dwprefs.setBoolPref("showWhenStarting", false);
-    } catch(e) { }
-
-    aData.dl.init(source, persistArgs.target, null, null, null, persist);
     persist.progressListener = new DownloadArchiveStateListener(persist.progressListener, aData);
     persist.saveURI(source, null, MafNativeFileSave.getReferrer(document), persistArgs.postData, null, persistArgs.target);
 
-    try {
-      // Return download window preference to saved value
-      dwprefs.setBoolPref("showWhenStarting", showWhenStarting);
-    } catch(e) {
-
-    }
   }
 
 
@@ -558,18 +516,22 @@ DownloadArchiveStateListener.prototype = {
 
   onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress,
                                 aCurTotalProgress, aMaxTotalProgress) {
-    this.listener.onProgressChange(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress,
-                                aCurTotalProgress, aMaxTotalProgress);
+    try {
+      this.listener.onProgressChange(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress,
+                                  aCurTotalProgress, aMaxTotalProgress);
+    } catch (pce) { }
   },
 
   onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
-    this.listener.onStateChange(aWebProgress, aRequest, aStateFlags, aStatus);
-
-    if (this.aData.dl.percentComplete == 100) {
+    if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP) {
       this.timer = Components.classes["@mozilla.org/timer;1"]
                       .createInstance(Components.interfaces.nsITimer);
       this.timer.initWithCallback(this, 100, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
     }
+
+    try {
+      this.listener.onStateChange(aWebProgress, aRequest, aStateFlags, aStatus);
+    } catch (sce) { }
   },
 
   notify: function(expiredtimer) {
@@ -580,15 +542,21 @@ DownloadArchiveStateListener.prototype = {
   },
 
   onLocationChange: function(aWebProgress, aRequest, aLocation) {
-    this.listener.onLocationChange(aWebProgress, aRequest, aLocation);
+    try {
+      this.listener.onLocationChange(aWebProgress, aRequest, aLocation);
+    } catch (lce) { }
   },
 
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
-    this.listener.onStatusChange(aWebProgress, aRequest, aStatus, aMessage);
+    try {
+      this.listener.onStatusChange(aWebProgress, aRequest, aStatus, aMessage);
+    } catch (sce) { }
   },
 
   onSecurityChange: function(aWebProgress, aRequest, aState) {
-    this.listener.onSecurityChange(aWebProgress, aRequest, aState);
+    try {
+      this.listener.onSecurityChange(aWebProgress, aRequest, aState);
+    } catch (sce) { }
   }
 }
 

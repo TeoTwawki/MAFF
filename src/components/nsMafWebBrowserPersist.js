@@ -102,9 +102,14 @@ MafWebBrowserPersistClass.prototype = {
     const nsIWBP = mafWebBrowserPersistIID;
 
     if (this.progressListener != null) {
-      this.progressListener.onProgressChange(null, null, 1, 100, 1, 100);
-      this.currentState = nsIWBP.PERSIST_STATE_READY;
-      this.progressListener.onStateChange(null, null, nsIWPL.STATE_IS_NETWORK | nsIWPL.STATE_START, null);
+      try {
+        this.progressListener.onProgressChange(null, null, 1, 100, 1, 100);
+      } catch (e) {  }
+
+        this.currentState = nsIWBP.PERSIST_STATE_READY;
+      try {
+        this.progressListener.onStateChange(null, null, nsIWPL.STATE_IS_NETWORK | nsIWPL.STATE_START, null);
+      } catch (e) {  }
     }
 
     var indexFile = file.QueryInterface(Components.interfaces.nsIFileURL).file;
@@ -119,6 +124,7 @@ MafWebBrowserPersistClass.prototype = {
 
     this.dataPathFile = dataPathFile;
     this.dataPathStr = dataPathStr;
+
 
     // Copy the DOM and modify the links to point to locally saved files
     var rootNode = document.getElementsByTagName("html")[0].cloneNode(true);
@@ -170,7 +176,6 @@ MafWebBrowserPersistClass.prototype = {
 
       MafUtils.createFile(MafUtils.appendToDir(dataPathFile.path, "mafindex.css"), mafCSScontent);
     }
-
 
     if (this.progressListener != null) {
 
@@ -703,9 +708,15 @@ saveTimerState.prototype = {
     if (this.parent.request <= 0) {
 
       if (this.parent.progressListener != null) {
-        this.parent.progressListener.onProgressChange(null, null, 100, 100, 100, 100);
+        try {
+          this.parent.progressListener.onProgressChange(null, null, 100, 100, 100, 100);
+        } catch (e) {  }
+
         this.parent.currentState = nsIWBP.PERSIST_STATE_FINISHED;
-        this.parent.progressListener.onStateChange(null, null, nsIWPL.STATE_IS_NETWORK | nsIWPL.STATE_STOP, null);
+
+        try {
+          this.parent.progressListener.onStateChange(null, null, nsIWPL.STATE_IS_NETWORK | nsIWPL.STATE_STOP, null);
+        } catch (e) {  }
       }
       this.parent.timer.cancel();
 

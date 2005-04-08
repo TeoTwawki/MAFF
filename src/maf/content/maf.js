@@ -42,6 +42,7 @@
  * Fixed bug 9303 - Removed .bin extension from being appended for unknown file types.
  * Fixed bug 9630 - Non latin character set filenames in "Save Page As..." dialog now show up in unicode.
  * Fixed bug 9629 - Relative content locations misses resources when MAF file optimization is on.
+ * Changed native download code so shouldn't have to work offline to a save some pages.
  *
  *
  * Changes from 0.4.3 to 0.5.0
