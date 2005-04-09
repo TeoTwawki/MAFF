@@ -1399,7 +1399,8 @@ function getDefaultFileName(aDefaultFileName, aNameFromHeaders, aDocumentURI, aD
 
     var uctitle = aDocument.title;
 
-    if (aDocument.characterSet != "UTF-8") {
+    if ((aDocument.characterSet != "UTF-8") &&
+        (aDocument.characterSet != "windows-1251")) { // Bug 9630
       // Convert
       try {
         var uconv = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
