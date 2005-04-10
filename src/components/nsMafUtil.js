@@ -150,36 +150,29 @@ MafUtilServiceClass.prototype = {
   },
 
   /**
-   * Create binary file
+   * Copy binary file
    */
   copyBinaryFile: function(source, fileToCreate) {
     try {
-      var oFile = Components.classes["@mozilla.org/file/local;1"]
-                     .createInstance(Components.interfaces.nsILocalFile);
-      oFile.initWithPath(fileToCreate);
-      if (!oFile.exists()) {
-        oFile.create(0x00, 0644);
+      var sourceFile = Components.classes["@mozilla.org/file/local;1"]
+                         .createInstance(Components.interfaces.nsILocalFile);
+      sourceFile.initWithPath(source);
+
+      if (sourceFile.exists()) {
+
+        try {
+          var destFile = Components.classes["@mozilla.org/file/local;1"]
+                        .createInstance(Components.interfaces.nsILocalFile);
+          destFile.initWithPath(fileToCreate);
+
+          if (!destFile.exists()) {
+            sourceFile.copyTo(destFile.parent, destFile.leafName);
+          }
+        } catch (e) { }
+
       }
-    } catch (e) {
-      mafdebug(e);
-    }
 
-    try {
-      var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                          .createInstance(Components.interfaces.nsIFileOutputStream);
-      oTransport.init( oFile, 0x04 | 0x08 | 0x10, 064, 0 );
-
-      var obj_BinaryIO = Components.classes["@mozilla.org/binaryoutputstream;1"]
-                           .createInstance(Components.interfaces.nsIBinaryOutputStream);
-      obj_BinaryIO.setOutputStream(oTransport);
-
-      var contents = this.readBinaryFile(source);
-
-      obj_BinaryIO.writeByteArray(contents, contents.length);
-      oTransport.close();
-    } catch (e) {
-      mafdebug(e);
-    }
+    } catch (se) { }
   },
 
 

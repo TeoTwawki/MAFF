@@ -43,6 +43,7 @@
  * Fixed bug 9630 - Non latin character set filenames in "Save Page As..." dialog now show up in unicode.
  * Fixed bug 9629 - Relative content locations misses resources when MAF file optimization is on.
  * Changed native download code so shouldn't have to work offline to a save some pages.
+ * Reverted bug fix 9630 and now only latin character set filenames appear in the dialog by default.
  *
  *
  * Changes from 0.4.3 to 0.5.0
@@ -1389,6 +1390,24 @@ function foundHeaderInfo(aSniffer, aData, aSkipPrompt)
   // ** MAF Addition end
 }
 
+
+/**
+* Remove any non-ascii chars from result string
+*/
+function removeDoubleByteChars(strWithDoubleByteChars) {
+  var result = "";
+
+  if (strWithDoubleByteChars) {
+    for (var i=0; i<strWithDoubleByteChars.length; i++) {
+      if (strWithDoubleByteChars.charCodeAt(i) < 256) {
+        result += strWithDoubleByteChars[i];
+      }
+    }
+  }
+
+  return result;
+}
+
 /**
  * Redefined to check the document title first and then the headers.
  * Not re-numbered in comments to show original position.
@@ -1397,19 +1416,10 @@ function getDefaultFileName(aDefaultFileName, aNameFromHeaders, aDocumentURI, aD
 {
   if (aDocument) {
 
-    var uctitle = aDocument.title;
+    var uctitle = removeDoubleByteChars(aDocument.title);
 
-    if ((aDocument.characterSet != "UTF-8") &&
-        (aDocument.characterSet != "windows-1251")) { // Bug 9630
-      // Convert
-      try {
-        var uconv = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-                      .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-        uconv.charset = "UTF-8";
-        uctitle = uconv.ConvertToUnicode(aDocument.title);
-      } catch (e) {
-        // Error converting to unicode - Might be in unicode already
-      }
+    if (uctitle != aDocument.title) {
+      uctitle = uctitle.replace(/\||:|-|,|\.|_/g, " ");
     }
 
     var docTitle = validateFileName(uctitle).replace(/^\s+|\s+$/g, "");

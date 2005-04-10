@@ -118,8 +118,32 @@ MAFGuiHandlerClass.prototype = {
   },
 
 
+  /**
+   * Remove any non-ascii chars from result string
+   */
+  removeDoubleByteChars: function(strWithDoubleByteChars) {
+    var result = "";
+
+    if (strWithDoubleByteChars) {
+      for (var i=0; i<strWithDoubleByteChars.length; i++) {
+        if (strWithDoubleByteChars.charCodeAt(i) < 256) {
+          result += strWithDoubleByteChars[i];
+        }
+      }
+    }
+
+    return result;
+  },
+
   addAllTabsToArchive: function(Maf) {
-    var defaultFileName = MafUtils.validateFileName(this.window.getBrowser().selectedBrowser.contentDocument.title);
+
+    var title = this.removeDoubleByteChars(this.window.getBrowser().selectedBrowser.contentDocument.title);
+
+    if (title != this.window.getBrowser().selectedBrowser.contentDocument.title) {
+      title = title.replace(/\||:|-|,|\.|_/g, " ");
+    }
+
+    var defaultFileName = MafUtils.validateFileName(title).replace(/^\s+|\s+$/g, "");
 
     var archiveToAddTo = this.selectFileSave(defaultFileName);
 
@@ -130,7 +154,14 @@ MAFGuiHandlerClass.prototype = {
   },
 
   addToArchive: function(Maf) {
-    var defaultFileName = MafUtils.validateFileName(this.window.getBrowser().selectedBrowser.contentDocument.title);
+
+    var title = this.removeDoubleByteChars(this.window.getBrowser().selectedBrowser.contentDocument.title);
+
+    if (title != this.window.getBrowser().selectedBrowser.contentDocument.title) {
+      title = title.replace(/\||:|-|,|\.|_/g, " ");
+    }
+
+    var defaultFileName = MafUtils.validateFileName(title).replace(/^\s+|\s+$/g, "");
 
     var archiveToAddTo = this.selectFileSave(defaultFileName);
 
@@ -305,9 +336,10 @@ MAFGuiHandlerClass.prototype = {
       fp.filterIndex = defaultFilterIndex;
     } catch(e) { }
 
-    var res=fp.show();
+    var res = fp.show();
     if (res == Components.interfaces.nsIFilePicker.returnOK ||
         res == Components.interfaces.nsIFilePicker.returnReplace) {
+      fp.fileURL.file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 777);
       return [fp.file, fp.filterIndex];
     } else { // Cancelled
       return [null, 0];

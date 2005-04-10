@@ -106,7 +106,7 @@ MafArchiverClass.prototype = {
 
   onDownloadComplete: function() {
     var tempArchiveFolder = MafUtils.appendToDir(this.tempPath, this.folderNumber);
-    
+
     if (MafUtils.checkFileExists(MafUtils.appendToDir(tempArchiveFolder, this.indexfilename))) {
 
         var ocHandler = new MafArchiverOnComplete();
