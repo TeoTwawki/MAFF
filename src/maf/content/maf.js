@@ -44,6 +44,8 @@
  * Fixed bug 9629 - Relative content locations misses resources when MAF file optimization is on.
  * Changed native download code so shouldn't have to work offline to a save some pages.
  * Reverted bug fix 9630 and now only latin character set filenames appear in the dialog by default.
+ * Added German locale by Ralph Ulrich.
+ * Added Save Tabs in Archive context menu entry.
  *
  *
  * Changes from 0.4.3 to 0.5.0

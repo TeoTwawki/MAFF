@@ -97,6 +97,12 @@
 
   <!-- Common popup menu -->
   <popup id="contentAreaContextMenu">
+    <menuitem id="maf-save-selected-tabs-archive"
+               label="&maf.addSelectedTabsToArchive;..."
+               oncommand="MafGUI.addSelectedTabsToArchive(Maf);"
+               insertafter="context-savepage"
+               accesskey="&maf.addSelectedTabsToArchiveKey;" />
+
     <menuitem id="maf-save-in-archive-menuitem"
                label="&maf.addToArchive;..."
                oncommand="MafGUI.addToArchive(Maf);"
