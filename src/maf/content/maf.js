@@ -46,6 +46,7 @@
  * Reverted bug fix 9630 and now only latin character set filenames appear in the dialog by default.
  * Added German locale by Ralph Ulrich.
  * Added Save Tabs in Archive context menu entry.
+ * Added select all and clear selection buttons to Save Tabs in Archive dialog.
  *
  *
  * Changes from 0.4.3 to 0.5.0

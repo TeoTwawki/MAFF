@@ -100,6 +100,8 @@
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Titre">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
 <!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Sauvegarder la sélection dans l'archive">
+<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
+<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Fermer">
 
 <!ENTITY maf.browseOpenArchivesAccessKey "R">

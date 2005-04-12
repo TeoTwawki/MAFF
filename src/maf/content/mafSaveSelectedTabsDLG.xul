@@ -113,6 +113,23 @@ function serialize(originalDatasource){
   browserWindow.alert(outputstream.content);
 };
 
+/**
+* Remove any non-ascii chars from result string
+*/
+function removeDoubleByteChars(strWithDoubleByteChars) {
+  var result = "";
+
+  if (strWithDoubleByteChars) {
+    for (var i=0; i<strWithDoubleByteChars.length; i++) {
+      if (strWithDoubleByteChars.charCodeAt(i) < 256) {
+        result += strWithDoubleByteChars[i];
+      }
+    }
+  }
+
+  return result;
+}
+
   function saveSelectedTabsInArchive(urlsource) {
     try {
       var start = new Object();
@@ -122,8 +139,6 @@ function serialize(originalDatasource){
       var browserList = new Array();
 
       // Construct browser array with matching indexes
-      mafdebug("Constructing browser array with matching indexes");
-
       for (var t=0; t < numRanges; t++) {
         document.getElementById("open-tabs-tree").view.selection.getRangeAt(t,start,end);
         for (var v=start.value; v <= end.value; v++) {
@@ -133,10 +148,8 @@ function serialize(originalDatasource){
 
       // If there's something selected
       if (browserList.length > 0) {
-        mafdebug("There is something selected");
-
-        var defaultFileName = ""
-        // MafUtils.validateFileName(browserWindow.getBrowser().selectedBrowser.contentDocument.title);
+        var defaultFileName = MafUtils.validateFileName(
+                                  removeDoubleByteChars(browserWindow.getBrowser().selectedBrowser.contentDocument.title));
 
         var indexAndArchivePath = MafGUI.selectFileSaveArchive(defaultFileName);
 
@@ -162,6 +175,18 @@ function serialize(originalDatasource){
     }
   }
 
+
+  function selectAll() {
+    try {
+      document.getElementById("open-tabs-tree").view.selection.selectAll();
+    } catch (e) {  }
+  }
+
+  function clearSelection() {
+    try {
+      document.getElementById("open-tabs-tree").view.selection.clearSelection();
+    } catch (e) {  }
+  }
 
 
 ]]></script>
@@ -194,6 +219,10 @@ function serialize(originalDatasource){
   <hbox>
     <button id="maf-savetabs-orig-button" label="&maf.saveSelectedTabsDialog.btnsaveselected;"
              oncommand="saveSelectedTabsInArchive('originalurl');"/>
+    <button id="maf-select-all-button" label="&maf.saveSelectedTabsDialog.btnselectall;"
+             oncommand="selectAll();"/>
+    <button id="maf-clear-selection-button" label="&maf.saveSelectedTabsDialog.btnclearselection;"
+             oncommand="clearSelection();"/>
     <spacer flex="1"/>
     <button id="maf-savetabs-close-button" label="&maf.saveSelectedTabsDialog.btnclose;" oncommand="window.close();"/>
   </hbox>
