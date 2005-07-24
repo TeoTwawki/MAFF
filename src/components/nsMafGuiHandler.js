@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.5.1
+ * Version: 0.6.0
  *
  * Author: Christopher Ottley
  *
@@ -339,7 +339,6 @@ MAFGuiHandlerClass.prototype = {
     var res = fp.show();
     if (res == Components.interfaces.nsIFilePicker.returnOK ||
         res == Components.interfaces.nsIFilePicker.returnReplace) {
-      fp.fileURL.file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 777);
       return [fp.file, fp.filterIndex];
     } else { // Cancelled
       return [null, 0];

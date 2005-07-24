@@ -1,4 +1,4 @@
-initInstall("Mozilla Archive Format","/Christopher Ottley/Mozilla Archive Format","0.5.1");
+initInstall("Mozilla Archive Format","/Christopher Ottley/Mozilla Archive Format","0.6.0");
 
 var jarFile = "maf.jar";
 
@@ -29,7 +29,7 @@ var componentsDir = getFolder("Components");  //getFolder("Profile", "components
 setPackageFolder(componentsDir);
 
 // add the components and typelib
-addFile("components/maf.0.5.1.xpt");
+addFile("components/maf.0.6.0.xpt");
 addFile("components/nsMafArchivePostProcessor.js");
 addFile("components/nsMafArchiver.js");
 addFile("components/nsMafBlockingObserverService.js");
@@ -47,6 +47,12 @@ addFile("components/nsMafTabArchiver.js");
 addFile("components/nsMafTabExpander.js");
 addFile("components/nsMafUtil.js");
 
+// Add the ZipWriter component
+addFile("components/IZipWriterComponent.xpt");
+addFile("components/ZipWriterComponent.dll");
+addFile("components/ZipWriterComponent.so");
+
+
 var tempDir = getFolder("Preferences");
 
 var mafScriptFolder = getFolder(tempDir,"maf");
@@ -56,22 +62,13 @@ var mafTempFolder = getFolder(mafScriptFolder, "maftemp");
 File.dirCreate(mafTempFolder);
 
 setPackageFolder(mafScriptFolder);
-addFile("scripts/mafzip.sh");
-addFile("scripts/mafunzip.sh");
-addFile("scripts/mafzip.bat");
-addFile("scripts/mafunzip.bat");
-addFile("scripts/invis.vbs");
-addFile("scripts/unzip.exe");
-addFile("scripts/zip.exe");
-addFile("scripts/zip.license.txt");
 addFile("scripts/setmafffiletype.vbs");
-addFile("scripts/setmaffiletype.vbs");
 addFile("scripts/setmhtfiletype.vbs");
 addFile("scripts/unsetallfiletypes.vbs");
 
 var err = performInstall();
 if (err == SUCCESS || err == 999) {
-  alert("MAF 0.5.1 is now installed.\nPlease restart your browser to activate it.");
+  alert("MAF 0.6.0 is now installed.\nPlease restart your browser to activate it.");
 } else {
   alert("Install failed. Error code:" + err + "\nTry installing it again");
 }

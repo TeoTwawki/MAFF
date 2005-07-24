@@ -12,7 +12,7 @@
         chrome:displayName="MAF"
         chrome:author="Christopher Ottley"
         chrome:authorURL="http://maf.mozdev.org/"
-        chrome:packageVersion="0.5.1"
+        chrome:packageVersion="0.6.0"
         chrome:extension="true"
         chrome:description="Save complete web pages in a single file"
         chrome:settingsURL="chrome://maf/content/mafPreferencesDLG.xul"

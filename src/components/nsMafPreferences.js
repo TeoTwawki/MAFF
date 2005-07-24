@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.5.1
+ * Version: 0.6.0
  *
  * Author: Christopher Ottley
  *
@@ -448,11 +448,11 @@ MafPreferencesServiceClass.prototype = {
       if (navigatorUserAgent.indexOf("Windows") == -1) {
         result.temp = mafParentDir + "/maf/maftemp/";
         result.programExtensions[result.programExtensions.length] = [
-           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.zip.maf", "*.maf.zip"]];
+           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.maff.zip"]];
       } else {
         result.temp = mafParentDir + "\\maf\\maftemp\\";
         result.programExtensions[result.programExtensions.length] = [
-           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.zip.maf", "*.maf.zip"]];
+           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.maff.zip"]];
         result.win_wscriptexe = "c:\\windows\\system32\\wscript.exe",
         result.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
       };
@@ -498,11 +498,11 @@ MafPreferencesServiceClass.prototype = {
       if (navigatorUserAgent.indexOf("Windows") == -1) {
         this.temp = mafParentDir + "/maf/maftemp/";
         this.programExtensions[this.programExtensions.length] = [
-           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.zip.maf", "*.maf.zip"]];
+           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.maff.zip"]];
       } else {
         this.temp = mafParentDir + "\\maf\\maftemp\\";
         this.programExtensions[this.programExtensions.length] = [
-           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.zip.maf", "*.maf.zip"]];
+           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.maff.zip"]];
         this.win_wscriptexe = "c:\\windows\\system32\\wscript.exe",
         this.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
       };

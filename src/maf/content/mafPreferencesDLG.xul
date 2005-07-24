@@ -62,9 +62,9 @@
 
     document.getElementById("chkURLRewrite").checked = MafPreferences.urlRewrite;
     document.getElementById("chkSaveExtended").checked = MafPreferences.saveExtendedMetadata;
-    document.getElementById("winChkRunInvisible").checked = MafPreferences.win_invisible;
+    //document.getElementById("winChkRunInvisible").checked = MafPreferences.win_invisible;
     document.getElementById("winWscriptLoc").value = MafPreferences.win_wscriptexe;
-    document.getElementById("winInvisVbsLoc").value = MafPreferences.win_invisiblevbs;
+    //document.getElementById("winInvisVbsLoc").value = MafPreferences.win_invisiblevbs;
     document.getElementById("chkClearTempOnClose").checked = MafPreferences.clearTempOnClose;
     document.getElementById("chkEnableMafProtocol").checked = MafPreferences.enableMafProtocol;
     document.getElementById("chkAddDocumentWriteOverride").checked = MafPreferences.addDocumentWriteOverride;
@@ -77,8 +77,8 @@
 
     var mprec = MafPreferences.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
 
-    document.getElementById("txtArchiveScript").value = mprec.archivescript;
-    document.getElementById("txtExpandScript").value = mprec.extractscript;
+    //document.getElementById("txtArchiveScript").value = mprec.archivescript;
+    //document.getElementById("txtExpandScript").value = mprec.extractscript;
   }
 
 
@@ -95,9 +95,9 @@
 
     document.getElementById("chkURLRewrite").checked = mpd.urlRewrite;
     document.getElementById("chkSaveExtended").checked = mpd.saveExtendedMetadata;
-    document.getElementById("winChkRunInvisible").checked = mpd.win_invisible;
+    //document.getElementById("winChkRunInvisible").checked = mpd.win_invisible;
     document.getElementById("winWscriptLoc").value = mpd.win_wscriptexe;
-    document.getElementById("winInvisVbsLoc").value = mpd.win_invisiblevbs;
+    //document.getElementById("winInvisVbsLoc").value = mpd.win_invisiblevbs;
     document.getElementById("chkClearTempOnClose").checked = mpd.clearTempOnClose;
     document.getElementById("chkEnableMafProtocol").checked = mpd.enableMafProtocol;
     document.getElementById("chkAddDocumentWriteOverride").checked = mpd.addDocumentWriteOverride;
@@ -110,8 +110,8 @@
 
     var mprec = mpd.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
 
-    document.getElementById("txtArchiveScript").value = mprec.archivescript;
-    document.getElementById("txtExpandScript").value = mprec.extractscript;
+    //document.getElementById("txtArchiveScript").value = mprec.archivescript;
+    //document.getElementById("txtExpandScript").value = mprec.extractscript;
 
   }
 
@@ -119,11 +119,11 @@
   function checkWinOnlyPrefs() {
     // If not windows, disable windows only preferences
     if (navigator.userAgent.indexOf("Windows") == -1) {
-      document.getElementById("winChkRunInvisible").disabled = true;
+      //document.getElementById("winChkRunInvisible").disabled = true;
       document.getElementById("winWscriptLoc").disabled = true;
       document.getElementById("btnBrowseWinScript").disabled = true;
-      document.getElementById("winInvisVbsLoc").disabled = true;
-      document.getElementById("btnBrowseInvisVbs").disabled = true;
+      //document.getElementById("winInvisVbsLoc").disabled = true;
+      //document.getElementById("btnBrowseInvisVbs").disabled = true;
       document.getElementById("winChkAssociateWithMAFF").disabled = true;
       document.getElementById("winChkAssociateWithMHT").disabled = true;
     }
@@ -143,8 +143,8 @@
     MafPreferences.urlRewrite = document.getElementById("chkURLRewrite").checked;
     MafPreferences.saveExtendedMetadata = document.getElementById("chkSaveExtended").checked;
     MafPreferences.win_wscriptexe = document.getElementById("winWscriptLoc").value;
-    MafPreferences.win_invisiblevbs = document.getElementById("winInvisVbsLoc").value;
-    MafPreferences.win_invisible = document.getElementById("winChkRunInvisible").checked;
+    //MafPreferences.win_invisiblevbs = document.getElementById("winInvisVbsLoc").value;
+    //MafPreferences.win_invisible = document.getElementById("winChkRunInvisible").checked;
     MafPreferences.clearTempOnClose = document.getElementById("chkClearTempOnClose").checked;
     MafPreferences.enableMafProtocol = document.getElementById("chkEnableMafProtocol").checked;
     MafPreferences.addDocumentWriteOverride = document.getElementById("chkAddDocumentWriteOverride").checked;
@@ -157,8 +157,8 @@
 
     var mprec = MafPreferences.getRecordAt(0);
 
-    mprec.archivescript = document.getElementById("txtArchiveScript").value;
-    mprec.extractscript = document.getElementById("txtExpandScript").value;
+    //mprec.archivescript = document.getElementById("txtArchiveScript").value;
+    //mprec.extractscript = document.getElementById("txtExpandScript").value;
 
     MafPreferences.updateRecordAt(0, mprec);
 
@@ -245,7 +245,6 @@
 <tabbox flex="1">
   <tabs>
     <tab label="&maf.preferencesdialog.tabsoptions;" selected="true"/>
-    <tab label="&maf.preferencesdialog.tabsregprogs;"/>
     <tab label="&maf.preferencesdialog.tabswinoptions;"/>
     <tab label="&maf.preferencesdialog.tabadvanced;" />
   </tabs>
@@ -273,23 +272,22 @@
        </radiogroup>
      </groupbox>
 
-     <hbox>
+     <!-- hbox>
        <label control="selDefaultApp" value="&maf.preferencesdialog.openmode.defaultapp;"/>
        <menulist id="selDefaultApp">
          <menupopup>
            <menuitem label="Zip" selected="true"/>
          </menupopup>
        </menulist>
-     </hbox>
+     </hbox -->
      </groupbox>
    </tabpanel>
 
-   <tabpanel id="registeredprogramspanel" orient="vertical">
+   <!-- tabpanel id="registeredprogramspanel" orient="vertical">
      <description>
        &maf.preferencesdialog.progs.description;
      </description>
 
-     <!-- label: drop down box with all the formats (zip, 7z, etc)-->
      <tabbox flex="1">
        <tabs>
          <tab label="Zip"/>
@@ -306,14 +304,12 @@
            <label control="txtExpandScript" value="&maf.preferencesdialog.progs.expand;"/>
            <textbox id="txtExpandScript" flex="1" />
            <button label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('txtExpandScript', '*.*')" />
-         </hbox>
-
-         <!-- TODO: Add extension control *.maf.zip for example -->
+         </hbox>        
 
          </vbox>
        </tabpanel>
      </tabbox>
-   </tabpanel>
+   </tabpanel -->
 
    <tabpanel id="windowsspecificoptionspanel" orient="vertical">
      <description>
@@ -325,17 +321,17 @@
        <caption label="&maf.preferencesdialog.winop.label;" />
      </groupbox>
      -->
-       <checkbox id="winChkRunInvisible" checked="false" label="&maf.preferencesdialog.winop.usevbs;" />
+       <!-- checkbox id="winChkRunInvisible" checked="false" label="&maf.preferencesdialog.winop.usevbs;" / -->
        <hbox>
          <label control="winWscriptLoc" value="&maf.preferencesdialog.winop.wscript;"/>
          <textbox id="winWscriptLoc" flex="1"/>
          <button id="btnBrowseWinScript" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winWscriptLoc', 'wscript.exe')"/>
        </hbox>
-       <hbox>
+       <!-- hbox>
          <label control="winInvisVbsLoc" value="&maf.preferencesdialog.winop.invis;"/>
          <textbox id="winInvisVbsLoc" flex="1"/>
          <button id="btnBrowseInvisVbs" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winInvisVbsLoc', 'invis.vbs')"/>
-       </hbox>
+       </hbox -->
 
        <groupbox>
          <caption label="&maf.preferencesdialog.winop.filetypelabel;" />

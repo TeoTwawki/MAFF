@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.5.1
+ * Version: 0.6.0
  *
  * Author: Christopher Ottley
  *
@@ -120,6 +120,8 @@ MAFProtocol.prototype = {
   },
 
   openArchiveURI: function(uri) {
+    var resultURI = uri;
+     
     var loadURIMafRegExp = new RegExp(MafPreferences.getOpenFilterRegEx(), "i");
 
      if (uri.match(loadURIMafRegExp)) {
@@ -133,11 +135,13 @@ MAFProtocol.prototype = {
            var file = ouri.QueryInterface(Components.interfaces.nsIFileURL).file;
          } catch(e) {
            // It wasn't a URL of the form file://, let's try again, shall we?
+           
            try {
              var file = Components.classes["@mozilla.org/file/local;1"]
                            .createInstance(Components.interfaces.nsILocalFile);
              file.initWithPath(uri);
            } catch(ex) {
+             
              // Give up
              mafdebug(MafStrBundle.GetStringFromName("mafprotocolloadhasgivenup") + ex);
            }
@@ -161,17 +165,20 @@ MAFProtocol.prototype = {
 
             try {
               // Open as a MAF with registered filter
-              this.openFromArchive(MafPreferences.temp,
-                              MafPreferences.programFromOpenIndex(filterIndex), localFilePath);
+              resultURI = this.openFromArchive(MafPreferences.temp,
+                                MafPreferences.programFromOpenIndex(filterIndex), localFilePath);                             
             } catch(e) {
-
+              mafdebug(e);
             }
           }
      }
+     
+     return resultURI;
   },
 
 
   openFromArchive: function(tempPath, scriptPath, archivePath) {
+    var resultURI = "";
     var dateTimeExpanded = new Date();
 
     var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random()*1000);
@@ -187,6 +194,9 @@ MAFProtocol.prototype = {
 
     MafBlockingObserver.notifyObservers(null, "maf-open-archive-complete", MafUtils.appendToDir(tempPath, folderNumber));
     MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
+    
+    resultURI = MafUtils.getURIFromFilename(archivePath);
+    return resultURI;
   },
 
   /**
@@ -202,60 +212,57 @@ MAFProtocol.prototype = {
 
       MafMHTHandler.extractArchive(archivefile, realDestPath);
     } else {
-      /** If program is nothing then don't try to run it. */
-      if (program.trim() != "") {
-        if (MafPreferences.win_invisible) {
-          // If wscript and vbs for invisible running exist
-          if (MafPreferences.win_wscriptexe.trim() != "" &&
-              MafPreferences.win_invisiblevbs.trim() != "" &&
-              MafUtils.checkFileExists(MafPreferences.win_wscriptexe) &&
-              MafUtils.checkFileExists(MafPreferences.win_invisiblevbs)) {
-            localProgram = MafPreferences.win_wscriptexe;
-            localProgramArgs = new Array();
-            localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
-            localProgramArgs[localProgramArgs.length] = program;
-          } else {
-            localProgram = program;
-            localProgramArgs = new Array();
-          }
-        } else {
-          localProgram = program;
-          localProgramArgs = new Array();
-        }
+      var oArchivefile = Components.classes["@mozilla.org/file/local;1"]
+                             .createInstance(Components.interfaces.nsILocalFile);
+      oArchivefile.initWithPath(archivefile);
 
-        try {
-          var oProgram = Components.classes["@mozilla.org/file/local;1"]
-                           .createInstance(Components.interfaces.nsILocalFile);
-          oProgram.initWithPath(localProgram);
-        } catch(e) {
-          mafdebug(MafStrBundle.GetStringFromName("couldnotfindprogram") + program + " \n" + e);
-        }
-
-        try {
-          var oProcess = Components.classes["@mozilla.org/process/util;1"]
-                           .createInstance(Components.interfaces.nsIProcess);
-        } catch (e) {
-          mafdebug(MafStrBundle.GetStringFromName("couldnotcreateprocess") + e);
-        }
-
-        oProcess.init(oProgram);
-
-        localProgramArgs[localProgramArgs.length] = archivefile;
-        localProgramArgs[localProgramArgs.length] = destpath;
-
-        this._arguments2Native(localProgramArgs);
-
-        oProcess.run(true, localProgramArgs, localProgramArgs.length);
-
-        var obs = Components.classes["@mozilla.org/observer-service;1"]
-                     .getService(Components.interfaces.nsIObserverService);
-
-        var observerData = new Array();
-        observerData[observerData.length] = oProcess.exitValue;
-        observerData[observerData.length] = destpath;
-
-        obs.notifyObservers(null, "maf-extract-finished", observerData);
+      var oDestpath = Components.classes["@mozilla.org/file/local;1"]
+                             .createInstance(Components.interfaces.nsILocalFile);
+      oDestpath.initWithPath(destpath);
+          
+      if (!oDestpath.exists() || !oDestpath.isDirectory()) {
+        oDestpath.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
       }
+      
+      var zipReader = Components.classes["@mozilla.org/libjar/zip-reader;1"]
+                        .createInstance(Components.interfaces.nsIZipReader);
+      zipReader.init(oArchivefile);
+      zipReader.open();
+
+      var it = zipReader.findEntries("*");
+      while (it.hasMoreElements()) {
+        var entry = it.getNext();
+        entry = entry.QueryInterface(Components.interfaces.nsIZipEntry);	
+
+        var oDestpathentry = Components.classes["@mozilla.org/file/local;1"]
+                          .createInstance(Components.interfaces.nsILocalFile);
+        oDestpathentry.initWithPath(destpath);
+        oDestpathentry.setRelativeDescriptor(oDestpath, entry.name);
+        
+        if (entry.name.endsWith("/")) {
+          // Folder
+          //alert("Extracting " + entry.name);
+          if (!oDestpathentry.exists() || !oDestpathentry.isDirectory()) {
+            oDestpathentry.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
+          }          
+        } else {
+          //alert("Extracting " + entry.name);
+          if (!oDestpathentry.parent.exists() || !oDestpathentry.parent.isDirectory()) {
+            oDestpathentry.parent.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
+          }
+          zipReader.extract(entry.name, oDestpathentry);        
+        }
+      }
+      zipReader.close();     
+       
+      var obs = Components.classes["@mozilla.org/observer-service;1"]
+                   .getService(Components.interfaces.nsIObserverService);      
+                   
+      var observerData = new Array();
+      observerData[observerData.length] = 0; // Error code
+      observerData[observerData.length] = destpath;
+
+      obs.notifyObservers(null, "maf-extract-finished", observerData); 
     }
   },
 
@@ -417,10 +424,11 @@ MAFProtocol.prototype = {
 
           if (!MafState.isArchiveURIOpen(requestURI)) {
             // Open it!
-            this.openArchiveURI(requestURI);
+            requestURI = this.openArchiveURI(requestURI);
           }
 
           if (MafState.isArchiveURIOpen(requestURI)) {
+            
             var destPath = "";
 
             if (this.isMhtArchive(requestURI)) {
@@ -552,6 +560,10 @@ String.prototype.trim = function() {
 
 String.prototype.startsWith = function(needle) {
   return (this.substring(0, needle.length) == needle);
+};
+
+String.prototype.endsWith = function(needle) {
+  return (this.substring(this.length - needle.length, this.length) == needle);
 };
 
 var MAFProtocolFactory = new Object();

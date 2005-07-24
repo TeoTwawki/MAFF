@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.5.1
+ * Version: 0.6.0
  *
  * Author: Christopher Ottley
  *
@@ -30,6 +30,16 @@
  * TODO: Add save frame functionality to alternative save component.
  */
 /**
+ * Changes from 0.5.1 to 0.6.0
+ *
+ * Added xpcom zip writer component.
+ * Extract now uses zip reader component.
+ * Removed zip and unzip executables and related scripts (.bat and .sh).
+ * Added Mozilla 1.8 compatible tree column selector for browse open archives.
+ * Made the maf protocol a bit more forgiving of bad uris.
+ * Removed some preference GUI elements (specifying script locations mafzip, mafunzip and invis.vbs).
+ * Removed second zip maf extension and changed remaining extension mask to *.maff.zip.
+ *
  *
  * Changes from 0.5.0 to 0.5.1
  *
@@ -198,60 +208,57 @@ maf.prototype = {
 
       MafMHTHandler.extractArchive(archivefile, realDestPath);
     } else {
-      /** If program is nothing then don't try to run it. */
-      if (program.trim() != "") {
-        if (MafPreferences.win_invisible) {
-          // If wscript and vbs for invisible running exist
-          if (MafPreferences.win_wscriptexe.trim() != "" &&
-              MafPreferences.win_invisiblevbs.trim() != "" &&
-              MafUtils.checkFileExists(MafPreferences.win_wscriptexe) &&
-              MafUtils.checkFileExists(MafPreferences.win_invisiblevbs)) {
-            localProgram = MafPreferences.win_wscriptexe;
-            localProgramArgs = new Array();
-            localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
-            localProgramArgs[localProgramArgs.length] = program;
-          } else {
-            localProgram = program;
-            localProgramArgs = new Array();
-          }
-        } else {
-          localProgram = program;
-          localProgramArgs = new Array();
-        }
+      var oArchivefile = Components.classes["@mozilla.org/file/local;1"]
+                             .createInstance(Components.interfaces.nsILocalFile);
+      oArchivefile.initWithPath(archivefile);
 
-        try {
-          var oProgram = Components.classes["@mozilla.org/file/local;1"]
-                           .createInstance(Components.interfaces.nsILocalFile);
-          oProgram.initWithPath(localProgram);
-        } catch(e) {
-          mafdebug(MafStrBundle.GetStringFromName("couldnotfindprogram") + program + " \n" + e);
-        }
-
-        try {
-          var oProcess = Components.classes["@mozilla.org/process/util;1"]
-                           .createInstance(Components.interfaces.nsIProcess);
-        } catch (e) {
-          mafdebug(MafStrBundle.GetStringFromName("couldnotcreateprocess") + e);
-        }
-
-        oProcess.init(oProgram);
-
-        localProgramArgs[localProgramArgs.length] = archivefile;
-        localProgramArgs[localProgramArgs.length] = destpath;
-
-        this._arguments2Native(localProgramArgs);
-
-        oProcess.run(true, localProgramArgs, localProgramArgs.length);
-
-        var obs = Components.classes["@mozilla.org/observer-service;1"]
-                     .getService(Components.interfaces.nsIObserverService);
-
-        var observerData = new Array();
-        observerData[observerData.length] = oProcess.exitValue;
-        observerData[observerData.length] = destpath;
-
-        obs.notifyObservers(null, "maf-extract-finished", observerData);
+      var oDestpath = Components.classes["@mozilla.org/file/local;1"]
+                             .createInstance(Components.interfaces.nsILocalFile);
+      oDestpath.initWithPath(destpath);
+          
+      if (!oDestpath.exists() || !oDestpath.isDirectory()) {
+        oDestpath.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
       }
+      
+      var zipReader = Components.classes["@mozilla.org/libjar/zip-reader;1"]
+                        .createInstance(Components.interfaces.nsIZipReader);
+      zipReader.init(oArchivefile);
+      zipReader.open();
+
+      var it = zipReader.findEntries("*");
+      while (it.hasMoreElements()) {
+        var entry = it.getNext();
+        entry = entry.QueryInterface(Components.interfaces.nsIZipEntry);	
+
+        var oDestpathentry = Components.classes["@mozilla.org/file/local;1"]
+                          .createInstance(Components.interfaces.nsILocalFile);
+        oDestpathentry.initWithPath(destpath);
+        oDestpathentry.setRelativeDescriptor(oDestpath, entry.name);
+        
+        if (entry.name.endsWith("/")) {
+          // Folder
+          //alert("Extracting " + entry.name);
+          if (!oDestpathentry.exists() || !oDestpathentry.isDirectory()) {
+            oDestpathentry.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
+          }          
+        } else {
+          //alert("Extracting " + entry.name);
+          if (!oDestpathentry.parent.exists() || !oDestpathentry.parent.isDirectory()) {
+            oDestpathentry.parent.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
+          }
+          zipReader.extract(entry.name, oDestpathentry);        
+        }
+      }
+      zipReader.close();     
+       
+      var obs = Components.classes["@mozilla.org/observer-service;1"]
+                   .getService(Components.interfaces.nsIObserverService);      
+                   
+      var observerData = new Array();
+      observerData[observerData.length] = 0; // Error code
+      observerData[observerData.length] = destpath;
+
+      obs.notifyObservers(null, "maf-extract-finished", observerData);
     }
   },
 
@@ -269,60 +276,74 @@ maf.prototype = {
       MafMHTHandler.createArchive(archivefile, realSourcePath);
 
     } else {
-      /** If program is nothing then don't try to run it. */
-      if (program != "") {
-        if (MafPreferences.win_invisible) {
+    
+      var exitvalue = 0;
+    
+      try {
+    
+        var archivefileobj = Components.classes["@mozilla.org/file/local;1"]
+                              .createInstance(Components.interfaces.nsILocalFile);
+        archivefileobj.initWithPath(archivefile); 
+        
+        var zipwriterobj = Components.classes["@ottley.org/libzip/zip-writer;1"]
+                              .createInstance(Components.interfaces.IZipWriterComponent);
 
-          // If wscript and vbs for invisible running exist
-          if (MafPreferences.win_wscriptexe.trim() != "" &&
-              MafPreferences.win_invisiblevbs.trim() != "" &&
-              MafUtils.checkFileExists(MafPreferences.win_wscriptexe) &&
-              MafUtils.checkFileExists(MafPreferences.win_invisiblevbs)) {
-            localProgram = MafPreferences.win_wscriptexe;
-            localProgramArgs = new Array();
-            localProgramArgs[localProgramArgs.length] = MafPreferences.win_invisiblevbs;
-            localProgramArgs[localProgramArgs.length] = program;
-          } else {
-            localProgram = program;
-            localProgramArgs = new Array();
+        zipwriterobj.CURR_COMPRESS_LEVEL = Components.interfaces.IZipWriterComponent.COMPRESS_LEVEL9;
+        
+        var sourcepathobj = Components.classes["@mozilla.org/file/local;1"]
+                              .createInstance(Components.interfaces.nsILocalFile);
+        sourcepathobj.initWithPath(MafUtils.appendToDir(MafPreferences.temp, sourcepath));        
+  
+        zipwriterobj.init(archivefileobj);
+        
+        zipwriterobj.basepath = sourcepathobj.parent;
+                  
+        var zipentriestoadd = new Array();
+        
+        // For each of the entries, add to zip
+        if (sourcepathobj.exists() && sourcepathobj.isDirectory()) {
+          var entries = sourcepathobj.directoryEntries;
+  
+          while (entries.hasMoreElements()) {
+            zipentriestoadd.push(entries.getNext());
           }
-        } else {
-          localProgram = program;
-          localProgramArgs = new Array();
         }
-
-        try {
-          var oProgram = Components.classes["@mozilla.org/file/local;1"]
-                            .createInstance(Components.interfaces.nsILocalFile);
-          oProgram.initWithPath(localProgram);
-        } catch(e) {
-          mafdebug(MafStrBundle.GetStringFromName("couldnotfindprogram") + program + " \n" + e);
+                          
+        // Add files depth first
+        while (zipentriestoadd.length > 0) {
+          var zipentry = zipentriestoadd.pop();
+          
+          zipentry.QueryInterface(Components.interfaces.nsILocalFile);
+          mafdebug(zipentry.path);
+          
+          if (!zipentry.isDirectory()) {
+            zipwriterobj.add(zipentry);
+          }
+          
+          if (zipentry.exists() && zipentry.isDirectory()) {
+            var entries = zipentry.directoryEntries;
+    
+            while (entries.hasMoreElements()) {
+              zipentriestoadd.push(entries.getNext());
+            }
+          }        
         }
-
-        try {
-          var oProcess = Components.classes["@mozilla.org/process/util;1"]
-                            .createInstance(Components.interfaces.nsIProcess);
-        } catch (e) {
-          mafdebug(MafStrBundle.GetStringFromName("couldnotcreateprocess") + e);
-        }
-
-        oProcess.init(oProgram);
-
-        localProgramArgs[localProgramArgs.length] = archivefile;
-        localProgramArgs[localProgramArgs.length] = sourcepath;
-
-        this._arguments2Native(localProgramArgs);
-
-        oProcess.run(true, localProgramArgs, localProgramArgs.length);
-
-        var observerData = new Array();
-        observerData[observerData.length] = oProcess.exitValue;
-        observerData[observerData.length] = archivefile;
-
-        var obs = Components.classes["@mozilla.org/observer-service;1"]
-                     .getService(Components.interfaces.nsIObserverService);
-        obs.notifyObservers(null, "maf-archiver-finished", observerData);
+          
+        zipwriterobj.commitUpdates();
+      
+      } catch (e) {
+        mafdebug(e);
+        exitvalue = -1;
       }
+      
+      var observerData = new Array();
+      observerData[observerData.length] = exitvalue;
+      observerData[observerData.length] = archivefile;
+  
+      var obs = Components.classes["@mozilla.org/observer-service;1"]
+                    .getService(Components.interfaces.nsIObserverService);
+      obs.notifyObservers(null, "maf-archiver-finished", observerData);      
+      
     }
   },
 
@@ -757,7 +778,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.5.1", // 0.5.1 has new batch files
+  postsetupversion: "0.6.0", // 0.6.0 has no batch files
 
   _getSaveFilters: function() {
     var filterresult = new Array();
@@ -840,8 +861,8 @@ var MafPostSetup = {
 
     try {
       prefs.setIntPref("version.major", 0);
-      prefs.setIntPref("version.minor", 5);
-      prefs.setIntPref("version.minorminor", 1);
+      prefs.setIntPref("version.minor", 6);
+      prefs.setIntPref("version.minorminor", 0);
     } catch(e) { }
 
     if (!setupComplete) {
@@ -1158,6 +1179,9 @@ String.prototype.startsWith = function(needle) {
   return (this.substring(0, needle.length) == needle);
 };
 
+String.prototype.endsWith = function(needle) {
+  return (this.substring(this.length - needle.length, this.length) == needle);
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1417,7 +1441,7 @@ function removeDoubleByteChars(strWithDoubleByteChars) {
  */
 function getDefaultFileName(aDefaultFileName, aNameFromHeaders, aDocumentURI, aDocument)
 {
-  if (aDocument) {
+  if ((aDocument) && (aDocument.contentType == "text/html")) {
 
     var uctitle = removeDoubleByteChars(aDocument.title);
 
