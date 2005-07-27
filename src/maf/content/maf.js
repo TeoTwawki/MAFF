@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.6.0
+ * Version: 0.6.1
  *
  * Author: Christopher Ottley
  *
@@ -30,6 +30,11 @@
  * TODO: Add save frame functionality to alternative save component.
  */
 /**
+ * Changes from 0.6.0 to 0.6.1
+ *
+ * Fixed heap pointer crashing problem in zip writer component (I hope).
+ *
+ *
  * Changes from 0.5.1 to 0.6.0
  *
  * Added xpcom zip writer component.
@@ -778,7 +783,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.6.0", // 0.6.0 has no batch files
+  postsetupversion: "0.6.1", // 0.6.x has no batch files
 
   _getSaveFilters: function() {
     var filterresult = new Array();
@@ -862,7 +867,7 @@ var MafPostSetup = {
     try {
       prefs.setIntPref("version.major", 0);
       prefs.setIntPref("version.minor", 6);
-      prefs.setIntPref("version.minorminor", 0);
+      prefs.setIntPref("version.minorminor", 1);
     } catch(e) { }
 
     if (!setupComplete) {

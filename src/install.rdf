@@ -5,8 +5,8 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>{7f57cf46-4467-4c2d-adfa-0cba7c507e54}</em:id>
-    <em:version>0.6.0</em:version>
-    <em:updateURL>http://maf.mozdev.org/update.rdf</em:updateURL>
+    <em:version>0.6.1</em:version>
+    <em:updateURL>http://maf.mozdev.org/update.windows.rdf</em:updateURL>
 
     <!-- Target Application this extension can install into,
         with minimum and maximum supported versions. -->
