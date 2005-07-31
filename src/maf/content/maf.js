@@ -33,6 +33,10 @@
  * Changes from 0.6.0 to 0.6.1
  *
  * Fixed heap pointer crashing problem in zip writer component (I hope).
+ * Fixed Save As MAF integration code to be Deer Park 2 compatible.
+ * Changed archiving result error code value from -1 to 1 to enable proper code test.
+ * Fixed memory allocation error causing the zip writer component not to be instantiable on Linux.
+ * Added script check for vbs file copy under deer park alpha 2.
  *
  *
  * Changes from 0.5.1 to 0.6.0
@@ -338,7 +342,7 @@ maf.prototype = {
       
       } catch (e) {
         mafdebug(e);
-        exitvalue = -1;
+        exitvalue = 1;
       }
       
       var observerData = new Array();
@@ -1009,6 +1013,14 @@ var MafPostSetup = {
                          navigator.vendorSub.indexOf("."))) * 100) >= 9);
       }
     }
+    
+    // Deer park alpha 2
+    if (!isFF09OrHigher) {
+      // Alpha, Beta, RC1 release - No vendor or vendor sub
+      if ((navigator.productSub.startsWith("2005")) && (navigator.userAgent.toLowerCase().indexOf("firefox") != -1)) {
+        isFF09OrHigher = true;
+      }
+    }
 
     if (isFF09OrHigher) {
       sourceDir = MafUtils.appendToDir(sourceDir, "extensions");
@@ -1041,54 +1053,14 @@ var MafPostSetup = {
     var profileDirDrive = profileDir.substring(0, 2);
     var profileDirNoDrive = profileDir.substring(2, profileDir.length);
 
-    // If not on windows
-    if (navigator.userAgent.indexOf("Windows") == -1) {
-      if (MafUtils.checkFileExists(profileDir + "/maf/mafzip.sh")) {
-        var mafzipStr = MafUtils.readFile(profileDir + "/maf/mafzip.sh");
-        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
-        MafUtils.deleteFile(profileDir + "/maf/mafzip.sh");
-        MafUtils.createExecutableFile(profileDir + "/maf/mafzip.sh", mafzipStr);
-      }
-
-      if (MafUtils.checkFileExists(profileDir + "/maf/mafunzip.sh")) {
-        var mafunzipStr = MafUtils.readFile(profileDir + "/maf/mafunzip.sh");
-        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
-        MafUtils.deleteFile(profileDir + "/maf/mafunzip.sh");
-        MafUtils.createExecutableFile(profileDir + "/maf/mafunzip.sh", mafunzipStr);
-      }
-
-    } else {
-
-      if (MafUtils.checkFileExists(profileDir + "\\maf\\mafzip.bat")) {
-        var mafzipStr = MafUtils.readFile(profileDir + "\\maf\\mafzip.bat");
-        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
-        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIRDRIVE%%", profileDirDrive);
-        mafzipStr = mafzipStr.replaceAll("%%PROFILEDIRNODRIVE%%", profileDirNoDrive);
-        MafUtils.deleteFile(profileDir + "\\maf\\mafzip.bat");
-        MafUtils.createExecutableFile(profileDir + "\\maf\\mafzip.bat", mafzipStr);
-      }
-
-      if (MafUtils.checkFileExists(profileDir + "\\maf\\mafunzip.bat")) {
-        var mafunzipStr = MafUtils.readFile(profileDir + "\\maf\\mafunzip.bat");
-        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIR%%", profileDir);
-        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIRDRIVE%%", profileDirDrive);
-        mafunzipStr = mafunzipStr.replaceAll("%%PROFILEDIRNODRIVE%%", profileDirNoDrive);
-        MafUtils.deleteFile(profileDir + "\\maf\\mafunzip.bat");
-        MafUtils.createExecutableFile(profileDir + "\\maf\\mafunzip.bat", mafunzipStr);
-      }
+    // If on windows
+    if (navigator.userAgent.indexOf("Windows") != -1) {
 
       if (MafUtils.checkFileExists(profileDir + "\\maf\\setmafffiletype.vbs")) {
         var mafsetMaffStr = MafUtils.readFile(profileDir + "\\maf\\setmafffiletype.vbs");
         mafsetMaffStr = mafsetMaffStr.replaceAll("%%MOZILLA_EXE%%", mozillaInstance);
         MafUtils.deleteFile(profileDir + "\\maf\\setmafffiletype.vbs");
         MafUtils.createExecutableFile(profileDir + "\\maf\\setmafffiletype.vbs", mafsetMaffStr);
-      }
-
-      if (MafUtils.checkFileExists(profileDir + "\\maf\\setmaffiletype.vbs")) {
-        var mafsetMafStr = MafUtils.readFile(profileDir + "\\maf\\setmaffiletype.vbs");
-        mafsetMafStr = mafsetMafStr.replaceAll("%%MOZILLA_EXE%%", mozillaInstance);
-        MafUtils.deleteFile(profileDir + "\\maf\\setmaffiletype.vbs");
-        MafUtils.createExecutableFile(profileDir + "\\maf\\setmaffiletype.vbs", mafsetMafStr);
       }
 
       if (MafUtils.checkFileExists(profileDir + "\\maf\\setmhtfiletype.vbs")) {
@@ -1221,67 +1193,153 @@ function getMafSaveFilters() {
 /**
  * A new and improved save. With MAF support.
  */
+ 
 function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, aSaveMode)
 {
-  var bundle = getStringBundle();
-
-  switch (aContentType) {
-  case "text/html":
-    if (aSaveMode == MODE_COMPLETE)
-      aFilePicker.appendFilter(bundle.GetStringFromName("WebPageCompleteFilter"), "*.htm; *.html");
-    aFilePicker.appendFilter(bundle.GetStringFromName("WebPageHTMLOnlyFilter"), "*.htm; *.html");
-    if (aSaveMode == MODE_COMPLETE)
-      aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText);
-
-    // ** MAF Addition start
-    try {
-      var filters = getMafSaveFilters();
-      for (var i=0; i<filters.length; i++) {
-        var title = filters[i][0];
-        var mask = filters[i][1];
-        aFilePicker.appendFilter(title, mask);
-      }
-    } catch(e) { }
-    // ** MAF Addition end
-
-    break;
-  default:
-    var mimeInfo = getMIMEInfoForType(aContentType, aFileExtension);
-    if (mimeInfo) {
-
-      var extEnumerator = mimeInfo.getFileExtensions();
-
-      var extString = "";
-      var defaultDesc = "";
-      var plural = false;
-      while (extEnumerator.hasMore()) {
-        if (defaultDesc) {
-          defaultDesc += ", ";
-          plural = true;
+  // If deer park alpha 2 (dp1 dp2)
+  if (SAVEMODE_COMPLETE_DOM) {
+    mafdebug("Well DP2");
+    
+    var bundle = getStringBundle();
+    // The bundle name for saving only a specific content type.
+    var bundleName;
+    // The corresponding filter string for a specific content type.
+    var filterString;
+  
+    // XXX all the cases that are handled explicitly here MUST be handled
+    // in GetSaveModeForContentType to return a non-fileonly filter.
+    switch (aContentType) {
+    case "text/html":
+      bundleName   = "WebPageHTMLOnlyFilter";
+      filterString = "*.htm; *.html";
+      break;
+  
+    case "application/xhtml+xml":
+      bundleName   = "WebPageXHTMLOnlyFilter";
+      filterString = "*.xht; *.xhtml";
+      break;
+  
+    case "text/xml":
+    case "application/xml":
+      bundleName   = "WebPageXMLOnlyFilter";
+      filterString = "*.xml";
+      break;
+  
+    default:
+      if (aSaveMode != SAVEMODE_FILEONLY)
+        throw "Invalid save mode for type '" + aContentType + "'";
+  
+      var mimeInfo = getMIMEInfoForType(aContentType, aFileExtension);
+      if (mimeInfo) {
+  
+        var extEnumerator = mimeInfo.getFileExtensions();
+  
+        var extString = "";
+        while (extEnumerator.hasMore()) {
+          var extension = extEnumerator.getNext();
+          if (extString)
+            extString += "; ";    // If adding more than one extension,
+                                  // separate by semi-colon
+          extString += "*." + extension;
         }
-        var extension = extEnumerator.getNext();
+  
         if (extString)
-          extString += "; ";    // If adding more than one extension,
-                                // separate by semi-colon
-        extString += "*." + extension;
-        defaultDesc += extension.toUpperCase();
+          aFilePicker.appendFilter(mimeInfo.description, extString);
       }
-
-      if (extString) {
-        var desc = mimeInfo.Description;
-        if (!desc) {
-          var key = plural ? "unknownDescriptionFilesPluralFilter" :
-                             "unknownDescriptionFilesFilter";
-          desc = getStringBundle().formatStringFromName(key, [defaultDesc], 1);
-        }
-        aFilePicker.appendFilter(desc, extString);
-      } else {
-        aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
-      }
+  
+      break;
     }
-    else
-      aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
-    break;
+  
+    mafdebug("Building the filters for aFilePicker");
+    if (aSaveMode & SAVEMODE_COMPLETE_DOM) {
+      aFilePicker.appendFilter(bundle.GetStringFromName("WebPageCompleteFilter"), filterString);
+      // We should always offer a choice to save document only if
+      // we allow saving as complete.
+      aFilePicker.appendFilter(bundle.GetStringFromName(bundleName), filterString);
+    }
+  
+    if (aSaveMode & SAVEMODE_COMPLETE_TEXT)
+      aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText);
+  
+    if (aSaveMode & SAVEMODE_COMPLETE_DOM) {
+      mafdebug("Adding MAF stuff to save file picker filters");
+      // ** MAF Addition start
+      try {
+        var filters = getMafSaveFilters();
+        for (var i=0; i<filters.length; i++) {
+          var title = filters[i][0];
+          var mask = filters[i][1];
+          aFilePicker.appendFilter(title, mask);
+        }
+      } catch(e) { }
+      // ** MAF Addition end    
+    }
+      
+    // Always append the all files (*) filter
+    aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
+  } else {
+
+    var bundle = getStringBundle();
+  
+    switch (aContentType) {
+    case "text/html":
+      if (aSaveMode == MODE_COMPLETE)
+        aFilePicker.appendFilter(bundle.GetStringFromName("WebPageCompleteFilter"), "*.htm; *.html");
+      aFilePicker.appendFilter(bundle.GetStringFromName("WebPageHTMLOnlyFilter"), "*.htm; *.html");
+      if (aSaveMode == MODE_COMPLETE)
+        aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText);
+  
+      // ** MAF Addition start
+      try {
+        var filters = getMafSaveFilters();
+        for (var i=0; i<filters.length; i++) {
+          var title = filters[i][0];
+          var mask = filters[i][1];
+          aFilePicker.appendFilter(title, mask);
+        }
+      } catch(e) { }
+      // ** MAF Addition end
+  
+      break;
+    default:
+      var mimeInfo = getMIMEInfoForType(aContentType, aFileExtension);
+      if (mimeInfo) {
+  
+        var extEnumerator = mimeInfo.getFileExtensions();
+  
+        var extString = "";
+        var defaultDesc = "";
+        var plural = false;
+        while (extEnumerator.hasMore()) {
+          if (defaultDesc) {
+            defaultDesc += ", ";
+            plural = true;
+          }
+          var extension = extEnumerator.getNext();
+          if (extString)
+            extString += "; ";    // If adding more than one extension,
+                                  // separate by semi-colon
+          extString += "*." + extension;
+          defaultDesc += extension.toUpperCase();
+        }
+  
+        if (extString) {
+          var desc = mimeInfo.Description;
+          if (!desc) {
+            var key = plural ? "unknownDescriptionFilesPluralFilter" :
+                              "unknownDescriptionFilesFilter";
+            desc = getStringBundle().formatStringFromName(key, [defaultDesc], 1);
+          }
+          aFilePicker.appendFilter(desc, extString);
+        } else {
+          aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
+        }
+      }
+      else
+        aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
+      break;
+    }
+  
   }
 }
 
@@ -1420,6 +1478,181 @@ function foundHeaderInfo(aSniffer, aData, aSkipPrompt)
                               MafPreferences.programFromSaveIndex(saveAsType), filename);
   }
   // ** MAF Addition end
+}
+
+// Modified from deer park alpha 2 (dp1 dp2)
+/**
+ * internalSave: Used when saving a document or URL. This method:
+ *  - Determines a local target filename to use (unless parameter
+ *    aChosenData is non-null)
+ *  - Determines content-type if possible
+ *  - Prompts the user to confirm the destination filename and save mode
+ *    (content-type affects this)
+ *  - Creates a 'Persist' object (which will perform the saving in the
+ *    background) and then starts it.
+ *
+ * @param aURL The String representation of the URL of the document being saved
+ * @param aDocument The document to be saved
+ * @param aDefaultFileName The caller-provided suggested filename if we don't
+ *        find a better one
+ * @param aContentDisposition The caller-provided content-disposition header
+ *         to use.
+ * @param aContentType The caller-provided content-type to use
+ * @param aShouldBypassCache If true, the document will always be refetched
+ *        from the server
+ * @param aFilePickerTitleKey Alternate title for the file picker
+ * @param aChosenData If non-null this contains an instance of object AutoChosen
+ *        (see below) which holds pre-determined data so that the user does not
+ *        need to be prompted for a target filename.
+ * @param aReferrer the referrer URI object (not URL string) to use, or null
+          if no referrer should be sent.
+ * @param aSkipPrompt If true, the file will be saved to the default download folder.
+ */
+function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
+                      aContentType, aShouldBypassCache, aFilePickerTitleKey,
+                      aChosenData, aReferrer, aSkipPrompt)
+{
+  if (aSkipPrompt == undefined)
+    aSkipPrompt = false;
+
+  // Note: aDocument == null when this code is used by save-link-as...
+  var saveMode = GetSaveModeForContentType(aContentType);
+  var isDocument = aDocument != null && saveMode != SAVEMODE_FILEONLY;
+  var saveAsType = kSaveAsType_Complete;
+
+  var file, fileURL;
+  // Find the URI object for aURL and the FileName/Extension to use when saving.
+  // FileName/Extension will be ignored if aChosenData supplied.
+  var fileInfo = new FileInfo(aDefaultFileName);
+  if (aChosenData)
+    file = aChosenData.file;
+  else {
+    initFileInfo(fileInfo, aURL, aDocument, aContentType, aContentDisposition);
+    var fpParams = {
+      fpTitleKey: aFilePickerTitleKey,
+      isDocument: isDocument,
+      fileInfo: fileInfo,
+      contentType: aContentType,
+      saveMode: saveMode,
+      saveAsType: saveAsType,
+      file: file,
+      fileURL: fileURL
+    };
+
+    if (!getTargetFile(fpParams, aSkipPrompt))
+      // If the method returned false this is because the user cancelled from
+      // the save file picker dialog.
+      return;
+
+    saveAsType = fpParams.saveAsType;
+    saveMode = fpParams.saveMode;
+    file = fpParams.file;
+    fileURL = fpParams.fileURL;
+  }
+
+  // Not a MAF archive
+  if ((saveAsType < 3) || (saveAsType > (2 + getMafSaveFilters().length))) {
+  
+    if (!fileURL)
+      fileURL = makeFileURI(file);
+  
+    // XXX We depend on the following holding true in appendFiltersForContentType():
+    // If we should save as a complete page, the saveAsType is kSaveAsType_Complete.
+    // If we should save as text, the saveAsType is kSaveAsType_Text.
+    var useSaveDocument = isDocument &&
+                          (((saveMode & SAVEMODE_COMPLETE_DOM) && (saveAsType == kSaveAsType_Complete)) ||
+                          ((saveMode & SAVEMODE_COMPLETE_TEXT) && (saveAsType == kSaveAsType_Text)));
+    // If we're saving a document, and are saving either in complete mode or
+    // as converted text, pass the document to the web browser persist component.
+    // If we're just saving the HTML (second option in the list), send only the URI.
+    var source = useSaveDocument ? aDocument : fileInfo.uri;
+    var persistArgs = {
+      source      : source,
+      contentType : (!aChosenData && useSaveDocument &&
+                    saveAsType == kSaveAsType_Text) ?
+                    "text/plain" : aContentType,
+      target      : fileURL,
+      postData    : isDocument ? getPostData() : null,
+      bypassCache : aShouldBypassCache
+    };
+  
+    var persist = makeWebBrowserPersist();
+  
+    // Calculate persist flags.
+    const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
+    const flags = nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
+    if (aShouldBypassCache)
+      persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_BYPASS_CACHE;
+    else
+      persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_FROM_CACHE;
+  
+    // Leave it to WebBrowserPersist to discover the encoding type (or lack thereof):
+    persist.persistFlags |= nsIWBP.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+  
+    // Create download and initiate it (below)
+    var tr = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
+  
+    if (useSaveDocument) {
+      // Saving a Document, not a URI:
+      var filesFolder = null;
+      if (persistArgs.contentType != "text/plain") {
+        // Create the local directory into which to save associated files.
+        filesFolder = file.clone();
+  
+        var nameWithoutExtension = filesFolder.leafName.replace(/\.[^.]*$/, "");
+        var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
+                                                                        [nameWithoutExtension],
+                                                                        1);
+  
+        filesFolder.leafName = filesFolderLeafName;
+      }
+  
+      var encodingFlags = 0;
+      if (persistArgs.contentType == "text/plain") {
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_FORMATTED;
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_ABSOLUTE_LINKS;
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_NOFRAMES_CONTENT;
+      }
+      else {
+        encodingFlags |= nsIWBP.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES;
+      }
+  
+      const kWrapColumn = 80;
+      tr.init((aChosenData ? aChosenData.uri : fileInfo.uri),
+              persistArgs.target, "", null, null, null, persist);
+      persist.progressListener = tr;
+      persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
+                          persistArgs.contentType, encodingFlags, kWrapColumn);
+    } else {
+      tr.init((aChosenData ? aChosenData.uri : source),
+              persistArgs.target, "", null, null, null, persist);
+      persist.progressListener = tr;
+      persist.saveURI((aChosenData ? aChosenData.uri : source),
+                      null, aReferrer, persistArgs.postData, null,
+                      persistArgs.target);
+    }
+  
+  } else {
+    // MAF Archive
+
+    saveAsType = saveAsType - 3;
+
+    var filename = file.path;
+
+    var filters = getMafSaveFilters();
+
+    var selectedFileType = filters[saveAsType][1];
+
+    selectedFileType = selectedFileType.substring(1,selectedFileType.length);
+
+    if (filename.substring(filename.length-selectedFileType.length, filename.length).toLowerCase() !=
+        selectedFileType.toLowerCase()) {
+      filename += selectedFileType;
+    }
+
+    Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, MafPreferences.temp,
+                              MafPreferences.programFromSaveIndex(saveAsType), filename);
+  }
 }
 
 
