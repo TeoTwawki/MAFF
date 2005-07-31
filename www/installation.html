@@ -3,7 +3,9 @@
 
 <p>Below you will find links to the latest XPI installer package. The installer packages have been merged so there is one XPI for both Linux and Windows installations. If you have previously installed MAF in Mozilla, please uninstall MAF and then install the latest package.</p>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-0.5.0.xpi">0.5.0 for Linux and Windows</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.6.1.xpi">0.6.1 for Linux</a> and <a href="http://downloads.mozdev.org/maf/maf-windows-0.6.1.xpi">0.6.1 for Windows</a></p>
+
+<p>If you are using the 0.6.0 version or higher, there are no more scripts used for archiving. Native (XPCOM C/C++) components are used making the process a bit simpler and faster.</p>
 
 <p>Please note, if you have previously installed MAF and are installing the 0.3.0 version or higher, the location of scripts and some settings have changed. In order to use the new scripts, go to the <a href="preferences.html">preferences</a>, click on the "Load defaults" button and save the new preferences.</p>
 
@@ -15,11 +17,49 @@
 
 <p>Additionally released is <a href="http://downloads.mozdev.org/maf/menumaf-0.5.0.xpi">MenuMAF 0.5.0 </a> for Linux and Windows. This package adds menu entries and shortcut keys for accessibility to the file menu. Currently it only works for MAF 0.5.0 and Firefox 1.0.</p>
 
-<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-0.4.3.xpi">0.4.3 for Linux and Windows</a></p>
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-0.5.0.xpi">0.5.0 for Linux and Windows</a></p>
 
 
 <h5 class="page-header"><a id="changelog" name="changelog">Changes</a></h5>
 <pre>
+ *
+ * Changes from 0.6.0 to 0.6.1
+ *
+ * Fixed heap pointer crashing problem in zip writer component (I hope).
+ * Fixed Save As MAF integration code to be Deer Park 2 compatible.
+ * Changed archiving result error code value from -1 to 1 to enable proper code test.
+ * Fixed memory allocation error causing the zip writer component not to be instantiable on Linux.
+ * Added script check for vbs file copy under deer park alpha 2.
+ *
+ *
+ * Changes from 0.5.1 to 0.6.0
+ *
+ * Added xpcom zip writer component.
+ * Extract now uses zip reader component.
+ * Removed zip and unzip executables and related scripts (.bat and .sh).
+ * Added Mozilla 1.8 compatible tree column selector for browse open archives.
+ * Made the maf protocol a bit more forgiving of bad uris.
+ * Removed some preference GUI elements (specifying script locations mafzip, mafunzip and invis.vbs).
+ * Removed second zip maf extension and changed remaining extension mask to *.maff.zip.
+ *
+ *
+ * Changes from 0.5.0 to 0.5.1
+ *
+ * Added Danish locale by Molle Bestefich.
+ * Fixed bug 7913 - Modified batch files should work correctly with Win95/98/ME.
+ * Fixed bug that incorrectly resolved supporting files folder relative URLs when using localized browsers.
+ * Added non-functional context menu for browse open archives dialog.
+ * Changed the MAF content type from application/maf to application/x-maf.
+ * Added ability to copy displayed meta-data from browse open archives dialog.
+ * Fixed bug 9303 - Removed .bin extension from being appended for unknown file types.
+ * Fixed bug 9630 - Non latin character set filenames in "Save Page As..." dialog now show up in unicode.
+ * Fixed bug 9629 - Relative content locations misses resources when MAF file optimization is on.
+ * Changed native download code so shouldn't have to work offline to a save some pages.
+ * Reverted bug fix 9630 and now only latin character set filenames appear in the dialog by default.
+ * Added German locale by Ralph Ulrich.
+ * Added Save Tabs in Archive context menu entry.
+ * Added select all and clear selection buttons to Save Tabs in Archive dialog.
+ *
  *
  * Changes from 0.4.3 to 0.5.0
  *
@@ -62,7 +102,7 @@
  * Fixed bug that resolved relative links to the wrong base url if the page had a base url tag.
  * Added Russian locale contributed by the ArtLonger: Mozilla.ru team.
  * Added Polish locale contributed by Bartosz Piec: Mozillapl.org team.
- * Updated Post Install code to work with FF RC1.
+ * Updated Post Install code to work with FF RC1
  * Added preference to disable the window alert when a single page has been saved.
  * Updated Post Install code to update new vbs scripts for windows filetype associations.
  * Fixed bug that stopped URL rewriting if there was an error accessing a DOM Attribute Node value.
@@ -72,7 +112,7 @@
  *
  * Changes from 0.4.1 to 0.4.2
  *
- * Fixed invis.vbs not being present in 0.4.x releases.
+ * Added missing invis.vbs file to installation.
  *
  *
  * Changes from 0.4.0 to 0.4.1
@@ -82,21 +122,18 @@
  * Fixed Archive Timing bug that caused some complex pages not to be archived.
  * maf:// protocol now works with MHT archives.
  * Added Blocking Observer Service component.
- * Fixed MHT decoding bug that caused decoding to fail if the remap list said the new
- *   value exists, but the value is null.
- * Added preference to disable javascript document write preference for archive index
- *   pages before they open.
+ * Fixed MHT decoding bug that caused decoding to fail if the remap list said the new value exists, but the value is null.
+ * Added preference to disable javascript document write preference for archive index pages before they open.
  * Added file filters to save drop down box filter names if on Windows.
  * Saving a page opened from an archive now saves the real original url in metadata.
- * Added capability to open archive pages from the browse window using the maf://
- *   protocol if the protocol is enabled.
+ * Added capability to open archive pages from the browse window using the maf:// protocol if the protocol is enabled.
+ *
  *
  *
  * Changes from 0.3.0 to 0.4.0
  *
  * Merged all the installers. Now a single XPI for Mozilla/Firefox on Windows/Linux.
- * Changed the default file extension for MAF files to *.maff to avoid extension
- *   clashes with MS Access on Windows.
+ * Changed the default file extension for MAF files to *.maff to avoid extension clashes with MS Access on Windows.
  * Added French Locale contributed by Xavier Robin.
  * Added Italian Locale contributed by Gioxx Solone: eXtenZilla.it.
  * Fixed GUI bug to allow mafsearch extension to work properly.
@@ -109,10 +146,8 @@
  * Added code to make URLs absolute when HTML document loads so that form submissions, etc work.
  * Added Save in Archive context menu entry.
  * Added new MIME type "application/maf" for better handler support.
- * Removed the MAF Open archive entry from the file menu. Open file now has
- *   all the necessary functionality.
- * Added maf:// protocol that allows resource viewing of local maf archives
- *   (not designed for use with MHT archives).
+ * Removed the MAF Open archive entry from the file menu. Open file now has all the necessary functionality.
+ * Added maf:// protocol that allows resource viewing of local maf archives (not designed for use with MHT archives).
  * When saving the document title of the selected tab is used for the default maf archive name.
  * Created string bundle of english text in code for better localization.
  * Added preference for disabling the maf:// protocol

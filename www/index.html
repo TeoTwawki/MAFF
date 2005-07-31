@@ -4,8 +4,7 @@
 <div class="infoTab" id="whats-new">
 <h5 class="infoHeader">What's New</h5>
 <ul>
-<li>MAF 0.5.0 released.</li>
-<li>PenMAF 0.5.0b1 released.</li>
+<li>MAF 0.6.1 released.</li>
 </ul>
 </div>
 
@@ -20,6 +19,8 @@
 <li>Store more than one saved page in an archive</li>
 <li>Localized in French, Italian, Polish, Portuguese and Russian</li>
 <li>maf:// protocol capability</li>
+<li>Native XPCOM Zip writer library (xpzip) used for archiving</li>
+<li>Built in zip-reader library used for extraction</li>
 </ul>
 </div>
 
@@ -48,7 +49,7 @@
 <!-- ***************** INFO/NEWS *************** -->
 
 <!-- MAIN CONTENT -->
-<p>The <b><?php echo ucwords($project); ?></b> project is an archive extension that allows complete web pages to be saved in a single archive file. MAF stands for Mozilla Archive Format and the extension uses RDF to save page meta-data such as the original URL of the page and the date/time the page was put in the archive. Starting with the 0.2.20 release a seperate <a href="bugs.html">bugs</a> page has been setup for known bugs in the release. Please check there first before reporting any bugs.</p>
+<p>The <b><?php echo ucwords($project); ?></b> project is an archive extension that allows complete web pages to be saved in a single archive file. MAF stands for Mozilla Archive Format and the extension uses RDF to save page meta-data such as the original URL of the page and the date/time the page was put in the archive. A <a href="bugs.html">bugs</a> page has been setup for known bugs in the release. Please check there first before reporting any bugs.</p>
 
 <p>
 If you use MAF and like it, please consider a <a href="donate.html">donation</a>.
@@ -60,29 +61,18 @@ If you use MAF and like it, please consider a <a href="donate.html">donation</a>
 
 <p><b>Aim:</b> To provide a Firefox (and Mozilla) extension which allows web pages to be saved easily in an archive.</p>
 
-<p><b>Design:</b> To provide maximum flexibility, registered external programs are used to perform the archiving and expansion process. The extension *.MAFF refers to files which can be processed using the default registered file archive program (for example Zip). File archive specific extensions may be used to indicate which program to use with the archive, example *.MAF.ZIP for a Zip archive, *.MAF.7Z for a 7Zip archive.</p>
+<p><b>Design:</b> To provide both speed and compatibility, XPCOM components are used to perform the archiving and expansion process. The extension *.MAFF refers to files which can be processed using the default XPCOM zip archive component. External script support via IPC for different formats started to be one big kludge and has been discontinued from the 0.6.x series onwards.</p>
 
-<p><b>Archive Application Requirements:</b> To be able to use a particular archive application the application must support:
-<ul>
-  <li>The ability to add individual files to an existing archive file</li>
-  <li>The ability to recursively add directories to an existing archive file</li>
-  <li>Long file names</li>
-  <li>The ability to extract files from an archive</li>
-</ul>
-</p>
-
-<p><b>Method:</b> An IPC process is created that executes the archive or expand script with the specified parameters.</p>
+<p><b>Method:</b> An XPCOM component is created that either archives to or expands the contents of the specified MAF archive.</p>
 
 <p><b>Format:</b> Each archive has a list of numbered folders. In each folder is an index.rdf file which holds the meta-data relating the saved page. There is also another index file with the related content type that was saved (index.html if an html page was saved, index.png if a png image was saved etc.). The RDF file holds the name of the index file to use.</p>
 
 <p><b>Tested on:</b>
   <ul>
-   <li>FireFox 1.0, Mozilla 1.7.3, Linux i686.</li>
-   <li>FireFox 1.0, Mozilla 1.7.3, Windows 2000.</li>
+   <li>FireFox 1.0 - Deer Park Alpha 2, Mozilla 1.7.3, Linux i686.</li>
+   <li>FireFox 1.0 - Deer Park Alpha 2, Mozilla 1.7.3, Windows 2000/XP/2003.</li>
   </ul>
 </p>
-
-<p><b>Note:</b> As of version 0.3.0 MAF is officially out of beta.</p>
 
 <p>
 <!-- Start of StatCounter Code -->

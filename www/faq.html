@@ -20,7 +20,7 @@
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>First make sure that you have windows scripting installed and working. Make sure the path for the location of WSCRIPT.exe is set properly in the preferences. Also make sure invis.vbs exists and the path to that is set properly.</td>
+    <td>First make sure that you have windows scripting installed and working. Make sure the path for the location of WSCRIPT.exe is set properly in the preferences. Also make sure invis.vbs exists and the path to that is set properly. - Not applicable from MAF 0.6.0 onwards.</td>
   </tr>
 </table>
 
@@ -59,7 +59,7 @@
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>Not too sure, but it seems that there are some strange permission problems that are created when the scripts are installed. If you can, try moving the MAF script installation to a non-ntfs partition (and modify the scripts accordingly). Alternately, opening the batch files in notepad and saving them back does the trick for some users.</td>
+    <td>Not too sure, but it seems that there are some strange permission problems that are created when the scripts are installed. If you can, try moving the MAF script installation to a non-ntfs partition (and modify the scripts accordingly). Alternately, opening the batch files in notepad and saving them back does the trick for some users. - Not applicable from MAF 0.6.0 onwards.</td>
   </tr>
 </table>
 
@@ -125,6 +125,58 @@
 
 <br /><br />
 
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>What happens if I associate MAF with .MAF? Would it screw up .MAF files for Microsoft Access Forms or Office?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>It may take the auto-open from Office, but the .maf extension is for older files. The default is .maff now. Basically, don't do this.</td>
+  </tr>
+</table>
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>What happens if I associate MAF with .MHT? Would it screw up IE and prevent .MHT files from automatically opening in IE?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>It may. That setting is for people who don't use IE who want to easily open the MHTs in Fïrefox. I say it may because MS has a habit of putting the associations back when it's one of their products.</td>
+  </tr>
+</table>
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>Why is there no 'Save As MAF' or 'Save as MAF MHT' option in the 'Save As' dialog box?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>MAF is either disabled or not installed properly. If you right click and Save in archive or use the MAF menu you're probably using MAF on an unsupported version of Mozilla/Firefox.</td>
+  </tr>
+</table>
+
+<br /><br />
+
+<table border="0" cellpadding="5" cellspacing="5" valign="top">
+  <tr>
+    <td align="right">Question:</td>
+    <td>What's the difference between open in tabs using MAF:// and open in tabs?</td>
+  </tr>
+  <tr>
+    <td align="right">Answer:</td>
+    <td>The second uses the MAF protocol, which basically allows you to bookmark pages in an archive. The first opens using the file protocol referencing the file in the temp folder. Sometimes the MAF protocol mis-renders so I left that option in.</td>
+  </tr>
+</table>
+
+<br /><br />
+
 <a name="website" />
 <h2>Website</h2>
 
@@ -162,7 +214,7 @@
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>It's cross platform, lets you use whatever archive format you want, stores meta-data in XML-based RDF files and integrates almost seamlessly into Mozilla based browsers like Firefox. Hmmm. I don't rightly know. It depends on who you ask.</td>
+    <td>It's cross platform, lets you use a well known archive format (zip), stores meta-data in XML-based RDF files and integrates almost seamlessly into Mozilla based browsers like Firefox. Hmmm. I don't rightly know. It depends on who you ask.</td>
   </tr>
 </table>
 
@@ -176,7 +228,7 @@
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>No-one actually asked this, but I'll answer it anyway. Mozilla's source is a huge download for someone who's still on a 14.4 modem. Heh. That and I recently started playing around with Mozilla based development. This is only my second Mozilla-based project. Also, scripts allow users more control over what archive applications they want to use. Choice is always good. Most of the code now provides XPCOM component interfaces though.</td>
+    <td>No-one actually asked this, but I'll answer it anyway. Mozilla's source is a huge download for someone who's still on a 14.4 modem. Heh. That and I recently started playing around with Mozilla based development. This is only my second Mozilla-based project. Also, scripts allow users more control over what archive applications they want to use. Choice is always good. Most of the code now provides XPCOM component interfaces though. - From 0.6.0 I've created an XPCOM Zip writer component so no more scripts are necessary. Wohoo!</td>
   </tr>
 </table>
 
@@ -205,7 +257,7 @@
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>As of this writing, an unemployed OSS developer with some (read a lot of) free time on his hands. I also just recently got an M.Sc. with distinction from the local <a href="http://www.uwi.tt/">university</a>, congratulate me!</td>
+    <td>As of this writing, an employed developer at a <a href="http://www.mycmmb.com/">local brokerage firm</a>. I also got an M.Sc. with distinction from the local <a href="http://www.uwi.tt/">university</a> last year. I'm one of the few Open Source developers in Trinidad (that I know of) so I hope my work helps put our small island more on the map.</td>
   </tr>
 </table>
 
@@ -218,7 +270,7 @@
   </tr>
   <tr>
     <td align="right">Answer:</td>
-    <td>Beats me. :).</td>
+    <td>I'm not now. Say hooray for salary! (Oh and company parties. Heh.)</td>
   </tr>
 </table>
 

@@ -12,9 +12,9 @@
 <a name="removingmaf" />
 <h2>Removing MAF</h2>
 
-<p>For version 0.3.0, 0.4.0 or 0.5.0 with Firefox 0.9 or higher, use the built in uninstall from the extension manager. Since MAF scripts and temporary folders are in the profile folder, remove the maf folder and any sub-folders or files that are present.</p>
+<p>For version 0.3.0, 0.4.0, 0.5.0 or 0.6.0 with Firefox 0.9 or higher, use the built in uninstall from the extension manager. Since MAF scripts and temporary folders are in the profile folder, remove the maf folder and any sub-folders or files that are present.</p>
 
-<p>For version 0.4.0 with Mozilla 1.7+, go to the profile folder and under the chrome directory remove maf.jar. Edit the chrome.rdf and remove all the RDF descriptions that contain MAF. There should also be an overlayinfo folder. In the browser/content/overlays.rdf file remove the RDF list item entry with MAF. If it is the only entry, you may remove the entire file. In the navigator/content/overlays.rdf perform the same action. Since MAF scripts and temporary folders are in the profile folder, remove the maf folder and any sub-folders or files that are present. In the components folder of the Mozilla installation, delete the following files: maf.0.4.0.xpt, nsMafArchiver.js, nsMafDocumentViewerFactory.js, nsMafGuiHandler.js, nsMafMhtDecoder.js, nsMafMhtEncoder.js, nsMafMhtHandler.js, nsMafPreferences.js, nsMafPreferencesRec.js, nsMafProtocol.js, nsMafState.js, nsMafStringValue.js, nsMafTabArchiver.js, nsMafTabExpander.js, nsMafUtil.js. In 0.4.1/0.4.2 there are three changes: maf.0.4.1.xpt instead of maf.0.4.0.xpt and there are two additional files: nsMafArchivePostProcessor.js and nsMafBlockingObserverService.js. In 0.5.0 remove maf.0.5.0.xpt.</p>
+<p>For version 0.4.0 with Mozilla 1.7+, go to the profile folder and under the chrome directory remove maf.jar. Edit the chrome.rdf and remove all the RDF descriptions that contain MAF. There should also be an overlayinfo folder. In the browser/content/overlays.rdf file remove the RDF list item entry with MAF. If it is the only entry, you may remove the entire file. In the navigator/content/overlays.rdf perform the same action. Since MAF scripts and temporary folders are in the profile folder, remove the maf folder and any sub-folders or files that are present. In the components folder of the Mozilla installation, delete the following files: maf.0.4.0.xpt, nsMafArchiver.js, nsMafDocumentViewerFactory.js, nsMafGuiHandler.js, nsMafMhtDecoder.js, nsMafMhtEncoder.js, nsMafMhtHandler.js, nsMafPreferences.js, nsMafPreferencesRec.js, nsMafProtocol.js, nsMafState.js, nsMafStringValue.js, nsMafTabArchiver.js, nsMafTabExpander.js, nsMafUtil.js. In 0.4.1/0.4.2 there are three changes: maf.0.4.1.xpt instead of maf.0.4.0.xpt and there are two additional files: nsMafArchivePostProcessor.js and nsMafBlockingObserverService.js. In 0.5.0 remove maf.0.5.0.xpt. In 0.6.0 remove maf.0.6.0.xpt. In 0.6.1 remove maf.0.6.1.xpt.</p>
 
 <p>For version 0.3.0 with Mozilla 1.7+ or Firefox 0.8, go to the profile folder and under the chrome directory remove maf.jar. Edit the chrome.rdf and remove all the RDF descriptions that contain MAF. There should also be an overlayinfo folder. In the browser/content/overlays.rdf file remove the RDF list item entry with MAF. If it is the only entry, you may remove the entire file. In the navigator/content/overlays.rdf perform the same action. Since MAF scripts and temporary folders are in the profile folder, remove the maf folder and any sub-folders or files that are present.</p>
 
@@ -58,12 +58,12 @@
   <tr>
     <td>maf.ext.0.archive</td>
     <td>string</td>
-    <td>Full path and filename of the script used by extension 0 to create an archive.</td>
+    <td>Full path and filename of the script used by extension 0 to create an archive. - No effect from MAF 0.6.0 onwards</td>
   </tr>
   <tr>
     <td>maf.ext.0.extract</td>
     <td>string</td>
-    <td>Full path and filename of the script used by extension 0 to extract an archive.</td>
+    <td>Full path and filename of the script used by extension 0 to extract an archive. - No effect from MAF 0.6.0 onwards</td>
   </tr>
   <tr>
     <td>maf.ext.0.id</td>
@@ -133,22 +133,22 @@
   <tr>
     <td>maf.wininvisible</td>
     <td>boolean</td>
-    <td>true if you want to use wscript to hide the DOS box that appears when executing batch files.</td>
+    <td>true if you want to use wscript to hide the DOS box that appears when executing batch files. - No effect from MAF 0.6.0 onwards</td>
   </tr>
   <tr>
     <td>maf.wininvisiblevbs</td>
     <td>string</td>
-    <td>Full path and filename of the invis.vbs included in the MAF installation.</td>
+    <td>Full path and filename of the invis.vbs included in the MAF installation. - No effect from MAF 0.6.0 onwards</td>
   </tr>
   <tr>
     <td>maf.winwscriptexe</td>
     <td>string</td>
-    <td>Full path and filename of wscript.exe. It is the executable involked that is passed invis.vbs as a parameter.</td>
+    <td>Full path and filename of wscript.exe. It is the executable involked that is passed a vbs script path as a parameter.</td>
   </tr>
 </table>
 
 <a name="scripts" />
-<h2>MAF scripts</h2>
+<h2>MAF scripts - Not applicable from MAF 0.6.0 onwards</h2>
 
 <p>In order to perform the archive and expand operations scripts are called which in turn pass parameters to the programs that do the real work. Below is a description of the anatomy of the scripts for linux and windows. The scripts below are the ones included for use with Infozip's Zip and Unzip programs.</p>
 
