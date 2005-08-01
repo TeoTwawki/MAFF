@@ -26,7 +26,7 @@
 
 <!ENTITY maf.aboutdlg.title "Mozilla Archive Format">
 <!ENTITY maf.aboutdlg.description "MAF jest rozszerzeniem do programów Mozilli, pozwalającym na wywołanie zewnętrznej aplikacji archiwizującej w celu zebrania kompletnych dokumentów HTML. Przechowuje również zapisane meta-dane, takie jak oryginalny adres URL oraz data i czas.">
-<!ENTITY maf.version "MAF v 0.6.1">
+<!ENTITY maf.version "MAF v 0.6.2">
 <!ENTITY maf.aboutdlg.copyright "(c) 2005 Christopher Ottley     Tłumaczenie: Bartosz Piec">
 <!ENTITY maf.aboutdlg.license "Wydane na licencji GNU GPL 2.0">
 <!ENTITY maf.aboutdlg.home "http://www.mozillapl.org/projekty/Dodatki/MozillaArchiveFormat">

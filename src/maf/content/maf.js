@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.6.1
+ * Version: 0.6.2
  *
  * Author: Christopher Ottley
  *
@@ -30,6 +30,14 @@
  * TODO: Add save frame functionality to alternative save component.
  */
 /**
+ *
+ * Changes from 0.6.1 to 0.6.2
+ *
+ * Fixed save multiple tabs functionality.
+ * Fixed save selected tabs functionality.
+ * Fixed death of save as dialog in non alpha versions of Firefox.
+ *
+ *
  * Changes from 0.6.0 to 0.6.1
  *
  * Fixed heap pointer crashing problem in zip writer component (I hope).
@@ -323,8 +331,7 @@ maf.prototype = {
           var zipentry = zipentriestoadd.pop();
           
           zipentry.QueryInterface(Components.interfaces.nsILocalFile);
-          mafdebug(zipentry.path);
-          
+         
           if (!zipentry.isDirectory()) {
             zipwriterobj.add(zipentry);
           }
@@ -787,7 +794,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.6.1", // 0.6.x has no batch files
+  postsetupversion: "0.6.2", // 0.6.x has no batch files
 
   _getSaveFilters: function() {
     var filterresult = new Array();
@@ -871,7 +878,7 @@ var MafPostSetup = {
     try {
       prefs.setIntPref("version.major", 0);
       prefs.setIntPref("version.minor", 6);
-      prefs.setIntPref("version.minorminor", 1);
+      prefs.setIntPref("version.minorminor", 2);
     } catch(e) { }
 
     if (!setupComplete) {
@@ -1196,9 +1203,15 @@ function getMafSaveFilters() {
  
 function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, aSaveMode)
 {
+  var dpa2 = false;
+  try {
+    if (SAVEMODE_COMPLETE_DOM) {
+      dpa2 = true;
+    }
+  } catch (ex) { }
+
   // If deer park alpha 2 (dp1 dp2)
-  if (SAVEMODE_COMPLETE_DOM) {
-    mafdebug("Well DP2");
+  if (dpa2) {
     
     var bundle = getStringBundle();
     // The bundle name for saving only a specific content type.
@@ -1250,7 +1263,6 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
       break;
     }
   
-    mafdebug("Building the filters for aFilePicker");
     if (aSaveMode & SAVEMODE_COMPLETE_DOM) {
       aFilePicker.appendFilter(bundle.GetStringFromName("WebPageCompleteFilter"), filterString);
       // We should always offer a choice to save document only if
@@ -1262,7 +1274,6 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
       aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText);
   
     if (aSaveMode & SAVEMODE_COMPLETE_DOM) {
-      mafdebug("Adding MAF stuff to save file picker filters");
       // ** MAF Addition start
       try {
         var filters = getMafSaveFilters();

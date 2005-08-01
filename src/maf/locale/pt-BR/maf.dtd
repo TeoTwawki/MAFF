@@ -26,7 +26,7 @@
 
 <!ENTITY maf.aboutdlg.title "Sobre o MAF">
 <!ENTITY maf.aboutdlg.description "MAF é uma extensão baseada no Mozilla que permite você se comunicar com programas externos para reunir Documentos de HTML. Pode Também Armazenar Páginas Meta-Data assim como o endereço original com a data e a hora.">
-<!ENTITY maf.version "MAF v 0.6.1">
+<!ENTITY maf.version "MAF v 0.6.2">
 <!ENTITY maf.aboutdlg.copyright "(c) 2005 Christopher Ottley">
 <!ENTITY maf.aboutdlg.license "Liberado sobre GNU GPL 2.0">
 <!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">

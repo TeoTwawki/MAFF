@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.6.1
+ * Version: 0.6.2
  *
  * Author: Christopher Ottley
  *
@@ -79,6 +79,8 @@ MafTabArchiverClass.prototype = {
     /** Which tabs to save. */
     this.browsersInclude = new Array();
 
+    this.browsers.QueryInterface(Components.interfaces.nsIArray);
+    
     for (var i=0; i<this.browsers.length; i++) {
       this.browsersInclude[this.browsersInclude.length] = i;
     }
@@ -113,8 +115,8 @@ MafTabArchiverClass.prototype = {
       }
 
       if (this.browsersInclude.length > 0) {
-        this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers[
-                              this.browsersInclude[this.currentMafArchiverIndex]],
+        this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers.queryElementAt(
+                              this.browsersInclude[this.currentMafArchiverIndex], Components.interfaces.nsISupports),
                             this.tempPath, this.scriptPath, this.archivePath,
                             dateTimeArchived.valueOf() + "", this.Maf);
         this.MafArchivers[this.currentMafArchiverIndex].start();
@@ -151,8 +153,8 @@ MafTabArchiverClass.prototype = {
               archivePathToUse = MafUtils.getFullUniqueFilename(archivePathToUse);
             }
             
-            this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers[
-                               this.browsersInclude[this.currentMafArchiverIndex]],
+            this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers.queryElementAt(
+                              this.browsersInclude[this.currentMafArchiverIndex], Components.interfaces.nsISupports),
                                this.tempPath, this.scriptPath, archivePathToUse,
                                dateTimeArchived.valueOf() + "", this.Maf);
             this.MafArchivers[this.currentMafArchiverIndex].start();

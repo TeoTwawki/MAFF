@@ -145,7 +145,7 @@ function removeDoubleByteChars(strWithDoubleByteChars) {
           browserList.push(v);
         }
       }
-
+      
       // If there's something selected
       if (browserList.length > 0) {
         var defaultFileName = MafUtils.validateFileName(
@@ -163,7 +163,14 @@ function removeDoubleByteChars(strWithDoubleByteChars) {
         }
 
         if ((index != -1) && (archivePath != "")) {
-          windowMAF.saveAllTabsComplete(browserWindow.getBrowser().browsers,
+          var browArray = Components.classes["@mozilla.org/array;1"]
+                            .createInstance(Components.interfaces.nsIMutableArray);
+                            
+          for (var i=0; i<browserWindow.getBrowser().browsers.length; i++) {
+            browArray.appendElement(browserWindow.getBrowser().browsers[i], false);
+          }
+              
+          windowMAF.saveAllTabsComplete(browArray,
                                         browserList.toString(),
                                         MafPreferences.temp,
                                         MafPreferences.programFromSaveIndex(index), archivePath);
