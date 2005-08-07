@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.6.2
+ * Version: 0.6.3
  *
  * Author: Christopher Ottley
  *
@@ -30,6 +30,11 @@
  * TODO: Add save frame functionality to alternative save component.
  */
 /**
+ *
+ * Changes from 0.6.2 to 0.6.3
+ *
+ * Added post setup copy of msvcr71.dll for Firefox on Wine and older Windows OS (95,98,Me)
+ * 
  *
  * Changes from 0.6.1 to 0.6.2
  *
@@ -794,7 +799,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.6.2", // 0.6.x has no batch files
+  postsetupversion: "0.6.3", // 0.6.x has no batch files
 
   _getSaveFilters: function() {
     var filterresult = new Array();
@@ -878,7 +883,7 @@ var MafPostSetup = {
     try {
       prefs.setIntPref("version.major", 0);
       prefs.setIntPref("version.minor", 6);
-      prefs.setIntPref("version.minorminor", 2);
+      prefs.setIntPref("version.minorminor", 3);
     } catch(e) { }
 
     if (!setupComplete) {
@@ -1048,7 +1053,30 @@ var MafPostSetup = {
         this._copyFile(MafUtils.appendToDir(sourceDir, filesList[i]), MafUtils.appendToDir(destDir, filesList[i]));
       }
     }
-
+    
+    
+    // If on windows
+    if (navigator.userAgent.indexOf("Windows") != -1) {
+      // Copy the lib files to the program folder if it doesn't exist
+      var progDir = Components.classes["@mozilla.org/file/directory_service;1"]
+                      .getService(Components.interfaces.nsIProperties)
+                      .get("CurProcD", Components.interfaces.nsIFile).path;
+                      
+      var libSourceDir = profileDir;
+      
+      if (isFF09OrHigher) {
+        libSourceDir = MafUtils.appendToDir(sourceDir, "extensions");
+        libSourceDir = MafUtils.appendToDir(sourceDir, this.progid);
+        libSourceDir = MafUtils.appendToDir(sourceDir, "libs");      
+        
+        var libFilesList = this._getFilesList(libSourceDir);
+        for (var i=0; i<libFilesList.length; i++) {
+          this._copyFile(MafUtils.appendToDir(libSourceDir, libFilesList[i]), MafUtils.appendToDir(progDir, libFilesList[i]));
+        }        
+      }
+                      
+    }
+    
   },
 
   /**

@@ -1,4 +1,4 @@
-initInstall("Mozilla Archive Format","/Christopher Ottley/Mozilla Archive Format","0.6.2");
+initInstall("Mozilla Archive Format","/Christopher Ottley/Mozilla Archive Format","0.6.3");
 
 var jarFile = "maf.jar";
 
@@ -29,7 +29,7 @@ var componentsDir = getFolder("Components");  //getFolder("Profile", "components
 setPackageFolder(componentsDir);
 
 // add the components and typelib
-addFile("components/maf.0.6.2.xpt");
+addFile("components/maf.0.6.3.xpt");
 addFile("components/nsMafArchivePostProcessor.js");
 addFile("components/nsMafArchiver.js");
 addFile("components/nsMafBlockingObserverService.js");
@@ -51,6 +51,10 @@ addFile("components/nsMafUtil.js");
 addFile("components/IZipWriterComponent.xpt");
 addFile("components/ZipWriterComponent.dll");
 
+// Add MSVC runtime for older Windows machines that need the library
+var progFolder = getFolder("Program");
+setPackageFolder(progFolder);
+addFile("libs/msvcr71.dll");
 
 var tempDir = getFolder("Preferences");
 
@@ -67,7 +71,7 @@ addFile("scripts/unsetallfiletypes.vbs");
 
 var err = performInstall();
 if (err == SUCCESS || err == 999) {
-  alert("MAF 0.6.2 is now installed.\nPlease restart your browser to activate it.");
+  alert("MAF 0.6.3 is now installed.\nPlease restart your browser to activate it.");
 } else {
   alert("Install failed. Error code:" + err + "\nTry installing it again");
 }
