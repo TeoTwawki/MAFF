@@ -34,6 +34,7 @@
  * Changes from 0.6.2 to 0.6.3
  *
  * Added post setup copy of msvcr71.dll for Firefox on Wine and older Windows OS (95,98,Me)
+ * Mime registration change to hopefully fix bug 11117.
  * 
  *
  * Changes from 0.6.1 to 0.6.2
@@ -856,8 +857,8 @@ var MafPostSetup = {
       }
       handler.isEditable = true;
       handler.saveToDisk = false;
-      handler.handleInternal = true; //false
-      handler.alwaysAsk = false; // true
+      handler.handleInternal = false;
+      handler.alwaysAsk = true;
       handler.appDisplayName = "MAF";
 
       handler.buildLinks();
