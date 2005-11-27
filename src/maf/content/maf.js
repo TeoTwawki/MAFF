@@ -35,6 +35,7 @@
  *
  * Added post setup copy of msvcr71.dll for Firefox on Wine and older Windows OS (95,98,Me)
  * Mime registration change to hopefully fix bug 11117.
+ * Added Slovenian locale by Martin Srebotnjak.
  * 
  *
  * Changes from 0.6.1 to 0.6.2

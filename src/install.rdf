@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
@@ -40,6 +40,7 @@
     <em:contributor>Jacinto Leal</em:contributor>
     <em:contributor>Molle Bestefich</em:contributor>
     <em:contributor>Ralph Ulrich</em:contributor>
+    <em:contributor>Martin Srebotnjak</em:contributor>
     <em:homepageURL>http://maf.mozdev.org/</em:homepageURL>
 
 
@@ -60,6 +61,7 @@
         <em:locale>locale/pt-BR/</em:locale>
         <em:locale>locale/da-DK/</em:locale>
         <em:locale>locale/de-DE/</em:locale>
+        <em:locale>locale/sl-SI/</em:locale>
         <!-- <em:skin>skin/classic/maf/</em:skin> -->
       </Description>
     </em:file>
