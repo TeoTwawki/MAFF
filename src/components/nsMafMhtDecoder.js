@@ -661,32 +661,31 @@ contentDecoderClass.prototype = {
   },
 
   /**
-   * Copied from FAQTs Knowledge Base
-   * Source: http://www.faqts.com/knowledge_base/view.phtml/aid/1748
-   * Authors: Jeff Wong, Thomas Loo, Louise Tolman, Martin Honnen, jsWalter
+   * Decode from base 64 using the hidden window's atob function
+   *
    */
   _decodeBase64: function(encodedString) {
     var result = new Array();
 
     try {
-      var bits, decOut = new Array(), i = 0;
-      for(; i<encodedString.length; i += 4) {
-        bits = (this.base64s.indexOf(encodedString.charAt(i)) & 0xff) <<18 |
-               (this.base64s.indexOf(encodedString.charAt(i +1)) & 0xff) <<12 |
-               (this.base64s.indexOf(encodedString.charAt(i +2)) & 0xff) << 6 |
-               this.base64s.indexOf(encodedString.charAt(i +3)) & 0xff;
+      var undecOut = '';
+      var decOut = new Array()
 
-        decOut.push((bits & 0xff0000) >>16);
-        decOut.push((bits & 0xff00) >>8);
-        decOut.push(bits & 0xff);
+      // Get hidden window
+      var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
+                        .getService(Components.interfaces.nsIAppShellService);
+      var hiddenWnd = appShell.hiddenDOMWindow;
+
+      mafdebug(encodedString);
+
+      var decStr = hiddenWnd.atob(encodedString);
+      for (var i=0; i<decStr.length; i++) {
+        decOut.push(decStr.charCodeAt(i));
       }
-      if(encodedString.charCodeAt(i -2) == 61)
-        undecOut=decOut.slice(0, decOut.length -2);
-      else if(encodedString.charCodeAt(i -1) == 61)
-        undecOut=decOut.slice(0, decOut.length -1);
-      else undecOut=decOut;
 
-      result = undecOut;
+      mafdebug(decOut);
+
+      result = decOut;
     } catch(e) {
       mafdebug(e);
     }

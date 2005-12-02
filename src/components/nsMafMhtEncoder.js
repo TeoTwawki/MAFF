@@ -206,8 +206,7 @@ MafMhtEncoderClass.prototype = {
     }
 
     try {
-      var str = obj_BinaryIO.readByteArray(obj_File.fileSize);
-
+      var str = obj_BinaryIO.readBytes(obj_File.fileSize);
     } catch (e) {
       mafdebug(e);
     }
@@ -316,44 +315,25 @@ MafMhtEncoderClass.prototype = {
     return result;
   },
 
+
   /**
-   * Based on code from the FAQTs Knowledge Base
-   * Source: http://www.faqts.com/knowledge_base/view.phtml/aid/1748
-   * Authors: Jeff Wong, Thomas Loo, Louise Tolman, Martin Honnen, jsWalter
+   * Encode to base 64 using the hidden window's btoa function
+   *
    */
   _encodeBase64: function(decStr, oTransport) {
     var result = "";
 
     try {
 
-      var bits, dual, i = 0, encOut = '';
+      var encOut = '';
 
-      while(decStr.length >= i + 3) {
-        bits = (decStr[i++] & 0xff) <<16 |
-               (decStr[i++] & 0xff) <<8  |
-                decStr[i++] & 0xff;
-        encOut += this.base64s.charAt((bits & 0x00fc0000) >>18) +
-                  this.base64s.charAt((bits & 0x0003f000) >>12) +
-                  this.base64s.charAt((bits & 0x00000fc0) >> 6) +
-                  this.base64s.charAt((bits & 0x0000003f));
+      // Get hidden window
+      var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
+                        .getService(Components.interfaces.nsIAppShellService);
+      var hiddenWnd = appShell.hiddenDOMWindow;
 
-        if (encOut.length > this.QPENCODE_MAXLINESIZE) {
-          // Split into lines of QPENCODE_MAXLINESIZE characters or less
-          result = encOut.slice(0, this.QPENCODE_MAXLINESIZE) + "\r\n";
-          encOut = encOut.substring(this.QPENCODE_MAXLINESIZE, encOut.length);
-          oTransport.write(result, result.length);
-        }
+      encOut = hiddenWnd.btoa(decStr);
 
-
-      }
-      if (decStr.length -i > 0 && decStr.length - i < 3) {
-        dual = Boolean(decStr.length -i -1);
-        bits = ((decStr[i++] & 0xff) <<16) |
-                (dual ? (decStr[i] & 0xff) <<8 : 0);
-        encOut += this.base64s.charAt((bits & 0x00fc0000) >>18) +
-                  this.base64s.charAt((bits & 0x0003f000) >>12) +
-                  (dual ? this.base64s.charAt((bits & 0x00000fc0) >>6) : '=') + '=';
-      }
       result = encOut;
     } catch(e) {
       mafdebug(e);
@@ -379,6 +359,7 @@ MafMhtEncoderClass.prototype = {
                .getService(Components.interfaces.nsIObserverService);
     obs.notifyObservers(null, "encoding-mht-encoder-finished", "base64");
   },
+
 
   /**
    * Encode a single line of text to be quoted printable.
