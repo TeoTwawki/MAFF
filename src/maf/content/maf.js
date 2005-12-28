@@ -36,6 +36,7 @@
  * Added post setup copy of msvcr71.dll for Firefox on Wine and older Windows OS (95,98,Me)
  * Mime registration change to hopefully fix bug 11117.
  * Added Slovenian locale by Martin Srebotnjak.
+ * Updated MHT Base64 encoding and decoding routines to use DOM window's atob and btoa functions
  * 
  *
  * Changes from 0.6.1 to 0.6.2
@@ -1714,11 +1715,36 @@ function removeDoubleByteChars(strWithDoubleByteChars) {
   return result;
 }
 
+
+function getDefaultFileName(aDefaultFileName, aURI, aDocument,
+                            aContentDisposition) {
+  var ff15 = false;
+
+  try {
+    // assuming we're running under Firefox
+    var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+                        .getService(Components.interfaces.nsIXULAppInfo);
+    var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+                               .getService(Components.interfaces.nsIVersionComparator);
+    if (versionChecker.compare(appInfo.version, "1.5") >= 0) {
+      // running under Firefox 1.5 or later
+      ff15 = true;
+    }
+  } catch (ex) { }
+
+
+  if (ff15) {
+    return getDefaultFileName_postDP(aDefaultFileName, aURI, aDocument, aContentDisposition);
+  } else {
+    return getDefaultFileName_preDP(aDefaultFileName, aNameFromHeaders, aURI, aDocument);
+  }
+}
+
 /**
  * Redefined to check the document title first and then the headers.
  * Not re-numbered in comments to show original position.
  */
-function getDefaultFileName(aDefaultFileName, aNameFromHeaders, aDocumentURI, aDocument)
+function getDefaultFileName_preDP(aDefaultFileName, aNameFromHeaders, aDocumentURI, aDocument)
 {
   if ((aDocument) && (aDocument.contentType == "text/html")) {
 
@@ -1775,6 +1801,81 @@ function getDefaultFileName(aDefaultFileName, aNameFromHeaders, aDocumentURI, aD
     if (aDocumentURI.host)
       // 6) Use the host.
       return aDocumentURI.host;
+  } catch (e) {
+    // Some files have no information at all, like Javascript generated pages
+  }
+  try {
+    // 7) Use the default file name
+    return getStringBundle().GetStringFromName("DefaultSaveFileName");
+  } catch (e) {
+    //in case localized string cannot be found
+  }
+  // 8) If all else fails, use "index"
+  return "index";
+}
+
+
+function getDefaultFileName_postDP(aDefaultFileName, aURI, aDocument,
+                            aContentDisposition)
+{
+  // 1) look for a filename in the content-disposition header, if any
+  if (aContentDisposition) {
+    const mhpContractID = "@mozilla.org/network/mime-hdrparam;1";
+    const mhpIID = Components.interfaces.nsIMIMEHeaderParam;
+    const mhp = Components.classes[mhpContractID].getService(mhpIID);
+    var dummy = { value: null };  // Need an out param...
+    var charset = getCharsetforSave(aDocument);
+
+    var fileName = null;
+    try {
+      fileName = mhp.getParameter(aContentDisposition, "filename", charset,
+                                  true, dummy);
+    }
+    catch (e) {
+      try {
+        fileName = mhp.getParameter(aContentDisposition, "name", charset, true,
+                                    dummy);
+      }
+      catch (e) {
+      }
+    }
+    if (fileName)
+      return fileName;
+  }
+
+  try {
+    var url = aURI.QueryInterface(Components.interfaces.nsIURL);
+    if (url.fileName != "") {
+      // 2) Use the actual file name, if present
+      var textToSubURI = Components.classes["@mozilla.org/intl/texttosuburi;1"]
+                                   .getService(Components.interfaces.nsITextToSubURI);
+      return validateFileName(textToSubURI.unEscapeURIForUI(url.originCharset || "UTF-8", url.fileName));
+    }
+  } catch (e) {
+    // This is something like a data: and so forth URI... no filename here.
+  }
+
+  if (aDocument) {
+    var docTitle = validateFileName(aDocument.title).replace(/^\s+|\s+$/g, "");
+    if (docTitle) {
+      // 3) Use the document title
+      return docTitle;
+    }
+  }
+
+  if (aDefaultFileName)
+    // 4) Use the caller-provided name, if any
+    return validateFileName(aDefaultFileName);
+
+  // 5) If this is a directory, use the last directory name
+  var path = aURI.path.match(/\/([^\/]+)\/$/);
+  if (path && path.length > 1)
+    return validateFileName(path[1]);
+
+  try {
+    if (aURI.host)
+      // 6) Use the host.
+      return aURI.host;
   } catch (e) {
     // Some files have no information at all, like Javascript generated pages
   }

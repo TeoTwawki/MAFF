@@ -441,7 +441,9 @@ MafWebBrowserPersistClass.prototype = {
 
 
   saveURLtoFile : function(aURLString) {
-    if ( !aURLString ) return;
+    if ( !aURLString ) return "";
+
+    try {
 
     // Resolve URL against the location href
     aURLString = this.resolveURL(this.baselocation, aURLString);
@@ -565,7 +567,7 @@ MafWebBrowserPersistClass.prototype = {
     try {
       var targetDir = this.dataPathFile.clone();
       var orgFile = this.convertURLToFile(aURLString);
-      if ( !orgFile.isFile() ) return;
+      if ( !orgFile.isFile() ) return "";
       orgFile.copyTo(targetDir, newFileName);
       this.fileList[newFileName] = aURLString;
       return this.dataPathStr + newFileName;
@@ -573,6 +575,11 @@ MafWebBrowserPersistClass.prototype = {
       mafdebug(err);
       return "";
     }
+   }
+
+   } catch (ex) {
+     mafdebug(ex);
+     return "";
    }
   },
 
@@ -655,14 +662,18 @@ MafWebBrowserPersistClass.prototype = {
       if ( ++i > 10 ) break;
       var imgURL  = this.resolveURL(aCSShref, RegExp.$1);
       var imgFile = this.saveURLtoFile(imgURL);
+      try {
 
-      if (this.dataPathStr.length > 0) {
-        // Since the css is in the same folder as the other data
-        if (imgFile.startsWith(this.dataPathStr)) {
-          imgFile = imgFile.substring(this.dataPathStr.length, imgFile.length);
+        if (this.dataPathStr.length > 0) {
+          // Since the css is in the same folder as the other data
+          if (imgFile.startsWith(this.dataPathStr)) {
+            imgFile = imgFile.substring(this.dataPathStr.length, imgFile.length);
+          }
         }
+        aCSStext = aCSStext.replace(RE, " url('" + imgFile + "')");
+      } catch(ex) {
+        mafdebug(ex);
       }
-      aCSStext = aCSStext.replace(RE, " url('" + imgFile + "')");
     }
     aCSStext = aCSStext.replace(/\r|\n/g, "\\A");
     RE = new RegExp(/ content: [\"\'](.*?)[\"\']; /);
