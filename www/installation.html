@@ -3,7 +3,7 @@
 
 <p>Below you will find links to the latest XPI installer package. The installer packages have been merged so there is one XPI for both Linux and Windows installations. If you have previously installed MAF in Mozilla, please uninstall MAF and then install the latest package.</p>
 
-<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.6.2.xpi">0.6.2 for Linux</a> and <a href="http://downloads.mozdev.org/maf/maf-windows-0.6.2.xpi">0.6.2 for Windows</a></p>
+<p>Latest XPI - <a href="http://downloads.mozdev.org/maf/maf-0.6.3.xpi">0.6.3 for Linux and Windows</a></p>
 
 <p>If you are using the 0.6.0 version or higher, there are no more scripts used for archiving. Native (XPCOM C/C++) components are used making the process a bit simpler and faster.</p>
 
@@ -15,11 +15,19 @@
 
 <p>Also released is <a href="http://downloads.mozdev.org/maf/menumaf-0.6.2.xpi">MenuMAF 0.6.2 </a> for Linux and Windows. This package adds menu entries and shortcut keys for accessibility to the file menu. Currently it only works for MAF 0.6.2 and Firefox 1.0+.</p>
 
-<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-0.5.0.xpi">0.5.0 for Linux and Windows</a></p>
+<p>Previous XPI - <a href="http://downloads.mozdev.org/maf/maf-linux-0.6.2.xpi">0.6.2 for Linux</a> and <a href="http://downloads.mozdev.org/maf/maf-windows-0.6.2.xpi">0.6.2 for Windows</a></p>
 
 
 <h5 class="page-header"><a id="changelog" name="changelog">Changes</a></h5>
 <pre>
+ *
+ * Changes from 0.6.2 to 0.6.3
+ *
+ * Added post setup copy of msvcr71.dll for Firefox on Wine and older Windows OS (95,98,Me)
+ * Mime registration change to hopefully fix bug 11117.
+ * Added Slovenian locale by Martin Srebotnjak.
+ * Updated MHT Base64 encoding and decoding routines to use DOM window's atob and btoa functions
+ * 
  *
  * Changes from 0.6.1 to 0.6.2
  *
