@@ -36,6 +36,7 @@
  * Firefox 3 compatibility: Replaced the "contents.rdf" files with "chrome.manifest".
  * Firefox 3 compatibility: Updated "install.rdf" and removed "install.js".
  * Firefox 3 compatibility: Added private nsIDictionary implementation.
+ * Firefox 3 compatibility: Updated code using the now changed nsIZipReader interface.
  * Changed layout of ZipWriterComponent libraries for cross-platform compatibility.
  *
  * Changes from 0.6.2 to 0.6.3
@@ -254,31 +255,31 @@ maf.prototype = {
       
       var zipReader = Components.classes["@mozilla.org/libjar/zip-reader;1"]
                         .createInstance(Components.interfaces.nsIZipReader);
-      zipReader.init(oArchivefile);
-      zipReader.open();
+      zipReader.open(oArchivefile);
 
       var it = zipReader.findEntries("*");
-      while (it.hasMoreElements()) {
-        var entry = it.getNext();
+      while (it.hasMore()) {
+      	entryname = it.getNext();
+        var entry = zipReader.getEntry(entryname);
         entry = entry.QueryInterface(Components.interfaces.nsIZipEntry);	
 
         var oDestpathentry = Components.classes["@mozilla.org/file/local;1"]
                           .createInstance(Components.interfaces.nsILocalFile);
         oDestpathentry.initWithPath(destpath);
-        oDestpathentry.setRelativeDescriptor(oDestpath, entry.name);
+        oDestpathentry.setRelativeDescriptor(oDestpath, entryname);
         
-        if (entry.name.endsWith("/")) {
+        if (entryname.endsWith("/")) {
           // Folder
-          //alert("Extracting " + entry.name);
+          //alert("Extracting " + entryname);
           if (!oDestpathentry.exists() || !oDestpathentry.isDirectory()) {
             oDestpathentry.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
           }          
         } else {
-          //alert("Extracting " + entry.name);
+          //alert("Extracting " + entryname);
           if (!oDestpathentry.parent.exists() || !oDestpathentry.parent.isDirectory()) {
             oDestpathentry.parent.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
           }
-          zipReader.extract(entry.name, oDestpathentry);        
+          zipReader.extract(entryname, oDestpathentry);        
         }
       }
       zipReader.close();     

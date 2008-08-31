@@ -226,31 +226,31 @@ MAFProtocol.prototype = {
       
       var zipReader = Components.classes["@mozilla.org/libjar/zip-reader;1"]
                         .createInstance(Components.interfaces.nsIZipReader);
-      zipReader.init(oArchivefile);
-      zipReader.open();
+      zipReader.open(oArchivefile);
 
       var it = zipReader.findEntries("*");
-      while (it.hasMoreElements()) {
-        var entry = it.getNext();
+      while (it.hasMore()) {
+    	entryname = it.getNext();
+        var entry = zipReader.getEntry(entryname);
         entry = entry.QueryInterface(Components.interfaces.nsIZipEntry);	
 
         var oDestpathentry = Components.classes["@mozilla.org/file/local;1"]
                           .createInstance(Components.interfaces.nsILocalFile);
         oDestpathentry.initWithPath(destpath);
-        oDestpathentry.setRelativeDescriptor(oDestpath, entry.name);
+        oDestpathentry.setRelativeDescriptor(oDestpath, entryname);
         
-        if (entry.name.endsWith("/")) {
+        if (entryname.endsWith("/")) {
           // Folder
-          //alert("Extracting " + entry.name);
+          //alert("Extracting " + entryname);
           if (!oDestpathentry.exists() || !oDestpathentry.isDirectory()) {
             oDestpathentry.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
           }          
         } else {
-          //alert("Extracting " + entry.name);
+          //alert("Extracting " + entryname);
           if (!oDestpathentry.parent.exists() || !oDestpathentry.parent.isDirectory()) {
             oDestpathentry.parent.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
           }
-          zipReader.extract(entry.name, oDestpathentry);        
+          zipReader.extract(entryname, oDestpathentry);        
         }
       }
       zipReader.close();     
