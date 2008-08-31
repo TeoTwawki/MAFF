@@ -26,7 +26,7 @@
 
 <!ENTITY maf.aboutdlg.title "O MAFu">
 <!ENTITY maf.aboutdlg.description "MAF je razširitev Mozille, ki omogoča ustvarjanje arhiva zip za zbiranje celotnih dokumentov HTML. Prav tako shranjuje shranjene meta-podatke, kot sta izvorni URL in datum/čas.">
-<!ENTITY maf.version "MAF v 0.6.2">
+<!ENTITY maf.version "MAF v 0.7.0-unofficial">
 <!ENTITY maf.aboutdlg.copyright "(c) 2005 Christopher Ottley">
 <!ENTITY maf.aboutdlg.license "Izdano pod licenco GNU GPL 2.0">
 <!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">
