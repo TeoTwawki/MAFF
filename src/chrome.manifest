@@ -1,0 +1,14 @@
+content	maf	chrome/content/
+
+locale	maf	en-US	chrome/locale/en-US/
+
+locale	maf	da-DK	chrome/locale/da-DK/
+locale	maf	de-DE	chrome/locale/de-DE/
+locale	maf	fr-FR	chrome/locale/fr-FR/
+locale	maf	it-IT	chrome/locale/it-IT/
+locale	maf	pl-PL	chrome/locale/pl-PL/
+locale	maf	pt-BR	chrome/locale/pt-BR/
+locale	maf	ru-RU	chrome/locale/ru-RU/
+locale	maf	sl-SI	chrome/locale/sl-SI/
+
+overlay	chrome://browser/content/browser.xul	chrome://maf/content/mafoverlay.xul

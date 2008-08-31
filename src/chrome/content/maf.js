@@ -31,6 +31,12 @@
  */
 /**
  *
+ * Changes from 0.6.3 to 0.7.0-unofficial
+ *
+ * Firefox 3 compatibility: Replaced the "contents.rdf" files with "chrome.manifest".
+ * Firefox 3 compatibility: Removed "install.js".
+ * Changed layout of ZipWriterComponent libraries for cross-platform compatibility.
+ *
  * Changes from 0.6.2 to 0.6.3
  *
  * Added post setup copy of msvcr71.dll for Firefox on Wine and older Windows OS (95,98,Me)
