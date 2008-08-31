@@ -662,8 +662,18 @@ function extractContentHandlerStateClass() {
 
 extractContentHandlerStateClass.prototype = {
 
-  uidToLocalFilenameMap: Components.classes["@mozilla.org/dictionary;1"]
-                            .createInstance(Components.interfaces.nsIDictionary),
+  _uidToLocalFilenameMap: null,
+
+  // We need to create an instance of the "@mozilla.org/maf/dictionary;1"
+  //  class, but we must be sure it is already registered; thus the getter.
+  get uidToLocalFilenameMap() {
+    if (this._uidToLocalFilenameMap === null) {
+      this._uidToLocalFilenameMap =
+                            Components.classes["@mozilla.org/maf/dictionary;1"]
+                            .createInstance(Components.interfaces.nsIDictionary);
+    }
+    return this._uidToLocalFilenameMap;
+  },
 
   htmlFiles: new Array(),
 
