@@ -38,6 +38,7 @@
  * Firefox 3 compatibility: Added private nsIDictionary implementation.
  * Firefox 3 compatibility: Updated code using the now changed nsIZipReader interface.
  * Changed layout of ZipWriterComponent libraries for cross-platform compatibility.
+ * Updated "postsetup" version to force the setup steps, even if it might not be needed.
  *
  * Changes from 0.6.2 to 0.6.3
  *
@@ -810,7 +811,7 @@ var MafPostSetup = {
 
   progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
 
-  postsetupversion: "0.6.3", // 0.6.x has no batch files
+  postsetupversion: "0.7.0u",
 
   _getSaveFilters: function() {
     var filterresult = new Array();
