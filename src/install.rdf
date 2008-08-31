@@ -14,17 +14,8 @@
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>1.5</em:minVersion>
-        <em:maxVersion>1.5</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-
-     <!-- Mozilla -->   
-    <em:targetApplication>
-      <Description>
-        <em:id>{86c18b42-e466-45a9-ae7a-9b95ba6f5640}</em:id>
-        <em:minVersion>1.7</em:minVersion>
-        <em:maxVersion>1.8</em:maxVersion>
+        <em:minVersion>3.0</em:minVersion>
+        <em:maxVersion>3.*</em:maxVersion>
       </Description>
     </em:targetApplication>
 
@@ -48,22 +39,5 @@
     <em:optionsURL>chrome://maf/content/mafPreferencesDLG.xul</em:optionsURL>
     <!-- <em:aboutURL>chrome://maf/content/mafAboutDLG.xul</em:aboutURL> -->
     <!-- <em:iconURL>chrome://maf/skin/maf.png</em:iconURL> -->
-
-    <!-- Packages, Skins and Locales that this extension registers -->
-    <em:file>
-      <Description about="urn:mozilla:extension:file:maf.jar">
-        <em:package>content/</em:package>
-        <em:locale>locale/en-US/</em:locale>
-        <em:locale>locale/it-IT/</em:locale>
-        <em:locale>locale/fr-FR/</em:locale>
-        <em:locale>locale/ru-RU/</em:locale>
-        <em:locale>locale/pl-PL/</em:locale>
-        <em:locale>locale/pt-BR/</em:locale>
-        <em:locale>locale/da-DK/</em:locale>
-        <em:locale>locale/de-DE/</em:locale>
-        <em:locale>locale/sl-SI/</em:locale>
-        <!-- <em:skin>skin/classic/maf/</em:skin> -->
-      </Description>
-    </em:file>
   </Description>
 </RDF>

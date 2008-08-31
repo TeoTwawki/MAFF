@@ -34,7 +34,7 @@
  * Changes from 0.6.3 to 0.7.0-unofficial
  *
  * Firefox 3 compatibility: Replaced the "contents.rdf" files with "chrome.manifest".
- * Firefox 3 compatibility: Removed "install.js".
+ * Firefox 3 compatibility: Updated "install.rdf" and removed "install.js".
  * Changed layout of ZipWriterComponent libraries for cross-platform compatibility.
  *
  * Changes from 0.6.2 to 0.6.3
