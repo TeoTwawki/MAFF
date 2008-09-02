@@ -315,56 +315,62 @@ maf.prototype = {
     
       var exitvalue = 0;
     
+      // Dfine some useful constants, locally for now
+      const PR_RDONLY      = 0x01;
+      const PR_WRONLY      = 0x02;
+      const PR_RDWR        = 0x04;
+      const PR_CREATE_FILE = 0x08;
+      const PR_APPEND      = 0x10;
+      const PR_TRUNCATE    = 0x20;
+      const PR_SYNC        = 0x40;
+      const PR_EXCL        = 0x80;
+
+      const PR_USEC_PER_MSEC = 1000;
+
       try {
     
         var archivefileobj = Components.classes["@mozilla.org/file/local;1"]
                               .createInstance(Components.interfaces.nsILocalFile);
         archivefileobj.initWithPath(archivefile); 
         
-        var zipwriterobj = Components.classes["@ottley.org/libzip/zip-writer;1"]
-                              .createInstance(Components.interfaces.IZipWriterComponent);
+        var zipwriterobj = Components.classes["@mozilla.org/zipwriter;1"]
+                              .createInstance(Components.interfaces.nsIZipWriter);
 
-        zipwriterobj.CURR_COMPRESS_LEVEL = Components.interfaces.IZipWriterComponent.COMPRESS_LEVEL9;
-        
         var sourcepathobj = Components.classes["@mozilla.org/file/local;1"]
                               .createInstance(Components.interfaces.nsILocalFile);
         sourcepathobj.initWithPath(MafUtils.appendToDir(MafPreferences.temp, sourcepath));        
   
-        zipwriterobj.init(archivefileobj);
-        
-        zipwriterobj.basepath = sourcepathobj.parent;
+        zipwriterobj.open(archivefileobj, PR_RDWR | PR_CREATE_FILE); // No PR_TRUNCATE for now
                   
-        var zipentriestoadd = new Array();
-        
-        // For each of the entries, add to zip
-        if (sourcepathobj.exists() && sourcepathobj.isDirectory()) {
-          var entries = sourcepathobj.directoryEntries;
+        function addDirectoryToZipRecursive(sourcePathObj, destZipEntry) {
+          var entries = sourcePathObj.directoryEntries;
+
+          if (entries.hasMoreElements()) {
+            zipwriterobj.addEntryDirectory(
+             destZipEntry,
+             sourcePathObj.lastModifiedTime * PR_USEC_PER_MSEC,
+             false);
+          }
   
           while (entries.hasMoreElements()) {
-            zipentriestoadd.push(entries.getNext());
-          }
-        }
-                          
-        // Add files depth first
-        while (zipentriestoadd.length > 0) {
-          var zipentry = zipentriestoadd.pop();
-          
-          zipentry.QueryInterface(Components.interfaces.nsILocalFile);
-         
-          if (!zipentry.isDirectory()) {
-            zipwriterobj.add(zipentry);
-          }
-          
-          if (zipentry.exists() && zipentry.isDirectory()) {
-            var entries = zipentry.directoryEntries;
-    
-            while (entries.hasMoreElements()) {
-              zipentriestoadd.push(entries.getNext());
+            var entry = entries.getNext().QueryInterface(Components.interfaces.nsIFile);
+            var zipEntry = destZipEntry + "/" + entry.leafName;
+            if (entry.isDirectory()) {
+              addDirectoryToZipRecursive(entry, zipEntry);
+            } else {
+              zipwriterobj.addEntryFile(
+               zipEntry,
+               Components.interfaces.nsIZipWriter.COMPRESSION_BEST,
+               entry,
+               false);
             }
           }        
         }
+
+        addDirectoryToZipRecursive(sourcepathobj, sourcepathobj.leafName);
           
-        zipwriterobj.commitUpdates();
+        zipwriterobj.close();
+        zipwriterobj = null;
       
       } catch (e) {
         mafdebug(e);
