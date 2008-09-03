@@ -26,7 +26,7 @@
 
 <!ENTITY maf.aboutdlg.title "Om MAF">
 <!ENTITY maf.aboutdlg.description "MAF er en Mozilla udvidelse som giver dig mulighed for at samle komplette HTML dokumenter i � fil. MAF gemmer udover f.eks. billeder ogs�meta-data om gemte sider, s�om den oprindelige URL og tidspunktet for arkiveringen.">
-<!ENTITY maf.version "MAF v 0.7.0-unofficial">
+<!ENTITY maf.version "MAF v 0.7.1-unofficial">
 <!ENTITY maf.aboutdlg.copyright "(c) 2005 Christopher Ottley">
 <!ENTITY maf.aboutdlg.license "Frigivet under GNU GPL 2.0">
 <!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">
