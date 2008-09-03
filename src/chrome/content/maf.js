@@ -2,7 +2,7 @@
  * Mozilla Archive Format
  * ======================
  *
- * Version: 0.7.0-unofficial
+ * Version: 0.7.1-unofficial
  *
  * Author: Christopher Ottley
  *
@@ -33,6 +33,11 @@
  */
 /**
  *
+ * Changes from 0.7.0-unofficial to 0.7.1-unofficial
+ *
+ * Multi-platform compatibility: Replaced binary zip writer component.
+ *
+ *
  * Changes from 0.6.3 to 0.7.0-unofficial
  *
  * Firefox 3 compatibility: Replaced the "contents.rdf" files with "chrome.manifest".
@@ -41,6 +46,7 @@
  * Firefox 3 compatibility: Updated code using the now changed nsIZipReader interface.
  * Changed layout of ZipWriterComponent libraries for cross-platform compatibility.
  * Updated "postsetup" version to force the setup steps, even if it might not be needed.
+ *
  *
  * Changes from 0.6.2 to 0.6.3
  *
