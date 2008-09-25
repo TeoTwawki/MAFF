@@ -194,38 +194,40 @@
  *
  */
 
+var sharedData = Application.storage.get("maf-data", null);
+if (!sharedData) {
+  sharedData = {};
+  Application.storage.set("maf-data", sharedData);
+}
+
+Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
+ .getService(Components.interfaces.mozIJSSubScriptLoader)
+ .loadSubScript("chrome://maf/content/includeall.js");
+
 try {
 
 var browserWindow = window;
 
-var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                        .getService(Components.interfaces.nsIMafPreferences);
+var MafPreferences = GetMafPreferencesServiceClass();
 
-var MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                  .getService(Components.interfaces.nsIMafUtil);
+var MafUtils = GetMafUtilServiceClass();
 
-var MafMHTHandler = Components.classes["@mozilla.org/maf/mhthandler_service;1"]
-                       .getService(Components.interfaces.nsIMafMhtHandler);
+var MafMHTHandler = new MafMhtHandlerServiceClass();
 
-var MafLibMHTDecoder = Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
-                          .createInstance(Components.interfaces.nsIMafMhtDecoder);
+var MafLibMHTDecoder = new MafMhtDecoderClass();
 
-var MafLibMHTEncoder = Components.classes["@mozilla.org/libmaf/encoder;1?name=mht"]
-                          .createInstance(Components.interfaces.nsIMafMhtEncoder);
+var MafLibMHTEncoder = new MafMhtEncoderClass();
 
-var MafGUI = Components.classes["@mozilla.org/maf/guihandler;1"]
-                .createInstance(Components.interfaces.nsIMafGuiHandler);
+var MafGUI = new MAFGuiHandlerClass();
 MafGUI.init(browserWindow);
 
-var MafState = Components.classes["@mozilla.org/maf/state_service;1"]
-                  .getService(Components.interfaces.nsIMafState);
+var MafState = GetMafStateServiceClass();
 
 var MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
                       .getService(Components.interfaces.nsIStringBundleService)
                       .createBundle("chrome://maf/locale/maf.properties");
 
-var MafBlockingObserver = Components.classes["@mozilla.org/blocking-observer-service;1"]
-                             .getService(Components.interfaces.nsIObserverService);
+var MafBlockingObserver = GetMafObserverServiceClass();
 
 } catch(e) {
   mafdebug(e);
@@ -487,8 +489,7 @@ maf.prototype = {
   saveAsWebPageComplete: function(aBrowser, tempPath, scriptPath, archivePath) {
     var dateTimeArchived = new Date();
 
-    var objMafArchiver = Components.classes["@mozilla.org/libmaf/archiver;1"]
-                            .createInstance(Components.interfaces.nsIMafArchiver);
+    var objMafArchiver = new MafArchiverClass();
     objMafArchiver.init(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived.valueOf() + "", Maf);
     objMafArchiver.setProgressUpdater(Maf);
     objMafArchiver.start();
@@ -498,7 +499,7 @@ maf.prototype = {
   nativeSaveFile: function(aDocument, aSaveDocPath, aSaveDocFileName, aObjMafArchiver) {
     try {
      MafNativeFileSave.saveFile(aDocument, aSaveDocPath, aSaveDocFileName,
-                                aObjMafArchiver.QueryInterface(Components.interfaces.nsIMafArchiver));
+                                aObjMafArchiver);
     } catch(e) {
       mafdebug(e);
     }
@@ -529,8 +530,7 @@ maf.prototype = {
    * Save all open tabs in an archive
    */
   saveAllTabsComplete: function(browsers, includeList, tempPath, scriptPath, archivePath) {
-    var objMafTabArchiver = Components.classes["@mozilla.org/libmaf/tabarchiver;1"]
-                               .createInstance(Components.interfaces.nsIMafTabArchiver);
+    var objMafTabArchiver = new MafTabArchiverClass();
     objMafTabArchiver.init(browsers, tempPath, scriptPath, archivePath, Maf);
     if (includeList != "") {
       objMafTabArchiver.setIncludeList(includeList);
@@ -546,8 +546,7 @@ maf.prototype = {
 
     var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random()*1000);
 
-    var objMafTabExpander = Components.classes["@mozilla.org/libmaf/tabexpander;1"]
-                                 .createInstance(Components.interfaces.nsIMafTabExpander);
+    var objMafTabExpander = new MafTabExpanderClass();
 
     objMafTabExpander.init(tempPath, scriptPath, archivePath, folderNumber, Maf);
     objMafTabExpander.start();
@@ -690,8 +689,7 @@ maf.prototype = {
 
         MafPostSetup.complete();
 
-        var MafArchivePostProcessor = Components.classes["@mozilla.org/maf/archive-postprocessor;1"]
-                                          .createInstance(Components.interfaces.nsIObserver);
+        var MafArchivePostProcessor = new MafArchivePostProcessorClass();
         MafBlockingObserver.addObserver(MafArchivePostProcessor, "maf-open-archive-complete", false);
       }
     } else {
@@ -801,17 +799,6 @@ maf.prototype = {
     gContextMenu.showItem("maf-save-in-archive-menuitem",
                          !( gContextMenu.inDirList || gContextMenu.isTextSelected || gContextMenu.onTextInput ||
                             gContextMenu.onLink || gContextMenu.onImage ));
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(Components.interfaces.nsIMaf) &&
-        !iid.equals(Components.interfaces.nsIMafProgressUpdater) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
 
 };

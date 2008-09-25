@@ -29,18 +29,6 @@
 
 // Provides MAF Archiver Object
 
-const mafArchiverContractID = "@mozilla.org/libmaf/archiver;1";
-const mafArchiverCID = Components.ID("{29c494d1-6f42-4ddd-a831-ea2176753ddd}");
-const mafArchiverIID = Components.interfaces.nsIMafArchiver;
-
-var MafUtils = null;
-
-var MafPreferences = null;
-
-var MafState = null;
-
-var MafStrBundle = null;
-
 /**
  * The MAF Archiver
  */
@@ -228,8 +216,7 @@ MafArchiverClass.prototype = {
 
   QueryInterface: function(iid) {
 
-    if (!iid.equals(mafArchiverIID) &&
-        !iid.equals(Components.interfaces.nsITimerCallback) &&
+    if (!iid.equals(Components.interfaces.nsITimerCallback) &&
         !iid.equals(Components.interfaces.nsISupports)) {
       throw Components.results.NS_ERROR_NO_INTERFACE;
     }
@@ -312,101 +299,3 @@ MafArchiverOnComplete.prototype = {
     return this;
   }
 };
-
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-String.prototype.trim = function() {
-  // skip leading and trailing whitespace
-  // and return everything in between
-  var x = this;
-  x = x.replace(/^\s*(.*)/, "$1");
-  x = x.replace(/(.*?)\s*$/, "$1");
-  return x;
-};
-
-/**
- * Replace all needles with newneedles
- */
-String.prototype.replaceAll = function(needle, newneedle) {
-  var x = this;
-  x = x.split(needle).join(newneedle);
-  return x;
-};
-
-var MAFArchiverFactory = new Object();
-
-MAFArchiverFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafArchiverIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (MafUtils == null) {
-    MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                  .getService(Components.interfaces.nsIMafUtil);
-  }
-
-  if (MafPreferences == null) {
-    MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                        .getService(Components.interfaces.nsIMafPreferences);
-  }
-
-  if (MafState == null) {
-    MafState = Components.classes["@mozilla.org/maf/state_service;1"]
-                  .getService(Components.interfaces.nsIMafState);
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-
-  return (new MafArchiverClass()).QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MAFArchiverModule = new Object();
-
-MAFArchiverModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafArchiverCID,
-                                  "Maf Archiver JS Component",
-                                  mafArchiverContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MAFArchiverModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafArchiverCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MAFArchiverFactory;
-};
-
-MAFArchiverModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MAFArchiverModule;
-};
-

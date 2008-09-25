@@ -29,26 +29,33 @@
 
 // Provides MAF State service
 
-const mafStateContractID = "@mozilla.org/maf/state_service;1";
-const mafStateCID = Components.ID("{de7a59d9-4857-4a8e-9455-61e1c990d6ea}");
-const mafStateIID = Components.interfaces.nsIMafState;
-
-const MAFNamespaceId = "MAF";
-const MAFNamespace = "http://maf.mozdev.org/metadata/rdf#";
-
-
 var gRDFService = null;
 var gRDFCService = null;
-var MafStateService = null;
-var MafUtils = null;
-var MafPreferences = null;
-var MafLibMHTDecoder = null;
-
-var MafStrBundle = null;
-
 var gNETIOService = null;
 
 
+function GetMafStateServiceClass() {
+  if (gRDFService == null) {
+    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
+                     .getService(Components.interfaces.nsIRDFService);
+  }
+
+  if (gRDFCService == null) {
+    gRDFCService = Components.classes["@mozilla.org/rdf/container-utils;1"]
+                     .getService(Components.interfaces.nsIRDFContainerUtils);
+  }
+
+  if (gNETIOService == null) {
+    gNETIOService = Components.classes["@mozilla.org/network/io-service;1"]
+                      .getService(Components.interfaces.nsIIOService);
+  }
+
+  if (!sharedData.MafStateService) {
+    sharedData.MafStateService = new MafStateServiceClass();
+  }
+
+  return sharedData.MafStateService;
+}
 
 /**
  * The MAF State Service.
@@ -425,116 +432,5 @@ MafStateServiceClass.prototype = {
       result = this.localFileToMafUrlMap[url];
     }
     return result;
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(mafStateIID) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
-
 };
-
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-
-var MafStateFactory = new Object();
-
-MafStateFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafStateIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (gRDFService == null) {
-    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
-                     .getService(Components.interfaces.nsIRDFService);
-  }
-
-  if (gRDFCService == null) {
-    gRDFCService = Components.classes["@mozilla.org/rdf/container-utils;1"]
-                     .getService(Components.interfaces.nsIRDFContainerUtils);
-  }
-
-  if (gNETIOService == null) {
-    gNETIOService = Components.classes["@mozilla.org/network/io-service;1"]
-                      .getService(Components.interfaces.nsIIOService);
-  }
-
-  if (MafUtils == null) {
-    MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                  .getService(Components.interfaces.nsIMafUtil);
-  }
-
-  if (MafPreferences == null) {
-    MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                        .getService(Components.interfaces.nsIMafPreferences);
-  }
-
-  if (MafLibMHTDecoder == null) {
-    MafLibMHTDecoder = Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
-                          .createInstance(Components.interfaces.nsIMafMhtDecoder);
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-
-  if (MafStateService == null) {
-    MafStateService = new MafStateServiceClass();
-  }
-
-  return MafStateService.QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MafStateModule = new Object();
-
-MafStateModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafStateCID,
-                                  "Maf State JS Component",
-                                  mafStateContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MafStateModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafStateCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MafStateFactory;
-};
-
-MafStateModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MafStateModule;
-};
-

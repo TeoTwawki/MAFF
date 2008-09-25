@@ -29,14 +29,6 @@
 
 // Provides MAF Tab Expander Object
 
-const mafTabExpanderContractID = "@mozilla.org/libmaf/tabexpander;1";
-const mafTabExpanderCID = Components.ID("{4383b20a-7cdf-4c82-90ee-74ee29d2ffce}");
-const mafTabExpanderIID = Components.interfaces.nsIMafTabExpander;
-
-var MafUtils = null;
-
-var MafStrBundle = null;
-
 /**
  * The MAF Tab Expander
  */
@@ -113,8 +105,7 @@ MafTabExpanderClass.prototype = {
 
   QueryInterface: function(iid) {
 
-    if (!iid.equals(mafTabExpanderIID) &&
-        !iid.equals(Components.interfaces.nsITimerCallback) &&
+    if (!iid.equals(Components.interfaces.nsITimerCallback) &&
         !iid.equals(Components.interfaces.nsISupports)) {
       throw Components.results.NS_ERROR_NO_INTERFACE;
     }
@@ -123,92 +114,3 @@ MafTabExpanderClass.prototype = {
   }
 
 };
-
-
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-String.prototype.trim = function() {
-  // skip leading and trailing whitespace
-  // and return everything in between
-  var x = this;
-  x = x.replace(/^\s*(.*)/, "$1");
-  x = x.replace(/(.*?)\s*$/, "$1");
-  return x;
-};
-
-/**
- * Replace all needles with newneedles
- */
-String.prototype.replaceAll = function(needle, newneedle) {
-  var x = this;
-  x = x.split(needle).join(newneedle);
-  return x;
-};
-
-var MAFTabExpanderFactory = new Object();
-
-MAFTabExpanderFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafTabExpanderIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (MafUtils == null) {
-    MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                  .getService(Components.interfaces.nsIMafUtil);
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-    
-  return (new MafTabExpanderClass()).QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MAFTabExpanderModule = new Object();
-
-MAFTabExpanderModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafTabExpanderCID,
-                                  "Maf Tab Expander JS Component",
-                                  mafTabExpanderContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MAFTabExpanderModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafTabExpanderCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MAFTabExpanderFactory;
-};
-
-MAFTabExpanderModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MAFTabExpanderModule;
-};
-

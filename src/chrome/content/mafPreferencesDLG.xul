@@ -37,8 +37,7 @@
 
 <script>
 
-  var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                          .getService(Components.interfaces.nsIMafPreferences);
+  var MafPreferences = GetMafPreferencesServiceClass();
 
   function onLoad() {
     try {
@@ -75,7 +74,7 @@
     document.getElementById("winChkAssociateWithMAFF").checked = MafPreferences.win_associate_maff;
     document.getElementById("winChkAssociateWithMHT").checked = MafPreferences.win_associate_mht;
 
-    var mprec = MafPreferences.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
+    var mprec = MafPreferences.getRecordAt(0);
 
     //document.getElementById("txtArchiveScript").value = mprec.archivescript;
     //document.getElementById("txtExpandScript").value = mprec.extractscript;
@@ -108,7 +107,7 @@
     document.getElementById("winChkAssociateWithMAFF").checked = mpd.win_associate_maff;
     document.getElementById("winChkAssociateWithMHT").checked = mpd.win_associate_mht;
 
-    var mprec = mpd.getRecordAt(0).QueryInterface(Components.interfaces.nsIMafPreferencesRec);
+    var mprec = mpd.getRecordAt(0);
 
     //document.getElementById("txtArchiveScript").value = mprec.archivescript;
     //document.getElementById("txtExpandScript").value = mprec.extractscript;

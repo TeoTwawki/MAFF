@@ -29,15 +29,9 @@
 
 // Provides MAF Mht Encoder Object
 
-const mafMhtEncoderContractID = "@mozilla.org/libmaf/encoder;1?name=mht";
-const mafMhtEncoderCID = Components.ID("{1a5c8698-b7a4-44af-87f4-38831fb369df}");
-const mafMhtEncoderIID = Components.interfaces.nsIMafMhtEncoder;
-
 const qpEncodeTimerDelay = 10;
 const fileEncodeTimerDelay = 100;
 const readBufferSize = 1024 * 10; // 10K Read buffer
-
-var MafStrBundle = null;
 
 /**
  * The MAF Mht Encoder.
@@ -495,16 +489,6 @@ MafMhtEncoderClass.prototype = {
     } else {
       return "0";
     }
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(mafMhtEncoderIID) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
 
 };
@@ -718,92 +702,8 @@ encodeQuotedPrintableTimerState.prototype = {
 
 };
 
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-
-String.prototype.trim = function() {
-  // skip leading and trailing whitespace
-  // and return everything in between
-  var x = this;
-  x = x.replace(/^\s*(.*)/, "$1");
-  x = x.replace(/(.*?)\s*$/, "$1");
-  return x;
-};
-
-/**
- * Replace all needles with newneedles
- */
-String.prototype.replaceAll = function(needle, newneedle) {
-  var x = this;
-  x = x.split(needle).join(newneedle);
-  return x;
-};
-
-
 Array.prototype.clear = function() {
   while (this.length > 0) {
     this.pop();
   }
 };
-
-var MAFMhtEncoderFactory = new Object();
-
-MAFMhtEncoderFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafMhtEncoderIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-  
-  return (new MafMhtEncoderClass()).QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MAFMhtEncoderModule = new Object();
-
-MAFMhtEncoderModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafMhtEncoderCID,
-                                  "Maf MHT Encoder JS Component",
-                                  mafMhtEncoderContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MAFMhtEncoderModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafMhtEncoderCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MAFMhtEncoderFactory;
-};
-
-MAFMhtEncoderModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MAFMhtEncoderModule;
-};
-

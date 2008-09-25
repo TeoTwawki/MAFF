@@ -29,17 +29,6 @@
 
 // Provides MAF Gui Handler Object
 
-
-const mafGuiHandlerContractID = "@mozilla.org/maf/guihandler;1";
-const mafGuiHandlerCID = Components.ID("{4a5db9f8-35d0-4cc0-91b6-681cd698495a}");
-const mafGuiHandlerIID = Components.interfaces.nsIMafGuiHandler;
-
-var MafPreferences = null;
-
-var MafUtils = null;
-
-var MafStrBundle = null;
-
 /**
  * The MAF Gui Handler.
  */
@@ -458,109 +447,5 @@ MAFGuiHandlerClass.prototype = {
     var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
                     ",width="+ w +",height=" + h;
     this.window.openDialog(url, "_blank", win_prefs, objMafExpander);
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(mafGuiHandlerIID) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
-
 };
-
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-String.prototype.trim = function() {
-  // skip leading and trailing whitespace
-  // and return everything in between
-  var x = this;
-  x = x.replace(/^\s*(.*)/, "$1");
-  x = x.replace(/(.*?)\s*$/, "$1");
-  return x;
-};
-
-/**
- * Replace all needles with newneedles
- */
-String.prototype.replaceAll = function(needle, newneedle) {
-  var x = this;
-  x = x.split(needle).join(newneedle);
-  return x;
-};
-
-var MAFGuiHandlerFactory = new Object();
-
-MAFGuiHandlerFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafGuiHandlerIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (MafPreferences == null) {
-    MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                          .getService(Components.interfaces.nsIMafPreferences);
-  }
-
-  if (MafUtils == null) {
-    MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                  .getService(Components.interfaces.nsIMafUtil);
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-  
-  return (new MAFGuiHandlerClass()).QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MAFGuiHandlerModule = new Object();
-
-MAFGuiHandlerModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafGuiHandlerCID,
-                                  "Maf Gui Handler JS Component",
-                                  mafGuiHandlerContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MAFGuiHandlerModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafGuiHandlerCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MAFGuiHandlerFactory;
-};
-
-MAFGuiHandlerModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MAFGuiHandlerModule;
-};
-

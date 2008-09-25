@@ -65,14 +65,6 @@
 
 // Provides An alternative to the WebBrowserPersist for saving complete pages
 
-const mafWebBrowserPersistContractID = "@mozilla.org/libmaf/embedding/browser/nsWebBrowserPersist;1";
-const mafWebBrowserPersistCID = Components.ID("{d23345ab-2d6c-4365-bc57-1c0529e73dad}");
-const mafWebBrowserPersistIID = Components.interfaces.nsIWebBrowserPersist;
-
-var MafUtils = null;
-
-var MafStrBundle = null;
-
 function MafWebBrowserPersistClass() {
 
 };
@@ -745,76 +737,3 @@ saveTimerState.prototype = {
   }
 
 };
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-String.prototype.startsWith = function(needle) {
-  return (this.substring(0, needle.length) == needle);
-};
-
-var MAFWebBrowserPersistFactory = new Object();
-
-MAFWebBrowserPersistFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafWebBrowserPersistIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (MafUtils == null) {
-    MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                  .getService(Components.interfaces.nsIMafUtil);
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-
-  return (new MafWebBrowserPersistClass()).QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MAFWebBrowserPersistModule = new Object();
-
-MAFWebBrowserPersistModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafWebBrowserPersistCID,
-                                  "Maf WebBrowser Persist JS Component",
-                                  mafWebBrowserPersistContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MAFWebBrowserPersistModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafWebBrowserPersistCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MAFWebBrowserPersistFactory;
-};
-
-MAFWebBrowserPersistModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MAFWebBrowserPersistModule;
-};
-

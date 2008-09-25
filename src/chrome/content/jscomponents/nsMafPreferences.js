@@ -29,13 +29,17 @@
 
 // Provides MAF Preferences management services
 
-const mafPreferencesContractID = "@mozilla.org/maf/preferences_service;1";
-const mafPreferencesCID = Components.ID("{34ea8b6d-e6c3-47e3-83ae-03e3b97dbb56}");
-const mafPreferencesIID = Components.interfaces.nsIMafPreferences;
+function GetMafPreferencesServiceClass() {
+  if (!sharedData.MafPreferencesService) {
+    sharedData.MafPreferencesService = new MafPreferencesServiceClass();
+  }
 
-var MafPreferencesService = null;
+  try {
+    if (!sharedData.MafPreferencesService.isLoaded) { sharedData.MafPreferencesService.load(); }
+  } catch(e) { mafdebug(e); }
 
-var MafStrBundle = null;
+  return sharedData.MafPreferencesService;
+}
 
 /**
  * The MAF preferences.
@@ -105,8 +109,7 @@ MafPreferencesServiceClass.prototype = {
   getRecordAt: function(index) {
     var result;
     try {
-      result = Components.classes["@mozilla.org/maf/preferences_rec;1"]
-                 .createInstance(Components.interfaces.nsIMafPreferencesRec);
+      result = new MafPreferencesRecClass();
 
       if ((index < 0) || (index >= this.programExtensions.length)) {
         // throw error index out of range
@@ -127,7 +130,7 @@ MafPreferencesServiceClass.prototype = {
 
   updateRecordAt: function(index, newRec) {
     try {
-      var prefRec = newRec.QueryInterface(Components.interfaces.nsIMafPreferencesRec);
+      var prefRec = newRec;
 
       if ((index < 0) || (index >= this.programExtensions.length)) {
         // throw error index out of range
@@ -150,7 +153,7 @@ MafPreferencesServiceClass.prototype = {
 
   addRecord: function(newRec) {
     try {
-      var prefRec = newRec.QueryInterface(Components.interfaces.nsIMafPreferencesRec);
+      var prefRec = newRec;
 
       var index = this.programExtensions.length;
 
@@ -554,10 +557,8 @@ MafPreferencesServiceClass.prototype = {
       try {
         this.programExtensions[this.programExtensions.length] = [
             "MHT",
-              Components.classes["@mozilla.org/libmaf/encoder;1?name=mht"]
-               .createInstance(Components.interfaces.nsIMafMhtEncoder).PROGID,
-             Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
-               .createInstance(Components.interfaces.nsIMafMhtDecoder).PROGID,
+             new MafMhtEncoderClass().PROGID,
+             new MafMhtDecoderClass().PROGID,
              ["*.mht"]];
       } catch(e) {
         mafdebug(e);
@@ -633,107 +634,5 @@ MafPreferencesServiceClass.prototype = {
       mafdebug(e);
     }
     return result;
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(mafPreferencesIID) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
-
 };
-
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-String.prototype.trim = function() {
-  // skip leading and trailing whitespace
-  // and return everything in between
-  var x = this;
-  x = x.replace(/^\s*(.*)/, "$1");
-  x = x.replace(/(.*?)\s*$/, "$1");
-  return x;
-};
-
-/**
- * Replace all needles with newneedles
- */
-String.prototype.replaceAll = function(needle, newneedle) {
-  var x = this;
-  x = x.split(needle).join(newneedle);
-  return x;
-};
-
-var MAFPreferencesFactory = new Object();
-
-MAFPreferencesFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafPreferencesIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (MafPreferencesService == null) {
-    MafPreferencesService = new MafPreferencesServiceClass();
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-
-  try {
-    if (!MafPreferencesService.isLoaded) { MafPreferencesService.load(); }
-  } catch(e) { mafdebug(e); }
-
-  return MafPreferencesService.QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MAFPreferencesModule = new Object();
-
-MAFPreferencesModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafPreferencesCID,
-                                  "MafPreferences JS Component",
-                                  mafPreferencesContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MAFPreferencesModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafPreferencesCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MAFPreferencesFactory;
-};
-
-MAFPreferencesModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MAFPreferencesModule;
-};
-

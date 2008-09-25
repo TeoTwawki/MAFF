@@ -30,13 +30,6 @@
 // Provides MAF Mht Decoder Object
 // TODO: Optimization: Dictionary holding headers instead of indexed array.
 
-const mafMhtDecoderContractID = "@mozilla.org/libmaf/decoder;1?name=mht";
-const mafMhtDecoderCID = Components.ID("{3814ca79-30bc-4ad3-a005-488f05a1dd87}");
-const mafMhtDecoderIID = Components.interfaces.nsIMafMhtDecoder;
-
-const mafMhtDecoderHeaderRecIID = Components.interfaces.nsIMafMhtHeaderRec;
-
-var MafStrBundle = null;
 
 /**
  * The MAF Mht Decoder.
@@ -547,7 +540,6 @@ MafMhtDecoderClass.prototype = {
   getContent: function(callback) {
     // If there is only one part, then decode and callback
     if (this.noOfParts() == 1) {
-       callback.QueryInterface(Components.interfaces.nsIMafMhtDecoderContentHandler);
        var contentType = this.getHeaderValue("Content-Type");
        var contentId = this.getHeaderValue("Content-Id");
        contentId = contentId.replaceAll(">", "").replaceAll("<", "");
@@ -572,19 +564,7 @@ MafMhtDecoderClass.prototype = {
   decodeQuotedPrintableString: function(source) {
     var decoder = new contentDecoderClass(null, null, null, null);
     return decoder._decodeQuotedPrintable(source);
-  },
-
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(mafMhtDecoderIID) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
-
 };
 
 function headerEnumerator(pheaders) {
@@ -617,19 +597,6 @@ headerEnumerator.prototype = {
 function headerRecClass(headerName, headerValue) {
   this.name = headerName;
   this.value = headerValue;
-};
-
-headerRecClass.prototype = {
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(mafMhtDecoderHeaderRecIID) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
-  }
 };
 
 function contentDecoderClass(encoding, content, contentType, callback) {
@@ -772,89 +739,3 @@ contentDecoderClass.prototype = {
     return String.fromCharCode((this._deHex(hexString.substring(0,1)) << 4) + this._deHex(hexString.substring(1,2)));
   }
 };
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-String.prototype.trim = function() {
-  // skip leading and trailing whitespace
-  // and return everything in between
-  var x = this;
-  x = x.replace(/^\s*(.*)/, "$1");
-  x = x.replace(/(.*?)\s*$/, "$1");
-  return x;
-};
-
-/**
- * Replace all needles with newneedles
- */
-String.prototype.replaceAll = function(needle, newneedle) {
-  var x = this;
-  x = x.split(needle).join(newneedle);
-  return x;
-};
-
-String.prototype.startsWith = function(needle) {
-  return (this.substring(0, needle.length) == needle);
-};
-
-var MAFMhtDecoderFactory = new Object();
-
-MAFMhtDecoderFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafMhtDecoderIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-    
-  return (new MafMhtDecoderClass()).QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MAFMhtDecoderModule = new Object();
-
-MAFMhtDecoderModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafMhtDecoderCID,
-                                  "Maf MHT Decoder JS Component",
-                                  mafMhtDecoderContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MAFMhtDecoderModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafMhtDecoderCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MAFMhtDecoderFactory;
-};
-
-MAFMhtDecoderModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MAFMhtDecoderModule;
-};
-

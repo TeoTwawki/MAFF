@@ -32,6 +32,19 @@ const mafDocumentViewerFactoryContractID = "@mozilla.org/content-viewer-factory/
 const mafDocumentViewerFactoryCID = Components.ID("{af7b4b58-cf98-49c7-81df-feb3b75659fe}");
 const mafDocumentViewerFactoryIID = Components.interfaces.nsIMafDocumentViewerFactory;
 
+var Application = Components.classes["@mozilla.org/fuel/application;1"]
+ .getService(Components.interfaces.fuelIApplication);
+
+var sharedData = Application.storage.get("maf-data", null);
+if (!sharedData) {
+  sharedData = {};
+  Application.storage.set("maf-data", sharedData);
+}
+
+Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
+ .getService(Components.interfaces.mozIJSSubScriptLoader)
+ .loadSubScript("chrome://maf/content/includeall.js");
+
 var MafDocumentViewerFactory = null;
 
 var MafStrBundle = null;
@@ -59,8 +72,7 @@ MafDocumentViewerFactoryClass.prototype = {
      var result = null;
      var uri = channel.URI.spec;
 
-     var loadURIMafRegExp = new RegExp(Components.classes["@mozilla.org/maf/preferences_service;1"]
-                                          .getService(Components.interfaces.nsIMafPreferences)
+     var loadURIMafRegExp = new RegExp(GetMafPreferencesServiceClass()
                                           .getOpenFilterRegEx(), "i");
 
      if (uri.match(loadURIMafRegExp)) {
@@ -84,8 +96,7 @@ MafDocumentViewerFactoryClass.prototype = {
            }
          }
 
-          var MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                                  .getService(Components.interfaces.nsIMafPreferences);
+          var MafPreferences = GetMafPreferencesServiceClass();
 
           var ismaf = false;
 

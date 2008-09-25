@@ -34,7 +34,6 @@
 const mafProtocolScheme = "maf";
 const mafProtocolName = "Mozilla Archive Format Access Protocol";
 const mafProtocolContractID = "@mozilla.org/network/protocol;1?name=" + mafProtocolScheme;
-const mafProtocolCID = Components.ID("0cd60c15-b7a9-4190-9176-81ecd67e8174");
 
 var MafState = null;
 var MafUtils = null;
@@ -50,7 +49,6 @@ function MAFProtocol() { }
 MAFProtocol.prototype = {
   QueryInterface: function(iid)   {
     if (!iid.equals(Components.interfaces.nsIProtocolHandler) &&
-        !iid.equals(Components.interfaces.nsIMaf) &&
         !iid.equals(Components.interfaces.nsISupports)) {
       throw Components.results.NS_ERROR_NO_INTERFACE;
     }
@@ -185,8 +183,7 @@ MAFProtocol.prototype = {
 
     var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random()*1000);
 
-    var objMafTabExpander = Components.classes["@mozilla.org/libmaf/tabexpander;1"]
-                                 .createInstance(Components.interfaces.nsIMafTabExpander);
+    var objMafTabExpander = new MafTabExpanderClass();
 
     objMafTabExpander.init(tempPath, scriptPath, archivePath, folderNumber, this);
     objMafTabExpander.startBlocking();
@@ -543,115 +540,4 @@ MAFProtocol.prototype = {
     return result;
   }
 
-}
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-String.prototype.trim = function() {
-  // skip leading and trailing whitespace
-  // and return everything in between
-  var x=this;
-  x=x.replace(/^\s*(.*)/, "$1");
-  x=x.replace(/(.*?)\s*$/, "$1");
-  return x;
-};
-
-String.prototype.startsWith = function(needle) {
-  return (this.substring(0, needle.length) == needle);
-};
-
-String.prototype.endsWith = function(needle) {
-  return (this.substring(this.length - needle.length, this.length) == needle);
-};
-
-var MAFProtocolFactory = new Object();
-
-MAFProtocolFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIProtocolHandler) &&
-      !iid.equals(Components.interfaces.nsIMaf) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (MafState == null) {
-    MafState = Components.classes["@mozilla.org/maf/state_service;1"]
-                  .getService(Components.interfaces.nsIMafState);
-  }
-
-  if (MafUtils == null) {
-    MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                  .getService(Components.interfaces.nsIMafUtil);
-  }
-
-  if (MafPreferences == null) {
-    MafPreferences = Components.classes["@mozilla.org/maf/preferences_service;1"]
-                        .getService(Components.interfaces.nsIMafPreferences);
-  }
-
-  if (MafLibMHTDecoder == null) {
-    MafLibMHTDecoder = Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
-                          .createInstance(Components.interfaces.nsIMafMhtDecoder);
-  }
-
-  if (MafMHTHandler == null) {
-    MafMHTHandler = Components.classes["@mozilla.org/maf/mhthandler_service;1"]
-                       .getService(Components.interfaces.nsIMafMhtHandler);
-  }
-
-  if (MafBlockingObserver == null) {
-    MafBlockingObserver = Components.classes["@mozilla.org/blocking-observer-service;1"]
-                             .getService(Components.interfaces.nsIObserverService);
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-  
-  return new MAFProtocol();
-}
-
-
-/**
- * XPCOM component registration
- */
-var MAFProtocolModule = new Object();
-
-MAFProtocolModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafProtocolCID,
-                                  mafProtocolName,
-                                  mafProtocolContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-}
-
-MAFProtocolModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafProtocolCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MAFProtocolFactory;
-}
-
-MAFProtocolModule.canUnload = function (compMgr) {
-  return true;
-}
-
-function NSGetModule(compMgr, fileSpec) {
-  return MAFProtocolModule;
 }

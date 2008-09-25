@@ -60,16 +60,6 @@
 
     progressUpdater: function(progress, code) {
       updateProgress(progress);
-    },
-
-    QueryInterface: function(iid) {
-
-      if (!iid.equals(Components.interfaces.nsIMafProgressUpdater) &&
-          !iid.equals(Components.interfaces.nsISupports)) {
-        throw Components.results.NS_ERROR_NO_INTERFACE;
-      }
-
-      return this;
     }
   };
 

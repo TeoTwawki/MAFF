@@ -29,10 +29,6 @@
 
 // Provides MAF Util service
 
-const mafUtilContractID = "@mozilla.org/maf/util_service;1";
-const mafUtilCID = Components.ID("{6e08b6a2-7d43-4cc8-90fc-4fe468a41b93}");
-const mafUtilIID = Components.interfaces.nsIMafUtil;
-
 const MAFNamespaceId = "MAF";
 const MAFNamespace = "http://maf.mozdev.org/metadata/rdf#";
 
@@ -46,9 +42,24 @@ const MAFRDFTemplate = '<?xml version="1.0"?>\n' +
 
 var gRDFService = null;
 var gRDFCService = null;
-var MafUtilService = null;
 
-var MafStrBundle = null;
+function GetMafUtilServiceClass() {
+  if (gRDFService == null) {
+    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
+                     .getService(Components.interfaces.nsIRDFService);
+  }
+
+  if (gRDFCService == null) {
+    gRDFCService = Components.classes["@mozilla.org/rdf/container-utils;1"]
+                     .getService(Components.interfaces.nsIRDFContainerUtils);
+  }
+
+  if (!sharedData.MafUtilService) {
+    sharedData.MafUtilService = new MafUtilServiceClass();
+  }
+
+  return sharedData.MafUtilService;
+}
 
 /**
  * The MAF Util Service.
@@ -617,96 +628,5 @@ MafUtilServiceClass.prototype = {
       mafdebug(e);
     }
     return result;
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(mafUtilIID) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
-
 };
-
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-
-var MafUtilFactory = new Object();
-
-MafUtilFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafUtilIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (gRDFService == null) {
-    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
-                     .getService(Components.interfaces.nsIRDFService);
-  }
-
-  if (gRDFCService == null) {
-    gRDFCService = Components.classes["@mozilla.org/rdf/container-utils;1"]
-                     .getService(Components.interfaces.nsIRDFContainerUtils);
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }  
-
-  if (MafUtilService == null) {
-    MafUtilService = new MafUtilServiceClass();
-  }
-
-  return MafUtilService.QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MafUtilModule = new Object();
-
-MafUtilModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafUtilCID,
-                                  "Maf Util JS Component",
-                                  mafUtilContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MafUtilModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafUtilCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MafUtilFactory;
-};
-
-MafUtilModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MafUtilModule;
-};
-

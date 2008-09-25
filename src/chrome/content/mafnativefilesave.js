@@ -189,12 +189,12 @@ makeFileURL: function(aFile)
 
 makeWebBrowserPersist: function()
 {
-  var persistContractID = "@mozilla.org/embedding/browser/nsWebBrowserPersist;1";
   if (MafPreferences.alternative_save_component) {
-    persistContractID = "@mozilla.org/libmaf/embedding/browser/nsWebBrowserPersist;1";
+    return new MafWebBrowserPersistClass();
+  } else {
+    return Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
+                              .createInstance(Components.interfaces.nsIWebBrowserPersist);
   }
-  const persistIID = Components.interfaces.nsIWebBrowserPersist;
-  return Components.classes[persistContractID].createInstance(persistIID);
 },
 
 isDocumentType: function(aContentType)

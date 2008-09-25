@@ -29,11 +29,13 @@
 
 // Provides A blocking observer service
 
-const mafObserverContractID = "@mozilla.org/blocking-observer-service;1";
-const mafObserverCID = Components.ID("{575458aa-3244-4460-9310-10ecbf03b7eb}");
-const mafObserverIID = Components.interfaces.nsIObserverService;
+function GetMafObserverServiceClass() {
+  if (!sharedData.MafObserverService) {
+    sharedData.MafObserverService = new MafObserverServiceClass();
+  }
 
-var MafObserverService = null;
+  return sharedData.MafObserverService;
+};
 
 /**
  * The MAF Blocking Observer Service.
@@ -90,7 +92,7 @@ MafObserverServiceClass.prototype = {
 
   QueryInterface: function(iid) {
 
-    if (!iid.equals(mafObserverIID) &&
+    if (!iid.equals(Components.interfaces.nsIObserverService) &&
         !iid.equals(Components.interfaces.nsISupports)) {
       throw Components.results.NS_ERROR_NO_INTERFACE;
     }
@@ -130,69 +132,3 @@ enumerationClass.prototype = {
   }
 
 };
-
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-
-var MafObserverFactory = new Object();
-
-MafObserverFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafObserverIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-
-
-  if (MafObserverService == null) {
-    MafObserverService = new MafObserverServiceClass();
-  }
-
-  return MafObserverService.QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MafObserverModule = new Object();
-
-MafObserverModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafObserverCID,
-                                  "Maf Observer JS Component",
-                                  mafObserverContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MafObserverModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafObserverCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MafObserverFactory;
-};
-
-MafObserverModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MafObserverModule;
-};
-

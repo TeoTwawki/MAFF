@@ -31,17 +31,21 @@
 
 // Provides MAF MHT Handler services
 
-const mafMhtHandlerContractID = "@mozilla.org/maf/mhthandler_service;1";
-const mafMhtHandlerCID = Components.ID("{2a64aca8-a16d-4b6d-937a-ab1977854568}");
-const mafMhtHandlerIID = Components.interfaces.nsIMafMhtHandler;
-
-const MAFNamespace = "http://maf.mozdev.org/metadata/rdf#";
-
 var gRDFService = null;
-var MafUtils = null;
-var MafMhtHandlerService = null;
 
-var MafStrBundle = null;
+function GetMafMhtHandlerServiceClass() {
+  if (gRDFService == null) {
+    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
+                     .getService(Components.interfaces.nsIRDFService);
+  }
+
+
+  if (!sharedData.MafMhtHandlerService) {
+    sharedData.MafMhtHandlerService = new MafMhtHandlerServiceClass();
+  }
+
+  return sharedData.MafMhtHandlerService;
+}
 
 /**
  * The MAF MHT Handler.
@@ -64,8 +68,7 @@ MafMhtHandlerServiceClass.prototype = {
 
     try {
 
-      var decoder = Components.classes["@mozilla.org/libmaf/decoder;1?name=mht"]
-                      .createInstance(Components.interfaces.nsIMafMhtDecoder);
+      var decoder = new MafMhtDecoderClass();
       var f = Components.classes["@mozilla.org/file/local;1"]
                 .createInstance(Components.interfaces.nsILocalFile);
       f.initWithPath(archivefile);
@@ -399,7 +402,7 @@ MafMhtHandlerServiceClass.prototype = {
     var headers = decoder.getHeaders();
     while (headers.hasMoreElements()) {
       try {
-        var header = (headers.getNext()).QueryInterface(Components.interfaces.nsIMafMhtHeaderRec);
+        var header = headers.getNext();
         var name = header.name.trim().toLowerCase();
         if (name == "subject") {
            subject = header.value;
@@ -423,8 +426,7 @@ MafMhtHandlerServiceClass.prototype = {
   createArchive: function(archivefile, sourcepath) {
     try {
 
-      var encoder = Components.classes["@mozilla.org/libmaf/encoder;1?name=mht"]
-                      .createInstance(Components.interfaces.nsIMafMhtEncoder);
+      var encoder = new MafMhtEncoderClass();
 
       var mainMetaData = this._getMainFileMetaData(sourcepath);
 
@@ -643,18 +645,7 @@ MafMhtHandlerServiceClass.prototype = {
 
     // Write changes to physical file
     datasource.Flush();
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(mafMhtHandlerIID) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
-
 };
 
 
@@ -874,129 +865,17 @@ extractContentHandlerClass.prototype = {
     } catch (e) {
       mafdebug(e);
     }
-  },
-
-  QueryInterface: function(iid) {
-    if (!iid.equals(Components.interfaces.nsIMafMhtDecoderContentHandler) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-    return this;
   }
 };
 
 
 function asStringValue(str) {
-  var result = Components.classes["@mozilla.org/libmaf/stringvalue;1"]
-                 .createInstance(Components.interfaces.nsIMafStringValue);
+  var result = new MafStringValueClass();
   result.value = str;
   return result;
 };
 
 function getStringValue(obj) {
-  var result = obj.QueryInterface(Components.interfaces.nsIMafStringValue).value;
+  var result = obj.value;
   return result;
 };
-
-
-function mafdebug(text) {
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(text);
-};
-
-
-String.prototype.trim = function() {
-  // skip leading and trailing whitespace
-  // and return everything in between
-  var x = this;
-  x = x.replace(/^\s*(.*)/, "$1");
-  x = x.replace(/(.*?)\s*$/, "$1");
-  return x;
-};
-
-/**
- * Replace all needles with newneedles
- */
-String.prototype.replaceAll = function(needle, newneedle) {
-  var x = this;
-  x = x.split(needle).join(newneedle);
-  return x;
-};
-
-String.prototype.startsWith = function(needle) {
-  return (this.substring(0, needle.length) == needle);
-};
-
-var MafMhtHandlerFactory = new Object();
-
-MafMhtHandlerFactory.createInstance = function (outer, iid) {
-  if (outer != null) {
-    throw Components.results.NS_ERROR_NO_AGGREGATION;
-  }
-
-  if (!iid.equals(mafMhtHandlerIID) &&
-      !iid.equals(Components.interfaces.nsISupports)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-
-  if (gRDFService == null) {
-    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
-                     .getService(Components.interfaces.nsIRDFService);
-  }
-
-  if (MafUtils == null) {
-    MafUtils = Components.classes["@mozilla.org/maf/util_service;1"]
-                  .getService(Components.interfaces.nsIMafUtil);
-  }
-
-  if (MafMhtHandlerService == null) {
-    MafMhtHandlerService = new MafMhtHandlerServiceClass();
-  }
-
-  if (MafStrBundle == null) {
-    MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-  }
-
-  return MafMhtHandlerService.QueryInterface(iid);
-};
-
-
-/**
- * XPCOM component registration
- */
-var MafMhtHandlerModule = new Object();
-
-MafMhtHandlerModule.registerSelf = function (compMgr, fileSpec, location, type) {
-  compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-  compMgr.registerFactoryLocation(mafMhtHandlerCID,
-                                  "MafMhtHandler JS Component",
-                                  mafMhtHandlerContractID,
-                                  fileSpec,
-                                  location,
-                                  type);
-};
-
-MafMhtHandlerModule.getClassObject = function(compMgr, cid, iid) {
-  if (!cid.equals(mafMhtHandlerCID)) {
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  }
-
-  if (!iid.equals(Components.interfaces.nsIFactory)) {
-    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-  }
-
-  return MafMhtHandlerFactory;
-};
-
-MafMhtHandlerModule.canUnload = function (compMgr) {
-  return true;
-};
-
-function NSGetModule(compMgr, fileSpec) {
-  return MafMhtHandlerModule;
-};
-

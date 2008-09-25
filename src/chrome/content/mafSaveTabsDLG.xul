@@ -37,14 +37,6 @@
       if (percentage==100) {
         setTimeout("window.close()", 1000);
       }
-    },
-
-    QueryInterface: function(iid) {
-      if (!iid.equals(Components.interfaces.nsIMafProgressUpdater) &&
-          !iid.equals(Components.interfaces.nsISupports)) {
-        throw Components.results.NS_ERROR_NO_INTERFACE;
-      }
-      return this;
     }
   };
 
