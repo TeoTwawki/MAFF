@@ -792,10 +792,6 @@ maf.prototype = {
       var MafDocumentViewer = Components.classes["@mozilla.org/content-viewer-factory/view;1?type=application/x-maf"]
                                 .getService(Components.interfaces.nsIMafDocumentViewerFactory);
       MafDocumentViewer.init(Maf);
-
-      var MafContentHandler = Components.classes["@mozilla.org/uriloader/content-handler;1?type=application/x-maf"]
-                                .getService(Components.interfaces.nsIMafDocumentViewerFactory);
-      MafContentHandler.init(Maf);
     }
   },
 
