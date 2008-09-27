@@ -30,7 +30,6 @@
 // Provides MAF Document Viewer Factory
 const mafDocumentViewerFactoryContractID = "@mozilla.org/content-viewer-factory/view;1?type=application/x-maf";
 const mafDocumentViewerFactoryCID = Components.ID("{af7b4b58-cf98-49c7-81df-feb3b75659fe}");
-const mafDocumentViewerFactoryIID = Components.interfaces.nsIMafDocumentViewerFactory;
 
 var Application = Components.classes["@mozilla.org/fuel/application;1"]
  .getService(Components.interfaces.fuelIApplication);
@@ -54,7 +53,7 @@ var MafStrBundle = null;
  */
 
 function MafDocumentViewerFactoryClass() {
-
+  this.wrappedJSObject = this;
 }
 
 MafDocumentViewerFactoryClass.prototype = {
@@ -136,7 +135,6 @@ MafDocumentViewerFactoryClass.prototype = {
   QueryInterface: function(iid) {
 
     if (!iid.equals(Components.interfaces.nsIDocumentLoaderFactory) &&
-        !iid.equals(mafDocumentViewerFactoryIID) &&
         !iid.equals(Components.interfaces.nsISupports)) {
       throw Components.results.NS_ERROR_NO_INTERFACE;
     }
@@ -178,7 +176,6 @@ MAFDocumentViewerFactoryFactory.createInstance = function (outer, iid) {
   }
 
   if (!iid.equals(Components.interfaces.nsIDocumentLoaderFactory) &&
-      !iid.equals(mafDocumentViewerFactoryIID) &&
       !iid.equals(Components.interfaces.nsISupports)) {
     throw Components.results.NS_ERROR_NO_INTERFACE;
   }

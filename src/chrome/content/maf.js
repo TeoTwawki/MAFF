@@ -788,7 +788,7 @@ maf.prototype = {
   onWindowFocus: function(event) {
     if (event.originalTarget == "[object XULDocument]") {
       var MafDocumentViewer = Components.classes["@mozilla.org/content-viewer-factory/view;1?type=application/x-maf"]
-                                .getService(Components.interfaces.nsIMafDocumentViewerFactory);
+                                .getService().wrappedJSObject;
       MafDocumentViewer.init(Maf);
     }
   },

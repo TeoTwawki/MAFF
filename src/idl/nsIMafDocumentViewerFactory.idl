@@ -1,8 +1,0 @@
-#include "nsISupports.idl"
-#include "nsIMaf.idl"
-
-[scriptable, uuid(af7b4b58-cf98-49c7-81df-feb3b75659fe)]
-interface nsIMafDocumentViewerFactory : nsISupports
-{
-  void init(in nsIMaf maf);
-};
