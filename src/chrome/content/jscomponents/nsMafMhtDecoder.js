@@ -683,46 +683,21 @@ contentDecoderClass.prototype = {
       this.contentType = null;
     }
 
-    if (!this.canNativeDecodeQuotedPrintable(result, decodedStrObj)) {
+    // = sign followed by new line, replaced by nothing.
+    result = result.replace(/=\r?\n/g, "");
 
-      // = sign followed by new line, replaced by nothing.
-      result = result.replace(/=\r?\n/g, "");
-
-      var equalsArray = result.split("=");
-      var newresult = equalsArray[0];
-       for (var i=1; i<equalsArray.length; i++) {
-        if (equalsArray[i].length >= 2) {
-          newresult += this._hexToDec(equalsArray[i].substring(0,2));
-          if (equalsArray[i].length > 2) {
-            newresult += equalsArray[i].substring(2,equalsArray[i].length);
-          }
+    var equalsArray = result.split("=");
+    var newresult = equalsArray[0];
+    for (var i=1; i<equalsArray.length; i++) {
+      if (equalsArray[i].length >= 2) {
+        newresult += this._hexToDec(equalsArray[i].substring(0,2));
+        if (equalsArray[i].length > 2) {
+          newresult += equalsArray[i].substring(2,equalsArray[i].length);
         }
       }
-
-      return newresult;
-    } else {
-      return decodedStrObj.content;
-    }
-  },
-
-  canNativeDecodeQuotedPrintable: function(source, decodedStrObj) {
-    var result = true;
-
-    try {
-      // Instantiate a native decoder
-      var nativeDecoderObj = Components.classes["@ottley.org/libmafbin/mhtmlcoders;1"]
-                                .createInstance(Components.interfaces.nsIMafMhtmlCoder);
-
-      decodedStrObj.content = nativeDecoderObj.decodeQuotedPrintable(source);
-
-      nativeDecoderObj = null;
-
-    } catch (e) {
-      // If anything goes wrong use the non-native decoder
-      result = false;
     }
 
-    return result;
+    return newresult;
   },
 
   /**
