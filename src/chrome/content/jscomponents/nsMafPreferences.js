@@ -29,6 +29,11 @@
 
 // Provides MAF Preferences management services
 
+const OPENMODE_NOTHING = 0;
+const OPENMODE_ALLTABS = 1;
+const OPENMODE_SHOWDIALOG = 2;
+const OPENMODE_FIRSTPAGE = 3;
+
 function GetMafPreferencesServiceClass() {
   if (!sharedData.MafPreferencesService) {
     sharedData.MafPreferencesService = new MafPreferencesServiceClass();

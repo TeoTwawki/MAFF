@@ -558,11 +558,11 @@ maf.prototype = {
     MafBlockingObserver.notifyObservers(null, "maf-open-archive-complete", MafUtils.appendToDir(tempPath, folderNumber));
     MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
 
-    if (MafPreferences.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS) {
+    if (MafPreferences.archiveOpenMode == OPENMODE_ALLTABS) {
       this.openListInTabs(archiveLocalURLs.value);
     }
 
-    if (MafPreferences.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_SHOWDIALOG) {
+    if (MafPreferences.archiveOpenMode == OPENMODE_SHOWDIALOG) {
       if (!MafUtils.isWindowOpen("chrome://maf/content/mafBrowseOpenArchivesDLG.xul")) {
         MafGUI.browseOpenArchives();
       }

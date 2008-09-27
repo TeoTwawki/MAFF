@@ -51,9 +51,9 @@
 
   function loadFromPref() {
     document.getElementById("txtTempFolder").value = MafPreferences.temp;
-    if (MafPreferences.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS) {
+    if (MafPreferences.archiveOpenMode == OPENMODE_ALLTABS) {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdOpenTabs");
-    } else if (MafPreferences.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_SHOWDIALOG) {
+    } else if (MafPreferences.archiveOpenMode == OPENMODE_SHOWDIALOG) {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdShowOpen");
     } else {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdDoNothing");
@@ -84,9 +84,9 @@
   function loadDefaultPref() {
     var mpd = MafPreferences.defaultValues();
     document.getElementById("txtTempFolder").value = mpd.temp;
-    if (mpd.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS) {
+    if (mpd.archiveOpenMode == OPENMODE_ALLTABS) {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdOpenTabs");
-    } else if (mpd.archiveOpenMode == Components.interfaces.nsIMafPreferences.OPENMODE_SHOWDIALOG) {
+    } else if (mpd.archiveOpenMode == OPENMODE_SHOWDIALOG) {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdShowOpen");
     } else {
       document.getElementById("rdOpenOptions").selectedItem = document.getElementById("rdDoNothing");
@@ -132,11 +132,11 @@
     MafPreferences.temp = document.getElementById("txtTempFolder").value;
 
     if (document.getElementById("rdOpenOptions").selectedItem == document.getElementById("rdOpenTabs")) {
-      MafPreferences.archiveOpenMode = Components.interfaces.nsIMafPreferences.OPENMODE_ALLTABS;
+      MafPreferences.archiveOpenMode = OPENMODE_ALLTABS;
     } else if (document.getElementById("rdOpenOptions").selectedItem == document.getElementById("rdShowOpen")) {
-      MafPreferences.archiveOpenMode = Components.interfaces.nsIMafPreferences.OPENMODE_SHOWDIALOG;
+      MafPreferences.archiveOpenMode = OPENMODE_SHOWDIALOG;
     } else {
-      MafPreferences.archiveOpenMode = Components.interfaces.nsIMafPreferences.OPENMODE_NOTHING;
+      MafPreferences.archiveOpenMode = OPENMODE_NOTHING;
     }
 
     MafPreferences.urlRewrite = document.getElementById("chkURLRewrite").checked;
