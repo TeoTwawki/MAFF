@@ -278,16 +278,9 @@ MafMhtHandlerServiceClass.prototype = {
 
       baseUrl = "cid:" + baseUrl.substring("cid:".length, baseUrl.length);
 
-      if (state.uidToLocalFilenameMap.hasKey(baseUrl)) {
+      if (state.uidToLocalFilenameMap.hasOwnProperty(baseUrl)) {
         try {
-          var newBaseUrlValue = state.uidToLocalFilenameMap.getValue(baseUrl);
-          for (var i=0; i<10000; i++) {
-            if (newBaseUrlValue == null) { // Timing problem getting the object?
-              newBaseUrlValue = state.uidToLocalFilenameMap.getValue(baseUrl);
-            } else {
-              break;
-            }
-          }
+          var newBaseUrlValue = state.uidToLocalFilenameMap[baseUrl];
           resultString += MafUtils.getURIFromFilename(
                                    getStringValue(newBaseUrlValue));
         } catch(e) {
@@ -355,16 +348,9 @@ MafMhtHandlerServiceClass.prototype = {
           var baseUrl = originalUrl.split("#")[0];
           var leftOver = originalUrl.split("#")[1];
 
-          if (state.uidToLocalFilenameMap.hasKey(baseUrl)) {
+          if (state.uidToLocalFilenameMap.hasOwnProperty(baseUrl)) {
             try {
-              var newBaseUrlValue = state.uidToLocalFilenameMap.getValue(baseUrl);
-              for (var i=0; i<10000; i++) {
-                if (newBaseUrlValue == null) { // Timing problem getting the object?
-                  newBaseUrlValue = state.uidToLocalFilenameMap.getValue(baseUrl);
-                } else {
-                  break;
-                }
-              }
+              var newBaseUrlValue = state.uidToLocalFilenameMap[baseUrl];
               originalUrl = MafUtils.getURIFromFilename(
                                      getStringValue(newBaseUrlValue));
             } catch(e) {
@@ -655,18 +641,7 @@ function extractContentHandlerStateClass() {
 
 extractContentHandlerStateClass.prototype = {
 
-  _uidToLocalFilenameMap: null,
-
-  // We need to create an instance of the "@mozilla.org/maf/dictionary;1"
-  //  class, but we must be sure it is already registered; thus the getter.
-  get uidToLocalFilenameMap() {
-    if (this._uidToLocalFilenameMap === null) {
-      this._uidToLocalFilenameMap =
-                            Components.classes["@mozilla.org/maf/dictionary;1"]
-                            .createInstance(Components.interfaces.nsIDictionary);
-    }
-    return this._uidToLocalFilenameMap;
-  },
+  uidToLocalFilenameMap: {},
 
   htmlFiles: new Array(),
 
@@ -779,11 +754,11 @@ extractContentHandlerClass.prototype = {
     }
 
     if (contentLocation != "") {
-      this.state.uidToLocalFilenameMap.setValue(contentLocation, asStringValue(this.destfile));
+      this.state.uidToLocalFilenameMap[contentLocation] = asStringValue(this.destfile);
     }
 
     if (contentId != "") {
-      this.state.uidToLocalFilenameMap.setValue("cid:" + contentId, asStringValue(this.destfile));
+      this.state.uidToLocalFilenameMap["cid:" + contentId] = asStringValue(this.destfile);
     }
   },
 
