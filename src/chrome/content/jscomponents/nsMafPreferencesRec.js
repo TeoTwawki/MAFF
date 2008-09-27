@@ -29,10 +29,6 @@
 
 // Provides MAF Preferences Record Object
 
-const mafPreferencesRecContractID = "@mozilla.org/maf/preferences_rec;1";
-const mafPreferencesRecCID = Components.ID("{5cba4706-ec80-416f-b1e3-2724a023f996}");
-const mafPreferencesRecIID = Components.interfaces.nsIMafPreferencesRec;
-
 /**
  * The MAF Preferences Record.
  */
