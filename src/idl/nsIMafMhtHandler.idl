@@ -1,8 +1,0 @@
-#include "nsISupports.idl"
-
-[scriptable, uuid(2a64aca8-a16d-4b6d-937a-ab1977854568)]
-interface nsIMafMhtHandler : nsISupports
-{
-  void extractArchive(in wstring archivefile, in wstring destpath);
-  void createArchive(in wstring archivefile, in wstring sourcepath);
-};

@@ -1,7 +1,0 @@
-#include "nsISupports.idl"
-
-[scriptable, uuid(675df47e-fabe-4b31-bab1-0e6b8e352f86)]
-interface nsIMafProgressUpdater : nsISupports
-{
-  void progressUpdater(in short progress, in short code);
-};
