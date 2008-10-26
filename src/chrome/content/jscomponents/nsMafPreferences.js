@@ -510,6 +510,136 @@ MafPreferencesServiceClass.prototype = {
     }
   },
 
+  /**
+   * Creates file associations, if required by the current preferences.
+   * This function never removes already created file associations.
+   */
+  createFileAssociationsNow: function() {
+    if (this.win_associate_maff || this.win_associate_mht) {
+      // Create the file type associations for Windows. If a problem occurs,
+      //  it is silently ignored.
+      try {
+        this._createWindowsFileType(
+         "MozillaMAF",
+         "Mozilla Archive Format",
+         this._getFirefoxExecutablePath());
+
+        if (MafPreferences.win_associate_maff) {
+          this._createWindowsFileExtensionAssociation(
+           ".maff",
+           "MozillaMAF");
+        }
+
+        if (MafPreferences.win_associate_mht) {
+          this._createWindowsFileExtensionAssociation(
+           ".mht",
+           "MozillaMAF");
+        }
+      } catch (e) {
+        // Do not show any error. 
+      }
+    }
+  },
+
+  /* Returns the probable path of "firefox.exe" on Windows. */
+  _getFirefoxExecutablePath: function() {
+    // To find the installation directory, try "XCurProcD" first, then
+    //  "CurProcD". See "nsAppFileLocationProvider::CloneMozBinDirectory" in
+    //  the Mozilla source code.
+    try {
+      var installDir =
+       Components.classes["@mozilla.org/file/directory_service;1"]
+       .getService(Components.interfaces.nsIProperties)
+       .get("XCurProcD", Components.interfaces.nsIFile);
+    } catch (e) {
+      installDir =
+       Components.classes["@mozilla.org/file/directory_service;1"]
+       .getService(Components.interfaces.nsIProperties)
+       .get("CurProcD", Components.interfaces.nsIFile);
+    }
+
+    // Assume the executable name is "firefox.exe"
+    installDir.append("firefox.exe");
+
+    // Return the required path as a string
+    return installDir.path;
+  },
+
+  /*
+   * Creates a global Windows file type, under HKEY_CLASSES_ROOT, associating
+   *  the given ProgID with the given executable file, and assigning the
+   *  second icon of the executable to the file type.
+   *
+   * If the ProgID already exists, its settings are overwritten.
+   */
+  _createWindowsFileType: function(aProgID, aDisplayName, aExecutablePath) {
+    // Create or open the key of the given ProgID
+    var keyProgID = Components.classes["@mozilla.org/windows-registry-key;1"]
+     .createInstance(Components.interfaces.nsIWindowsRegKey);
+    keyProgID.create(
+     keyProgID.ROOT_KEY_CLASSES_ROOT,
+     aProgID,
+     keyProgID.ACCESS_WRITE);
+    try {
+      // Set the display name shown in the Windows file association GUI
+      keyProgID.writeStringValue("", aDisplayName);
+  
+      // Associate a default icon
+      var keyDefaultIcon = keyProgID.createChild(
+       "DefaultIcon", keyProgID.ACCESS_WRITE);
+      try {
+        // Use the second icon of the specified executable
+        keyDefaultIcon.writeStringValue("", '"' + aExecutablePath + '",1');
+      } finally {
+        keyDefaultIcon.close();
+      }
+  
+      // Create a default "open" verb that passes the quoted file name to
+      //  the specified executable
+      var keyShell = keyProgID.createChild("shell", keyProgID.ACCESS_WRITE);
+      try {
+        var keyOpen = keyShell.createChild("open", keyShell.ACCESS_WRITE);
+        try {
+          var keyCommand = keyOpen.createChild("command", keyOpen.ACCESS_WRITE);
+          try {
+            keyCommand.writeStringValue("", '"' + aExecutablePath + '" "%1"');
+          } finally {
+            keyCommand.close();
+          }
+        } finally {
+          keyOpen.close();
+        }
+      } finally {
+        keyShell.close();
+      }
+    } finally {
+      keyProgID.close();
+    }
+  },
+
+  /*
+   * Creates a global Windows file type association, under HKEY_CLASSES_ROOT,
+   *  associating the given extension with the given ProgID.
+   *
+   * If the extension is already associated to another file type, the
+   *  association is modified.
+   */
+  _createWindowsFileExtensionAssociation: function(aFileExtension, aProgID) {
+    // Create or open the key of the given file extension
+    var keyExtension = Components.classes["@mozilla.org/windows-registry-key;1"]
+     .createInstance(Components.interfaces.nsIWindowsRegKey);
+    keyExtension.create(
+     keyExtension.ROOT_KEY_CLASSES_ROOT,
+     aFileExtension,
+     keyExtension.ACCESS_WRITE);
+    try {
+      // Set the file type association
+      keyExtension.writeStringValue("", aProgID);
+    } finally {
+      keyExtension.close();
+    }
+  },
+
   _getProfileDir: function() {
     const DIR_SERVICE = new Components.Constructor("@mozilla.org/file/directory_service;1","nsIProperties");
     try {

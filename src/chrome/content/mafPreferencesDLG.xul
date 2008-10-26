@@ -140,6 +140,8 @@
     MafPreferences.save();
 
     if (navigator.userAgent.indexOf("Windows") != -1) {
+      MafPreferences.createFileAssociationsNow();
+
       // Execute the VBS to update the associations.
 
       var mafRoot = _getProfileDir();
