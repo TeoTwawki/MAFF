@@ -58,8 +58,29 @@ MafPreferencesServiceClass.prototype = {
   /** The temp folder. */
   temp: "",
 
-  /** The registered scripts used with archiving. */
-  programExtensions: new Array(),
+  /** Structured array with information on supported file formats.
+   *
+   * [i] = (Array) A file format definition
+   * [i][0] = (String) File format display name
+   * [i][1] = (String) "Program" used when saving archives.
+   * [i][2] = (String) "Program" used when opening archives.
+   * [i][3] = (Array) List of file patterns associated with the file format.
+   *
+   * The basic "MAF" file format is not part of this array.
+   *
+   **/
+  programExtensions: [
+   ["Zip",
+    "MAF",
+    "MAF",
+    ["*.maff.zip"]
+   ],
+   ["MHT",
+    new MafMhtEncoderClass().PROGID,
+    new MafMhtDecoderClass().PROGID,
+    ["*.mht"]
+   ]
+  ],
 
   /** The extension that handles *.maf by default. */
   defaultMAFExtensionIndex: 0,
@@ -346,7 +367,6 @@ MafPreferencesServiceClass.prototype = {
     var result;
     result = new MafPreferencesServiceClass();
 
-    result.programExtensions = new Array();
     result.archiveOpenMode = 1;
     result.urlRewrite = true;
     result.saveExtendedMetadata = false;
@@ -380,12 +400,8 @@ MafPreferencesServiceClass.prototype = {
       // If not on windows
       if (navigatorUserAgent.indexOf("Windows") == -1) {
         result.temp = mafParentDir + "/maf/maftemp/";
-        result.programExtensions[result.programExtensions.length] = [
-           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.maff.zip"]];
       } else {
         result.temp = mafParentDir + "\\maf\\maftemp\\";
-        result.programExtensions[result.programExtensions.length] = [
-           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.maff.zip"]];
         result.win_wscriptexe = "c:\\windows\\system32\\wscript.exe",
         result.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
       };
@@ -398,7 +414,6 @@ MafPreferencesServiceClass.prototype = {
    */
   load: function() {
     // if (!this.isLoaded) {
-    this.programExtensions = new Array();
 
       var mafParentDir = this._getProfileDir();
       // Default if there's no stored prefs
@@ -430,12 +445,8 @@ MafPreferencesServiceClass.prototype = {
       // If not on windows
       if (navigatorUserAgent.indexOf("Windows") == -1) {
         this.temp = mafParentDir + "/maf/maftemp/";
-        this.programExtensions[this.programExtensions.length] = [
-           "Zip", mafParentDir + "/maf/mafzip.sh", mafParentDir + "/maf/mafunzip.sh", ["*.maff.zip"]];
       } else {
         this.temp = mafParentDir + "\\maf\\maftemp\\";
-        this.programExtensions[this.programExtensions.length] = [
-           "Zip", mafParentDir + "\\maf\\mafzip.bat", mafParentDir + "\\maf\\mafunzip.bat", ["*.maff.zip"]];
         this.win_wscriptexe = "c:\\windows\\system32\\wscript.exe",
         this.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
       };
@@ -460,38 +471,8 @@ MafPreferencesServiceClass.prototype = {
         this.win_associate_maff = prefs.getBoolPref("winassociatemaff");
         this.win_associate_mht = prefs.getBoolPref("winassociatemht");
 
-        var noOfExtensions = prefs.getIntPref("noofextensions");
-
-        this.programExtensions = new Array();
-
-        for (var i=0; i<noOfExtensions; i++) {
-          currEntry = new Array();
-          currEntry[0] = prefs.getCharPref("ext." + i + ".id");
-          currEntry[1] = prefs.getCharPref("ext." + i + ".archive");
-          currEntry[2] = prefs.getCharPref("ext." + i + ".extract");
-          var noOfMasks = prefs.getIntPref("ext." + i + ".masklength");
-          maskEntry = new Array();
-          for (var j=0; j<noOfMasks; j++) {
-            maskEntry[j] = prefs.getCharPref("ext." + i + ".mask." + j);
-          }
-          currEntry[3] = maskEntry;
-          this.programExtensions[this.programExtensions.length] = currEntry;
-        }
-
       } catch(e) {
         // mafdebug(e);
-      }
-
-    // Add MHT as the last archive format supported
-
-      try {
-        this.programExtensions[this.programExtensions.length] = [
-            "MHT",
-             new MafMhtEncoderClass().PROGID,
-             new MafMhtDecoderClass().PROGID,
-             ["*.mht"]];
-      } catch(e) {
-        mafdebug(e);
       }
 
     //  this.isLoaded = true;
@@ -535,20 +516,6 @@ MafPreferencesServiceClass.prototype = {
 
       prefs.setBoolPref("winassociatemaff", this.win_associate_maff);
       prefs.setBoolPref("winassociatemht", this.win_associate_mht);
-
-      // Subtract 1 because MHT hander not counted
-      prefs.setIntPref("noofextensions", this.programExtensions.length-1);
-      for (var i=0; i<this.programExtensions.length; i++) {
-        if (this.programExtensions[i][0] != "MHT") {
-          prefs.setCharPref("ext." + i + ".id", this.programExtensions[i][0]);
-          prefs.setCharPref("ext." + i + ".archive", this.programExtensions[i][1]);
-          prefs.setCharPref("ext." + i + ".extract", this.programExtensions[i][2]);
-          prefs.setIntPref("ext." + i + ".masklength", this.programExtensions[i][3].length);
-          for (var j=0; j<this.programExtensions[i][3].length; j++) {
-            prefs.setCharPref("ext." + i + ".mask." + j, this.programExtensions[i][3][j]);
-          }
-        }
-      }
 
     } catch(e) {
       mafdebug(e);
