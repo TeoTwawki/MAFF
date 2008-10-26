@@ -105,9 +105,6 @@ MafPreferencesServiceClass.prototype = {
   /** Save extended metadata. */
   saveExtendedMetadata: false,
 
-  /** Windows specific preferences. */
-  win_wscriptexe: "",
-
   isLoaded: false,
 
   clearTempOnClose: true,
@@ -367,7 +364,6 @@ MafPreferencesServiceClass.prototype = {
     result.urlRewrite = true;
     result.saveExtendedMetadata = false;
 
-    result.win_wscriptexe = "";
     result.clearTempOnClose = true;
     result.enableMafProtocol = false;
     result.addDocumentWriteOverride = false;
@@ -396,7 +392,6 @@ MafPreferencesServiceClass.prototype = {
         result.temp = mafParentDir + "/maf/maftemp/";
       } else {
         result.temp = mafParentDir + "\\maf\\maftemp\\";
-        result.win_wscriptexe = "c:\\windows\\system32\\wscript.exe"
       };
 
     return result;
@@ -440,7 +435,6 @@ MafPreferencesServiceClass.prototype = {
         this.temp = mafParentDir + "/maf/maftemp/";
       } else {
         this.temp = mafParentDir + "\\maf\\maftemp\\";
-        this.win_wscriptexe = "c:\\windows\\system32\\wscript.exe"
       };
 
         this.temp = prefs.getCharPref("temp");
@@ -448,8 +442,6 @@ MafPreferencesServiceClass.prototype = {
         this.saveExtendedMetadata = prefs.getBoolPref("saveextendedmetadata");
         this.defaultMAFExtensionIndex = prefs.getIntPref("defaultmafhandler");
         this.archiveOpenMode = prefs.getIntPref("archiveopenmode");
-
-        this.win_wscriptexe = prefs.getCharPref("winwscriptexe");
 
         this.clearTempOnClose = prefs.getBoolPref("clearTempOnClose");
         this.enableMafProtocol = prefs.getBoolPref("enableMafProtocol");
@@ -492,8 +484,6 @@ MafPreferencesServiceClass.prototype = {
       prefs.setBoolPref("saveextendedmetadata", this.saveExtendedMetadata);
       prefs.setIntPref("defaultmafhandler", this.defaultMAFExtensionIndex);
       prefs.setIntPref("archiveopenmode", this.archiveOpenMode);
-
-      prefs.setCharPref("winwscriptexe", this.win_wscriptexe);
 
       prefs.setBoolPref("clearTempOnClose", this.clearTempOnClose);
       prefs.setBoolPref("enableMafProtocol", this.enableMafProtocol);

@@ -75,9 +75,6 @@
 <!ENTITY maf.preferencesdialog.winop.label "Windows specifikke indstillinger">
 <!ENTITY maf.preferencesdialog.winop.usevbs "Brug VBS til at skjule konsol vinduet n� MAFF filer �nes">
 
-<!ENTITY maf.preferencesdialog.winop.wscript "Lokation af WSCRIPT.EXE:">
-<!ENTITY maf.preferencesdialog.winop.invis "Lokation af invis.vbs:">
-
 <!ENTITY maf.preferencesdialog.winop.filetypelabel "Filtype associationer">
 <!ENTITY maf.preferencesdialog.winop.filetypemaf "Associ� MAF med .maf filer">
 <!ENTITY maf.preferencesdialog.winop.filetypemaff "Associ� MAF med .maff filer">

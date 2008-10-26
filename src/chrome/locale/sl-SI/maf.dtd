@@ -75,9 +75,6 @@
 <!ENTITY maf.preferencesdialog.winop.label "Možnosti za Windows">
 <!ENTITY maf.preferencesdialog.winop.usevbs "Uporabi VBS za skrivanje ukaznega okna pri odpiranju datotek MAF">
 
-<!ENTITY maf.preferencesdialog.winop.wscript "Mesto WSCRIPT.EXE:">
-<!ENTITY maf.preferencesdialog.winop.invis "Mesto invis.vbs:">
-
 <!ENTITY maf.preferencesdialog.winop.filetypelabel "Povezave vrste datotek">
 <!ENTITY maf.preferencesdialog.winop.filetypemaf "Poveži MAF s končnicami .maf">
 <!ENTITY maf.preferencesdialog.winop.filetypemaff "Poveži MAF s končnicami .maff">

@@ -75,9 +75,6 @@
 <!ENTITY maf.preferencesdialog.winop.label "Настройка дополнительных параметров, зависящих от Windows:">
 <!ENTITY maf.preferencesdialog.winop.usevbs "Использовать VBS для скрытого запуска командных bat-файлов">
 
-<!ENTITY maf.preferencesdialog.winop.wscript "Расположение wscript.exe:">
-<!ENTITY maf.preferencesdialog.winop.invis "Расположение invis.vbs:    ">
-
 <!ENTITY maf.preferencesdialog.winop.filetypelabel "Связь с расширениями имён файлов">
 <!ENTITY maf.preferencesdialog.winop.filetypemaf "Связать MAF с расширением .maf">
 <!ENTITY maf.preferencesdialog.winop.filetypemaff "Связать MAF с расширением .maff">

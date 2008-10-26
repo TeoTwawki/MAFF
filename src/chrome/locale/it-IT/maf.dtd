@@ -75,9 +75,6 @@
 <!ENTITY maf.preferencesdialog.winop.label "Opzioni specifiche per Windows">
 <!ENTITY maf.preferencesdialog.winop.usevbs "Usa VBS per avviare i file batch in modo invisibile">
 
-<!ENTITY maf.preferencesdialog.winop.wscript "Posizione di WSCRIPT.EXE:">
-<!ENTITY maf.preferencesdialog.winop.invis "Posizione di invis.vbs:">
-
 <!ENTITY maf.preferencesdialog.winop.filetypelabel "Associazioni dei tipi di file">
 <!ENTITY maf.preferencesdialog.winop.filetypemaf "Associa MAF alle estensioni .maf">
 <!ENTITY maf.preferencesdialog.winop.filetypemaff "Associa MAF alle estensioni .maff">

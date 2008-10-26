@@ -75,9 +75,6 @@
 <!ENTITY maf.preferencesdialog.winop.label "Windows specific options">
 <!ENTITY maf.preferencesdialog.winop.usevbs "Use VBS to hide command window when opening MAFF files">
 
-<!ENTITY maf.preferencesdialog.winop.wscript "Location of WSCRIPT.EXE:">
-<!ENTITY maf.preferencesdialog.winop.invis "Location of invis.vbs:">
-
 <!ENTITY maf.preferencesdialog.winop.filetypelabel "File type associations">
 <!ENTITY maf.preferencesdialog.winop.filetypemaf "Associate MAF with .maf extensions">
 <!ENTITY maf.preferencesdialog.winop.filetypemaff "Associate MAF with .maff extensions">

@@ -75,9 +75,6 @@
 <!ENTITY maf.preferencesdialog.winop.label "Windows spezifische Optionen">
 <!ENTITY maf.preferencesdialog.winop.usevbs "benutze VBS um Kommandozeilenfenster zu verstecken">
 
-<!ENTITY maf.preferencesdialog.winop.wscript "Ort von 'WSCRIPT.EXE'">
-<!ENTITY maf.preferencesdialog.winop.invis "das Script 'invis.vbs'">
-
 <!ENTITY maf.preferencesdialog.winop.filetypelabel "starte Mozilla-Firefox MAF beim Doppelklick im Windows Explorer">
 <!ENTITY maf.preferencesdialog.winop.filetypemaf "Assoziiere MAF fuer .maf Dateiendung">
 <!ENTITY maf.preferencesdialog.winop.filetypemaff "Assoziiere MAF fuer .maff Dateiendung">

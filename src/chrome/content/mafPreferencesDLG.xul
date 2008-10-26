@@ -61,7 +61,6 @@
 
     document.getElementById("chkURLRewrite").checked = MafPreferences.urlRewrite;
     document.getElementById("chkSaveExtended").checked = MafPreferences.saveExtendedMetadata;
-    document.getElementById("winWscriptLoc").value = MafPreferences.win_wscriptexe;
     document.getElementById("chkClearTempOnClose").checked = MafPreferences.clearTempOnClose;
     document.getElementById("chkEnableMafProtocol").checked = MafPreferences.enableMafProtocol;
     document.getElementById("chkAddDocumentWriteOverride").checked = MafPreferences.addDocumentWriteOverride;
@@ -87,7 +86,6 @@
 
     document.getElementById("chkURLRewrite").checked = mpd.urlRewrite;
     document.getElementById("chkSaveExtended").checked = mpd.saveExtendedMetadata;
-    document.getElementById("winWscriptLoc").value = mpd.win_wscriptexe;
     document.getElementById("chkClearTempOnClose").checked = mpd.clearTempOnClose;
     document.getElementById("chkEnableMafProtocol").checked = mpd.enableMafProtocol;
     document.getElementById("chkAddDocumentWriteOverride").checked = mpd.addDocumentWriteOverride;
@@ -103,11 +101,6 @@
   function checkWinOnlyPrefs() {
     // If not windows, disable windows only preferences
     if (navigator.userAgent.indexOf("Windows") == -1) {
-      //document.getElementById("winChkRunInvisible").disabled = true;
-      document.getElementById("winWscriptLoc").disabled = true;
-      document.getElementById("btnBrowseWinScript").disabled = true;
-      //document.getElementById("winInvisVbsLoc").disabled = true;
-      //document.getElementById("btnBrowseInvisVbs").disabled = true;
       document.getElementById("winChkAssociateWithMAFF").disabled = true;
       document.getElementById("winChkAssociateWithMHT").disabled = true;
     }
@@ -126,7 +119,6 @@
 
     MafPreferences.urlRewrite = document.getElementById("chkURLRewrite").checked;
     MafPreferences.saveExtendedMetadata = document.getElementById("chkSaveExtended").checked;
-    MafPreferences.win_wscriptexe = document.getElementById("winWscriptLoc").value;
     MafPreferences.clearTempOnClose = document.getElementById("chkClearTempOnClose").checked;
     MafPreferences.enableMafProtocol = document.getElementById("chkEnableMafProtocol").checked;
     MafPreferences.addDocumentWriteOverride = document.getElementById("chkAddDocumentWriteOverride").checked;
@@ -148,12 +140,6 @@
     var initialDir = document.getElementById(textFolder).value;
     var newDir = MafGUI.selectDirectory("Select a folder", initialDir);
     document.getElementById(textFolder).value = newDir;
-  }
-
-  function browseforfile(textFile, filename) {
-    var initialFile = document.getElementById(textFile).value;
-    var newFile = MafGUI.selectSpecificFile("Select file", initialFile, filename);
-    document.getElementById(textFile).value = newFile;
   }
 
   function mafdebug(text) {
@@ -239,23 +225,6 @@
      <description>
        &maf.preferencesdialog.winop.label;
      </description>
-
-     <!--
-     <groupbox>
-       <caption label="&maf.preferencesdialog.winop.label;" />
-     </groupbox>
-     -->
-       <!-- checkbox id="winChkRunInvisible" checked="false" label="&maf.preferencesdialog.winop.usevbs;" / -->
-       <hbox>
-         <label control="winWscriptLoc" value="&maf.preferencesdialog.winop.wscript;"/>
-         <textbox id="winWscriptLoc" flex="1"/>
-         <button id="btnBrowseWinScript" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winWscriptLoc', 'wscript.exe')"/>
-       </hbox>
-       <!-- hbox>
-         <label control="winInvisVbsLoc" value="&maf.preferencesdialog.winop.invis;"/>
-         <textbox id="winInvisVbsLoc" flex="1"/>
-         <button id="btnBrowseInvisVbs" label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('winInvisVbsLoc', 'invis.vbs')"/>
-       </hbox -->
 
        <groupbox>
          <caption label="&maf.preferencesdialog.winop.filetypelabel;" />

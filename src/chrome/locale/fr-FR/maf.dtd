@@ -75,9 +75,6 @@
 <!ENTITY maf.preferencesdialog.winop.label "Options spécifiques à Windows">
 <!ENTITY maf.preferencesdialog.winop.usevbs "Utiliser un VBS pour exécuter les fichiers de manière cachée">
 
-<!ENTITY maf.preferencesdialog.winop.wscript "Emplacement de WSCRIPT.EXE:">
-<!ENTITY maf.preferencesdialog.winop.invis "Emplacement de invis.vbs:">
-
 <!ENTITY maf.preferencesdialog.winop.filetypelabel "Association des fichiers">
 <!ENTITY maf.preferencesdialog.winop.filetypemaf "Associer MAF avec les fichiers .maf">
 <!ENTITY maf.preferencesdialog.winop.filetypemaff "Associer MAF avec les fichiers .maff">
