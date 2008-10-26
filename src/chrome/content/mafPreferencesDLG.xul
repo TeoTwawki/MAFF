@@ -141,60 +141,7 @@
 
     if (navigator.userAgent.indexOf("Windows") != -1) {
       MafPreferences.createFileAssociationsNow();
-
-      // Execute the VBS to update the associations.
-
-      var mafRoot = _getProfileDir();
-
-      // Execute VBS that removes all associations
-      _execVBS(mafRoot + "\\maf\\unsetallfiletypes.vbs");
-
-      // Execute individual VBS that adds associations.
-      /*
-      if (MafPreferences.win_associate_maf) {
-        _execVBS(mafRoot + "\\maf\\setmaffiletype.vbs");
-      }
-      */
-
-      if (MafPreferences.win_associate_maff) {
-        _execVBS(mafRoot + "\\maf\\setmafffiletype.vbs");
-      }
-
-      if (MafPreferences.win_associate_mht) {
-        _execVBS(mafRoot + "\\maf\\setmhtfiletype.vbs");
-      }
-
     }
-  }
-
-  function _execVBS(scriptPath) {
-    try {
-      var localProgram = MafPreferences.win_wscriptexe;
-      var localProgramArgs = new Array();
-      localProgramArgs[localProgramArgs.length] = scriptPath;
-
-      var oProgram = Components.classes["@mozilla.org/file/local;1"]
-                       .createInstance(Components.interfaces.nsILocalFile);
-      oProgram.initWithPath(localProgram);
-
-      var oProcess = Components.classes["@mozilla.org/process/util;1"]
-                       .createInstance(Components.interfaces.nsIProcess);
-      oProcess.init(oProgram);
-      oProcess.run(true, localProgramArgs, localProgramArgs.length);
-    } catch(e) {
-      mafdebug(e);
-    }
-  }
-
-  function _getProfileDir() {
-    const DIR_SERVICE = new Components.Constructor("@mozilla.org/file/directory_service;1","nsIProperties");
-    try {
-      var result = (new DIR_SERVICE()).get("ProfD", Components.interfaces.nsIFile).path;
-    } catch (e) {
-      result = "";
-      mafdebug(e);
-    }
-    return result;
   }
 
   function browse(textFolder) {
