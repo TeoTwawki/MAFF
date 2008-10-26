@@ -73,11 +73,6 @@
 
     document.getElementById("winChkAssociateWithMAFF").checked = MafPreferences.win_associate_maff;
     document.getElementById("winChkAssociateWithMHT").checked = MafPreferences.win_associate_mht;
-
-    var mprec = MafPreferences.getRecordAt(0);
-
-    //document.getElementById("txtArchiveScript").value = mprec.archivescript;
-    //document.getElementById("txtExpandScript").value = mprec.extractscript;
   }
 
 
@@ -106,12 +101,6 @@
 
     document.getElementById("winChkAssociateWithMAFF").checked = mpd.win_associate_maff;
     document.getElementById("winChkAssociateWithMHT").checked = mpd.win_associate_mht;
-
-    var mprec = mpd.getRecordAt(0);
-
-    //document.getElementById("txtArchiveScript").value = mprec.archivescript;
-    //document.getElementById("txtExpandScript").value = mprec.extractscript;
-
   }
 
 
@@ -153,13 +142,6 @@
 
     MafPreferences.win_associate_maff = document.getElementById("winChkAssociateWithMAFF").checked;
     MafPreferences.win_associate_mht = document.getElementById("winChkAssociateWithMHT").checked;
-
-    var mprec = MafPreferences.getRecordAt(0);
-
-    //mprec.archivescript = document.getElementById("txtArchiveScript").value;
-    //mprec.extractscript = document.getElementById("txtExpandScript").value;
-
-    MafPreferences.updateRecordAt(0, mprec);
 
     MafPreferences.save();
 
