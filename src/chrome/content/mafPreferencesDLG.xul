@@ -61,9 +61,7 @@
 
     document.getElementById("chkURLRewrite").checked = MafPreferences.urlRewrite;
     document.getElementById("chkSaveExtended").checked = MafPreferences.saveExtendedMetadata;
-    //document.getElementById("winChkRunInvisible").checked = MafPreferences.win_invisible;
     document.getElementById("winWscriptLoc").value = MafPreferences.win_wscriptexe;
-    //document.getElementById("winInvisVbsLoc").value = MafPreferences.win_invisiblevbs;
     document.getElementById("chkClearTempOnClose").checked = MafPreferences.clearTempOnClose;
     document.getElementById("chkEnableMafProtocol").checked = MafPreferences.enableMafProtocol;
     document.getElementById("chkAddDocumentWriteOverride").checked = MafPreferences.addDocumentWriteOverride;
@@ -89,9 +87,7 @@
 
     document.getElementById("chkURLRewrite").checked = mpd.urlRewrite;
     document.getElementById("chkSaveExtended").checked = mpd.saveExtendedMetadata;
-    //document.getElementById("winChkRunInvisible").checked = mpd.win_invisible;
     document.getElementById("winWscriptLoc").value = mpd.win_wscriptexe;
-    //document.getElementById("winInvisVbsLoc").value = mpd.win_invisiblevbs;
     document.getElementById("chkClearTempOnClose").checked = mpd.clearTempOnClose;
     document.getElementById("chkEnableMafProtocol").checked = mpd.enableMafProtocol;
     document.getElementById("chkAddDocumentWriteOverride").checked = mpd.addDocumentWriteOverride;
@@ -131,8 +127,6 @@
     MafPreferences.urlRewrite = document.getElementById("chkURLRewrite").checked;
     MafPreferences.saveExtendedMetadata = document.getElementById("chkSaveExtended").checked;
     MafPreferences.win_wscriptexe = document.getElementById("winWscriptLoc").value;
-    //MafPreferences.win_invisiblevbs = document.getElementById("winInvisVbsLoc").value;
-    //MafPreferences.win_invisible = document.getElementById("winChkRunInvisible").checked;
     MafPreferences.clearTempOnClose = document.getElementById("chkClearTempOnClose").checked;
     MafPreferences.enableMafProtocol = document.getElementById("chkEnableMafProtocol").checked;
     MafPreferences.addDocumentWriteOverride = document.getElementById("chkAddDocumentWriteOverride").checked;

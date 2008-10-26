@@ -106,11 +106,7 @@ MafPreferencesServiceClass.prototype = {
   saveExtendedMetadata: false,
 
   /** Windows specific preferences. */
-  win_invisible: true,
-
   win_wscriptexe: "",
-
-  win_invisiblevbs: "",
 
   isLoaded: false,
 
@@ -371,9 +367,7 @@ MafPreferencesServiceClass.prototype = {
     result.urlRewrite = true;
     result.saveExtendedMetadata = false;
 
-    result.win_invisible = true;
     result.win_wscriptexe = "";
-    result.win_invisiblevbs = "";
     result.clearTempOnClose = true;
     result.enableMafProtocol = false;
     result.addDocumentWriteOverride = false;
@@ -402,8 +396,7 @@ MafPreferencesServiceClass.prototype = {
         result.temp = mafParentDir + "/maf/maftemp/";
       } else {
         result.temp = mafParentDir + "\\maf\\maftemp\\";
-        result.win_wscriptexe = "c:\\windows\\system32\\wscript.exe",
-        result.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
+        result.win_wscriptexe = "c:\\windows\\system32\\wscript.exe"
       };
 
     return result;
@@ -447,8 +440,7 @@ MafPreferencesServiceClass.prototype = {
         this.temp = mafParentDir + "/maf/maftemp/";
       } else {
         this.temp = mafParentDir + "\\maf\\maftemp\\";
-        this.win_wscriptexe = "c:\\windows\\system32\\wscript.exe",
-        this.win_invisiblevbs = mafParentDir + "\\maf\\invis.vbs"
+        this.win_wscriptexe = "c:\\windows\\system32\\wscript.exe"
       };
 
         this.temp = prefs.getCharPref("temp");
@@ -457,9 +449,7 @@ MafPreferencesServiceClass.prototype = {
         this.defaultMAFExtensionIndex = prefs.getIntPref("defaultmafhandler");
         this.archiveOpenMode = prefs.getIntPref("archiveopenmode");
 
-        this.win_invisible = prefs.getBoolPref("wininvisible");
         this.win_wscriptexe = prefs.getCharPref("winwscriptexe");
-        this.win_invisiblevbs = prefs.getCharPref("wininvisiblevbs");
 
         this.clearTempOnClose = prefs.getBoolPref("clearTempOnClose");
         this.enableMafProtocol = prefs.getBoolPref("enableMafProtocol");
@@ -503,9 +493,7 @@ MafPreferencesServiceClass.prototype = {
       prefs.setIntPref("defaultmafhandler", this.defaultMAFExtensionIndex);
       prefs.setIntPref("archiveopenmode", this.archiveOpenMode);
 
-      prefs.setBoolPref("wininvisible", this.win_invisible);
       prefs.setCharPref("winwscriptexe", this.win_wscriptexe);
-      prefs.setCharPref("wininvisiblevbs", this.win_invisiblevbs);
 
       prefs.setBoolPref("clearTempOnClose", this.clearTempOnClose);
       prefs.setBoolPref("enableMafProtocol", this.enableMafProtocol);
