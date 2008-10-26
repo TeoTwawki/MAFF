@@ -182,44 +182,8 @@
        </radiogroup>
      </groupbox>
 
-     <!-- hbox>
-       <label control="selDefaultApp" value="&maf.preferencesdialog.openmode.defaultapp;"/>
-       <menulist id="selDefaultApp">
-         <menupopup>
-           <menuitem label="Zip" selected="true"/>
-         </menupopup>
-       </menulist>
-     </hbox -->
      </groupbox>
    </tabpanel>
-
-   <!-- tabpanel id="registeredprogramspanel" orient="vertical">
-     <description>
-       &maf.preferencesdialog.progs.description;
-     </description>
-
-     <tabbox flex="1">
-       <tabs>
-         <tab label="Zip"/>
-       </tabs>
-       <tabpanel>
-         <vbox>
-         <hbox>
-           <label control="txtArchiveScript" value="&maf.preferencesdialog.progs.archive;"/>
-           <textbox id="txtArchiveScript" flex="1" />
-           <button label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('txtArchiveScript', '*.*')" />
-         </hbox>
-
-         <hbox>
-           <label control="txtExpandScript" value="&maf.preferencesdialog.progs.expand;"/>
-           <textbox id="txtExpandScript" flex="1" />
-           <button label="&maf.preferencesdialog.btnbrowse;" oncommand="browseforfile('txtExpandScript', '*.*')" />
-         </hbox>        
-
-         </vbox>
-       </tabpanel>
-     </tabbox>
-   </tabpanel -->
 
    <tabpanel id="windowsspecificoptionspanel" orient="vertical">
      <description>
@@ -228,7 +192,6 @@
 
        <groupbox>
          <caption label="&maf.preferencesdialog.winop.filetypelabel;" />
-         <!-- checkbox id="winChkAssociateWithMAF" checked="false" label="&maf.preferencesdialog.winop.filetypemaf;" / -->
          <checkbox id="winChkAssociateWithMAFF" checked="false" label="&maf.preferencesdialog.winop.filetypemaff;" />
          <checkbox id="winChkAssociateWithMHT" checked="false" label="&maf.preferencesdialog.winop.filetypemht;" />
        </groupbox>
