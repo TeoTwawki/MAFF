@@ -116,15 +116,6 @@ MafStateServiceClass.prototype = {
     this.archivesSequence.AppendElement(archive1Subject);
   },
 
-
-  isArchiveURIOpen: function(uri) {
-    return (typeof(this.openArchives[uri]) != "undefined");
-  },
-
-  expandedArchiveURIPath: function(uri) {
-    return this.openArchives[uri];
-  },
-
   getDatasource: function() {
     return this.datasource;
   },

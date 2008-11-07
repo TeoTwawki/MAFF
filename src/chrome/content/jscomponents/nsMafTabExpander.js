@@ -68,13 +68,6 @@ MafTabExpanderClass.prototype = {
     }
   },
 
-  startBlocking: function() {
-    if (!this.started) {
-      this.started = true;
-      this.notify(this.timer);
-    }
-  },
-
   /**
    * Can't kill the process, so stop does nothing really.
    */

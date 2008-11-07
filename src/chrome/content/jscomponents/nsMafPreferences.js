@@ -200,23 +200,6 @@ MafPreferencesServiceClass.prototype = {
     return result;
   },
 
-  /**
-   * Creates a regular expression that matches registered MAF application extensions
-   */
-  getOpenFilterRegEx: function() {
-    var regExStr = "^.+\\.maff?$"; // Matches *.maff and *.maf
-
-    for (var i=0; i<this.programExtensions.length; i++) {
-      for (var j=0; j<this.programExtensions[i][3].length; j++) {
-        var progRegEx = this.programExtensions[i][3][j];
-        progRegEx = progRegEx.replaceAll(".", "\\.").replaceAll("*", ".+");
-        regExStr += "|^" + progRegEx + "$";
-      }
-    }
-
-    return regExStr;
-  },
-
   getSaveFiltersLength: function() {
     var result = 1; // *.maff
     for (var i=0; i<this.programExtensions.length; i++) {

@@ -21,7 +21,6 @@ try {
    "jscomponents/nsMafMhtEncoder.js",
    "jscomponents/nsMafMhtHandler.js",
    "jscomponents/nsMafPreferences.js",
-   "jscomponents/nsMafProtocol.js",
    "jscomponents/nsMafState.js",
    "jscomponents/nsMafStringValue.js",
    "jscomponents/nsMafTabArchiver.js",
