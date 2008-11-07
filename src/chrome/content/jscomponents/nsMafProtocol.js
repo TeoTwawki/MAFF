@@ -165,7 +165,7 @@ MAFProtocol.prototype = {
 
             try {
               // Open as a MAF with registered filter
-              resultURI = this.openFromArchive(MafPreferences.temp,
+              resultURI = this.openFromArchive(
                                 MafPreferences.programFromOpenIndex(filterIndex), localFilePath);                             
             } catch(e) {
               mafdebug(e);
@@ -177,7 +177,9 @@ MAFProtocol.prototype = {
   },
 
 
-  openFromArchive: function(tempPath, scriptPath, archivePath) {
+  openFromArchive: function(scriptPath, archivePath) {
+    var tempPath = MafPreferences.temp;
+
     var resultURI = "";
     var dateTimeExpanded = new Date();
 

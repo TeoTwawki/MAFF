@@ -541,7 +541,9 @@ maf.prototype = {
   /**
    * Open a MAF archive and add the meta-data to the global state
    */
-  openFromArchive: function(tempPath, scriptPath, archivePath) {
+  openFromArchive: function(scriptPath, archivePath) {
+    var tempPath = MafPreferences.temp;
+
     var dateTimeExpanded = new Date();
 
     var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random()*1000);

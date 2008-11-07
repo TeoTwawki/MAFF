@@ -53,8 +53,7 @@ MAFGuiHandlerClass.prototype = {
     try {
       var archiveToOpen = this.selectFileOpen();
 
-      Maf.openFromArchive(MafPreferences.temp,
-                          MafPreferences.programFromOpenIndex(archiveToOpen[0]), archiveToOpen[1]);
+      Maf.openFromArchive(MafPreferences.programFromOpenIndex(archiveToOpen[0]), archiveToOpen[1]);
     } catch(e) {
       mafdebug(e);
     }

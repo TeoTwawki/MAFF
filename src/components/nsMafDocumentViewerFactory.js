@@ -115,7 +115,7 @@ MafDocumentViewerFactoryClass.prototype = {
 
             try {
               // Open as a MAF with registered filter
-              this.maf.openFromArchive(MafPreferences.temp,
+              this.maf.openFromArchive(
                               MafPreferences.programFromOpenIndex(filterIndex), localFilePath);
             } catch(e) {
 
