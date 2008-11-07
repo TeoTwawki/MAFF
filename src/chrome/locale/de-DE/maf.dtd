@@ -54,7 +54,6 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "TEMP Verzeichnis:">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Beim Schliessen des Browsers alles im TEMP Verzeichnis loeschen">
-<!ENTITY maf.preferencesdialog.label.enablemafprotocol "MAF Protocol einsetzen">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "einsetzen von document.write override">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Hinweis bei Fertigstellung einer einzigen Archiveseite">
 <!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Benutze alternative Sicherungskomponente">

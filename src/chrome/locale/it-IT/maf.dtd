@@ -54,7 +54,6 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "Cartella temporanei:">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Elimina file temporanei quando si chiude il browser">
-<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Attiva il protocollo MAF">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Abilita la sovrascrittura del documento">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Avvisa quando completi una pagina dell'archivio">
 <!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Use alternative save component">

@@ -62,7 +62,6 @@
     document.getElementById("chkURLRewrite").checked = MafPreferences.urlRewrite;
     document.getElementById("chkSaveExtended").checked = MafPreferences.saveExtendedMetadata;
     document.getElementById("chkClearTempOnClose").checked = MafPreferences.clearTempOnClose;
-    document.getElementById("chkEnableMafProtocol").checked = MafPreferences.enableMafProtocol;
     document.getElementById("chkAddDocumentWriteOverride").checked = MafPreferences.addDocumentWriteOverride;
     document.getElementById("chkAlertOnArchiveComplete").checked = MafPreferences.alertOnArchiveComplete;
 
@@ -87,7 +86,6 @@
     document.getElementById("chkURLRewrite").checked = mpd.urlRewrite;
     document.getElementById("chkSaveExtended").checked = mpd.saveExtendedMetadata;
     document.getElementById("chkClearTempOnClose").checked = mpd.clearTempOnClose;
-    document.getElementById("chkEnableMafProtocol").checked = mpd.enableMafProtocol;
     document.getElementById("chkAddDocumentWriteOverride").checked = mpd.addDocumentWriteOverride;
     document.getElementById("chkAlertOnArchiveComplete").checked = mpd.alertOnArchiveComplete;
 
@@ -120,7 +118,6 @@
     MafPreferences.urlRewrite = document.getElementById("chkURLRewrite").checked;
     MafPreferences.saveExtendedMetadata = document.getElementById("chkSaveExtended").checked;
     MafPreferences.clearTempOnClose = document.getElementById("chkClearTempOnClose").checked;
-    MafPreferences.enableMafProtocol = document.getElementById("chkEnableMafProtocol").checked;
     MafPreferences.addDocumentWriteOverride = document.getElementById("chkAddDocumentWriteOverride").checked;
     MafPreferences.alertOnArchiveComplete = document.getElementById("chkAlertOnArchiveComplete").checked;
 
@@ -211,7 +208,6 @@
      <groupbox>
        <caption label="&maf.preferencesdialog.advanced.extractinglabel;" />
        <checkbox id="chkURLRewrite" checked="false" label="&maf.preferencesdialog.openmode.urlrewrite;" />
-       <checkbox id="chkEnableMafProtocol" checked="false" label="&maf.preferencesdialog.label.enablemafprotocol;" />
        <checkbox id="chkAddDocumentWriteOverride" checked="false"
                   label="&maf.preferencesdialog.label.adddocumentwriteoverride;" />
      </groupbox>

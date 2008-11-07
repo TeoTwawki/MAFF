@@ -54,7 +54,6 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "Začasna mapa:">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Počisti začasno mapo ob izhodu iz brskalnika">
-<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Omogoči protokol MAF">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Omogoči prezrtje document.write">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Opozorilo ob dokončanju arhiva posamične strani">
 <!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Uporabi alternativno komponento shranjevanja">

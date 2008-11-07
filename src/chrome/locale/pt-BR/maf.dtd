@@ -54,7 +54,6 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "Pasta Temporária:">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Limpar Pasta Temporária Quando Sair do Navegador">
-<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Ativar Protocolo MAF">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Ativar a Escrita de Documento Manualmente">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alertar Quando Arquivo de Única Página Estiver Completo">
 <!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Usar alternativa exceto o componente">

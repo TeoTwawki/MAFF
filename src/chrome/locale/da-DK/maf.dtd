@@ -54,7 +54,6 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "Midlertidig folder:">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Ryd midlertidig folder n� browseren lukkes">
-<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Brug MAF Protokol">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Brug omg�lse af document.write">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Advar n� enkeltsidede arkiver er f�dige">
 <!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Brug alternativ lagrings komponent">

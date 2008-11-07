@@ -109,8 +109,6 @@ MafPreferencesServiceClass.prototype = {
 
   clearTempOnClose: true,
 
-  enableMafProtocol: false,
-
   addDocumentWriteOverride: false,
 
   alertOnArchiveComplete: true,
@@ -348,7 +346,6 @@ MafPreferencesServiceClass.prototype = {
     result.saveExtendedMetadata = false;
 
     result.clearTempOnClose = true;
-    result.enableMafProtocol = false;
     result.addDocumentWriteOverride = false;
     result.alertOnArchiveComplete = true;
 
@@ -427,7 +424,6 @@ MafPreferencesServiceClass.prototype = {
         this.archiveOpenMode = prefs.getIntPref("archiveopenmode");
 
         this.clearTempOnClose = prefs.getBoolPref("clearTempOnClose");
-        this.enableMafProtocol = prefs.getBoolPref("enableMafProtocol");
         this.addDocumentWriteOverride = prefs.getBoolPref("addDocumentWriteOverride");
         this.alertOnArchiveComplete = prefs.getBoolPref("alertOnArchiveComplete");
 
@@ -469,7 +465,6 @@ MafPreferencesServiceClass.prototype = {
       prefs.setIntPref("archiveopenmode", this.archiveOpenMode);
 
       prefs.setBoolPref("clearTempOnClose", this.clearTempOnClose);
-      prefs.setBoolPref("enableMafProtocol", this.enableMafProtocol);
       prefs.setBoolPref("addDocumentWriteOverride", this.addDocumentWriteOverride);
       prefs.setBoolPref("alertOnArchiveComplete", this.alertOnArchiveComplete);
 

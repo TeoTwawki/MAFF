@@ -54,7 +54,6 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "Katalog tymczasowy:">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Wyczyść katalog tymczasowy podczas zamykania przeglądarki">
-<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Włącz obsługę protokołu MAF">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Włącz nadpisywanie document.write">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Informuj o zakończeniu archiwizowania pojedynczej strony">
 <!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Użyj alternatywnego sposobu zapisywania">

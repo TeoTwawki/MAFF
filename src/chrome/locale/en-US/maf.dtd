@@ -54,7 +54,6 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "Temporary folder:">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Clear Temporary folder when browser exits">
-<!ENTITY maf.preferencesdialog.label.enablemafprotocol "Enable MAF Protocol">
 <!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Enable document.write override">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alert on single page archive complete">
 <!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Use alternative save component">
