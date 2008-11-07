@@ -797,9 +797,7 @@ maf.prototype = {
 
   onWindowFocus: function(event) {
     if (event.originalTarget == "[object XULDocument]") {
-      var MafDocumentViewer = Components.classes["@mozilla.org/content-viewer-factory/view;1?type=application/x-maf"]
-                                .getService().wrappedJSObject;
-      MafDocumentViewer.init(Maf);
+      sharedData.mafObjectOfCurrentWindow = Maf;
     }
   },
 
@@ -840,14 +838,6 @@ var MafPostSetup = {
 
   setupMafContentType: function() {
     try {
-      // Add the content type to the category manager
-      // so that when it is encountered the viewer factory
-      // will be invoked.
-      var catMan = Components.classes["@mozilla.org/categorymanager;1"]
-                      .getService(Components.interfaces.nsICategoryManager);
-      var result  = catMan.addCategoryEntry("Gecko-Content-Viewers", "application/x-maf",
-                      "@mozilla.org/content-viewer-factory/view;1?type=application/x-maf", true, true);
-
       const mimeTypes = "UMimTyp";
       var fileLocator = Components.classes["@mozilla.org/file/directory_service;1"]
                            .getService(Components.interfaces.nsIProperties);
