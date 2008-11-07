@@ -250,8 +250,8 @@ MafStateServiceClass.prototype = {
     this.urlToLocalFileMap[originalurl] = localurl;
 
     // Add maf protocol support
-    this.localFileToUrlMap["maf://" + archiveUri + "!" + archiveFilePart] = originalurl
-    this.localFileToMafUrlMap[localurl] = "maf://" + archiveUri + "!" + archiveFilePart;
+    this.localFileToUrlMap["jar:" + archiveUri + "!/" + archiveFilePart] = originalurl
+    this.localFileToMafUrlMap[localurl] = "jar:" + archiveUri + "!/" + archiveFilePart;
 
     // If the original url has a # sign, add the original url without the # sign to the list
     if (originalurl.indexOf("#") > 0) {

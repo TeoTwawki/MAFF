@@ -39,7 +39,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Lokalny URL">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Otwórz w panelach">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Otwórz w panelach używając maf://">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Otwórz w panelach używając jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Otwórz oryginalne URLe w panelach">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Zamknij">
 

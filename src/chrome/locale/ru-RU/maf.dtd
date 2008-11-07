@@ -39,7 +39,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Локальный адрес">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Открыть во вкладках">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Открыть во вкладках, используя maf://"> 
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Открыть во вкладках, используя jar:"> 
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Открыть оригинал во вкладках">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Закрыть">
 

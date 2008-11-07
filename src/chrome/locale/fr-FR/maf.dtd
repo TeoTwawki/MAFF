@@ -39,7 +39,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "URL locale">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Ouvrir dans des onglets">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Ouvrir dans des onglets en utilisant maf://">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Ouvrir dans des onglets en utilisant jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Ouvrir les URLs d'origine dans des onglets">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Fermer">
 

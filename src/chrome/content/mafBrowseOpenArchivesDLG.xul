@@ -36,7 +36,6 @@
 
   function onLoad() {
     window.sizeToContent();
-    document.getElementById("maf-browse-archives-tabopen-protocol-button").disabled = true;
     document.getElementById("open-archives-tree").database.AddDataSource(
            MafState.getDatasource().QueryInterface(Components.interfaces.nsIRDFDataSource));
     document.getElementById("open-archives-tree").builder.rebuild();

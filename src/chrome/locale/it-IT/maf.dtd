@@ -39,7 +39,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "URL locale">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Apri in schede">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Apri in schede quando si usa maf://">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Apri in schede quando si usa jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Apri URL originali in schede">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Chiudi">
 

@@ -39,7 +39,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Local URL">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Open in Tabs">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Open in Tabs using maf://">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Open in Tabs using jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Open Original URLs in Tabs">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Close">
 

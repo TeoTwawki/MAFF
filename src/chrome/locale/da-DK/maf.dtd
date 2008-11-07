@@ -39,7 +39,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Lokal URL">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "�n i Faneblade">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "�n i Faneblade med maf://">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "�n i Faneblade med jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "�n Oprindelige URLs i Faneblade">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Luk">
 

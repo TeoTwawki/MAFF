@@ -39,7 +39,7 @@
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Krajevni URL">
 
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Odpri v zavihkih">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Odpri v zavihkih z uporabo maf://">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Odpri v zavihkih z uporabo jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Odpri izvorne URL v zavihkih">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Zapri">
 
