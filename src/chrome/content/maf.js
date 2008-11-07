@@ -544,6 +544,14 @@ maf.prototype = {
   openFromArchive: function(scriptPath, archivePath) {
     var tempPath = MafPreferences.temp;
 
+    if (!scriptPath) {
+      // Determine the format to use (MAF or MHT) from the file name
+      var filterIndex =
+       MafPreferences.getOpenFilterIndexFromFilename(archivePath);
+      if (filterIndex < 0) throw Components.results.NS_ERROR_FILE_INVALID_PATH;
+      scriptPath = MafPreferences.programFromOpenIndex(filterIndex);
+    }
+
     var dateTimeExpanded = new Date();
 
     var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random()*1000);
