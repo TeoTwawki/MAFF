@@ -135,59 +135,6 @@ MafUtilServiceClass.prototype = {
   },
 
   /**
-   * Create file with the user executable flag set
-   */
-  createExecutableFile: function(fileToCreate, contents) {
-    try {
-      var oFile = Components.classes["@mozilla.org/file/local;1"]
-                    .createInstance(Components.interfaces.nsILocalFile);
-      oFile.initWithPath(fileToCreate);
-      if (!oFile.exists()) {
-        oFile.create(0x00, 0744);
-      }
-    } catch (e) {
-      mafdebug(e);
-    }
-
-    try {
-      var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                          .createInstance(Components.interfaces.nsIFileOutputStream);
-      oTransport.init( oFile, 0x04 | 0x08 | 0x10, 064, 0 );
-      oTransport.write(contents, contents.length);
-      oTransport.close();
-    } catch (e) {
-      mafdebug(e);
-    }
-  },
-
-  /**
-   * Copy binary file
-   */
-  copyBinaryFile: function(source, fileToCreate) {
-    try {
-      var sourceFile = Components.classes["@mozilla.org/file/local;1"]
-                         .createInstance(Components.interfaces.nsILocalFile);
-      sourceFile.initWithPath(source);
-
-      if (sourceFile.exists()) {
-
-        try {
-          var destFile = Components.classes["@mozilla.org/file/local;1"]
-                        .createInstance(Components.interfaces.nsILocalFile);
-          destFile.initWithPath(fileToCreate);
-
-          if (!destFile.exists()) {
-            sourceFile.copyTo(destFile.parent, destFile.leafName);
-          }
-        } catch (e) { }
-
-      }
-
-    } catch (se) { }
-  },
-
-
-  /**
    * Delete file
    */
   deleteFile: function(fileToDelete) {
