@@ -109,8 +109,6 @@ MafPreferencesServiceClass.prototype = {
 
   clearTempOnClose: true,
 
-  addDocumentWriteOverride: false,
-
   alertOnArchiveComplete: true,
 
   alternative_save_component: false,
@@ -346,7 +344,6 @@ MafPreferencesServiceClass.prototype = {
     result.saveExtendedMetadata = false;
 
     result.clearTempOnClose = true;
-    result.addDocumentWriteOverride = false;
     result.alertOnArchiveComplete = true;
 
     result.alternative_save_component = false;
@@ -424,7 +421,6 @@ MafPreferencesServiceClass.prototype = {
         this.archiveOpenMode = prefs.getIntPref("archiveopenmode");
 
         this.clearTempOnClose = prefs.getBoolPref("clearTempOnClose");
-        this.addDocumentWriteOverride = prefs.getBoolPref("addDocumentWriteOverride");
         this.alertOnArchiveComplete = prefs.getBoolPref("alertOnArchiveComplete");
 
         this.alternative_save_component = prefs.getBoolPref("useAlternativeSaveComponent");
@@ -465,7 +461,6 @@ MafPreferencesServiceClass.prototype = {
       prefs.setIntPref("archiveopenmode", this.archiveOpenMode);
 
       prefs.setBoolPref("clearTempOnClose", this.clearTempOnClose);
-      prefs.setBoolPref("addDocumentWriteOverride", this.addDocumentWriteOverride);
       prefs.setBoolPref("alertOnArchiveComplete", this.alertOnArchiveComplete);
 
       prefs.setBoolPref("useAlternativeSaveComponent", this.alternative_save_component);

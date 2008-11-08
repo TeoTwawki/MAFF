@@ -54,7 +54,6 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "Временная папка:">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Очищать временную папку при выходе из браузера">
-<!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Разрешить сброс document.write">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Извещать о завершении архивирования отдельных страниц">
 <!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Использовать альтернативный механизм сохранения">
 

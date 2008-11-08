@@ -62,7 +62,6 @@
     document.getElementById("chkURLRewrite").checked = MafPreferences.urlRewrite;
     document.getElementById("chkSaveExtended").checked = MafPreferences.saveExtendedMetadata;
     document.getElementById("chkClearTempOnClose").checked = MafPreferences.clearTempOnClose;
-    document.getElementById("chkAddDocumentWriteOverride").checked = MafPreferences.addDocumentWriteOverride;
     document.getElementById("chkAlertOnArchiveComplete").checked = MafPreferences.alertOnArchiveComplete;
 
     document.getElementById("chkUseAlternativeSaveComponent").checked = MafPreferences.alternative_save_component;
@@ -86,7 +85,6 @@
     document.getElementById("chkURLRewrite").checked = mpd.urlRewrite;
     document.getElementById("chkSaveExtended").checked = mpd.saveExtendedMetadata;
     document.getElementById("chkClearTempOnClose").checked = mpd.clearTempOnClose;
-    document.getElementById("chkAddDocumentWriteOverride").checked = mpd.addDocumentWriteOverride;
     document.getElementById("chkAlertOnArchiveComplete").checked = mpd.alertOnArchiveComplete;
 
     document.getElementById("chkUseAlternativeSaveComponent").checked = mpd.alternative_save_component;
@@ -118,7 +116,6 @@
     MafPreferences.urlRewrite = document.getElementById("chkURLRewrite").checked;
     MafPreferences.saveExtendedMetadata = document.getElementById("chkSaveExtended").checked;
     MafPreferences.clearTempOnClose = document.getElementById("chkClearTempOnClose").checked;
-    MafPreferences.addDocumentWriteOverride = document.getElementById("chkAddDocumentWriteOverride").checked;
     MafPreferences.alertOnArchiveComplete = document.getElementById("chkAlertOnArchiveComplete").checked;
 
     MafPreferences.alternative_save_component = document.getElementById("chkUseAlternativeSaveComponent").checked;
@@ -208,8 +205,6 @@
      <groupbox>
        <caption label="&maf.preferencesdialog.advanced.extractinglabel;" />
        <checkbox id="chkURLRewrite" checked="false" label="&maf.preferencesdialog.openmode.urlrewrite;" />
-       <checkbox id="chkAddDocumentWriteOverride" checked="false"
-                  label="&maf.preferencesdialog.label.adddocumentwriteoverride;" />
      </groupbox>
 
    </tabpanel>

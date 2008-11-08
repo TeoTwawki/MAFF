@@ -54,7 +54,6 @@
 
 <!ENTITY maf.preferencesdialog.label.temp "Dossier temporaire :">
 <!ENTITY maf.preferencesdialog.label.cleartemp "Vider le dossier temporaire en quittant le navigateur">
-<!ENTITY maf.preferencesdialog.label.adddocumentwriteoverride "Activer la réécriture des document.write">
 <!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alerter à la fin de l'archivage d'une page unique">
 <!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Utiliser un composant de sauvegarde alternatif">
 
