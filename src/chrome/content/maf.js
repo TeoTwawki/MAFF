@@ -227,8 +227,6 @@ var MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
                       .getService(Components.interfaces.nsIStringBundleService)
                       .createBundle("chrome://maf/locale/maf.properties");
 
-var MafBlockingObserver = GetMafObserverServiceClass();
-
 } catch(e) {
   mafdebug(e);
 }
@@ -478,7 +476,6 @@ maf.prototype = {
     var count = {};
     var archiveLocalURLs = {};
 
-    MafBlockingObserver.notifyObservers(null, "maf-open-archive-complete", MafUtils.appendToDir(tempPath, folderNumber));
     MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
 
     if (MafPreferences.archiveOpenMode == OPENMODE_ALLTABS) {
@@ -611,9 +608,6 @@ maf.prototype = {
         }
 
         MafPostSetup.complete();
-
-        var MafArchivePostProcessor = new MafArchivePostProcessorClass();
-        MafBlockingObserver.addObserver(MafArchivePostProcessor, "maf-open-archive-complete", false);
       }
     } else {
       if (event.originalTarget == "[object HTMLDocument]") {
