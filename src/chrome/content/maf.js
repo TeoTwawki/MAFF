@@ -241,6 +241,7 @@ maf.prototype = {
    * Extract the archive using the specified program
    */
   extractFromArchive: function(program, archivefile, destpath) {
+    MafUtils.createDir(destpath);
     if (program == MafLibMHTDecoder.PROGID) {
 
       var dateTimeExpanded = new Date();
@@ -720,11 +721,6 @@ maf.prototype = {
 
 
 var MafPostSetup = {
-
-  progid: "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}",
-
-  postsetupversion: "0.7.0u",
-
   _getSaveFilters: function() {
     var filterresult = new Array();
     var prefsSaveFilterLength = MafPreferences.getSaveFiltersLength();
@@ -786,58 +782,6 @@ var MafPostSetup = {
 
   complete: function() {
     this.setupMafContentType();
-
-    // Get preference maf.postsetup.complete
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                   .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
-
-    try {
-      var setupComplete = prefs.getBoolPref("postsetup." + this.postsetupversion + ".complete");
-    } catch(e) { setupComplete = false; }
-
-    if (!setupComplete) {
-      // Make temp directory
-      this.makeTempDirectory();
-
-      // Set preference maf.postsetup.complete
-      prefs.setBoolPref("postsetup." + this.postsetupversion + ".complete", true);
-    }
-  },
-
-
-  /**
-   * Create the MAF temporary directory structure.
-   */
-  makeTempDirectory: function() {
-    try {
-      var profileDir = this._getProfileDir();
-      // If not on windows
-      if (navigator.userAgent.indexOf("Windows") == -1) {
-        // Make directory {profileDir}/maf/
-        MafUtils.createDir(profileDir + "/maf");
-        // Make directory {profileDir}/maf/maftemp
-        MafUtils.createDir(profileDir + "/maf/maftemp");
-      } else {
-        // Make directory {profileDir}\\maf
-        MafUtils.createDir(profileDir + "\\maf");
-        // Make directory c:\temp\maf\maftemp
-        MafUtils.createDir(profileDir + "\\maf\\maftemp");
-      }
-    } catch(e) { mafdebug(e); }
-  },
-
-  /**
-   * @returns A string representing the location of the user's profile directory
-   */
-  _getProfileDir: function() {
-    try {
-      var result = Components.classes["@mozilla.org/file/directory_service;1"]
-                      .getService(Components.interfaces.nsIProperties)
-                      .get("ProfD", Components.interfaces.nsIFile).path;
-    } catch (e) {
-      result = "";
-    }
-    return result;
   }
 }
 

@@ -42,6 +42,7 @@ MafTabExpanderClass.prototype = {
   init: function(tempPath, scriptPath, archivePath, folderNumber, Maf) {
     /** The path of the temp folder to use. */
     this.tempPath = tempPath;
+    MafUtils.createDir(tempPath);
 
     /** The path of the archive script to use. */
     this.scriptPath = scriptPath;
