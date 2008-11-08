@@ -795,13 +795,6 @@ var MafPostSetup = {
       var setupComplete = prefs.getBoolPref("postsetup." + this.postsetupversion + ".complete");
     } catch(e) { setupComplete = false; }
 
-
-    try {
-      prefs.setIntPref("version.major", 0);
-      prefs.setIntPref("version.minor", 6);
-      prefs.setIntPref("version.minorminor", 3);
-    } catch(e) { }
-
     if (!setupComplete) {
       // Make temp directory
       this.makeTempDirectory();
