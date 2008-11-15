@@ -1,77 +1,44 @@
-
-<!-- ***************** INFO/NEWS *************** -->
-<div id="infoTabs">
-<div class="infoTab" id="whats-new">
-<h5 class="infoHeader">What's New</h5>
-<ul>
-<li>Created a MAF <a href="http://www.createforum.com/phpbb/maf.html">forum</a>.</li>
-<li>MAF 0.6.3 released.</li>
-</ul>
-</div>
-
-
-<div class="infoTab" id="current-features">
-<h5 class="infoHeader">Current features</h5>
-<ul>
-<li>Archive saved pages using a registered archive application</li>
-<li>Shortcut keys for opening and browsing open archives</li>
-<li>URLs in archive documents can be replaced if there's a local version in an open archive</li>
-<li>MHTML read and write support implemented</li>
-<li>Store more than one saved page in an archive</li>
-<li>Localized in French, Italian, Polish, Portuguese and Russian</li>
-<li>maf:// protocol capability</li>
-<li>Native XPCOM Zip writer library (xpzip) used for archiving</li>
-<li>Built in zip-reader library used for extraction</li>
-</ul>
-</div>
-
-
-<div class="infoTab" id="other-stuff">
-<h5 class="infoHeader">Planned features</h5>
-<ul>
-<li>GUI to register more than one archive application</li>
-<li>Archive refresh functionality</li>
-<li>Moving pages from one archive to another</li>
-</ul>
-</div>
-
-<!-- alternative image/table base tab works better in NS4 -->
-<!--
-<div class="infoTab" id="whats-new-image">
-<h5 class="infoHeader"><img src="http://www.mozdev.org/sharedimages/whatsnew_top.gif" width="154" alt="What's New"></h5>
-<div class="infoItems">
-<div>News item goes here</div>
-<div>More news item goes here</div>
-<div><a href="http://mozdev.org/">mozdev.org</a></div>
-</div>
-</div>
--->
-</div>
-<!-- ***************** INFO/NEWS *************** -->
-
 <!-- MAIN CONTENT -->
-<p>The <b><?php echo ucwords($project); ?></b> project is an archive extension that allows complete web pages to be saved in a single archive file. MAF stands for Mozilla Archive Format and the extension uses RDF to save page meta-data such as the original URL of the page and the date/time the page was put in the archive. A <a href="bugs.html">bugs</a> page has been setup for known bugs in the release. Please check there first before reporting any bugs.</p>
-
-<p>MAF 0.7.0 is currently under development and will be compatible with Firefox 1.5 only. This is due to the decreased time I have to spend developing and regression testing on older versions, in different languages, on different platforms. Two of the planned features of the 0.7.0 release include a speed increase in the MHT encoding/decoding and basic <a href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office">OpenDocument</a> HTML display support. In the meantime I've released a FF 1.5 compatible release based on the 0.6.x series (0.6.3) as 0.7.0 is taking a very long time to complete.</p>
-
-<p>
-If you use MAF and like it, please consider a <a href="donate.html">donation</a>.
-</p>
-
-<p><b>License:</b> The MAF extension is released under the <a href="license.html">GNU GPL</a>.</p>
-
-<p><b>Author:</b> Christopher Ottley.</p>
-
-<p><b>Aim:</b> To provide a Firefox (and Mozilla) extension which allows web pages to be saved easily in an archive.</p>
-
-<p><b>Design:</b> To provide both speed and compatibility, XPCOM components are used to perform the archiving and expansion process. The extension *.MAFF refers to files which can be processed using the default XPCOM zip archive component. External script support via IPC for different formats started to be one big kludge and has been discontinued from the 0.6.x series onwards.</p>
-
-<p><b>Method:</b> An XPCOM component is created that either archives to or expands the contents of the specified MAF archive.</p>
-
-<p><b>Format:</b> Each archive has a list of numbered folders. In each folder is an index.rdf file which holds the meta-data relating the saved page. There is also another index file with the related content type that was saved (index.html if an html page was saved, index.png if a png image was saved etc.). The RDF file holds the name of the index file to use.</p>
-
-<p><b>Tested on:</b>
-  <ul>
-   <li>FireFox 1.5, Windows 2000/XP/2003.</li>
-  </ul>
-</p>
+<p>The <b>MAF</b> extension enables Firefox to save <b>complete web pages in a
+ single file</b>, using the following formats:</p>
+<dl>
+  <dt>MAFF (Mozilla Archive Format File)</dt>
+  <dd>
+    <p>MAFF files are <b>standard ZIP files</b> containing <b>one or more</b>
+     web pages, images, or other content stored in a platform-independent
+     way. MAFF files also contain <i>metadata</i> like the orirginal URL the
+     page was saved from.</p>
+    <p>Firefox with the MAF extension can open and save these files
+     seamlessly.</p>
+    <p>Since MAFF is based on
+     <a href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">standard
+     ZIP</a>, the contents of MAFF archives can still be accessed on any
+     computer using a ZIP extraction utility or the
+     <a href="http://docs.sun.com/source/819-0913/author/jar.html">jar:
+     protocol</a>.</p>
+    <p>MAFF files use the <code class="maf-file-ext">*.maff</code> or
+     <code class="maf-file-ext">*.maff.zip</code> file extensions.</p>
+  </dd>
+  <dt>MHTML (MIME HTML)</dt> 
+  <dd>
+    <p><a href="http://en.wikipedia.org/wiki/MHTML">MHTML</a> is the file
+     format used by Internet Explorer when saving complete web pages. The
+     MAF extension allows Firefox to open and save these files seamlessly.</p>
+    <p>A single MHTML file may contain only one web page.</p>
+    <p>MHTML files use the <code class="maf-file-ext">*.mht</code> or
+     <code class="maf-file-ext">*.mhtml</code> file extensions.</p>
+  </dd>
+</dl>
+<h5>Downloading and installing</h5>
+<p>You can <a href="installation.html">download and install</a> the latest
+ version of MAF in Firefox very easily.</p>
+<h5>Current features</h5>
+<ul>
+  <li>Save and load complete web pages using either MAFF or MHTML</li>
+  <li>Command to open the original URLs instead of the archived copy</li>
+  <li>Store more than one saved page in a MAFF archive</li>
+  <li>Open the contents of MAFF archives in multiple tabs at once</li>
+  <li>Replace absoulte URLs on web pages if there is a local version in any
+   other open archive</li>
+  <li>Localized in French, Italian, Polish, Portuguese and Russian</li>
+</ul>

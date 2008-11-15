@@ -1,1 +1,14 @@
 @import url("http://www.mozdev.org/project.css");
+
+dt {
+  font-weight: bold;
+}
+
+dd p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+code.maf-file-ext {
+  font-weight: bold;
+}
