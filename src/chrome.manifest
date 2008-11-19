@@ -11,4 +11,6 @@ locale	maf	pt-BR	chrome/locale/pt-BR/
 locale	maf	ru-RU	chrome/locale/ru-RU/
 locale	maf	sl-SI	chrome/locale/sl-SI/
 
+skin	maf	classic/1.0	chrome/skin/
+
 overlay	chrome://browser/content/browser.xul	chrome://maf/content/mafoverlay.xul

@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://maf/skin/preferences/prefsDialog.css" type="text/css"?>
+<!DOCTYPE prefwindow SYSTEM "chrome://maf/locale/preferences/prefsDialog.dtd">
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Mozilla Archive Format.
+   -
+   - The Initial Developer of the Original Code is
+   - Paolo Amadini <http://www.amadzone.org/>.
+   - Portions created by the Initial Developer are Copyright (C) 2008
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the LGPL or the GPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<!--
+   - This dialog allows modification of the extension's preferences.
+   -
+   - When adding a preference here, also update "prefsObject.js" accordingly.
+   -->
+
+<prefwindow
+ id="prefsDialog"
+ title="&window.title;"
+ buttons="accept,cancel"
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ persist="lastSelected screenX screenY"
+ onload="PrefsDialog.onLoadDialog();"
+ >
+
+  <!-- Main pane -->
+  <prefpane
+   id="paneMain"
+   label="&pane.main.label;"
+   >
+    <preferences>
+      <preference id="prefOpenAction"                  name="extensions.maf.open.action"                  type="string"/>
+      <preference id="prefSaveMetadataExtended"        name="extensions.maf.save.metadata.extended"       type="bool"/>
+      <preference id="prefAlertOnSinglePageComplete"   name="extensions.maf.alert.onsinglepagecomplete"   type="bool"/>
+    </preferences>
+    <groupbox>
+      <caption label="&open.caption;" />
+      <label control="rgrOpenAction"
+             value=  "&open.action.grouplabel;"
+             />
+      <radiogroup id=        "rgrOpenAction"
+                  preference="prefOpenAction"
+                  class=     "indent"
+                  >
+        <radio value="tabs"       label=    "&open.action.tabs.label;"
+                                  accesskey="&open.action.tabs.accesskey;"
+                                  />
+        <radio value="ask"        label=    "&open.action.ask.label;"
+                                  accesskey="&open.action.ask.accesskey;"
+                                  />
+        <radio value="remember"   label=    "&open.action.remember.label;"
+                                  accesskey="&open.action.remember.accesskey;"
+                                  />
+      </radiogroup>
+    </groupbox>
+    <groupbox>
+      <caption label="&save.caption;" />
+      <checkbox preference="prefSaveMetadataExtended" 
+                label=     "&save.metadata.extended.label;"
+                accesskey= "&save.metadata.extended.accesskey;"
+                />
+      <checkbox preference="prefAlertOnSinglePageComplete"
+                label=     "&alert.onsinglepagecomplete.label;"
+                accesskey= "&alert.onsinglepagecomplete.accesskey;"
+                />
+    </groupbox>
+  </prefpane>
+
+  <!-- File associations pane. This pane is enabled only on Windows. -->
+  <prefpane
+   id="paneFileAssociations"
+   label="&pane.fileassociations.label;"
+   >
+    <description id=    "descAssociateWindowsOnly"
+                 class= "header"
+                 hidden="true"
+                 >
+      &associate.windowsonly.description;
+    </description>
+    <groupbox>
+      <caption label="&open.caption;" />
+      <description>
+        &associate.buttons.description;
+      </description>
+      <description>
+        &associate.adminprivs.description;
+      </description>
+      <button id=       "btnAssociateMAFF"
+              label=    "&associate.maff.label;"
+              accesskey="&associate.maff.accesskey;"
+              oncommand="PrefsDialog.createAssociationsForMAFF();"
+              />
+      <button id=       "btnAssociateMHTML"
+              label=    "&associate.mhtml.label;"
+              accesskey="&associate.mhtml.accesskey;"
+              oncommand="PrefsDialog.createAssociationsForMHTML();"
+              />
+      <description>
+        &associate.uninstall.description;
+      </description>
+    </groupbox>
+  </prefpane>
+
+  <!-- Advanced pane -->
+  <prefpane id="paneAdvanced" label="&pane.advanced.label;">
+    <preferences>
+      <preference id="prefTempFolder"        name="extensions.maf.temp.folder"        type="unichar"/>
+      <preference id="prefTempClearOnExit"   name="extensions.maf.temp.clearonexit"   type="bool"/>
+      <preference id="prefOpenRewriteUrls"   name="extensions.maf.open.rewriteurls"   type="bool"/>
+      <preference id="prefSaveComponent"     name="extensions.maf.save.component"     type="string"/>
+    </preferences>
+    <groupbox>
+      <caption label="&temp.caption;" />
+      <hbox align="center">
+        <label control=  "txtTempFolder"
+               value=    "&temp.folder.label;"
+               accesskey="&temp.folder.accesskey;"
+               />
+        <textbox id=        "txtTempFolder"
+                 preference="prefTempFolder"
+                 flex=      "1"
+                 />
+        <button label=    "&browsebutton.label;"
+                oncommand="PrefsDialog.browseForTempFolder();"
+                />
+      </hbox>
+      <checkbox preference="prefTempClearOnExit"
+                label=     "&temp.clearonexit.label;"
+                accesskey= "&temp.clearonexit.accesskey;"
+                />
+    </groupbox>
+    <groupbox>
+      <caption label="&open.caption;" />
+      <checkbox preference="prefOpenRewriteUrls"
+                label=     "&open.rewriteurls.label;"
+                accesskey= "&open.rewriteurls.accesskey;"
+                />
+    </groupbox>
+    <groupbox>
+      <caption label="&save.caption;" />
+      <label control="rgrSaveComponents"
+             value=  "&save.component.grouplabel;"
+             />
+      <radiogroup id=        "rgrSaveComponents"
+                  preference="prefSaveComponent"
+                  class=     "indent"
+                  >
+        <radio value="standard"   label=    "&save.component.standard.label;"
+                                  accesskey="&save.component.standard.accesskey;"
+                                  />
+        <radio value="maf"        label=    "&save.component.maf.label;"
+                                  accesskey="&save.component.maf.accesskey;"
+                                  />
+      </radiogroup>
+    </groupbox>
+  </prefpane>
+
+  <!--
+     - Preferences window machinery. These elements must be placed after the
+     -  prefpanes for the prefwindow to work correctly.
+     -->
+  <stringbundleset>
+    <stringbundle id= "bundleDialog"
+                  src="chrome://maf/locale/preferences/prefsDialog.properties"
+                  />
+  </stringbundleset>
+  <script type="application/x-javascript"
+          src= "prefsDialog.js"
+          />
+</prefwindow>

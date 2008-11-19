@@ -37,7 +37,7 @@
 
 
     <!-- Front End Integration Hooks (used by Extension Manager)-->
-    <em:optionsURL>chrome://maf/content/mafPreferencesDLG.xul</em:optionsURL>
+    <em:optionsURL>chrome://maf/content/preferences/prefsDialog.xul</em:optionsURL>
     <!-- <em:aboutURL>chrome://maf/content/mafAboutDLG.xul</em:aboutURL> -->
     <!-- <em:iconURL>chrome://maf/skin/maf.png</em:iconURL> -->
   </Description>
