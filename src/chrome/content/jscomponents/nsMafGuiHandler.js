@@ -67,10 +67,11 @@ MAFGuiHandlerClass.prototype = {
     var filters = this.getOpenFilters();
 
     var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                  .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
+                  .getService(Components.interfaces.nsIPrefService)
+                  .getBranch("extensions.maf.");
     try {
       // Check pref for index and set it
-      var defaultFilterIndex = prefs.getIntPref("openarchive.filterindex");
+      var defaultFilterIndex = prefs.getIntPref("current.open.filterindex");
     } catch(e) { }
 
     var result = this.selectFile(MafStrBundle.GetStringFromName("openmafarchivewindowtitle"),
@@ -80,7 +81,7 @@ MAFGuiHandlerClass.prototype = {
                                   defaultFilterIndex,
                                   defaultFilename);
 
-    prefs.setIntPref("openarchive.filterindex", result[1]);
+    prefs.setIntPref("current.open.filterindex", result[1]);
 
     return [result[1], result[0].path];
   },
@@ -175,10 +176,11 @@ MAFGuiHandlerClass.prototype = {
     var filters = this.getSaveFilters();
 
     var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                   .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
+                   .getService(Components.interfaces.nsIPrefService)
+                   .getBranch("extensions.maf.");
     try {
       // Check pref for index and set it
-      var defaultFilterIndex = prefs.getIntPref("savearchive.filterindex");
+      var defaultFilterIndex = prefs.getIntPref("current.save.filterindex");
     } catch(e) { }
 
     var result = this.selectFile(MafStrBundle.GetStringFromName("savemafarchivewindowtitle"),
@@ -189,7 +191,7 @@ MAFGuiHandlerClass.prototype = {
                                   defaultFilename);
 
     if (result[0] != null) {
-      prefs.setIntPref("savearchive.filterindex", result[1]);
+      prefs.setIntPref("current.save.filterindex", result[1]);
     }
 
     var selectedFileType = filters[result[1]][1];
