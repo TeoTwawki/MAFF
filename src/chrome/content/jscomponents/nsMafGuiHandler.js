@@ -246,17 +246,23 @@ MAFGuiHandlerClass.prototype = {
   },
 
   showPreferences: function() {
-    var url = "chrome://maf/content/mafPreferencesDLG.xul";
-
-    var w = 500;
-    var h = 500;
-
-    var sX = (this.window.screen.width/2)-(Math.round(w/2));
-    var sY = (this.window.screen.height/2)-(Math.round(h/2));
-
-    var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
-                     ",width="+ w +",height=" + h;
-    this.window.openDialog(url, "_blank", win_prefs);
+    // Determine the expected behavior of preferences windows
+    try {
+      var instantApply =
+       Components.classes["@mozilla.org/preferences-service;1"]
+       .getService(Components.interfaces.nsIPrefService)
+       .getBranch("").getBoolPref("browser.preferences.instantApply");
+    } catch(e) {
+      instantApply = false;
+    }
+    // Open the preferences window. If instant apply is on, the window will
+    //  be minimizable (dialog=no), conversely if instant apply is not enabled
+    //  the window will be modal and not minimizable.
+    this.window.openDialog(
+     "chrome://maf/content/preferences/prefsDialog.xul",
+     "maf-prefsDialog",
+     "chrome,titlebar,toolbar,centerscreen," +
+     (instantApply ? "dialog=no" : "modal"));
   },
 
   /**
