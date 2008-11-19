@@ -585,25 +585,6 @@ maf.prototype = {
 
       if (typeof(hiddenWnd.mafloaded) == "undefined") {
         hiddenWnd.mafloaded = true;
-
-        var prefExists = false;
-        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                        .getService(Components.interfaces.nsIPrefService).getBranch("maf.");
-
-        try {
-          var navigatorUserAgent = prefs.getCharPref("general.useragent");
-          prefExists = true;
-        } catch(e) {
-          prefExists = false;
-        }
-
-        prefs.setCharPref("general.useragent", navigator.userAgent);
-
-        if (!prefExists) {
-          // Preferences Service would freak out, load it again
-          MafPreferences.load();
-        }
-
         MafPostSetup.complete();
       }
     } else {
