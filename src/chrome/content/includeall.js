@@ -3,9 +3,16 @@
  * split across multiple files. Including this file is enough
  * to include also all the other relevant parts of the extension.
  *
+ * The common shortcuts Ci, Cc, Cr and Cu are also defined here.
+ *
  * This file is in the public domain :-)
- *    
- */   
+ *
+ */
+
+var Ci = Components.interfaces;
+var Cc = Components.classes;
+var Cr = Components.results;
+var Cu = Components.utils;
 
 const EXTENSION_CHROME_CONTENT_PATH = "chrome://maf/content/";
 
@@ -24,7 +31,8 @@ try {
    "jscomponents/nsMafTabArchiver.js",
    "jscomponents/nsMafTabExpander.js",
    "jscomponents/nsMafUtil.js",
-   "jscomponents/nsMafWebBrowserPersist.js"
+   "jscomponents/nsMafWebBrowserPersist.js",
+   "preferences/prefsObject.js"
   ].forEach(function(contentRelativePath) {
     Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
      .getService(Components.interfaces.mozIJSSubScriptLoader)
