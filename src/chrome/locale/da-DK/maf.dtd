@@ -43,54 +43,6 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "�n Oprindelige URLs i Faneblade">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Luk">
 
-<!ENTITY maf.preferencesdialog.title "Indstillinger">
-
-<!ENTITY maf.preferencesdialog.tabsoptions "Ops�ning">
-<!ENTITY maf.preferencesdialog.tabsregprogs "Registrerede Programmer">
-<!ENTITY maf.preferencesdialog.tabswinoptions "Windows indstillinger">
-<!ENTITY maf.preferencesdialog.tabadvanced "Avancerede indstillinger">
-
-<!ENTITY maf.preferencesdialog.options.description "Hvordan MAF arkiver generelt h�dteres">
-
-<!ENTITY maf.preferencesdialog.label.temp "Midlertidig folder:">
-<!ENTITY maf.preferencesdialog.label.cleartemp "Ryd midlertidig folder n� browseren lukkes">
-<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Advar n� enkeltsidede arkiver er f�dige">
-<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Brug alternativ lagrings komponent">
-
-<!ENTITY maf.preferencesdialog.btnbrowse "Gennemse...">
-
-<!ENTITY maf.preferencesdialog.openmode "Arkiv �ning">
-
-<!ENTITY maf.preferencesdialog.openmode.showopen "Vis �n dialogen">
-<!ENTITY maf.preferencesdialog.openmode.tabs "�en alt HTML i nye faneblade">
-<!ENTITY maf.preferencesdialog.openmode.nothing "Gr intet">
-
-<!ENTITY maf.preferencesdialog.openmode.urlrewrite "Omskriv Arkiv Dokument URLs">
-<!ENTITY maf.preferencesdialog.openmode.savexmeta "Gem Udvidet Meta-Data">
-
-<!ENTITY maf.preferencesdialog.openmode.defaultapp "Standard MAF h�dteringsprogram:">
-
-<!ENTITY maf.preferencesdialog.winop.label "Windows specifikke indstillinger">
-<!ENTITY maf.preferencesdialog.winop.usevbs "Brug VBS til at skjule konsol vinduet n� MAFF filer �nes">
-
-<!ENTITY maf.preferencesdialog.winop.filetypelabel "Filtype associationer">
-<!ENTITY maf.preferencesdialog.winop.filetypemaf "Associ� MAF med .maf filer">
-<!ENTITY maf.preferencesdialog.winop.filetypemaff "Associ� MAF med .maff filer">
-<!ENTITY maf.preferencesdialog.winop.filetypemht "Associ� MAF med .mht filer">
-
-<!ENTITY maf.preferencesdialog.progs.description "Ops�ning af scripts til at komprimere MAF indhold">
-
-<!ENTITY maf.preferencesdialog.progs.archive "Komprimerings Script:">
-<!ENTITY maf.preferencesdialog.progs.expand "Dekomprimerings Script:">
-
-<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Komprimering">
-<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Dekomprimering">
-
-<!ENTITY maf.preferencesdialog.btnloaddefault "Gendan standard">
-<!ENTITY maf.preferencesdialog.btnsave "Gem">
-<!ENTITY maf.preferencesdialog.btnrevert "Indl� sidst gemte">
-<!ENTITY maf.preferencesdialog.btnclose "Luk">
-
 <!ENTITY maf.saveSelectedTabsDialog.title "V�g faneblade til arkivering">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Titel">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">

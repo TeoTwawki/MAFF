@@ -43,54 +43,6 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Odpri izvorne URL v zavihkih">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Zapri">
 
-<!ENTITY maf.preferencesdialog.title "Možnosti">
-
-<!ENTITY maf.preferencesdialog.tabsoptions "Možnosti">
-<!ENTITY maf.preferencesdialog.tabsregprogs "Registrirani programi">
-<!ENTITY maf.preferencesdialog.tabswinoptions "Možnosti za Windows">
-<!ENTITY maf.preferencesdialog.tabadvanced "Napredne možnosti">
-
-<!ENTITY maf.preferencesdialog.options.description "Splošne možnosti o obravnavi arhivov MAF z razširitvijo">
-
-<!ENTITY maf.preferencesdialog.label.temp "Začasna mapa:">
-<!ENTITY maf.preferencesdialog.label.cleartemp "Počisti začasno mapo ob izhodu iz brskalnika">
-<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Opozorilo ob dokončanju arhiva posamične strani">
-<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Uporabi alternativno komponento shranjevanja">
-
-<!ENTITY maf.preferencesdialog.btnbrowse "Prebrskaj ...">
-
-<!ENTITY maf.preferencesdialog.openmode "Način odpiranja arhiva">
-
-<!ENTITY maf.preferencesdialog.openmode.showopen "Pokaži pogovorno okno odpiranja">
-<!ENTITY maf.preferencesdialog.openmode.tabs "Odpri vse strani HTML v novih zavihkih">
-<!ENTITY maf.preferencesdialog.openmode.nothing "Ne naredi ničesar">
-
-<!ENTITY maf.preferencesdialog.openmode.urlrewrite "Prepiši URL-je arhivskih dokumentov">
-<!ENTITY maf.preferencesdialog.openmode.savexmeta "Shrani razširjene meta-podatke">
-
-<!ENTITY maf.preferencesdialog.openmode.defaultapp "Privzeti rokovalec z aplikacijami MAF:">
-
-<!ENTITY maf.preferencesdialog.winop.label "Možnosti za Windows">
-<!ENTITY maf.preferencesdialog.winop.usevbs "Uporabi VBS za skrivanje ukaznega okna pri odpiranju datotek MAF">
-
-<!ENTITY maf.preferencesdialog.winop.filetypelabel "Povezave vrste datotek">
-<!ENTITY maf.preferencesdialog.winop.filetypemaf "Poveži MAF s končnicami .maf">
-<!ENTITY maf.preferencesdialog.winop.filetypemaff "Poveži MAF s končnicami .maff">
-<!ENTITY maf.preferencesdialog.winop.filetypemht "Poveži MAF s končnicami .mht">
-
-<!ENTITY maf.preferencesdialog.progs.description "Uporabljeni skripti zunanje arhivske aplikacije za delo z arhivi MAF.">
-
-<!ENTITY maf.preferencesdialog.progs.archive "Skript za arhiviranje:">
-<!ENTITY maf.preferencesdialog.progs.expand "Skript za razširjanje:">
-
-<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Arhiviranje">
-<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Razširjanje">
-
-<!ENTITY maf.preferencesdialog.btnloaddefault "Naloži privzeto">
-<!ENTITY maf.preferencesdialog.btnsave "Shrani">
-<!ENTITY maf.preferencesdialog.btnrevert "Povrni na zadnje shranjeno">
-<!ENTITY maf.preferencesdialog.btnclose "Zapri">
-
 <!ENTITY maf.saveSelectedTabsDialog.title "Izberite zavihke za shranjevanje v arhiv">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Naslov">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">

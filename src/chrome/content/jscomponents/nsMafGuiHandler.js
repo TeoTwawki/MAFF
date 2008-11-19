@@ -268,39 +268,6 @@ MAFGuiHandlerClass.prototype = {
   },
 
   /**
-   * Shows the filepicker dialog with the directory select mode.
-   * @return The directory selected as a string.
-   */
-  selectDirectory: function(windowTitle, initialDirectory) {
-    var result = initialDirectory;
-
-    var fp = Components.classes["@mozilla.org/filepicker;1"]
-                .createInstance(Components.interfaces.nsIFilePicker);
-    fp.init(this.window, windowTitle, Components.interfaces.nsIFilePicker.modeGetFolder);
-
-    try {
-      if (initialDirectory != null) {
-        // Create a directory reference to use
-        var dir = Components.classes["@mozilla.org/file/local;1"]
-                     .createInstance(Components.interfaces.nsILocalFile);
-        dir.initWithPath(initialDirectory);
-        fp.displayDirectory = dir;
-      }
-    } catch(e) {
-
-    }
-
-    var res = fp.show();
-
-    if (res == Components.interfaces.nsIFilePicker.returnOK) {
-      var selDir = fp.file.QueryInterface(Components.interfaces.nsILocalFile);
-      result = selDir.path;
-    }
-
-    return result;
-  },
-
-  /**
    * Shows the filepicker dialog with the appropriate filters.
    * @return The file selected.
    */

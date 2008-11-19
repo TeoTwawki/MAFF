@@ -43,54 +43,6 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Открыть оригинал во вкладках">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Закрыть">
 
-<!ENTITY maf.preferencesdialog.title "Конфигурация">
-
-<!ENTITY maf.preferencesdialog.tabsoptions "Настройки">
-<!ENTITY maf.preferencesdialog.tabsregprogs "Внешние программы">
-<!ENTITY maf.preferencesdialog.tabswinoptions "Параметры Windows">
-<!ENTITY maf.preferencesdialog.tabadvanced "Дополнительные настройки">
-
-<!ENTITY maf.preferencesdialog.options.description "Основные параметры работы расширения с архивами MAF">
-
-<!ENTITY maf.preferencesdialog.label.temp "Временная папка:">
-<!ENTITY maf.preferencesdialog.label.cleartemp "Очищать временную папку при выходе из браузера">
-<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Извещать о завершении архивирования отдельных страниц">
-<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Использовать альтернативный механизм сохранения">
-
-<!ENTITY maf.preferencesdialog.btnbrowse "Обзор...">
-
-<!ENTITY maf.preferencesdialog.openmode "При открытии архивов:">
-
-<!ENTITY maf.preferencesdialog.openmode.showopen "Показывать диалог ''Открыть''">
-<!ENTITY maf.preferencesdialog.openmode.tabs "Открывать все HTML- файлы в новых вкладках">
-<!ENTITY maf.preferencesdialog.openmode.nothing "Не выполнять никаких действий">
-
-<!ENTITY maf.preferencesdialog.openmode.urlrewrite "Перезаписывать адреса в архивных документах">
-<!ENTITY maf.preferencesdialog.openmode.savexmeta "Сохранять в архивах расширенные метаданные">
-
-<!ENTITY maf.preferencesdialog.openmode.defaultapp "Программа, по умолчанию обрабатывающая архивы MAF:">
-
-<!ENTITY maf.preferencesdialog.winop.label "Настройка дополнительных параметров, зависящих от Windows:">
-<!ENTITY maf.preferencesdialog.winop.usevbs "Использовать VBS для скрытого запуска командных bat-файлов">
-
-<!ENTITY maf.preferencesdialog.winop.filetypelabel "Связь с расширениями имён файлов">
-<!ENTITY maf.preferencesdialog.winop.filetypemaf "Связать MAF с расширением .maf">
-<!ENTITY maf.preferencesdialog.winop.filetypemaff "Связать MAF с расширением .maff">
-<!ENTITY maf.preferencesdialog.winop.filetypemht "Связать MAF с расширением .mht">
-
-<!ENTITY maf.preferencesdialog.progs.description "Скрипты, подключающие к обработке архивов MAF внешние программы:">
-
-<!ENTITY maf.preferencesdialog.progs.archive "Сценарий упаковки:    ">
-<!ENTITY maf.preferencesdialog.progs.expand "Сценарий распаковки:">
-
-<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Упаковка">
-<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Распаковка">
-
-<!ENTITY maf.preferencesdialog.btnloaddefault "По умолчанию">
-<!ENTITY maf.preferencesdialog.btnsave " Сохранить ">
-<!ENTITY maf.preferencesdialog.btnrevert "Предыдущее сохранение">
-<!ENTITY maf.preferencesdialog.btnclose "  Закрыть  ">
-
 <!ENTITY maf.saveSelectedTabsDialog.title "Выбор вкладок для сохранения в архиве">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Заголовок">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "Адрес">

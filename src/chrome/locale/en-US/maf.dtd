@@ -43,54 +43,6 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Open Original URLs in Tabs">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Close">
 
-<!ENTITY maf.preferencesdialog.title "Preferences">
-
-<!ENTITY maf.preferencesdialog.tabsoptions "Options">
-<!ENTITY maf.preferencesdialog.tabsregprogs "Registered Programs">
-<!ENTITY maf.preferencesdialog.tabswinoptions "Windows options">
-<!ENTITY maf.preferencesdialog.tabadvanced "Advanced options">
-
-<!ENTITY maf.preferencesdialog.options.description "The general options of how MAF archives are worked with in the extension">
-
-<!ENTITY maf.preferencesdialog.label.temp "Temporary folder:">
-<!ENTITY maf.preferencesdialog.label.cleartemp "Clear Temporary folder when browser exits">
-<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alert on single page archive complete">
-<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Use alternative save component">
-
-<!ENTITY maf.preferencesdialog.btnbrowse "Browse...">
-
-<!ENTITY maf.preferencesdialog.openmode "Archive Open mode">
-
-<!ENTITY maf.preferencesdialog.openmode.showopen "Show open dialog box">
-<!ENTITY maf.preferencesdialog.openmode.tabs "Open all HTML in new Tabs">
-<!ENTITY maf.preferencesdialog.openmode.nothing "Do nothing">
-
-<!ENTITY maf.preferencesdialog.openmode.urlrewrite "Rewrite Archive Document URLs">
-<!ENTITY maf.preferencesdialog.openmode.savexmeta "Save Extended Meta-Data">
-
-<!ENTITY maf.preferencesdialog.openmode.defaultapp "Default MAF Application Hander:">
-
-<!ENTITY maf.preferencesdialog.winop.label "Windows specific options">
-<!ENTITY maf.preferencesdialog.winop.usevbs "Use VBS to hide command window when opening MAFF files">
-
-<!ENTITY maf.preferencesdialog.winop.filetypelabel "File type associations">
-<!ENTITY maf.preferencesdialog.winop.filetypemaf "Associate MAF with .maf extensions">
-<!ENTITY maf.preferencesdialog.winop.filetypemaff "Associate MAF with .maff extensions">
-<!ENTITY maf.preferencesdialog.winop.filetypemht "Associate MAF with .mht extensions">
-
-<!ENTITY maf.preferencesdialog.progs.description "The external archive application scripts used for working with MAF archives.">
-
-<!ENTITY maf.preferencesdialog.progs.archive "Archive Script:">
-<!ENTITY maf.preferencesdialog.progs.expand "Expand Script:">
-
-<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiving">
-<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Expanding">
-
-<!ENTITY maf.preferencesdialog.btnloaddefault "Load defaults">
-<!ENTITY maf.preferencesdialog.btnsave "Save">
-<!ENTITY maf.preferencesdialog.btnrevert "Revert to last saved">
-<!ENTITY maf.preferencesdialog.btnclose "Close">
-
 <!ENTITY maf.saveSelectedTabsDialog.title "Select tabs to save in archive">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Title">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">

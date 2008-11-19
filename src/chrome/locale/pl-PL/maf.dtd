@@ -43,54 +43,6 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Otwórz oryginalne URLe w panelach">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Zamknij">
 
-<!ENTITY maf.preferencesdialog.title "Ustawienia">
-
-<!ENTITY maf.preferencesdialog.tabsoptions "Opcje">
-<!ENTITY maf.preferencesdialog.tabsregprogs "Zarejestrowane programy">
-<!ENTITY maf.preferencesdialog.tabswinoptions "Opcje okien">
-<!ENTITY maf.preferencesdialog.tabadvanced "Opcje zaawansowane">
-
-<!ENTITY maf.preferencesdialog.options.description "Ogólne opcje współpracy archiwów MAF z rozszerzeniem">
-
-<!ENTITY maf.preferencesdialog.label.temp "Katalog tymczasowy:">
-<!ENTITY maf.preferencesdialog.label.cleartemp "Wyczyść katalog tymczasowy podczas zamykania przeglądarki">
-<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Informuj o zakończeniu archiwizowania pojedynczej strony">
-<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Użyj alternatywnego sposobu zapisywania">
-
-<!ENTITY maf.preferencesdialog.btnbrowse "Przeglądaj...">
-
-<!ENTITY maf.preferencesdialog.openmode "Tryb otwierania archiwów">
-
-<!ENTITY maf.preferencesdialog.openmode.showopen "Pokaż okno otwierania">
-<!ENTITY maf.preferencesdialog.openmode.tabs "Otwórz wszystkie strony w osobnych panelach">
-<!ENTITY maf.preferencesdialog.openmode.nothing "Nic nie rób">
-
-<!ENTITY maf.preferencesdialog.openmode.urlrewrite "Zmień adres URL dokumentów w archiwum">
-<!ENTITY maf.preferencesdialog.openmode.savexmeta "Zapisz rozszerzone meta-dane">
-
-<!ENTITY maf.preferencesdialog.openmode.defaultapp "Domyślny program obsługi aplikacji MAF:">
-
-<!ENTITY maf.preferencesdialog.winop.label "Specyficzne opcje okien">
-<!ENTITY maf.preferencesdialog.winop.usevbs "Użyj VBS w celu ukrytego uruchomienia plików wsadowych">
-
-<!ENTITY maf.preferencesdialog.winop.filetypelabel "Powiązania typów plików">
-<!ENTITY maf.preferencesdialog.winop.filetypemaf "Powiąż MAF z rozszerzeniem .maf">
-<!ENTITY maf.preferencesdialog.winop.filetypemaff "Powiąż MAF z rozszerzeniem .maff">
-<!ENTITY maf.preferencesdialog.winop.filetypemht "Powiąż MAF z rozszerzeniem .mht">
-
-<!ENTITY maf.preferencesdialog.progs.description "Zewnętrzne programy archiwizujące używane do pracy z archiwami MAF">
-
-<!ENTITY maf.preferencesdialog.progs.archive "Skrypt archiwizujący:">
-<!ENTITY maf.preferencesdialog.progs.expand "Skrypt rozpakowujący:">
-
-<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archiwizacja">
-<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Rozszerzanie">
-
-<!ENTITY maf.preferencesdialog.btnloaddefault "Wczytaj domyślne">
-<!ENTITY maf.preferencesdialog.btnsave "Zapisz">
-<!ENTITY maf.preferencesdialog.btnrevert "Przywróc ostatnio zapisane">
-<!ENTITY maf.preferencesdialog.btnclose "Zamknij">
-
 <!ENTITY maf.saveSelectedTabsDialog.title "Wybierz panele w celu zapisania w archiwum">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Nazwa">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">

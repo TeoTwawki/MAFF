@@ -43,54 +43,6 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Ouvrir les URLs d'origine dans des onglets">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Fermer">
 
-<!ENTITY maf.preferencesdialog.title "Préférences">
-
-<!ENTITY maf.preferencesdialog.tabsoptions "Options">
-<!ENTITY maf.preferencesdialog.tabsregprogs "Programmes enregistrés">
-<!ENTITY maf.preferencesdialog.tabswinoptions "Options Windows">
-<!ENTITY maf.preferencesdialog.tabadvanced "Options avancées">
-
-<!ENTITY maf.preferencesdialog.options.description "Options générales pour la gestion des archives MAF par l'extension">
-
-<!ENTITY maf.preferencesdialog.label.temp "Dossier temporaire :">
-<!ENTITY maf.preferencesdialog.label.cleartemp "Vider le dossier temporaire en quittant le navigateur">
-<!ENTITY maf.preferencesdialog.label.alertonarchivecomplete "Alerter à la fin de l'archivage d'une page unique">
-<!ENTITY maf.preferencesdialog.label.usealternativesavecomponent "Utiliser un composant de sauvegarde alternatif">
-
-<!ENTITY maf.preferencesdialog.btnbrowse "Parcourir...">
-
-<!ENTITY maf.preferencesdialog.openmode "Mode d'ouverture des archives">
-
-<!ENTITY maf.preferencesdialog.openmode.showopen "Montrer une boîte de dialogue d'ouverture">
-<!ENTITY maf.preferencesdialog.openmode.tabs "Ouvrir tous les HTML dans de nouveaux onglets">
-<!ENTITY maf.preferencesdialog.openmode.nothing "Ne rien faire">
-
-<!ENTITY maf.preferencesdialog.openmode.urlrewrite "Adapter les URL des documents archivés">
-<!ENTITY maf.preferencesdialog.openmode.savexmeta "Sauvegarder les méta-données étendues">
-
-<!ENTITY maf.preferencesdialog.openmode.defaultapp "Application MAF par défaut :">
-
-<!ENTITY maf.preferencesdialog.winop.label "Options spécifiques à Windows">
-<!ENTITY maf.preferencesdialog.winop.usevbs "Utiliser un VBS pour exécuter les fichiers de manière cachée">
-
-<!ENTITY maf.preferencesdialog.winop.filetypelabel "Association des fichiers">
-<!ENTITY maf.preferencesdialog.winop.filetypemaf "Associer MAF avec les fichiers .maf">
-<!ENTITY maf.preferencesdialog.winop.filetypemaff "Associer MAF avec les fichiers .maff">
-<!ENTITY maf.preferencesdialog.winop.filetypemht "Associer MAF avec les fichiers .mht">
-
-<!ENTITY maf.preferencesdialog.progs.description "Scripts correspondant aux applications externes pour manipuler les archive MAF.">
-
-<!ENTITY maf.preferencesdialog.progs.archive "Script pour l'archivage :">
-<!ENTITY maf.preferencesdialog.progs.expand "Script pour la décompression :">
-
-<!ENTITY maf.preferencesdialog.advanced.archivinglabel "Archivage">
-<!ENTITY maf.preferencesdialog.advanced.extractinglabel "Extraction">
-
-<!ENTITY maf.preferencesdialog.btnloaddefault "Paramètres par défaut">
-<!ENTITY maf.preferencesdialog.btnsave "Sauvegarder">
-<!ENTITY maf.preferencesdialog.btnrevert "Restaurer la dernière sauvegarde">
-<!ENTITY maf.preferencesdialog.btnclose "Fermer">
-
 <!ENTITY maf.saveSelectedTabsDialog.title "Sélectionner les onglets à sauvegarder dans l'archive">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Titre">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
