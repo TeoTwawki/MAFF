@@ -189,7 +189,7 @@ makeFileURL: function(aFile)
 
 makeWebBrowserPersist: function()
 {
-  if (MafPreferences.alternative_save_component) {
+  if (Prefs.saveComponent == Prefs.SAVECOMPONENT_MAF) {
     return new MafWebBrowserPersistClass();
   } else {
     return Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]

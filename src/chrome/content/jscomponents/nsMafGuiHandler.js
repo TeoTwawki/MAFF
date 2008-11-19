@@ -144,7 +144,7 @@ MAFGuiHandlerClass.prototype = {
         browArray.appendElement(this.window.getBrowser().browsers[i], false);
       }
                     
-      Maf.saveAllTabsComplete(browArray, "", MafPreferences.temp,
+      Maf.saveAllTabsComplete(browArray, "", Prefs.tempFolder,
                               MafPreferences.programFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
     }
   },
@@ -162,7 +162,7 @@ MAFGuiHandlerClass.prototype = {
     var archiveToAddTo = this.selectFileSave(defaultFileName);
 
     if ((typeof(archiveToAddTo) != "undefined") && (archiveToAddTo.length > 1)) {
-      Maf.saveAsWebPageComplete(this.window.getBrowser().selectedBrowser, MafPreferences.temp,
+      Maf.saveAsWebPageComplete(this.window.getBrowser().selectedBrowser, Prefs.tempFolder,
                                 MafPreferences.programFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
     }
   },

@@ -172,7 +172,7 @@ function removeDoubleByteChars(strWithDoubleByteChars) {
               
           windowMAF.saveAllTabsComplete(browArray,
                                         browserList.toString(),
-                                        MafPreferences.temp,
+                                        Prefs.tempFolder,
                                         MafPreferences.programFromSaveIndex(index), archivePath);
         }
       }

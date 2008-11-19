@@ -312,7 +312,7 @@ maf.prototype = {
   archiveDownload: function(program, archivefile, sourcepath) {
     if (program == MafLibMHTEncoder.PROGID) {
 
-      var temppath = MafPreferences.temp;
+      var temppath = Prefs.tempFolder;
 
       var realSourcePath = MafUtils.appendToDir(temppath, sourcepath);
 
@@ -345,7 +345,7 @@ maf.prototype = {
 
         var sourcepathobj = Components.classes["@mozilla.org/file/local;1"]
                               .createInstance(Components.interfaces.nsILocalFile);
-        sourcepathobj.initWithPath(MafUtils.appendToDir(MafPreferences.temp, sourcepath));        
+        sourcepathobj.initWithPath(MafUtils.appendToDir(Prefs.tempFolder, sourcepath));        
   
         zipwriterobj.open(archivefileobj, PR_RDWR | PR_CREATE_FILE); // No PR_TRUNCATE for now
                   
@@ -423,17 +423,13 @@ maf.prototype = {
   progressUpdater: function(progress, code) {
     if (progress == 100) {
       if (code == 0) {
-        if (MafPreferences.alertOnArchiveComplete) {
+        if (Prefs.alertOnSinglePageComplete) {
           browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationcomplete"));
         } else {
           browserWindow.status = MafStrBundle.GetStringFromName("archiveoperationcomplete");
         }
       } else {
-        if (MafPreferences.alertOnArchiveComplete) {
-          browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationfailed") + code);
-        } else {
-          browserWindow.status = MafStrBundle.GetStringFromName("archiveoperationfailed") + code;
-        }
+        browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationfailed") + code);
       }
     }
   },
@@ -454,7 +450,7 @@ maf.prototype = {
    * Open a MAF archive and add the meta-data to the global state
    */
   openFromArchive: function(scriptPath, archivePath) {
-    var tempPath = MafPreferences.temp;
+    var tempPath = Prefs.tempFolder;
 
     if (!scriptPath) {
       // Determine the format to use (MAF or MHT) from the file name
@@ -479,11 +475,11 @@ maf.prototype = {
 
     MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
 
-    if (MafPreferences.archiveOpenMode == OPENMODE_ALLTABS) {
+    if (Prefs.openAction == Prefs.OPENACTION_TABS) {
       this.openListInTabs(archiveLocalURLs.value);
     }
 
-    if (MafPreferences.archiveOpenMode == OPENMODE_SHOWDIALOG) {
+    if (Prefs.openAction == Prefs.OPENACTION_ASK) {
       if (!MafUtils.isWindowOpen("chrome://maf/content/mafBrowseOpenArchivesDLG.xul")) {
         MafGUI.browseOpenArchives();
       }
@@ -622,7 +618,7 @@ maf.prototype = {
           originalURL = originalURL.substring(0, originalURL.indexOf("#"));
         }
 
-        if ((MafPreferences.urlRewrite) && (MafState.isArchiveURL(originalURL))) {
+        if (Prefs.openRewriteUrls && (MafState.isArchiveURL(originalURL))) {
           var doc = event.originalTarget;
           var baseUrl = doc.location.href;
 
@@ -677,12 +673,12 @@ maf.prototype = {
     // If it's the last window
     if (numberOfOpenWindows < 2) {
 
-      if (MafPreferences.clearTempOnClose) {
+      if (Prefs.tempClearOnExit) {
         // Remove everything in the temp directory
         try {
           var oDir = Components.classes["@mozilla.org/file/local;1"]
                         .createInstance(Components.interfaces.nsILocalFile);
-          oDir.initWithPath(MafPreferences.temp);
+          oDir.initWithPath(Prefs.tempFolder);
 
           if (oDir.exists() && oDir.isDirectory()) {
             var entries = oDir.directoryEntries;
@@ -1182,7 +1178,7 @@ function foundHeaderInfo(aSniffer, aData, aSkipPrompt)
       filename += selectedFileType;
     }
 
-    Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, MafPreferences.temp,
+    Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, Prefs.tempFolder,
                               MafPreferences.programFromSaveIndex(saveAsType), filename);
   }
   // ** MAF Addition end
@@ -1358,7 +1354,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       filename += selectedFileType;
     }
 
-    Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, MafPreferences.temp,
+    Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, Prefs.tempFolder,
                               MafPreferences.programFromSaveIndex(saveAsType), filename);
   }
 }
