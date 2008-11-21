@@ -74,6 +74,11 @@ if (!sharedData) {
  *  <http://weblogs.mozillazine.org/weirdal/archives/019620.html> (retrieved
  *  2008-10-07). However, since this object doesn't store any state information,
  *  we might as well create it as a normal XPCOM object.
+ *
+ * Document loader factories must be registered with the
+ *  "Gecko-Content-Viewers" category. For MAF, this is done dynamically during
+ *  the "app-startup" notification, because the list of MIME types that this
+ *  document loader factory will handle is not known in advance.
  */
 function MafDocumentLoaderFactory() {
 
@@ -85,18 +90,6 @@ MafDocumentLoaderFactory.prototype = {
   classID:          Components.ID("{3b2f1177-d918-44ee-91a6-ba95954064bb}"),
   contractID:       "@amadzone.org/maf/document-loader-factory;1",
   QueryInterface:   XPCOMUtils.generateQI([Ci.nsIDocumentLoaderFactory]),
-
-  // XPCOMUtils takes care of registering this component with the category
-  //  manager as a document loader factory. For more information, see
-  //  <https://developer.mozilla.org/en/nsICategoryManager> (retrieved
-  //  2008-10-07).
-  _xpcom_categories: [{
-    // This category name is the same for all document loader factories
-    category: "Gecko-Content-Viewers",
-    // The category entry is the MIME type of the content, and the value
-    //  is automatically set by XPCOMUtils to the contractID of the component
-    entry: "application/x-maf"
-  }],
 
   // --- nsIDocumentLoaderFactory interface functions ---
 
