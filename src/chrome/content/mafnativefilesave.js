@@ -1,6 +1,7 @@
 /**
  *
  *  Copyright (c) 2005 Christopher Ottley.
+ *  Portions Copyright (c) 2008 Paolo Amadini.
  *
  *  This file is part of MAF.
  *
