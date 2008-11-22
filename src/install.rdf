@@ -5,7 +5,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>{7f57cf46-4467-4c2d-adfa-0cba7c507e54}</em:id>
-    <em:version>0.7.1u</em:version>
+    <em:version>0.8.0</em:version>
     <em:updateURL></em:updateURL>
 
     <!-- Target Application this extension can install into,
@@ -14,8 +14,8 @@
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>3.0</em:minVersion>
-        <em:maxVersion>3.*</em:maxVersion>
+        <em:minVersion>3.0.1</em:minVersion>
+        <em:maxVersion>3.1.0</em:maxVersion>
       </Description>
     </em:targetApplication>
 
@@ -23,6 +23,7 @@
     <em:name>Mozilla Archive Format</em:name>
     <em:description>Save complete web pages in a single file.</em:description>
     <em:creator>Christopher Ottley</em:creator>
+    <em:developer>Paolo Amadini</em:developer>
     <em:contributor>Gioxx: eXtenZilla.it</em:contributor>
     <em:contributor>Xavier Robin</em:contributor>
     <em:contributor>Юрий Меркулов, ArtLonger (русский перевод)</em:contributor>
@@ -32,12 +33,9 @@
     <em:contributor>Molle Bestefich</em:contributor>
     <em:contributor>Ralph Ulrich</em:contributor>
     <em:contributor>Martin Srebotnjak</em:contributor>
-    <em:contributor>Paolo Amadini</em:contributor>
     <em:homepageURL>http://maf.mozdev.org/</em:homepageURL>
-
 
     <!-- Front End Integration Hooks (used by Extension Manager)-->
     <em:optionsURL>chrome://maf/content/preferences/prefsDialog.xul</em:optionsURL>
-    <!-- <em:iconURL>chrome://maf/skin/maf.png</em:iconURL> -->
   </Description>
 </RDF>
