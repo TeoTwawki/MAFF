@@ -81,8 +81,9 @@ MafArchiverClass.prototype = {
   },
 
 
-  start: function() {
+  start: function(appendToArchive) {
     if (!this.started) {
+      this.appendToExistingArchive = appendToArchive;
       this.started = true;
       this.Maf.nativeSaveFile(this.aDocument, MafUtils.appendToDir(this.tempPath, this.folderNumber),
                                  "index.html", this);
@@ -112,7 +113,8 @@ MafArchiverClass.prototype = {
         this.addMetaData();
         this.Maf.archiveDownload(this.scriptPath,
                                   this.archivePath,
-                                  this.folderNumber);
+                                  this.folderNumber,
+                                  this.appendToExistingArchive);
 
     } else {
        if (this.downloadCompleteTries < this.maxDownloadCompleteTries) {

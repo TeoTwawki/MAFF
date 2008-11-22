@@ -309,7 +309,8 @@ maf.prototype = {
   /**
    * Archives the downloaded file(s).
    */
-  archiveDownload: function(program, archivefile, sourcepath) {
+  archiveDownload: function(program, archivefile, sourcepath,
+   appendtoexistingarchive) {
     if (program == MafLibMHTEncoder.PROGID) {
 
       var temppath = Prefs.tempFolder;
@@ -347,7 +348,9 @@ maf.prototype = {
                               .createInstance(Components.interfaces.nsILocalFile);
         sourcepathobj.initWithPath(MafUtils.appendToDir(Prefs.tempFolder, sourcepath));        
   
-        zipwriterobj.open(archivefileobj, PR_RDWR | PR_CREATE_FILE); // No PR_TRUNCATE for now
+        var flags = PR_RDWR | PR_CREATE_FILE;
+        if(!appendtoexistingarchive) flags |= PR_TRUNCATE;        
+        zipwriterobj.open(archivefileobj, flags);
                   
         function addDirectoryToZipRecursive(sourcePathObj, destZipEntry) {
           var entries = sourcePathObj.directoryEntries;
@@ -404,7 +407,7 @@ maf.prototype = {
     var objMafArchiver = new MafArchiverClass();
     objMafArchiver.init(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived.valueOf() + "", Maf);
     objMafArchiver.setProgressUpdater(Maf);
-    objMafArchiver.start();
+    objMafArchiver.start(false); // Do not append to existing archive
   },
 
 

@@ -106,7 +106,8 @@ MafTabArchiverClass.prototype = {
                               this.browsersInclude[this.currentMafArchiverIndex], Components.interfaces.nsISupports),
                             this.tempPath, this.scriptPath, this.archivePath,
                             dateTimeArchived.valueOf() + "", this.Maf);
-        this.MafArchivers[this.currentMafArchiverIndex].start();
+        // We are archiving the first tab, replace an existing archive
+        this.MafArchivers[this.currentMafArchiverIndex].start(false);
       }
     }
   },
@@ -144,7 +145,8 @@ MafTabArchiverClass.prototype = {
                               this.browsersInclude[this.currentMafArchiverIndex], Components.interfaces.nsISupports),
                                this.tempPath, this.scriptPath, archivePathToUse,
                                dateTimeArchived.valueOf() + "", this.Maf);
-            this.MafArchivers[this.currentMafArchiverIndex].start();
+            // We are archiving a new tab, append to the existing archive
+            this.MafArchivers[this.currentMafArchiverIndex].start(true);
           } else {
             if (this.objWith_fnProgressUpdater != null) {
               this.objWith_fnProgressUpdater.progressUpdater(100, 0);
