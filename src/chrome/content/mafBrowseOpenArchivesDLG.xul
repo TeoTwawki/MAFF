@@ -281,39 +281,12 @@
   }
 
 
-  /**
-   * For the selected row, if the column is being displayed, copy the data at that row to the clipboard.
-   */
-  function editMetaData() {
-
-    if (contextMenuSelectedRow != null) {
-      var url = "chrome://maf/content/mafEditMetaDataDLG.xul";
-
-      var w = 200;
-      var h = 300;
-
-      var sX = (this.window.screen.width/2)-(Math.round(w/2));
-      var sY = (this.window.screen.height/2)-(Math.round(h/2));
-
-      var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
-                      ",width="+ w +",height=" + h;
-      window.openDialog(url, "_blank", win_prefs);
-    }
-  }
-
-
 ]]>
 </script>
 
 <!-- context-menu -->
 <menupopup id="maf-browsearchives-contextmenu">
-  <menuitem id="maf-browsearchives-contextmenu-edit" label="Edit Meta-data" oncommand="editMetaData();"/>
   <menuitem id="maf-browsearchives-contextmenu-copy" label="Copy Meta-data" oncommand="copyMetaData();"/>
-  <menuseparator />
-  <menuitem id="maf-browsearchives-contextmenu-refresh" label="Refresh archive" oncommand="refresh();"/>
-  <menuitem id="maf-browsearchives-contextmenu-setindexpage" label="Set as Index" oncommand="setAsIndexMetaData();"/>
-  <menuseparator />
-  <menuitem id="maf-browsearchives-contextmenu-delete" label="Delete from archive" oncommand="deleteFromArchive();"/>
 </menupopup>
 <!-- context-menu -->
 
