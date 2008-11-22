@@ -34,6 +34,11 @@ const readBufferSize = 1024 * 10; // 10K Read buffer
 
 function MafMhtEncoderClass() {
   this.filelist = new Array();
+  // Determine the version information saved in MAF MHT archives
+  var extUpdateInfo = Cc["@mozilla.org/extensions/manager;1"]
+   .getService(Ci.nsIExtensionManager)
+   .getItemForID("{7f57cf46-4467-4c2d-adfa-0cba7c507e54}");
+  this.xMafHeaderValue = "Produced By MAF V" + extUpdateInfo.version;
 }
 
 MafMhtEncoderClass.prototype = {
@@ -105,7 +110,7 @@ MafMhtEncoderClass.prototype = {
           MHTContentString += "Content-Type: multipart/related;\r\n";
           MHTContentString += "\tboundary=\"" + boundaryString + "\";\r\n"
           MHTContentString += "\ttype=\"" + this.filelist[0].type + "\"\r\n";
-          MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.4.1\r\n";
+          MHTContentString += "X-MAF: " + this.xMafHeaderValue + "\r\n";
           MHTContentString += "\r\nThis is a multi-part message in MIME format.\r\n";
 
           oTransport.write(MHTContentString, MHTContentString.length);
@@ -114,7 +119,7 @@ MafMhtEncoderClass.prototype = {
           state.boundaryString = boundaryString;
 
         } else {
-          MHTContentString += "X-MAF: Produced By MAF MHT Archive Handler V0.4.1\r\n";
+          MHTContentString += "X-MAF: " + this.xMafHeaderValue + "\r\n";
           oTransport.write(MHTContentString, MHTContentString.length);
           MHTContentString = "";
 
