@@ -62,39 +62,6 @@
     <key id="maf-firefox-browseOpenArchives-cmd" modifiers="alt" key="&maf.browseOpenArchivesAccessKey;" oncommand="MafGUI.browseOpenArchives();"/>
   </keyset>
 
-  <!-- mozilla tools menu -->
-  <menupopup id="taskPopup">
-    <menu id="maf-mozilla-menu" label="&maf.menuLabel;" position="8">
-      <menupopup id="maf-mozilla-menupopup">
-        <menuitem id="maf-mozilla-preferences" label="&maf.preferences;"
-                   accesskey="&maf.preferencesKey;"
-                   oncommand="MafGUI.showPreferences();" />
-        <menuitem id="maf-mozilla-browse-open-archives" label="&maf.browseOpenArchives;"
-                   accesskey="&maf.browseOpenArchivesKey;" key="browseOpenArchives_cmd"
-                   oncommand="MafGUI.browseOpenArchives();" />
-        <menuitem id="maf-mozilla-save-archive" label="&maf.addToArchive;" insertbefore="menu_sendLink"
-                   accesskey="&maf.addToArchiveKey;"
-                   oncommand="MafGUI.addToArchive(Maf);" />
-        <menuitem id="maf-mozilla-save-selected-tabs-archive" label="&maf.addSelectedTabsToArchive;"
-                   insertbefore="menu_sendLink"
-                   accesskey="&maf.addSelectedTabsToArchiveKey;"
-                   oncommand="MafGUI.addSelectedTabsToArchive(Maf);" />
-        <menuitem id="maf-mozilla-save-all-tabs-archive" label="&maf.addAllTabsToArchive;"
-                   insertbefore="menu_sendLink"
-                   accesskey="&maf.addAllTabsToArchiveKey;"
-                   oncommand="MafGUI.addAllTabsToArchive(Maf);" />
-        <menuitem id="maf-mozilla-about" label="&maf.about;"
-                   accesskey="&maf.aboutKey;"
-                   oncommand="MafGUI.showAbout();" />
-      </menupopup>
-    </menu>
-  </menupopup>
-
-  <!-- mozilla keyset -->
-  <keyset id="navKeys">
-    <key id="maf-mozilla-browseOpenArchives-cmd" modifiers="alt" key="&maf.browseOpenArchivesAccessKey;" oncommand="MafGUI.browseOpenArchives();"/>
-  </keyset>
-
   <!-- Common popup menu -->
   <popup id="contentAreaContextMenu">
     <menuitem id="maf-save-selected-tabs-archive"
