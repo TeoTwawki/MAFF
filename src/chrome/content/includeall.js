@@ -27,7 +27,6 @@ try {
    "jscomponents/nsMafMhtEncoder.js",
    "jscomponents/nsMafMhtHandler.js",
    "jscomponents/nsMafState.js",
-   "jscomponents/nsMafStringValue.js",
    "jscomponents/nsMafTabArchiver.js",
    "jscomponents/nsMafTabExpander.js",
    "jscomponents/nsMafUtil.js",

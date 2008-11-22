@@ -282,7 +282,7 @@ MafMhtHandlerServiceClass.prototype = {
         try {
           var newBaseUrlValue = state.uidToLocalFilenameMap[baseUrl];
           resultString += MafUtils.getURIFromFilename(
-                                   getStringValue(newBaseUrlValue));
+                                   newBaseUrlValue);
         } catch(e) {
           resultString += baseUrl;
         }
@@ -352,7 +352,7 @@ MafMhtHandlerServiceClass.prototype = {
             try {
               var newBaseUrlValue = state.uidToLocalFilenameMap[baseUrl];
               originalUrl = MafUtils.getURIFromFilename(
-                                     getStringValue(newBaseUrlValue));
+                                     newBaseUrlValue);
             } catch(e) {
               originalUrl = baseUrl;
             }
@@ -754,11 +754,11 @@ extractContentHandlerClass.prototype = {
     }
 
     if (contentLocation != "") {
-      this.state.uidToLocalFilenameMap[contentLocation] = asStringValue(this.destfile);
+      this.state.uidToLocalFilenameMap[contentLocation] = this.destfile;
     }
 
     if (contentId != "") {
-      this.state.uidToLocalFilenameMap["cid:" + contentId] = asStringValue(this.destfile);
+      this.state.uidToLocalFilenameMap["cid:" + contentId] = this.destfile;
     }
   },
 
@@ -841,16 +841,4 @@ extractContentHandlerClass.prototype = {
       mafdebug(e);
     }
   }
-};
-
-
-function asStringValue(str) {
-  var result = new MafStringValueClass();
-  result.value = str;
-  return result;
-};
-
-function getStringValue(obj) {
-  var result = obj.value;
-  return result;
 };
