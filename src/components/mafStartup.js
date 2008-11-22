@@ -103,9 +103,9 @@ MafStartup.prototype = {
     //  "ext-to-type-mapping" category, so we set a key there for every
     //  file extension to be handled. 
     [
-     {ext: "mhtml", mimeType: "application/x-mht", replace: false},
-     {ext: "mht",   mimeType: "application/x-mht", replace: false},
-     {ext: "maff",  mimeType: "application/x-maf", replace: true}
+     {ext: "mhtml", mimeType: "application/x-mht",  replace: false},
+     {ext: "mht",   mimeType: "application/x-mht",  replace: false},
+     {ext: "maff",  mimeType: "application/x-maff", replace: true}
     ].forEach(function(item) {
       // Add the entry, without persisting it, and replacing an existing entry
       //  only for the file types that are preferably managed by this extension
