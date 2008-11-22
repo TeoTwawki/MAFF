@@ -53,7 +53,7 @@ MAFGuiHandlerClass.prototype = {
     try {
       var archiveToOpen = this.selectFileOpen();
 
-      Maf.openFromArchive(MafPreferences.programFromOpenIndex(archiveToOpen[0]), archiveToOpen[1]);
+      Maf.openFromArchive(archiveToOpen[0], archiveToOpen[1]);
     } catch(e) {
       mafdebug(e);
     }
@@ -64,7 +64,7 @@ MAFGuiHandlerClass.prototype = {
    * @return The file selected.
    */
   selectFileOpen: function(defaultFilename) {
-    var filters = this.getOpenFilters();
+    var filters = FileFilters.openFiltersArray;
 
     var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                   .getService(Components.interfaces.nsIPrefService)
@@ -83,29 +83,8 @@ MAFGuiHandlerClass.prototype = {
 
     prefs.setIntPref("current.open.filterindex", result[1]);
 
-    return [result[1], result[0].path];
+    return [FileFilters.scriptPathFromFilePath(result[0].path), result[0].path];
   },
-
-  getOpenFilters: function() {
-
-    var filterresult = new Array();
-    var prefsOpenFilterLength = MafPreferences.getOpenFiltersLength();
-
-    for (var i=0; i<prefsOpenFilterLength; i++) {
-
-      var count = {};
-      var result = {};
-      MafPreferences.getOpenFilterAt(i, count, result);
-
-      if (count.value == 3) {
-        var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
-
-        filterresult[filterresult.length] = entry;
-      }
-    }
-    return filterresult;
-  },
-
 
   /**
    * Remove any non-ascii chars from result string
@@ -146,7 +125,7 @@ MAFGuiHandlerClass.prototype = {
       }
                     
       Maf.saveAllTabsComplete(browArray, "", Prefs.tempFolder,
-                              MafPreferences.programFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
+                              FileFilters.scriptPathFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
     }
   },
 
@@ -164,7 +143,7 @@ MAFGuiHandlerClass.prototype = {
 
     if ((typeof(archiveToAddTo) != "undefined") && (archiveToAddTo.length > 1)) {
       Maf.saveAsWebPageComplete(this.window.getBrowser().selectedBrowser, Prefs.tempFolder,
-                                MafPreferences.programFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
+                                FileFilters.scriptPathFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
     }
   },
 
@@ -173,7 +152,7 @@ MAFGuiHandlerClass.prototype = {
    * @return The file selected.
    */
   selectFileSave: function(defaultFilename) {
-    var filters = this.getSaveFilters();
+    var filters = FileFilters.saveFiltersArray;
 
     var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                    .getService(Components.interfaces.nsIPrefService)
@@ -220,31 +199,6 @@ MAFGuiHandlerClass.prototype = {
     } else {
       return "";
     }
-  },
-
-  getSaveFilters: function() {
-    var filterresult = new Array();
-    var prefsSaveFilterLength = MafPreferences.getSaveFiltersLength();
-
-    for (var i=0; i<prefsSaveFilterLength; i++) {
-
-      var count = {};
-      var result = {};
-      MafPreferences.getSaveFilterAt(i, count, result);
-
-      if (count.value == 3) {
-        // If it's on Windows, show the filter string as part of the file type.
-        if (this.window.navigator.userAgent.indexOf("Windows") != -1) {
-          var entry = [result.value[0] + " (" + result.value[1] + ")", result.value[1], parseInt(result.value[2])];
-        } else {
-          var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
-        }
-
-        filterresult[filterresult.length] = entry;
-      }
-    }
-
-    return filterresult;
   },
 
   showPreferences: function() {

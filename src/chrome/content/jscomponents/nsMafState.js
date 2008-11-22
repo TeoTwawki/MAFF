@@ -134,8 +134,8 @@ MafStateServiceClass.prototype = {
                      .createInstance(Components.interfaces.nsILocalFile);
       oDir.initWithPath(MafUtils.appendToDir(temp, expandedArchiveRoot));
 
-      var isMHTArchive = (MafLibMHTDecoder.PROGID == MafPreferences.programFromOpenIndex(
-                         MafPreferences.getOpenFilterIndexFromFilename(archiveUri)));
+      var isMHTArchive =
+       (FileFilters.scriptPathFromFilePath(archiveUri) == "TypeMHTML");
 
       if (oDir.exists() && oDir.isDirectory()) {
         var entries = oDir.directoryEntries;

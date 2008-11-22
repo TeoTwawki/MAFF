@@ -208,8 +208,6 @@ try {
 
 var browserWindow = window;
 
-var MafPreferences = GetMafPreferencesServiceClass();
-
 var MafUtils = GetMafUtilServiceClass();
 
 var MafMHTHandler = new MafMhtHandlerServiceClass();
@@ -242,7 +240,7 @@ maf.prototype = {
    */
   extractFromArchive: function(program, archivefile, destpath) {
     MafUtils.createDir(destpath);
-    if (program == MafLibMHTDecoder.PROGID) {
+    if (program == "TypeMHTML") {
 
       var dateTimeExpanded = new Date();
       var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random() * 1000);
@@ -311,7 +309,7 @@ maf.prototype = {
    */
   archiveDownload: function(program, archivefile, sourcepath,
    appendtoexistingarchive) {
-    if (program == MafLibMHTEncoder.PROGID) {
+    if (program == "TypeMHTML") {
 
       var temppath = Prefs.tempFolder;
 
@@ -457,10 +455,7 @@ maf.prototype = {
 
     if (!scriptPath) {
       // Determine the format to use (MAF or MHT) from the file name
-      var filterIndex =
-       MafPreferences.getOpenFilterIndexFromFilename(archivePath);
-      if (filterIndex < 0) throw Components.results.NS_ERROR_FILE_INVALID_PATH;
-      scriptPath = MafPreferences.programFromOpenIndex(filterIndex);
+      scriptPath = FileFilters.scriptPathFromFilePath(archivePath);
     }
 
     var dateTimeExpanded = new Date();
@@ -780,30 +775,6 @@ String.prototype.endsWith = function(needle) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * In order to modify Firefox / Mozilla without patching, the functions used must be
- * redefined. Mozilla may have unresolved dependent functions, so those must also be
- * included for Mozilla to work when using the Firefox functions as a base.
- */
-function getMafSaveFilters() {
-  var filterresult = new Array();
-  var prefsSaveFilterLength = MafPreferences.getSaveFiltersLength();
-
-  for (var i=0; i<prefsSaveFilterLength; i++) {
-
-    var count = {};
-    var result = {};
-    MafPreferences.getSaveFilterAt(i, count, result);
-
-    if (count.value == 3) {
-      var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
-
-      filterresult[filterresult.length] = entry;
-    }
-  }
-  return filterresult;
-};
-
-/**
  * A new and improved save. With MAF support.
  */
  
@@ -882,7 +853,7 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
     if (aSaveMode & SAVEMODE_COMPLETE_DOM) {
       // ** MAF Addition start
       try {
-        var filters = getMafSaveFilters();
+        var filters = FileFilters.saveFiltersArray;
         for (var i=0; i<filters.length; i++) {
           var title = filters[i][0];
           var mask = filters[i][1];
@@ -908,7 +879,7 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
   
       // ** MAF Addition start
       try {
-        var filters = getMafSaveFilters();
+        var filters = FileFilters.saveFiltersArray;
         for (var i=0; i<filters.length; i++) {
           var title = filters[i][0];
           var mask = filters[i][1];
@@ -1080,7 +1051,7 @@ function foundHeaderInfo(aSniffer, aData, aSkipPrompt)
 
     var filename = file.path;
 
-    var filters = getMafSaveFilters();
+    var filters = FileFilters.saveFiltersArray;
 
     var selectedFileType = filters[saveAsType][1];
 
@@ -1092,7 +1063,7 @@ function foundHeaderInfo(aSniffer, aData, aSkipPrompt)
     }
 
     Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, Prefs.tempFolder,
-                              MafPreferences.programFromSaveIndex(saveAsType), filename);
+                              FileFilters.scriptPathFromSaveIndex(saveAsType), filename);
   }
   // ** MAF Addition end
 }
@@ -1168,7 +1139,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   }
 
   // Not a MAF archive
-  if ((saveAsType < 3) || (saveAsType > (2 + getMafSaveFilters().length))) {
+  if ((saveAsType < 3) || (saveAsType > (2 + FileFilters.saveFiltersArray.length))) {
   
     if (!fileURL)
       fileURL = makeFileURI(file);
@@ -1256,7 +1227,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
 
     var filename = file.path;
 
-    var filters = getMafSaveFilters();
+    var filters = FileFilters.saveFiltersArray;
 
     var selectedFileType = filters[saveAsType][1];
 
@@ -1268,7 +1239,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     }
 
     Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser, Prefs.tempFolder,
-                              MafPreferences.programFromSaveIndex(saveAsType), filename);
+                              FileFilters.scriptPathFromSaveIndex(saveAsType), filename);
   }
 }
 
@@ -1464,26 +1435,6 @@ function getDefaultFileName_postDP(aDefaultFileName, aURI, aDocument,
   return "index";
 }
 
-
-function getMafOpenFilters() {
-  var filterresult = new Array();
-  var prefsOpenFilterLength = MafPreferences.getOpenFiltersLength();
-
-  for (var i=0; i<prefsOpenFilterLength; i++) {
-
-    var count = {};
-    var result = {};
-    MafPreferences.getOpenFilterAt(i, count, result);
-
-    if (count.value == 3) {
-      var entry = [result.value[0], result.value[1], parseInt(result.value[2])];
-
-      filterresult[filterresult.length] = entry;
-    }
-  }
-  return filterresult;
-};
-
 /**
  * A new and improved open. With MAF support.
  */
@@ -1499,7 +1450,7 @@ function BrowserOpenFileWindow() {
 
     // ** MAF Addition start
     try {
-      var filters = getMafOpenFilters();
+      var filters = FileFilters.openFiltersArray;
       for (var i=0; i<filters.length; i++) {
         var title = filters[i][0];
         var mask = filters[i][1];

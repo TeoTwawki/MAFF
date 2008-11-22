@@ -137,7 +137,7 @@ MafTabArchiverClass.prototype = {
             var dateTimeArchived = new Date();
             var archivePathToUse = this.archivePath;
             // If it's MHT, get unique filename
-            if (this.scriptPath == MafLibMHTEncoder.PROGID) {
+            if (this.scriptPath == "TypeMHTML") {
               archivePathToUse = MafUtils.getFullUniqueFilename(archivePathToUse);
             }
             

@@ -41,8 +41,6 @@ function MafMhtDecoderClass() {
 
 MafMhtDecoderClass.prototype = {
 
-  PROGID : "Internal MHT Program Extract Handler",
-
   content : "",
 
   contentHeaders : "",

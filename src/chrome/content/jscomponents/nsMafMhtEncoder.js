@@ -43,8 +43,6 @@ function MafMhtEncoderClass() {
 
 MafMhtEncoderClass.prototype = {
 
-  PROGID : "Internal MHT Program Archive Handler",
-
   from : "maf@mozdev.org",
 
   subject : "",
