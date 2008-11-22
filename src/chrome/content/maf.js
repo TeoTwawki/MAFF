@@ -702,6 +702,12 @@ browserWindow.addEventListener("popupshown", Maf.onPopupShown, true);
   mafdebug(e);
 }
 
+// When a new browser window initially loads, the current Maf object is updated
+//  so that archives will be opened in that window. This must be done here to
+//  support the case where an archive is specified on the command-line. When
+//  an existing window gets the focus, this reference is updated.
+sharedData.mafObjectOfCurrentWindow = Maf;
+
 function mafdebug(text) {
 //  var contents = "" + (new Date()).getTime() + ": " + text;
 
