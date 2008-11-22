@@ -18,18 +18,8 @@
 <!ENTITY maf.preferences "Preferenze...">
 <!ENTITY maf.preferencesKey "f">
 
-<!ENTITY maf.about "Informazioni su...">
-<!ENTITY maf.aboutKey "I">
-
 <!ENTITY maf.browseOpenArchives "Sfoglia archivi aperti">
 <!ENTITY maf.browseOpenArchivesKey "p">
-
-<!ENTITY maf.aboutdlg.title "Informazioni su MAF">
-<!ENTITY maf.aboutdlg.description "MAF e' un'estensione per Mozilla che permette di usare script esterni per archiviare documenti HTML completi. Permette anche di memorizzare informazioni aggiuntive come l'URL originale e l'orario/data di archiviazione.">
-<!ENTITY maf.version "MAF v 0.7.1-unofficial">
-<!ENTITY maf.aboutdlg.copyright "(c) 2005 Christopher Ottley">
-<!ENTITY maf.aboutdlg.license "Rilasciato sotto licenza GNU GPL 2.0">
-<!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">
 
 <!ENTITY maf.browseOpenArchivesDialog.title "Sfoglia archivi aperti">
 

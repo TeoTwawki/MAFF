@@ -50,9 +50,6 @@
                    insertbefore="menu_sendLink"
                    accesskey="&maf.addAllTabsToArchiveKey;"
                    oncommand="MafGUI.addAllTabsToArchive(Maf);" />
-        <menuitem id="maf-firefox-about" label="&maf.about;"
-                   accesskey="&maf.aboutKey;"
-                   oncommand="MafGUI.showAbout();" />
       </menupopup>
     </menu>
   </menupopup>

@@ -43,12 +43,6 @@ MAFGuiHandlerClass.prototype = {
     this.window = window;
   },
 
-  showAbout: function() {
-    var url = "chrome://maf/content/mafAboutDLG.xul";
-    var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes";
-    this.window.openDialog(url, "_blank", win_prefs);
-  },
-
   loadArchive: function(Maf) {
     try {
       var archiveToOpen = this.selectFileOpen();

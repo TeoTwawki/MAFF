@@ -18,18 +18,8 @@
 <!ENTITY maf.preferences "Конфигурация">
 <!ENTITY maf.preferencesKey "К">
 
-<!ENTITY maf.about "О расширении MAF...">
-<!ENTITY maf.aboutKey "M">
-
 <!ENTITY maf.browseOpenArchives "Просмотр архивов">
 <!ENTITY maf.browseOpenArchivesKey "П">
-
-<!ENTITY maf.aboutdlg.title "О расширении">
-<!ENTITY maf.aboutdlg.description "Расширение MAF сохраняет HTML-страницы в zip-совместимом архиве с помощью внешнего архиватора. Также сохраняются метаданные страниц, к примеру адрес источника и дата/время.">
-<!ENTITY maf.version "MAF версия 0.7.1-unofficial">
-<!ENTITY maf.aboutdlg.copyright "(c) 2005 Christopher Ottley">
-<!ENTITY maf.aboutdlg.license "Лицензия GNU GPL 2.0">
-<!ENTITY maf.aboutdlg.home "http://maf.mozdev.org">
 
 <!ENTITY maf.browseOpenArchivesDialog.title "Просмотр архивов">
 

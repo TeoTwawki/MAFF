@@ -18,18 +18,8 @@
 <!ENTITY maf.preferences "Preferenzen">
 <!ENTITY maf.preferencesKey "f">
 
-<!ENTITY maf.about "About">
-<!ENTITY maf.aboutKey "A">
-
 <!ENTITY maf.browseOpenArchives "zeige offene Archive">
 <!ENTITY maf.browseOpenArchivesKey "g">
-
-<!ENTITY maf.aboutdlg.title "About MAF">
-<!ENTITY maf.aboutdlg.description "MAF ist eine Mozilla basierte Extension, die einen Packer aufrufen kann, um komplette Html-Seiten aufzubewahren. Es werden auch Meta-Daten, wie die Original-URLs und Zeitstempel mitgespeichert.">
-<!ENTITY maf.version "MAF v 0.7.1-unofficial">
-<!ENTITY maf.aboutdlg.copyright "(c) 2005 Christopher Ottley">
-<!ENTITY maf.aboutdlg.license "Released under the GNU GPL 2.0">
-<!ENTITY maf.aboutdlg.home "http://maf.mozdev.org/">
 
 <!ENTITY maf.browseOpenArchivesDialog.title "offene Archive">
 
