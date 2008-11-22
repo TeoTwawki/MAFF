@@ -64,24 +64,12 @@ MAFGuiHandlerClass.prototype = {
    * @return The file selected.
    */
   selectFileOpen: function(defaultFilename) {
-    var filters = FileFilters.openFiltersArray;
-
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                  .getService(Components.interfaces.nsIPrefService)
-                  .getBranch("extensions.maf.");
-    try {
-      // Check pref for index and set it
-      var defaultFilterIndex = prefs.getIntPref("current.open.filterindex");
-    } catch(e) { }
-
     var result = this.selectFile(MafStrBundle.GetStringFromName("openmafarchivewindowtitle"),
                                   Components.interfaces.nsIFilePicker.modeOpen,
-                                  filters,
+                                  FileFilters.openFiltersArray,
                                   null,
-                                  defaultFilterIndex,
+                                  0,
                                   defaultFilename);
-
-    prefs.setIntPref("current.open.filterindex", result[1]);
 
     return [FileFilters.scriptPathFromFilePath(result[0].path), result[0].path];
   },
