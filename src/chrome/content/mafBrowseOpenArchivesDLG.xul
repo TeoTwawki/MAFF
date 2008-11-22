@@ -56,13 +56,7 @@
       for (var t=0; t < numRanges; t++) {
         document.getElementById("open-archives-tree").view.selection.getRangeAt(t,start,end);
         for (var v=start.value; v <= end.value; v++) {        
-          var url;
-          if ("nsITreeColumn" in Components.interfaces) {
-            /* 1.8 code */
-            url = document.getElementById("open-archives-tree").view.getCellText(v, document.getElementById("open-archives-tree").columns[urlsource]); 
-          } else {
-            url = document.getElementById("open-archives-tree").view.getCellText(v, urlsource);
-          }
+          var url = _getTextForColumn(v, urlsource);
           var level = document.getElementById("open-archives-tree").view.getLevel(v);
 
           if (level == 1) {
@@ -106,13 +100,7 @@
       for (var t=0; t < numRanges; t++) {
         document.getElementById("open-archives-tree").view.selection.getRangeAt(t,start,end);
         for (var v=start.value; v <= end.value; v++) {
-          var url;
-          if ("nsITreeColumn" in Components.interfaces) {
-            /* 1.8 code */
-            url = document.getElementById("open-archives-tree").view.getCellText(v, document.getElementById("open-archives-tree").columns[urlsource]); 
-          } else {
-            url = document.getElementById("open-archives-tree").view.getCellText(v, urlsource);
-          }        
+          var url = _getTextForColumn(v, urlsource);        
           var level = document.getElementById("open-archives-tree").view.getLevel(v);
 
           if (level == 1) {
@@ -172,15 +160,8 @@
       var url;
       var level;
       
-      if ("nsITreeColumn" in Components.interfaces) {
-        /* 1.8 code */
-        url = document.getElementById("open-archives-tree").view.getCellText(v,
-                 document.getElementById("open-archives-tree").columns["localurl"]); 
-        level = document.getElementById("open-archives-tree").view.getLevel(v);        
-      } else {
-        url = document.getElementById("open-archives-tree").view.getCellText(v, "localurl");
-        level = document.getElementById("open-archives-tree").view.getLevel(v);
-      }
+      url = _getTextForColumn(v, "localurl");
+      level = document.getElementById("open-archives-tree").view.getLevel(v);
 
       if (level == 1) {
         var urlList = new Array();
@@ -234,17 +215,17 @@
 
     if (contextMenuSelectedRow != null) {
       var v = contextMenuSelectedRow;
-      resultStr = document.getElementById("open-archives-tree").view.getCellText(v, "title");
+      resultStr = _getTextForColumn(v, "title");
       if (document.getElementById("archivetime").getAttribute("hidden") != "true") {
-        resultStr += " " + document.getElementById("open-archives-tree").view.getCellText(v, "archivetime");
+        resultStr += " " + _getTextForColumn(v, "archivetime");
       }
 
       if (document.getElementById("originalurl").getAttribute("hidden") != "true") {
-        resultStr += " " + document.getElementById("open-archives-tree").view.getCellText(v, "originalurl");
+        resultStr += " " + _getTextForColumn(v, "originalurl");
       }
 
       if (document.getElementById("localurl").getAttribute("hidden") != "true") {
-        resultStr += " " + document.getElementById("open-archives-tree").view.getCellText(v, "localurl");
+        resultStr += " " + _getTextForColumn(v, "localurl");
       }
       _copyTextToClipboard(resultStr);
 
@@ -280,6 +261,10 @@
     return result;
   }
 
+  function _getTextForColumn(aRowValue, aColumnName) {
+    var oat = document.getElementById("open-archives-tree");
+    return oat.view.getCellText(aRowValue, oat.columns[aColumnName]);
+  }
 
 ]]>
 </script>
