@@ -1,44 +1,45 @@
 <!-- MAIN CONTENT -->
-<p>The <b>MAF</b> extension enables Firefox to save <b>complete web pages in a
- single file</b>, using the following formats:</p>
+<h5 class="page-header">Mozilla Archive Format</h5>
+<p><b>Save complete web pages in a single file</b>, using one of the following
+ formats:</p>
 <dl>
-  <dt>MAFF (Mozilla Archive Format File)</dt>
+  <dt><b>MAFF (Mozilla Archive Format File)</b></dt>
   <dd>
     <p>MAFF files are <b>standard ZIP files</b> containing <b>one or more</b>
-     web pages, images, or other content stored in a platform-independent
-     way. MAFF files also contain <i>metadata</i> like the orirginal URL the
-     page was saved from.</p>
-    <p>Firefox with the MAF extension can open and save these files
-     seamlessly.</p>
-    <p>Since MAFF is based on
-     <a href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">standard
-     ZIP</a>, the contents of MAFF archives can still be accessed on any
-     computer using a ZIP extraction utility or the
-     <a href="http://docs.sun.com/source/819-0913/author/jar.html">jar:
-     protocol</a>.</p>
-    <p>MAFF files use the <code class="maf-file-ext">*.maff</code> or
-     <code class="maf-file-ext">*.maff.zip</code> file extensions.</p>
+     web pages, images, or other downloadable content. Additional information,
+     like the orirginal page address, is saved along with the content; this
+     <b>metadata</b> allows the browser to open these files intelligently.</p>
+    <p><i>For example, you can save to disk all the open tabs at once in a
+     single MAFF file.</i></p>
+    <p>MAFF files are not proprietary, and once saved with Firefox they can be
+     opened on any modern computer system, using your favorite ZIP extraction
+     utility. <a href="maff-file-format.html">Learn more...</a></p>
   </dd>
-  <dt>MHTML (MIME HTML)</dt> 
+  <dt><b>MHTML (Internet Explorer's MHT)</b></dt>
   <dd>
-    <p><a href="http://en.wikipedia.org/wiki/MHTML">MHTML</a> is the file
-     format used by Internet Explorer when saving complete web pages. The
-     MAF extension allows Firefox to open and save these files seamlessly.</p>
-    <p>A single MHTML file may contain only one web page.</p>
-    <p>MHTML files use the <code class="maf-file-ext">*.mht</code> or
-     <code class="maf-file-ext">*.mhtml</code> file extensions.</p>
+    <p>MHTML, or MIME HTML, is the file format used by Internet Explorer when
+     saving web archives. The Mozilla Archive Format extension allows Firefox to
+     open and save these files seamlessly.</p>
+    <p>MHTML can only contain a single web page and its subpages.
+     <a href="http://en.wikipedia.org/wiki/MHTML">Learn more...</a></p>
   </dd>
 </dl>
-<h5>Downloading and installing</h5>
-<p>You can <a href="installation.html">download and install</a> the latest
- version of MAF in Firefox very easily.</p>
+
+<h5 class="maf-home-downloadheader">Downloading and installing</h5>
+<p class="maf-home-download"><a
+ href="http://downloads.mozdev.org/maf/maf-0.8.0-fx.xpi">Install MAF
+ 0.8.0</a></p>
+<p class="maf-home-downloadmore">Compatible with Firefox 3.</p>
+<p>Licensed under the <a href="license.html">GNU General Public License</a>.</p>
+<p class="maf-home-downloadmore"><a href="installation.html">More downloads and
+ history...</a></p>
+
 <h5>Current features</h5>
 <ul>
   <li>Save and load complete web pages using either MAFF or MHTML</li>
-  <li>Command to open the original URLs instead of the archived copy</li>
-  <li>Store more than one saved page in a MAFF archive</li>
+  <li>Save more than one page in a MAFF archive</li>
   <li>Open the contents of MAFF archives in multiple tabs at once</li>
-  <li>Replace absoulte URLs on web pages if there is a local version in any
-   other open archive</li>
-  <li>Localized in French, Italian, Polish, Portuguese and Russian</li>
+  <li>Open pages from their original web address</li>
+  <li>Navigate off-line across all the pages in your open archives</li>
+  <li>On Windows, associate MAFF and MHTML file types with Firefox</li>
 </ul>

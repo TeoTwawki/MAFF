@@ -1,0 +1,114 @@
+<!-- MAIN CONTENT -->
+<h5 class="page-header">About the MAFF file format</h5>
+<p>MAFF files are <b>standard ZIP files</b> containing <b>one or more</b> web
+ pages, images, or other downloadable content. Additional information, like the
+ orirginal page address, is saved along with the content; this <b>metadata</b>
+ allows the browser to open these files intelligently.</p>
+<h5>Features of the MAFF file format</h5>
+<ul>
+  <li>
+    <p><b>Store web content in a single file</b></p>
+    <p>The various files required to view a saved page as it appeared on-line
+     are saved together, and cannot be separated by accident.</p>
+  </li>
+  <li>
+    <p><b>Store multiple independent pages in the same archive</b></p>
+    <p>For example, Firefox with the MAFall the open tabs can be saved in a
+     single file.</p>
+  </li>
+  <li>
+    <p><b>Based on the ordinary ZIP / JAR format</b></p>
+    <p>The ZIP format is supported natively on many modern operating systems.
+     The contents of MAFF archives can be extracted using any ZIP extractor.
+     The single files that are saved along with the main web page can be easily
+     separated and inspected, in their original form, while preserving the
+     advantages of storing the related content in a single file.</p>
+  </li>
+  <li>
+    <p><b>View using the jar: protocol</b></p>
+    <p>Even without the MAF extension, Mozilla Firefox is able to display the
+     contents of MAFF archives natively, using the jar: protocol.</p>
+  </li>
+  <li>
+    <p><b>Store metadata about the saved resources</b></p>
+    <p>MAFF archives contain metadata like the original URL the page was saved
+     from and the date/time of the save operation. The presence of this
+     additional data is indifferent to ordinary ZIP extractors, but for
+     example allows the Firefox browser with the MAF extension to perform
+     operations like:</p>
+    <ul>
+      <li>Opening the original page instead of the archived copy while
+       on-line</li>
+      <li>Enabling off-line navigation between pages in different archives</li>
+      <li>Refreshing the archive contents with the latest on-line version
+       <i>(not implemented in MAF at present)</i></li>
+      <li>Asking web services like the Internet Archive about how the page
+       appeared at the time it was saved <i>(not implemented in MAF at
+       present)</i></li>
+    </ul>
+  </li>
+  <li>
+    <p><b>Store arbitrary extended metadata</b></p>
+    <p>Extended metadata may include the browser's scroll position in the
+     page, text zoom level, and more. The MAF extension for Firefox has an
+     option to store this kind of data, even though the current version is not
+     able to read it.</p>
+  </li>
+  <li>
+    <p><b>Supported by Open Source products</b></p>
+    <p>The MAF extension enables Firefox to handle MAFF archives intelligently.
+     MAF is an Open Source product, released under the
+     <a href="license.html">GNU General Public License</a>, and as such will
+     continue to remain available in the future.</p>
+  </li>
+</ul>
+
+<h5>Status</h5>
+<p>Full support for the MAFF file format is provided by the following versions
+ of the Mozilla Archive Format extension:</p>
+<ul>
+  <li>Version 0.8.0, for Firefox 3</li>
+  <li>Version 0.6.3.1, for Firefox 2 and Mozilla 1.7-1.8</li>
+</ul>
+<p>The file format supported by these versions is referred to as MAFF version 1.
+ Previous versions of the MAF extension may not support all the features
+ available in the MAFF file format version 1.</p>
+
+<h5 id="maf-maff-overview">Technical overview</h5>
+<p><i>This is not intended to be complete by any means, and is based on the
+ reverse engineering of the existing MAF extension.</i></p>
+
+<h6>File extension and type</h6>
+<p>MAFF files use the <code class="maf-file-ext">.maff</code> file
+ extension. Internally, the MAF extension for Firefox registers the MIME type
+ <code class="maf-mime-type">application/x-maff</code> for files with the
+ <code class="maf-file-ext">.maff</code> extension, unless there is already
+ another MIME type association in the system. However, this MIME type is not
+ advertised outside of Firefox, for example when the file type is registered
+ with the operating system on Windows.</p>
+
+<h6>ZIP implementation</h6>
+<p>MAF uses <code>nsIZipReader</code> and <code>nsIZipWriter</code> from Mozilla
+Firefox. Their implementation is based on
+<a href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">PKWARE's ZIP
+Application Note</a>. File and directory names are stored using UTF-8.</p>
+
+<h6>Directory structure</h6>
+<p>The root directory is empty. There is one subdirectory for every saved
+ page. Every subdirectory contains a file named <tt>index.rdf</tt>, with the
+ metadata, and another file with the main web page that was saved. This file is
+ usually named <tt>index</tt>, with a file extension based on the content
+ type.</p>
+
+<h6>Metadata</h6>
+<p>Information about the archived files is stored using RDF, an XML format
+ particularly suited to describe metadata about web resources. The matadata is
+ stored using a special MAF XML namespace.</p>
+
+<h5>Roadmap</h5>
+<p>MAFF version 1 is defined on the basis of the existing implementation. As new
+ versions of MAF are released, the description of the file format will be
+ updated, to accomodate the new features. The MAFF format will be extended
+ while ensuring full interoperability between the circulating versions of
+ MAF. This will lead to a more formal definition of MAFF version 2, a superset
+ of MAFF version 1.</p>
