@@ -1,10 +1,13 @@
 <!-- MAIN CONTENT -->
-<h5 class="page-header">About the MAFF file format</h5>
+<div class="maf-column-contents">
+  <h2 class="page-header">About the MAFF file format</h2>
+
 <p>MAFF files are <b>standard ZIP files</b> containing <b>one or more</b> web
  pages, images, or other downloadable content. Additional information, like the
  orirginal page address, is saved along with the content; this <b>metadata</b>
  allows the browser to open these files intelligently.</p>
-<h5>Features of the MAFF file format</h5>
+
+<h2>Features of the MAFF file format</h2>
 <ul>
   <li>
     <p><b>Store web content in a single file</b></p>
@@ -63,7 +66,7 @@
   </li>
 </ul>
 
-<h5>Status</h5>
+<h2>Status</h2>
 <p>Full support for the MAFF file format is provided by the following versions
  of the Mozilla Archive Format extension:</p>
 <ul>
@@ -74,11 +77,11 @@
  Previous versions of the MAF extension may not support all the features
  available in the MAFF file format version 1.</p>
 
-<h5 id="maf-maff-overview">Technical overview</h5>
+<h2 id="maf-maff-overview">Technical overview</h2>
 <p><i>This is not intended to be complete by any means, and is based on the
  reverse engineering of the existing MAF extension.</i></p>
 
-<h6>File extension and type</h6>
+<h3>File extension and type</h3>
 <p>MAFF files use the <code class="maf-file-ext">.maff</code> file
  extension. Internally, the MAF extension for Firefox registers the MIME type
  <code class="maf-mime-type">application/x-maff</code> for files with the
@@ -87,28 +90,30 @@
  advertised outside of Firefox, for example when the file type is registered
  with the operating system on Windows.</p>
 
-<h6>ZIP implementation</h6>
+<h3>ZIP implementation</h3>
 <p>MAF uses <code>nsIZipReader</code> and <code>nsIZipWriter</code> from Mozilla
 Firefox. Their implementation is based on
 <a href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">PKWARE's ZIP
 Application Note</a>. File and directory names are stored using UTF-8.</p>
 
-<h6>Directory structure</h6>
+<h3>Directory structure</h3>
 <p>The root directory is empty. There is one subdirectory for every saved
  page. Every subdirectory contains a file named <tt>index.rdf</tt>, with the
  metadata, and another file with the main web page that was saved. This file is
  usually named <tt>index</tt>, with a file extension based on the content
  type.</p>
 
-<h6>Metadata</h6>
+<h3>Metadata</h3>
 <p>Information about the archived files is stored using RDF, an XML format
  particularly suited to describe metadata about web resources. The matadata is
  stored using a special MAF XML namespace.</p>
 
-<h5>Roadmap</h5>
+<h2>Roadmap</h2>
 <p>MAFF version 1 is defined on the basis of the existing implementation. As new
  versions of MAF are released, the description of the file format will be
  updated, to accomodate the new features. The MAFF format will be extended
  while ensuring full interoperability between the circulating versions of
  MAF. This will lead to a more formal definition of MAFF version 2, a superset
  of MAFF version 1.</p>
+
+</div>

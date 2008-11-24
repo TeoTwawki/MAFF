@@ -1,14 +1,84 @@
 @import url("http://www.mozdev.org/project.css");
 
+/* Column layout*/
+
+.maf-column-left {
+  max-width: 40em;
+}
+
+.maf-column-left, .maf-column-right {
+  float: left;
+  min-width: 50%;
+  padding: 0px;
+  margin: 0px;
+}
+
+.maf-column-contents {
+  padding: 10px;
+}
+
+/* Headers */
+
+h2 {
+  color: #00C;
+  border-bottom: 2px solid #00C;
+}
+
+/* Lists */
+
+#main-content-no-nav ul,
+#main-content-no-nav ul ul,
+#main-content ul,
+#main-content ul ul {
+  list-style-type: square;
+  list-style-image: url(http://www.mozdev.org/sharedimages/bullet.gif);
+  list-style-position: outside;
+  padding-left: 20px;
+  margin-left: 0;
+}
+
 dt {
   font-weight: bold;
 }
 
-dd p {
+dd p, li p {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
 
+/* Inline text */
+
 code.maf-file-ext {
   font-weight: bold;
+}
+
+/* Download boxes */
+
+.maf-download-box {
+  margin: 20px 10px;
+  padding: 10px 30px;
+  border: 1px solid grey;
+  background-color: lightgreen;
+  float: left;
+}
+
+.maf-download-afterbox {
+  clear: both;
+}
+
+.maf-download-name {
+  margin: 0px;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: x-large;
+  white-space: nowrap;
+}
+
+.maf-download-info {
+  margin: 0px;
+  font-family: Verdana, sans-serif;
+}
+
+.maf-download-more {
+  margin: 10px 10px;
+  font-family: Verdana, sans-serif;
 }
