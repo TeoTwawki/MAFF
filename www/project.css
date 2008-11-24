@@ -2,6 +2,13 @@
 
 /* Column layout*/
 
+.maf-column-outer {
+  float: left;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
 .maf-column-left {
   max-width: 40em;
 }
@@ -16,13 +23,6 @@
 
 .maf-column-contents {
   padding: 10px;
-}
-
-#main-content,
-#main-content-no-nav {
-  float: left;
-  border-bottom: 2px solid #C60;
-  margin-bottom: 10px;
 }
 
 /* Headers */
