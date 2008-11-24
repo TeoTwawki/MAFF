@@ -6,7 +6,8 @@
   max-width: 40em;
 }
 
-.maf-column-left, .maf-column-right {
+.maf-column-left,
+.maf-column-right {
   float: left;
   min-width: 50%;
   padding: 0px;
@@ -15,6 +16,13 @@
 
 .maf-column-contents {
   padding: 10px;
+}
+
+#main-content,
+#main-content-no-nav {
+  float: left;
+  border-bottom: 2px solid #C60;
+  margin-bottom: 10px;
 }
 
 /* Headers */
@@ -41,7 +49,8 @@ dt {
   font-weight: bold;
 }
 
-dd p, li p {
+dd p,
+li p {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
