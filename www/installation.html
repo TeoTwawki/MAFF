@@ -21,6 +21,45 @@
    Source licenses as well. See the <a href="source.html">source code</a> for
    more information.</p>
 
+  <h2>What's new in the latest version?</h2>
+  <p>MAF 0.8.0 has the following user-visible improvements over MAF 0.6.3:</p>
+  <ul>
+    <li>Compatibility with Firefox 3 on all operating systems.</li>
+    <li>Clean installation and uninstallation.</li>
+    <li>Redesigned preferences user interface.</li>
+    <li>Temporary files are now created in the system's temporary folder by
+     default.</li>
+    <li>Creating file associations on Windows works again.</li>
+    <li>Stabilized file extension and type handling:
+      <ul>
+        <li>Handle only the <code class="maf-file-ext">.maff</code> extension,
+         and not its variations, since double extensions cannot be handled
+         correctly by Firefox.</li>
+        <li>Removed support for the old <code
+         class="maf-file-ext">.maf</code> and <code
+         class="maf-file-ext">.maff.zip</code> extensions.</li>
+        <li>Added support for <code class="maf-file-ext">.mhtml</code> file
+         extension for MHTML archives.</li>
+        <li>MAF does not register applications for its MIME types anymore.</li>
+      </ul>
+    </li>
+    <li>Removed features:
+      <ul>
+        <li><code>maf:</code> protocol (use <code>jar:</code> instead).</li>
+        <li><code>document.write</code> override.</li>
+      </ul>
+    </li>
+    <li>Bugfixes:
+      <ul>
+        <li>Opening archives from the command-line or by double-clicking a file
+         when no browser windows are visible now works reliably.</li>
+        <li>Now the save functions always overwrite the contents of existing
+         archives, rather than appending.</li>
+        <li>Copying archive metadata to the clipboard works again.</li>
+      </ul>
+    </li>
+  </ul>
+
   <h2>Previous versions</h2>
   <p>You can download all the previous versions of MAF from the
    <a href="https://www.mozdev.org/projects/overview/maf/">project page on
