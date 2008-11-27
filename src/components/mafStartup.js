@@ -132,6 +132,14 @@ MafStartup.prototype = {
          false, mimeList[mimeTypeToHandle]);
       }
     }
+
+    // The following code is a workaround for the fact that, when updating from
+    //  a previous version of MAF, it is common that MAFF files are registered
+    //  as "application/x-maf" in "mimeTypes.rdf". This is not detected by
+    //  "getTypeFromExtension".
+    categoryManager.addCategoryEntry("Gecko-Content-Viewers",
+     "application/x-maf", "@amadzone.org/maf/document-loader-factory;1",
+     false, true);
   }
 };
 
