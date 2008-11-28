@@ -3,8 +3,8 @@
   <h2 class="page-header">Installation</h2>
   <div class="maf-download-box">
     <p class="maf-download-name"><a
-     href="http://downloads.mozdev.org/maf/maf-0.8.0-fx.xpi">Install MAF
-     0.8.0</a></p>
+     href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>-fx.xpi">Install
+     MAF <?php echo $maf_latest_fx; ?></a></p>
   </div>
   <p class="maf-download-afterbox">The latest version of MAF is compatible only
    with <b>Firefox 3</b>. MAF is still available for older versions of Firefox,
@@ -22,7 +22,8 @@
    more information.</p>
 
   <h2>What's new in the latest version?</h2>
-  <p>MAF 0.8.0 has the following user-visible improvements over MAF 0.6.3:</p>
+  <p>MAF <?php echo $maf_latest_fx; ?> has the following user-visible
+   improvements over MAF 0.6.3:</p>
   <ul>
     <li>Compatibility with Firefox 3 on all operating systems.</li>
     <li>Clean installation and uninstallation.</li>
