@@ -13,4 +13,6 @@ locale	maf	sl-SI	chrome/locale/sl-SI/
 
 skin	maf	classic/1.0	chrome/skin/
 
+resource	maf	resource/
+
 overlay	chrome://browser/content/browser.xul	chrome://maf/content/mafoverlay.xul

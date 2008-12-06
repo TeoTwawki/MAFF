@@ -36,8 +36,8 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
- * Implements an application startup observer. On startup, MAF dynamically
- *  initializes the MIME types and file extensions it can handle.
+ * Implements an application startup observer. This module is just a stub, and
+ *  the actual initialization of the extension is done in "startupObjects.jsm".
  */
 
 var Ci = Components.interfaces;
@@ -49,6 +49,9 @@ var Cu = Components.utils;
 //  <https://developer.mozilla.org/en/How_to_Build_an_XPCOM_Component_in_Javascript#Using_XPCOMUtils>
 //  (retrieved 2008-10-07).
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+
+// Import the MAF shared modules
+Cu.import("resource://maf/modules/startupObjects.jsm");
 
 function MafStartup() {
 
@@ -73,73 +76,10 @@ MafStartup.prototype = {
    * This function is called with aTopic set to "app-startup" when the
    *  application starts, before the first browser window is opened.
    *
-   * Dynamic MIME type and document loader factory registrations must be done
-   *  here, instead of when the first browser windows loads, to handle the case
-   *  where the path of an archive managed by MAF is specified on the
-   *  command-line.
-   *
-   * This function is hard-coded to enable handling of the MAFF file format
-   *  (.maff file extension) and MHTML file format (.mht and .mhtml file
-   *  extensions). Since MAF works with local files only, the file extension
-   *  is prioritized over the expected MIME type of the content.
+   * The real initialization is done by the MAF shared modules.
    */
   observe: function(aSubject, aTopic, aData) {
-    // Get references to the XPCOM services used here. The nsIMIMEService
-    //  interface is also exposed by the component whose contract ID is
-    //  "@mozilla.org/uriloader/external-helper-app-service;1", but
-    //  "@mozilla.org/mime;1" can be used indifferently.
-    var categoryManager = Cc["@mozilla.org/categorymanager;1"]
-     .getService(Ci.nsICategoryManager);
-    var mimeService = Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService);
-
-    // This object will be filled in with properties whose name is the MIME type
-    //  we need to handle, and whose value is true if MAF is the extension that
-    //  must preferably handle that MIME type.
-    mimeList = {};
-
-    // First of all, for all the file extensions we handle, we must ensure that
-    //  the application is able to determine a specific MIME type. If there are
-    //  no other means to determine the MIME type, the last resort is the
-    //  "ext-to-type-mapping" category, so we set a key there for every
-    //  file extension to be handled. 
-    [
-     {ext: "mhtml", mimeType: "application/x-mht",  replace: false},
-     {ext: "mht",   mimeType: "application/x-mht",  replace: false},
-     {ext: "maff",  mimeType: "application/x-maff", replace: true}
-    ].forEach(function(item) {
-      // Add the entry, without persisting it, and replacing an existing entry
-      //  only for the file types that are preferably managed by this extension
-      categoryManager.addCategoryEntry("ext-to-type-mapping",
-       item.ext, item.mimeType, false, item.replace);
-      // While we are here, find out the actual MIME type that will be used for
-      //  the file extension, and populate the mimeList array accordingly. See
-      //  <https://developer.mozilla.org/En/How_Mozilla_determines_MIME_Types>
-      //  (retrieved 2008-11-21).
-      var realMimeType = mimeService.getTypeFromExtension(item.ext);
-      mimeList[realMimeType] = item.replace;
-    });
-
-    // Next, we must register the document loader factories for the MIME types
-    //  we need to handle. Depending on the MIME type, we may need to override
-    //  a document loader factory previously registered by another extension.
-    for (var mimeTypeToHandle in mimeList) {
-      if (mimeList.hasOwnProperty(mimeTypeToHandle)) {
-        // Add the entry, without persisting it, and replacing an existing entry
-        //  only for the MIME types that are preferably managed by this
-        //  extension
-        categoryManager.addCategoryEntry("Gecko-Content-Viewers",
-         mimeTypeToHandle, "@amadzone.org/maf/document-loader-factory;1",
-         false, mimeList[mimeTypeToHandle]);
-      }
-    }
-
-    // The following code is a workaround for the fact that, when updating from
-    //  a previous version of MAF, it is common that MAFF files are registered
-    //  as "application/x-maf" in "mimeTypes.rdf". This is not detected by
-    //  "getTypeFromExtension".
-    categoryManager.addCategoryEntry("Gecko-Content-Viewers",
-     "application/x-maf", "@amadzone.org/maf/document-loader-factory;1",
-     false, true);
+    StartupEvents.onAppStartup();
   }
 };
 

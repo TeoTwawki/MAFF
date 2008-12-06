@@ -76,9 +76,9 @@ if (!sharedData) {
  *  we might as well create it as a normal XPCOM object.
  *
  * Document loader factories must be registered with the
- *  "Gecko-Content-Viewers" category. For MAF, this is done dynamically during
- *  the "app-startup" notification, because the list of MIME types that this
- *  document loader factory will handle is not known in advance.
+ *  "Gecko-Content-Viewers" category. For MAF, this is done dynamically on
+ *  startup, because the list of MIME types that this document loader factory
+ *  will handle is not known in advance.
  */
 function MafDocumentLoaderFactory() {
 
