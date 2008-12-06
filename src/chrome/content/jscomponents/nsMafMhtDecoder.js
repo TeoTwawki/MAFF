@@ -113,8 +113,8 @@ MafMhtDecoderClass.prototype = {
 
       for (var i=0; i<ctData.length; i++) {
         var entry = ctData[i];
-        if ((entry.name).trim().toLowerCase() == "type") {
-          needleType = entry.value.trim().toLowerCase();
+        if (Maf_String_trim(entry.name).toLowerCase() == "type") {
+          needleType = Maf_String_trim(entry.value).toLowerCase();
         }
       }
 
@@ -125,7 +125,7 @@ MafMhtDecoderClass.prototype = {
           var bodyContentTypeArray = bodyContentType.split(";");
           for (var j=0; j<bodyContentTypeArray.length; j++) {
              // Found needleType
-             if ((bodyContentTypeArray[j].trim().toLowerCase()) == needleType) {
+             if ((Maf_String_trim(bodyContentTypeArray[j]).toLowerCase()) == needleType) {
                this.rootLocation = i;
                this.rootLocationSet = true;
                break; break;
@@ -167,8 +167,8 @@ MafMhtDecoderClass.prototype = {
     for (var i=0; i<normalizedHeaderLines.length; i++) {
       var headerDelimiter = normalizedHeaderLines[i].indexOf(":");
       if (headerDelimiter > 0) {
-        var headerName = normalizedHeaderLines[i].substring(0, headerDelimiter).trim();
-        var headerValue = normalizedHeaderLines[i].substring(headerDelimiter + 1, normalizedHeaderLines[i].length).trim();
+        var headerName = Maf_String_trim(normalizedHeaderLines[i].substring(0, headerDelimiter));
+        var headerValue = Maf_String_trim(normalizedHeaderLines[i].substring(headerDelimiter + 1, normalizedHeaderLines[i].length));
         var headerRec = new headerRecClass(headerName, headerValue);
         aheaders.push(headerRec);
       }
@@ -188,8 +188,8 @@ MafMhtDecoderClass.prototype = {
     var newContent = "";
 
     for (var i=0; i<headers.length; i++) {
-      newHeader = this._normalizeHeadersGetName(headers[i]).trim();
-      newContent = this._normalizeHeadersGetValue(headers[i]).trim();
+      newHeader = Maf_String_trim(this._normalizeHeadersGetName(headers[i]));
+      newContent = Maf_String_trim(this._normalizeHeadersGetValue(headers[i]));
       //mafdebug("[" + i + "] newHeader:" + newHeader);
       //mafdebug("[" + i + "] newContent:" + newHeader);
 
@@ -203,7 +203,7 @@ MafMhtDecoderClass.prototype = {
           //mafdebug("[" + i + "] Current header not empty but content is empty");
           //mafdebug("[" + i + "] Current header:" + currentHeader);
           // Header with empty content
-          currentContent = this._removeCommentFromHeader(currentHeader, headers[i].trim());
+          currentContent = this._removeCommentFromHeader(currentHeader, Maf_String_trim(headers[i]));
           //mafdebug("[" + i + "] Current header new content:" + currentContent);
         } else {
           if ((currentHeader != "") && (newHeader == "")) {
@@ -263,7 +263,7 @@ MafMhtDecoderClass.prototype = {
     var result = headerValue;
 
     // Everything after the ; is gone
-    if (headerName.trim().toLowerCase() != "content-type") {
+    if (Maf_String_trim(headerName).toLowerCase() != "content-type") {
       if (result.indexOf(";") > -1) {
         result = result.substring(0, result.indexOf(";"));
       }
@@ -291,9 +291,9 @@ MafMhtDecoderClass.prototype = {
       var start = ""; // Explicit start content id
       for (var i=0; i<ctData.length; i++) {
         var entry = ctData[i];
-        if ((entry.name).trim().toLowerCase() == "boundary") {
+        if (Maf_String_trim(entry.name).toLowerCase() == "boundary") {
           boundary = entry.value;
-        } else if ((entry.name).trim().toLowerCase() == "start") {
+        } else if (Maf_String_trim(entry.name).toLowerCase() == "start") {
           start = entry.value;
         }
       }
@@ -363,7 +363,7 @@ MafMhtDecoderClass.prototype = {
       // Get the part's content location
       for (var i=0; i<headers.length; i++) {
         var entry = headers[i];
-        if ((entry.name).trim().toLowerCase() == "content-location") {
+        if (Maf_String_trim(entry.name).toLowerCase() == "content-location") {
           hasContentLocationAlready = true;
           break;
         }
@@ -405,7 +405,7 @@ MafMhtDecoderClass.prototype = {
       // Get the part's content location
       for (var i=0; i<headers.length; i++) {
         var entry = headers[i];
-        if ((entry.name).trim().toLowerCase() == "content-location") {
+        if (Maf_String_trim(entry.name).toLowerCase() == "content-location") {
           partContentLocation = entry.value;
           break;
         }
@@ -422,7 +422,7 @@ MafMhtDecoderClass.prototype = {
         var headerStr = "";
         for (var i=0; i<headers.length; i++) {
           var entry = headers[i];
-          if ((entry.name).trim().toLowerCase() == "content-location") {
+          if (Maf_String_trim(entry.name).toLowerCase() == "content-location") {
             headerStr += entry.name + ": " + partContentLocation + "\r\n";
             headerStr += "x-maf-content-location: " + relativeContentLocation + "\r\n";
           } else {
@@ -451,8 +451,8 @@ MafMhtDecoderClass.prototype = {
       var parsedPartHeaders = this.parseHeaders(partHeaders);
       for (var i=0; i<parsedPartHeaders.length; i++) {
         var entry = parsedPartHeaders[i];
-        if ((entry.name.trim().toLowerCase() == "content-id") ||
-            (entry.name.trim().toLowerCase() == "content-location")) {
+        if ((Maf_String_trim(entry.name).toLowerCase() == "content-id") ||
+            (Maf_String_trim(entry.name).toLowerCase() == "content-location")) {
           if (entry.value == startid) {
             result = true;
             break;
@@ -473,7 +473,7 @@ MafMhtDecoderClass.prototype = {
 
     // Get the name value pairs
     for (var i=0; i<ctArray.length; i++) {
-      var entry = ctArray[i].trim();
+      var entry = Maf_String_trim(ctArray[i]);
       if (entry.indexOf("=") > -1) {
         var name = entry.substring(0, entry.indexOf("="));
         var value = entry.substring(entry.indexOf("=") + 1, entry.length);
@@ -498,7 +498,7 @@ MafMhtDecoderClass.prototype = {
       var hnames = this.getHeaders();
       while (hnames.hasMoreElements()) {
         var header = hnames.getNext();
-        if ((header.name.trim().toLowerCase()) == headerName.trim().toLowerCase()) {
+        if ((Maf_String_trim(header.name).toLowerCase()) == Maf_String_trim(headerName).toLowerCase()) {
           result = header.value;
           break;
         }
@@ -535,13 +535,13 @@ MafMhtDecoderClass.prototype = {
     if (this.noOfParts() == 1) {
        var contentType = this.getHeaderValue("Content-Type");
        var contentId = this.getHeaderValue("Content-Id");
-       contentId = contentId.replaceAll(">", "").replaceAll("<", "");
+       contentId = Maf_String_replaceAll(Maf_String_replaceAll(contentId, ">", ""), "<", "");
        var contentLocation = this.getHeaderValue("Content-Location");
        var relativeContentLocation = this.getHeaderValue("x-maf-content-location");
 
        callback.onContentStart(contentType, contentId, contentLocation, relativeContentLocation);
 
-       var encoding = this.getHeaderValue("Content-Transfer-Encoding").trim().toLowerCase();
+       var encoding = Maf_String_trim(this.getHeaderValue("Content-Transfer-Encoding")).toLowerCase();
 
        if ((encoding == "quoted-printable") || (encoding == "base64")) {
          // Decode with encoding and callback
@@ -667,7 +667,7 @@ contentDecoderClass.prototype = {
       // Loose check to see if charset is UTF
       // Should really parse contentType, get charset and check that.
       if (this.contentType.toLowerCase().indexOf("utf-") > -1) {
-        if (result.startsWith("=EF=BB=BF")) {
+        if (Maf_String_startsWith(result, "=EF=BB=BF")) {
           // Remove the three bytes
           result = result.substring("=EF=BB=BF".length, result.length);
         }

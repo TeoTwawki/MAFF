@@ -213,9 +213,9 @@ MafMhtEncoderClass.prototype = {
    */
   _getContentEncodingByType: function(fileContentType) {
     var result = "base64";
-    if (fileContentType.trim().toLowerCase() == "text/html") { result = "quoted-printable"; }
-    if (fileContentType.trim().toLowerCase() == "text/css") { result = "quoted-printable"; }
-    if (fileContentType.trim().toLowerCase() == "application/x-javascript") { result = "quoted-printable"; }
+    if (Maf_String_trim(fileContentType).toLowerCase() == "text/html") { result = "quoted-printable"; }
+    if (Maf_String_trim(fileContentType).toLowerCase() == "text/css") { result = "quoted-printable"; }
+    if (Maf_String_trim(fileContentType).toLowerCase() == "application/x-javascript") { result = "quoted-printable"; }
     return result;
   },
 

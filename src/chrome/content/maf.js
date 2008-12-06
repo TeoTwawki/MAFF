@@ -107,7 +107,7 @@ maf.prototype = {
         oDestpathentry.initWithPath(destpath);
         oDestpathentry.setRelativeDescriptor(oDestpath, entryname);
         
-        if (entryname.endsWith("/")) {
+        if (Maf_String_endsWith(entryname, "/")) {
           // Folder
           //alert("Extracting " + entryname);
           if (!oDestpathentry.exists() || !oDestpathentry.isDirectory()) {
@@ -573,10 +573,9 @@ function mafdebug(text) {
  * Source: http://js-x.com/javascript/?view=932
  * Author: Brock Weaver - 0
  */
-String.prototype.trim = function() {
+var Maf_String_trim = function(x) {
   // skip leading and trailing whitespace
   // and return everything in between
-  var x=this;
   x=x.replace(/^\s*(.*)/, "$1");
   x=x.replace(/(.*?)\s*$/, "$1");
   return x;
@@ -585,18 +584,17 @@ String.prototype.trim = function() {
 /**
  * Replace all needles with newneedles
  */
-String.prototype.replaceAll = function(needle, newneedle) {
-  var x=this;
+var Maf_String_replaceAll = function(x, needle, newneedle) {
   x=x.split(needle).join(newneedle);
   return x;
 };
 
-String.prototype.startsWith = function(needle) {
-  return (this.substring(0, needle.length) == needle);
+var Maf_String_startsWith = function(x, needle) {
+  return (x.substring(0, needle.length) == needle);
 };
 
-String.prototype.endsWith = function(needle) {
-  return (this.substring(this.length - needle.length, this.length) == needle);
+var Maf_String_endsWith = function(x, needle) {
+  return (x.substring(x.length - needle.length, x.length) == needle);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////

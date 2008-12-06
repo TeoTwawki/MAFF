@@ -214,12 +214,12 @@ MafMhtHandlerServiceClass.prototype = {
 
           newTagstr += newUrlattribstr;
 
-          var attribstr = urlattribstr.substring(urlattribstr.indexOf("=") + 1, urlattribstr.length).trim();
+          var attribstr = Maf_String_trim(urlattribstr.substring(urlattribstr.indexOf("=") + 1, urlattribstr.length));
 
           var quote = "";
           var unquotedattrib = attribstr;
           // If the attribute is quoted, store the quote and remove it
-          if (attribstr.startsWith("\"") || attribstr.startsWith("'")) {
+          if (Maf_String_startsWith(attribstr, "\"") || Maf_String_startsWith(attribstr, "'")) {
             quote = attribstr.substring(0, 1);
             unquotedattrib = attribstr.substring(1, attribstr.length -1);
           }
@@ -263,7 +263,7 @@ MafMhtHandlerServiceClass.prototype = {
       var originalUrl = m.toString();
 
       // TODO, decode anything else that might give trouble
-      originalUrl = originalUrl.replaceAll("&amp;", "&");
+      originalUrl = Maf_String_replaceAll(originalUrl, "&amp;", "&");
 
       // Cater for Hashes
       var baseUrl = originalUrl.split("#")[0];
@@ -322,20 +322,20 @@ MafMhtHandlerServiceClass.prototype = {
 
           newTagstr += newUrlattribstr;
 
-          var attribstr = urlattribstr.substring(urlattribstr.indexOf("=") + 1, urlattribstr.length).trim();
+          var attribstr = Maf_String_trim(urlattribstr.substring(urlattribstr.indexOf("=") + 1, urlattribstr.length));
 
           var quote = "";
           var unquotedattrib = attribstr;
           // If the attribute is quoted, store the quote and remove it
-          if (attribstr.startsWith("\"") || attribstr.startsWith("'")) {
+          if (Maf_String_startsWith(attribstr, "\"") || Maf_String_startsWith(attribstr, "'")) {
             quote = attribstr.substring(0, 1);
             unquotedattrib = attribstr.substring(1, attribstr.length -1);
           }
 
-          var originalUrl = unquotedattrib.trim();
+          var originalUrl = Maf_String_trim(unquotedattrib);
 
           // TODO, decode anything else that might give trouble
-          originalUrl = originalUrl.replaceAll("&amp;", "&");
+          originalUrl = Maf_String_replaceAll(originalUrl, "&amp;", "&");
 
           // Cater for Hashes
           var baseUrl = originalUrl.split("#")[0];
@@ -382,7 +382,7 @@ MafMhtHandlerServiceClass.prototype = {
     while (headers.hasMoreElements()) {
       try {
         var header = headers.getNext();
-        var name = header.name.trim().toLowerCase();
+        var name = Maf_String_trim(header.name).toLowerCase();
         if (name == "subject") {
            subject = header.value;
         }
@@ -688,7 +688,7 @@ extractContentHandlerClass.prototype = {
 
         var relativeIndexFilesUsed = false;
 
-        if (relativeContentLocation.startsWith("index_files/")) {
+        if (Maf_String_startsWith(relativeContentLocation, "index_files/")) {
           relativeContentLocation = relativeContentLocation.substring("index_files/".length,
                                     relativeContentLocation.length);
           relativeIndexFilesUsed = true;

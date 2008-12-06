@@ -653,7 +653,7 @@ MafWebBrowserPersistClass.prototype = {
 
         if (this.dataPathStr.length > 0) {
           // Since the css is in the same folder as the other data
-          if (imgFile.startsWith(this.dataPathStr)) {
+          if (Maf_String_startsWith(imgFile, this.dataPathStr)) {
             imgFile = imgFile.substring(this.dataPathStr.length, imgFile.length);
           }
         }
