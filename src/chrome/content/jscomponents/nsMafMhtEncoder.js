@@ -506,7 +506,7 @@ encodingTimerState.prototype = {
 
         this.oTransport.close();
 
-        this.encoder.filelist.clear();
+        this.encoder.filelist = [];
         this.timer = null;
 
         var observerData = new Array();
@@ -649,10 +649,4 @@ encodeQuotedPrintableTimerState.prototype = {
     return this;
   }
 
-};
-
-Array.prototype.clear = function() {
-  while (this.length > 0) {
-    this.pop();
-  }
 };
