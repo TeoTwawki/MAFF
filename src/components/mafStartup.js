@@ -50,9 +50,6 @@ var Cu = Components.utils;
 //  (retrieved 2008-10-07).
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
-// Import the MAF shared modules
-Cu.import("resource://maf/modules/startupObjects.jsm");
-
 function MafStartup() {
 
 }
@@ -79,7 +76,15 @@ MafStartup.prototype = {
    * The real initialization is done by the MAF shared modules.
    */
   observe: function(aSubject, aTopic, aData) {
-    StartupEvents.onAppStartup();
+    // Import the MAF shared modules and call the functions defined there.
+    //  We cannot do this in the global scope, like we do for XPCOMUtils,
+    //  since our resource protocol alias may not be registered at that time.
+    //  See also
+    //  <http://groups.google.com/group/mozilla.dev.tech.xpcom/browse_thread/thread/6a8ea7f803ac720a>
+    //  (retrieved 2008-12-07).
+    var startupObjects = {};
+    Cu.import("resource://maf/modules/startupObjects.jsm", startupObjects);
+    startupObjects.StartupEvents.onAppStartup();
   }
 };
 
