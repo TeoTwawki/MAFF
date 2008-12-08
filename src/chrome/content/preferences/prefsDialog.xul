@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin" type="text/css"?>
 <?xml-stylesheet href="chrome://maf/skin/preferences/prefsDialog.css" type="text/css"?>
-<!DOCTYPE prefwindow SYSTEM "chrome://maf/locale/preferences/prefsDialog.dtd">
+<!DOCTYPE prefwindow SYSTEM "chrome://maf/locale/prefsDialog.dtd">
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
    -
@@ -191,7 +191,7 @@
      -->
   <stringbundleset>
     <stringbundle id= "bundleDialog"
-                  src="chrome://maf/locale/preferences/prefsDialog.properties"
+                  src="chrome://maf/locale/prefsDialog.properties"
                   />
   </stringbundleset>
   <script type="application/x-javascript"
