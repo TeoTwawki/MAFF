@@ -247,48 +247,6 @@ MAFGuiHandlerClass.prototype = {
     }
   },
 
-
-  /**
-   * Shows the file picker dialog allowing the user to select ONLY a specific file.
-   * @return The full file path and filename as a string
-   */
-  selectSpecificFile: function(windowTitle, initialFilePath, filterFilename) {
-    var result = initialFilePath;
-
-    var defaultPath = null;
-
-    try {
-      // Create a directory reference to use
-      var filedir = Components.classes["@mozilla.org/file/local;1"]
-                      .createInstance(Components.interfaces.nsILocalFile);
-      filedir.initWithPath(initialFilePath);
-
-      defaultPath = filedir.path;
-
-      var leafname = filedir.leafName;
-
-      defaultFilename = leafname;
-
-      // Remove the file part to get the directory
-      defaultPath = defaultPath.substring(0, defaultPath.length - leafname.length);
-    } catch(e) {
-      mafdebug(e);
-    }
-
-    try {
-      var filter = [ [filterFilename, filterFilename] ];
-      var fresult = this.selectFile(windowTitle,
-                                     Components.interfaces.nsIFilePicker.modeOpen,
-                                     filter,
-                                     defaultPath,
-                                     defaultFilename);
-      result = fresult[0].path;
-    } catch(e) {
-
-    }
-    return result;
-  },
-
   /**
    * Shows the user a window that allows them to browse the open archives.
    */
