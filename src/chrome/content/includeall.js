@@ -20,6 +20,8 @@ const EXTENSION_CHROME_CONTENT_PATH = "chrome://maf/content/";
 try {
   // Include each JavaScript file named in the following array
   [
+   "integration/browser.js",
+   "integration/contentAreaUtils.js",
    "integration/fileFiltersObject.js",
    "jscomponents/nsMafArchiver.js",
    "jscomponents/nsMafGuiHandler.js",
