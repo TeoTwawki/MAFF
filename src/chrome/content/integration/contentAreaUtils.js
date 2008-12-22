@@ -24,6 +24,7 @@
  *   Fredrik Holmqvist <thesuckiestemail@yahoo.se>
  *   Asaf Romano <mozilla.mano@sent.com>
  *   Ehsan Akhgari <ehsan.akhgari@gmail.com>
+ *   Paolo Amadini <http://www.amadzone.org/>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -121,6 +122,29 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     saveMode = fpParams.saveMode;
     file = fpParams.file;
     fileURL = fpParams.fileURL;
+  }
+
+  // Handle saving a web archive using the Mozilla Archive Format extension
+  var mafSaveFilterIndex = saveAsType - 3;
+  if (mafSaveFilterIndex >= 0 &&
+   mafSaveFilterIndex < FileFilters.saveFiltersArray.length) {
+    // Always add the archive extension if not explicitly specified. No check
+    //  is done to see if a file with the new name already exists.
+    var selectedFileType = FileFilters.saveFiltersArray[mafSaveFilterIndex][1];
+    selectedFileType = selectedFileType.substring(1, selectedFileType.length);
+    var filename = file.path;
+    if (filename.substring(filename.length - selectedFileType.length,
+     filename.length).toLowerCase() != selectedFileType.toLowerCase()) {
+      filename += selectedFileType;
+    }
+
+    // Save the selected page in the web archive
+    Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser,
+     Prefs.tempFolder, FileFilters.scriptPathFromSaveIndex(mafSaveFilterIndex),
+     filename);
+
+    // Do not continue with the normal save process
+    return;
   }
 
   if (!fileURL)
@@ -273,6 +297,13 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
 
   if (aSaveMode & SAVEMODE_COMPLETE_TEXT)
     aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText);
+
+  if (aSaveMode & SAVEMODE_COMPLETE_DOM) {
+    // Add filters from Mozilla Archive Format
+    FileFilters.saveFiltersArray.forEach(function(curFilterEntry) {
+      aFilePicker.appendFilter(curFilterEntry[0], curFilterEntry[1]);
+    });
+  }
 
   // Always append the all files (*) filter
   aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
