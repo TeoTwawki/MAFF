@@ -31,6 +31,7 @@ try {
    "jscomponents/nsMafTabExpander.js",
    "jscomponents/nsMafUtil.js",
    "jscomponents/nsMafWebBrowserPersist.js",
+   "preferences/dynamicPrefsObject.js",
    "preferences/prefsObject.js"
   ].forEach(function(contentRelativePath) {
     Components.classes["@mozilla.org/moz/jssubscript-loader;1"]

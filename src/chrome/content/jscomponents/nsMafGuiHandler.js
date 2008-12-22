@@ -131,23 +131,15 @@ MAFGuiHandlerClass.prototype = {
   selectFileSave: function(defaultFilename) {
     var filters = FileFilters.saveFiltersArray;
 
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                   .getService(Components.interfaces.nsIPrefService)
-                   .getBranch("extensions.maf.");
-    try {
-      // Check pref for index and set it
-      var defaultFilterIndex = prefs.getIntPref("current.save.filterindex");
-    } catch(e) { }
-
     var result = this.selectFile(MafStrBundle.GetStringFromName("savemafarchivewindowtitle"),
                                   Components.interfaces.nsIFilePicker.modeSave,
                                   filters,
                                   null,
-                                  defaultFilterIndex,
+                                  DynamicPrefs.saveFilterIndex,
                                   defaultFilename);
 
     if (result[0] != null) {
-      prefs.setIntPref("current.save.filterindex", result[1]);
+      DynamicPrefs.saveFilterIndex = result[1];
     }
 
     var selectedFileType = filters[result[1]][1];
