@@ -45,6 +45,7 @@
  *   Dão Gottwald <dao@mozilla.com>
  *   Thomas K. Dyas <tdyas@zecador.org>
  *   Edward Lee <edward.lee@engineering.uiuc.edu>
+ *   Paolo Amadini <http://www.amadzone.org/>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -67,8 +68,15 @@ function BrowserOpenFileWindow()
     const nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, gNavigatorBundle.getString("openFile"), nsIFilePicker.modeOpen);
-    fp.appendFilters(nsIFilePicker.filterAll | nsIFilePicker.filterText | nsIFilePicker.filterImages |
+    fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterImages |
                      nsIFilePicker.filterXML | nsIFilePicker.filterHTML);
+
+    // Add filters from Mozilla Archive Format
+    FileFilters.openFiltersArray.forEach(function(curFilterEntry) {
+      fp.appendFilter(curFilterEntry[0], curFilterEntry[1]);
+    });
+
+    fp.appendFilters(nsIFilePicker.filterAll);
 
     if (fp.show() == nsIFilePicker.returnOK)
       openTopWin(fp.fileURL.spec);
