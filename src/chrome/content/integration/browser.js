@@ -78,8 +78,12 @@ function BrowserOpenFileWindow()
 
     fp.appendFilters(nsIFilePicker.filterAll);
 
-    if (fp.show() == nsIFilePicker.returnOK)
+    // Show the filepicker, and remember the selected file filter
+    fp.filterIndex = DynamicPrefs.openFilterIndex;
+    if (fp.show() == nsIFilePicker.returnOK) {
+      DynamicPrefs.openFilterIndex = fp.filterIndex;
       openTopWin(fp.fileURL.spec);
+    }
   } catch (ex) {
   }
 }
