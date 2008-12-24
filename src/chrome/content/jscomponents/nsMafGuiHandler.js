@@ -237,6 +237,7 @@ MAFGuiHandlerClass.prototype = {
       fp.filterIndex = defaultFilterIndex;
     } catch(e) { }
 
+    fp.defaultExtension = " ";
     var res = fp.show();
     if (res == Components.interfaces.nsIFilePicker.returnOK ||
         res == Components.interfaces.nsIFilePicker.returnReplace) {
