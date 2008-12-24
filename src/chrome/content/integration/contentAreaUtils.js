@@ -136,6 +136,13 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     if (filename.substring(filename.length - selectedFileType.length,
      filename.length).toLowerCase() != selectedFileType.toLowerCase()) {
       filename += selectedFileType;
+      // If an extension is added later, check if a file with the new name
+      //  already exists. This code will be replaced by a new mechanism.
+      if (MafUtils.checkFileExists(filename)) {
+        if(!browserWindow.confirm('Overwrite "' + filename + '"?')) {
+          return;
+        }
+      }
     }
 
     // Save the selected page in the web archive
