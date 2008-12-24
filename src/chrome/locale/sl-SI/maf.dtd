@@ -1,38 +1,27 @@
 <!ENTITY maf.loadArchive "Odpri arhiv">
 <!ENTITY maf.loadArchiveKey "h">
-
 <!ENTITY maf.addToArchive "Shrani stran v arhiv">
 <!ENTITY maf.addToArchiveKey "I">
-
 <!ENTITY maf.addSelectedTabsToArchive "Shrani zavihke v arhiv">
 <!ENTITY maf.addSelectedTabsToArchiveKey "z">
-
 <!ENTITY maf.addAllTabsToArchive "Shrani vse zavihke v arhivu">
 <!ENTITY maf.addAllTabsToArchiveKey "v">
-
 <!ENTITY maf.saveTabsDialogTitle "Shrani napredek odptih zavihkov">
 <!ENTITY maf.openTabsDialogTitle "Odpri v napredku zavihkov">
-
 <!ENTITY maf.menuLabel "Mozillin arhivski zapis">
-
 <!ENTITY maf.preferences "Možnosti">
 <!ENTITY maf.preferencesKey "M">
-
 <!ENTITY maf.browseOpenArchives "Prebrskaj odprte arhive">
 <!ENTITY maf.browseOpenArchivesKey "B">
-
 <!ENTITY maf.browseOpenArchivesDialog.title "Prebrskaj odpte arhive">
-
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Naslov">
 <!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Čas arhiviranja">
 <!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "Izvorni URL">
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Krajevni URL">
-
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Odpri v zavihkih">
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Odpri v zavihkih z uporabo jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Odpri izvorne URL v zavihkih">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Zapri">
-
 <!ENTITY maf.saveSelectedTabsDialog.title "Izberite zavihke za shranjevanje v arhiv">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Naslov">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
@@ -40,6 +29,5 @@
 <!ENTITY maf.saveSelectedTabsDialog.btnselectall "Izberi vse">
 <!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Počisti izbiro">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Zapri">
-
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
 <!ENTITY maf.addToArchiveAccessKey "P">

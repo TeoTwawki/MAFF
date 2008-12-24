@@ -1,45 +1,33 @@
 <!ENTITY maf.loadArchive "Otwórz archiwum">
-<!ENTITY maf.loadArchiveKey "h">
-
+<!ENTITY maf.loadArchiveKey "O">
 <!ENTITY maf.addToArchive "Zapisz stronę w archiwum">
-<!ENTITY maf.addToArchiveKey "r">
-
-<!ENTITY maf.addSelectedTabsToArchive "Zapisz panele w archiwum">
-<!ENTITY maf.addSelectedTabsToArchiveKey "l">
-
-<!ENTITY maf.addAllTabsToArchive "Zapisz wszystkie panele w archiwum">
-<!ENTITY maf.addAllTabsToArchiveKey "e">
-
-<!ENTITY maf.saveTabsDialogTitle "Zapisywanie otwartych paneli">
-<!ENTITY maf.openTabsDialogTitle "Otwieranie zapisanych paneli">
-
+<!ENTITY maf.addToArchiveKey "T">
+<!ENTITY maf.addSelectedTabsToArchive "Zapisz karty w archiwum">
+<!ENTITY maf.addSelectedTabsToArchiveKey "K">
+<!ENTITY maf.addAllTabsToArchive "Zapisz wszystkie karty w archiwum">
+<!ENTITY maf.addAllTabsToArchiveKey "W">
+<!ENTITY maf.saveTabsDialogTitle "Zapisz postęp otwartych kart">
+<!ENTITY maf.openTabsDialogTitle "Otwórz w kartach postępu">
 <!ENTITY maf.menuLabel "Mozilla Archive Format">
-
-<!ENTITY maf.preferences "Ustawienia...">
+<!ENTITY maf.preferences "Ustawienia">
 <!ENTITY maf.preferencesKey "U">
-
-<!ENTITY maf.browseOpenArchives "Przeglądaj otwarte archiwa...">
+<!ENTITY maf.browseOpenArchives "Przeglądaj otwarte archiwa">
 <!ENTITY maf.browseOpenArchivesKey "P">
-
-<!ENTITY maf.browseOpenArchivesDialog.title "Przeglądarka otwartych archiwów">
-
+<!ENTITY maf.browseOpenArchivesDialog.title "Przeglądaj otwarte archiwa">
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Tytuł">
-<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Czas archiwum">
+<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Czas archiwizacji">
 <!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "Oryginalny URL">
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Lokalny URL">
-
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Otwórz w panelach">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Otwórz w panelach używając jar:">
-<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Otwórz oryginalne URLe w panelach">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Otwórz w kartach">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Otwórz w kartach używając jar:">
+<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Otwórz oryginalne adresy URL w kartach">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Zamknij">
-
-<!ENTITY maf.saveSelectedTabsDialog.title "Wybierz panele w celu zapisania w archiwum">
-<!ENTITY maf.saveSelectedTabsDialog.tree.title "Nazwa">
+<!ENTITY maf.saveSelectedTabsDialog.title "Zaznacz karty do zapisania w archiwum">
+<!ENTITY maf.saveSelectedTabsDialog.tree.title "Tytuł">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Zapisz wybrane w archiwum">
-<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
-<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
+<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Zapisz zaznaczone w archiwum">
+<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Zaznacz wszystkie">
+<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Odznacz">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Zamknij">
-
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
-<!ENTITY maf.addToArchiveAccessKey "P">
+<!ENTITY maf.addToArchiveAccessKey "D">

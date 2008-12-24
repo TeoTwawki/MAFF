@@ -1,45 +1,33 @@
 <!ENTITY maf.loadArchive "Ouvrir une archive">
 <!ENTITY maf.loadArchiveKey "h">
-
-<!ENTITY maf.addToArchive "Enregistrer la page dans une archive">
+<!ENTITY maf.addToArchive "Enregistrer la page dans l&apos;archive">
 <!ENTITY maf.addToArchiveKey "I">
-
-<!ENTITY maf.addSelectedTabsToArchive "Enregistrer les onglets dans une archive">
-<!ENTITY maf.addSelectedTabsToArchiveKey "b">
-
-<!ENTITY maf.addAllTabsToArchive "Enregistrer tous les onglets dans une archive">
+<!ENTITY maf.addSelectedTabsToArchive "Sauvegarder les onglets dans une archive">
+<!ENTITY maf.addSelectedTabsToArchiveKey "S">
+<!ENTITY maf.addAllTabsToArchive "Enregistrer tous les onglets dans l&apos;archive">
 <!ENTITY maf.addAllTabsToArchiveKey "T">
-
-<!ENTITY maf.saveTabsDialogTitle "Progression de la sauvegarde des onglets">
-<!ENTITY maf.openTabsDialogTitle "Progression de l'ouverture des onglets">
-
+<!ENTITY maf.saveTabsDialogTitle "Progression de l&apos;enregistrement des onglet ouverts">
+<!ENTITY maf.openTabsDialogTitle "Progression de l&apos;ouverture dans des onglets">
 <!ENTITY maf.menuLabel "Mozilla Archive Format">
-
 <!ENTITY maf.preferences "Préférences">
 <!ENTITY maf.preferencesKey "f">
-
 <!ENTITY maf.browseOpenArchives "Parcourir les archives ouvertes">
-<!ENTITY maf.browseOpenArchivesKey "B">
-
-<!ENTITY maf.browseOpenArchivesDialog.title "Explorer les archives ouvertes">
-
+<!ENTITY maf.browseOpenArchivesKey "P">
+<!ENTITY maf.browseOpenArchivesDialog.title "Parcourir les archives ouvertes">
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Titre">
-<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Date/heure de l'archive">
-<!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "URL d'origine">
+<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Temps de l&apos;archive">
+<!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "URL originale">
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "URL locale">
-
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Ouvrir dans des onglets">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Ouvrir dans des onglets en utilisant jar:">
-<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Ouvrir les URLs d'origine dans des onglets">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Ouvrir dans des onglets en utilisant le protocole « jar: »">
+<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Ouvrir les URLs originales dans des onglets">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Fermer">
-
-<!ENTITY maf.saveSelectedTabsDialog.title "Sélectionner les onglets à sauvegarder dans l'archive">
+<!ENTITY maf.saveSelectedTabsDialog.title "Sélectionner les onglets à enregistrer dans l&apos;archive">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Titre">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Sauvegarder la sélection dans l'archive">
-<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
-<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
+<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Enregistrer la sélection dans l&apos;archive">
+<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Tout sélectionner">
+<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Effacer la sélection">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Fermer">
-
 <!ENTITY maf.browseOpenArchivesAccessKey "R">
 <!ENTITY maf.addToArchiveAccessKey "P">

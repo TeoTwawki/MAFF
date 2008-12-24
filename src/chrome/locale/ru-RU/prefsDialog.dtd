@@ -1,8 +1,5 @@
-<!-- General window controls -->
 <!ENTITY window.title "Preferences">
 <!ENTITY browsebutton.label "Browse...">
-
-<!-- Main pane -->
 <!ENTITY pane.main.label "Main">
 <!ENTITY open.caption "Open">
 <!ENTITY open.action.grouplabel "When an archive is opened:">
@@ -17,8 +14,6 @@
 <!ENTITY save.caption "Save">
 <!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
 <!ENTITY save.metadata.extended.accesskey "v">
-
-<!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.fileassociations.label "File associations">
 <!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
 <!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
@@ -28,8 +23,6 @@
 <!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
 <!ENTITY associate.mhtml.accesskey "a">
 <!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
-
-<!-- Advanced pane -->
 <!ENTITY pane.advanced.label "Advanced">
 <!ENTITY temp.caption "Temporary files">
 <!ENTITY temp.folder.label "Temporary folder:">
@@ -39,7 +32,7 @@
 <!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
 <!ENTITY open.rewriteurls.accesskey "R">
 <!ENTITY save.component.grouplabel "When saving complete web page contents:">
-<!ENTITY save.component.standard.label "Use browser's standard save system">
+<!ENTITY save.component.standard.label "Use browser&apos;s standard save system">
 <!ENTITY save.component.standard.accesskey "b">
 <!ENTITY save.component.maf.label "Use MAF internal save component (advanced)">
 <!ENTITY save.component.maf.accesskey "M">

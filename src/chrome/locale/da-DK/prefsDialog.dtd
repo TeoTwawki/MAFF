@@ -1,45 +1,38 @@
-<!-- General window controls -->
-<!ENTITY window.title "Preferences">
-<!ENTITY browsebutton.label "Browse...">
-
-<!-- Main pane -->
-<!ENTITY pane.main.label "Main">
-<!ENTITY open.caption "Open">
-<!ENTITY open.action.grouplabel "When an archive is opened:">
-<!ENTITY open.action.tabs.label "Open contents in new tabs">
-<!ENTITY open.action.tabs.accesskey "O">
-<!ENTITY open.action.ask.label "Show list of open archives, and ask for action">
-<!ENTITY open.action.ask.accesskey "S">
-<!ENTITY open.action.remember.label "Only add to the list of open archives, showing nothing">
+<!ENTITY window.title "Indstillinger">
+<!ENTITY browsebutton.label "Gennemse...">
+<!ENTITY pane.main.label "Hoved">
+<!ENTITY open.caption "Åbn">
+<!ENTITY open.action.grouplabel "Når et arkiv åbnes:">
+<!ENTITY open.action.tabs.label "Åbn indhold i nyt faneblad">
+<!ENTITY open.action.tabs.accesskey "b">
+<!ENTITY open.action.ask.label "Vis liste over åbne arkiver, og spørg om handling">
+<!ENTITY open.action.ask.accesskey "V">
+<!ENTITY open.action.remember.label "Tilføj kun til liste over åbne arkiver, vis ingenting">
 <!ENTITY open.action.remember.accesskey "n">
-<!ENTITY alert.onsinglepagecomplete.label "Show a message box when completing a single page archival">
-<!ENTITY alert.onsinglepagecomplete.accesskey "w">
-<!ENTITY save.caption "Save">
-<!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
-<!ENTITY save.metadata.extended.accesskey "v">
-
-<!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.fileassociations.label "File associations">
-<!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
-<!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
-<!ENTITY associate.adminprivs.description "This operation might require administrator privileges.">
-<!ENTITY associate.maff.label "Create association for .maff extension">
+<!ENTITY alert.onsinglepagecomplete.label "Vis en meddelelsesboks ved fuldførelse af arkivering af en enkelt side">
+<!ENTITY alert.onsinglepagecomplete.accesskey "m">
+<!ENTITY save.caption "Gem">
+<!ENTITY save.metadata.extended.label "Gem udvidede metadata i MAFF-arkiver">
+<!ENTITY save.metadata.extended.accesskey "u">
+<!ENTITY pane.fileassociations.label "Fil-associationer">
+<!ENTITY associate.windowsonly.description "Denne funktionalitet er kun tilgængelig under Windows.">
+<!ENTITY associate.buttons.description "Klik på følgende knapper for at associere Firefox med filtyperne der håndteres af MAF.">
+<!ENTITY associate.adminprivs.description "Denne handlig kan kræve administratorrettigheder.">
+<!ENTITY associate.maff.label "Opret association for .maff filtypen">
 <!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
+<!ENTITY associate.mhtml.label "Opret association for .mht og .mhtml filtyperne">
 <!ENTITY associate.mhtml.accesskey "a">
-<!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
-
-<!-- Advanced pane -->
-<!ENTITY pane.advanced.label "Advanced">
-<!ENTITY temp.caption "Temporary files">
-<!ENTITY temp.folder.label "Temporary folder:">
-<!ENTITY temp.folder.accesskey "T">
-<!ENTITY temp.clearonexit.label "Clear temporary folder when browser exits">
-<!ENTITY temp.clearonexit.accesskey "C">
-<!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
-<!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY save.component.grouplabel "When saving complete web page contents:">
-<!ENTITY save.component.standard.label "Use browser's standard save system">
+<!ENTITY associate.uninstall.description "Bemærk: Disse associationer vil ikke blive fjernet ved afinstallation af MAF eller Firefox. Du kan administrere dine filassociationer ved hjælp af Windows kontrolpanel.">
+<!ENTITY pane.advanced.label "Avanceret">
+<!ENTITY temp.caption "Midlertidige filer">
+<!ENTITY temp.folder.label "Midlertidig mappe:">
+<!ENTITY temp.folder.accesskey "t">
+<!ENTITY temp.clearonexit.label "Ryd midlertidig mappe når browseren lukkes">
+<!ENTITY temp.clearonexit.accesskey "y">
+<!ENTITY open.rewriteurls.label "Omskriv absolutte URLer i åbne arkiver">
+<!ENTITY open.rewriteurls.accesskey "r">
+<!ENTITY save.component.grouplabel "Ved gem af komplet webside-indhold:">
+<!ENTITY save.component.standard.label "Brug browsers standard gem-system">
 <!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.maf.label "Use MAF internal save component (advanced)">
+<!ENTITY save.component.maf.label "Brug MAF internt gem-komponent (avanceret)">
 <!ENTITY save.component.maf.accesskey "M">

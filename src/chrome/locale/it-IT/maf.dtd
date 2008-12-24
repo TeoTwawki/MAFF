@@ -1,45 +1,33 @@
 <!ENTITY maf.loadArchive "Apri archivio MAF">
 <!ENTITY maf.loadArchiveKey "A">
-
 <!ENTITY maf.addToArchive "Salva pagina come archivio MAF">
 <!ENTITY maf.addToArchiveKey "S">
-
-<!ENTITY maf.addSelectedTabsToArchive "Salva le TAB nell'archivio">
+<!ENTITY maf.addSelectedTabsToArchive "Salva le schede nell&apos;archivio">
 <!ENTITY maf.addSelectedTabsToArchiveKey "l">
-
 <!ENTITY maf.addAllTabsToArchive "Salva tutte le schede come archivio MAF">
 <!ENTITY maf.addAllTabsToArchiveKey "T">
-
 <!ENTITY maf.saveTabsDialogTitle "Salvataggio schede aperte in corso...">
 <!ENTITY maf.openTabsDialogTitle "Apertura schede in corso...">
-
 <!ENTITY maf.menuLabel "Mozilla Archive Format">
-
 <!ENTITY maf.preferences "Preferenze...">
 <!ENTITY maf.preferencesKey "f">
-
 <!ENTITY maf.browseOpenArchives "Sfoglia archivi aperti">
 <!ENTITY maf.browseOpenArchivesKey "p">
-
 <!ENTITY maf.browseOpenArchivesDialog.title "Sfoglia archivi aperti">
-
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Titolo">
 <!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Orario di archiviazione">
 <!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "URL originale">
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "URL locale">
-
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Apri in schede">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Apri in schede quando si usa jar:">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Apri in schede usando jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Apri URL originali in schede">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Chiudi">
-
-<!ENTITY maf.saveSelectedTabsDialog.title "Seleziona le TAB da salvare nell'archivio">
+<!ENTITY maf.saveSelectedTabsDialog.title "Seleziona le schede da salvare nell&apos;archivio">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Titolo">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Salva quelle selezionate nell'archivio">
-<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
-<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
+<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Salva quelle selezionate nell&apos;archivio">
+<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Seleziona tutto">
+<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Annulla selezione">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Chiudi">
-
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
 <!ENTITY maf.addToArchiveAccessKey "P">

@@ -1,45 +1,38 @@
-<!-- General window controls -->
-<!ENTITY window.title "Preferences">
-<!ENTITY browsebutton.label "Browse...">
-
-<!-- Main pane -->
-<!ENTITY pane.main.label "Main">
-<!ENTITY open.caption "Open">
-<!ENTITY open.action.grouplabel "When an archive is opened:">
-<!ENTITY open.action.tabs.label "Open contents in new tabs">
+<!ENTITY window.title "Ustawienia">
+<!ENTITY browsebutton.label "Przeglądaj...">
+<!ENTITY pane.main.label "Główne">
+<!ENTITY open.caption "Otwórz">
+<!ENTITY open.action.grouplabel "Gdy archiwum jest otwierane:">
+<!ENTITY open.action.tabs.label "Otwórz zawartość w nowych kartach">
 <!ENTITY open.action.tabs.accesskey "O">
-<!ENTITY open.action.ask.label "Show list of open archives, and ask for action">
-<!ENTITY open.action.ask.accesskey "S">
-<!ENTITY open.action.remember.label "Only add to the list of open archives, showing nothing">
-<!ENTITY open.action.remember.accesskey "n">
-<!ENTITY alert.onsinglepagecomplete.label "Show a message box when completing a single page archival">
-<!ENTITY alert.onsinglepagecomplete.accesskey "w">
-<!ENTITY save.caption "Save">
-<!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
-<!ENTITY save.metadata.extended.accesskey "v">
-
-<!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.fileassociations.label "File associations">
-<!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
-<!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
-<!ENTITY associate.adminprivs.description "This operation might require administrator privileges.">
-<!ENTITY associate.maff.label "Create association for .maff extension">
-<!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
-<!ENTITY associate.mhtml.accesskey "a">
-<!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
-
-<!-- Advanced pane -->
-<!ENTITY pane.advanced.label "Advanced">
-<!ENTITY temp.caption "Temporary files">
-<!ENTITY temp.folder.label "Temporary folder:">
+<!ENTITY open.action.ask.label "Wyświetl listę otwartych archiwów i zapytaj o działanie">
+<!ENTITY open.action.ask.accesskey "W">
+<!ENTITY open.action.remember.label "Dodaj do listy otwartych archiwów - nic nie wyświetlaj">
+<!ENTITY open.action.remember.accesskey "D">
+<!ENTITY alert.onsinglepagecomplete.label "Po zakończeniu archiwizacji wyświetlaj powiadomienie">
+<!ENTITY alert.onsinglepagecomplete.accesskey "K">
+<!ENTITY save.caption "Zapisz">
+<!ENTITY save.metadata.extended.label "Zapisz rozszerzone metadane w archiwach MAFF">
+<!ENTITY save.metadata.extended.accesskey "Z">
+<!ENTITY pane.fileassociations.label "Skojarzenia plików">
+<!ENTITY associate.windowsonly.description "Ta funkcjonalność jest dostępna tylko w systemie Windows.">
+<!ENTITY associate.buttons.description "Aby skojarzyć Firefoksa z typami plików obsługiwanymi przez MAF, kliknij następujące przyciski.">
+<!ENTITY associate.adminprivs.description "Ta operacja wymaga uprawnień administratora.">
+<!ENTITY associate.maff.label "Utwórz skojarzenie dla rozszerzenia .maff">
+<!ENTITY associate.maff.accesskey "M">
+<!ENTITY associate.mhtml.label "Utwórz skojarzenie dla rozszerzeń .mht i.mhtml">
+<!ENTITY associate.mhtml.accesskey "H">
+<!ENTITY associate.uninstall.description "Informacja: Skojarzenia plików utworzone tutaj nie będą usuwane podczas dezinstalacji MAF lub Firefoksa. Możesz zarządzać skojarzeniami plików z poziomu Panelu sterowania systemu Windows.">
+<!ENTITY pane.advanced.label "Zaawansowane">
+<!ENTITY temp.caption "Pliki tymczasowe">
+<!ENTITY temp.folder.label "Folder plików tymczasowych:">
 <!ENTITY temp.folder.accesskey "T">
-<!ENTITY temp.clearonexit.label "Clear temporary folder when browser exits">
+<!ENTITY temp.clearonexit.label "Wyczyść folder plików tymczasowych podczas zamykania przeglądarki">
 <!ENTITY temp.clearonexit.accesskey "C">
-<!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
-<!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY save.component.grouplabel "When saving complete web page contents:">
-<!ENTITY save.component.standard.label "Use browser's standard save system">
-<!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.maf.label "Use MAF internal save component (advanced)">
-<!ENTITY save.component.maf.accesskey "M">
+<!ENTITY open.rewriteurls.label "Zapisz ponownie absolutne adresy URL w otwartych archiwach">
+<!ENTITY open.rewriteurls.accesskey "P">
+<!ENTITY save.component.grouplabel "Podczas zapisywania całej zawartości strony internetowej:">
+<!ENTITY save.component.standard.label "Użyj standardowego systemu przeglądarki">
+<!ENTITY save.component.standard.accesskey "S">
+<!ENTITY save.component.maf.label "Użyj wewnętrznego komponentu zapisu MAF (zaawansowane)">
+<!ENTITY save.component.maf.accesskey "W">

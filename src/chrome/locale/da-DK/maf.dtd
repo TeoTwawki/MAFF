@@ -1,45 +1,33 @@
-<!ENTITY maf.loadArchive "�n Arkiv">
+<!ENTITY maf.loadArchive "Åbn arkiv">
 <!ENTITY maf.loadArchiveKey "v">
-
-<!ENTITY maf.addToArchive "Gem Side i Arkiv">
-<!ENTITY maf.addToArchiveKey "I">
-
-<!ENTITY maf.addSelectedTabsToArchive "Gem Faneblade i Arkiv">
+<!ENTITY maf.addToArchive "Gem side i arkiv">
+<!ENTITY maf.addToArchiveKey "i">
+<!ENTITY maf.addSelectedTabsToArchive "Gem faneblade i arkiv">
 <!ENTITY maf.addSelectedTabsToArchiveKey "b">
-
-<!ENTITY maf.addAllTabsToArchive "Gem Alle Faneblade i Arkiv">
+<!ENTITY maf.addAllTabsToArchive "Gem alle faneblade i arkiv">
 <!ENTITY maf.addAllTabsToArchiveKey "k">
-
-<!ENTITY maf.saveTabsDialogTitle "Gem �ne Faneblade Status">
-<!ENTITY maf.openTabsDialogTitle "�n i Faneblade Status">
-
+<!ENTITY maf.saveTabsDialogTitle "Gem åbne faneblade-status">
+<!ENTITY maf.openTabsDialogTitle "Åbn i faneblade-status">
 <!ENTITY maf.menuLabel "Mozilla Arkiv Format">
-
 <!ENTITY maf.preferences "Indstillinger">
 <!ENTITY maf.preferencesKey "I">
-
-<!ENTITY maf.browseOpenArchives "Gennemse �ne Arkiver">
+<!ENTITY maf.browseOpenArchives "Gennemse åbne arkiver">
 <!ENTITY maf.browseOpenArchivesKey "G">
-
-<!ENTITY maf.browseOpenArchivesDialog.title "Gennemse �ne Arkiver">
-
+<!ENTITY maf.browseOpenArchivesDialog.title "Gennemse åbne arkiver">
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Titel">
 <!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Arkiveringstidspunkt">
 <!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "Oprindelig URL">
 <!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Lokal URL">
-
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "�n i Faneblade">
-<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "�n i Faneblade med jar:">
-<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "�n Oprindelige URLs i Faneblade">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "Åbn i faneblade">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Åbn i faneblade med jar:">
+<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Åbn oprindelige URLer i faneblade">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Luk">
-
-<!ENTITY maf.saveSelectedTabsDialog.title "V�g faneblade til arkivering">
+<!ENTITY maf.saveSelectedTabsDialog.title "Vælg faneblade der skal gemems i arkiv">
 <!ENTITY maf.saveSelectedTabsDialog.tree.title "Titel">
 <!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Gem Valgte i Arkiv">
-<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
-<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
+<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Gem valgte i arkiv">
+<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Vælg alle">
+<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Ryd valgte">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Luk">
-
 <!ENTITY maf.browseOpenArchivesAccessKey "m">
 <!ENTITY maf.addToArchiveAccessKey "I">
