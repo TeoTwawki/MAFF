@@ -1,0 +1,33 @@
+<!ENTITY maf.loadArchive "oeffne Archiv">
+<!ENTITY maf.loadArchiveKey "h">
+<!ENTITY maf.addToArchive "Seite Ins Archiv sichern">
+<!ENTITY maf.addToArchiveKey "I">
+<!ENTITY maf.addSelectedTabsToArchive "selektiere Tabs ins Archiv">
+<!ENTITY maf.addSelectedTabsToArchiveKey "b">
+<!ENTITY maf.addAllTabsToArchive "alle Tabs ins Archiv sichern">
+<!ENTITY maf.addAllTabsToArchiveKey "T">
+<!ENTITY maf.saveTabsDialogTitle "Save Open Tabs Progress">
+<!ENTITY maf.openTabsDialogTitle "Open In Tabs Progress">
+<!ENTITY maf.menuLabel "Mozilla Archive Format">
+<!ENTITY maf.preferences "Preferenzen">
+<!ENTITY maf.preferencesKey "f">
+<!ENTITY maf.browseOpenArchives "zeige offene Archive">
+<!ENTITY maf.browseOpenArchivesKey "g">
+<!ENTITY maf.browseOpenArchivesDialog.title "offene Archive">
+<!ENTITY maf.browseOpenArchivesDialog.tree.title "Titel">
+<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Archiv Zeit">
+<!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "Original URL">
+<!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Lokale URL">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "oeffne in Tabs">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "oeffne in Tabs mit Protokoll jar:">
+<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "oeffne originale URLs in Tabs">
+<!ENTITY maf.browseOpenArchivesDialog.btnclose "schliesse">
+<!ENTITY maf.saveSelectedTabsDialog.title "Selektiere Tabs fuer Archivierung">
+<!ENTITY maf.saveSelectedTabsDialog.tree.title "Titel">
+<!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
+<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "selektierte ins Archiv sichern">
+<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
+<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
+<!ENTITY maf.saveSelectedTabsDialog.btnclose "schliessen">
+<!ENTITY maf.browseOpenArchivesAccessKey "M">
+<!ENTITY maf.addToArchiveAccessKey "P">

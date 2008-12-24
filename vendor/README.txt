@@ -33,6 +33,17 @@ Every first-level subfolder maps to a different project:
     folder are updated, the differences are propagated to the files in the
     main source tree, for all the functions that are redefined there.
 
+  * "babelzilla" subfolder
+
+    Contains the chrome locale folders as downloaded from the BabelZilla Web
+    Translation System, using the "Download locales (missing strings: skipped)"
+    function.
+
+    These localized files do not include the strings that are still untranslated
+    on BabelZilla, thus cannot be included in the release version as they are.
+    These files are instead required to build the next version to be feeded to
+    the WTS, combined with the new en-US locale.
+
 
 
 Retrieving the original Mozilla files

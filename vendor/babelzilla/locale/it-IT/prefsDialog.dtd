@@ -1,0 +1,38 @@
+<!ENTITY window.title "Preferenze">
+<!ENTITY browsebutton.label "Sfoglia...">
+<!ENTITY pane.main.label "Principale">
+<!ENTITY open.caption "Apri">
+<!ENTITY open.action.grouplabel "Quando viene aperto un archivio:">
+<!ENTITY open.action.tabs.label "Apri il contenuto in una nuova scheda">
+<!ENTITY open.action.tabs.accesskey "A">
+<!ENTITY open.action.ask.label "Mostra l&apos;elenco degli archivi aperti, e chiedi cosa fare">
+<!ENTITY open.action.ask.accesskey "M">
+<!ENTITY open.action.remember.label "Aggiungi solamente all&apos;elenco degli archivi aperti, senza mostrare nulla">
+<!ENTITY open.action.remember.accesskey "g">
+<!ENTITY alert.onsinglepagecomplete.label "Mostra una finestra di messaggio quando l&apos;archiviazione di una singola pagina è completata">
+<!ENTITY alert.onsinglepagecomplete.accesskey "o">
+<!ENTITY save.caption "Salva">
+<!ENTITY save.metadata.extended.label "Salva metadati estesi negli archivi MAFF">
+<!ENTITY save.metadata.extended.accesskey "l">
+<!ENTITY pane.fileassociations.label "Associazioni dei file">
+<!ENTITY associate.windowsonly.description "Questa funzionalità è disponibile solo su Windows.">
+<!ENTITY associate.buttons.description "Fare clic sui bottoni seguenti per associare Firefox con i tipi di file gestiti da MAF.">
+<!ENTITY associate.adminprivs.description "Questa operazione richiede privilegi di amministratore.">
+<!ENTITY associate.maff.label "Crea associazione per l&apos;estensione .maff">
+<!ENTITY associate.maff.accesskey "C">
+<!ENTITY associate.mhtml.label "Crea associazione per le estensioni .mht e .mhtml">
+<!ENTITY associate.mhtml.accesskey "r">
+<!ENTITY associate.uninstall.description "Nota: Le associazioni create qui non saranno rimosse quando MAF o Firefox sarà disinstallato. È possibile gestire le associazioni dei file usando il pannello di controllo di Windows.">
+<!ENTITY pane.advanced.label "Avanzate">
+<!ENTITY temp.caption "File temporanei">
+<!ENTITY temp.folder.label "Cartella temporanea:">
+<!ENTITY temp.folder.accesskey "t">
+<!ENTITY temp.clearonexit.label "Svuota la cartella temporanea quando si chiude il browser">
+<!ENTITY temp.clearonexit.accesskey "S">
+<!ENTITY open.rewriteurls.label "Riscrivi gli URL assoluti negli archivi aperti">
+<!ENTITY open.rewriteurls.accesskey "i">
+<!ENTITY save.component.grouplabel "Quando si salva il contenuto completo di una pagina:">
+<!ENTITY save.component.standard.label "Usa il sistema di salvataggio standard del browser">
+<!ENTITY save.component.standard.accesskey "U">
+<!ENTITY save.component.maf.label "Usa il componente di salvataggio interno di MAF (avanzato)">
+<!ENTITY save.component.maf.accesskey "p">
