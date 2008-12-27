@@ -326,26 +326,9 @@ maf.prototype = {
    */
   openListInTabs: function(urlList) {
     var oBrowser = browserWindow.getBrowser();
-
-    try {
-      var triedFirstTab = false;
-      for (var i=0; i < urlList.length; i++) {
-        if (triedFirstTab) {
-          oBrowser.addTab(urlList[i]);
-        } else {
-          triedFirstTab = true;
-          if ((oBrowser.browsers.length == 1) && (oBrowser.currentURI.spec == "about:blank")) {
-            oBrowser.loadURI(urlList[i], null, null);
-          } else {
-            oBrowser.addTab(urlList[i]);
-          }
-
-        }
-      }
-    } catch(e) {
-      mafdebug(e);
+    for (var i=0; i < urlList.length; i++) {
+      oBrowser.addTab(urlList[i]);
     }
-
   },
 
   _makeLocalLinksAbsolute: function(domDoc, baseUrl, originalURL) {
