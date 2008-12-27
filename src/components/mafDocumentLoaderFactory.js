@@ -67,6 +67,20 @@ if (!sharedData) {
 }
 
 /**
+ * Helper object for nsIDocumentLoaderFactory.createInstance implementation.
+ */
+var EmptyStreamListener = {
+  QueryInterface: XPCOMUtils.generateQI([Ci.nsIStreamListener]),
+
+  // --- nsIStreamListener interface functions ---
+
+  onStartRequest: function(aRequest, aContext) { },
+  onStopRequest: function(aRequest, aContext, aStatusCode) { },
+  onDataAvailable: function (aRequest, aContext, aInputStream, aOffset,
+   aCount) { }
+};
+
+/**
  * Construct the MafDocumentLoaderFactory object.
  *
  * Document loader factories are XPCOM services, so they should be constructed
@@ -106,17 +120,31 @@ MafDocumentLoaderFactory.prototype = {
       throw Cr.NS_ERROR_NOT_IMPLEMENTED;
 
     // Currently we can only open MAF archives from "file://" URLs.
-    localFilePath = aChannel.URI.QueryInterface(Ci.nsIFileURL).file.path;
+    var localFilePath = aChannel.URI.QueryInterface(Ci.nsIFileURL).file.path;
 
-    // Open the archive in another tab
-    sharedData.mafObjectOfCurrentWindow.openFromArchive(null, localFilePath);
+    // Extract the archive, and store the URI of the first page. Other pages are
+    //  opened in other tabs at this point, if required. Note: there is
+    //  currently no mechanism in place to avoid extracting the archive or
+    //  opening the other tabs multiple times if the original page is refreshed.
+    var contentURISpec = sharedData.mafObjectOfCurrentWindow.openFromArchive(
+     null, localFilePath, true);
+    // If no data is available or should be shown, display an empty page
+    if (!contentURISpec) {
+      contentURISpec = "about:blank";
+    }
 
-    // If we don't return both the content viewer and the stream listener,
-    //  we should actually throw an exception. However, to avoid the exception
-    //  appearing in the error console, we return null, breaking the function's
-    //  contract. This behavior is the same as the one of MAF 0.6.x.
-    aDocListenerResult = null;
-    return null;
+    // Create and start a content viewer for the archive contents. For now,
+    //  assume that the content type is "text/html".
+    var contentURI = Cc['@mozilla.org/network/io-service;1']
+     .getService(Ci.nsIIOService).newURI(contentURISpec, "utf-8", null);
+    var originalContentViewer = this._startActualContentViewer(contentURI,
+     "text/html", aLoadGroup, aContainer, aExtraInfo);
+
+    // Return the content viewer, which is already receiving data from our
+    //  channel, and a dummy stream listener, to throw away data from the
+    //  original channel (aChannel). 
+    aDocListenerResult.value = EmptyStreamListener;
+    return originalContentViewer;
   },
 
   createInstanceForDocument: function(aContainer, aDocument, aCommand) {
@@ -129,6 +157,46 @@ MafDocumentLoaderFactory.prototype = {
 
   createBlankDocument: function(aLoadGroup, aPrincipal) {
     return null; // See the comment inside createInstanceForDocument.
+  },
+
+  // --- Private functions ---
+
+  /**
+   * Creates and starts a content viewer from the application's built-in
+   *  Document Loader Factory, to display the specified URI. The provided
+   *  content viewer can then be returned from an implementation of
+   *  nsIDocumentLoaderFactory.createInstance.
+   *
+   * @param aContentURI    The URI of the content to be displayed.
+   * @param aContentType   The MIME content type of the content to be displayed.
+   * @param aLoadGroup     See nsIDocumentLoaderFactory.createInstance.
+   * @param aContainer     See nsIDocumentLoaderFactory.createInstance.
+   * @param aExtraInfo     See nsIDocumentLoaderFactory.createInstance.
+   *
+   * @return   The newly constructed content viewer.
+   */
+  _startActualContentViewer: function(aContentURI, aContentType, aLoadGroup,
+   aContainer, aExtraInfo) {
+    // Create a new channel to feed the new content viewer
+    var contentChannel = Cc['@mozilla.org/network/io-service;1']
+     .getService(Ci.nsIIOService).newChannelFromURI(aContentURI);
+
+    // Ask the application's built-in document loader factory to provide a
+    //  content viewer and a stream listener for our channel
+    var originalDocListenerResult = {};
+    var originalContentViewer =
+     Cc['@mozilla.org/content/document-loader-factory;1']
+     .getService(Ci.nsIDocumentLoaderFactory)
+     .createInstance("view", contentChannel, aLoadGroup, aContentType,
+     aContainer, aExtraInfo, originalDocListenerResult);
+    originalDocListener = originalDocListenerResult.value.QueryInterface(
+     Ci.nsIStreamListener);
+
+    // Start feeding data to the provided stream listener
+    contentChannel.asyncOpen(originalDocListener, null);
+
+    // Return the now running content viewer
+    return originalContentViewer;
   }
 };
 
