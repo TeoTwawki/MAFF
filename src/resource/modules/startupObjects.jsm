@@ -121,55 +121,119 @@ var StartupInitializer = {
    *  profile is unloaded.
    */
   initFromCurrentProfile: function() {
-    // Get references to the XPCOM services used here. The nsIMIMEService
-    //  interface is also exposed by the component whose contract ID is
-    //  "@mozilla.org/uriloader/external-helper-app-service;1", but
-    //  "@mozilla.org/mime;1" can be used indifferently.
-    var mimeService = Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService);
+    // Register our Document Loader Factory for every handled file type. MAF is
+    //  the extension that will preferably handle the MAFF file format, while it
+    //  will handle MHTML only if no other extension does it.
+    new DlfRegisterer("@amadzone.org/maf/document-loader-factory;1")
+     .addFileExtension("mhtml", "application/x-mht",  false)
+     .addFileExtension("mht",   "application/x-mht",  false)
+     .addFileExtension("maff",  "application/x-maff", true)
+     .register();
+  },
+};
 
-    // This object will be filled in with properties whose name is the MIME type
-    //  we need to handle, and whose value is true if MAF is the extension that
-    //  must preferably handle that MIME type.
-    mimeList = {};
+/**
+ * This object takes care of registering the specified Document Loader Factory
+ *  in the "Gecko-Content-Viewers" category, for specific MIME types or file
+ *  extensions.
+ *
+ * To use this object, firstly call the addMimeType or addFileExtension methods,
+ *  then call the register method.
+ *
+ * All the changes made by this object are valid only for the current
+ *  application session.
+ *
+ * For more information on the document loading process, see
+ *  <http://www.mozilla.org/newlayout/doc/webwidget.html> and
+ *  <https://developer.mozilla.org/En/The_life_of_an_HTML_HTTP_request>
+ *  (retrieved 2008-12-27).
+ */
+function DlfRegisterer(aDlfContractId) {
+  this.dlfContractId = aDlfContractId;
+}
 
-    // First of all, for all the file extensions we handle, we must ensure that
-    //  the application is able to determine a specific MIME type. If there are
-    //  no other means to determine the MIME type, the last resort is the
-    //  "ext-to-type-mapping" category, so we set a key there for every
-    //  file extension to be handled. 
-    [
-     {ext: "mhtml", mimeType: "application/x-mht",  replace: false},
-     {ext: "mht",   mimeType: "application/x-mht",  replace: false},
-     {ext: "maff",  mimeType: "application/x-maff", replace: true}
-    ].forEach(function(item) {
-      // Add the entry, without persisting it, and replacing an existing entry
-      //  only for the file types that are preferably managed by this extension
-      this._addCategoryEntryForSession("ext-to-type-mapping",
-       item.ext, item.mimeType, item.replace);
-      // While we are here, find out the actual MIME type that will be used for
-      //  the file extension, and populate the mimeList array accordingly. See
-      //  <https://developer.mozilla.org/En/How_Mozilla_determines_MIME_Types>
-      //  (retrieved 2008-11-21).
-      var realMimeType = mimeService.getTypeFromExtension(item.ext);
-      mimeList[realMimeType] = item.replace;
-    }, this);
+DlfRegisterer.prototype = {
+  // --- Public properties ---
 
-    // Next, we must register the document loader factories for the MIME types
-    //  we need to handle. Depending on the MIME type, we may need to override
-    //  a document loader factory previously registered by another extension.
-    for (var mimeTypeToHandle in mimeList) {
-      if (mimeList.hasOwnProperty(mimeTypeToHandle)) {
-        // Add the entry, without persisting it, and replacing an existing entry
-        //  only for the MIME types that are preferably managed by this
-        //  extension
+  /** Contract ID of the Document Loader Factory to be registered */
+  dlfContractId: null,
+
+  // --- Public methods and properties ---
+
+  /**
+   * Prepare for registering the DLF with the specified MIME type.
+   *
+   * @param aMimeType           The MIME type to be managed.
+   * @param aIsRecommended      True if this DLF is the one that should
+   *                             preferably handle the associated type.
+   *
+   * @return Reference to this object, for fluent interface support.
+   */
+  addMimeType: function(aMimeType, aIsRecommended) {
+    // If the the type was already added with aIsRecommended set to true, leave
+    //  it alone even if aIsRecommended is now false.
+    if (!this._mimeList[aMimeType]) {
+      this._mimeList[aMimeType] = aIsRecommended;
+    }
+    return this;
+  },
+
+  /**
+   * Prepare for registering the DLF with the MIME type actually associated with
+   *  the specified file extension.
+   *
+   * @param aExtension          The file extension to be managed.
+   * @param aPossibleMimeType   Suggestion for a possible MIME type to be
+   *                             associated with the file extension.
+   * @param aIsRecommended      True if this DLF is the one that should
+   *                             preferably handle the associated type.
+   *
+   * @return Reference to this object, for fluent interface support.
+   */
+  addFileExtension: function(aExtension, aPossibleMimeType, aIsRecommended) {
+    // First of all, for the specified file extensions, we must ensure that the
+    //  application is able to determine a specific MIME type. If there are no
+    //  other means to determine the MIME type, the last resort is the
+    //  "ext-to-type-mapping" category, so we set an entry there, replacing an
+    //  existing entry only for the file extensions that are preferably managed
+    //  by this DLF.
+    this._addCategoryEntryForSession("ext-to-type-mapping", aExtension,
+     aPossibleMimeType, aIsRecommended);
+ 
+    // Find out the actual MIME type that will be used for the file extension,
+    //  and register the DLF for handling it. See also
+    //  <https://developer.mozilla.org/En/How_Mozilla_determines_MIME_Types>
+    //  (retrieved 2008-11-21).
+    var realMimeType = this._mimeService.getTypeFromExtension(aExtension);
+    this.addMimeType(realMimeType, aIsRecommended);
+    return this;
+  },
+
+  /**
+   * Perform the actual registration.
+   */
+  register: function() {
+    // For every MIME type that was specified
+    for (var mimeTypeToHandle in this._mimeList) {
+      if (this._mimeList.hasOwnProperty(mimeTypeToHandle)) {
+        // Add the appropriate category entry, without persisting it, and
+        //  replacing an existing entry only for the MIME types that are
+        //  preferably managed by this DLF.
         this._addCategoryEntryForSession("Gecko-Content-Viewers",
-         mimeTypeToHandle, "@amadzone.org/maf/document-loader-factory;1",
-         mimeList[mimeTypeToHandle]);
+         mimeTypeToHandle, this.dlfContractId,
+         this._mimeList[mimeTypeToHandle]);
       }
     }
   },
 
   // --- Private methods and properties ---
+
+  /**
+   * This object will be filled in with properties whose name is the MIME type
+   *  we need to handle, and whose value is true if this is the DLF that should
+   *  preferably handle that MIME type.
+   */
+  _mimeList: {},
 
   /**
    * Calls nsICategoryManager.addCategoryEntry with aPersist set to false, but
@@ -196,5 +260,10 @@ var StartupInitializer = {
   },
 
   _categoryManager: Cc["@mozilla.org/categorymanager;1"]
-   .getService(Ci.nsICategoryManager)
+   .getService(Ci.nsICategoryManager),
+
+  // The nsIMIMEService interface is also exposed by the component whose
+  //  contract ID is "@mozilla.org/uriloader/external-helper-app-service;1", but
+  //  "@mozilla.org/mime;1" can be used indifferently.
+  _mimeService: Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService)
 };
