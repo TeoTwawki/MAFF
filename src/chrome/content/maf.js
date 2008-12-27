@@ -281,7 +281,7 @@ maf.prototype = {
   /**
    * Open a MAF archive and add the meta-data to the global state
    */
-  openFromArchive: function(scriptPath, archivePath) {
+  openFromArchive: function(scriptPath, archivePath, returnFirstItem) {
     var tempPath = Prefs.tempFolder;
 
     if (!scriptPath) {
@@ -305,7 +305,11 @@ maf.prototype = {
     MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
 
     if (Prefs.openAction == Prefs.OPENACTION_TABS) {
+      if(returnFirstItem) {
+        firstItem = archiveLocalURLs.value.shift();
+      }
       this.openListInTabs(archiveLocalURLs.value);
+      return firstItem;
     }
 
     if (Prefs.openAction == Prefs.OPENACTION_ASK) {
@@ -313,6 +317,8 @@ maf.prototype = {
         MafGUI.browseOpenArchives();
       }
     }
+
+    return null;
   },
 
   /**
