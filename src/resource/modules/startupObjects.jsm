@@ -125,8 +125,6 @@ var StartupInitializer = {
     //  interface is also exposed by the component whose contract ID is
     //  "@mozilla.org/uriloader/external-helper-app-service;1", but
     //  "@mozilla.org/mime;1" can be used indifferently.
-    var categoryManager = Cc["@mozilla.org/categorymanager;1"]
-     .getService(Ci.nsICategoryManager);
     var mimeService = Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService);
 
     // This object will be filled in with properties whose name is the MIME type
@@ -146,15 +144,15 @@ var StartupInitializer = {
     ].forEach(function(item) {
       // Add the entry, without persisting it, and replacing an existing entry
       //  only for the file types that are preferably managed by this extension
-      categoryManager.addCategoryEntry("ext-to-type-mapping",
-       item.ext, item.mimeType, false, item.replace);
+      this._addCategoryEntryForSession("ext-to-type-mapping",
+       item.ext, item.mimeType, item.replace);
       // While we are here, find out the actual MIME type that will be used for
       //  the file extension, and populate the mimeList array accordingly. See
       //  <https://developer.mozilla.org/En/How_Mozilla_determines_MIME_Types>
       //  (retrieved 2008-11-21).
       var realMimeType = mimeService.getTypeFromExtension(item.ext);
       mimeList[realMimeType] = item.replace;
-    });
+    }, this);
 
     // Next, we must register the document loader factories for the MIME types
     //  we need to handle. Depending on the MIME type, we may need to override
@@ -164,10 +162,39 @@ var StartupInitializer = {
         // Add the entry, without persisting it, and replacing an existing entry
         //  only for the MIME types that are preferably managed by this
         //  extension
-        categoryManager.addCategoryEntry("Gecko-Content-Viewers",
+        this._addCategoryEntryForSession("Gecko-Content-Viewers",
          mimeTypeToHandle, "@amadzone.org/maf/document-loader-factory;1",
-         false, mimeList[mimeTypeToHandle]);
+         mimeList[mimeTypeToHandle]);
       }
     }
-  }
+  },
+
+  // --- Private methods and properties ---
+
+  /**
+   * Calls nsICategoryManager.addCategoryEntry with aPersist set to false, but
+   *  if aReplace is false and the category entry already has a value, no
+   *  exception is thrown.
+   * 
+   * @param aCategory   The name of the category being modified.
+   * @param aEntry      The name of the category entry being modified.
+   * @param aValue      The value for the category entry.
+   * @param aReplace    A flag indicating whether or not to overwrite the value
+   *                    of an existing category entry.
+   */
+  _addCategoryEntryForSession: function(aCategory, aEntry, aValue, aReplace) {
+    try {
+      this._categoryManager.addCategoryEntry(aCategory, aEntry, aValue, false,
+       aReplace);
+    } catch (e) {
+      // Ignore only the NS_ERROR_INVALID_ARG result
+      if (!(e instanceof Ci.nsIXPCException) || (e.result !=
+       Cr.NS_ERROR_INVALID_ARG)) {
+        throw e;
+      }
+    }
+  },
+
+  _categoryManager: Cc["@mozilla.org/categorymanager;1"]
+   .getService(Ci.nsICategoryManager)
 };
