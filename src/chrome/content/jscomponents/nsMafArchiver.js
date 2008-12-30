@@ -33,9 +33,6 @@ function MafArchiverClass() {
 };
 
 MafArchiverClass.prototype = {
-
-  downloadPercentComplete: -1,
-
   indexfilename: "index.html",
 
   downloadComplete: false,
