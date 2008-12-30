@@ -69,6 +69,7 @@ MafArchiverClass.prototype = {
 
     /** The full path of the folder to save the document to. */
     this.tempSubPath = MafUtils.appendToDir(this.tempPath, this.folderNumber);
+    MafUtils.createDir(this.tempSubPath);
 
     /** Flag to ensure the start function isn't called twice. */
     this.started = false;
@@ -83,8 +84,10 @@ MafArchiverClass.prototype = {
     if (!this.started) {
       this.appendToExistingArchive = appendToArchive;
       this.started = true;
-      this.Maf.nativeSaveFile(this.aDocument, this.tempSubPath,
-                                 "index.html", this);
+      var dir = Components.classes["@mozilla.org/file/local;1"]
+                    .createInstance(Components.interfaces.nsILocalFile);
+      dir.initWithPath(this.tempSubPath);
+      browserWindow.saveDocument(this.aDocument, {saveDir: dir, mafEventListener: this});
     }
   },
 

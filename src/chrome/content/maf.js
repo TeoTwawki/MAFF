@@ -239,15 +239,6 @@ maf.prototype = {
     objMafArchiver.start(false); // Do not append to existing archive
   },
 
-
-  nativeSaveFile: function(aDocument, aSaveDocPath, aSaveDocFileName, aObjMafArchiver) {
-    var dir = Components.classes["@mozilla.org/file/local;1"]
-                  .createInstance(Components.interfaces.nsILocalFile);
-    dir.initWithPath(aSaveDocPath);
-    MafUtils.createDir(aSaveDocPath);
-    browserWindow.saveDocument(aDocument, {saveDir: dir, mafEventListener: aObjMafArchiver});
-  },
-
   /**
    * If a single page is saved, this is called as visual feedback to the user.
    */
