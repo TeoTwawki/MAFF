@@ -240,7 +240,7 @@ MafMhtEncoderClass.prototype = {
       mafdebug(e);
     }
 
-    var eqtState = new encodeQuotedPrintableTimerState();
+    var eqtState = new encodeQuotedPrintableTimerState(this);
 
     eqtState.totalFileSize = obj_File.fileSize;
     eqtState.charsToRead = this.READ_BUFFER_SIZE;
@@ -296,9 +296,7 @@ MafMhtEncoderClass.prototype = {
     result = "";
     encOut = "";
 
-    var obs = Components.classes["@mozilla.org/observer-service;1"]
-               .getService(Components.interfaces.nsIObserverService);
-    obs.notifyObservers(null, "encoding-mht-encoder-finished", "base64");
+    this.onEncodingFinished();
   },
 
 
@@ -438,14 +436,7 @@ MafMhtEncoderClass.prototype = {
     }
   },
 
-  observe: function(subject, topic, data) {
-    if (topic != "encoding-mht-encoder-finished")
-      return;
-
-    var obs = Components.classes["@mozilla.org/observer-service;1"]
-                 .getService(Components.interfaces.nsIObserverService);
-    obs.removeObserver(this, "encoding-mht-encoder-finished");
-
+  onEncodingFinished: function() {
     if (this.boundaryString != "") {
       var MHTContentString = "\r\n";
       this.oTransport.write(MHTContentString, MHTContentString.length);
@@ -466,10 +457,6 @@ MafMhtEncoderClass.prototype = {
     if (this.timer == expiredtimer) {
 
       if (this.i < this.filelist.length) {
-        var obs = Components.classes["@mozilla.org/observer-service;1"]
-                    .getService(Components.interfaces.nsIObserverService);
-        obs.addObserver(this, "encoding-mht-encoder-finished", false);
-
         if (this.boundaryString == "") {
 
           this._getEncodedFile(this.i, this.oTransport);
@@ -505,8 +492,7 @@ MafMhtEncoderClass.prototype = {
 
   QueryInterface: function(iid) {
 
-    if (!iid.equals(Components.interfaces.nsIObserver) &&
-        !iid.equals(Components.interfaces.nsITimerCallback) &&
+    if (!iid.equals(Components.interfaces.nsITimerCallback) &&
         !iid.equals(Components.interfaces.nsISupports)) {
       throw Components.results.NS_ERROR_NO_INTERFACE;
     }
@@ -517,7 +503,8 @@ MafMhtEncoderClass.prototype = {
 };
 
 
-function encodeQuotedPrintableTimerState() {
+function encodeQuotedPrintableTimerState(encodingeventlistener) {
+  this.encodingeventlistener = encodingeventlistener;
   this.totalFileSize = 0;
   this.charsToRead = 0;
   this.str = "";
@@ -611,9 +598,7 @@ encodeQuotedPrintableTimerState.prototype = {
       this.obj_InputStream = null;
       } catch(e) { }
 
-      var obs = Components.classes["@mozilla.org/observer-service;1"]
-                 .getService(Components.interfaces.nsIObserverService);
-      obs.notifyObservers(null, "encoding-mht-encoder-finished", "quoted-printable");
+      this.encodingeventlistener.onEncodingFinished();
       this.timer = null;
     }
 
