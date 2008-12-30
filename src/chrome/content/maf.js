@@ -43,10 +43,6 @@ var MafUtils = GetMafUtilServiceClass();
 
 var MafMHTHandler = new MafMhtHandlerServiceClass();
 
-var MafLibMHTDecoder = new MafMhtDecoderClass();
-
-var MafLibMHTEncoder = new MafMhtEncoderClass();
-
 var MafGUI = new MAFGuiHandlerClass();
 MafGUI.init(browserWindow);
 
