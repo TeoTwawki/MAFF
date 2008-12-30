@@ -216,21 +216,9 @@ MafArchiverClass.prototype = {
     }
   },
 
-  /**
-   * Removes the specified folder if it exists.
-   */
-  removeFolder: function(folderToRemove) {
-    var oDir = Components.classes["@mozilla.org/file/local;1"]
-                  .createInstance(Components.interfaces.nsILocalFile);
-    oDir.initWithPath(folderToRemove);
-    if (oDir.exists() && oDir.isDirectory()) {
-      oDir.remove(true);
-    }
-  },
-
   notify: function(expiredtimer) {
     if (this.timer == expiredtimer) {
-      this.removeFolder(this.tempSubPath);
+      MafUtils.deleteFile(this.tempSubPath);
       this.timer = null;
     }
   },
