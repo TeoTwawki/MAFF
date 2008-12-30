@@ -81,17 +81,14 @@ MafMhtEncoderClass.prototype = {
         dest.create(0x00, 0644);
       }
 
-      var state = new encodingTimerState(this.mafeventlistener);
-      state.encoder = this;
-      state.i = 0;
-      state.boundaryString = "";
-      state.dest = dest;
+      this.i = 0;
+      this.boundaryString = "";
 
       try {
         var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
                             .createInstance(Components.interfaces.nsIFileOutputStream);
         oTransport.init( dest, 0x04 | 0x08 | 0x10, 064, 0 );
-        state.oTransport =  oTransport;
+        this.oTransport =  oTransport;
 
         var MHTContentString = "";
         if (this.from != "" ) { MHTContentString += "From: " + this.from + "\r\n"; }
@@ -117,7 +114,7 @@ MafMhtEncoderClass.prototype = {
           oTransport.write(MHTContentString, MHTContentString.length);
           MHTContentString = "";
 
-          state.boundaryString = boundaryString;
+          this.boundaryString = boundaryString;
 
         } else {
           MHTContentString += "X-MAF: " + this.xMafHeaderValue + "\r\n";
@@ -135,8 +132,8 @@ MafMhtEncoderClass.prototype = {
 
     var timer = Components.classes["@mozilla.org/timer;1"]
                  .createInstance(Components.interfaces.nsITimer);
-    state.timer = timer;
-    timer.initWithCallback(state, fileEncodeTimerDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+    this.timer = timer;
+    timer.initWithCallback(this, fileEncodeTimerDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
 
   },
 
@@ -439,15 +436,7 @@ MafMhtEncoderClass.prototype = {
     } else {
       return "0";
     }
-  }
-
-};
-
-function encodingTimerState(mafeventlistener) {
-  this.mafeventlistener = mafeventlistener;
-};
-
-encodingTimerState.prototype = {
+  },
 
   observe: function(subject, topic, data) {
     if (topic != "encoding-mht-encoder-finished")
@@ -476,21 +465,21 @@ encodingTimerState.prototype = {
   notify: function(expiredtimer) {
     if (this.timer == expiredtimer) {
 
-      if (this.i < this.encoder.filelist.length) {
+      if (this.i < this.filelist.length) {
         var obs = Components.classes["@mozilla.org/observer-service;1"]
                     .getService(Components.interfaces.nsIObserverService);
         obs.addObserver(this, "encoding-mht-encoder-finished", false);
 
         if (this.boundaryString == "") {
 
-          this.encoder._getEncodedFile(this.i, this.oTransport);
+          this._getEncodedFile(this.i, this.oTransport);
 
         } else {
           var MHTContentString = "\r\n\--" + this.boundaryString + "\r\n";
           this.oTransport.write(MHTContentString, MHTContentString.length);
           MHTContentString = "";
 
-          this.encoder._getEncodedFile(this.i, this.oTransport);
+          this._getEncodedFile(this.i, this.oTransport);
         }
 
         //mafdebug("Called getEncodedFile " + this.i);
@@ -507,7 +496,7 @@ encodingTimerState.prototype = {
 
         this.oTransport.close();
 
-        this.encoder.filelist = [];
+        this.filelist = [];
         this.timer = null;
         this.mafeventlistener.onArchivingComplete(0);
       }
