@@ -89,6 +89,14 @@ MafArchiverClass.prototype = {
     this.objWith_fnProgressUpdater = objWith_fnProgressUpdater;
   },
 
+  onSaveNameDetermined: function(aSaveName) {
+    this.indexfilename = aSaveName;
+  },
+
+  onDownloadFailed: function(aStatus) {
+    Components.utils.reportError(new Components.Exception("Download failed.", aStatus));
+  },
+
   onDownloadComplete: function() {
     var tempArchiveFolder = MafUtils.appendToDir(this.tempPath, this.folderNumber);
 
