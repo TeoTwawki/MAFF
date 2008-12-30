@@ -47,9 +47,6 @@ MafTabArchiverClass.prototype = {
     /** Flag to ensure the start function isn't called twice. */
     this.started = false,
 
-    /** If all the tabs have finished downloading. */
-    this.downloadComplete = false,
-
     /** The archiver objects used to save. */
     this.MafArchivers = new Array(),
 
@@ -117,8 +114,6 @@ MafTabArchiverClass.prototype = {
       // Finished saving single tab
 
       if (this.currentMafArchiverIndex < this.browsersInclude.length) {
-        if (this.MafArchivers[this.currentMafArchiverIndex].downloadComplete == true) {
-
           if (this.objWith_fnProgressUpdater != null) {
             var percentage = Math.floor((this.currentMafArchiverIndex/this.browsersInclude.length)*100);
             this.objWith_fnProgressUpdater.progressUpdater(percentage, 0);
@@ -143,18 +138,14 @@ MafTabArchiverClass.prototype = {
             if (this.objWith_fnProgressUpdater != null) {
               this.objWith_fnProgressUpdater.progressUpdater(100, 0);
             }
-            this.downloadComplete = true;
             var obs = Components.classes["@mozilla.org/observer-service;1"]
                          .getService(Components.interfaces.nsIObserverService);
             obs.notifyObservers(null, "maf-tabarchiver-finished", this.archivePath);
           }
-
-        }
       } else {
         if (this.objWith_fnProgressUpdater != null) {
           this.objWith_fnProgressUpdater.progressUpdater(100, 0);
         }
-        this.downloadComplete = true;
         var obs = Components.classes["@mozilla.org/observer-service;1"]
                      .getService(Components.interfaces.nsIObserverService);
         obs.notifyObservers(null, "maf-tabarchiver-finished", this.archivePath);

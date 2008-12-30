@@ -35,8 +35,6 @@ function MafArchiverClass() {
 MafArchiverClass.prototype = {
   indexfilename: "index.html",
 
-  downloadComplete: false,
-
   init: function(aBrowser, scriptPath, archivePath, dateTimeArchived, Maf) {
     /** The browser containing the data archive. */
     this.aBrowser = aBrowser;
@@ -62,8 +60,6 @@ MafArchiverClass.prototype = {
 
     /** Flag to ensure the start function isn't called twice. */
     this.started = false;
-
-    this.downloadComplete = false;
 
     this.Maf = Maf;
   },
@@ -98,7 +94,6 @@ MafArchiverClass.prototype = {
     observerService.addObserver(this, "mht-encoder-finished", false);
     observerService.addObserver(this, "maf-archiver-finished", false);
 
-    this.downloadComplete = true;
     this.addMetaData();
     this.Maf.archiveDownload(this.scriptPath,
                               this.archivePath,
