@@ -40,10 +40,6 @@ MafArchiverClass.prototype = {
 
   downloadComplete: false,
 
-  downloadCompleteTries: 0,
-
-  maxDownloadCompleteTries: 100,
-
   init: function(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived, Maf) {
     /** The browser containing the data archive. */
     this.aBrowser = aBrowser;
@@ -106,42 +102,22 @@ MafArchiverClass.prototype = {
   onDownloadComplete: function() {
     var tempArchiveFolder = this.tempSubPath;
 
-    if (MafUtils.checkFileExists(MafUtils.appendToDir(tempArchiveFolder, this.indexfilename))) {
+    var ocHandler = new MafArchiverOnComplete();
+    ocHandler.objMafArchiver = this;
+    ocHandler.tempArchiveFolder = tempArchiveFolder;
+    ocHandler.objWith_fnProgressUpdater = this.objWith_fnProgressUpdater;
 
-        var ocHandler = new MafArchiverOnComplete();
-        ocHandler.objMafArchiver = this;
-        ocHandler.tempArchiveFolder = tempArchiveFolder;
-        ocHandler.objWith_fnProgressUpdater = this.objWith_fnProgressUpdater;
+    var observerService = Components.classes["@mozilla.org/observer-service;1"]
+                             .getService(Components.interfaces.nsIObserverService);
+    observerService.addObserver(ocHandler, "mht-encoder-finished", false);
+    observerService.addObserver(ocHandler, "maf-archiver-finished", false);
 
-        var observerService = Components.classes["@mozilla.org/observer-service;1"]
-                                 .getService(Components.interfaces.nsIObserverService);
-        observerService.addObserver(ocHandler, "mht-encoder-finished", false);
-        observerService.addObserver(ocHandler, "maf-archiver-finished", false);
-
-        this.downloadComplete = true;
-        this.addMetaData();
-        this.Maf.archiveDownload(this.scriptPath,
-                                  this.archivePath,
-                                  this.folderNumber,
-                                  this.appendToExistingArchive);
-
-    } else {
-       if (this.downloadCompleteTries < this.maxDownloadCompleteTries) {
-         this.downloadCompleteTries++;
-         this.timer = Components.classes["@mozilla.org/timer;1"]
-                         .createInstance(Components.interfaces.nsITimer);
-         this.timer.initWithCallback(this, 100, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-       } else {
-         mafdebug(MafStrBundle.GetStringFromName("errorafterstart") + " " + this.maxDownloadCompleteTries + " " + MafStrBundle.GetStringFromName("errorafterend"));
-       }
-    }
-  },
-
-  notify: function(expiredtimer) {
-    if (this.timer == expiredtimer) {
-      this.onDownloadComplete();
-      this.timer = null;
-    }
+    this.downloadComplete = true;
+    this.addMetaData();
+    this.Maf.archiveDownload(this.scriptPath,
+                              this.archivePath,
+                              this.folderNumber,
+                              this.appendToExistingArchive);
   },
 
   /**
@@ -224,18 +200,7 @@ MafArchiverClass.prototype = {
 
       }
     }
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(Components.interfaces.nsITimerCallback) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
-
 };
 
 function MafArchiverOnComplete() {
