@@ -100,17 +100,10 @@ MafArchiverClass.prototype = {
   },
 
   onDownloadComplete: function() {
-    var tempArchiveFolder = this.tempSubPath;
-
-    var ocHandler = new MafArchiverOnComplete();
-    ocHandler.objMafArchiver = this;
-    ocHandler.tempArchiveFolder = tempArchiveFolder;
-    ocHandler.objWith_fnProgressUpdater = this.objWith_fnProgressUpdater;
-
     var observerService = Components.classes["@mozilla.org/observer-service;1"]
                              .getService(Components.interfaces.nsIObserverService);
-    observerService.addObserver(ocHandler, "mht-encoder-finished", false);
-    observerService.addObserver(ocHandler, "maf-archiver-finished", false);
+    observerService.addObserver(this, "mht-encoder-finished", false);
+    observerService.addObserver(this, "maf-archiver-finished", false);
 
     this.downloadComplete = true;
     this.addMetaData();
@@ -200,14 +193,7 @@ MafArchiverClass.prototype = {
 
       }
     }
-  }
-};
-
-function MafArchiverOnComplete() {
-
-};
-
-MafArchiverOnComplete.prototype = {
+  },
 
   observe: function(subject, topic, data) {
     if (topic == "mht-encoder-finished") {
@@ -244,7 +230,7 @@ MafArchiverOnComplete.prototype = {
 
   notify: function(expiredtimer) {
     if (this.timer == expiredtimer) {
-      this.removeFolder(this.tempArchiveFolder);
+      this.removeFolder(this.tempSubPath);
       this.timer = null;
     }
   },
