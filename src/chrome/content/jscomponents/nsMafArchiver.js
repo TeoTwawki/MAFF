@@ -67,6 +67,9 @@ MafArchiverClass.prototype = {
     /** The folder number used in the archive. */
     this.folderNumber = dateTimeArchived + "_" + Math.floor(Math.random()*1000);
 
+    /** The full path of the folder to save the document to. */
+    this.tempSubPath = MafUtils.appendToDir(this.tempPath, this.folderNumber);
+
     /** Flag to ensure the start function isn't called twice. */
     this.started = false;
 
@@ -80,7 +83,7 @@ MafArchiverClass.prototype = {
     if (!this.started) {
       this.appendToExistingArchive = appendToArchive;
       this.started = true;
-      this.Maf.nativeSaveFile(this.aDocument, MafUtils.appendToDir(this.tempPath, this.folderNumber),
+      this.Maf.nativeSaveFile(this.aDocument, this.tempSubPath,
                                  "index.html", this);
     }
   },
@@ -98,7 +101,7 @@ MafArchiverClass.prototype = {
   },
 
   onDownloadComplete: function() {
-    var tempArchiveFolder = MafUtils.appendToDir(this.tempPath, this.folderNumber);
+    var tempArchiveFolder = this.tempSubPath;
 
     if (MafUtils.checkFileExists(MafUtils.appendToDir(tempArchiveFolder, this.indexfilename))) {
 
@@ -144,7 +147,7 @@ MafArchiverClass.prototype = {
    */
   addMetaData: function() {
 
-    destMetaDataFolder = MafUtils.appendToDir(this.tempPath, this.folderNumber);
+    destMetaDataFolder = this.tempSubPath;
     // Create index.rdf in the folderNumber and
     // Get a referance to index.rdf's data source
     var indexDS = MafUtils.createRDF(destMetaDataFolder, "index.rdf");
