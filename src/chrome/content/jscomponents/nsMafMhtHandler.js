@@ -175,14 +175,6 @@ MafMhtHandlerServiceClass.prototype = {
         }
       }
     }
-
-    var observerData = new Array();
-    observerData[observerData.length] = 0;
-    observerData[observerData.length] = destpath;
-
-    var obs = Components.classes["@mozilla.org/observer-service;1"]
-                 .getService(Components.interfaces.nsIObserverService);
-    obs.notifyObservers(null, "mht-decoder-finished", observerData);
   },
 
   _makeUrlsAbsolute: function(sourceString, baseUrl) {

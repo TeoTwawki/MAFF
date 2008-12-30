@@ -117,16 +117,7 @@ maf.prototype = {
           zipReader.extract(entryname, oDestpathentry);        
         }
       }
-      zipReader.close();     
-       
-      var obs = Components.classes["@mozilla.org/observer-service;1"]
-                   .getService(Components.interfaces.nsIObserverService);      
-                   
-      var observerData = new Array();
-      observerData[observerData.length] = 0; // Error code
-      observerData[observerData.length] = destpath;
-
-      obs.notifyObservers(null, "maf-extract-finished", observerData);
+      zipReader.close();
     }
   },
 
