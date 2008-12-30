@@ -230,11 +230,11 @@ maf.prototype = {
   /**
    * Save a single web page in an archive
    */
-  saveAsWebPageComplete: function(aBrowser, tempPath, scriptPath, archivePath) {
+  saveAsWebPageComplete: function(aBrowser, scriptPath, archivePath) {
     var dateTimeArchived = new Date();
 
     var objMafArchiver = new MafArchiverClass();
-    objMafArchiver.init(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived.valueOf() + "", Maf);
+    objMafArchiver.init(aBrowser, scriptPath, archivePath, dateTimeArchived.valueOf() + "", Maf);
     objMafArchiver.setProgressUpdater(Maf);
     objMafArchiver.start(false); // Do not append to existing archive
   },
@@ -259,9 +259,9 @@ maf.prototype = {
   /**
    * Save all open tabs in an archive
    */
-  saveAllTabsComplete: function(browsers, includeList, tempPath, scriptPath, archivePath) {
+  saveAllTabsComplete: function(browsers, includeList, scriptPath, archivePath) {
     var objMafTabArchiver = new MafTabArchiverClass();
-    objMafTabArchiver.init(browsers, tempPath, scriptPath, archivePath, Maf);
+    objMafTabArchiver.init(browsers, scriptPath, archivePath, Maf);
     if (includeList != "") {
       objMafTabArchiver.setIncludeList(includeList);
     }

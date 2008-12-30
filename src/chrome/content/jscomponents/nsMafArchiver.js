@@ -37,16 +37,12 @@ MafArchiverClass.prototype = {
 
   downloadComplete: false,
 
-  init: function(aBrowser, tempPath, scriptPath, archivePath, dateTimeArchived, Maf) {
+  init: function(aBrowser, scriptPath, archivePath, dateTimeArchived, Maf) {
     /** The browser containing the data archive. */
     this.aBrowser = aBrowser;
 
     /** The document to archive. */
     this.aDocument = aBrowser.contentDocument;
-
-    /** The path of the temp folder to use. */
-    this.tempPath = tempPath;
-    MafUtils.createDir(tempPath);
 
     /** The path of the archive script to use. */
     this.scriptPath = scriptPath;
@@ -60,8 +56,8 @@ MafArchiverClass.prototype = {
     /** The folder number used in the archive. */
     this.folderNumber = dateTimeArchived + "_" + Math.floor(Math.random()*1000);
 
-    /** The full path of the folder to save the document to. */
-    this.tempSubPath = MafUtils.appendToDir(this.tempPath, this.folderNumber);
+    /** The full path of the temporary folder to save the document to. */
+    this.tempSubPath = MafUtils.appendToDir(Prefs.tempFolder, this.folderNumber);
     MafUtils.createDir(this.tempSubPath);
 
     /** Flag to ensure the start function isn't called twice. */

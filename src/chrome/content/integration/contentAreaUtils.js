@@ -172,7 +172,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
 
     // Save the selected page in the web archive
     Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser,
-     Prefs.tempFolder, FileFilters.scriptPathFromSaveIndex(mafSaveFilterIndex),
+     FileFilters.scriptPathFromSaveIndex(mafSaveFilterIndex),
      filename);
 
     // Do not continue with the normal save process
