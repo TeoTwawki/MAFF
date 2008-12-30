@@ -402,10 +402,10 @@ MafMhtHandlerServiceClass.prototype = {
     this._updateMetaData(datasource, "archivetime", dateTimeArchived);
   },
 
-  createArchive: function(archivefile, sourcepath) {
+  createArchive: function(archivefile, sourcepath, mafeventlistener) {
     try {
 
-      var encoder = new MafMhtEncoderClass();
+      var encoder = new MafMhtEncoderClass(mafeventlistener);
 
       var mainMetaData = this._getMainFileMetaData(sourcepath);
 

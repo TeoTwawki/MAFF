@@ -135,14 +135,14 @@ maf.prototype = {
    * Archives the downloaded file(s).
    */
   archiveDownload: function(program, archivefile, sourcepath,
-   appendtoexistingarchive) {
+   appendtoexistingarchive, mafeventlistener) {
     if (program == "TypeMHTML") {
 
       var temppath = Prefs.tempFolder;
 
       var realSourcePath = MafUtils.appendToDir(temppath, sourcepath);
 
-      MafMHTHandler.createArchive(archivefile, realSourcePath);
+      MafMHTHandler.createArchive(archivefile, realSourcePath, mafeventlistener);
 
     } else {
     
@@ -211,15 +211,8 @@ maf.prototype = {
         mafdebug(e);
         exitvalue = 1;
       }
-      
-      var observerData = new Array();
-      observerData[observerData.length] = exitvalue;
-      observerData[observerData.length] = archivefile;
-  
-      var obs = Components.classes["@mozilla.org/observer-service;1"]
-                    .getService(Components.interfaces.nsIObserverService);
-      obs.notifyObservers(null, "maf-archiver-finished", observerData);      
-      
+
+      mafeventlistener.onArchivingComplete(exitvalue);
     }
   },
 

@@ -83,16 +83,12 @@ MafArchiverClass.prototype = {
   },
 
   onDownloadComplete: function() {
-    var observerService = Components.classes["@mozilla.org/observer-service;1"]
-                             .getService(Components.interfaces.nsIObserverService);
-    observerService.addObserver(this, "mht-encoder-finished", false);
-    observerService.addObserver(this, "maf-archiver-finished", false);
-
     this.addMetaData();
     this.Maf.archiveDownload(this.scriptPath,
                               this.archivePath,
                               this.folderNumber,
-                              this.appendToExistingArchive);
+                              this.appendToExistingArchive,
+                              this);
   },
 
   /**
@@ -177,28 +173,7 @@ MafArchiverClass.prototype = {
     }
   },
 
-  observe: function(subject, topic, data) {
-    if (topic == "mht-encoder-finished") {
-      try {
-        var obs = Components.classes["@mozilla.org/observer-service;1"]
-                                 .getService(Components.interfaces.nsIObserverService);
-        obs.removeObserver(this, "mht-encoder-finished");
-        obs.removeObserver(this, "maf-archiver-finished");
-      } catch(e) { }
-      this.onComplete(data[0]);
-    } else {
-      if (topic == "maf-archiver-finished") {
-        try {
-          var obs = Components.classes["@mozilla.org/observer-service;1"]
-                                   .getService(Components.interfaces.nsIObserverService);
-          obs.removeObserver(this, "maf-archiver-finished");
-        } catch(e) { }
-        this.onComplete(data[0]);
-      }
-    }
-  },
-
-  onComplete: function(code) {
+  onArchivingComplete: function(code) {
     try {
       // Remove Folder
       MafUtils.deleteFile(this.tempSubPath);
@@ -209,15 +184,5 @@ MafArchiverClass.prototype = {
     } catch(e) {
       mafdebug(e);
     }
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(Components.interfaces.nsIObserver) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
 };

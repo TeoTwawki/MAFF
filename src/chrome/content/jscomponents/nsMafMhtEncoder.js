@@ -32,8 +32,9 @@ const readBufferSize = 1024 * 10; // 10K Read buffer
  * The MAF Mht Encoder.
  */
 
-function MafMhtEncoderClass() {
+function MafMhtEncoderClass(mafeventlistener) {
   this.filelist = new Array();
+  this.mafeventlistener = mafeventlistener;
   // Determine the version information saved in MAF MHT archives
   var extUpdateInfo = Cc["@mozilla.org/extensions/manager;1"]
    .getService(Ci.nsIExtensionManager)
@@ -80,7 +81,7 @@ MafMhtEncoderClass.prototype = {
         dest.create(0x00, 0644);
       }
 
-      var state = new encodingTimerState();
+      var state = new encodingTimerState(this.mafeventlistener);
       state.encoder = this;
       state.i = 0;
       state.boundaryString = "";
@@ -442,8 +443,8 @@ MafMhtEncoderClass.prototype = {
 
 };
 
-function encodingTimerState() {
-
+function encodingTimerState(mafeventlistener) {
+  this.mafeventlistener = mafeventlistener;
 };
 
 encodingTimerState.prototype = {
@@ -508,15 +509,7 @@ encodingTimerState.prototype = {
 
         this.encoder.filelist = [];
         this.timer = null;
-
-        var observerData = new Array();
-        observerData[observerData.length] = 0;
-        observerData[observerData.length] = this.dest.path;
-
-        var obs = Components.classes["@mozilla.org/observer-service;1"]
-                  .getService(Components.interfaces.nsIObserverService);
-        obs.notifyObservers(null, "mht-encoder-finished", observerData);
-
+        this.mafeventlistener.onArchivingComplete(0);
       }
     }
   },
