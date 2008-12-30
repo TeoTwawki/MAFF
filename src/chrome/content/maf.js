@@ -241,12 +241,11 @@ maf.prototype = {
 
 
   nativeSaveFile: function(aDocument, aSaveDocPath, aSaveDocFileName, aObjMafArchiver) {
-    try {
-     MafNativeFileSave.saveFile(aDocument, aSaveDocPath, aSaveDocFileName,
-                                aObjMafArchiver);
-    } catch(e) {
-      mafdebug(e);
-    }
+    var dir = Components.classes["@mozilla.org/file/local;1"]
+                  .createInstance(Components.interfaces.nsILocalFile);
+    dir.initWithPath(aSaveDocPath);
+    MafUtils.createDir(aSaveDocPath);
+    browserWindow.saveDocument(aDocument, {saveDir: dir, mafEventListener: aObjMafArchiver});
   },
 
   /**

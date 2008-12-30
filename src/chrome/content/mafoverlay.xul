@@ -22,7 +22,6 @@
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script src="chrome://maf/content/mafnativefilesave.js"/>
   <script src="chrome://maf/content/maf.js"/>
 
   <menupopup id="menu_FilePopup">
