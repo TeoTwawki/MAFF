@@ -34,7 +34,8 @@ try {
    "jscomponents/nsMafUtil.js",
    "jscomponents/nsMafWebBrowserPersist.js",
    "preferences/dynamicPrefsObject.js",
-   "preferences/prefsObject.js"
+   "preferences/prefsObject.js",
+   "saving/mafWebProgressListenerObject.js"
   ].forEach(function(contentRelativePath) {
     Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
      .getService(Components.interfaces.mozIJSSubScriptLoader)
