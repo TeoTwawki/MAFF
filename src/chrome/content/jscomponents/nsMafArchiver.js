@@ -216,20 +216,10 @@ MafArchiverClass.prototype = {
     }
   },
 
-  notify: function(expiredtimer) {
-    if (this.timer == expiredtimer) {
-      MafUtils.deleteFile(this.tempSubPath);
-      this.timer = null;
-    }
-  },
-
   onComplete: function(code) {
     try {
-      // Remove Folder after 5 seconds
-      this.timer = Components.classes["@mozilla.org/timer;1"]
-                     .createInstance(Components.interfaces.nsITimer);
-      this.timer.initWithCallback(this, 5000, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-
+      // Remove Folder
+      MafUtils.deleteFile(this.tempSubPath);
 
       if (this.objWith_fnProgressUpdater != null) {
         this.objWith_fnProgressUpdater.progressUpdater(100, code);
@@ -242,7 +232,6 @@ MafArchiverClass.prototype = {
   QueryInterface: function(iid) {
 
     if (!iid.equals(Components.interfaces.nsIObserver) &&
-        !iid.equals(Components.interfaces.nsITimerCallback) &&
         !iid.equals(Components.interfaces.nsISupports)) {
       throw Components.results.NS_ERROR_NO_INTERFACE;
     }
