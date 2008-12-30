@@ -75,6 +75,14 @@
  * @param aSkipPrompt [optional]
  *        If set to true, we will attempt to save the file to the
  *        default downloads folder without prompting.
+ *        When this function is called, directly or indirectly, by Mozilla
+ *        Archive Format, this parameter can also be an object with the
+ *        following properties:
+ *         - saveDir: nsILocalFile instance pointing to the directory where the
+ *           specified document should be saved. The filename is determined
+ *           automatically, using "index" as the basename.
+ *         - mafEventListener: Object implementing the onSaveNameDetermined,
+ *           onDownloadComplete, and onDownloadFailed event functions.
  */
 function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                       aContentType, aShouldBypassCache, aFilePickerTitleKey,
@@ -113,10 +121,27 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       fileURL: fileURL
     };
 
-    if (!getTargetFile(fpParams, aSkipPrompt))
-      // If the method returned false this is because the user cancelled from
-      // the save file picker dialog.
-      return;
+    // When aSkipPrompt is an object provided by Mozilla Archive Format, no user
+    //  prompt is shown and the file is saved in the specified directory using
+    //  "index" as the basename.
+    if (typeof aSkipPrompt == "object") {
+      // Find the leaf name of the file to be saved
+      var saveFileName = getNormalizedLeafName("index", fileInfo.fileExt);
+      // Notify the Mozilla Archive Format saving component
+      try {
+        aSkipPrompt.mafEventListener.onSaveNameDetermined(saveFileName);
+      } catch(e) {
+        Components.utils.reportError(e);
+      }
+      // Build the target file object
+      fpParams.file = aSkipPrompt.saveDir.clone();
+      fpParams.file.append(saveFileName);
+    } else {
+      if (!getTargetFile(fpParams, aSkipPrompt))
+        // If the method returned false this is because the user cancelled from
+        // the save file picker dialog.
+        return;
+    }
 
     saveAsType = fpParams.saveAsType;
     saveMode = fpParams.saveMode;
@@ -221,6 +246,15 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     const kWrapColumn = 80;
     tr.init((aChosenData ? aChosenData.uri : fileInfo.uri),
             persistArgs.target, "", null, null, null, persist);
+
+    // Mozilla Archive Format indirectly uses this function to save an already
+    //  loaded document to a temporary file on disk, before generating the final
+    //  archive. If the document saving was initiated by MAF, we add another
+    //  download listener, that in turn will call the second-level listener
+    //  specified in the eventListener property of the aSkipPrompt object.
+    if (typeof aSkipPrompt == "object")
+      tr = new MafWebProgressListener(aSkipPrompt.mafEventListener, tr);
+
     persist.progressListener = new DownloadListener(window, tr);
     persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
                          persistArgs.contentType, encodingFlags, kWrapColumn);
