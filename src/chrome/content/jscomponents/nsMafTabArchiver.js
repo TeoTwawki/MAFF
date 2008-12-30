@@ -44,9 +44,6 @@ MafTabArchiverClass.prototype = {
     /** The full path of the archive file to archive to. */
     this.archivePath = archivePath,
 
-    /** Flag to ensure the start function isn't called twice. */
-    this.started = false,
-
     /** The archiver objects used to save. */
     this.MafArchivers = new Array(),
 
@@ -79,25 +76,21 @@ MafTabArchiverClass.prototype = {
   },
 
   start: function() {
-    if (!this.started) {
-      this.started = true;
+    var dateTimeArchived = new Date();
 
-      var dateTimeArchived = new Date();
+    for (var i=0; i<this.browsers.length; i++) {
+      var objMafArchiver =  new MafArchiverClass();
+      objMafArchiver.setProgressUpdater(this);
+      this.MafArchivers[this.MafArchivers.length] = objMafArchiver;
+    }
 
-      for (var i=0; i<this.browsers.length; i++) {
-        var objMafArchiver =  new MafArchiverClass();
-        objMafArchiver.setProgressUpdater(this);
-        this.MafArchivers[this.MafArchivers.length] = objMafArchiver;
-      }
-
-      if (this.browsersInclude.length > 0) {
-        this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers.queryElementAt(
-                              this.browsersInclude[this.currentMafArchiverIndex], Components.interfaces.nsISupports),
-                            this.scriptPath, this.archivePath,
-                            dateTimeArchived.valueOf() + "", this.Maf);
-        // We are archiving the first tab, replace an existing archive
-        this.MafArchivers[this.currentMafArchiverIndex].start(false);
-      }
+    if (this.browsersInclude.length > 0) {
+      this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers.queryElementAt(
+                            this.browsersInclude[this.currentMafArchiverIndex], Components.interfaces.nsISupports),
+                          this.scriptPath, this.archivePath,
+                          dateTimeArchived.valueOf() + "", this.Maf);
+      // We are archiving the first tab, replace an existing archive
+      this.MafArchivers[this.currentMafArchiverIndex].start(false);
     }
   },
 

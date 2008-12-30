@@ -45,9 +45,6 @@ MafTabExpanderClass.prototype = {
     /** The full path of the archive file to archive to. */
     this.archivePath = archivePath;
 
-    /** Flag to ensure the start function isn't called twice. */
-    this.started = false;
-
     /** The folder holding the expanded archive contents. */
     this.folderNumber = folderNumber;
 
@@ -56,12 +53,9 @@ MafTabExpanderClass.prototype = {
 
 
   start: function() {
-    if (!this.started) {
-      this.started = true;
-      this.timer = Components.classes["@mozilla.org/timer;1"]
-                     .createInstance(Components.interfaces.nsITimer);
-      this.timer.initWithCallback(this, 500, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-    }
+    this.timer = Components.classes["@mozilla.org/timer;1"]
+                   .createInstance(Components.interfaces.nsITimer);
+    this.timer.initWithCallback(this, 500, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
   },
 
   /**

@@ -58,22 +58,16 @@ MafArchiverClass.prototype = {
     this.tempSubPath = MafUtils.appendToDir(Prefs.tempFolder, this.folderNumber);
     MafUtils.createDir(this.tempSubPath);
 
-    /** Flag to ensure the start function isn't called twice. */
-    this.started = false;
-
     this.Maf = Maf;
   },
 
 
   start: function(appendToArchive) {
-    if (!this.started) {
-      this.appendToExistingArchive = appendToArchive;
-      this.started = true;
-      var dir = Components.classes["@mozilla.org/file/local;1"]
-                    .createInstance(Components.interfaces.nsILocalFile);
-      dir.initWithPath(this.tempSubPath);
-      browserWindow.saveDocument(this.aDocument, {saveDir: dir, mafEventListener: this});
-    }
+    this.appendToExistingArchive = appendToArchive;
+    var dir = Components.classes["@mozilla.org/file/local;1"]
+                  .createInstance(Components.interfaces.nsILocalFile);
+    dir.initWithPath(this.tempSubPath);
+    browserWindow.saveDocument(this.aDocument, {saveDir: dir, mafEventListener: this});
   },
 
   setProgressUpdater: function(objWith_fnProgressUpdater) {
