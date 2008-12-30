@@ -114,12 +114,13 @@ MafTabArchiverClass.prototype = {
       // Finished saving single tab
 
       if (this.currentMafArchiverIndex < this.browsersInclude.length) {
+          this.currentMafArchiverIndex += 1;
+
           if (this.objWith_fnProgressUpdater != null) {
             var percentage = Math.floor((this.currentMafArchiverIndex/this.browsersInclude.length)*100);
             this.objWith_fnProgressUpdater.progressUpdater(percentage, 0);
           }
 
-          this.currentMafArchiverIndex += 1;
           if (this.currentMafArchiverIndex < this.browsersInclude.length) {
             var dateTimeArchived = new Date();
             var archivePathToUse = this.archivePath;
@@ -134,21 +135,7 @@ MafTabArchiverClass.prototype = {
                                dateTimeArchived.valueOf() + "", this.Maf);
             // We are archiving a new tab, append to the existing archive
             this.MafArchivers[this.currentMafArchiverIndex].start(true);
-          } else {
-            if (this.objWith_fnProgressUpdater != null) {
-              this.objWith_fnProgressUpdater.progressUpdater(100, 0);
-            }
-            var obs = Components.classes["@mozilla.org/observer-service;1"]
-                         .getService(Components.interfaces.nsIObserverService);
-            obs.notifyObservers(null, "maf-tabarchiver-finished", this.archivePath);
           }
-      } else {
-        if (this.objWith_fnProgressUpdater != null) {
-          this.objWith_fnProgressUpdater.progressUpdater(100, 0);
-        }
-        var obs = Components.classes["@mozilla.org/observer-service;1"]
-                     .getService(Components.interfaces.nsIObserverService);
-        obs.notifyObservers(null, "maf-tabarchiver-finished", this.archivePath);
       }
     }
   }
