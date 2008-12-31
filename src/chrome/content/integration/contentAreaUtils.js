@@ -193,7 +193,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // If we're just saving the HTML (second option in the list), send only the URI.
   var persistArgs = {
     source      : aDocument,
-    contentType : (!aChosenData && useSaveDocument &&
+    contentType : (!aChosenData &&
                    saveAsType == kSaveAsType_Text) ?
                   "text/plain" : null,
     target      : fileURL,
