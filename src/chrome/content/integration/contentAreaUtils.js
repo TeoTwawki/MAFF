@@ -210,7 +210,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // If we're just saving the HTML (second option in the list), send only the URI.
   var persistArgs = {
     sourceURI         : sourceURI,
-    sourceDocument    : aDocument,
+    sourceDocument    : useSaveDocument ? aDocument : null,
     targetContentType : (saveAsType == kSaveAsType_Text) ? "text/plain" : null,
     targetFileURL     : fileURL,
     sourcePostData    : isDocument ? getPostData() : null,
@@ -233,7 +233,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // Create download and initiate it (below)
   var tr = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
 
-  if (useSaveDocument) {
+  if (persistArgs.sourceDocument) {
     // Saving a Document, not a URI:
     var filesFolder = null;
     if (persistArgs.targetContentType != "text/plain") {
@@ -272,7 +272,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
 
   persist.progressListener = new DownloadListener(window, tr);
 
-  if (useSaveDocument) {
+  if (persistArgs.sourceDocument) {
     const kWrapColumn = 80;
     persist.saveDocument(persistArgs.sourceDocument, persistArgs.targetFileURL, filesFolder,
                          persistArgs.targetContentType, encodingFlags, kWrapColumn);
