@@ -191,9 +191,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // If we're saving a document, and are saving either in complete mode or
   // as converted text, pass the document to the web browser persist component.
   // If we're just saving the HTML (second option in the list), send only the URI.
-  var source = useSaveDocument ? aDocument : fileInfo.uri;
   var persistArgs = {
-    source      : source,
+    source      : aDocument,
     contentType : (!aChosenData && useSaveDocument &&
                    saveAsType == kSaveAsType_Text) ?
                   "text/plain" : null,
