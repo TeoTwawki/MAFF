@@ -94,15 +94,15 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // Note: aDocument == null when this code is used by save-link-as...
   var saveMode = GetSaveModeForContentType(aContentType);
   var isDocument = aDocument != null && saveMode != SAVEMODE_FILEONLY;
-  var saveAsType = kSaveAsType_Complete;
 
-  var file, fileURL, sourceURI;
+  var file, fileURL, sourceURI, saveAsType;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
   // FileName/Extension will be ignored if aChosenData supplied.
   var fileInfo = new FileInfo(aDefaultFileName);
   if (aChosenData) {
     file = aChosenData.file;
     sourceURI = aChosenData.uri;
+    saveAsType = kSaveAsType_Complete;
   } else {
     var charset = null;
     if (aDocument)
@@ -117,7 +117,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       fileInfo: fileInfo,
       contentType: aContentType,
       saveMode: saveMode,
-      saveAsType: saveAsType,
+      saveAsType: kSaveAsType_Complete,
       file: file,
       fileURL: fileURL
     };
