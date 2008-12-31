@@ -213,6 +213,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     sourceReferrer    : aReferrer,
     sourceDocument    : useSaveDocument ? aDocument : null,
     targetContentType : (saveAsType == kSaveAsType_Text) ? "text/plain" : null,
+    targetFile        : file,
     targetFileURL     : fileURL,
     sourcePostData    : isDocument ? getPostData() : null,
     bypassCache       : aShouldBypassCache
@@ -239,7 +240,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     var filesFolder = null;
     if (persistArgs.targetContentType != "text/plain") {
       // Create the local directory into which to save associated files.
-      filesFolder = file.clone();
+      filesFolder = persistArgs.targetFile.clone();
 
       var nameWithoutExtension = getFileBaseName(filesFolder.leafName);
       var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
