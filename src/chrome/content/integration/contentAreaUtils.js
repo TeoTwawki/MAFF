@@ -224,7 +224,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // Calculate persist flags.
   const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
   const flags = nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
-  if (aShouldBypassCache)
+  if (persistArgs.bypassCache)
     persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_BYPASS_CACHE;
   else
     persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_FROM_CACHE;
