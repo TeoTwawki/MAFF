@@ -219,6 +219,40 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     bypassCache       : aShouldBypassCache
   };
 
+  // Start the actual save process
+  internalPersist(persistArgs, aSkipPrompt);
+}
+
+/**
+ * internalPersist: Creates a 'Persist' object (which will perform the saving
+ *  in the background) and then starts it.
+ *
+ * @param persistArgs.sourceURI
+ *        The nsIURI of the document being saved
+ * @param persistArgs.sourceDocument [optional]
+ *        The document to be saved, or null if not saving a complete document
+ * @param persistArgs.sourceReferrer
+ *        Required and used only when persistArgs.sourceDocument is NOT present,
+ *        the nsIURI of the referrer to use, or null if no referrer should be
+ *        sent.
+ * @param persistArgs.sourcePostData
+ *        Required and used only when persistArgs.sourceDocument is NOT present,
+ *        represents the POST data to be sent along with the HTTP request, and
+ *        must be null if no POST data should be sent.
+ * @param persistArgs.targetFile
+ *        The nsIFile of the file to create
+ * @param persistArgs.targetFileURL
+ *        The nsIURI associated with persistArgs.targetFile
+ * @param persistArgs.targetContentType
+ *        Required and used only when persistArgs.sourceDocument is present,
+ *        determines the final content type of the saved file, or null to use
+ *        the same content type as the source document. Currently only
+ *        "text/plain" is meaningful.
+ * @param persistArgs.bypassCache
+ *        If true, the document will always be refetched from the server
+ */
+function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
+{
   var persist = makeWebBrowserPersist();
 
   // Calculate persist flags.
