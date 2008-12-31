@@ -209,6 +209,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // as converted text, pass the document to the web browser persist component.
   // If we're just saving the HTML (second option in the list), send only the URI.
   var persistArgs = {
+    sourceURI   : sourceURI,
     source      : aDocument,
     contentType : (saveAsType == kSaveAsType_Text) ? "text/plain" : null,
     target      : fileURL,
@@ -258,7 +259,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     }
   }
 
-  tr.init(sourceURI,
+  tr.init(persistArgs.sourceURI,
           persistArgs.target, "", null, null, null, persist);
 
   // Mozilla Archive Format indirectly uses this function to save an already
@@ -276,7 +277,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
                          persistArgs.contentType, encodingFlags, kWrapColumn);
   } else {
-    persist.saveURI(sourceURI,
+    persist.saveURI(persistArgs.sourceURI,
                     null, aReferrer, persistArgs.postData, null,
                     persistArgs.target);
   }
