@@ -210,6 +210,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // If we're just saving the HTML (second option in the list), send only the URI.
   var persistArgs = {
     sourceURI         : sourceURI,
+    sourceReferrer    : aReferrer,
     sourceDocument    : useSaveDocument ? aDocument : null,
     targetContentType : (saveAsType == kSaveAsType_Text) ? "text/plain" : null,
     targetFileURL     : fileURL,
@@ -278,7 +279,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                          persistArgs.targetContentType, encodingFlags, kWrapColumn);
   } else {
     persist.saveURI(persistArgs.sourceURI,
-                    null, aReferrer, persistArgs.sourcePostData, null,
+                    null, persistArgs.sourceReferrer, persistArgs.sourcePostData, null,
                     persistArgs.targetFileURL);
   }
 }
