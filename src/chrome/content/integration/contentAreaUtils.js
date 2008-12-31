@@ -209,12 +209,12 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // as converted text, pass the document to the web browser persist component.
   // If we're just saving the HTML (second option in the list), send only the URI.
   var persistArgs = {
-    sourceURI   : sourceURI,
-    source      : aDocument,
-    contentType : (saveAsType == kSaveAsType_Text) ? "text/plain" : null,
-    target      : fileURL,
-    postData    : isDocument ? getPostData() : null,
-    bypassCache : aShouldBypassCache
+    sourceURI         : sourceURI,
+    sourceDocument    : aDocument,
+    targetContentType : (saveAsType == kSaveAsType_Text) ? "text/plain" : null,
+    targetFileURL     : fileURL,
+    sourcePostData    : isDocument ? getPostData() : null,
+    bypassCache       : aShouldBypassCache
   };
 
   var persist = makeWebBrowserPersist();
@@ -236,7 +236,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   if (useSaveDocument) {
     // Saving a Document, not a URI:
     var filesFolder = null;
-    if (persistArgs.contentType != "text/plain") {
+    if (persistArgs.targetContentType != "text/plain") {
       // Create the local directory into which to save associated files.
       filesFolder = file.clone();
 
@@ -249,7 +249,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     }
 
     var encodingFlags = 0;
-    if (persistArgs.contentType == "text/plain") {
+    if (persistArgs.targetContentType == "text/plain") {
       encodingFlags |= nsIWBP.ENCODE_FLAGS_FORMATTED;
       encodingFlags |= nsIWBP.ENCODE_FLAGS_ABSOLUTE_LINKS;
       encodingFlags |= nsIWBP.ENCODE_FLAGS_NOFRAMES_CONTENT;
@@ -260,7 +260,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   }
 
   tr.init(persistArgs.sourceURI,
-          persistArgs.target, "", null, null, null, persist);
+          persistArgs.targetFileURL, "", null, null, null, persist);
 
   // Mozilla Archive Format indirectly uses this function to save an already
   //  loaded document to a temporary file on disk, before generating the final
@@ -274,12 +274,12 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
 
   if (useSaveDocument) {
     const kWrapColumn = 80;
-    persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
-                         persistArgs.contentType, encodingFlags, kWrapColumn);
+    persist.saveDocument(persistArgs.sourceDocument, persistArgs.targetFileURL, filesFolder,
+                         persistArgs.targetContentType, encodingFlags, kWrapColumn);
   } else {
     persist.saveURI(persistArgs.sourceURI,
-                    null, aReferrer, persistArgs.postData, null,
-                    persistArgs.target);
+                    null, aReferrer, persistArgs.sourcePostData, null,
+                    persistArgs.targetFileURL);
   }
 }
 
