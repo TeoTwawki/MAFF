@@ -259,10 +259,10 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
                          persistArgs.contentType, encodingFlags, kWrapColumn);
   } else {
-    tr.init((aChosenData ? aChosenData.uri : source),
+    tr.init((aChosenData ? aChosenData.uri : fileInfo.uri),
             persistArgs.target, "", null, null, null, persist);
     persist.progressListener = new DownloadListener(window, tr);
-    persist.saveURI((aChosenData ? aChosenData.uri : source),
+    persist.saveURI((aChosenData ? aChosenData.uri : fileInfo.uri),
                     null, aReferrer, persistArgs.postData, null,
                     persistArgs.target);
   }
