@@ -98,7 +98,6 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   var file, fileURL, sourceURI, saveAsType;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
   // FileName/Extension will be ignored if aChosenData supplied.
-  var fileInfo = new FileInfo(aDefaultFileName);
   if (aChosenData) {
     file = aChosenData.file;
     sourceURI = aChosenData.uri;
@@ -109,6 +108,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       charset = aDocument.characterSet;
     else if (aReferrer)
       charset = aReferrer.originCharset;
+    var fileInfo = new FileInfo(aDefaultFileName);
     initFileInfo(fileInfo, aURL, charset, aDocument,
                  aContentType, aContentDisposition);
     var fpParams = {
