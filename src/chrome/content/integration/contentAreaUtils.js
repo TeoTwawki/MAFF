@@ -96,13 +96,14 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   var isDocument = aDocument != null && saveMode != SAVEMODE_FILEONLY;
   var saveAsType = kSaveAsType_Complete;
 
-  var file, fileURL;
+  var file, fileURL, sourceURI;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
   // FileName/Extension will be ignored if aChosenData supplied.
   var fileInfo = new FileInfo(aDefaultFileName);
-  if (aChosenData)
+  if (aChosenData) {
     file = aChosenData.file;
-  else {
+    sourceURI = aChosenData.uri;
+  } else {
     var charset = null;
     if (aDocument)
       charset = aDocument.characterSet;
@@ -147,6 +148,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     saveMode = fpParams.saveMode;
     file = fpParams.file;
     fileURL = fpParams.fileURL;
+    sourceURI = fileInfo.uri;
   }
 
   // Handle saving a web archive using the Mozilla Archive Format extension
@@ -243,7 +245,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     }
 
     const kWrapColumn = 80;
-    tr.init((aChosenData ? aChosenData.uri : fileInfo.uri),
+    tr.init(sourceURI,
             persistArgs.target, "", null, null, null, persist);
 
     // Mozilla Archive Format indirectly uses this function to save an already
@@ -258,10 +260,10 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     persist.saveDocument(persistArgs.source, persistArgs.target, filesFolder,
                          persistArgs.contentType, encodingFlags, kWrapColumn);
   } else {
-    tr.init((aChosenData ? aChosenData.uri : fileInfo.uri),
+    tr.init(sourceURI,
             persistArgs.target, "", null, null, null, persist);
     persist.progressListener = new DownloadListener(window, tr);
-    persist.saveURI((aChosenData ? aChosenData.uri : fileInfo.uri),
+    persist.saveURI(sourceURI,
                     null, aReferrer, persistArgs.postData, null,
                     persistArgs.target);
   }
