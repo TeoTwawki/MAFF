@@ -41,14 +41,29 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
- * internalSave: Used when saving a document or URL. This method:
- *  - Determines a local target filename to use (unless parameter
- *    aChosenData is non-null)
- *  - Determines content-type if possible
+ * internalSave: Used when saving a document or URL.
+ *
+ * If aChosenData is null, this method:
+ *  - Determines a local target filename to use
  *  - Prompts the user to confirm the destination filename and save mode
- *    (content-type affects this)
+ *    (aContentType affects this)
+ *  - [Note] This process involves the parameters aURL, aReferrer (to determine
+ *    how aURL was encoded), aDocument, aDefaultFileName, aFilePickerTitleKey,
+ *    and aSkipPrompt.
+ *
+ * If aChosenData is non-null, this method:
+ *  - Uses the provided source URI and save file name
+ *  - Saves the document as complete DOM if possible (aDocument present and
+ *    right aContentType)
+ *  - [Note] The parameters aURL, aDefaultFileName, aFilePickerTitleKey, and
+ *    aSkipPrompt are ignored.
+ *
+ * In any case, this method:
  *  - Creates a 'Persist' object (which will perform the saving in the
  *    background) and then starts it.
+ *  - [Note] This part of the process only involves the parameters aDocument,
+ *    aShouldBypassCache and aReferrer. The source, the save name and the save
+ *    mode are the ones determined previously.
  *
  * @param aURL
  *        The String representation of the URL of the document being saved
