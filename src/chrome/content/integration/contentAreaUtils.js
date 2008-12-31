@@ -260,6 +260,15 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   } else {
     tr.init(sourceURI,
             persistArgs.target, "", null, null, null, persist);
+
+    // Mozilla Archive Format indirectly uses this function to save an already
+    //  loaded document to a temporary file on disk, before generating the final
+    //  archive. If the document saving was initiated by MAF, we add another
+    //  download listener, that in turn will call the second-level listener
+    //  specified in the eventListener property of the aSkipPrompt object.
+    if (typeof aSkipPrompt == "object")
+      tr = new MafWebProgressListener(aSkipPrompt.mafEventListener, tr);
+
     persist.progressListener = new DownloadListener(window, tr);
     persist.saveURI(sourceURI,
                     null, aReferrer, persistArgs.postData, null,
