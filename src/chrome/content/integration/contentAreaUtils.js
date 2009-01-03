@@ -122,13 +122,13 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   var saveMode = GetSaveModeForContentType(aContentType, aDocument);
   var isDocument = aDocument != null && saveMode != SAVEMODE_FILEONLY;
 
-  var file, fileURL, sourceURI, saveAsType;
+  var file, fileURL, sourceURI, saveBehavior;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
   // FileName/Extension will be ignored if aChosenData supplied.
   if (aChosenData) {
     file = aChosenData.file;
     sourceURI = aChosenData.uri;
-    saveAsType = kSaveAsType_Complete;
+    saveBehavior = gCompleteSaveBehavior;
   } else {
     var charset = null;
     if (aDocument)
@@ -145,7 +145,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       fileInfo: fileInfo,
       contentType: aContentType,
       saveMode: saveMode,
-      saveAsType: kSaveAsType_Complete,
+      saveBehavior: gCompleteSaveBehavior,
       file: file,
       fileURL: fileURL
     };
@@ -172,22 +172,19 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
         return;
     }
 
-    saveAsType = fpParams.saveAsType;
+    saveBehavior = fpParams.saveBehavior;
     file = fpParams.file;
     fileURL = fpParams.fileURL;
   }
 
   // Handle saving a web archive using the Mozilla Archive Format extension
-  var mafSaveFilterIndex = saveAsType - 3;
-  if (mafSaveFilterIndex >= 0 &&
-   mafSaveFilterIndex < FileFilters.saveFiltersArray.length) {
+  if (saveBehavior.isMafArchive) {
     // Always add the archive extension if not explicitly specified. No check
     //  is done to see if a file with the new name already exists.
-    var selectedFileType = FileFilters.saveFiltersArray[mafSaveFilterIndex][1];
-    selectedFileType = selectedFileType.substring(1, selectedFileType.length);
+    var mandatoryExtension = saveBehavior.mandatoryExtension;
     var filename = file.path;
-    if (filename.substring(filename.length - selectedFileType.length,
-     filename.length).toLowerCase() != selectedFileType.toLowerCase()) {
+    if (filename.substring(filename.length - mandatoryExtension.length,
+     filename.length).toLowerCase() != mandatoryExtension.toLowerCase()) {
       filename += selectedFileType;
       // If an extension is added later, check if a file with the new name
       //  already exists. This code will be replaced by a new mechanism.
@@ -200,8 +197,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
 
     // Save the selected page in the web archive
     Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser,
-     FileFilters.scriptPathFromSaveIndex(mafSaveFilterIndex),
-     filename);
+     saveBehavior.mafArchiveType, filename);
 
     // Do not continue with the normal save process
     return;
@@ -210,12 +206,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   if (!fileURL)
     fileURL = makeFileURI(file);
 
-  // XXX We depend on the following holding true in appendFiltersForContentType():
-  // If we should save as a complete page, the saveAsType is kSaveAsType_Complete.
-  // If we should save as text, the saveAsType is kSaveAsType_Text.
-  var useSaveDocument = (aDocument != null) &&
-                        (((saveMode & SAVEMODE_COMPLETE_DOM) && (saveAsType == kSaveAsType_Complete)) ||
-                         ((saveMode & SAVEMODE_COMPLETE_TEXT) && (saveAsType == kSaveAsType_Text)));
+  var useSaveDocument = (aDocument != null) && saveBehavior.isComplete;
   // If we're saving a document, and are saving either in complete mode or
   // as converted text, pass the document to the web browser persist component.
   // If we're just saving the HTML (second option in the list), send only the URI.
@@ -223,7 +214,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     sourceURI         : sourceURI,
     sourceReferrer    : aReferrer,
     sourceDocument    : useSaveDocument ? aDocument : null,
-    targetContentType : (saveAsType == kSaveAsType_Text) ? "text/plain" : null,
+    targetContentType : saveBehavior.targetContentType,
     targetFile        : file,
     targetFileURL     : fileURL,
     sourcePostData    : isDocument ? getPostData() : null,
@@ -377,8 +368,9 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     fp.defaultExtension = aFpP.fileInfo.fileExt;
     fp.defaultString = getNormalizedLeafName(aFpP.fileInfo.fileName,
                                              aFpP.fileInfo.fileExt);
+    var saveBehaviors = [];
     appendFiltersForContentType(fp, aFpP.contentType, aFpP.fileInfo.fileExt,
-                                aFpP.saveMode);
+                                aFpP.saveMode, saveBehaviors);
 
     if (dir)
       fp.displayDirectory = dir;
@@ -410,12 +402,12 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     }
 
     fp.file.leafName = validateFileName(fp.file.leafName);
-    aFpP.saveAsType = fp.filterIndex;
+    aFpP.saveBehavior = saveBehaviors[fp.filterIndex];
     aFpP.file = fp.file;
     aFpP.fileURL = fp.fileURL;
 
     if (aFpP.saveMode != SAVEMODE_FILEONLY)
-      prefs.setIntPref("save_converter_index", aFpP.saveAsType);
+      prefs.setIntPref("save_converter_index", fp.filterIndex);
   }
   else {
     dir.append(getNormalizedLeafName(aFpP.fileInfo.fileName,
@@ -451,11 +443,14 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
   return true;
 }
 
-// If we are able to save a complete DOM, the 'save as complete' filter
-// must be the first filter appended.  The 'save page only' counterpart
-// must be the second filter appended.  And the 'save as complete text'
-// filter must be the third filter appended.
-function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, aSaveMode)
+/**
+ * Populate the filter list of the file picker using the valid save behaviors
+ * for the specified save mode. The aReturnBehaviorArray is populated with the
+ * save behaviors that have been actually added to the file picker, including
+ * the standard behavior for "All Files".
+ */
+function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension,
+                                     aSaveMode, aReturnBehaviorArray)
 {
   // For every behavior that is valid for the given save mode
   gInternalSaveBehaviors.forEach(function(saveBehavior) {
@@ -464,14 +459,17 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
       var filter = saveBehavior.getFileFilter(aContentType, aFileExtension);
       if (filter.mask) {
         aFilePicker.appendFilters(filter.mask);
+        aReturnBehaviorArray.push(saveBehavior);
       } else if (filter.extensionstring) {
         aFilePicker.appendFilter(filter.title, filter.extensionstring);
+        aReturnBehaviorArray.push(saveBehavior);
       }
     }
   });
 
   // Always append the all files (*) filter
   aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
+  aReturnBehaviorArray.push(gNormalSaveBehavior);
 }
 
 /**
