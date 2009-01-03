@@ -135,6 +135,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     var fileInfo = new FileInfo(aDefaultFileName);
     initFileInfo(fileInfo, aURL, charset, aDocument,
                  aContentType, aContentDisposition);
+    sourceURI = fileInfo.uri;
+
     var fpParams = {
       fpTitleKey: aFilePickerTitleKey,
       fileInfo: fileInfo,
@@ -168,10 +170,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     }
 
     saveAsType = fpParams.saveAsType;
-    saveMode = fpParams.saveMode;
     file = fpParams.file;
     fileURL = fpParams.fileURL;
-    sourceURI = fileInfo.uri;
   }
 
   // Handle saving a web archive using the Mozilla Archive Format extension
