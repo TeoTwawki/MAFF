@@ -319,6 +319,127 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   }
 }
 
+function getTargetFile(aFpP, /* optional */ aSkipPrompt)
+{
+  const prefSvcContractID = "@mozilla.org/preferences-service;1";
+  const prefSvcIID = Components.interfaces.nsIPrefService;                              
+  var prefs = Components.classes[prefSvcContractID]
+                        .getService(prefSvcIID).getBranch("browser.download.");
+
+  const nsILocalFile = Components.interfaces.nsILocalFile;
+
+  // For information on download folder preferences, see
+  // mozilla/browser/components/preferences/main.js
+  
+  var useDownloadDir = prefs.getBoolPref("useDownloadDir");
+  var dir = null;
+  
+  // Default to lastDir if useDownloadDir is false, and lastDir
+  // is configured and valid. Otherwise, use the user's default
+  // downloads directory configured through download prefs.
+  var dnldMgr = Components.classes["@mozilla.org/download-manager;1"]
+                          .getService(Components.interfaces.nsIDownloadManager);
+  try {                          
+    var lastDir = prefs.getComplexValue("lastDir", nsILocalFile);
+    if ((!aSkipPrompt || !useDownloadDir) && lastDir.exists())
+      dir = lastDir;
+    else
+      dir = dnldMgr.userDownloadsDirectory;
+  } catch(ex) {
+    dir = dnldMgr.userDownloadsDirectory;
+  }
+
+  if (!aSkipPrompt || !useDownloadDir || !dir || (dir && !dir.exists())) {
+    if (!dir || (dir && !dir.exists())) {
+      // Default to desktop.
+      var fileLocator = Components.classes["@mozilla.org/file/directory_service;1"]
+                                  .getService(Components.interfaces.nsIProperties);
+      dir = fileLocator.get("Desk", nsILocalFile);
+    }
+
+    var fp = makeFilePicker();
+    var titleKey = aFpP.fpTitleKey || "SaveLinkTitle";
+    var bundle = getStringBundle();
+    fp.init(window, bundle.GetStringFromName(titleKey), 
+            Components.interfaces.nsIFilePicker.modeSave);
+    
+    fp.defaultExtension = aFpP.fileInfo.fileExt;
+    fp.defaultString = getNormalizedLeafName(aFpP.fileInfo.fileName,
+                                             aFpP.fileInfo.fileExt);
+    appendFiltersForContentType(fp, aFpP.contentType, aFpP.fileInfo.fileExt,
+                                aFpP.saveMode);
+
+    if (dir)
+      fp.displayDirectory = dir;
+    
+    if (aFpP.isDocument) {
+      try {
+        fp.filterIndex = prefs.getIntPref("save_converter_index");
+      }
+      catch (e) {
+      }
+    }
+
+    if (fp.show() == Components.interfaces.nsIFilePicker.returnCancel || !fp.file)
+      return false;
+
+    // Do not remember the last save directory inside the private browsing mode
+    var persistLastDir = true;
+    try {
+      var pbs = Components.classes["@mozilla.org/privatebrowsing;1"]
+                          .getService(Components.interfaces.nsIPrivateBrowsingService);
+      if (pbs.privateBrowsingEnabled)
+        persistLastDir = false;
+    }
+    catch (e) {
+    }
+    if (persistLastDir) {
+      var directory = fp.file.parent.QueryInterface(nsILocalFile);
+      prefs.setComplexValue("lastDir", nsILocalFile, directory);
+    }
+
+    fp.file.leafName = validateFileName(fp.file.leafName);
+    aFpP.saveAsType = fp.filterIndex;
+    aFpP.file = fp.file;
+    aFpP.fileURL = fp.fileURL;
+
+    if (aFpP.isDocument)
+      prefs.setIntPref("save_converter_index", aFpP.saveAsType);
+  }
+  else {
+    dir.append(getNormalizedLeafName(aFpP.fileInfo.fileName,
+                                     aFpP.fileInfo.fileExt));
+    var file = dir;
+    
+    // Since we're automatically downloading, we don't get the file picker's 
+    // logic to check for existing files, so we need to do that here.
+    //
+    // Note - this code is identical to that in
+    //   mozilla/toolkit/mozapps/downloads/src/nsHelperAppDlg.js.in
+    // If you are updating this code, update that code too! We can't share code
+    // here since that code is called in a js component.
+    var collisionCount = 0;
+    while (file.exists()) {
+      collisionCount++;
+      if (collisionCount == 1) {
+        // Append "(2)" before the last dot in (or at the end of) the filename
+        // special case .ext.gz etc files so we don't wind up with .tar(2).gz
+        if (file.leafName.match(/\.[^\.]{1,3}\.(gz|bz2|Z)$/i))
+          file.leafName = file.leafName.replace(/\.[^\.]{1,3}\.(gz|bz2|Z)$/i, "(2)$&");
+        else
+          file.leafName = file.leafName.replace(/(\.[^\.]*)?$/, "(2)$&");
+      }
+      else {
+        // replace the last (n) in the filename with (n+1)
+        file.leafName = file.leafName.replace(/^(.*\()\d+\)/, "$1" + (collisionCount+1) + ")");
+      }
+    }
+    aFpP.file = file;
+  }
+
+  return true;
+}
+
 // If we are able to save a complete DOM, the 'save as complete' filter
 // must be the first filter appended.  The 'save page only' counterpart
 // must be the second filter appended.  And the 'save as complete text'
@@ -399,4 +520,22 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
 
   // Always append the all files (*) filter
   aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
+}
+
+function GetSaveModeForContentType(aContentType)
+{
+  var saveMode = SAVEMODE_FILEONLY;
+  switch (aContentType) {
+  case "text/html":
+  case "application/xhtml+xml":
+  case "image/svg+xml":
+    saveMode |= SAVEMODE_COMPLETE_TEXT;
+    // Fall through
+  case "text/xml":
+  case "application/xml":
+    saveMode |= SAVEMODE_COMPLETE_DOM;
+    break;
+  }
+
+  return saveMode;
 }
