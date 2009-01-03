@@ -137,7 +137,6 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                  aContentType, aContentDisposition);
     var fpParams = {
       fpTitleKey: aFilePickerTitleKey,
-      isDocument: saveMode != SAVEMODE_FILEONLY,
       fileInfo: fileInfo,
       contentType: aContentType,
       saveMode: saveMode,
@@ -381,7 +380,7 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     if (dir)
       fp.displayDirectory = dir;
     
-    if (aFpP.isDocument) {
+    if (aFpP.saveMode != SAVEMODE_FILEONLY) {
       try {
         fp.filterIndex = prefs.getIntPref("save_converter_index");
       }
@@ -412,7 +411,7 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     aFpP.file = fp.file;
     aFpP.fileURL = fp.fileURL;
 
-    if (aFpP.isDocument)
+    if (aFpP.saveMode != SAVEMODE_FILEONLY)
       prefs.setIntPref("save_converter_index", aFpP.saveAsType);
   }
   else {
