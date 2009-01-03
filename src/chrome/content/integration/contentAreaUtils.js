@@ -457,93 +457,174 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
 // filter must be the third filter appended.
 function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, aSaveMode)
 {
-  var bundle = getStringBundle();
-  // The bundle name for saving only a specific content type.
-  var bundleName;
-  // The actual filter name for a specific content type.
-  var filterName;
-  // The corresponding filter string for a specific content type.
-  var filterString = null;
-
-  // Try with known content types first
-  // XXX all the cases that are handled in GetSaveModeForContentType to return
-  // a non-fileonly filter MUST be handled explicitly here.
-  switch (aContentType) {
-  case "text/html":
-    bundleName   = "WebPageHTMLOnlyFilter";
-    filterString = "*.htm; *.html";
-    break;
-
-  case "application/xhtml+xml":
-    bundleName   = "WebPageXHTMLOnlyFilter";
-    filterString = "*.xht; *.xhtml";
-    break;
-
-  case "image/svg+xml":
-    bundleName   = "WebPageSVGOnlyFilter";
-    filterString = "*.svg; *.svgz";
-    break;
-
-  case "text/xml":
-  case "application/xml":
-    bundleName   = "WebPageXMLOnlyFilter";
-    filterString = "*.xml";
-    break;
-  }
-
-  if (filterString) {
-    // Get the filter description for the well-known content type
-    filterName = bundle.GetStringFromName(bundleName);
-  } else {
-    // This is not one of the known content types,
-    // get the filter info from the system if possible
-    if (aSaveMode != SAVEMODE_FILEONLY)
-      throw "Invalid save mode for type '" + aContentType + "'";
-
-    var mimeInfo = getMIMEInfoForType(aContentType, aFileExtension);
-    if (mimeInfo) {
-
-      var extEnumerator = mimeInfo.getFileExtensions();
-
-      var extString = "";
-      while (extEnumerator.hasMore()) {
-        var extension = extEnumerator.getNext();
-        if (extString)
-          extString += "; ";    // If adding more than one extension,
-                                // separate by semi-colon
-        extString += "*." + extension;
-      }
-
-      if (extString) {
-        filterName = mimeInfo.description;
-        filterString = extString;
+  // For every behavior that is valid for the given save mode
+  gInternalSaveBehaviors.forEach(function(saveBehavior) {
+    if(saveBehavior.isValidForSaveMode(aSaveMode)) {
+      // Add the corresponding file filter if one is provided
+      var filter = saveBehavior.getFileFilter(aContentType, aFileExtension);
+      if (filter.mask) {
+        aFilePicker.appendFilters(filter.mask);
+      } else if (filter.extensionstring) {
+        aFilePicker.appendFilter(filter.title, filter.extensionstring);
       }
     }
-  }
-
-  if (aSaveMode & SAVEMODE_COMPLETE_DOM) {
-    aFilePicker.appendFilter(bundle.GetStringFromName("WebPageCompleteFilter"), filterString);
-  }
-
-  if (filterString) {
-    // We should always offer a choice to save document only if
-    // we allow saving as complete.
-    aFilePicker.appendFilter(filterName, filterString);
-  }
-
-  if (aSaveMode & SAVEMODE_COMPLETE_TEXT)
-    aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText);
-
-  if (aSaveMode & SAVEMODE_COMPLETE_DOM) {
-    // Add filters from Mozilla Archive Format
-    FileFilters.saveFiltersArray.forEach(function(curFilterEntry) {
-      aFilePicker.appendFilter(curFilterEntry[0], curFilterEntry[1]);
-    });
-  }
+  });
 
   // Always append the all files (*) filter
   aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
 }
+
+/**
+ * The stateless objects that extend this one represent the possible methods
+ *  to save a web page or other file locally. Every object based on
+ *  InternalSaveBehavior maps to a save filter in the save file picker dialog.
+ */
+function InternalSaveBehavior() { }
+
+InternalSaveBehavior.prototype = {
+  /** True if this save behavior is for a complete web page or document. */
+  isComplete: false,
+
+  /** Target content type for the complete save, or null to use the default. */
+  targetContentType: null,
+
+  /**
+   * Returns true is this filter should be included for the given save mode.
+   */
+  isValidForSaveMode: function(aSaveMode) {
+    return true;
+  },
+
+  /**
+   * Returns an object containing the filter string and description to use in
+   *  the save file picker dialog.
+   *
+   * @param aContentType
+   *        The content type of the document being saved
+   * @param aFileExtension
+   *        The file extension of the document being saved
+   *
+   * @return .mask [optional]
+   *           One and only one of the constants defined in nsIFilePicker for
+   *           the appendFilters method. If present, .title and .extensionstring
+   *           should be ignored.
+   *         .extensionstring [optional]
+   *           Filter extensions, for example "*.htm; *.html".
+   *         .title
+   *           Filter display label, for example "Web Page, HTML only". Must
+   *           be returned only if .extensionstring is present.
+   *
+   * Warning: if neither .mask nor .extensionstring is returned, then the save
+   * behavior will not be available from the file picker. Currently this can
+   * only happen for the "normal" save mode, that is reachable in any case from
+   * the "All Files" filter.
+   */
+  getFileFilter: function(aContentType, aFileExtension) {
+    // Default implementation: use well-known file extensions for the well-known
+    //  content types, otherwise try to get the list of valid extensions from
+    //  the system.
+
+    var bundle = getStringBundle();
+    // The bundle name for saving only a specific content type.
+    var bundleName;
+    // The actual filter name for a specific content type.
+    var filterName = null;
+    // The corresponding filter string for a specific content type.
+    var filterString = null;
+
+    // Try with known content types first
+    // Note: all the cases that are handled in GetSaveModeForContentType to
+    // return SAVEMODE_COMPLETE_DOM should also be handled explicitly here,
+    // otherwise the file picker dialog might not be able to offer the choice
+    // of saving as complete DOM.
+    switch (aContentType) {
+    case "text/html":
+      bundleName   = "WebPageHTMLOnlyFilter";
+      filterString = "*.htm; *.html";
+      break;
+
+    case "application/xhtml+xml":
+      bundleName   = "WebPageXHTMLOnlyFilter";
+      filterString = "*.xht; *.xhtml";
+      break;
+
+    case "image/svg+xml":
+      bundleName   = "WebPageSVGOnlyFilter";
+      filterString = "*.svg; *.svgz";
+      break;
+
+    case "text/xml":
+    case "application/xml":
+      bundleName   = "WebPageXMLOnlyFilter";
+      filterString = "*.xml";
+      break;
+    }
+
+    if (filterString) {
+      // Get the filter description for the well-known content type
+      filterName = bundle.GetStringFromName(bundleName);
+    } else {
+      // This is not one of the known content types,
+      // get the filter info from the system if possible
+      var mimeInfo = getMIMEInfoForType(aContentType, aFileExtension);
+      if (mimeInfo) {
+
+        var extEnumerator = mimeInfo.getFileExtensions();
+
+        var extString = "";
+        while (extEnumerator.hasMore()) {
+          var extension = extEnumerator.getNext();
+          if (extString)
+            extString += "; ";    // If adding more than one extension,
+                                  // separate by semi-colon
+          extString += "*." + extension;
+        }
+
+        if (extString) {
+          filterName = mimeInfo.description;
+          filterString = extString;
+        }
+      }
+    }
+
+    // Note: filterName and filterString might be null
+    return {title: filterName, extensionstring: filterString};
+  }
+}
+
+/** The normal save behavior (also used when All Files is selected) */
+var gNormalSaveBehavior = new InternalSaveBehavior();
+
+/** The "save as complete web page" behavior. */
+var gCompleteSaveBehavior = new InternalSaveBehavior();
+gCompleteSaveBehavior.isComplete = true;
+gCompleteSaveBehavior.isValidForSaveMode = function(aSaveMode) {
+  return aSaveMode & SAVEMODE_COMPLETE_DOM;
+};
+gCompleteSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
+  // Keep the same extensions as the normal behavior, override the description
+  filter = this.__proto__.getFileFilter(aContentType, aFileExtension);
+  filter.title = getStringBundle().GetStringFromName("WebPageCompleteFilter");
+  return filter;
+};
+
+/** The "save as text only" behavior. */
+var gTextOnlySaveBehavior = new InternalSaveBehavior();
+gTextOnlySaveBehavior.isComplete = true;
+gTextOnlySaveBehavior.targetContentType = "text/plain";
+gTextOnlySaveBehavior.isValidForSaveMode = function(aSaveMode) {
+  return aSaveMode & SAVEMODE_COMPLETE_TEXT;
+};
+gTextOnlySaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
+  return {mask: Components.interfaces.nsIFilePicker.filterText};
+};
+
+/** The list of registered save behaviors. */
+var gInternalSaveBehaviors = [
+  gCompleteSaveBehavior,
+  gNormalSaveBehavior,
+  gTextOnlySaveBehavior
+];
 
 function GetSaveModeForContentType(aContentType, aDocument)
 {
