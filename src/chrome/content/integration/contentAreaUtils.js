@@ -460,11 +460,14 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
   var bundle = getStringBundle();
   // The bundle name for saving only a specific content type.
   var bundleName;
+  // The actual filter name for a specific content type.
+  var filterName;
   // The corresponding filter string for a specific content type.
-  var filterString;
+  var filterString = null;
 
-  // XXX all the cases that are handled explicitly here MUST be handled
-  // in GetSaveModeForContentType to return a non-fileonly filter.
+  // Try with known content types first
+  // XXX all the cases that are handled in GetSaveModeForContentType to return
+  // a non-fileonly filter MUST be handled explicitly here.
   switch (aContentType) {
   case "text/html":
     bundleName   = "WebPageHTMLOnlyFilter";
@@ -486,8 +489,14 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
     bundleName   = "WebPageXMLOnlyFilter";
     filterString = "*.xml";
     break;
+  }
 
-  default:
+  if (filterString) {
+    // Get the filter description for the well-known content type
+    filterName = bundle.GetStringFromName(bundleName);
+  } else {
+    // This is not one of the known content types,
+    // get the filter info from the system if possible
     if (aSaveMode != SAVEMODE_FILEONLY)
       throw "Invalid save mode for type '" + aContentType + "'";
 
@@ -505,18 +514,21 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
         extString += "*." + extension;
       }
 
-      if (extString)
-        aFilePicker.appendFilter(mimeInfo.description, extString);
+      if (extString) {
+        filterName = mimeInfo.description;
+        filterString = extString;
+      }
     }
-
-    break;
   }
 
   if (aSaveMode & SAVEMODE_COMPLETE_DOM) {
     aFilePicker.appendFilter(bundle.GetStringFromName("WebPageCompleteFilter"), filterString);
+  }
+
+  if (filterString) {
     // We should always offer a choice to save document only if
     // we allow saving as complete.
-    aFilePicker.appendFilter(bundle.GetStringFromName(bundleName), filterString);
+    aFilePicker.appendFilter(filterName, filterString);
   }
 
   if (aSaveMode & SAVEMODE_COMPLETE_TEXT)
