@@ -23,6 +23,7 @@ try {
    "integration/browser.js",
    "integration/contentAreaUtils.js",
    "integration/fileFiltersObject.js",
+   "integration/fileFiltersOverlay.js",
    "jscomponents/nsMafArchiver.js",
    "jscomponents/nsMafGuiHandler.js",
    "jscomponents/nsMafMhtDecoder.js",

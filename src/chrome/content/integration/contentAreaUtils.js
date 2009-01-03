@@ -624,6 +624,9 @@ var gInternalSaveBehaviors = [
   gTextOnlySaveBehavior
 ];
 
+// Special save mode for Mozilla Archive Format
+const SAVEMODE_MAFARCHIVE = 0x100;
+
 function GetSaveModeForContentType(aContentType, aDocument)
 {
   // We can only save a complete page if we have a loaded document
@@ -631,7 +634,7 @@ function GetSaveModeForContentType(aContentType, aDocument)
     return SAVEMODE_FILEONLY;
 
   // Find the possible save modes using the provided content type
-  var saveMode = SAVEMODE_FILEONLY;
+  var saveMode = SAVEMODE_FILEONLY | SAVEMODE_MAFARCHIVE;
   switch (aContentType) {
   case "text/html":
   case "application/xhtml+xml":
