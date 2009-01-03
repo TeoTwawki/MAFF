@@ -113,10 +113,13 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // (in particular, not an image type). In turn, aContentType can be present
   // only when this function is called from saveDocument or saveImageURL, but
   // in the latter case aContentType is an image type. The saveDocument
-  // function always provides aDocument. Thus:
+  // function always provides aDocument, while other callers never provide it.
+  // Thus:
   // saveMode != SAVEMODE_FILEONLY  =>  aDocument != null
+  // aDocument == null  =>  aContentType != "<any-type-in-GetSaveModeForContentType>"
+  //                    =>  saveMode == SAVEMODE_FILEONLY
 
-  var saveMode = GetSaveModeForContentType(aContentType);
+  var saveMode = GetSaveModeForContentType(aContentType, aDocument);
   var isDocument = aDocument != null && saveMode != SAVEMODE_FILEONLY;
 
   var file, fileURL, sourceURI, saveAsType;
@@ -530,8 +533,13 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension, 
   aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
 }
 
-function GetSaveModeForContentType(aContentType)
+function GetSaveModeForContentType(aContentType, aDocument)
 {
+  // We can only save a complete page if we have a loaded document
+  if (!aDocument)
+    return SAVEMODE_FILEONLY;
+
+  // Find the possible save modes using the provided content type
   var saveMode = SAVEMODE_FILEONLY;
   switch (aContentType) {
   case "text/html":
