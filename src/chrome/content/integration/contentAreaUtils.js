@@ -107,6 +107,15 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     aSkipPrompt = false;
 
   // Note: aDocument == null when this code is used by save-link-as...
+
+  // Note: GetSaveModeForContentType can return a value different from
+  // SAVEMODE_FILEONLY only if aContentType is present and is a document type
+  // (in particular, not an image type). In turn, aContentType can be present
+  // only when this function is called from saveDocument or saveImageURL, but
+  // in the latter case aContentType is an image type. The saveDocument
+  // function always provides aDocument. Thus:
+  // saveMode != SAVEMODE_FILEONLY  =>  aDocument != null
+
   var saveMode = GetSaveModeForContentType(aContentType);
   var isDocument = aDocument != null && saveMode != SAVEMODE_FILEONLY;
 
@@ -128,7 +137,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                  aContentType, aContentDisposition);
     var fpParams = {
       fpTitleKey: aFilePickerTitleKey,
-      isDocument: isDocument,
+      isDocument: saveMode != SAVEMODE_FILEONLY,
       fileInfo: fileInfo,
       contentType: aContentType,
       saveMode: saveMode,
@@ -202,7 +211,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // XXX We depend on the following holding true in appendFiltersForContentType():
   // If we should save as a complete page, the saveAsType is kSaveAsType_Complete.
   // If we should save as text, the saveAsType is kSaveAsType_Text.
-  var useSaveDocument = isDocument &&
+  var useSaveDocument = (aDocument != null) &&
                         (((saveMode & SAVEMODE_COMPLETE_DOM) && (saveAsType == kSaveAsType_Complete)) ||
                          ((saveMode & SAVEMODE_COMPLETE_TEXT) && (saveAsType == kSaveAsType_Text)));
   // If we're saving a document, and are saving either in complete mode or
