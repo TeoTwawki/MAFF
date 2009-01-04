@@ -210,34 +210,30 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   }
 
   // Handle saving a web archive using the Mozilla Archive Format extension
+  var mafPersistObject = null;
   if (saveBehavior.isMafArchive) {
     // Always add the archive extension if not explicitly specified. No check
     //  is done to see if a file with the new name already exists.
     var mandatoryExtension = saveBehavior.mandatoryExtension;
-    var filename = file.path;
+    var filename = file.leafName;
     if (filename.substring(filename.length - mandatoryExtension.length,
      filename.length).toLowerCase() != mandatoryExtension.toLowerCase()) {
-      filename += mandatoryExtension;
+      file.leafName = filename + mandatoryExtension;
       // If an extension is added later, check if a file with the new name
       //  already exists. This code will be replaced by a new mechanism.
-      if (MafUtils.checkFileExists(filename)) {
-        if(!browserWindow.confirm('Overwrite "' + filename + '"?')) {
+      if (file.exists()) {
+        if(!browserWindow.confirm('Overwrite "' + file.path + '"?')) {
           return;
         }
       }
+      // Invalidate the associated file URL
+      fileURL = null;
     }
 
-    // Save the selected page or tabs in the web archive
-    if (mafSaveTabs) {
-      Maf.saveAllTabsComplete(mafSaveTabs, "",
-       saveBehavior.mafArchiveType, filename);
-    } else {
-      Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser,
-       saveBehavior.mafArchiveType, filename);
-    }
-
-    // Do not continue with the normal save process
-    return;
+    // Create the special archive persist object
+    mafPersistObject = new MafArchivePersist(
+     window.getBrowser().selectedBrowser, mafSaveTabs,
+     saveBehavior.mafArchiveType);
   }
 
   if (!fileURL)
@@ -255,7 +251,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     targetFile        : file,
     targetFileURL     : fileURL,
     sourcePostData    : isDocument ? getPostData() : null,
-    bypassCache       : aShouldBypassCache
+    bypassCache       : aShouldBypassCache,
+    persistObject     : mafPersistObject
   };
 
   // Start the actual save process
@@ -294,7 +291,9 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
 {
   // Check if the Mozilla Archive Format internal save component should be used
   var persist;
-  if (Prefs.saveComponent == Prefs.SAVECOMPONENT_MAF &&
+  if (persistArgs.persistObject) {
+    persist = persistArgs.persistObject;
+  } else if (Prefs.saveComponent == Prefs.SAVECOMPONENT_MAF &&
       persistArgs.sourceDocument && !persistArgs.targetContentType) {
     // This component can only save a complete document without converting its
     //  content type

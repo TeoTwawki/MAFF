@@ -48,6 +48,7 @@ FileFilters.saveFiltersArray.forEach(function(curFilterEntry, curFilterIndex) {
 
   // Create the new save behavior object
   var newSaveBehavior = new InternalSaveBehavior();
+  newSaveBehavior.isComplete = true;
   newSaveBehavior.isMafArchive = true;
   newSaveBehavior.mafArchiveType = mafArchiveType;
   newSaveBehavior.mandatoryExtension = extensionOnly;

@@ -146,16 +146,6 @@ MafUtilServiceClass.prototype = {
   },
 
   /**
-   * Returns true if the file in the path exists
-   */
-  checkFileExists: function(filePathToCheck) {
-    var oFile = Components.classes["@mozilla.org/file/local;1"]
-                  .createInstance(Components.interfaces.nsILocalFile);
-    oFile.initWithPath(filePathToCheck);
-    return oFile.exists();
-  },
-
-  /**
    * Based on the suggested filename, new file names are created so as
    * not to overwite existing ones.
    * Code from contentUtils.js
