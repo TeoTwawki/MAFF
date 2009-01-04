@@ -50,29 +50,7 @@ MafTabArchiverClass.prototype = {
     /** The current tab being saved. */
     this.currentMafArchiverIndex = 0;
 
-    /** Which tabs to save. */
-    this.browsersInclude = new Array();
-
-    this.browsers.QueryInterface(Components.interfaces.nsIArray);
-    
-    for (var i=0; i<this.browsers.length; i++) {
-      this.browsersInclude[this.browsersInclude.length] = i;
-    }
-
     this.Maf = Maf;
-  },
-
-  setIncludeList: function(strIncludeList) {
-    this.browsersInclude = new Array();
-
-    var strListIndexes = strIncludeList.split(",");
-
-    for (var i=0; i<strListIndexes.length; i++) {
-      var browserIndex = parseInt(strListIndexes[i]);
-      if ((browserIndex > -1) && (browserIndex < this.browsers.length)) {
-        this.browsersInclude[this.browsersInclude.length] = browserIndex;
-      }
-    }
   },
 
   start: function() {
@@ -84,9 +62,9 @@ MafTabArchiverClass.prototype = {
       this.MafArchivers[this.MafArchivers.length] = objMafArchiver;
     }
 
-    if (this.browsersInclude.length > 0) {
-      this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers.queryElementAt(
-                            this.browsersInclude[this.currentMafArchiverIndex], Components.interfaces.nsISupports),
+    if (this.browsers.length > 0) {
+      this.MafArchivers[this.currentMafArchiverIndex].init(
+                          this.browsers[this.currentMafArchiverIndex],
                           this.scriptPath, this.archivePath,
                           dateTimeArchived.valueOf() + "", this.Maf);
       // We are archiving the first tab, replace an existing archive
@@ -106,15 +84,15 @@ MafTabArchiverClass.prototype = {
     if (progress == 100) {
       // Finished saving single tab
 
-      if (this.currentMafArchiverIndex < this.browsersInclude.length) {
+      if (this.currentMafArchiverIndex < this.browsers.length) {
           this.currentMafArchiverIndex += 1;
 
           if (this.objWith_fnProgressUpdater != null) {
-            var percentage = Math.floor((this.currentMafArchiverIndex/this.browsersInclude.length)*100);
+            var percentage = Math.floor((this.currentMafArchiverIndex/this.browsers.length)*100);
             this.objWith_fnProgressUpdater.progressUpdater(percentage, 0);
           }
 
-          if (this.currentMafArchiverIndex < this.browsersInclude.length) {
+          if (this.currentMafArchiverIndex < this.browsers.length) {
             var dateTimeArchived = new Date();
             var archivePathToUse = this.archivePath;
             // If it's MHT, get unique filename
@@ -122,8 +100,8 @@ MafTabArchiverClass.prototype = {
               archivePathToUse = MafUtils.getFullUniqueFilename(archivePathToUse);
             }
             
-            this.MafArchivers[this.currentMafArchiverIndex].init(this.browsers.queryElementAt(
-                              this.browsersInclude[this.currentMafArchiverIndex], Components.interfaces.nsISupports),
+            this.MafArchivers[this.currentMafArchiverIndex].init(
+                               this.browsers[this.currentMafArchiverIndex],
                                this.scriptPath, archivePathToUse,
                                dateTimeArchived.valueOf() + "", this.Maf);
             // We are archiving a new tab, append to the existing archive

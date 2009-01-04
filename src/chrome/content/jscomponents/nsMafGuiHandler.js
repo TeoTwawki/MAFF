@@ -93,15 +93,8 @@ MAFGuiHandlerClass.prototype = {
     var archiveToAddTo = this.selectFileSave(defaultFileName);
 
     if ((typeof(archiveToAddTo) != "undefined") && (archiveToAddTo.length > 1)) {
-    
-      var browArray = Components.classes["@mozilla.org/array;1"]
-                        .createInstance(Components.interfaces.nsIMutableArray);
-                        
-      for (var i=0; i<this.window.getBrowser().browsers.length; i++) {
-        browArray.appendElement(this.window.getBrowser().browsers[i], false);
-      }
                     
-      Maf.saveAllTabsComplete(browArray, "",
+      Maf.saveAllTabsComplete(this.window.getBrowser().browsers, "",
                               FileFilters.scriptPathFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
     }
   },
