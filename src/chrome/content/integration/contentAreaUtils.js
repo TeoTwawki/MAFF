@@ -177,6 +177,12 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     fileURL = fpParams.fileURL;
   }
 
+  // The save behavior may not be valid for the save mode if it was determined
+  // automatically instead of through the file picker.
+  if (!saveBehavior.isValidForSaveMode(saveMode)) {
+    saveBehavior = gNormalSaveBehavior;
+  }
+
   // Handle saving a web archive using the Mozilla Archive Format extension
   if (saveBehavior.isMafArchive) {
     // Always add the archive extension if not explicitly specified. No check
