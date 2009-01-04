@@ -91,13 +91,17 @@
  *        If set to true, we will attempt to save the file to the
  *        default downloads folder without prompting.
  *        When this function is called, directly or indirectly, by Mozilla
- *        Archive Format, this parameter can also be an object with the
- *        following properties:
+ *        Archive Format to save a file automatically, this parameter can also
+ *        be an object with the following properties:
  *         - saveDir: nsILocalFile instance pointing to the directory where the
  *           specified document should be saved. The filename is determined
  *           automatically, using "index" as the basename.
  *         - mafEventListener: Object implementing the onSaveNameDetermined,
  *           onDownloadComplete, and onDownloadFailed event functions.
+ *        When this function is called, directly or indirectly, by Mozilla
+ *        Archive Format to ask the user to save an archive, this parameter can
+ *        also be an object with the following properties:
+ *         - mafAskSaveArchive: True to ask to save archives only.
  */
 function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                       aContentType, aShouldBypassCache, aFilePickerTitleKey,
@@ -106,21 +110,28 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   if (aSkipPrompt == undefined)
     aSkipPrompt = false;
 
+  // We use aSkipPrompt also to convey the saveAllTabs flag
+  var mafAskSaveArchive = false;
+  if (typeof aSkipPrompt == "object" && aSkipPrompt.mafAskSaveArchive) {
+    mafAskSaveArchive = true;
+    aSkipPrompt = false;
+  }
+
   // Note: aDocument == null when this code is used by save-link-as...
 
   // Note: GetSaveModeForContentType can return a value different from
-  // SAVEMODE_FILEONLY only if aContentType is present and is a document type
+  // SAVEMODE_SAMEFORMAT only if aContentType is present and is a document type
   // (in particular, not an image type). In turn, aContentType can be present
   // only when this function is called from saveDocument or saveImageURL, but
   // in the latter case aContentType is an image type. The saveDocument
   // function always provides aDocument, while other callers never provide it.
   // Thus:
-  // saveMode != SAVEMODE_FILEONLY  =>  aDocument != null
+  // saveMode != SAVEMODE_SAMEFORMAT  =>  aDocument != null
   // aDocument == null  =>  aContentType != "<any-type-in-GetSaveModeForContentType>"
-  //                    =>  saveMode == SAVEMODE_FILEONLY
+  //                    =>  saveMode == SAVEMODE_SAMEFORMAT
 
   var saveMode = GetSaveModeForContentType(aContentType, aDocument);
-  var isDocument = aDocument != null && saveMode != SAVEMODE_FILEONLY;
+  var isDocument = aDocument != null && saveMode != SAVEMODE_SAMEFORMAT;
 
   var file, fileURL, sourceURI, saveBehavior;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
@@ -144,7 +155,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       fpTitleKey: aFilePickerTitleKey,
       fileInfo: fileInfo,
       contentType: aContentType,
-      saveMode: saveMode,
+      // When saving all tabs, only offer the choice of creating an archive
+      saveMode: mafAskSaveArchive ? SAVEMODE_MAFARCHIVE : saveMode,
       saveBehavior: gCompleteSaveBehavior,
       file: file,
       fileURL: fileURL
@@ -173,6 +185,16 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     }
 
     saveBehavior = fpParams.saveBehavior;
+    
+    // When asking to save in an archive, if All Files is selected we will save
+    //  the file using the default archive format
+    if (mafAskSaveArchive && saveBehavior == gNormalSaveBehavior) {
+      // Note: in this case, aDocument is specified and the original saveMode
+      //  includes SAVEMODE_MAFARCHIVE, so we needn't worry that saveBehavior
+      //  be changed later
+      saveBehavior = gMafDefaultSaveBehavior;
+    }
+
     file = fpParams.file;
     fileURL = fpParams.fileURL;
   }
@@ -390,7 +412,7 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     if (dir)
       fp.displayDirectory = dir;
     
-    if (aFpP.saveMode != SAVEMODE_FILEONLY) {
+    if (aFpP.saveMode != SAVEMODE_SAMEFORMAT) {
       try {
         fp.filterIndex = prefs.getIntPref("save_converter_index");
       }
@@ -421,7 +443,7 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     aFpP.file = fp.file;
     aFpP.fileURL = fp.fileURL;
 
-    if (aFpP.saveMode != SAVEMODE_FILEONLY)
+    if (aFpP.saveMode != SAVEMODE_SAMEFORMAT)
       prefs.setIntPref("save_converter_index", fp.filterIndex);
   }
   else {
@@ -607,6 +629,9 @@ InternalSaveBehavior.prototype = {
 
 /** The normal save behavior (also used when All Files is selected) */
 var gNormalSaveBehavior = new InternalSaveBehavior();
+gNormalSaveBehavior.isValidForSaveMode = function(aSaveMode) {
+  return aSaveMode & SAVEMODE_SAMEFORMAT;
+};
 
 /** The "save as complete web page" behavior. */
 var gCompleteSaveBehavior = new InternalSaveBehavior();
@@ -639,17 +664,18 @@ var gInternalSaveBehaviors = [
   gTextOnlySaveBehavior
 ];
 
-// Special save mode for Mozilla Archive Format
+// Special save modes for Mozilla Archive Format
 const SAVEMODE_MAFARCHIVE = 0x100;
+const SAVEMODE_SAMEFORMAT = 0x200;
 
 function GetSaveModeForContentType(aContentType, aDocument)
 {
   // We can only save a complete page if we have a loaded document
   if (!aDocument)
-    return SAVEMODE_FILEONLY;
+    return SAVEMODE_SAMEFORMAT;
 
   // Find the possible save modes using the provided content type
-  var saveMode = SAVEMODE_FILEONLY | SAVEMODE_MAFARCHIVE;
+  var saveMode = SAVEMODE_SAMEFORMAT | SAVEMODE_MAFARCHIVE;
   switch (aContentType) {
   case "text/html":
   case "application/xhtml+xml":

@@ -39,6 +39,8 @@
  * This overlay adds the Mozilla Archive Format save behaviors to the browser.
  */
 
+var gMafDefaultSaveBehavior;
+
 FileFilters.saveFiltersArray.forEach(function(curFilterEntry, curFilterIndex) {
   var [title, extensionString] = curFilterEntry;
   var extensionOnly = extensionString.substring(1, extensionString.length);
@@ -59,4 +61,9 @@ FileFilters.saveFiltersArray.forEach(function(curFilterEntry, curFilterIndex) {
   // Add the save behavior to the browser, before the one already present at
   //  index 2, assuming it is the one for saving as text only.
   gInternalSaveBehaviors.splice(2 + curFilterIndex, 0, newSaveBehavior);
+
+  // Save a reference to the first save behavior, considered the default
+  if (curFilterIndex == 0) {
+    gMafDefaultSaveBehavior = newSaveBehavior;
+  }
 });
