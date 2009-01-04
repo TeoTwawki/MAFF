@@ -261,7 +261,16 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  */
 function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
 {
-  var persist = makeWebBrowserPersist();
+  // Check if the Mozilla Archive Format internal save component should be used
+  var persist;
+  if (Prefs.saveComponent == Prefs.SAVECOMPONENT_MAF &&
+      persistArgs.sourceDocument && !persistArgs.targetContentType) {
+    // This component can only save a complete document without converting its
+    //  content type
+    persist = new MafWebBrowserPersistClass();
+  } else {
+    persist = makeWebBrowserPersist();
+  }
 
   // Calculate persist flags.
   const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
