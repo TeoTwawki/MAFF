@@ -84,6 +84,12 @@ var savecomplete = {
     main: function() {
         savecomplete.dump("Starting save...");
         try {
+            // Clean up the "_files" directory {
+            if(savecomplete.getDir().exists()) {
+                savecomplete.getDir().remove(true);
+            }
+            //}
+
             // Get all the "base" URIs to save {
             var baseURIs = savecomplete.getBaseURIs(savecomplete.doc); // URIs found in the html document
             for (i in baseURIs) { if(baseURIs[i].where) { continue; } baseURIs[i].where = "base"; }
