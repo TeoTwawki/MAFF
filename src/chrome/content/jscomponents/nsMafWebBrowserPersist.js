@@ -86,7 +86,7 @@ MafWebBrowserPersistClass.prototype = {
     // document.getElementsByTagName("base")[0].src
 
     const nsIWPL = Components.interfaces.nsIWebProgressListener;
-    const nsIWBP = mafWebBrowserPersistIID;
+    const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
 
     if (this.progressListener != null) {
       try {
@@ -701,7 +701,7 @@ saveTimerState.prototype = {
 
   notify: function(expiredtimer) {
     const nsIWPL = Components.interfaces.nsIWebProgressListener;
-    const nsIWBP = mafWebBrowserPersistIID;
+    const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
 
     if (this.parent.request <= 0) {
 
