@@ -543,14 +543,15 @@ var savecomplete = {
         if(savecomplete.DEBUG_MODE) {
             savecomplete.dumpObj({relative: relative, base: base, typeIn: typeIn});
         }
-        var uriString = "";
-        if(relative.indexOf("http") == 0) {
-            uriString = relative;
-        } else if(base && !(base.resolve)) {
-            uriString = savecomplete.nsIIOService.newURI(base,null,null).resolve(relative);
-        } else if (base.resolve) {
-            uriString = base.resolve(relative);
+        var uriString = relative;
+        if(!base.resolve) {
+            try {
+                base = savecomplete.nsIIOService.newURI(base,null,null);
+            } catch(e) { }
         }
+        try {
+            uriString = base.resolve(relative);
+        } catch(e) { }
         return {
                 URI: savecomplete.nsIIOService.newURI(uriString,null,null),
                 text: (relative) ? relative : "",
