@@ -36,14 +36,10 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var savecompleteStrings = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle("chrome://savecomplete/locale/save_complete.properties");
+// Namespace wrapper for Mozilla Archive Format
+function MafSaveComplete() {
+
 var savecomplete = {
-    VERSION: '0.9b11',
-    /* Translateable Strings */
-    savePage: savecompleteStrings.GetStringFromName("savecompleteSavePage"),
-    saveFilter: savecompleteStrings.GetStringFromName("savecompleteSaveFilter"),
-    illegalProtocol: savecompleteStrings.GetStringFromName("savecompleteIllegalProtocol"),
-    illegalContentType: savecompleteStrings.GetStringFromName("savecompleteIllegalContentType"),
     /* XPCOM Shortcuts */
     nsIIOService: Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService),
     nsIRequest: Components.interfaces.nsIRequest,
@@ -56,73 +52,17 @@ var savecomplete = {
     DEBUG_MODE: false,
 
     /* Main functions */
-    onload: function() { // Called when Firefox runs
-        // Make sure not called again and the listener is cleaned up
-        window.removeEventListener('load',savecomplete.onload, true);
-
-        // Show in context menu if the preference for it is set {
-        var PrefBranch = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-        var status = PrefBranch.getBoolPref("extensions.savecomplete@perlprogrammer.com.context");
-        if(status == true) {
-            var contextMenu = document.getElementById('contentAreaContextMenu');
-            contextMenu.addEventListener('popupshowing',savecomplete.checkStatus,true);
-        }
-        //}
-    },
-    checkStatus: function() {
-        gContextMenu.showItem("savecomplete_context", !( gContextMenu.inDirList || gContextMenu.isContentSelected || gContextMenu.onLink));
-    },
-    save: function() { // Called by selecting from either the context menu or the file menu
-        // Get page that is supposed to be saved {
-        var focusedWindow = document.commandDispatcher.focusedWindow;
-        if (focusedWindow == window)
-            focusedWindow = _content;
-        //}
-
-        // First check if it's html and if it's from an accepted protocol {
-        if(focusedWindow.document.contentType != "text/html" && focusedWindow.document.contentType != "application/xhtml+xml") {
-            alert(savecomplete.illegalContentType);
-            return;
-        } else if(focusedWindow.document.location.href.match(/^(ftp|file|chrome|view-source|about|javascript|news|snews|ldap|ldaps|mailto|finger|telnet|gopher|irc|mailbox)/)) {
-            alert(savecomplete.illegalProtocol+" "+focusedWindow.document.location.href.split("://").shift()+"://");
-            return;
-        }
-        //}
-
-        // Create a save dialog and then display it {
-        var nsIFilePicker = Components.interfaces.nsIFilePicker;
-        var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-        fp.init(window, savecomplete.savePage, nsIFilePicker.modeSave);
-        fp.appendFilter(savecomplete.saveFilter,"");
-
-        // Get default save string {
-        // The default save string is either the url after the '/' or it is the title of the document
-        // I've tried to be as close to the default behavior in Firefox as possible
-        var defaultSaveString = focusedWindow.document.location.href.split("?").shift();
-        if(defaultSaveString.split("/").pop() == "") // Nothing after '/' so use the title
-            defaultSaveString = focusedWindow.document.title+".html";
-        else {
-            defaultSaveString = defaultSaveString.split("/").pop();
-            if(defaultSaveString.match(/\.x?html?$/) == null) defaultSaveString += ".html";
-        }
-        fp.defaultString = defaultSaveString.replace(/ *[:*?|<>\"/]+ */g," "); // Clean out illegal characters
-        //}
-
-        var res = fp.show();
-        if (res == nsIFilePicker.returnCancel) return;
-        //}
-
+    save: function(aDocument, aFile, aDataPath, aCallback) {
         // We have where they want it to be saved to so create the HTML file that needs to be saved {
-        var htmlFile = fp.file;
+        var htmlFile = aFile;
         var exists = htmlFile.exists();
         if(exists == false)
             htmlFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0644);
         //}
 
         // Get the additional files folder name and create the directory {
-        var folderName = htmlFile.leafName.replace(/\.\w*$/,"") /*.replace(/\s+/g,"_")*/ + "_files";
-        var dir = htmlFile.parent;
-        dir.append(folderName);
+        var folderName = aDataPath.leafName;
+        var dir = aDataPath;
         if (dir.exists() == false) // Should wait until I know if this is necessary, but I don't - oh well :(
             dir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
         //}
@@ -131,10 +71,11 @@ var savecomplete = {
         savecomplete.file = htmlFile;
         savecomplete.folderName = folderName;
         savecomplete.dir = dir;
-        savecomplete.doc = focusedWindow.document;
-        savecomplete.baseURI = savecomplete.nsIIOService.newURI(focusedWindow.document.location.href,null,null);
-        savecomplete.baseURL = focusedWindow.document.location.href;
+        savecomplete.doc = aDocument;
+        savecomplete.baseURI = savecomplete.nsIIOService.newURI(aDocument.location.href,null,null);
+        savecomplete.baseURL = aDocument.location.href;
         savecomplete.fixed = 0;
+        savecomplete.callbackObject = aCallback;
         //}
 
         // RUN!!!!!!!
@@ -156,7 +97,7 @@ var savecomplete = {
             // Start the save process for all of the found URIs
             savecomplete.asyncSave(baseURIs, otherURIs);
         } catch(e) {
-            alert("Error caught in main() - version "+savecomplete.VERSION+":\n"+e);
+            Components.utils.reportError(e);
         }
     },
     getBaseURIs: function(docNode) {
@@ -498,6 +439,7 @@ var savecomplete = {
 
         // Clean up if done {
         if(savecomplete.fixed == savecomplete.URIQueue.length) {
+            savecomplete.callbackObject.onDownloadComplete();
             savecomplete.cleanUp();
             savecomplete.dump("Complete save successful.");
             return;
@@ -692,4 +634,7 @@ var savecomplete = {
         savecomplete.dump(str);
     }
 };
-window.addEventListener('load',savecomplete.onload, true);
+
+// End of namespace wrapper for Mozilla Archive Format
+this.savecomplete = savecomplete;
+}
