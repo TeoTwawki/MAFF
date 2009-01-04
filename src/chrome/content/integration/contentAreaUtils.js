@@ -191,7 +191,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     var filename = file.path;
     if (filename.substring(filename.length - mandatoryExtension.length,
      filename.length).toLowerCase() != mandatoryExtension.toLowerCase()) {
-      filename += selectedFileType;
+      filename += mandatoryExtension;
       // If an extension is added later, check if a file with the new name
       //  already exists. This code will be replaced by a new mechanism.
       if (MafUtils.checkFileExists(filename)) {
