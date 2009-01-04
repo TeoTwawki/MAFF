@@ -75,6 +75,7 @@ var savecomplete = {
         savecomplete.baseURI = savecomplete.nsIIOService.newURI(aDocument.location.href,null,null);
         savecomplete.baseURL = aDocument.location.href;
         savecomplete.fixed = 0;
+        savecomplete.urisavemap = {};
         savecomplete.callbackObject = aCallback;
         //}
 
@@ -524,20 +525,54 @@ var savecomplete = {
         dir.append(savecomplete.folderName);
         return dir;
     },
+    /*
+     * This function is called once for every different URI object found while
+     *  scanning the various files. Multiple URI objects may refer to the same
+     *  Internet address.
+     *
+     * The resource is not actually downloaded and saved to disk until later.
+     *
+     * If folder is true, the returned name will include the save folder. This
+     *  affects only the return value.
+     */
     savePath: function(URIObj, folder) { // Returns the path for the file to be saved to as a string
+        // If we already determined the save name, use it
+        var uriUniqueKey = URIObj.toString();
+        if (savecomplete.urisavemap[uriUniqueKey]) {
+            // Include the folder name if requested
+            return (folder ? savecomplete.folderName + '/' : '') +
+              savecomplete.urisavemap[uriUniqueKey];
+        }
+
+        // Determine the base filename to use
         var fileName = URIObj.URI.path.split('/').pop();
         if(fileName.replace(/\?.*$/,"") != "") { fileName = fileName.replace(/\?.*$/,""); }
 
-        // TODO: Need to check if the file exists already so we can change the path (or replace)
-        // because they might have two images with the same name and different paths which would be overwritten
-        if(false) {
-            for(var i = 2; i < 10; i++) {
-                fileName.replace(/([^.]+)(.*)/, "$1-"+i+"$2");
-                // Create nsIFile instance with the filename given and check if it exists and break if it does
-                if(true) {
-                    break;
-                }
-            }
+        // Here we must check if the file can be saved to disk with the chosen
+        //  name. One case where the file cannot be saved is when the name
+        //  conflicts with one of another file that must be saved. Note that
+        //  whether two names collide is dependent on the underlying filesystem:
+        //  for example, on FAT on Windows two file names that differ only in
+        //  case conflict with each other, while on ext2 on Linux this conflict
+        //  does not occur. {
+
+        // Build a new nsIFile corresponding to the file name to be saved
+        var actualFileOnDisk = savecomplete.getDir();
+        actualFileOnDisk.append(fileName);
+        // Since the file is not actually downloaded until later, we
+        //  must create a placeholder
+        actualFileOnDisk.createUnique(
+          Components.interfaces.nsIFile.FILE_TYPE,
+          0777); // TODO: Determine the correct permissions to use
+        // Find out which unique name has been used
+        fileName = actualFileOnDisk.leafName;
+
+        // }
+
+        // Remember the assigned name and return it
+        savecomplete.urisavemap[uriUniqueKey] = fileName;
+        if (savecomplete.DEBUG_MODE) {
+            savecomplete.dumpObj({uri: uriUniqueKey, savedto: fileName});
         }
 
         if(folder) 
