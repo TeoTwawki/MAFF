@@ -63,40 +63,10 @@ MAFGuiHandlerClass.prototype = {
     return [FileFilters.scriptPathFromFilePath(result[0].path), result[0].path];
   },
 
-  /**
-   * Remove any non-ascii chars from result string
-   */
-  removeDoubleByteChars: function(strWithDoubleByteChars) {
-    var result = "";
-
-    if (strWithDoubleByteChars) {
-      for (var i=0; i<strWithDoubleByteChars.length; i++) {
-        if (strWithDoubleByteChars.charCodeAt(i) < 256) {
-          result += strWithDoubleByteChars[i];
-        }
-      }
-    }
-
-    return result;
-  },
-
   addAllTabsToArchive: function(Maf) {
-
-    var title = this.removeDoubleByteChars(this.window.getBrowser().selectedBrowser.contentDocument.title);
-
-    if (title != this.window.getBrowser().selectedBrowser.contentDocument.title) {
-      title = title.replace(/\||:|-|,|\.|_/g, " ");
-    }
-
-    var defaultFileName = MafUtils.validateFileName(title).replace(/^\s+|\s+$/g, "");
-
-    var archiveToAddTo = this.selectFileSave(defaultFileName);
-
-    if ((typeof(archiveToAddTo) != "undefined") && (archiveToAddTo.length > 1)) {
-                    
-      Maf.saveAllTabsComplete(this.window.getBrowser().browsers, "",
-                              FileFilters.scriptPathFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
-    }
+    // Use the global saveDocument function with the special MAF parameters
+    saveDocument(this.window.getBrowser().selectedBrowser.contentDocument,
+     {mafAskSaveArchive: true, mafSaveTabs: this.window.getBrowser().browsers});
   },
 
   addToArchive: function(Maf) {
