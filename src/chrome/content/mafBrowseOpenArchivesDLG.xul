@@ -43,7 +43,7 @@
   }
 
   function loadArchive() {
-    MafGUI.loadArchive(Maf);
+    browserWindow.BrowserOpenFileWindow();
   }
 
   function openSelectedInTabs(urlsource) {

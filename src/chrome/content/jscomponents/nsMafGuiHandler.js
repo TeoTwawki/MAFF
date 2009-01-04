@@ -38,31 +38,6 @@ MAFGuiHandlerClass.prototype = {
     this.window = window;
   },
 
-  loadArchive: function(Maf) {
-    try {
-      var archiveToOpen = this.selectFileOpen();
-
-      Maf.openFromArchive(archiveToOpen[0], archiveToOpen[1]);
-    } catch(e) {
-      mafdebug(e);
-    }
-  },
-
-  /**
-   * Opens a File choose dialog with a open mode.
-   * @return The file selected.
-   */
-  selectFileOpen: function(defaultFilename) {
-    var result = this.selectFile(MafStrBundle.GetStringFromName("openmafarchivewindowtitle"),
-                                  Components.interfaces.nsIFilePicker.modeOpen,
-                                  FileFilters.openFiltersArray,
-                                  null,
-                                  0,
-                                  defaultFilename);
-
-    return [FileFilters.scriptPathFromFilePath(result[0].path), result[0].path];
-  },
-
   addAllTabsToArchive: function(Maf) {
     // Use the global saveDocument function with the special MAF parameters
     saveDocument(this.window.getBrowser().selectedBrowser.contentDocument,
@@ -93,56 +68,6 @@ MAFGuiHandlerClass.prototype = {
      "maf-prefsDialog",
      "chrome,titlebar,toolbar,centerscreen," +
      (instantApply ? "dialog=no" : "modal"));
-  },
-
-  /**
-   * Shows the filepicker dialog with the appropriate filters.
-   * @return The file selected.
-   */
-  selectFile: function(windowTitle, filePickerMode, filters, initialDirectory, defaultFilterIndex, defaultString) {
-    var fp = Components.classes["@mozilla.org/filepicker;1"]
-                .createInstance(Components.interfaces.nsIFilePicker);
-    fp.init(this.window, windowTitle, filePickerMode);
-
-    try {
-      if (initialDirectory != null) {
-        // Create a directory reference to use
-        var dir = Components.classes["@mozilla.org/file/local;1"]
-                    .createInstance(Components.interfaces.nsILocalFile);
-        dir.initWithPath(initialDirectory);
-
-        fp.displayDirectory = dir;
-      }
-
-      if (defaultString != null) {
-        fp.defaultString = defaultString;
-      }
-    } catch(e) {
-      mafdebug(e);
-    }
-
-    for (var i=0; i<filters.length; i++) {
-      var title = filters[i][0];
-      var mask = filters[i][1];
-      fp.appendFilter(title, mask);
-    }
-
-    if (filters.length==0) {
-      fp.appendFilters(nsIFilePicker.filterAll);
-    }
-
-    try {
-      fp.filterIndex = defaultFilterIndex;
-    } catch(e) { }
-
-    fp.defaultExtension = " ";
-    var res = fp.show();
-    if (res == Components.interfaces.nsIFilePicker.returnOK ||
-        res == Components.interfaces.nsIFilePicker.returnReplace) {
-      return [fp.file, fp.filterIndex];
-    } else { // Cancelled
-      return [null, 0];
-    }
   },
 
   /**
