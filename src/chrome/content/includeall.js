@@ -36,6 +36,8 @@ try {
    "jscomponents/nsMafWebBrowserPersist.js",
    "preferences/dynamicPrefsObject.js",
    "preferences/prefsObject.js",
+   "savecomplete/savecomplete.js",
+   "savecomplete/saveCompletePersistObject.js",
    "saving/mafArchivePersistObject.js",
    "saving/mafWebProgressListenerObject.js"
   ].forEach(function(contentRelativePath) {
