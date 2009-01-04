@@ -41,5 +41,7 @@
 <!ENTITY save.component.grouplabel "When saving complete web page contents:">
 <!ENTITY save.component.standard.label "Use browser's standard save system">
 <!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.savecomplete.label "Use the integrated &quot;Save Complete&quot; extension">
+<!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.component.maf.label "Use MAF internal save component (advanced)">
 <!ENTITY save.component.maf.accesskey "M">

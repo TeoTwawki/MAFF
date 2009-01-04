@@ -175,12 +175,15 @@
                   preference="prefSaveComponent"
                   class=     "indent"
                   >
-        <radio value="standard"   label=    "&save.component.standard.label;"
-                                  accesskey="&save.component.standard.accesskey;"
-                                  />
-        <radio value="maf"        label=    "&save.component.maf.label;"
-                                  accesskey="&save.component.maf.accesskey;"
-                                  />
+        <radio value="standard"       label=    "&save.component.standard.label;"
+                                      accesskey="&save.component.standard.accesskey;"
+                                      />
+        <radio value="savecomplete"   label=    "&save.component.savecomplete.label;"
+                                      accesskey="&save.component.savecomplete.accesskey;"
+                                      />
+        <radio value="maf"            label=    "&save.component.maf.label;"
+                                      accesskey="&save.component.maf.accesskey;"
+                                      />
       </radiogroup>
     </groupbox>
   </prefpane>

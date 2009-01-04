@@ -51,6 +51,7 @@ var Prefs = {
 
   /** Enumeration for saveComponent */
   SAVECOMPONENT_STANDARD: "standard",
+  SAVECOMPONENT_SAVECOMPLETE: "savecomplete",
   SAVECOMPONENT_MAF: "maf",
 
   /**
@@ -58,10 +59,11 @@ var Prefs = {
    *  local folder, before archiving the saved elements.
    *
    * Possible values:
-   *   SAVECOMPONENT_STANDARD - (default) Use the browser's native "save
-   *                             complete web page" functionality.
-   *   SAVECOMPONENT_MAF      - Use the internal implementation.
-   *   (other)                - If the user has customized the preference.
+   *   SAVECOMPONENT_STANDARD     - (default) Use the browser's native "save
+   *                                 complete web page" functionality.
+   *   SAVECOMPONENT_SAVECOMPLETE - Use the integrated "Save Complete" code.
+   *   SAVECOMPONENT_MAF          - Use the internal implementation.
+   *   (other)                    - If the user has customized the preference.
    */
   get saveComponent() {
     return this._prefBranchForMaf.getCharPref("save.component");
