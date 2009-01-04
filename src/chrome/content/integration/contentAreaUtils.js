@@ -423,7 +423,12 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     
     if (aFpP.saveMode != SAVEMODE_SAMEFORMAT) {
       try {
-        fp.filterIndex = prefs.getIntPref("save_converter_index");
+        // In Mozilla Archive Format, use a special preference to store the
+        //  selected filter if only the archive save filters are shown
+        if (aFpP.saveMode == SAVEMODE_MAFARCHIVE)
+          fp.filterIndex = DynamicPrefs.saveFilterIndex;
+        else
+          fp.filterIndex = prefs.getIntPref("save_converter_index");
       }
       catch (e) {
       }
@@ -452,8 +457,14 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     aFpP.file = fp.file;
     aFpP.fileURL = fp.fileURL;
 
-    if (aFpP.saveMode != SAVEMODE_SAMEFORMAT)
-      prefs.setIntPref("save_converter_index", fp.filterIndex);
+    if (aFpP.saveMode != SAVEMODE_SAMEFORMAT) {
+      // In Mozilla Archive Format, use a special preference to store the
+      //  selected filter if only the archive save filters are shown
+      if (aFpP.saveMode == SAVEMODE_MAFARCHIVE)
+        DynamicPrefs.saveFilterIndex = fp.filterIndex;
+      else
+        prefs.setIntPref("save_converter_index", fp.filterIndex);
+    }
   }
   else {
     dir.append(getNormalizedLeafName(aFpP.fileInfo.fileName,
