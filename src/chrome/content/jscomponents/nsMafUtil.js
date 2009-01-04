@@ -535,29 +535,6 @@ MafUtilServiceClass.prototype = {
     return "index";
   },
 
-  validateFileName: function(aFileName) {
-    if (!this.navigator) {
-      this.navigator = Components.classes["@mozilla.org/appshell/appShellService;1"]
-                            .getService(Components.interfaces.nsIAppShellService)
-                            .hiddenDOMWindow.navigator;
-    }
-
-    var re = /[\/\|]+/g;
-    if (this.navigator.appVersion.indexOf("Windows") != -1) {
-      re = /[\\\/\|]+/g;
-      aFileName = aFileName.replace(/[\"]+/g, "'");
-      aFileName = aFileName.replace(/[\*\:\?]+/g, " ");
-      aFileName = aFileName.replace(/[\<]+/g, "(");
-      aFileName = aFileName.replace(/[\>]+/g, ")");
-    } else {
-      if (this.navigator.appVersion.indexOf("Macintosh") != -1) {
-        re = /[\:\/]+/g;
-      }
-    }
-
-    return aFileName.replace(re, "_");
-  },
-
   getExtensionByType: function(contentType) {
     var result = ""; // By default, unknown
     try {

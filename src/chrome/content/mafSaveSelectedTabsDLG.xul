@@ -113,23 +113,6 @@ function serialize(originalDatasource){
   browserWindow.alert(outputstream.content);
 };
 
-/**
-* Remove any non-ascii chars from result string
-*/
-function removeDoubleByteChars(strWithDoubleByteChars) {
-  var result = "";
-
-  if (strWithDoubleByteChars) {
-    for (var i=0; i<strWithDoubleByteChars.length; i++) {
-      if (strWithDoubleByteChars.charCodeAt(i) < 256) {
-        result += strWithDoubleByteChars[i];
-      }
-    }
-  }
-
-  return result;
-}
-
   function saveSelectedTabsInArchive(urlsource) {
     try {
       var start = new Object();
@@ -148,25 +131,10 @@ function removeDoubleByteChars(strWithDoubleByteChars) {
       
       // If there's something selected
       if (browserList.length > 0) {
-        var defaultFileName = MafUtils.validateFileName(
-                                  removeDoubleByteChars(browserWindow.getBrowser().selectedBrowser.contentDocument.title));
-
-        var indexAndArchivePath = MafGUI.selectFileSaveArchive(defaultFileName);
-
-        var index = -1;
-
-        var archivePath = "";
-
-        if (indexAndArchivePath != "") {
-          index = parseInt(indexAndArchivePath.substring(0, indexAndArchivePath.indexOf(",")));
-          archivePath = indexAndArchivePath.substring(indexAndArchivePath.indexOf(",") + 1, indexAndArchivePath.length);
-        }
-
-        if ((index != -1) && (archivePath != "")) {
-          windowMAF.saveAllTabsComplete(browserList,
-                                        "",
-                                        FileFilters.scriptPathFromSaveIndex(index), archivePath);
-        }
+        // Use the global saveDocument function with the special MAF parameters
+        browserWindow.saveDocument(
+         browserWindow.getBrowser().selectedBrowser.contentDocument,
+         {mafAskSaveArchive: true, mafSaveTabs: browserList});
       }
 
     } catch (e)  {

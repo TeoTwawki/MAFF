@@ -75,59 +75,6 @@ MAFGuiHandlerClass.prototype = {
      {mafAskSaveArchive: true});
   },
 
-  /**
-   * Opens a File choose dialog with a save mode.
-   * @return The file selected.
-   */
-  selectFileSave: function(defaultFilename) {
-    var filters = FileFilters.saveFiltersArray;
-
-    var result = this.selectFile(MafStrBundle.GetStringFromName("savemafarchivewindowtitle"),
-                                  Components.interfaces.nsIFilePicker.modeSave,
-                                  filters,
-                                  null,
-                                  DynamicPrefs.saveFilterIndex,
-                                  defaultFilename);
-
-    if (result[0] != null) {
-      DynamicPrefs.saveFilterIndex = result[1];
-    }
-
-    var selectedFileType = filters[result[1]][1];
-
-    selectedFileType = selectedFileType.substring(1,selectedFileType.length);
-
-    try {
-      var filename = result[0].path;
-      // if the file name does not end with the file type specified, tack it on
-
-      if (filename.substring(filename.length-selectedFileType.length, filename.length).toLowerCase() !=
-          selectedFileType.toLowerCase()) {
-          filename += selectedFileType;
-          // If an extension is added later, check if a file with the new name
-          //  already exists. This code will be replaced by a new mechanism.
-          if (MafUtils.checkFileExists(filename)) {
-            if(!browserWindow.confirm('Overwrite "' + filename + '"?')) {
-              return;
-            }
-          }
-      }
-    } catch(e) {
-      return;
-    }
-
-    return [result[1], filename];
-  },
-
-  selectFileSaveArchive: function(defaultFilename) {
-    var result = this.selectFileSave(defaultFilename);
-    if (result != null) {
-      return result.toString();
-    } else {
-      return "";
-    }
-  },
-
   showPreferences: function() {
     // Determine the expected behavior of preferences windows
     try {
