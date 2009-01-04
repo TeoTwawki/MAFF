@@ -20,6 +20,7 @@
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
+ *   Paolo Amadini <http://www.amadzone.org/>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -304,7 +305,7 @@ var savecomplete = {
         // Skip if a dupe {
         if(savecomplete.URIQueue[queueNum].dupe) {
             savecomplete.fixed++;
-            setTimeout("savecomplete.asyncGet("+(queueNum+1)+")",2);
+            setTimeout(savecomplete.asyncGet, 2, queueNum+1);
             return;
         }
         //}
@@ -327,7 +328,7 @@ var savecomplete = {
         } catch(e) {
             savecomplete.dump("Error with <" + fileURI + "> newURI/newChannel for queueNum " + queueNum + " of " + savecomplete.URIQueue.length + "\n" + e);
             savecomplete.dumpObj(savecomplete.URIQueue[queueNum]);
-            setTimeout("savecomplete.asyncGet("+(queueNum+1)+")",2);
+            setTimeout(savecomplete.asyncGet, 2, queueNum+1);
             return;
         }
         //}
@@ -367,7 +368,7 @@ var savecomplete = {
         //}
 
         // Get the next item in the queue
-        setTimeout("savecomplete.asyncGet("+(queueNum+1)+")",100);
+        setTimeout(savecomplete.asyncGet, 100, queueNum+1);
     },
     asyncFix: function(queueNum) {
         var docObject = savecomplete.fixQueue[queueNum];
@@ -659,7 +660,7 @@ var savecomplete = {
                             if(loader.channel)
                                 savecomplete.fixQueue[this.mQueueNum].contentType = loader.channel.contentType;
 
-                            setTimeout("savecomplete.asyncFix("+this.mQueueNum+")",1);
+                            setTimeout(savecomplete.asyncFix, 1, this.mQueueNum);
                         } catch (e) {
                             savecomplete.dump(e);
                         }
