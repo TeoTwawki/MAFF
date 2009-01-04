@@ -107,21 +107,9 @@ MAFGuiHandlerClass.prototype = {
   },
 
   addToArchive: function(Maf) {
-
-    var title = this.removeDoubleByteChars(this.window.getBrowser().selectedBrowser.contentDocument.title);
-
-    if (title != this.window.getBrowser().selectedBrowser.contentDocument.title) {
-      title = title.replace(/\||:|-|,|\.|_/g, " ");
-    }
-
-    var defaultFileName = MafUtils.validateFileName(title).replace(/^\s+|\s+$/g, "");
-
-    var archiveToAddTo = this.selectFileSave(defaultFileName);
-
-    if ((typeof(archiveToAddTo) != "undefined") && (archiveToAddTo.length > 1)) {
-      Maf.saveAsWebPageComplete(this.window.getBrowser().selectedBrowser,
-                                FileFilters.scriptPathFromSaveIndex(archiveToAddTo[0]), archiveToAddTo[1]);
-    }
+    // Use the global saveDocument function with the special MAF parameters
+    saveDocument(this.window.getBrowser().selectedBrowser.contentDocument,
+     {mafAskSaveArchive: true});
   },
 
   /**
