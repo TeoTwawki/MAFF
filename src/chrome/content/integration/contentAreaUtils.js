@@ -102,6 +102,8 @@
  *        Archive Format to ask the user to save an archive, this parameter can
  *        also be an object with the following properties:
  *         - mafAskSaveArchive: True to ask to save archives only.
+ *         - mafSaveTabs [optional]: Array of browser objects corresponding to
+ *           the tabs to be saved.
  */
 function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                       aContentType, aShouldBypassCache, aFilePickerTitleKey,
@@ -112,8 +114,10 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
 
   // We use aSkipPrompt also to convey the saveAllTabs flag
   var mafAskSaveArchive = false;
+  var mafSaveTabs = null;
   if (typeof aSkipPrompt == "object" && aSkipPrompt.mafAskSaveArchive) {
     mafAskSaveArchive = true;
+    mafSaveTabs = aSkipPrompt.mafSaveTabs;
     aSkipPrompt = false;
   }
 
@@ -223,9 +227,14 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       }
     }
 
-    // Save the selected page in the web archive
-    Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser,
-     saveBehavior.mafArchiveType, filename);
+    // Save the selected page or tabs in the web archive
+    if (mafSaveTabs) {
+      Maf.saveAllTabsComplete(mafSaveTabs, "",
+       saveBehavior.mafArchiveType, filename);
+    } else {
+      Maf.saveAsWebPageComplete(window.getBrowser().selectedBrowser,
+       saveBehavior.mafArchiveType, filename);
+    }
 
     // Do not continue with the normal save process
     return;
