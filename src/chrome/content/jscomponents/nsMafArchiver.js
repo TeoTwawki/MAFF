@@ -35,7 +35,7 @@ function MafArchiverClass() {
 MafArchiverClass.prototype = {
   indexfilename: "index.html",
 
-  init: function(aBrowser, scriptPath, archivePath, Maf) {
+  init: function(aBrowser, scriptPath, archivePath) {
     /** The browser containing the data archive. */
     this.aBrowser = aBrowser;
 
@@ -57,8 +57,6 @@ MafArchiverClass.prototype = {
     /** The full path of the temporary folder to save the document to. */
     this.tempSubPath = MafUtils.appendToDir(Prefs.tempFolder, this.folderNumber);
     MafUtils.createDir(this.tempSubPath);
-
-    this.Maf = Maf;
   },
 
 
@@ -84,7 +82,7 @@ MafArchiverClass.prototype = {
 
   onDownloadComplete: function() {
     this.addMetaData();
-    this.Maf.archiveDownload(this.scriptPath,
+    Maf.archiveDownload(this.scriptPath,
                               this.archivePath,
                               this.folderNumber,
                               this.appendToExistingArchive,

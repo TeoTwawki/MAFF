@@ -212,7 +212,7 @@ maf.prototype = {
    */
   saveAsWebPageComplete: function(aBrowser, scriptPath, archivePath) {
     var objMafArchiver = new MafArchiverClass();
-    objMafArchiver.init(aBrowser, scriptPath, archivePath, Maf);
+    objMafArchiver.init(aBrowser, scriptPath, archivePath);
     objMafArchiver.setProgressUpdater(Maf);
     objMafArchiver.start(false); // Do not append to existing archive
   },
@@ -239,7 +239,7 @@ maf.prototype = {
    */
   saveAllTabsComplete: function(browsers, includeList, scriptPath, archivePath) {
     var objMafTabArchiver = new MafTabArchiverClass();
-    objMafTabArchiver.init(browsers, scriptPath, archivePath, Maf);
+    objMafTabArchiver.init(browsers, scriptPath, archivePath);
     MafGUI.showDownloadTabsDLG(objMafTabArchiver);
   },
 

@@ -34,7 +34,7 @@ function MafTabArchiverClass() {
 
 MafTabArchiverClass.prototype = {
 
-  init: function(browsers, scriptPath, archivePath, Maf) {
+  init: function(browsers, scriptPath, archivePath) {
     /** The tabs to archive. */
     this.browsers = browsers,
 
@@ -49,8 +49,6 @@ MafTabArchiverClass.prototype = {
 
     /** The current tab being saved. */
     this.currentMafArchiverIndex = 0;
-
-    this.Maf = Maf;
   },
 
   start: function() {
@@ -63,7 +61,7 @@ MafTabArchiverClass.prototype = {
     if (this.browsers.length > 0) {
       this.MafArchivers[this.currentMafArchiverIndex].init(
                           this.browsers[this.currentMafArchiverIndex],
-                          this.scriptPath, this.archivePath, this.Maf);
+                          this.scriptPath, this.archivePath);
       // We are archiving the first tab, replace an existing archive
       this.MafArchivers[this.currentMafArchiverIndex].start(false);
     }
@@ -98,7 +96,7 @@ MafTabArchiverClass.prototype = {
             
             this.MafArchivers[this.currentMafArchiverIndex].init(
                                this.browsers[this.currentMafArchiverIndex],
-                               this.scriptPath, archivePathToUse, this.Maf);
+                               this.scriptPath, archivePathToUse);
             // We are archiving a new tab, append to the existing archive
             this.MafArchivers[this.currentMafArchiverIndex].start(true);
           }
