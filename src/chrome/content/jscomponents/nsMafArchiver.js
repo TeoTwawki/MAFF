@@ -81,6 +81,7 @@ MafArchiverClass.prototype = {
 
   onDownloadFailed: function(aStatus) {
     Components.utils.reportError(new Components.Exception("Download failed.", aStatus));
+    this.onArchivingComplete(1);
   },
 
   onDownloadComplete: function() {
