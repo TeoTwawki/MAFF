@@ -81,11 +81,16 @@ MafArchivePersist.prototype = {
 
   saveDocument: function(aDocument, aFile, aDataPath, aOutputContentType,
    aEncodingFlags, aWrapColumn) {
-    // Operation in progress
-    this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_SAVING;
-
     // Pass exceptions to the progress listener
     try {
+      // Operation in progress
+      this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_SAVING;
+      if (this.progressListener) {
+        this.progressListener.onStateChange(null, null,
+         Ci.nsIWebProgressListener.STATE_START |
+         Ci.nsIWebProgressListener.STATE_IS_NETWORK, Cr.NS_OK);
+      }
+
       // Find the path of the file to save to
       filePath = aFile.QueryInterface(Ci.nsIFileURL).file.path;
 
@@ -100,24 +105,15 @@ MafArchivePersist.prototype = {
       }
       mafArchiver.start(false); // Do not append to existing archive
     } catch(e) {
+      Cu.reportError(e);
       // Preserve the result code of XPCOM exceptions
       if (e instanceof Ci.nsIXPCException) {
         this.result = e.result;
       } else {
         this.result = Cr.NS_ERROR_FAILURE;
       }
-    }
-
-    // Assume the operation is completed
-    this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_FINISHED;
-    // Signal success or failure in the archiving process
-    if (this.progressListener) {
-      this.progressListener.onStateChange(null, null,
-       Ci.nsIWebProgressListener.STATE_START |
-       Ci.nsIWebProgressListener.STATE_IS_NETWORK, Cr.NS_OK);
-      this.progressListener.onStateChange(null, null,
-       Ci.nsIWebProgressListener.STATE_STOP |
-       Ci.nsIWebProgressListener.STATE_IS_NETWORK, this.result);
+      // Report that the download is finished to the listener
+      this._onComplete();
     }
   },
 
@@ -125,11 +121,29 @@ MafArchivePersist.prototype = {
     this.cancel(Cr.NS_BINDING_ABORTED);
   },
 
-  progressUpdater: function(aProgress, aCode) {
+  // --- Callback functions for the worker object ---
 
+  progressUpdater: function(aProgress, aCode) {
+    if (aProgress == 100) {
+      this._onComplete();
+    }
   },
 
   // --- Private methods and properties ---
+
+  _onComplete: function() {
+    // Never report the finished condition more than once
+    if (this.currentState != Ci.nsIWebBrowserPersist.PERSIST_STATE_FINISHED) {
+      // Operation completed
+      this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_FINISHED;
+      // Signal success or failure in the archiving process
+      if (this.progressListener) {
+        this.progressListener.onStateChange(null, null,
+         Ci.nsIWebProgressListener.STATE_STOP |
+         Ci.nsIWebProgressListener.STATE_IS_NETWORK, this.result);
+      }
+    }
+  },
 
   _saveBrowser: null,
   _saveTabs: null,
