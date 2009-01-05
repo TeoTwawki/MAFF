@@ -106,14 +106,6 @@ var Prefs = {
   },
 
   /**
-   * Returns true if a message box should be shows after a successful archival
-   *  of a single web page.
-   */
-  get alertOnSinglePageComplete() {
-    return this._prefBranchForMaf.getBoolPref("alert.onsinglepagecomplete");
-  },
-
-  /**
    * Returns the absolute path of the temporary folder.
    */
   get tempFolder() {

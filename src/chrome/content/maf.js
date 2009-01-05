@@ -213,25 +213,7 @@ maf.prototype = {
   saveAsWebPageComplete: function(aBrowser, scriptPath, archivePath) {
     var objMafArchiver = new MafArchiverClass();
     objMafArchiver.init(aBrowser, scriptPath, archivePath);
-    objMafArchiver.setProgressUpdater(Maf);
     objMafArchiver.start(false); // Do not append to existing archive
-  },
-
-  /**
-   * If a single page is saved, this is called as visual feedback to the user.
-   */
-  progressUpdater: function(progress, code) {
-    if (progress == 100) {
-      if (code == 0) {
-        if (Prefs.alertOnSinglePageComplete) {
-          browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationcomplete"));
-        } else {
-          browserWindow.status = MafStrBundle.GetStringFromName("archiveoperationcomplete");
-        }
-      } else {
-        browserWindow.alert(MafStrBundle.GetStringFromName("archiveoperationfailed") + code);
-      }
-    }
   },
 
   /**

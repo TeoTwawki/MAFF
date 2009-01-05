@@ -61,7 +61,6 @@
     <preferences>
       <preference id="prefOpenAction"                  name="extensions.maf.open.action"                  type="string"/>
       <preference id="prefSaveMetadataExtended"        name="extensions.maf.save.metadata.extended"       type="bool"/>
-      <preference id="prefAlertOnSinglePageComplete"   name="extensions.maf.alert.onsinglepagecomplete"   type="bool"/>
     </preferences>
     <groupbox>
       <caption label="&open.caption;" />
@@ -88,10 +87,6 @@
       <checkbox preference="prefSaveMetadataExtended" 
                 label=     "&save.metadata.extended.label;"
                 accesskey= "&save.metadata.extended.accesskey;"
-                />
-      <checkbox preference="prefAlertOnSinglePageComplete"
-                label=     "&alert.onsinglepagecomplete.label;"
-                accesskey= "&alert.onsinglepagecomplete.accesskey;"
                 />
     </groupbox>
   </prefpane>

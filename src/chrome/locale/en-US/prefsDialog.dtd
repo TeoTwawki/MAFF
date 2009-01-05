@@ -12,8 +12,6 @@
 <!ENTITY open.action.ask.accesskey "S">
 <!ENTITY open.action.remember.label "Only add to the list of open archives, showing nothing">
 <!ENTITY open.action.remember.accesskey "n">
-<!ENTITY alert.onsinglepagecomplete.label "Show a message box when completing a single page archival">
-<!ENTITY alert.onsinglepagecomplete.accesskey "w">
 <!ENTITY save.caption "Save">
 <!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
 <!ENTITY save.metadata.extended.accesskey "v">
