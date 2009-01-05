@@ -34,7 +34,7 @@ function MafTabArchiverClass() {
 
 MafTabArchiverClass.prototype = {
 
-  init: function(browsers, scriptPath, archivePath) {
+  init: function(browsers, scriptPath, archivePath, mafEventListener) {
     /** The tabs to archive. */
     this.browsers = browsers,
 
@@ -49,19 +49,21 @@ MafTabArchiverClass.prototype = {
 
     /** The current tab being saved. */
     this.currentMafArchiverIndex = 0;
+
+    /** The object that will receive event notifications. */
+    this.mafEventListener = mafEventListener;
   },
 
   start: function() {
     for (var i=0; i<this.browsers.length; i++) {
       var objMafArchiver =  new MafArchiverClass();
-      objMafArchiver.setProgressUpdater(this);
       this.MafArchivers[this.MafArchivers.length] = objMafArchiver;
     }
 
     if (this.browsers.length > 0) {
       this.MafArchivers[this.currentMafArchiverIndex].init(
                           this.browsers[this.currentMafArchiverIndex],
-                          this.scriptPath, this.archivePath);
+                          this.scriptPath, this.archivePath, this);
       // We are archiving the first tab, replace an existing archive
       this.MafArchivers[this.currentMafArchiverIndex].start(false);
     }
@@ -71,10 +73,6 @@ MafTabArchiverClass.prototype = {
     this.currentMafArchiverIndex = this.browsers.length;
   },
 
-  setProgressUpdater: function(objWith_fnProgressUpdater) {
-    this.objWith_fnProgressUpdater = objWith_fnProgressUpdater;
-  },
-
   progressUpdater: function(progress, code) {
     if (progress == 100) {
       // Finished saving single tab
@@ -82,10 +80,8 @@ MafTabArchiverClass.prototype = {
       if (this.currentMafArchiverIndex < this.browsers.length) {
           this.currentMafArchiverIndex += 1;
 
-          if (this.objWith_fnProgressUpdater != null) {
-            var percentage = Math.floor((this.currentMafArchiverIndex/this.browsers.length)*100);
-            this.objWith_fnProgressUpdater.progressUpdater(percentage, 0);
-          }
+          var percentage = Math.floor((this.currentMafArchiverIndex/this.browsers.length)*100);
+          this.mafEventListener.progressUpdater(percentage, 0);
 
           if (this.currentMafArchiverIndex < this.browsers.length) {
             var archivePathToUse = this.archivePath;
@@ -96,7 +92,7 @@ MafTabArchiverClass.prototype = {
             
             this.MafArchivers[this.currentMafArchiverIndex].init(
                                this.browsers[this.currentMafArchiverIndex],
-                               this.scriptPath, archivePathToUse);
+                               this.scriptPath, archivePathToUse, this);
             // We are archiving a new tab, append to the existing archive
             this.MafArchivers[this.currentMafArchiverIndex].start(true);
           }

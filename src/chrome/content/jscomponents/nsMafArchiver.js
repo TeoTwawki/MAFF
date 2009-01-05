@@ -35,7 +35,7 @@ function MafArchiverClass() {
 MafArchiverClass.prototype = {
   indexfilename: "index.html",
 
-  init: function(aBrowser, scriptPath, archivePath) {
+  init: function(aBrowser, scriptPath, archivePath, mafEventListener) {
     /** The browser containing the data archive. */
     this.aBrowser = aBrowser;
 
@@ -57,6 +57,9 @@ MafArchiverClass.prototype = {
     /** The full path of the temporary folder to save the document to. */
     this.tempSubPath = MafUtils.appendToDir(Prefs.tempFolder, this.folderNumber);
     MafUtils.createDir(this.tempSubPath);
+
+    /** The object that will receive event notifications. */
+    this.mafEventListener = mafEventListener;
   },
 
 
@@ -66,10 +69,6 @@ MafArchiverClass.prototype = {
                   .createInstance(Components.interfaces.nsILocalFile);
     dir.initWithPath(this.tempSubPath);
     browserWindow.saveDocument(this.aDocument, {saveDir: dir, mafEventListener: this});
-  },
-
-  setProgressUpdater: function(objWith_fnProgressUpdater) {
-    this.objWith_fnProgressUpdater = objWith_fnProgressUpdater;
   },
 
   onSaveNameDetermined: function(aSaveName) {
@@ -176,9 +175,7 @@ MafArchiverClass.prototype = {
       // Remove Folder
       MafUtils.deleteFile(this.tempSubPath);
 
-      if (this.objWith_fnProgressUpdater != null) {
-        this.objWith_fnProgressUpdater.progressUpdater(100, code);
-      }
+      this.mafEventListener.progressUpdater(100, code);
     } catch(e) {
       mafdebug(e);
     }

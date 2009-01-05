@@ -93,10 +93,10 @@ MafArchivePersist.prototype = {
       var mafArchiver;
       if (this._saveTabs) {
         mafArchiver = new MafTabArchiverClass();
-        mafArchiver.init(this._saveTabs, this._archiveType, filePath);
+        mafArchiver.init(this._saveTabs, this._archiveType, filePath, this);
       } else {
         mafArchiver = new MafArchiverClass();
-        mafArchiver.init(this._saveBrowser, this._archiveType, filePath);
+        mafArchiver.init(this._saveBrowser, this._archiveType, filePath, this);
       }
       mafArchiver.start(false); // Do not append to existing archive
     } catch(e) {
@@ -123,6 +123,10 @@ MafArchivePersist.prototype = {
 
   cancelSave: function() {
     this.cancel(Cr.NS_BINDING_ABORTED);
+  },
+
+  progressUpdater: function(aProgress, aCode) {
+
   },
 
   // --- Private methods and properties ---
