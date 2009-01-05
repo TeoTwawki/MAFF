@@ -35,7 +35,7 @@ function MafArchiverClass() {
 MafArchiverClass.prototype = {
   indexfilename: "index.html",
 
-  init: function(aBrowser, scriptPath, archivePath, dateTimeArchived, Maf) {
+  init: function(aBrowser, scriptPath, archivePath, Maf) {
     /** The browser containing the data archive. */
     this.aBrowser = aBrowser;
 
@@ -49,10 +49,10 @@ MafArchiverClass.prototype = {
     this.archivePath = archivePath;
 
     /** When this document was archived. */
-    this.dateTimeArchived = dateTimeArchived;
+    this.dateTimeArchived = new Date().valueOf() + "";
 
     /** The folder number used in the archive. */
-    this.folderNumber = dateTimeArchived + "_" + Math.floor(Math.random()*1000);
+    this.folderNumber = this.dateTimeArchived + "_" + Math.floor(Math.random()*1000);
 
     /** The full path of the temporary folder to save the document to. */
     this.tempSubPath = MafUtils.appendToDir(Prefs.tempFolder, this.folderNumber);

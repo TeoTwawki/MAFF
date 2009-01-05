@@ -211,10 +211,8 @@ maf.prototype = {
    * Save a single web page in an archive
    */
   saveAsWebPageComplete: function(aBrowser, scriptPath, archivePath) {
-    var dateTimeArchived = new Date();
-
     var objMafArchiver = new MafArchiverClass();
-    objMafArchiver.init(aBrowser, scriptPath, archivePath, dateTimeArchived.valueOf() + "", Maf);
+    objMafArchiver.init(aBrowser, scriptPath, archivePath, Maf);
     objMafArchiver.setProgressUpdater(Maf);
     objMafArchiver.start(false); // Do not append to existing archive
   },

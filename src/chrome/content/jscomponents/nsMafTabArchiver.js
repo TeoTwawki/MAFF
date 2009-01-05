@@ -54,8 +54,6 @@ MafTabArchiverClass.prototype = {
   },
 
   start: function() {
-    var dateTimeArchived = new Date();
-
     for (var i=0; i<this.browsers.length; i++) {
       var objMafArchiver =  new MafArchiverClass();
       objMafArchiver.setProgressUpdater(this);
@@ -65,8 +63,7 @@ MafTabArchiverClass.prototype = {
     if (this.browsers.length > 0) {
       this.MafArchivers[this.currentMafArchiverIndex].init(
                           this.browsers[this.currentMafArchiverIndex],
-                          this.scriptPath, this.archivePath,
-                          dateTimeArchived.valueOf() + "", this.Maf);
+                          this.scriptPath, this.archivePath, this.Maf);
       // We are archiving the first tab, replace an existing archive
       this.MafArchivers[this.currentMafArchiverIndex].start(false);
     }
@@ -93,7 +90,6 @@ MafTabArchiverClass.prototype = {
           }
 
           if (this.currentMafArchiverIndex < this.browsers.length) {
-            var dateTimeArchived = new Date();
             var archivePathToUse = this.archivePath;
             // If it's MHT, get unique filename
             if (this.scriptPath == "TypeMHTML") {
@@ -102,8 +98,7 @@ MafTabArchiverClass.prototype = {
             
             this.MafArchivers[this.currentMafArchiverIndex].init(
                                this.browsers[this.currentMafArchiverIndex],
-                               this.scriptPath, archivePathToUse,
-                               dateTimeArchived.valueOf() + "", this.Maf);
+                               this.scriptPath, archivePathToUse, this.Maf);
             // We are archiving a new tab, append to the existing archive
             this.MafArchivers[this.currentMafArchiverIndex].start(true);
           }
