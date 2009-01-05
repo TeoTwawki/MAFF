@@ -90,11 +90,15 @@ MafArchivePersist.prototype = {
       filePath = aFile.QueryInterface(Ci.nsIFileURL).file.path;
 
       // Save the selected page or tabs in the web archive
+      var mafArchiver;
       if (this._saveTabs) {
-        Maf.saveAllTabsComplete(this._saveTabs, "", this._archiveType, filePath);
+        mafArchiver = new MafTabArchiverClass();
+        mafArchiver.init(this._saveTabs, this._archiveType, filePath);
       } else {
-        Maf.saveAsWebPageComplete(this._saveBrowser, this._archiveType, filePath);
+        mafArchiver = new MafArchiverClass();
+        mafArchiver.init(this._saveBrowser, this._archiveType, filePath);
       }
+      mafArchiver.start(false); // Do not append to existing archive
     } catch(e) {
       // Preserve the result code of XPCOM exceptions
       if (e instanceof Ci.nsIXPCException) {

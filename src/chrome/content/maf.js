@@ -208,24 +208,6 @@ maf.prototype = {
   },
 
   /**
-   * Save a single web page in an archive
-   */
-  saveAsWebPageComplete: function(aBrowser, scriptPath, archivePath) {
-    var objMafArchiver = new MafArchiverClass();
-    objMafArchiver.init(aBrowser, scriptPath, archivePath);
-    objMafArchiver.start(false); // Do not append to existing archive
-  },
-
-  /**
-   * Save all open tabs in an archive
-   */
-  saveAllTabsComplete: function(browsers, includeList, scriptPath, archivePath) {
-    var objMafTabArchiver = new MafTabArchiverClass();
-    objMafTabArchiver.init(browsers, scriptPath, archivePath);
-    objMafTabArchiver.start();
-  },
-
-  /**
    * Open a MAF archive and add the meta-data to the global state
    */
   openFromArchive: function(scriptPath, archivePath, returnFirstItem) {
