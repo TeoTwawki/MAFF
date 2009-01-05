@@ -240,7 +240,7 @@ maf.prototype = {
   saveAllTabsComplete: function(browsers, includeList, scriptPath, archivePath) {
     var objMafTabArchiver = new MafTabArchiverClass();
     objMafTabArchiver.init(browsers, scriptPath, archivePath);
-    MafGUI.showDownloadTabsDLG(objMafTabArchiver);
+    objMafTabArchiver.start();
   },
 
   /**
