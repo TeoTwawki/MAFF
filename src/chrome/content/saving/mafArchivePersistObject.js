@@ -58,6 +58,9 @@ MafArchivePersist.prototype = {
 
   cancel: function(aReason) {
     this.result = aReason;
+    if (this._archiver) {
+      this._archiver.stop();
+    }
   },
 
   // --- nsIWebBrowserPersist interface functions ---
@@ -104,6 +107,9 @@ MafArchivePersist.prototype = {
         mafArchiver.init(this._saveBrowser, this._archiveType, filePath, this);
       }
       mafArchiver.start(false); // Do not append to existing archive
+
+      // Keep a reference to the archiver to allow stopping it
+      this._archiver = mafArchiver;
     } catch(e) {
       Cu.reportError(e);
       // Preserve the result code of XPCOM exceptions
@@ -152,5 +158,6 @@ MafArchivePersist.prototype = {
 
   _saveBrowser: null,
   _saveTabs: null,
-  _archiveType: null
+  _archiveType: null,
+  _archiver: null
 }

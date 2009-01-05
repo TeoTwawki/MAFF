@@ -71,6 +71,10 @@ MafArchiverClass.prototype = {
     browserWindow.saveDocument(this.aDocument, {saveDir: dir, mafEventListener: this});
   },
 
+  stop: function(appendToArchive) {
+    this.stopped = true;
+  },
+
   onSaveNameDetermined: function(aSaveName) {
     this.indexfilename = aSaveName;
   },
@@ -80,6 +84,11 @@ MafArchiverClass.prototype = {
   },
 
   onDownloadComplete: function() {
+    if (this.stopped) {
+      this.onArchivingComplete(1);
+      return;
+    }
+
     this.addMetaData();
     Maf.archiveDownload(this.scriptPath,
                               this.archivePath,
