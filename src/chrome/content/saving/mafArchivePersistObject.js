@@ -124,6 +124,11 @@ MafArchivePersist.prototype = {
   // --- Callback functions for the worker object ---
 
   progressUpdater: function(aProgress, aCode) {
+    if (this.progressListener) {
+      // Use dummy byte values to update the progress listener.
+      this.progressListener.onProgressChange(null, null, aProgress, 100,
+       aProgress, 100);
+    }
     if (aProgress == 100) {
       this._onComplete();
     }
