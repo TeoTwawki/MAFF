@@ -13,6 +13,13 @@
 <!ENTITY open.action.remember.label "Only add to the list of open archives, showing nothing">
 <!ENTITY open.action.remember.accesskey "n">
 <!ENTITY save.caption "Save">
+<!ENTITY save.component.grouplabel "When saving complete web page contents:">
+<!ENTITY save.component.standard.label "Use browser's standard save system">
+<!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.savecomplete.label "Use the integrated &quot;Save Complete&quot; extension">
+<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.component.maf.label "Use MAF internal save component (advanced)">
+<!ENTITY save.component.maf.accesskey "M">
 <!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
 <!ENTITY save.metadata.extended.accesskey "v">
 
@@ -36,10 +43,3 @@
 <!ENTITY temp.clearonexit.accesskey "C">
 <!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
 <!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY save.component.grouplabel "When saving complete web page contents:">
-<!ENTITY save.component.standard.label "Use browser's standard save system">
-<!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.savecomplete.label "Use the integrated &quot;Save Complete&quot; extension">
-<!ENTITY save.component.savecomplete.accesskey "U">
-<!ENTITY save.component.maf.label "Use MAF internal save component (advanced)">
-<!ENTITY save.component.maf.accesskey "M">

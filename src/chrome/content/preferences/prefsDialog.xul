@@ -84,6 +84,23 @@
     </groupbox>
     <groupbox>
       <caption label="&save.caption;" />
+      <label control="rgrSaveComponents"
+             value=  "&save.component.grouplabel;"
+             />
+      <radiogroup id=        "rgrSaveComponents"
+                  preference="prefSaveComponent"
+                  class=     "indent"
+                  >
+        <radio value="standard"       label=    "&save.component.standard.label;"
+                                      accesskey="&save.component.standard.accesskey;"
+                                      />
+        <radio value="savecomplete"   label=    "&save.component.savecomplete.label;"
+                                      accesskey="&save.component.savecomplete.accesskey;"
+                                      />
+        <radio value="maf"            label=    "&save.component.maf.label;"
+                                      accesskey="&save.component.maf.accesskey;"
+                                      />
+      </radiogroup>
       <checkbox preference="prefSaveMetadataExtended" 
                 label=     "&save.metadata.extended.label;"
                 accesskey= "&save.metadata.extended.accesskey;"
@@ -160,26 +177,6 @@
                 label=     "&open.rewriteurls.label;"
                 accesskey= "&open.rewriteurls.accesskey;"
                 />
-    </groupbox>
-    <groupbox>
-      <caption label="&save.caption;" />
-      <label control="rgrSaveComponents"
-             value=  "&save.component.grouplabel;"
-             />
-      <radiogroup id=        "rgrSaveComponents"
-                  preference="prefSaveComponent"
-                  class=     "indent"
-                  >
-        <radio value="standard"       label=    "&save.component.standard.label;"
-                                      accesskey="&save.component.standard.accesskey;"
-                                      />
-        <radio value="savecomplete"   label=    "&save.component.savecomplete.label;"
-                                      accesskey="&save.component.savecomplete.accesskey;"
-                                      />
-        <radio value="maf"            label=    "&save.component.maf.label;"
-                                      accesskey="&save.component.maf.accesskey;"
-                                      />
-      </radiogroup>
     </groupbox>
   </prefpane>
 
