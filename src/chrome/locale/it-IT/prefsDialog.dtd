@@ -3,7 +3,7 @@
 <!ENTITY pane.main.label "Principale">
 <!ENTITY open.caption "Apri">
 <!ENTITY open.action.grouplabel "Quando viene aperto un archivio:">
-<!ENTITY open.action.tabs.label "Apri il contenuto in una nuova scheda">
+<!ENTITY open.action.tabs.label "Apri il contenuto in nuove schede">
 <!ENTITY open.action.tabs.accesskey "A">
 <!ENTITY open.action.ask.label "Mostra l&apos;elenco degli archivi aperti, e chiedi cosa fare">
 <!ENTITY open.action.ask.accesskey "M">
