@@ -1,7 +1,5 @@
 <!ENTITY maf.loadArchive "Odpri arhiv">
 <!ENTITY maf.loadArchiveKey "h">
-<!ENTITY maf.addToArchive "Shrani stran v arhiv">
-<!ENTITY maf.addToArchiveKey "I">
 <!ENTITY maf.addSelectedTabsToArchive "Shrani zavihke v arhiv">
 <!ENTITY maf.addSelectedTabsToArchiveKey "z">
 <!ENTITY maf.addAllTabsToArchive "Shrani vse zavihke v arhivu">
@@ -30,4 +28,3 @@
 <!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Počisti izbiro">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Zapri">
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
-<!ENTITY maf.addToArchiveAccessKey "P">

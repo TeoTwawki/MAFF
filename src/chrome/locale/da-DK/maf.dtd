@@ -1,7 +1,5 @@
 <!ENTITY maf.loadArchive "Åbn arkiv">
 <!ENTITY maf.loadArchiveKey "v">
-<!ENTITY maf.addToArchive "Gem side i arkiv">
-<!ENTITY maf.addToArchiveKey "i">
 <!ENTITY maf.addSelectedTabsToArchive "Gem faneblade i arkiv">
 <!ENTITY maf.addSelectedTabsToArchiveKey "b">
 <!ENTITY maf.addAllTabsToArchive "Gem alle faneblade i arkiv">
@@ -30,4 +28,3 @@
 <!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Ryd valgte">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Luk">
 <!ENTITY maf.browseOpenArchivesAccessKey "m">
-<!ENTITY maf.addToArchiveAccessKey "I">

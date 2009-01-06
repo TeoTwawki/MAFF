@@ -1,7 +1,5 @@
 <!ENTITY maf.loadArchive "oeffne Archiv">
 <!ENTITY maf.loadArchiveKey "h">
-<!ENTITY maf.addToArchive "Seite Ins Archiv sichern">
-<!ENTITY maf.addToArchiveKey "I">
 <!ENTITY maf.addSelectedTabsToArchive "selektiere Tabs ins Archiv">
 <!ENTITY maf.addSelectedTabsToArchiveKey "b">
 <!ENTITY maf.addAllTabsToArchive "alle Tabs ins Archiv sichern">
@@ -30,4 +28,3 @@
 <!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "schliessen">
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
-<!ENTITY maf.addToArchiveAccessKey "P">
