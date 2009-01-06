@@ -212,24 +212,6 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // Handle saving a web archive using the Mozilla Archive Format extension
   var mafPersistObject = null;
   if (saveBehavior.isMafArchive) {
-    // Always add the archive extension if not explicitly specified. No check
-    //  is done to see if a file with the new name already exists.
-    var mandatoryExtension = saveBehavior.mandatoryExtension;
-    var filename = file.leafName;
-    if (filename.substring(filename.length - mandatoryExtension.length,
-     filename.length).toLowerCase() != mandatoryExtension.toLowerCase()) {
-      file.leafName = filename + mandatoryExtension;
-      // If an extension is added later, check if a file with the new name
-      //  already exists. This code will be replaced by a new mechanism.
-      if (file.exists()) {
-        if(!browserWindow.confirm('Overwrite "' + file.path + '"?')) {
-          return;
-        }
-      }
-      // Invalidate the associated file URL
-      fileURL = null;
-    }
-
     // Create the special archive persist object
     mafPersistObject = new MafArchivePersist(
      window.getBrowser().selectedBrowser, mafSaveTabs,
@@ -440,8 +422,55 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
       }
     }
 
-    if (fp.show() == Components.interfaces.nsIFilePicker.returnCancel || !fp.file)
-      return false;
+    var saveBehavior;
+    do {
+      var shouldShowFilePickerAgain = false;
+
+      if (fp.show() == Components.interfaces.nsIFilePicker.returnCancel || !fp.file)
+        return false;
+
+      fp.file.leafName = validateFileName(fp.file.leafName);
+      fp.defaultString = fp.file.leafName; // If the dialog is displaying again
+      aFpP.saveBehavior = saveBehaviors[fp.filterIndex];
+      aFpP.file = fp.file;
+      aFpP.fileURL = fp.fileURL;
+
+      // Archives saved by Mozilla Archive Format cannot be opened unless the
+      //  correct extension is present. If we are saving an archive, force the
+      //  extension and check again if the file exists.
+      var mandatoryExtension = aFpP.saveBehavior.mandatoryExtension;
+      if (mandatoryExtension) {
+        if (mandatoryExtension.toLowerCase() !=
+         aFpP.file.leafName.slice(-mandatoryExtension.length).toLowerCase()) {
+          // Change the name and invalidate the associated file URL
+          aFpP.file.leafName += mandatoryExtension;
+          aFpP.fileURL = null;
+          // If an extension is added later, check if a file with the new name
+          //  already exists
+          if (aFpP.file.exists()) {
+            // For more information, see the "confirm_overwrite_file" function
+            //  in <http://mxr.mozilla.org/mozilla-central/source/widget/src/gtk2/nsFilePicker.cpp>
+            //  (retrieved 2009-01-06)
+            var bundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+             .getService(Components.interfaces.nsIStringBundleService)
+             .createBundle("chrome://global/locale/filepicker.properties");
+            var title = bundle.GetStringFromName("confirmTitle");
+            var message = bundle.formatStringFromName("confirmFileReplacing",
+             [aFpP.file.leafName], 1);
+            // If the user chooses not to overwrite, show the file picker again
+            var prompts =
+             Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+             .getService(Components.interfaces.nsIPromptService);
+            if(prompts.confirmEx(window, title, message,
+             prompts.BUTTON_POS_0 * prompts.BUTTON_TITLE_YES +
+             prompts.BUTTON_POS_1 * prompts.BUTTON_TITLE_NO +
+             prompts.BUTTON_POS_1_DEFAULT, "", "", "", null, {}) == 1) {
+              shouldShowFilePickerAgain = true;
+            }
+          }
+        }
+      }
+    } while(shouldShowFilePickerAgain);
 
     // Do not remember the last save directory inside the private browsing mode
     var persistLastDir = true;
@@ -457,11 +486,6 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
       var directory = fp.file.parent.QueryInterface(nsILocalFile);
       prefs.setComplexValue("lastDir", nsILocalFile, directory);
     }
-
-    fp.file.leafName = validateFileName(fp.file.leafName);
-    aFpP.saveBehavior = saveBehaviors[fp.filterIndex];
-    aFpP.file = fp.file;
-    aFpP.fileURL = fp.fileURL;
 
     if (aFpP.saveMode != SAVEMODE_SAMEFORMAT) {
       // In Mozilla Archive Format, use a special preference to store the
