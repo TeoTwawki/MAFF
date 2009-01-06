@@ -44,12 +44,6 @@ MAFGuiHandlerClass.prototype = {
      {mafAskSaveArchive: true, mafSaveTabs: this.window.getBrowser().browsers});
   },
 
-  addToArchive: function(Maf) {
-    // Use the global saveDocument function with the special MAF parameters
-    saveDocument(this.window.getBrowser().selectedBrowser.contentDocument,
-     {mafAskSaveArchive: true});
-  },
-
   showPreferences: function() {
     // Determine the expected behavior of preferences windows
     try {

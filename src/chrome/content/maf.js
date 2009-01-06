@@ -421,14 +421,6 @@ maf.prototype = {
     if (event.originalTarget == "[object XULDocument]") {
       sharedData.mafObjectOfCurrentWindow = Maf;
     }
-  },
-
-  onPopupShown: function(event) {
-    if (event.target.id != "contentAreaContextMenu") return;
-
-    gContextMenu.showItem("maf-save-in-archive-menuitem",
-                         !( gContextMenu.inDirList || gContextMenu.isTextSelected || gContextMenu.onTextInput ||
-                            gContextMenu.onLink || gContextMenu.onImage ));
   }
 
 };
@@ -443,7 +435,6 @@ var Maf = new maf();
 browserWindow.addEventListener("close", Maf.onWindowClose, true);
 browserWindow.addEventListener("load", Maf.onWindowLoad, true);
 browserWindow.addEventListener("focus", Maf.onWindowFocus, true);
-browserWindow.addEventListener("popupshown", Maf.onPopupShown, true);
 
 } catch(e) {
   mafdebug(e);

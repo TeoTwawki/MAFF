@@ -1,9 +1,6 @@
 <!ENTITY maf.loadArchive "Open Archive">
 <!ENTITY maf.loadArchiveKey "h">
 
-<!ENTITY maf.addToArchive "Save Page In Archive">
-<!ENTITY maf.addToArchiveKey "I">
-
 <!ENTITY maf.addSelectedTabsToArchive "Save Tabs In Archive">
 <!ENTITY maf.addSelectedTabsToArchiveKey "b">
 
@@ -42,4 +39,3 @@
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Close">
 
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
-<!ENTITY maf.addToArchiveAccessKey "P">
