@@ -135,7 +135,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   //                    =>  saveMode == SAVEMODE_SAMEFORMAT
 
   var saveMode = GetSaveModeForContentType(aContentType, aDocument);
-  var isDocument = aDocument != null && saveMode != SAVEMODE_SAMEFORMAT;
+  var isDocument = (aDocument == getBrowser().selectedBrowser.contentDocument);
 
   var file, fileURL, sourceURI, saveBehavior;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
