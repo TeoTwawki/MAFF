@@ -24,8 +24,13 @@
     <em:description>Save complete web pages in a single file. Supports MHTML (MHT) files from Internet Explorer, and MAFF multi-page archives (based on ZIP).</em:description>
     <em:creator>Christopher Ottley</em:creator>
     <em:developer>Paolo Amadini</em:developer>
-    <em:translator>it-IT: Gioxx; eXtenZilla.it</em:translator>
+    <!-- Translators using BabelZilla -->
+    <em:translator>da-DK: Finn S. Sørensen</em:translator>
+    <em:translator>es-ES: Proyecto Nave; http://www.proyectonave.es/</em:translator>
     <em:translator>fr-FR: Xavier Robin</em:translator>
+    <em:translator>pl-PL: Leszek(teo)Życzkowski</em:translator>
+    <!-- Translators for MAF 0.6.3 and earlier -->
+    <em:translator>it-IT: Gioxx; eXtenZilla.it</em:translator>
     <em:translator>ru-RU: Юрий Меркулов, ArtLonger</em:translator>
     <em:translator>ru-RU: Sergey N UshaKov</em:translator>
     <em:translator>pl-PL: Bartosz Piec</em:translator>
