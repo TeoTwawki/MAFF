@@ -24,15 +24,15 @@
     <em:description>Save complete web pages in a single file. Supports MHTML (MHT) files from Internet Explorer, and MAFF multi-page archives (based on ZIP).</em:description>
     <em:creator>Christopher Ottley</em:creator>
     <em:developer>Paolo Amadini</em:developer>
-    <em:translator>Gioxx: eXtenZilla.it</em:translator>
-    <em:translator>Xavier Robin</em:translator>
-    <em:translator>Юрий Меркулов, ArtLonger (русский перевод)</em:translator>
-    <em:translator>Sergey N UshaKov</em:translator>
-    <em:translator>Tłumaczenie: Bartosz Piec</em:translator>
-    <em:translator>Jacinto Leal</em:translator>
-    <em:translator>Molle Bestefich</em:translator>
-    <em:translator>Ralph Ulrich</em:translator>
-    <em:translator>Martin Srebotnjak</em:translator>
+    <em:translator>it-IT: Gioxx; eXtenZilla.it</em:translator>
+    <em:translator>fr-FR: Xavier Robin</em:translator>
+    <em:translator>ru-RU: Юрий Меркулов, ArtLonger</em:translator>
+    <em:translator>ru-RU: Sergey N UshaKov</em:translator>
+    <em:translator>pl-PL: Bartosz Piec</em:translator>
+    <em:translator>pt-BR: Jacinto Leal</em:translator>
+    <em:translator>da-DK: Molle Bestefich</em:translator>
+    <em:translator>de-DE: Ralph Ulrich</em:translator>
+    <em:translator>sl-SI: Martin Srebotnjak</em:translator>
     <em:homepageURL>http://maf.mozdev.org/</em:homepageURL>
 
     <!-- Front End Integration Hooks (used by Extension Manager)-->
