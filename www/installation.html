@@ -51,44 +51,63 @@
    more information.</p>
 
   <h2><a name="whatsnew"></a>What's new in the latest version?</h2>
-  <p>MAF <?php echo $maf_latest_fx; ?> has the following user-visible
-   improvements over MAF 0.6.3:</p>
+  <p>MAF <?php echo $maf_experimental_fx; ?> has the following user-visible
+   improvements over MAF 0.8.7:</p>
   <ul>
-    <li>Compatibility with Firefox 3 on all operating systems.</li>
-    <li>Clean installation and uninstallation.</li>
-    <li>Redesigned preferences user interface.</li>
-    <li>Temporary files are now created in the system's temporary folder by
-     default.</li>
-    <li>Creating file associations on Windows works again.</li>
-    <li>Stabilized file extension and type handling:
+    <li>Integration with the <b>Save Complete</b> extension.</li>
+    <li>Ready for compatibility with the <b>UnMHT</b> extension.</li>
+    <li>Compatibility with the <b>Title Save</b> extension.</li>
+    <li>Improved browser integration when loading and saving archives:
       <ul>
-        <li>Handle only the <code class="maf-file-ext">.maff</code> extension,
-         and not its variations, since double extensions cannot be handled
-         correctly by Firefox.</li>
-        <li>Removed support for the old <code
-         class="maf-file-ext">.maf</code> and <code
-         class="maf-file-ext">.maff.zip</code> extensions.</li>
-        <li>Added support for <code class="maf-file-ext">.mhtml</code> file
-         extension for MHTML archives.</li>
-        <li>MAF does not register applications for its MIME types anymore.</li>
+        <li>The download progress is displayed in the standard <b>Downloads</b>
+         window also when saving an archive.</li>
+        <li>The chosen MAF save component is used regardless of whether a page
+         is saved in an archive or not.</li>
+        <li>The address of the archive, instead of that of the temporary file,
+         is displayed in the address bar for the first entry in an archive.</li>
       </ul>
     </li>
-    <li>Removed features:
+    <li>Modified user interface elements:
       <ul>
-        <li><code>maf:</code> protocol (use <code>jar:</code> instead).</li>
-        <li><code>document.write</code> override.</li>
+        <li>The <b>Save Page In Archive</b> menu command is now completely
+         integrated with the standard <b>Save Page As</b>.</li>
+        <li>The default file name suggested by the <b>Save Tabs In Archive</b>
+         command is now the same as the one suggested by <b>Save Page
+         As</b>.</li>
+        <li>The <b>Show a message box when completing a single page archival</b>
+         preference is not available anymore, since download progress is now
+         tracked by the standard <b>Downloads</b> window.</li>
       </ul>
     </li>
     <li>Bugfixes:
       <ul>
-        <li>Opening archives from the command-line or by double-clicking a file
-         when no browser windows are visible now works reliably.</li>
-        <li>Now the save functions always overwrite the contents of existing
-         archives, rather than appending.</li>
-        <li>Copying archive metadata to the clipboard works again.</li>
+        <li>If an archive is opened and the <b>Open contents in new tabs</b>
+         default option is selected, no blank tab is displayed anymore.</li>
+        <li>On platforms other than Windows, a localized message is now
+         displayed when asking to overwrite an archive, and the archive file
+         extension was not initially specified in the file picker dialog.</li>
+        <li>The alternative save component now works.</li>
       </ul>
     </li>
   </ul>
+  <p>MAF <?php echo $maf_experimental_fx; ?> has the following known issues:</p>
+  <ul>
+    <li>If the first entry of an archive is not a web page, but for instance an
+     image, it cannot be displayed when opening the archive normally.</li>
+    <li>If an archive contains multiple pages, refreshing the tab displaying
+     the first one may cause the other pages to be opened again in new
+     tabs.</li>
+    <li>The download progress indication is not accurate when saving an
+     archive.</li>
+    <li>When saving a page in an archive fails, retrying the download from the
+     <b>Downloads</b> window does not achieve the expected result.</li>
+    <li>A secondary download progress bar is shown when saving a single page in
+     an archive.</li>
+    <li>The <b>Save Complete</b> component doesn't always work when saving
+     multiple tabs in an archive.</li>
+  </ul>
+  <p><a href="changelog.html#whatwasnew">What was new in the previous
+   version?</a></p>
 
   <h2>Previous versions</h2>
   <p>You can download all the previous versions of MAF from the
