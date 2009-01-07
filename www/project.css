@@ -64,11 +64,16 @@ code.maf-file-ext {
 /* Download boxes */
 
 .maf-download-box {
+  float: left;
+  padding: 0px;
+  margin: 0px;
+}
+
+.maf-download-box-contents {
   margin: 20px 10px;
   padding: 10px 30px;
   border: 1px solid grey;
   background-color: lightgreen;
-  float: left;
 }
 
 .maf-download-afterbox {
@@ -90,4 +95,29 @@ code.maf-file-ext {
 .maf-download-more {
   margin: 10px 10px;
   font-family: Verdana, sans-serif;
+}
+
+/* Download tips after the download box */
+
+.maf-download-tips {
+  float: left;
+  padding: 0px;
+  /*
+   * This negative margin is required to compensate the padding introduced by
+   *  "maf-column-contents". Not compensating it would cause a horizontal
+   *  scrollbar to appear when the page is viewed using Internet Explorer 6.
+   */
+  margin: 0px -10px;
+  max-width: 30em;
+}
+
+.maf-download-tips-contents {
+  color: #666;
+  padding: 0px;
+  margin: 20px 20px;
+  text-align: left;
+}
+
+.maf-download-tips p {
+  margin: 0px;
 }
