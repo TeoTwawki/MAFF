@@ -76,6 +76,10 @@ code.maf-file-ext {
   background-color: lightgreen;
 }
 
+.maf-download-box-contents.experimental {
+  background-color: #FC0;
+}
+
 .maf-download-afterbox {
   clear: both;
 }
