@@ -39,16 +39,44 @@
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
+ * Helper object for MafWebProgressListener implementation.
+ */
+var EmptyWebProgressListener = {
+
+  // --- nsIWebProgressListener interface functions ---
+
+  onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) { },
+  onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
+   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
+  onLocationChange: function(aWebProgress, aRequest, aLocation) { },
+  onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) { },
+  onSecurityChange: function(aWebProgress, aRequest, aState) { },
+
+  // --- nsIWebProgressListener2 interface functions ---
+
+  onProgressChange64: function(aWebProgress, aRequest, aCurSelfProgress,
+   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
+  onRefreshAttempted: function(aWebProgress, aRefreshURI, aMillis,
+   aSameURI) { }
+
+};
+
+/**
  * This object implements nsIWebProgressListener2 by forwarding all calls to a
  *  wrapped object. In addition, the interesting state changes are notified to
  *  the specified MAF event listener.
  *
  * @param aMafEventListener   Object whose onDownloadComplete or
  *                             onDownloadFailed methods will be called.
- * @param wrappedObject       Wrapped object implementing
- *                             nsIWebProgressListener2.
+ * @param wrappedObject       Optional wrapped object implementing
+ *                             nsIWebProgressListener2. If omitted, an empty
+ *                             implementation will be used.
  */
 function MafWebProgressListener(aMafEventListener, wrappedObject) {
+  if (!wrappedObject) {
+    wrappedObject = EmptyWebProgressListener;
+  }
+
   this._mafEventListener = aMafEventListener;
   this._wrappedObject = wrappedObject;
 
