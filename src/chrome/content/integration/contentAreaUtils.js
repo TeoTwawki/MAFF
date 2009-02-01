@@ -302,8 +302,21 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   // Leave it to WebBrowserPersist to discover the encoding type (or lack thereof):
   persist.persistFlags |= nsIWBP.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
 
-  // Create download and initiate it (below)
-  var tr = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
+  // Mozilla Archive Format indirectly uses this function to save an already
+  //  loaded document to a temporary file on disk, before generating the final
+  //  archive. If the document saving was initiated by MAF, we use the
+  //  provided download listener instead of creating a transfer object.
+  var tr;
+  if (typeof aSkipPrompt == "object") {
+    tr = new MafWebProgressListener(aSkipPrompt.mafEventListener);
+  } else {
+    // Create download and initiate it (below)
+    tr = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
+    tr.init(persistArgs.sourceURI,
+            persistArgs.targetFileURL, "", null, null, null, persist);
+  }
+
+  persist.progressListener = new DownloadListener(window, tr);
 
   if (persistArgs.sourceDocument) {
     // Saving a Document, not a URI:
@@ -329,22 +342,7 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
     else {
       encodingFlags |= nsIWBP.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES;
     }
-  }
 
-  tr.init(persistArgs.sourceURI,
-          persistArgs.targetFileURL, "", null, null, null, persist);
-
-  // Mozilla Archive Format indirectly uses this function to save an already
-  //  loaded document to a temporary file on disk, before generating the final
-  //  archive. If the document saving was initiated by MAF, we add another
-  //  download listener, that in turn will call the second-level listener
-  //  specified in the eventListener property of the aSkipPrompt object.
-  if (typeof aSkipPrompt == "object")
-    tr = new MafWebProgressListener(aSkipPrompt.mafEventListener, tr);
-
-  persist.progressListener = new DownloadListener(window, tr);
-
-  if (persistArgs.sourceDocument) {
     const kWrapColumn = 80;
     persist.saveDocument(persistArgs.sourceDocument, persistArgs.targetFileURL, filesFolder,
                          persistArgs.targetContentType, encodingFlags, kWrapColumn);
