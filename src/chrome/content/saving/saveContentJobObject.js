@@ -39,9 +39,16 @@
  * Manages the saving process of a single web page.
  *
  * This class derives from Job. See the Job documentation for details.
+ *
+ * @param aDocument    The document to be saved.
+ * @param aTargetDir   An nsILocalFile instance representing the temporary
+ *                      directory where the document should be saved.
  */
-function SaveContentJob(aEventListener) {
+function SaveContentJob(aEventListener, aDocument, aTargetDir) {
   Job.call(this, aEventListener);
+
+  this._document = aDocument;
+  this._targetDir = aTargetDir;
 }
 
 SaveContentJob.prototype = {
@@ -53,33 +60,70 @@ SaveContentJob.prototype = {
   // --- Overridden Job methods ---
 
   _executeStart: function() {
-    this._archiver = new MafArchiverClass();
-    this._archiver.init(
-      this.targetBrowser,
-      this.targetType,
-      this.targetFile.path,
-      this);
-    this._archiver.start(this.addToArchive);
+    // Create the target folder
+    this._targetDir.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
+    // Save the document in the target folder
+    browserWindow.saveDocument(this._document,
+     {saveDir: this._targetDir, mafEventListener: this});
+    // Wait for the save completed callback
+    this._asyncWorkStarted();
   },
 
   _executeCancel: function(aReason) {
-    this._archiver.stop();
+    // No special action is required since the worker objects do not support
+    //  cancellation
   },
 
-  _checkIfCompleted: function() {
-    return this._archiverCompleted;
+  _executeDispose: function() {
+    // Delete the target folder if it was created successfully
+    if(this._targetDir.exists()) {
+      this._targetDir.remove(true);
+    }
   },
 
-  // --- Callback functions for the worker object ---
+  // --- Callback functions for the worker objects ---
 
-  progressUpdater: function(progress, code) {
-    this._notifyJobProgressChange(null, null, progress, 100, progress, 100);
-    this._archiverCompleted = (progress == 100);
-    this._notifyPossibleCompletion();
+  onSaveNameDetermined: function(aSaveName) {
+    // Remember the name that the save component has chosen for the index file
+    this._targetLeafName = aSaveName;
+  },
+
+  onDownloadFailed: function(aStatus) {
+    this._handleAsyncCallback(function() {
+      // Cancel the operation because the download failed
+      Cu.reportError(new Components.Exception("Download failed.", aStatus));
+      this.cancel(aStatus);
+    }, this);
+  },
+
+  onDownloadComplete: function() {
+    this._handleAsyncCallback(function() {
+      // Add metadata near the saved file
+      new MafArchiverClass(this._document, this._targetDir.path,
+       this.targetBrowser, this._targetLeafName).addMetaData();
+      // Create a new archive or add to an existing archive
+      Maf.archiveDownload(this.targetType, this.targetFile.path,
+       this._targetDir.path, this.addToArchive, this);
+      // Wait for the archiving completed callback
+      this._asyncWorkStarted();
+    }, this);
+  },
+
+  onArchivingComplete: function(code) {
+    this._handleAsyncCallback(function() {
+      if (code != 0) {
+        // Cancel the operation if archiving failed
+        this.cancel(Cr.NS_ERROR_FAILURE);
+      } else {
+        // Archiving completed
+        this._notifyCompletion();
+      }
+    }, this);
   },
 
   // --- Private methods and properties ---
 
-  _archiver: null,
-  _archiverCompleted: false
+  _document: null,
+  _targetDir: null,
+  _targetLeafName: null
 }

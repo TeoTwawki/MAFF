@@ -28,75 +28,14 @@
  * The MAF Archiver
  */
 
-function MafArchiverClass() {
-
+function MafArchiverClass(aDocument, tempSubPath, aBrowser, indexfilename) {
+  this.aDocument = aDocument;
+  this.tempSubPath = tempSubPath;
+  this.aBrowser = aBrowser;
+  this.indexfilename = indexfilename;
 };
 
 MafArchiverClass.prototype = {
-  indexfilename: "index.html",
-
-  init: function(aBrowser, scriptPath, archivePath, mafEventListener) {
-    /** The browser containing the data archive. */
-    this.aBrowser = aBrowser;
-
-    /** The document to archive. */
-    this.aDocument = aBrowser.contentDocument;
-
-    /** The path of the archive script to use. */
-    this.scriptPath = scriptPath;
-
-    /** The full path of the archive file to archive to. */
-    this.archivePath = archivePath;
-
-    /** When this document was archived. */
-    this.dateTimeArchived = new Date().valueOf() + "";
-
-    /** The folder number used in the archive. */
-    this.folderNumber = this.dateTimeArchived + "_" + Math.floor(Math.random()*1000);
-
-    /** The full path of the temporary folder to save the document to. */
-    this.tempSubPath = MafUtils.appendToDir(Prefs.tempFolder, this.folderNumber);
-    MafUtils.createDir(this.tempSubPath);
-
-    /** The object that will receive event notifications. */
-    this.mafEventListener = mafEventListener;
-  },
-
-
-  start: function(appendToArchive) {
-    this.appendToExistingArchive = appendToArchive;
-    var dir = Components.classes["@mozilla.org/file/local;1"]
-                  .createInstance(Components.interfaces.nsILocalFile);
-    dir.initWithPath(this.tempSubPath);
-    browserWindow.saveDocument(this.aDocument, {saveDir: dir, mafEventListener: this});
-  },
-
-  stop: function(appendToArchive) {
-    this.stopped = true;
-  },
-
-  onSaveNameDetermined: function(aSaveName) {
-    this.indexfilename = aSaveName;
-  },
-
-  onDownloadFailed: function(aStatus) {
-    Components.utils.reportError(new Components.Exception("Download failed.", aStatus));
-    this.onArchivingComplete(1);
-  },
-
-  onDownloadComplete: function() {
-    if (this.stopped) {
-      this.onArchivingComplete(1);
-      return;
-    }
-
-    this.addMetaData();
-    Maf.archiveDownload(this.scriptPath,
-                              this.archivePath,
-                              this.folderNumber,
-                              this.appendToExistingArchive,
-                              this);
-  },
 
   /**
    * Adds RDF files containing Meta Data about the saved page
@@ -177,17 +116,6 @@ MafArchiverClass.prototype = {
       } catch(e) {
 
       }
-    }
-  },
-
-  onArchivingComplete: function(code) {
-    try {
-      // Remove Folder
-      MafUtils.deleteFile(this.tempSubPath);
-
-      this.mafEventListener.progressUpdater(100, code);
-    } catch(e) {
-      mafdebug(e);
     }
   }
 };
