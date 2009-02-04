@@ -49,6 +49,8 @@ function Job(aEventListener) {
   this.isCompleted = false;
   this.result = Cr.NS_OK;
   this._deferDisposal = false;
+  this._isWorkingAsynchronously = false;
+  this._asyncDisposalRequested = false;
 }
 
 Job.prototype = {
@@ -124,6 +126,18 @@ Job.prototype = {
    *  implementation or asynchronously at a later time.
    */
   dispose: function() {
+    // A job must be canceled before its resources can be disposed of
+    if (!this.isCompleted) {
+      throw Components.Exception("Dispose attempted before job completed.",
+       Cr.NS_ERROR_NOT_INITIALIZED);
+    }
+
+    // If the resources cannot be disposed of now, defer until later
+    if (this._isWorkingAsynchronously) {
+      this._asyncDisposalRequested = true;
+      return;
+    }
+
     // Execute the implementation-specific disposal process
     try {
       this._executeDispose();
@@ -224,6 +238,52 @@ Job.prototype = {
   },
 
   /**
+   * This function may be called by implementations to indicate that operations
+   *  like disposing of job resources should be deferred until after a callback
+   *  from a worker object is called.
+   */
+  _asyncWorkStarted: function() {
+    this._isWorkingAsynchronously = true;
+  },
+
+  /**
+   * Implementations must call this function after a callback from a worker
+   *  object is called, if the callback indicates that the worker has finished.
+   *
+   * The handler function cannot return a value to the worker object. If the
+   *  job has been canceled meanwhile, the handler function is not called.
+   */
+  _handleAsyncCallback: function(handlerFunction, thisObject) {
+    this._isWorkingAsynchronously = false;
+
+    // If the operation was already canceled or completed
+    if (this.isCompleted) {
+      // We may perform the resource disposal now that the worker objects
+      //  terminated their execution
+      if (this._asyncDisposalRequested) {
+        this.dispose();
+      }
+      // Do not call the callback handler function
+      return;
+    }
+
+    // Execute the callback handler. If the handler raises an exception, report
+    //  it and cancel the operation.
+    try {
+      handlerFunction.apply(thisObject);
+    } catch(e) {
+      // Report any error to the console
+      Cu.reportError(e);
+      // Preserve the result code of XPCOM exceptions
+      if (e instanceof Ci.nsIXPCException && e.result != Cr.NS_OK) {
+        this.cancel(e.result);
+      } else {
+        this.cancel(Cr.NS_ERROR_FAILURE);
+      }
+    }
+  },
+
+  /**
    * This function may be called by implementations to notify about progress
    *  of the current operation.
    */
@@ -233,5 +293,19 @@ Job.prototype = {
     this._eventListener.onJobProgressChange(this, aWebProgress, aRequest,
      aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
      aMaxTotalProgress);
-  }
+  },
+
+  // --- Private methods and properties ---
+
+  /**
+   * True while we are expecting that a callback function from a worker object
+   *  will be called, and some operations should be deferred meanwhile.
+   */
+  _isWorkingAsynchronously: false,
+
+  /**
+   * True if resource disposal was requested while _isWorkingAsynchronously was
+   *  true.
+   */
+  _asyncDisposalRequested: false,
 }
