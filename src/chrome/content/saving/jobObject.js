@@ -107,13 +107,7 @@ Job.prototype = {
     this._notifyCompletion();
   },
 
-  // --- Protected methods and properties ---
-
-  /**
-   * The event listener specified on construction. Subclasses may send custom
-   *  events to this listener.
-   */
-  _eventListener: null,
+  // --- Protected methods and properties that can be overridden ---
 
   /**
    * Called when the operation is started. Implementations must throw
@@ -136,11 +130,20 @@ Job.prototype = {
   },
 
   /**
-   * Must return true if the operation is completed.
+   * Returns true if the operation is completed before _notifyCompletion()
+   *  has been called.
    */
   _checkIfCompleted: function() {
-    throw Cr.NS_ERROR_NOT_IMPLEMENTED;
+    return false;
   },
+
+  // --- Protected methods and properties ---
+
+  /**
+   * The event listener specified on construction. Subclasses may send custom
+   *  events to this listener.
+   */
+  _eventListener: null,
 
   /**
    * This function must be called by implementations to indicate that the
@@ -155,6 +158,20 @@ Job.prototype = {
   },
 
   /**
+   * This function may be called by implementations to indicate that the
+   *  operation is completed. It is not necessary to call this method if
+   *  the operation has been canceled.
+   */
+  _notifyCompletion: function() {
+    // Update the job state, and notify our listener that the operation is
+    //  completed. A completion notification is never sent more than once.
+    if (!this.isCompleted) {
+      this.isCompleted = true;
+      this._eventListener.onJobComplete(this, this.result);
+    }
+  },
+
+  /**
    * This function may be called by implementations to notify about progress
    *  of the current operation.
    */
@@ -164,19 +181,5 @@ Job.prototype = {
     this._eventListener.onJobProgressChange(this, aWebProgress, aRequest,
      aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
      aMaxTotalProgress);
-  },
-
-  // --- Private methods and properties ---
-
-  /**
-   * Notify our listener that the operation is completed. A completion
-   *  notification is never sent more than once.
-   */
-  _notifyCompletion: function() {
-    // Notify only if the listener was not already notified
-    if (!this.isCompleted) {
-      this.isCompleted = true;
-      this._eventListener.onJobComplete(this, this.result);
-    }
   }
 }
