@@ -48,6 +48,7 @@ function Job(aEventListener) {
   // Initialize other member variables explicitly for proper inheritance
   this.isCompleted = false;
   this.result = Cr.NS_OK;
+  this._deferDisposal = false;
 }
 
 Job.prototype = {
@@ -93,6 +94,12 @@ Job.prototype = {
    * @param aReason   Result code indicating the cancel reason.
    */
   cancel: function(aReason) {
+    // Check the validity of the parameter
+    if (aReason == Cr.NS_OK) {
+      throw Components.Exception("Cancel called with a success code.",
+       Cr.NS_ERROR_ILLEGAL_VALUE);
+    }
+
     // Check if the operation was already canceled or completed. This is common
     //  when a group of jobs gets canceled because one of them failed.
     if (this.isCompleted) {
@@ -105,6 +112,24 @@ Job.prototype = {
     // If canceling succeeded, report the provided result code
     this.result = aReason;
     this._notifyCompletion();
+  },
+
+  /**
+   * Free the operation's results. This method must be called only if the job is
+   *  designed to maintain some resources available to the caller, and the job
+   *  has not been canceled.
+   *
+   * If the onJobComplete event is raised with a success code, and the job set
+   *  _deferDisposal, this method should be called either in the onJobComplete
+   *  implementation or asynchronously at a later time.
+   */
+  dispose: function() {
+    // Execute the implementation-specific disposal process
+    try {
+      this._executeDispose();
+    } catch(e) {
+      Cu.reportError(e);
+    }
   },
 
   // --- Protected methods and properties that can be overridden ---
@@ -137,7 +162,22 @@ Job.prototype = {
     return false;
   },
 
+  /**
+   * Called when the job results are not needed anymore, to free any resources.
+   *  In some cases, this method may be called more than once.
+   *
+   * Any exception raised by this method is caught and reported.
+   */
+  _executeDispose: function() { },
+
   // --- Protected methods and properties ---
+
+  /**
+   * Implementations may set this property to true to indicate that after the
+   *  job is completed _executeDispose() should not be called immediately, but
+   *  only after dispose() is explicitly called.
+   */
+  _deferDisposal: false,
 
   /**
    * The event listener specified on construction. Subclasses may send custom
@@ -167,7 +207,19 @@ Job.prototype = {
     //  completed. A completion notification is never sent more than once.
     if (!this.isCompleted) {
       this.isCompleted = true;
-      this._eventListener.onJobComplete(this, this.result);
+      try {
+        this._eventListener.onJobComplete(this, this.result);
+      } catch(e) {
+        Cu.reportError(e);
+        // Handling the notification failed; dispose of the object and exit
+        this.dispose();
+        return;
+      }
+      // If handling the notification succeeded, the job completed successfully
+      //  and deferred disposal is required, do not dispose of the object now
+      if(this.result != Cr.NS_OK || !_deferDisposal) {
+        this.dispose();
+      }
     }
   },
 
