@@ -82,11 +82,13 @@ Job.prototype = {
        Cr.NS_ERROR_ALREADY_INITIALIZED);
     }
 
-    // Execute the implementation-specific start process
-    this._executeStart();
-
-    // Check if the operation is already completed
-    this._notifyPossibleCompletion();
+    // If the start process fails, cancel the operation and dispose of resources
+    this._executeAndCancelOnException(function() {
+      // Execute the implementation-specific start process
+      this._executeStart();
+      // Check if the operation is already completed
+      this._notifyPossibleCompletion();
+    }, this);
   },
 
   /**
@@ -269,18 +271,7 @@ Job.prototype = {
 
     // Execute the callback handler. If the handler raises an exception, report
     //  it and cancel the operation.
-    try {
-      handlerFunction.apply(thisObject);
-    } catch(e) {
-      // Report any error to the console
-      Cu.reportError(e);
-      // Preserve the result code of XPCOM exceptions
-      if (e instanceof Ci.nsIXPCException && e.result != Cr.NS_OK) {
-        this.cancel(e.result);
-      } else {
-        this.cancel(Cr.NS_ERROR_FAILURE);
-      }
-    }
+    this._executeAndCancelOnCaughtException(handlerFunction, thisObject);
   },
 
   /**
@@ -308,4 +299,42 @@ Job.prototype = {
    *  true.
    */
   _asyncDisposalRequested: false,
+
+  /**
+   * Execute the provided function. If the function raises an exception, report
+   *  it and cancel the operation.
+   */
+  _executeAndCancelOnCaughtException: function(innerFunction, thisObject) {
+    try {
+      innerFunction.apply(thisObject);
+    } catch(e) {
+      // Report the error before attempting the cancel operation
+      Cu.reportError(e);
+      // Cancel while preserving the result code of XPCOM exceptions
+      if (e instanceof Ci.nsIXPCException && e.result != Cr.NS_OK) {
+        this.cancel(e.result);
+      } else {
+        this.cancel(Cr.NS_ERROR_FAILURE);
+      }
+    }
+  },
+
+  /**
+   * Execute the provided function. If the function raises an exception, cancel
+   *  the operation before forwarding it.
+   */
+  _executeAndCancelOnException: function(innerFunction, thisObject) {
+    try {
+      innerFunction.apply(thisObject);
+    } catch(e) {
+      // Cancel while preserving the result code of XPCOM exceptions
+      if (e instanceof Ci.nsIXPCException && e.result != Cr.NS_OK) {
+        this.cancel(e.result);
+      } else {
+        this.cancel(Cr.NS_ERROR_FAILURE);
+      }
+      // Forward the exception to the caller
+      throw e;
+    }
+  }
 }
