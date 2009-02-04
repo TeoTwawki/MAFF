@@ -30,7 +30,6 @@ try {
    "jscomponents/nsMafMhtEncoder.js",
    "jscomponents/nsMafMhtHandler.js",
    "jscomponents/nsMafState.js",
-   "jscomponents/nsMafTabArchiver.js",
    "jscomponents/nsMafTabExpander.js",
    "jscomponents/nsMafUtil.js",
    "jscomponents/nsMafWebBrowserPersist.js",
@@ -38,8 +37,13 @@ try {
    "preferences/prefsObject.js",
    "savecomplete/savecomplete.js",
    "savecomplete/saveCompletePersistObject.js",
+   "saving/jobObject.js",
+   "saving/jobRunnerObject.js",
    "saving/mafArchivePersistObject.js",
-   "saving/mafWebProgressListenerObject.js"
+   "saving/mafWebProgressListenerObject.js",
+   "saving/saveArchiveJobObject.js",
+   "saving/saveContentJobObject.js",
+   "saving/saveJobObject.js"
   ].forEach(function(contentRelativePath) {
     Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
      .getService(Components.interfaces.mozIJSSubScriptLoader)

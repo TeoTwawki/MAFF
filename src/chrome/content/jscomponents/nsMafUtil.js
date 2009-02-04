@@ -188,21 +188,8 @@ MafUtilServiceClass.prototype = {
    * not to overwite existing ones.
    * Code from contentUtils.js
    */
-  getFullUniqueFilename: function(suggestedPathAndFilename) {
-    var dir = null;
-    try {
-      dir = Components.classes["@mozilla.org/file/local;1"]
-              .createInstance(Components.interfaces.nsILocalFile);
-      dir.initWithPath(suggestedPathAndFilename);
-    } catch (e) {
-
-    }
-
-    var file;
-
-    file = dir;
-
-    while (file.exists()) {
+  getFullUniqueFilename: function(file) {
+    do {
       var parts = /.+-(\d+)(\..*)?$/.exec(file.leafName);
       if (parts) {
         file.leafName = file.leafName.replace(/((\d+)\.)/,
@@ -213,10 +200,7 @@ MafUtilServiceClass.prototype = {
       else {
         file.leafName = file.leafName.replace(/\./, "-1$&");
       }
-    }
-
-
-    return file.path;
+    } while (file.exists());
   },
 
 

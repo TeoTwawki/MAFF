@@ -43,8 +43,11 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  *  current download progress and status in the browser's download window.
  */
 function MafArchivePersist(aSaveBrowser, aSaveTabs, aArchiveType) {
-  this._saveBrowser = aSaveBrowser;
-  this._saveTabs = aSaveTabs;
+  if (aSaveTabs) {
+    this._saveBrowsers = aSaveTabs;
+  } else {
+    this._saveBrowsers = [aSaveBrowser];
+  }
   this._archiveType = aArchiveType;
 }
 
@@ -58,8 +61,8 @@ MafArchivePersist.prototype = {
 
   cancel: function(aReason) {
     this.result = aReason;
-    if (this._archiver) {
-      this._archiver.stop();
+    if (this._saveJob) {
+      this._saveJob.cancel(aReason);
     }
   },
 
@@ -94,22 +97,20 @@ MafArchivePersist.prototype = {
          Ci.nsIWebProgressListener.STATE_IS_NETWORK, Cr.NS_OK);
       }
 
-      // Find the path of the file to save to
-      filePath = aFile.QueryInterface(Ci.nsIFileURL).file.path;
+      // Find the local file to save to
+      targetFile = aFile.QueryInterface(Ci.nsIFileURL).file;
 
-      // Save the selected page or tabs in the web archive
-      var mafArchiver;
-      if (this._saveTabs) {
-        mafArchiver = new MafTabArchiverClass();
-        mafArchiver.init(this._saveTabs, this._archiveType, filePath, this);
-      } else {
-        mafArchiver = new MafArchiverClass();
-        mafArchiver.init(this._saveBrowser, this._archiveType, filePath, this);
-      }
-      mafArchiver.start(false); // Do not append to existing archive
+      // Create a save job and listen to its events
+      var saveJob = new SaveJob(this);
 
-      // Keep a reference to the archiver to allow stopping it
-      this._archiver = mafArchiver;
+      // Save the selected pages in the web archive
+      saveJob.addJobsFromBrowsers(this._saveBrowsers, targetFile,
+       this._archiveType);
+      saveJob.start();
+
+      // If the start succeeded, keep a reference to the save job to allow
+      //  stopping it
+      this._saveJob = saveJob;
     } catch(e) {
       Cu.reportError(e);
       // Preserve the result code of XPCOM exceptions
@@ -129,15 +130,19 @@ MafArchivePersist.prototype = {
 
   // --- Callback functions for the worker object ---
 
-  progressUpdater: function(aProgress, aCode) {
+  onJobProgressChange: function(aJob, aWebProgress, aRequest, aCurSelfProgress,
+   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
+    // Simply propagate the event to our listener
     if (this.progressListener) {
-      // Use dummy byte values to update the progress listener.
-      this.progressListener.onProgressChange(null, null, aProgress, 100,
-       aProgress, 100);
+      this.progressListener.onProgressChange(aWebProgress, aRequest,
+       aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
+       aMaxTotalProgress);
     }
-    if (aProgress == 100) {
-      this._onComplete();
-    }
+  },
+
+  onJobComplete: function(aJob, aResult) {
+    this.result = aResult;
+    this._onComplete();
   },
 
   // --- Private methods and properties ---
@@ -156,8 +161,7 @@ MafArchivePersist.prototype = {
     }
   },
 
-  _saveBrowser: null,
-  _saveTabs: null,
+  _saveBrowsers: null,
   _archiveType: null,
-  _archiver: null
+  _saveJob: null
 }
