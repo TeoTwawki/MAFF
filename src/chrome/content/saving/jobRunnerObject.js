@@ -115,18 +115,35 @@ JobRunner.prototype = {
 
   onJobProgressChange: function(aJob, aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
-    // Compute the total completion percentage using dummy byte values
-    var totalProgress = 0;
-    var maxTotalProgress = 0;
+    // Sum the progress, in bytes, of all the child jobs that are started
+    var numStartedJobs = 0;
+    var numUnstartedJobs = 0;
+    var curStartedProgress = 0;
+    var maxStartedProgress = 0;
     this._jobs.forEach(function(job) {
-      if (job.isCompleted) {
-        totalProgress += 100;        
+      if (job.startedByRunner) {
+        // If the job is started, use its progress indication
+        curStartedProgress += job.curJobProgress;
+        maxStartedProgress += job.maxJobProgress;
+        numStartedJobs++;
+      } else {
+        numUnstartedJobs++;
       }
-      maxTotalProgress += 100;
     }, this);
+    // Estimate total progress for unstarted jobs
+    var maxUnstartedProgress;
+    if (!numStartedJobs) {
+      // No jobs are started, use a dummy byte value for the total progress
+      maxUnstartedProgress = 100;
+    } else {
+      // Assume that the remaining jobs will have the same average byte count
+      maxUnstartedProgress = Math.floor(maxStartedProgress / numStartedJobs) *
+       numUnstartedJobs;
+    }
     // Propagate the event to our listener
     this._notifyJobProgressChange(aWebProgress, aRequest, aCurSelfProgress,
-     aMaxSelfProgress, totalProgress, maxTotalProgress);
+     aMaxSelfProgress, curStartedProgress, maxStartedProgress +
+     maxUnstartedProgress);
   },
 
   onJobComplete: function(aJob, aResult) {
