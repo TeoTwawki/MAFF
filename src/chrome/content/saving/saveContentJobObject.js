@@ -88,6 +88,13 @@ SaveContentJob.prototype = {
     this._targetLeafName = aSaveName;
   },
 
+  onDownloadProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
+   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
+    // Update job progress and propagate the event to our listener
+    this._notifyJobProgressChange(aWebProgress, aRequest, aCurSelfProgress,
+     aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
+  },
+
   onDownloadFailed: function(aStatus) {
     this._handleAsyncCallback(function() {
       // Cancel the operation because the download failed

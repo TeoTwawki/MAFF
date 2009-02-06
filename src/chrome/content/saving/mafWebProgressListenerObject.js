@@ -66,8 +66,9 @@ var EmptyWebProgressListener = {
  *  wrapped object. In addition, the interesting state changes are notified to
  *  the specified MAF event listener.
  *
- * @param aMafEventListener   Object whose onDownloadComplete or
- *                             onDownloadFailed methods will be called.
+ * @param aMafEventListener   Object whose onDownloadComplete, onDownloadFailed
+ *                             or onDownloadProgressChange methods will be
+ *                             called.
  * @param wrappedObject       Optional wrapped object implementing
  *                             nsIWebProgressListener2. If omitted, an empty
  *                             implementation will be used.
@@ -131,6 +132,35 @@ MafWebProgressListener.prototype = {
     // Forward the call to the wrapped object
     this._wrappedObject.onStateChange(aWebProgress, aRequest, aStateFlags,
      aStatus);
+  },
+
+  /**
+   * This function must be implemented because onProgressChange64 is overridden.
+   */
+  onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
+   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
+    this.onProgressChange64(aWebProgress, aRequest, aCurSelfProgress,
+     aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
+  },
+
+  /**
+   * Forwards the progress notification to the associated event listener.
+   */
+  onProgressChange64: function(aWebProgress, aRequest, aCurSelfProgress,
+   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
+    // Trap exceptions to ensure the wrapped object gets called
+    try {
+      // Notify our listener
+      this._mafEventListener.onDownloadProgressChange(aWebProgress, aRequest,
+       aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
+       aMaxTotalProgress);
+    } catch(e) {
+      Cu.reportError(e);
+    }
+
+    // Forward the call to the wrapped object
+    this._wrappedObject.onProgressChange64(aWebProgress, aRequest,
+     aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
   },
 
   // --- Private methods and properties ---
