@@ -123,8 +123,19 @@ JobRunner.prototype = {
     this._jobs.forEach(function(job) {
       if (job.startedByRunner) {
         // If the job is started, use its progress indication
-        curStartedProgress += job.curJobProgress;
-        maxStartedProgress += job.maxJobProgress;
+        if (job.maxJobProgress > 0) {
+          curStartedProgress += job.curJobProgress;
+          maxStartedProgress += job.maxJobProgress;
+        } else {
+          // If the progress properties of the job contain no meaningful value,
+          //  use dummy byte values to indicate the progress. This allows the
+          //  progress bar to advance when monitoring multiple jobs with a
+          //  persister that doesn't report the download progress.
+          maxStartedProgress += 1;
+          if (job.isCompleted) {
+            curStartedProgress += 1;
+          }
+        }
         numStartedJobs++;
       } else {
         numUnstartedJobs++;
@@ -153,6 +164,10 @@ JobRunner.prototype = {
       this.cancel(aResult);
       return;
     }
+
+    // Check the completed job progress even if not previously notified
+    this.onJobProgressChange(aJob, null, null, 0, 0, aJob.curJobProgress,
+     aJob.maxJobProgress);
 
     // Start the next job if required
     if (!this._runInParallel) {
