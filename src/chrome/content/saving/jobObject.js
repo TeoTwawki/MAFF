@@ -48,6 +48,8 @@ function Job(aEventListener) {
   // Initialize other member variables explicitly for proper inheritance
   this.isCompleted = false;
   this.result = Cr.NS_OK;
+  this.curJobProgress = 0;
+  this.maxJobProgress = 0;
   this._deferDisposal = false;
   this._isWorkingAsynchronously = false;
   this._asyncDisposalRequested = false;
@@ -67,6 +69,19 @@ Job.prototype = {
    * When isCompleted is true, contains the last result code of the job.
    */
   result: Cr.NS_OK,
+
+  /**
+   * Current job progress. This value is independent from the completion state,
+   *  and is usually less than or equal to the total job progress. Often this
+   *  value is interpreted as a byte count.
+   */
+  curJobProgress: 0,
+
+  /**
+   * Maximum reference value for the job progress. This value can be zero even
+   *  if the job is started. Often this value is interpreted as a byte count.
+   */
+  maxJobProgress: 0,
 
   /**
    * Start the operation.
@@ -276,10 +291,14 @@ Job.prototype = {
 
   /**
    * This function may be called by implementations to notify about progress
-   *  of the current operation.
+   *  of the current operation. The progress properties of the job are updated
+   *  consequently.
    */
   _notifyJobProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
+    // Update the job properties
+    this.curJobProgress = aCurTotalProgress;
+    this.maxJobProgress = aMaxTotalProgress;
     // Simply propagate the event to our listener
     this._eventListener.onJobProgressChange(this, aWebProgress, aRequest,
      aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
