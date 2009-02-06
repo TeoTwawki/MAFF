@@ -110,7 +110,7 @@ SaveContentJob.prototype = {
        this.targetBrowser, this._targetLeafName).addMetaData();
       // Create a new archive or add to an existing archive
       Maf.archiveDownload(this.targetType, this.targetFile.path,
-       this._targetDir.path, this.addToArchive, this);
+       this._targetDir.leafName, this.addToArchive, this);
       // Wait for the archiving completed callback
       this._asyncWorkStarted();
     }, this);
