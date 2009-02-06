@@ -191,6 +191,12 @@ JobRunner.prototype = {
     this._notifyPossibleCompletion();
   },
 
+  onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
+    // Propagate this download event unaltered
+    this._eventListener.onStatusChange(aWebProgress, aRequest, aStatus,
+     aMessage);
+  },
+
   // --- Private methods and properties ---
 
   /**

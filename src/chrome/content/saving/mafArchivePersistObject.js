@@ -145,6 +145,14 @@ MafArchivePersist.prototype = {
     this._onComplete();
   },
 
+  onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
+    // Propagate this download event unaltered
+    if (this.progressListener) {
+      this.progressListener.onStatusChange(aWebProgress, aRequest, aStatus,
+       aMessage);
+    }
+  },
+
   // --- Private methods and properties ---
 
   _onComplete: function() {

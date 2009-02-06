@@ -163,6 +163,24 @@ MafWebProgressListener.prototype = {
      aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
   },
 
+  /**
+   * Forwards the status notification to the associated event listener.
+   */
+  onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
+    // Trap exceptions to ensure the wrapped object gets called
+    try {
+      // Notify our listener
+      this._mafEventListener.onDownloadStatusChange(aWebProgress, aRequest,
+       aStatus, aMessage);
+    } catch(e) {
+      Cu.reportError(e);
+    }
+
+    // Forward the call to the wrapped object
+    this._wrappedObject.onStatusChange(aWebProgress, aRequest, aStatus,
+     aMessage);
+  },
+
   // --- Private methods and properties ---
 
   _mafEventListener: null,

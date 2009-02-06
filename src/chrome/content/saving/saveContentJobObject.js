@@ -95,6 +95,12 @@ SaveContentJob.prototype = {
      aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
   },
 
+  onDownloadStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
+    // Propagate the event to our listener
+    this._eventListener.onStatusChange(aWebProgress, aRequest, aStatus,
+     aMessage);
+  },
+
   onDownloadFailed: function(aStatus) {
     this._handleAsyncCallback(function() {
       // Cancel the operation because the download failed
