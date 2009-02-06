@@ -170,8 +170,27 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     //  prompt is shown and the file is saved in the specified directory using
     //  "index" as the basename.
     if (typeof aSkipPrompt == "object") {
-      // Find the leaf name of the file to be saved
-      var saveFileName = getNormalizedLeafName("index", fileInfo.fileExt);
+      // Find the leaf name of the file to be saved. Since in some cases the
+      //  browser erroneously reads the default extension from the page title,
+      //  if the content we are saving has a known document type, use the
+      //  well-known extension for that type.
+      var fileExtension = fileInfo.fileExt;
+      switch (aContentType) {
+      case "text/html":
+        fileExtension = "html";
+        break;
+      case "application/xhtml+xml":
+        fileExtension = "xhtml";
+        break;
+      case "image/svg+xml":
+        fileExtension = "svg";
+        break;
+      case "text/xml":
+      case "application/xml":
+        fileExtension = "xml";
+        break;
+      }
+      var saveFileName = getNormalizedLeafName("index", fileExtension);
       // Notify the Mozilla Archive Format saving component
       try {
         aSkipPrompt.mafEventListener.onSaveNameDetermined(saveFileName);
