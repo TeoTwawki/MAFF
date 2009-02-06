@@ -248,7 +248,7 @@ Job.prototype = {
       }
       // If handling the notification succeeded, the job completed successfully
       //  and deferred disposal is required, do not dispose of the object now
-      if(this.result != Cr.NS_OK || !_deferDisposal) {
+      if(this.result != Cr.NS_OK || !this._deferDisposal) {
         this.dispose();
       }
     }
