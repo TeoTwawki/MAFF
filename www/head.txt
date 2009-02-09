@@ -3,7 +3,7 @@
 <meta content="text/css" http-equiv="Content-Style-Type" />
 <?php
 
-$maf_latest_fx = "0.8.7";
-$maf_experimental_fx = "0.9.0";
+$maf_latest_fx = "0.9.1.0";
+$maf_experimental_fx = "";
 
 ?>
