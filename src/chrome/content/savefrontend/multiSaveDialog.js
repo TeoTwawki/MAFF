@@ -113,6 +113,37 @@ var MultiSaveDialog = {
     return true;
   },
 
+  /**
+   * Invert the checked state of the tree selection when space is pressed.
+   */
+  onTreeKeyPress: function(aEvent) {
+    if (aEvent.charCode != KeyEvent.DOM_VK_SPACE)
+      return;
+
+    var tabsTree = document.getElementById("treeTabs");
+    var treeView = tabsTree.view;
+    var checkboxColumn = tabsTree.columns["tcChecked"];
+    var forbidChildChanges = false;
+    for (var i = 0; i < treeView.selection.getRangeCount(); i++) {
+      var start = {}, end = {};
+      treeView.selection.getRangeAt(i, start, end);
+      for (var rowNum = start.value; rowNum <= end.value; rowNum++) {
+        // If we are changing the state of a container, ignore the selection
+        //  changes on its children
+        var isContainer = (rowNum === 0);
+        if (isContainer) {
+          forbidChildChanges = true;
+        }
+        // Invert the checked state of the row
+        if (isContainer || !forbidChildChanges) {
+          var oldValue = treeView.getCellValue(rowNum, checkboxColumn);
+          var newValue = (oldValue == "true" ? "false" : "true");
+          treeView.setCellValue(rowNum, checkboxColumn, newValue);
+        }
+      }
+    }
+  },
+
   // --- Dialog support functions ---
 
   /**

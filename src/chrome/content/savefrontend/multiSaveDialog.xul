@@ -86,6 +86,7 @@
         statedatasource="rdf:null"
         enableColumnDrag="true"
         editable="true"
+        onkeypress="MultiSaveDialog.onTreeKeyPress(event);"
         >
     <treecols>
       <treecol id="tcChecked"
