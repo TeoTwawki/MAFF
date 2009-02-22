@@ -30,12 +30,4 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Open Original URLs in Tabs">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Close">
 
-<!ENTITY maf.saveSelectedTabsDialog.title "Select tabs to save in archive">
-<!ENTITY maf.saveSelectedTabsDialog.tree.title "Title">
-<!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Save Selected in Archive">
-<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
-<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
-<!ENTITY maf.saveSelectedTabsDialog.btnclose "Close">
-
 <!ENTITY maf.browseOpenArchivesAccessKey "M">

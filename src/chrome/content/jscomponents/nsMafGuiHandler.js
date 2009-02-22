@@ -82,17 +82,19 @@ MAFGuiHandlerClass.prototype = {
   },
 
   addSelectedTabsToArchive: function(Maf) {
-    var url = "chrome://maf/content/mafSaveSelectedTabsDLG.xul";
-
-    var w = 500;
-    var h = 500;
-
-    var sX = (this.window.screen.width/2)-(Math.round(w/2));
-    var sY = (this.window.screen.height/2)-(Math.round(h/2));
-
-    var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
-                    ",width="+ w +",height=" + h;
-    this.window.openDialog(url, "_blank", win_prefs, this.window, Maf);
+    var returnValues = {};
+    this.window.openDialog(
+     "chrome://maf/content/savefrontend/multiSaveDialog.xul",
+     "maf-multiSaveDialog",
+     "chrome,titlebar,centerscreen,modal,resizable=yes",
+     this.window,
+     returnValues);
+    if (returnValues.selectedTabs) {
+      // Use the global saveDocument function with the special MAF parameters
+      this.window.saveDocument(
+       this.window.getBrowser().selectedBrowser.contentDocument,
+       {mafAskSaveArchive: true, mafSaveTabs: returnValues.selectedTabs});
+    }
   },
 
   /**
