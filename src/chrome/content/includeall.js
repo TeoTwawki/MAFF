@@ -37,6 +37,7 @@ try {
    "preferences/prefsObject.js",
    "savecomplete/savecomplete.js",
    "savecomplete/saveCompletePersistObject.js",
+   "savefrontend/tabsDataSourceObject.js",
    "saving/jobObject.js",
    "saving/jobRunnerObject.js",
    "saving/mafArchivePersistObject.js",
