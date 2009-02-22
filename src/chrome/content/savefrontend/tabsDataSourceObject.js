@@ -138,6 +138,32 @@ TabsDataSource.prototype = {
     return this._rdf.GetResource("urn:maf:tab#" + aIndex);
   },
 
+  /**
+   * Get an array containing the browser objects only for the tabs that are
+   *  checked.
+   */
+  getSelectedTabs: function() {
+    var tabsArray = [];
+
+    // Enumerate all the tabs in the single window
+    var windowSequence = this._rdfSequence(this.resourceForWindow(1));
+    var windowEnum = windowSequence.GetElements();
+    while (windowEnum.hasMoreElements()) {
+      var tabResource = windowEnum.getNext();
+      // Get the properties of the tab
+      var tabCheckedLiteral = this._wrappedObject.GetTarget(tabResource,
+       this.resources.checked, true);
+      var tabInternalIndexLiteral = this._wrappedObject.GetTarget(tabResource,
+       this.resources.internalIndex, true);
+      // Add the tab to the array if required
+      if (tabCheckedLiteral.Value == "true") {
+        tabsArray.push(this._browsers[tabInternalIndexLiteral.Value]);
+      }
+    }
+
+    return tabsArray;
+  },
+
   // --- nsISupports interface functions ---
 
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIRDFDataSource]),
