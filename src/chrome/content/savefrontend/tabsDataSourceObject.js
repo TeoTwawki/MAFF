@@ -184,6 +184,34 @@ TabsDataSource.prototype = {
 
     // Propagate the change to the wrapped object
     this._wrappedObject.Change(aSource, aProperty, aOldTarget, aNewTarget);
+
+    // If the selection change is on a container, update the child elements
+    if (this._wrappedObject.HasAssertion(aSource, this.resources.instanceOf,
+     this.resources.window, true)) {
+      var windowSequence = this._rdfSequence(aSource);
+      var newSelectionState = (aNewTarget.Value == "true");
+      var windowEnum = windowSequence.GetElements();
+      while (windowEnum.hasMoreElements()) {
+        var tabResource = windowEnum.getNext();
+        // Change the selection on the element, by removing the assertion that
+        //  is no longer true and adding the new assertion
+        this._wrappedObject.Assert(tabResource, this.resources.checked,
+         this._rdfBool(newSelectionState), true);
+        this._wrappedObject.Unassert(tabResource, this.resources.checked,
+         this._rdfBool(!newSelectionState));
+      }
+    } else {
+      // If the selection change is on a child element, update the container
+      var windowResource = this.resourceForWindow(1);
+      var allTabsSelected =
+       (this.getSelectedTabs().length == this._browsers.length);
+      // Change the selection on the element, by removing the assertion that
+      //  is no longer true and adding the new assertion
+      this._wrappedObject.Assert(windowResource, this.resources.checked,
+       this._rdfBool(allTabsSelected), true);
+      this._wrappedObject.Unassert(windowResource, this.resources.checked,
+       this._rdfBool(!allTabsSelected));
+    }
   },
 
   Move: function(aOldSource, aNewSource, aProperty, aTarget) {
