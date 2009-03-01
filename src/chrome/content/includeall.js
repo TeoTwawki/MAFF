@@ -32,7 +32,6 @@ try {
    "jscomponents/nsMafState.js",
    "jscomponents/nsMafTabExpander.js",
    "jscomponents/nsMafUtil.js",
-   "jscomponents/nsMafWebBrowserPersist.js",
    "preferences/dynamicPrefsObject.js",
    "preferences/prefsObject.js",
    "savecomplete/savecomplete.js",

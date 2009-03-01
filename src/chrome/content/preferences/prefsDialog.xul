@@ -97,9 +97,6 @@
         <radio value="savecomplete"   label=    "&save.component.savecomplete.label;"
                                       accesskey="&save.component.savecomplete.accesskey;"
                                       />
-        <radio value="maf"            label=    "&save.component.maf.label;"
-                                      accesskey="&save.component.maf.accesskey;"
-                                      />
       </radiogroup>
       <checkbox preference="prefSaveMetadataExtended" 
                 label=     "&save.metadata.extended.label;"

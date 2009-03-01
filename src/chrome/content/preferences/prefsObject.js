@@ -93,7 +93,6 @@ var Prefs = {
   /** Enumeration for saveComponent */
   SAVECOMPONENT_STANDARD: "standard",
   SAVECOMPONENT_SAVECOMPLETE: "savecomplete",
-  SAVECOMPONENT_MAF: "maf",
 
   /**
    * Returns the component MAF will use when saving pages from the web to a
@@ -103,11 +102,14 @@ var Prefs = {
    *   SAVECOMPONENT_STANDARD     - (default) Use the browser's native "save
    *                                 complete web page" functionality.
    *   SAVECOMPONENT_SAVECOMPLETE - Use the integrated "Save Complete" code.
-   *   SAVECOMPONENT_MAF          - Use the internal implementation.
    *   (other)                    - If the user has customized the preference.
    */
   get saveComponent() {
-    return this._prefBranchForMaf.getCharPref("save.component");
+    var prefValue = this._prefBranchForMaf.getCharPref("save.component");
+    // The "maf" value represented the internal save component, that is not
+    //  available anymore. If that value is specified in the preference, the
+    //  Save Complete component is used instead.
+    return (prefValue == "maf" ? this.SAVECOMPONENT_SAVECOMPLETE : prefValue);
   },
 
   /**

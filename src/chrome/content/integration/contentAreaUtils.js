@@ -294,11 +294,6 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   var persist;
   if (persistArgs.persistObject) {
     persist = persistArgs.persistObject;
-  } else if (Prefs.saveComponent == Prefs.SAVECOMPONENT_MAF &&
-      persistArgs.sourceDocument && !persistArgs.targetContentType) {
-    // This component can only save a complete document without converting its
-    //  content type
-    persist = new MafWebBrowserPersistClass();
   } else if (Prefs.saveComponent == Prefs.SAVECOMPONENT_SAVECOMPLETE &&
       persistArgs.sourceDocument && !persistArgs.targetContentType &&
       (persistArgs.sourceDocument.contentType == "text/html" ||

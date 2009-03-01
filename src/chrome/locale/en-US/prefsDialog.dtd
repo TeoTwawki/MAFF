@@ -18,8 +18,6 @@
 <!ENTITY save.component.standard.accesskey "b">
 <!ENTITY save.component.savecomplete.label "Use the integrated &quot;Save Complete&quot; extension">
 <!ENTITY save.component.savecomplete.accesskey "U">
-<!ENTITY save.component.maf.label "Use MAF internal save component (advanced)">
-<!ENTITY save.component.maf.accesskey "M">
 <!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
 <!ENTITY save.metadata.extended.accesskey "v">
 
