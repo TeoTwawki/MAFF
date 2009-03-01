@@ -15,6 +15,10 @@ prefwindow radio[pane="paneMain"] {
   -moz-image-region: rect(0px, 32px,  32px, 0px)
 }
 
+prefwindow radio[pane="paneInterface"] {
+  -moz-image-region: rect(0px, 96px,  32px, 64px)
+}
+
 prefwindow radio[pane="paneFileAssociations"] {
   -moz-image-region: rect(0px, 128px,  32px, 96px)
 }

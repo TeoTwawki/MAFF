@@ -108,6 +108,46 @@
     </groupbox>
   </prefpane>
 
+  <!-- Interface pane -->
+  <prefpane
+   id="paneInterface"
+   label="&pane.interface.label;"
+   >
+    <preferences>
+      <preference id="prefInterfaceMenuFile"                name="extensions.maf.interface.menu.file"                 type="bool"/>
+      <preference id="prefInterfaceMenuTools"               name="extensions.maf.interface.menu.tools"                type="bool"/>
+      <preference id="prefInterfaceMenuPageContext"         name="extensions.maf.interface.menu.pagecontext"          type="bool"/>
+      <preference id="prefInterfaceMenuTabsContext"         name="extensions.maf.interface.menu.tabscontext"          type="bool"/>
+      <preference id="prefInterfaceMenuItemSaveInArchive"   name="extensions.maf.interface.menuitem.saveinarchive"    type="bool"/>
+    </preferences>
+    <groupbox>
+      <caption label="&menu.caption;" />
+      <label value="&menu.grouplabel;" />
+      <checkbox preference="prefInterfaceMenuFile" 
+                label=     "&menu.file.label;"
+                accesskey= "&menu.file.accesskey;"
+                />
+      <checkbox preference="prefInterfaceMenuTools" 
+                label=     "&menu.tools.label;"
+                accesskey= "&menu.tools.accesskey;"
+                />
+      <checkbox preference="prefInterfaceMenuPageContext" 
+                label=     "&menu.pagecontext.label;"
+                accesskey= "&menu.pagecontext.accesskey;"
+                />
+      <checkbox preference="prefInterfaceMenuTabsContext" 
+                label=     "&menu.tabscontext.label;"
+                accesskey= "&menu.tabscontext.accesskey;"
+                />
+      <separator />
+      <label value="&menuitem.grouplabel;" />
+      <checkbox preference="prefInterfaceMenuItemSaveInArchive" 
+                label=     "&menuitem.saveinarchive.label;"
+                accesskey= "&menuitem.saveinarchive.accesskey;"
+                />
+    </groupbox>
+  </prefpane>
+
   <!-- File associations pane. This pane is enabled only on Windows. -->
   <prefpane
    id="paneFileAssociations"

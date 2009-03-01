@@ -49,6 +49,47 @@ var Prefs = {
    * Public properties to read preferences
    */
 
+  /**
+   * Returns true if MAF menu items should be shown in the File menu.
+   */
+  get interfaceMenuFile() {
+    return this._prefBranchForMaf.getBoolPref("interface.menu.file");
+  },
+
+  /**
+   * Returns true if MAF menu items should be shown in the Tools menu.
+   */
+  get interfaceMenuTools() {
+    return this._prefBranchForMaf.getBoolPref("interface.menu.tools");
+  },
+
+  /**
+   * Returns true if MAF menu items should be shown in the page context menu.
+   */
+  get interfaceMenuPageContext() {
+    return this._prefBranchForMaf.getBoolPref("interface.menu.pagecontext");
+  },
+
+  /**
+   * Returns true if MAF menu items should be shown in the tab bar context menu.
+   *
+   * If this preference is false, some of the tab bar context menu items may
+   *  appear in the page context menu instead.
+   */
+  get interfaceMenuTabsContext() {
+    return this._prefBranchForMaf.getBoolPref("interface.menu.tabscontext");
+  },
+
+  /**
+   * Returns true if the additional "Save In Archive" menu item and its
+   *  variations should be shown in the various menus. The "Save In Archive"
+   *  menu item is always present in the Tools menu.
+   */
+  get interfaceMenuItemSaveInArchive() {
+    return this._prefBranchForMaf.
+     getBoolPref("interface.menuitem.saveinarchive");
+  },
+
   /** Enumeration for saveComponent */
   SAVECOMPONENT_STANDARD: "standard",
   SAVECOMPONENT_SAVECOMPLETE: "savecomplete",
