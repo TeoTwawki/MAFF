@@ -38,32 +38,6 @@ MAFGuiHandlerClass.prototype = {
     this.window = window;
   },
 
-  addAllTabsToArchive: function(Maf) {
-    // Use the global saveDocument function with the special MAF parameters
-    saveDocument(this.window.getBrowser().selectedBrowser.contentDocument,
-     {mafAskSaveArchive: true, mafSaveTabs: this.window.getBrowser().browsers});
-  },
-
-  showPreferences: function() {
-    // Determine the expected behavior of preferences windows
-    try {
-      var instantApply =
-       Components.classes["@mozilla.org/preferences-service;1"]
-       .getService(Components.interfaces.nsIPrefService)
-       .getBranch("").getBoolPref("browser.preferences.instantApply");
-    } catch(e) {
-      instantApply = false;
-    }
-    // Open the preferences window. If instant apply is on, the window will
-    //  be minimizable (dialog=no), conversely if instant apply is not enabled
-    //  the window will be modal and not minimizable.
-    this.window.openDialog(
-     "chrome://maf/content/preferences/prefsDialog.xul",
-     "maf-prefsDialog",
-     "chrome,titlebar,toolbar,centerscreen," +
-     (instantApply ? "dialog=no" : "modal"));
-  },
-
   /**
    * Shows the user a window that allows them to browse the open archives.
    */
@@ -79,22 +53,6 @@ MAFGuiHandlerClass.prototype = {
     var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
                     ",width="+ w +",height=" + h;
     this.window.openDialog(url, "_blank", win_prefs, this.window);
-  },
-
-  addSelectedTabsToArchive: function(Maf) {
-    var returnValues = {};
-    this.window.openDialog(
-     "chrome://maf/content/savefrontend/multiSaveDialog.xul",
-     "maf-multiSaveDialog",
-     "chrome,titlebar,centerscreen,modal,resizable=yes",
-     this.window,
-     returnValues);
-    if (returnValues.selectedTabs) {
-      // Use the global saveDocument function with the special MAF parameters
-      this.window.saveDocument(
-       this.window.getBrowser().selectedBrowser.contentDocument,
-       {mafAskSaveArchive: true, mafSaveTabs: returnValues.selectedTabs});
-    }
   },
 
   /**

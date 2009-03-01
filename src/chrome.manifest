@@ -16,4 +16,4 @@ skin	maf	classic/1.0	chrome/skin/
 
 resource	maf	resource/
 
-overlay	chrome://browser/content/browser.xul	chrome://maf/content/mafoverlay.xul
+overlay	chrome://browser/content/browser.xul	chrome://maf/content/integration/mafCommandsOverlay.xul

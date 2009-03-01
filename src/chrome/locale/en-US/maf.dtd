@@ -1,22 +1,8 @@
 <!ENTITY maf.loadArchive "Open Archive">
 <!ENTITY maf.loadArchiveKey "h">
 
-<!ENTITY maf.addSelectedTabsToArchive "Save Tabs In Archive">
-<!ENTITY maf.addSelectedTabsToArchiveKey "b">
-
-<!ENTITY maf.addAllTabsToArchive "Save All Tabs In Archive">
-<!ENTITY maf.addAllTabsToArchiveKey "T">
-
 <!ENTITY maf.saveTabsDialogTitle "Save Open Tabs Progress">
 <!ENTITY maf.openTabsDialogTitle "Open In Tabs Progress">
-
-<!ENTITY maf.menuLabel "Mozilla Archive Format">
-
-<!ENTITY maf.preferences "Preferences">
-<!ENTITY maf.preferencesKey "f">
-
-<!ENTITY maf.browseOpenArchives "Browse Open Archives">
-<!ENTITY maf.browseOpenArchivesKey "B">
 
 <!ENTITY maf.browseOpenArchivesDialog.title "Browse Open Archives">
 
@@ -29,5 +15,3 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Open in Tabs using jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Open Original URLs in Tabs">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Close">
-
-<!ENTITY maf.browseOpenArchivesAccessKey "M">
