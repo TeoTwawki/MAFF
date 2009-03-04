@@ -53,22 +53,5 @@ MAFGuiHandlerClass.prototype = {
     var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
                     ",width="+ w +",height=" + h;
     this.window.openDialog(url, "_blank", win_prefs, this.window);
-  },
-
-  /**
-   * Shows the dialog to the user when extracting files.
-   */
-  showOpenTabsDLG: function(objMafExpander) {
-    var url = "chrome://maf/content/mafOpenTabsDLG.xul";
-
-    var w = 400;
-    var h = 50;
-
-    var sX = (this.window.screen.width/2)-(Math.round(w/2));
-    var sY = (this.window.screen.height/2)-(Math.round(h/2));
-
-    var win_prefs = "chrome,dialog,dependent=no,modal,resizable=yes,screenX="+ sX + ",screenY="+ sY +
-                    ",width="+ w +",height=" + h;
-    this.window.openDialog(url, "_blank", win_prefs, objMafExpander);
   }
 };

@@ -1,9 +1,6 @@
 <!ENTITY maf.loadArchive "Open Archive">
 <!ENTITY maf.loadArchiveKey "h">
 
-<!ENTITY maf.saveTabsDialogTitle "Save Open Tabs Progress">
-<!ENTITY maf.openTabsDialogTitle "Open In Tabs Progress">
-
 <!ENTITY maf.browseOpenArchivesDialog.title "Browse Open Archives">
 
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Title">

@@ -224,9 +224,23 @@ maf.prototype = {
 
     var objMafTabExpander = new MafTabExpanderClass();
 
+    var progressObject = {
+      isComplete: false,
+      progressUpdater: function(progress, code) {
+        if(progress == 100) this.isComplete = true;
+      }
+    };
+
     objMafTabExpander.init(tempPath, scriptPath, archivePath, folderNumber, Maf);
+    objMafTabExpander.setProgressUpdater(progressObject);
     objMafTabExpander.start();
-    MafGUI.showOpenTabsDLG(objMafTabExpander);
+
+    // Wait until the archive is open
+    var curThread = Cc["@mozilla.org/thread-manager;1"]
+     .getService(Ci.nsIThreadManager).currentThread;
+    while (!progressObject.isComplete) {
+      curThread.processNextEvent(true);
+    }
 
     var count = {};
     var archiveLocalURLs = {};
