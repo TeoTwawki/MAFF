@@ -30,7 +30,6 @@ try {
    "jscomponents/nsMafMhtEncoder.js",
    "jscomponents/nsMafMhtHandler.js",
    "jscomponents/nsMafState.js",
-   "jscomponents/nsMafTabExpander.js",
    "jscomponents/nsMafUtil.js",
    "preferences/dynamicPrefsObject.js",
    "preferences/prefsObject.js",
