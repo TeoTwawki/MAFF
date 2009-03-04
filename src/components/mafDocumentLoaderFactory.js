@@ -77,7 +77,18 @@ var EmptyStreamListener = {
   onStartRequest: function(aRequest, aContext) { },
   onStopRequest: function(aRequest, aContext, aStatusCode) { },
   onDataAvailable: function (aRequest, aContext, aInputStream, aOffset,
-   aCount) { }
+   aCount) {
+    // To implement the interface correctly, we must read the exact number of
+    //  bytes specified in aCount from the input stream. We have to use a
+    //  scriptable stream to read from the provided normal stream. We could
+    //  also throw an exception to abort the request, but the exception would
+    //  appear in the Error Console.
+    var scrInputStream = Cc["@mozilla.org/scriptableinputstream;1"]
+     .createInstance(Ci.nsIScriptableInputStream);
+    scrInputStream.init(aInputStream);
+    scrInputStream.read(aCount);
+    scrInputStream.close();
+  }
 };
 
 /**
