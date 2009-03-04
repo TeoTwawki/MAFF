@@ -192,6 +192,10 @@ MafDocumentLoaderFactory.prototype = {
     var contentChannel = Cc['@mozilla.org/network/io-service;1']
      .getService(Ci.nsIIOService).newChannelFromURI(aContentURI);
 
+    // The content type of the channel should match the content type of the
+    //  content viewer, otherwise the content might not be displayed correctly.
+    contentChannel.contentType = aContentType;
+
     // Ask the application's built-in document loader factory to provide a
     //  content viewer and a stream listener for our channel
     var originalDocListenerResult = {};
