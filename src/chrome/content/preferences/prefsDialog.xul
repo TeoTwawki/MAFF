@@ -186,9 +186,9 @@
       <preference id="prefTempFolder"              name="extensions.maf.temp.folder"              type="unichar"/>
       <preference id="prefTempClearOnExit"         name="extensions.maf.temp.clearonexit"         type="bool"/>
       <preference id="prefOpenRewriteUrls"         name="extensions.maf.open.rewriteurls"         type="bool"/>
+      <preference id="prefOpenUseJarProtocol"      name="extensions.maf.open.usejarprotocol"      type="bool"/>
       <preference id="prefSaveComponent"           name="extensions.maf.save.component"           type="string"/>
       <preference id="prefSaveUseMhtmlExtension"   name="extensions.maf.save.usemhtmlextension"   type="bool"/>
-      
     </preferences>
     <groupbox>
       <caption label="&temp.caption;" />
@@ -215,6 +215,10 @@
       <checkbox preference="prefOpenRewriteUrls"
                 label=     "&open.rewriteurls.label;"
                 accesskey= "&open.rewriteurls.accesskey;"
+                />
+      <checkbox preference="prefOpenUseJarProtocol"
+                label=     "&open.usejarprotocol.label;"
+                accesskey= "&open.usejarprotocol.accesskey;"
                 />
     </groupbox>
     <groupbox>

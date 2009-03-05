@@ -231,7 +231,7 @@ maf.prototype = {
 
     MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
 
-    if (scriptPath == "TypeMAFF") {
+    if (Prefs.openUseJarProtocol && scriptPath == "TypeMAFF") {
       archiveLocalURLs.value = archiveLocalURLs.value.map(function(url) {
         return MafState.localFileToMafUrlMap[url];
       });

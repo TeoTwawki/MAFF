@@ -57,5 +57,7 @@
 <!ENTITY temp.clearonexit.accesskey "C">
 <!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
 <!ENTITY open.rewriteurls.accesskey "R">
+<!ENTITY open.usejarprotocol.label "Use the &quot;jar:&quot; protocol to access the contents of MAFF archives">
+<!ENTITY open.usejarprotocol.accesskey "j">
 <!ENTITY save.usemhtmlextension.label "Save using the .mhtml file extension instead of .mht by default">
 <!ENTITY save.usemhtmlextension.accesskey "m">

@@ -149,6 +149,17 @@ var Prefs = {
   },
 
   /**
+   * Returns true if the contents of MAFF archives should be accessed directly
+   *  using the "jar:" protocol instead of extracting the archive to a
+   *  temporary folder and using the "file:" protocol.
+   *
+   * The "jar:" protocol may be faster but using it may lock the archive file.
+   */
+  get openUseJarProtocol() {
+    return this._prefBranchForMaf.getBoolPref("open.usejarprotocol");
+  },
+
+  /**
    * Returns true if MAF should rewrite absolute URLs in open documents if
    *  they refer to a page that was saved in any of the open archives.
    */
