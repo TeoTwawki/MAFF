@@ -231,6 +231,12 @@ maf.prototype = {
 
     MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
 
+    if (scriptPath == "TypeMAFF") {
+      archiveLocalURLs.value = archiveLocalURLs.value.map(function(url) {
+        return MafState.localFileToMafUrlMap[url];
+      });
+    }
+
     if (Prefs.openAction == Prefs.OPENACTION_TABS) {
       if(returnFirstItem) {
         firstItem = archiveLocalURLs.value.shift();
