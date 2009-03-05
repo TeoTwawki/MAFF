@@ -42,12 +42,8 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  * This object implements nsIWebBrowserPersist, and allows displaying the
  *  current download progress and status in the browser's download window.
  */
-function MafArchivePersist(aSaveBrowser, aSaveTabs, aArchiveType) {
-  if (aSaveTabs) {
-    this._saveBrowsers = aSaveTabs;
-  } else {
-    this._saveBrowsers = [aSaveBrowser];
-  }
+function MafArchivePersist(aSaveBrowsers, aArchiveType) {
+  this._saveBrowsers = aSaveBrowsers;
   this._archiveType = aArchiveType;
 }
 
@@ -103,9 +99,13 @@ MafArchivePersist.prototype = {
       // Create a save job and listen to its events
       var saveJob = new SaveJob(this);
 
-      // Save the selected pages in the web archive
-      saveJob.addJobsFromBrowsers(this._saveBrowsers, targetFile,
-       this._archiveType);
+      // Save the selected pages or the given document in the web archive
+      if (this._saveBrowsers) {
+        saveJob.addJobsFromBrowsers(this._saveBrowsers, targetFile,
+         this._archiveType);
+      } else {
+        saveJob.addJobFromDocument(aDocument, targetFile, this._archiveType);
+      }
       saveJob.start();
 
       // If the start succeeded, keep a reference to the save job to allow

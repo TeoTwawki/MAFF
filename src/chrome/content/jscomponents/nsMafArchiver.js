@@ -75,7 +75,7 @@ MafArchiverClass.prototype = {
       // Add document source character set
       MafUtils.addStringData(indexDS, "charset", this.aDocument.characterSet);
 
-      if (Prefs.saveMetadataExtended) {
+      if (Prefs.saveMetadataExtended && this.aBrowser) {
         // Add text zoom data
         MafUtils.addStringData(indexDS, "textzoom", this.aBrowser.markupDocumentViewer.textZoom);
 
@@ -93,7 +93,7 @@ MafArchiverClass.prototype = {
     indexDS.Flush();
 
 
-    if (Prefs.saveMetadataExtended) {
+    if (Prefs.saveMetadataExtended && this.aBrowser) {
       // Create history.rdf in the folderNumber
       try {
         // Get a reference to history.rdf

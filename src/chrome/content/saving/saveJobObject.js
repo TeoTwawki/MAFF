@@ -69,7 +69,8 @@ SaveJob.prototype = {
       // Create a single archive with all the pages
       var maffArchiveJob = new SaveArchiveJob(this, aTargetFile, aTargetType);
       aBrowsers.forEach(function(curBrowser) {
-        maffArchiveJob.addContentFromBrowser(curBrowser);
+        maffArchiveJob.addContentFromDocumentAndBrowser(
+         curBrowser.contentDocument, curBrowser);
       }, this);
       this._addJob(maffArchiveJob);
 
@@ -83,7 +84,8 @@ SaveJob.prototype = {
         // Create the save job
         var mhtmlArchiveJob = new SaveArchiveJob(this, curTargetFile,
          aTargetType);
-        mhtmlArchiveJob.addContentFromBrowser(curBrowser);
+        mhtmlArchiveJob.addContentFromDocumentAndBrowser(
+         curBrowser.contentDocument, curBrowser);
         this._addJob(mhtmlArchiveJob);
 
         // Get the next target file name
@@ -91,5 +93,16 @@ SaveJob.prototype = {
       }, this);
 
     }
+  },
+
+  /*
+   * Adds a new save job to the current operation, for the given document only.
+   *  This function should only be used to save subdocuments.
+   */
+  addJobFromDocument: function(aDocument, aTargetFile, aTargetType) {
+    // Create a single archive with the selected page
+    var maffArchiveJob = new SaveArchiveJob(this, aTargetFile, aTargetType);
+    maffArchiveJob.addContentFromDocumentAndBrowser(aDocument, null);
+    this._addJob(maffArchiveJob);
   }
 }

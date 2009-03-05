@@ -61,14 +61,14 @@ SaveArchiveJob.prototype = {
 
   // --- Public methods and properties ---
 
-  addContentFromBrowser: function(aBrowser) {
+  addContentFromDocumentAndBrowser: function(aDocument, aBrowser) {
     // Determine the name of the directory where the page will be saved
     var dir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
     dir.initWithPath(Prefs.tempFolder);
     dir.append(new Date().valueOf() + "_" + Math.floor(Math.random() * 1000));
 
     // Create a new object for saving page contents
-    var job = new SaveContentJob(this, aBrowser.contentDocument, dir);
+    var job = new SaveContentJob(this, aDocument, dir);
     job.targetBrowser = aBrowser;
     job.targetType = this._targetType;
     job.targetFile = this._targetFile;

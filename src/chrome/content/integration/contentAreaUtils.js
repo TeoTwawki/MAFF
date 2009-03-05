@@ -231,9 +231,16 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // Handle saving a web archive using the Mozilla Archive Format extension
   var mafPersistObject = null;
   if (saveBehavior.isMafArchive) {
+    // If the save wasn't initiated from a list of tabs, but the document to be
+    //  saved is the main document in the browser window, ensure the browser
+    //  object is passed to the archive persist object, to enable saving the
+    //  additional metadata.
+    var curBrowser = getBrowser().selectedBrowser;
+    if (!mafSaveTabs && (aDocument == curBrowser.contentDocument)) {
+      mafSaveTabs = [curBrowser];
+    }
     // Create the special archive persist object
-    mafPersistObject = new MafArchivePersist(
-     window.getBrowser().selectedBrowser, mafSaveTabs,
+    mafPersistObject = new MafArchivePersist(mafSaveTabs,
      saveBehavior.mafArchiveType);
   }
 
