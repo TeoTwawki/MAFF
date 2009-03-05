@@ -450,12 +450,22 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
       // Archives saved by Mozilla Archive Format cannot be opened unless the
       //  correct extension is present. If we are saving an archive, force the
       //  extension and check again if the file exists.
-      var mandatoryExtension = aFpP.saveBehavior.mandatoryExtension;
-      if (mandatoryExtension) {
-        if (mandatoryExtension.toLowerCase() !=
-         aFpP.file.leafName.slice(-mandatoryExtension.length).toLowerCase()) {
+      if (aFpP.saveBehavior.mandatoryExtension) {
+        // Use a MAF specific call to retrieve the filter string again
+        var filterString = aFpP.saveBehavior.getFileFilter().extensionstring;
+        // Get an array of valid extensions for the file type
+        var possibleExtensions = filterString.split(";").
+         map(function(extWithStar) {
+          // Remove the star ("*"), but leave the dot in the extension
+          return extWithStar.slice(1);
+        });
+        // If none of the possible extensions matches
+        if (!possibleExtensions.some(function(possibleExtension) {
+          return possibleExtension.toLowerCase() ==
+           aFpP.file.leafName.slice(-possibleExtension.length).toLowerCase();
+        })) {
           // Change the name and invalidate the associated file URL
-          aFpP.file.leafName += mandatoryExtension;
+          aFpP.file.leafName += possibleExtensions[0];
           aFpP.fileURL = null;
           // If an extension is added later, check if a file with the new name
           //  already exists

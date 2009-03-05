@@ -72,8 +72,8 @@ function BrowserOpenFileWindow()
                      nsIFilePicker.filterXML | nsIFilePicker.filterHTML);
 
     // Add filters from Mozilla Archive Format
-    FileFilters.openFiltersArray.forEach(function(curFilterEntry) {
-      fp.appendFilter(curFilterEntry[0], curFilterEntry[1]);
+    FileFilters.openFilters.forEach(function(curFilter) {
+      fp.appendFilter(curFilter.title, curFilter.extensionString);
     });
 
     fp.appendFilters(nsIFilePicker.filterAll);

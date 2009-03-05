@@ -41,22 +41,22 @@
 
 var gMafDefaultSaveBehavior;
 
-FileFilters.saveFiltersArray.forEach(function(curFilterEntry, curFilterIndex) {
-  var [title, extensionString] = curFilterEntry;
-  var extensionOnly = extensionString.substring(1, extensionString.length);
-  var mafArchiveType = FileFilters.scriptPathFromSaveIndex(curFilterIndex);
+FileFilters.saveFilters.forEach(function(curFilter, curFilterIndex) {
 
   // Create the new save behavior object
   var newSaveBehavior = new InternalSaveBehavior();
   newSaveBehavior.isComplete = true;
   newSaveBehavior.isMafArchive = true;
-  newSaveBehavior.mafArchiveType = mafArchiveType;
-  newSaveBehavior.mandatoryExtension = extensionOnly;
+  newSaveBehavior.mafArchiveType = curFilter.mafArchiveType;
+  newSaveBehavior.mandatoryExtension = true;
   newSaveBehavior.isValidForSaveMode = function(aSaveMode) {
     return aSaveMode & SAVEMODE_MAFARCHIVE;
   }
   newSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
-    return {title: title, extensionstring: extensionString};
+    // Access the current values in the MAF save filter objects array
+    var filter = FileFilters.saveFilters[curFilterIndex];
+    // Return the required values
+    return {title: filter.title, extensionstring: filter.extensionString};
   }
 
   // Add the save behavior to the browser, before the one already present at

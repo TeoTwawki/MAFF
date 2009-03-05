@@ -46,43 +46,43 @@ var FileFilters = {
    */
 
   /**
-   * Returns a structured array with information on the file filters to use in
-   *  the various "Open" dialogs. This property returns this array format:
-   *   [i] = (Array) A file format definition
-   *   [i][0] = (String) File format display name
-   *   [i][1] = (String) List of file patterns associated with the file format
-   *   [i][2] = (Integer) Default extension index, always 0
+   * Returns an array of objects representing the file filters to use in
+   *  the various "Open" dialogs. Each object has the following properties:
+   *   - title: File format display name
+   *   - extensionString: List of file patterns associated with the file format
    */
-  get openFiltersArray() {
+  get openFilters() {
     return [
-     [this._str("opendialog.filters.webarchives"), "*.maff;*.mhtml;*.mht", 0]
-     ];
+     { title:           this._str("opendialog.filters.webarchives"),
+       extensionString: "*.maff;*.mhtml;*.mht" }
+    ];
   },
 
   /**
-   * Returns a structured array with information on the file filters to use in
-   *  the various "Save As" dialogs. This property returns the same array format
-   *  as openFiltersArray, but each possible file extension is returned as a
-   *  separate filter.
+   * Returns an array of objects representing the file filters to use in
+   *  the various "Save As" dialogs. Each object has the following properties:
+   *   - title: File format display name
+   *   - extensionString: List of file patterns associated with the file format
+   *   - mafArchiveType: Either "TypeMAFF" or "scriptPath"
+   *
+   * Note: To allow changing the "Save As" dialog behavior dynamically using
+   *  preferences, this function is called every time the dialog is displayed,
+   *  assuming however that the positions of the objects in the returned array
+   *  will not vary.
    */
-  get saveFiltersArray() {
+  get saveFilters() {
+    // Determine the default extension to use for MHTML archives
+    var mhtmlExtensionString = Prefs.saveUseMhtmlExtension ?
+     "*.mhtml;*.mht" : "*.mht;*.mhtml";
+    // Return the array representing MAFF and MHTML filters
     return [
-     [this._str("savedialog.filters.maff"), "*.maff", 0],
-     [this._str("savedialog.filters.mhtml"), "*.mhtml", 0],
-     [this._str("savedialog.filters.mht"), "*.mht", 0]
-     ];
-  },
-
-  /**
-   * Returns the "scriptPath" information for the item whose index in
-   *  saveFiltersArray is specified.
-   */
-  scriptPathFromSaveIndex: function(aSaveFilterIndex) {
-    return [
-     "TypeMAFF",
-     "TypeMHTML",
-     "TypeMHTML"
-     ][aSaveFilterIndex];
+     { title:           this._str("savedialog.filters.maff"),
+       extensionString: "*.maff;*.mhtml;*.mht",
+       mafArchiveType:  "TypeMAFF" },
+     { title:           this._str("savedialog.filters.mhtmlonly"),
+       extensionString: mhtmlExtensionString,
+       mafArchiveType:  "TypeMHTML" }
+    ];
   },
 
   /**
