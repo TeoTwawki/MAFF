@@ -183,10 +183,12 @@
   <!-- Advanced pane -->
   <prefpane id="paneAdvanced" label="&pane.advanced.label;">
     <preferences>
-      <preference id="prefTempFolder"        name="extensions.maf.temp.folder"        type="unichar"/>
-      <preference id="prefTempClearOnExit"   name="extensions.maf.temp.clearonexit"   type="bool"/>
-      <preference id="prefOpenRewriteUrls"   name="extensions.maf.open.rewriteurls"   type="bool"/>
-      <preference id="prefSaveComponent"     name="extensions.maf.save.component"     type="string"/>
+      <preference id="prefTempFolder"              name="extensions.maf.temp.folder"              type="unichar"/>
+      <preference id="prefTempClearOnExit"         name="extensions.maf.temp.clearonexit"         type="bool"/>
+      <preference id="prefOpenRewriteUrls"         name="extensions.maf.open.rewriteurls"         type="bool"/>
+      <preference id="prefSaveComponent"           name="extensions.maf.save.component"           type="string"/>
+      <preference id="prefSaveUseMhtmlExtension"   name="extensions.maf.save.usemhtmlextension"   type="bool"/>
+      
     </preferences>
     <groupbox>
       <caption label="&temp.caption;" />
@@ -213,6 +215,13 @@
       <checkbox preference="prefOpenRewriteUrls"
                 label=     "&open.rewriteurls.label;"
                 accesskey= "&open.rewriteurls.accesskey;"
+                />
+    </groupbox>
+    <groupbox>
+      <caption label="&save.caption;" />
+      <checkbox preference="prefSaveUseMhtmlExtension"
+                label=     "&save.usemhtmlextension.label;"
+                accesskey= "&save.usemhtmlextension.accesskey;"
                 />
     </groupbox>
   </prefpane>

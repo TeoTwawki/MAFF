@@ -120,6 +120,14 @@ var Prefs = {
     return this._prefBranchForMaf.getBoolPref("save.metadata.extended");
   },
 
+  /**
+   * Returns true if the ".mhtml" file extension should be preferred over
+   *  ".mht" in the file filters for the "Save As" dialogs.
+   */
+  get saveUseMhtmlExtension() {
+    return this._prefBranchForMaf.getBoolPref("save.usemhtmlextension");
+  },
+
   /** Enumeration for openAction */
   OPENACTION_TABS: "tabs",
   OPENACTION_ASK: "ask",
