@@ -20,10 +20,18 @@ const EXTENSION_CHROME_CONTENT_PATH = "chrome://maf/content/";
 try {
   // Include each JavaScript file named in the following array
   [
+
+   // Preferences objects (used throughout the rest of the code)
+   "preferences/dynamicPrefsObject.js",
+   "preferences/prefsObject.js",
+
+   // Integration overlays
    "integration/browser.js",
    "integration/contentAreaUtils.js",
    "integration/fileFiltersObject.js",
    "integration/fileFiltersOverlay.js",
+
+   // Original MAF JavaScript infrastructure
    "jscomponents/nsMafArchiver.js",
    "jscomponents/nsMafGuiHandler.js",
    "jscomponents/nsMafMhtDecoder.js",
@@ -31,11 +39,15 @@ try {
    "jscomponents/nsMafMhtHandler.js",
    "jscomponents/nsMafState.js",
    "jscomponents/nsMafUtil.js",
-   "preferences/dynamicPrefsObject.js",
-   "preferences/prefsObject.js",
+
+   // "Save Complete" extension integration
    "savecomplete/savecomplete.js",
    "savecomplete/saveCompletePersistObject.js",
+
+   // Support objects for the saving front-end
    "savefrontend/tabsDataSourceObject.js",
+
+   // Saving infrastructure
    "saving/jobObject.js",
    "saving/jobRunnerObject.js",
    "saving/mafArchivePersistObject.js",
@@ -43,6 +55,7 @@ try {
    "saving/saveArchiveJobObject.js",
    "saving/saveContentJobObject.js",
    "saving/saveJobObject.js"
+
   ].forEach(function(contentRelativePath) {
     Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
      .getService(Components.interfaces.mozIJSSubScriptLoader)
