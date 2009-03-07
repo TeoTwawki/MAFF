@@ -315,6 +315,7 @@ TabsDataSource.prototype = {
     ds.Assert(windowResource, res.checked, this._rdfBool(false), true);
 
     // For each tab that is available
+    var selectedTabIndex = -1;
     var browsers = aBrowserWindow.getBrowser().browsers;
     for (var i = 0; i < browsers.length; i++) {
       // Copy the browser object reference to the internal array
@@ -341,6 +342,21 @@ TabsDataSource.prototype = {
 
       // Add the checked state
       ds.Assert(tabResource, res.checked, this._rdfBool(false), true);
+
+      // Remember the index of the selected tab for later
+      if (browsers[i] == aBrowserWindow.getBrowser().selectedBrowser) {
+        selectedTabIndex = i;
+      }
+    }
+
+    // Now that the data source is fully populated, update the selection state
+    //  for the current tab in the window
+    if (selectedTabIndex >= 0) {
+      // Switch the state of the checkbox. If this is the only tab in the
+      //  window, the containing window resource will also be selected.
+      var selectedTabResource = this.resourceForTab(selectedTabIndex + 1);
+      this.Change(selectedTabResource, res.checked, this._rdfBool(false),
+       this._rdfBool(true));
     }
   },
 
