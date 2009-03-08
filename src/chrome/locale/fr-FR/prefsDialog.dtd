@@ -13,7 +13,7 @@
 <!ENTITY save.component.grouplabel "Lors de la sauvegarde du contenu complet des pages web :">
 <!ENTITY save.component.standard.label "Utiliser le système de sauvegarde standard du système">
 <!ENTITY save.component.standard.accesskey "s">
-<!ENTITY save.component.savecomplete.label "Use the integrated &quot;Save Complete&quot; extension">
+<!ENTITY save.component.savecomplete.label "Utiliser l&apos;extension intégrée &quot;Save Complete&quot;">
 <!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.component.maf.label "Utiliser le composant interne de sauvegarde de MAF (avancé)">
 <!ENTITY save.component.maf.accesskey "M">

@@ -1,0 +1,38 @@
+<!ENTITY window.title "Předvolby">
+<!ENTITY browsebutton.label "Procházet...">
+<!ENTITY pane.main.label "Hlavní">
+<!ENTITY open.caption "Otevírání">
+<!ENTITY open.action.grouplabel "Když je archiv otevřen:">
+<!ENTITY open.action.tabs.label "Otevřít obsahy v nových panelech">
+<!ENTITY open.action.tabs.accesskey "O">
+<!ENTITY open.action.ask.label "Show list of open archives, and ask for action">
+<!ENTITY open.action.ask.accesskey "S">
+<!ENTITY open.action.remember.label "Only add to the list of open archives, showing nothing">
+<!ENTITY open.action.remember.accesskey "n">
+<!ENTITY save.caption "Save">
+<!ENTITY save.component.grouplabel "When saving complete web page contents:">
+<!ENTITY save.component.standard.label "Use browser&apos;s standard save system">
+<!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.savecomplete.label "Use the integrated &quot;Save Complete&quot; extension">
+<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.component.maf.label "Use MAF internal save component (advanced)">
+<!ENTITY save.component.maf.accesskey "M">
+<!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
+<!ENTITY save.metadata.extended.accesskey "v">
+<!ENTITY pane.fileassociations.label "File associations">
+<!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
+<!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
+<!ENTITY associate.adminprivs.description "This operation might require administrator privileges.">
+<!ENTITY associate.maff.label "Create association for .maff extension">
+<!ENTITY associate.maff.accesskey "e">
+<!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
+<!ENTITY associate.mhtml.accesskey "a">
+<!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
+<!ENTITY pane.advanced.label "Advanced">
+<!ENTITY temp.caption "Temporary files">
+<!ENTITY temp.folder.label "Temporary folder:">
+<!ENTITY temp.folder.accesskey "T">
+<!ENTITY temp.clearonexit.label "Clear temporary folder when browser exits">
+<!ENTITY temp.clearonexit.accesskey "C">
+<!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
+<!ENTITY open.rewriteurls.accesskey "R">

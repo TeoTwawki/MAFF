@@ -13,8 +13,8 @@
 <!ENTITY save.component.grouplabel "Podczas zapisywania całej zawartości strony internetowej:">
 <!ENTITY save.component.standard.label "Użyj standardowego systemu przeglądarki">
 <!ENTITY save.component.standard.accesskey "S">
-<!ENTITY save.component.savecomplete.label "Use the integrated &quot;Save Complete&quot; extension">
-<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.component.savecomplete.label "Użyj zintegrowanego rozszerzenia &quot;Save Complete&quot;">
+<!ENTITY save.component.savecomplete.accesskey "N">
 <!ENTITY save.component.maf.label "Użyj wewnętrznego komponentu zapisu MAF (zaawansowane)">
 <!ENTITY save.component.maf.accesskey "W">
 <!ENTITY save.metadata.extended.label "Zapisz rozszerzone metadane w archiwach MAFF">
