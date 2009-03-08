@@ -27,6 +27,7 @@ Every first-level subfolder maps to a different project:
       "fx-3_0"   - CVS tag: FIREFOX_3_0_RELEASE
       "fx-3_0_5" - CVS tag: FIREFOX_3_0_5_RELEASE
       "fx-3_1b2" - Mercurial tag: FIREFOX_3_1b2_RELEASE
+      "fx-3_1b3" - Mercurial tag: FIREFOX_3_1b3_RELEASE
 
     The subfolder named "current" contains the latest version used as a
     reference for the files in the "integration" folder. As files in this
