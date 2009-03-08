@@ -56,6 +56,50 @@
  <a href="#fileassociations">file associations</a> that allow opening the web
  archives by double-clicking them from Windows Explorer.</p>
 
+<h3>Integration with other extensions</h3>
+<p>One of the key features of Mozilla Archive Format is that it integrates not
+ only with Firefox, but with other extensions as well, to provide a smooth user
+ experience.</p>
+<p>Some of these extensions, like UnMHT, must be installed separately; other
+ extensions, like Save Complete, are embedded and updated together with MAF.</p>
+<dl>
+  <dt><a href="https://addons.mozilla.org/firefox/addon/4838">Multiple Tab
+   Handler</a>, by Shimoda Hiroshi</dt>
+  <dd>
+    <p>This extension adds a multiple selection interface and a new context menu
+     to the Firefox tab bar.</p>
+    <p>MAF integrates with the tab selection context menu and adds an entry to
+     save the selected tabs in an archive. For MHTML archives, MAF creates
+     multiple files, while for MAFF archives all the tabs are saved in a
+     single file.</p>
+  </dd>
+  <dt><a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>,
+   by Stephen Augenstein</dt>
+  <dd>
+    <p><i>The Save Complete extension is integrated with MAF, but must be
+     <a href="#savecomplete">enabled from the preferences</a>.</i></p>
+    <p>This extension replaces the system used by the browser to save complete
+     web pages. The new system correctly handles style sheets referencing image
+     files, that otherwise would not be saved causing some pages to appear
+     differently.</p>
+  </dd>
+  <dt><a href="https://addons.mozilla.org/firefox/addon/712">Title Save</a>, by
+   <i>gm</i></dt>
+  <dd>
+    <p>This extension adds a new item in the <b>File</b> menu to use the title
+     of the page instead of the file name in the <i>Save As</i> dialog box.</p>
+    <p>You can use the new command to save MAFF and MHTML archives too.</p>
+  </dd>
+  <dt><a href="https://addons.mozilla.org/firefox/addon/8051">UnMHT</a>, by
+   Arai</dt>
+  <dd>
+    <p>This extension adds new options in the <b>File</b> menu to save MHTML
+     archives that are 100% compatible with Internet Explorer.</p>
+    <p>If UnMHT is installed, you can continue to use MAF to create and open
+     MAFF archives, while MHTML archives are opened with UnMHT.</p>
+  </dd>
+</dl>
+
 <h3>MAF preferences</h3>
 <p>The default settings in effect when you install MAF for the first time
  should be enough to allow correct loading and saving of MAFF and MHTML files.
