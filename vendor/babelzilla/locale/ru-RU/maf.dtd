@@ -1,7 +1,5 @@
 <!ENTITY maf.loadArchive "Открыть архив">
 <!ENTITY maf.loadArchiveKey "О">
-<!ENTITY maf.addToArchive "Сохранить страницу в архив">
-<!ENTITY maf.addToArchiveKey "С">
 <!ENTITY maf.addSelectedTabsToArchive "Сохранить вкладки в архив">
 <!ENTITY maf.addSelectedTabsToArchiveKey "к">
 <!ENTITY maf.addAllTabsToArchive "Сохранить все вкладки в архив">
@@ -30,4 +28,3 @@
 <!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Закрыть">
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
-<!ENTITY maf.addToArchiveAccessKey "а">

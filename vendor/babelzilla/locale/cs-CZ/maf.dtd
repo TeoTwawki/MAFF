@@ -1,0 +1,13 @@
+<!ENTITY maf.loadArchive "Otevřít archiv">
+<!ENTITY maf.loadArchiveKey "h">
+<!ENTITY maf.addSelectedTabsToArchive "Uložit panely do archivu">
+<!ENTITY maf.addSelectedTabsToArchiveKey "p">
+<!ENTITY maf.addAllTabsToArchive "Uložit všechny panely do archivu">
+<!ENTITY maf.addAllTabsToArchiveKey "v">
+<!ENTITY maf.browseOpenArchivesDialog.tree.title "Nadpis">
+<!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "Originální URL">
+<!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Místní URL">
+<!ENTITY maf.browseOpenArchivesDialog.btnclose "Zavřít">
+<!ENTITY maf.saveSelectedTabsDialog.tree.title "Nadpis">
+<!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
+<!ENTITY maf.saveSelectedTabsDialog.btnclose "Zavřít">

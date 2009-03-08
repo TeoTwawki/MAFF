@@ -1,7 +1,5 @@
 <!ENTITY maf.loadArchive "Otwórz archiwum">
 <!ENTITY maf.loadArchiveKey "O">
-<!ENTITY maf.addToArchive "Zapisz stronę w archiwum">
-<!ENTITY maf.addToArchiveKey "T">
 <!ENTITY maf.addSelectedTabsToArchive "Zapisz karty w archiwum">
 <!ENTITY maf.addSelectedTabsToArchiveKey "K">
 <!ENTITY maf.addAllTabsToArchive "Zapisz wszystkie karty w archiwum">
@@ -30,4 +28,3 @@
 <!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Odznacz">
 <!ENTITY maf.saveSelectedTabsDialog.btnclose "Zamknij">
 <!ENTITY maf.browseOpenArchivesAccessKey "M">
-<!ENTITY maf.addToArchiveAccessKey "D">

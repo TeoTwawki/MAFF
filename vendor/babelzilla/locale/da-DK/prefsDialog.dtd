@@ -9,15 +9,20 @@
 <!ENTITY open.action.ask.accesskey "V">
 <!ENTITY open.action.remember.label "Tilføj kun til liste over åbne arkiver, vis ingenting">
 <!ENTITY open.action.remember.accesskey "n">
-<!ENTITY alert.onsinglepagecomplete.label "Vis en meddelelsesboks ved fuldførelse af arkivering af en enkelt side">
-<!ENTITY alert.onsinglepagecomplete.accesskey "m">
 <!ENTITY save.caption "Gem">
+<!ENTITY save.component.grouplabel "Ved gem af komplet webside-indhold:">
+<!ENTITY save.component.standard.label "Brug browsers standard gem-system">
+<!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.savecomplete.label "Brug integreret &quot;Save Complete&quot;-udvidelse">
+<!ENTITY save.component.savecomplete.accesskey "u">
+<!ENTITY save.component.maf.label "Brug MAF internt gem-komponent (avanceret)">
+<!ENTITY save.component.maf.accesskey "M">
 <!ENTITY save.metadata.extended.label "Gem udvidede metadata i MAFF-arkiver">
 <!ENTITY save.metadata.extended.accesskey "u">
 <!ENTITY pane.fileassociations.label "Fil-associationer">
 <!ENTITY associate.windowsonly.description "Denne funktionalitet er kun tilgængelig under Windows.">
 <!ENTITY associate.buttons.description "Klik på følgende knapper for at associere Firefox med filtyperne der håndteres af MAF.">
-<!ENTITY associate.adminprivs.description "Denne handlig kan kræve administratorrettigheder.">
+<!ENTITY associate.adminprivs.description "Denne handling kan kræve administratorrettigheder.">
 <!ENTITY associate.maff.label "Opret association for .maff filtypen">
 <!ENTITY associate.maff.accesskey "e">
 <!ENTITY associate.mhtml.label "Opret association for .mht og .mhtml filtyperne">
@@ -31,8 +36,3 @@
 <!ENTITY temp.clearonexit.accesskey "y">
 <!ENTITY open.rewriteurls.label "Omskriv absolutte URLer i åbne arkiver">
 <!ENTITY open.rewriteurls.accesskey "r">
-<!ENTITY save.component.grouplabel "Ved gem af komplet webside-indhold:">
-<!ENTITY save.component.standard.label "Brug browsers standard gem-system">
-<!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.maf.label "Brug MAF internt gem-komponent (avanceret)">
-<!ENTITY save.component.maf.accesskey "M">

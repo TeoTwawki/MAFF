@@ -9,9 +9,14 @@
 <!ENTITY open.action.ask.accesskey "S">
 <!ENTITY open.action.remember.label "Uniquement ajouter à la liste des archives ouvertes, ne rien afficher">
 <!ENTITY open.action.remember.accesskey "n">
-<!ENTITY alert.onsinglepagecomplete.label "Afficher une boîte de message lors de la complétion de l&apos;archivage une page unique">
-<!ENTITY alert.onsinglepagecomplete.accesskey "b">
 <!ENTITY save.caption "Enregistrer">
+<!ENTITY save.component.grouplabel "Lors de la sauvegarde du contenu complet des pages web :">
+<!ENTITY save.component.standard.label "Utiliser le système de sauvegarde standard du système">
+<!ENTITY save.component.standard.accesskey "s">
+<!ENTITY save.component.savecomplete.label "Utiliser l&apos;extension intégrée &quot;Save Complete&quot;">
+<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.component.maf.label "Utiliser le composant interne de sauvegarde de MAF (avancé)">
+<!ENTITY save.component.maf.accesskey "M">
 <!ENTITY save.metadata.extended.label "Enregistrer les métadonnées étendues dans les archives MAFF">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!ENTITY pane.fileassociations.label "Association des fichiers">
@@ -31,8 +36,3 @@
 <!ENTITY temp.clearonexit.accesskey "V">
 <!ENTITY open.rewriteurls.label "Réécrire les URLs absolues dans les archives ouvertes">
 <!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY save.component.grouplabel "Lors de la sauvegarde du contenu complet des pages web :">
-<!ENTITY save.component.standard.label "Utiliser le système de sauvegarde standard du système">
-<!ENTITY save.component.standard.accesskey "s">
-<!ENTITY save.component.maf.label "Utiliser le composant interne de sauvegarde de MAF (avancé)">
-<!ENTITY save.component.maf.accesskey "M">

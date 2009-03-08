@@ -1,0 +1,7 @@
+<!ENTITY window.title "Předvolby">
+<!ENTITY browsebutton.label "Procházet...">
+<!ENTITY pane.main.label "Hlavní">
+<!ENTITY open.caption "Otevírání">
+<!ENTITY open.action.grouplabel "Když je archiv otevřen:">
+<!ENTITY open.action.tabs.label "Otevřít obsahy v nových panelech">
+<!ENTITY open.action.tabs.accesskey "O">
