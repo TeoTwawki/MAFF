@@ -15,10 +15,22 @@
 <!ENTITY save.component.standard.accesskey "U">
 <!ENTITY save.component.savecomplete.label "Usa l&apos;estensione &quot;Save Complete&quot; integrata">
 <!ENTITY save.component.savecomplete.accesskey "n">
-<!ENTITY save.component.maf.label "Usa il componente di salvataggio interno di MAF (avanzato)">
-<!ENTITY save.component.maf.accesskey "p">
 <!ENTITY save.metadata.extended.label "Salva metadati estesi negli archivi MAFF">
 <!ENTITY save.metadata.extended.accesskey "l">
+<!ENTITY pane.interface.label "Interface">
+<!ENTITY menu.caption "Menu">
+<!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
+<!ENTITY menu.file.label "File menu">
+<!ENTITY menu.file.accesskey "F">
+<!ENTITY menu.tools.label "Tools menu">
+<!ENTITY menu.tools.accesskey "l">
+<!ENTITY menu.pagecontext.label "Page context menu">
+<!ENTITY menu.pagecontext.accesskey "p">
+<!ENTITY menu.tabscontext.label "Tab bar context menu">
+<!ENTITY menu.tabscontext.accesskey "x">
+<!ENTITY menuitem.grouplabel "Show these additional menu items:">
+<!ENTITY menuitem.saveinarchive.label "Save In Archive">
+<!ENTITY menuitem.saveinarchive.accesskey "h">
 <!ENTITY pane.fileassociations.label "Associazioni dei file">
 <!ENTITY associate.windowsonly.description "Questa funzionalità è disponibile solo su Windows.">
 <!ENTITY associate.buttons.description "Fare clic sui bottoni seguenti per associare Firefox con i tipi di file gestiti da MAF.">
@@ -36,3 +48,7 @@
 <!ENTITY temp.clearonexit.accesskey "S">
 <!ENTITY open.rewriteurls.label "Riscrivi gli URL assoluti negli archivi aperti">
 <!ENTITY open.rewriteurls.accesskey "i">
+<!ENTITY open.usejarprotocol.label "Use the &quot;jar:&quot; protocol to access the contents of MAFF archives">
+<!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY save.usemhtmlextension.label "Save using the .mhtml file extension instead of .mht by default">
+<!ENTITY save.usemhtmlextension.accesskey "m">

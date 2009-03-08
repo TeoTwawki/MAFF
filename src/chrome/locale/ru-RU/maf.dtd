@@ -1,16 +1,5 @@
 <!ENTITY maf.loadArchive "Открыть архив">
 <!ENTITY maf.loadArchiveKey "О">
-<!ENTITY maf.addSelectedTabsToArchive "Сохранить вкладки в архив">
-<!ENTITY maf.addSelectedTabsToArchiveKey "к">
-<!ENTITY maf.addAllTabsToArchive "Сохранить все вкладки в архив">
-<!ENTITY maf.addAllTabsToArchiveKey "в">
-<!ENTITY maf.saveTabsDialogTitle "Сохранение открытых вкладок...">
-<!ENTITY maf.openTabsDialogTitle "Открывается во вкладках...">
-<!ENTITY maf.menuLabel "Настройка архиватора MAF">
-<!ENTITY maf.preferences "Конфигурация">
-<!ENTITY maf.preferencesKey "К">
-<!ENTITY maf.browseOpenArchives "Просмотр архивов">
-<!ENTITY maf.browseOpenArchivesKey "П">
 <!ENTITY maf.browseOpenArchivesDialog.title "Просмотр архивов">
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Заголовок">
 <!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Время архивации">
@@ -20,11 +9,3 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Открыть во вкладках, используя jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Открыть оригинал во вкладках">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Закрыть">
-<!ENTITY maf.saveSelectedTabsDialog.title "Выбор вкладок для сохранения в архиве">
-<!ENTITY maf.saveSelectedTabsDialog.tree.title "Заголовок">
-<!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "Адрес">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Сохранить выбранное в архиве">
-<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
-<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
-<!ENTITY maf.saveSelectedTabsDialog.btnclose "Закрыть">
-<!ENTITY maf.browseOpenArchivesAccessKey "M">

@@ -1,16 +1,5 @@
 <!ENTITY maf.loadArchive "Otevřít archiv">
 <!ENTITY maf.loadArchiveKey "h">
-<!ENTITY maf.addSelectedTabsToArchive "Uložit panely do archivu">
-<!ENTITY maf.addSelectedTabsToArchiveKey "p">
-<!ENTITY maf.addAllTabsToArchive "Uložit všechny panely do archivu">
-<!ENTITY maf.addAllTabsToArchiveKey "v">
-<!ENTITY maf.saveTabsDialogTitle "Save Open Tabs Progress">
-<!ENTITY maf.openTabsDialogTitle "Open In Tabs Progress">
-<!ENTITY maf.menuLabel "Mozilla Archive Format">
-<!ENTITY maf.preferences "Preferences">
-<!ENTITY maf.preferencesKey "f">
-<!ENTITY maf.browseOpenArchives "Browse Open Archives">
-<!ENTITY maf.browseOpenArchivesKey "B">
 <!ENTITY maf.browseOpenArchivesDialog.title "Browse Open Archives">
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Nadpis">
 <!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Archive Time">
@@ -20,11 +9,3 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Open in Tabs using jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Open Original URLs in Tabs">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Zavřít">
-<!ENTITY maf.saveSelectedTabsDialog.title "Select tabs to save in archive">
-<!ENTITY maf.saveSelectedTabsDialog.tree.title "Nadpis">
-<!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Save Selected in Archive">
-<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
-<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
-<!ENTITY maf.saveSelectedTabsDialog.btnclose "Zavřít">
-<!ENTITY maf.browseOpenArchivesAccessKey "M">
