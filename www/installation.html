@@ -2,11 +2,11 @@
 <div class="maf-column-contents">
   <h2 class="page-header">Installation</h2>
   <div class="maf-download-box">
-    <div class="maf-download-box-contents">
+    <div class="maf-download-box-contents experimental">
       <p class="maf-download-name"><a
-       href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>-fx.xpi">Install
-       MAF <?php echo $maf_latest_fx; ?></a></p>
-      <p class="maf-download-info">Compatible with Firefox 3.</p>
+       href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_experimental_fx; ?>-fx.xpi">Install
+       MAF <?php echo $maf_experimental_fx; ?></a></p>
+      <p class="maf-download-info">Experimental, for Firefox 3.</p>
     </div>
   </div>
   <div class="maf-download-tips">
@@ -19,6 +19,22 @@
          <a href="http://www.unmht.org/unmht/en_index.html"><b>UnMHT</b></a></li>
         <li><a href="feedback.html">Feedback</a> is welcome!</li>
       </ul>
+    </div>
+  </div>
+  <div class="maf-download-afterbox">
+    <div class="maf-download-box">
+      <div class="maf-download-box-contents">
+        <p class="maf-download-name"><a
+         href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>-fx.xpi">Install
+         MAF <?php echo $maf_latest_fx; ?></a></p>
+        <p class="maf-download-info">Stable, for Firefox 3.</p>
+      </div>
+    </div>
+    <div class="maf-download-tips">
+      <div class="maf-download-tips-contents">
+        <p>The stable version has been tested more extensively, but lacks the
+         <a href="#whatsnew">new features</a> of the experimental version.</p>
+      </div>
     </div>
   </div>
   <p class="maf-download-afterbox">If you download Mozilla Archive Format from
@@ -44,7 +60,7 @@
    <a href="source.html">source code</a> for more information.</p>
 
   <h2><a name="whatsnew"></a>What's new in the latest version?</h2>
-  <p>MAF <?php echo $maf_latest_fx; ?> has the following user-visible
+  <p>MAF <?php echo $maf_experimental_fx; ?> has the following user-visible
    improvements over MAF 0.9.1:</p>
   <ul>
     <li>Integration with the
@@ -78,7 +94,7 @@
       </ul>
     </li>
   </ul>
-  <p>MAF <?php echo $maf_latest_fx; ?> has the following known issues:</p>
+  <p>MAF <?php echo $maf_experimental_fx; ?> has the following known issues:</p>
   <ul>
     <li>If the first entry of an archive is not a web page, but for instance an
      image, it cannot be displayed when opening the archive normally.</li>

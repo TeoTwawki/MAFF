@@ -4,6 +4,6 @@
 <?php
 
 $maf_latest_fx = "0.9.1.0";
-$maf_experimental_fx = "";
+$maf_experimental_fx = "0.10.0.0";
 
 ?>
