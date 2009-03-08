@@ -45,47 +45,36 @@
 
   <h2><a name="whatsnew"></a>What's new in the latest version?</h2>
   <p>MAF <?php echo $maf_latest_fx; ?> has the following user-visible
-   improvements over MAF 0.8.7:</p>
+   improvements over MAF 0.9.1:</p>
   <ul>
     <li>Integration with the
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     extension.</li>
-    <li>Compatibility with the
-     <a href="https://addons.mozilla.org/firefox/addon/8051">UnMHT</a>
-     extension version 5.1.1 and later.</li>
-    <li>Compatibility with the
-     <a href="https://addons.mozilla.org/firefox/addon/712">Title Save</a>
-     extension.</li>
-    <li>Improved browser integration when loading and saving archives:
-      <ul>
-        <li>The download progress is displayed in the standard <b>Downloads</b>
-         window also when saving an archive.</li>
-        <li>The chosen MAF save component is used regardless of whether a page
-         is saved in an archive or not.</li>
-        <li>The address of the archive, instead of that of the temporary file,
-         is displayed in the address bar for the first entry in an archive.</li>
-      </ul>
-    </li>
+     <a href="https://addons.mozilla.org/firefox/addon/4838">Multiple Tab
+     Handler</a> extension.</li>
+    <li>Now a single frame can be saved in an archive, and in this case the
+     extended metadata is not included.</li>
+    <li>New preference to use the <code>jar:</code> protocol to access
+     additional pages when opening multi-page MAFF archives.</li>
     <li>Modified user interface elements:
       <ul>
-        <li>The <b>Save Page In Archive</b> menu command is now completely
-         integrated with the standard <b>Save Page As</b>.</li>
-        <li>The default file name suggested by the <b>Save Tabs In Archive</b>
-         command is now the same as the one suggested by <b>Save Page
-         As</b>.</li>
-        <li>The <b>Show a message box when completing a single page archival</b>
-         preference is not available anymore, since download progress is now
-         tracked by the standard <b>Downloads</b> window.</li>
+        <li>The default visibility and layout of the MAF menu items has changed,
+         and is now customizable from the preferences dialog.</li>
+        <li>The tab selection dialog displayed on save has changed, and the
+         current tab is now preselected.</li>
+        <li>A single file filter is present for the MHTML file format in the
+         "Save As" dialog, and the default extension is a user preference.</li>
+        <li>The window with the progress bar shown when opening archives does
+         not appear anymore.</li>
+      </ul>
+    </li>
+    <li>Removed elements:
+      <ul>
+        <li>MAF internal save component, superseded by the integrated Save
+         Complete extension.</li>
       </ul>
     </li>
     <li>Bugfixes:
       <ul>
-        <li>If an archive is opened and the <b>Open contents in new tabs</b>
-         default option is selected, no blank tab is displayed anymore.</li>
-        <li>On platforms other than Windows, a localized message is now
-         displayed when asking to overwrite an archive, and the archive file
-         extension was not initially specified in the file picker dialog.</li>
-        <li>The alternative save component now works.</li>
+        <li>Removed a half-second pause when opening archives.</li>
       </ul>
     </li>
   </ul>
