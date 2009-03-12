@@ -449,8 +449,13 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
         return false;
 
       fp.file.leafName = validateFileName(fp.file.leafName);
-      fp.defaultString = fp.file.leafName; // If the dialog is displaying again
-      aFpP.saveBehavior = saveBehaviors[fp.filterIndex];
+      // Set the file name to be shown if the dialog is displayed again
+      fp.defaultString = fp.file.leafName;
+      // Check that the file picker filter index is not out of bounds. The
+      //  nsIFilePicker interface does not guarantee this.
+      aFpP.saveBehavior = saveBehaviors[fp.filterIndex] ?
+       saveBehaviors[fp.filterIndex] : gNormalSaveBehavior;
+      // Save the selected file object and URL
       aFpP.file = fp.file;
       aFpP.fileURL = fp.fileURL;
 
