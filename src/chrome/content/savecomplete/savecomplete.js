@@ -316,7 +316,7 @@ var savecomplete = {
         //}
 
         // Get the next item in the queue
-        setTimeout(savecomplete.asyncGet, 100, queueNum+1);
+        setTimeout(savecomplete.asyncGet, 2, queueNum+1);
     },
     asyncFix: function(queueNum) {
         var docObject = savecomplete.fixQueue[queueNum];
