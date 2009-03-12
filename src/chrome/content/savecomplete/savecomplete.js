@@ -434,7 +434,34 @@ var savecomplete = {
             var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(Components.interfaces.nsIWebBrowserPersist);
             var fileObj = savecomplete.getDir();
             fileObj.append(savecomplete.savePath(fixed,false));
+
+            // Mozilla Archive Format needs to be notified about the save
+            //  after it is completed, not when it's started {
+            Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+            persist.progressListener = {
+              QueryInterface: XPCOMUtils.generateQI(
+               [Ci.nsIWebProgressListener]),
+              onStateChange: function(aWebProgress, aRequest, aStateFlags,
+               aStatus) {
+                // If the download is completed, even if unsuccessful
+                if ((aStateFlags & Ci.nsIWebProgressListener.STATE_STOP) &&
+                 (aStateFlags & Ci.nsIWebProgressListener.STATE_IS_NETWORK)) {
+                  // Signal that another file has been downloaded
+                  savecomplete.asyncFixed();
+                }
+              },
+              onProgressChange: function(aWebProgress, aRequest,
+               aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
+               aMaxTotalProgress) { },
+              onLocationChange: function(aWebProgress, aRequest, aLocation) { },
+              onStatusChange: function(aWebProgress, aRequest, aStatus,
+               aMessage) { },
+              onSecurityChange: function(aWebProgress, aRequest, aState) { }
+            };
+            //}
+
             persist.saveURI(fixed.URI, null , null , null , null , fileObj);
+            return;
         } else {
             savecomplete.dump("Missing contentType");
             savecomplete.dumpObj(docObject);
@@ -442,6 +469,9 @@ var savecomplete = {
 
         savecomplete.fixQueue[queueNum].contents = ""; // For some small clean up
 
+        savecomplete.asyncFixed();
+    },
+    asyncFixed: function() {
         savecomplete.fixed++;
 
         // Clean up if done {
