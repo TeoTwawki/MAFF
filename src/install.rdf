@@ -32,13 +32,8 @@
     <em:translator>tr-TR: Ersen Yoldaç</em:translator>
     <!-- Translators for MAF 0.6.3 and earlier -->
     <em:translator>it-IT: Gioxx; eXtenZilla.it</em:translator>
-    <em:translator>ru-RU: Юрий Меркулов, ArtLonger</em:translator>
-    <em:translator>ru-RU: Sergey N UshaKov</em:translator>
     <em:translator>pl-PL: Bartosz Piec</em:translator>
-    <em:translator>pt-BR: Jacinto Leal</em:translator>
     <em:translator>da-DK: Molle Bestefich</em:translator>
-    <em:translator>de-DE: Ralph Ulrich</em:translator>
-    <em:translator>sl-SI: Martin Srebotnjak</em:translator>
     <em:homepageURL>http://maf.mozdev.org/</em:homepageURL>
 
     <!-- Front End Integration Hooks (used by Extension Manager)-->
