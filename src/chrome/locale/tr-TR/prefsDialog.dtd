@@ -1,0 +1,54 @@
+<!ENTITY window.title "Tercihler">
+<!ENTITY browsebutton.label "Tara...">
+<!ENTITY pane.main.label "Ana">
+<!ENTITY open.caption "Aç">
+<!ENTITY open.action.grouplabel "Bir arşiv açıldığında:">
+<!ENTITY open.action.tabs.label "içeriği yeni sekmelerde aç">
+<!ENTITY open.action.tabs.accesskey "O">
+<!ENTITY open.action.ask.label "Açık arşivleri listele, ve eylem için sor">
+<!ENTITY open.action.ask.accesskey "S">
+<!ENTITY open.action.remember.label "Hiçbirşey göstermeden yalnızca açık arşivler listesine ekle">
+<!ENTITY open.action.remember.accesskey "n">
+<!ENTITY save.caption "Kaydet">
+<!ENTITY save.component.grouplabel "Tüm web sayfası içeriğini kaydederken:">
+<!ENTITY save.component.standard.label "Tarayıcının standart kayıt sistemini kullan">
+<!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.savecomplete.label "Tümleşik &quot;Tamamını Kaydet&quot; eklentisini kullan">
+<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.metadata.extended.label "Genişletilmiş metaveriyi MAFF arşivlerine kaydet">
+<!ENTITY save.metadata.extended.accesskey "v">
+<!ENTITY pane.interface.label "Arayüz">
+<!ENTITY menu.caption "Menü">
+<!ENTITY menu.grouplabel "Mozilla Arşiv Biçimi menü ögelerini şunda göster:">
+<!ENTITY menu.file.label "Dosya menüsü">
+<!ENTITY menu.file.accesskey "F">
+<!ENTITY menu.tools.label "Araçlar menüsü">
+<!ENTITY menu.tools.accesskey "l">
+<!ENTITY menu.pagecontext.label "Sayfa içeriği menüsü">
+<!ENTITY menu.pagecontext.accesskey "P">
+<!ENTITY menu.tabscontext.label "Sekme çubuğu içerik menüsü">
+<!ENTITY menu.tabscontext.accesskey "x">
+<!ENTITY menuitem.grouplabel "Bu ek menü ögelerini göster:">
+<!ENTITY menuitem.saveinarchive.label "Arşive Kaydet">
+<!ENTITY menuitem.saveinarchive.accesskey "h">
+<!ENTITY pane.fileassociations.label "Dosya eşleştirmeleri">
+<!ENTITY associate.windowsonly.description "Bu işlev yalnızca Windows&apos;ta geçerlidir.">
+<!ENTITY associate.buttons.description "Firefox&apos;u MAF tarafından kullanılan belgelerle eşleştirmek için şu tuşlara basın:">
+<!ENTITY associate.adminprivs.description "Bu işlem yönetici yetkisi gerektirebilir.">
+<!ENTITY associate.maff.label ".maff eklentisi için eşleştirme oluştur">
+<!ENTITY associate.maff.accesskey "e">
+<!ENTITY associate.mhtml.label ".mht ve .mhtml eklentileri için eşleştirme oluştur">
+<!ENTITY associate.mhtml.accesskey "a">
+<!ENTITY associate.uninstall.description "Not: Burada oluşturulan belge eşleştirmeleri MAF ya da Firefox kaldırılmadan  silinmeyecektir. Belge eşleştirmelerinizi Windows denetim masasını kullanarak yönetebilirsiniz.">
+<!ENTITY pane.advanced.label "Gelişmiş">
+<!ENTITY temp.caption "Geçici belgeler">
+<!ENTITY temp.folder.label "Geçici klasör:">
+<!ENTITY temp.folder.accesskey "T">
+<!ENTITY temp.clearonexit.label "Tarayıcıdan çıkıldığında geçici klasörü temizle">
+<!ENTITY temp.clearonexit.accesskey "C">
+<!ENTITY open.rewriteurls.label "Tam URL&apos;leri açık arşivlere yaz">
+<!ENTITY open.rewriteurls.accesskey "R">
+<!ENTITY open.usejarprotocol.label "&quot;jar&quot; kullan: MAFF arşivlerinin içeriklerine erişmek için protokol">
+<!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY save.usemhtmlextension.label "Varsayılan olarak .mht yerine .mhtml eklentisini kullanarak kaydet">
+<!ENTITY save.usemhtmlextension.accesskey "m">

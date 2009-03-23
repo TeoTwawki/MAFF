@@ -12,6 +12,7 @@ locale	maf	pl-PL	chrome/locale/pl-PL/
 locale	maf	pt-BR	chrome/locale/pt-BR/
 locale	maf	ru-RU	chrome/locale/ru-RU/
 locale	maf	sl-SI	chrome/locale/sl-SI/
+locale	maf	tr-TR	chrome/locale/tr-TR/
 
 skin	maf	classic/1.0	chrome/skin/
 

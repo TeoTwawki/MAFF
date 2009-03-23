@@ -1,0 +1,26 @@
+<!ENTITY command.browseopenarchives.key "M">
+<!ENTITY command.browseopenarchives.modifiers "alt">
+<!ENTITY menuitem.mafsubmenu.label "Mozilla Arşiv Biçimi">
+<!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
+<!ENTITY menuitem.browseopenarchives.label "Açık Arşivleri Tara...">
+<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
+<!ENTITY menuitem.preferences.label "Tercihler...">
+<!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
+<!ENTITY menuitem.savetabsas.label "Sekmeleri Farklı Kaydet...">
+<!ENTITY menuitem.savetabsas.accesskey.filemenu "b">
+<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "b">
+<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "b">
+<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "b">
+<!ENTITY menuitem.savealltabsas.label "Tüm Sekmeleri Farklı Kaydet...">
+<!ENTITY menuitem.savealltabsas.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "S">
+<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
+<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "S">
+<!ENTITY menuitem.savepageinarchive.label "SAyfayı Arşive Kaydet...">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
+<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
+<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
+<!ENTITY menuitem.saveframeinarchive.label "Çerçeveyi Arşive Kaydet...">
+<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "h">
+<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "h">
+<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "h">

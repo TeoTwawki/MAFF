@@ -1,5 +1,5 @@
 <!ENTITY window.title "Ustawienia">
-<!ENTITY browsebutton.label "Przeglądaj...">
+<!ENTITY browsebutton.label "Przeglądaj…">
 <!ENTITY pane.main.label "Główne">
 <!ENTITY open.caption "Otwórz">
 <!ENTITY open.action.grouplabel "Gdy archiwum jest otwierane:">
@@ -7,30 +7,30 @@
 <!ENTITY open.action.tabs.accesskey "O">
 <!ENTITY open.action.ask.label "Wyświetl listę otwartych archiwów i zapytaj o działanie">
 <!ENTITY open.action.ask.accesskey "W">
-<!ENTITY open.action.remember.label "Dodaj do listy otwartych archiwów - nic nie wyświetlaj">
+<!ENTITY open.action.remember.label "Dodaj do listy otwartych archiwów – nic nie wyświetlaj">
 <!ENTITY open.action.remember.accesskey "D">
 <!ENTITY save.caption "Zapisz">
 <!ENTITY save.component.grouplabel "Podczas zapisywania całej zawartości strony internetowej:">
-<!ENTITY save.component.standard.label "Użyj standardowego systemu przeglądarki">
+<!ENTITY save.component.standard.label "Użyj standardowego systemu zapisu przeglądarki">
 <!ENTITY save.component.standard.accesskey "S">
-<!ENTITY save.component.savecomplete.label "Użyj zintegrowanego rozszerzenia &quot;Save Complete&quot;">
+<!ENTITY save.component.savecomplete.label "Użyj zintegrowanego rozszerzenia „Save Complete”">
 <!ENTITY save.component.savecomplete.accesskey "N">
 <!ENTITY save.metadata.extended.label "Zapisz rozszerzone metadane w archiwach MAFF">
 <!ENTITY save.metadata.extended.accesskey "Z">
-<!ENTITY pane.interface.label "Interface">
+<!ENTITY pane.interface.label "Interfejs">
 <!ENTITY menu.caption "Menu">
-<!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
-<!ENTITY menu.file.label "File menu">
-<!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tools.label "Tools menu">
-<!ENTITY menu.tools.accesskey "l">
-<!ENTITY menu.pagecontext.label "Page context menu">
-<!ENTITY menu.pagecontext.accesskey "p">
-<!ENTITY menu.tabscontext.label "Tab bar context menu">
-<!ENTITY menu.tabscontext.accesskey "x">
-<!ENTITY menuitem.grouplabel "Show these additional menu items:">
-<!ENTITY menuitem.saveinarchive.label "Save In Archive">
-<!ENTITY menuitem.saveinarchive.accesskey "h">
+<!ENTITY menu.grouplabel "Wyświetlaj element „Mozilla Archive Format” w:">
+<!ENTITY menu.file.label "Menu „Plik”">
+<!ENTITY menu.file.accesskey "P">
+<!ENTITY menu.tools.label "Menu „Narzędzia”">
+<!ENTITY menu.tools.accesskey "N">
+<!ENTITY menu.pagecontext.label "Menu kontekstowym strony">
+<!ENTITY menu.pagecontext.accesskey "K">
+<!ENTITY menu.tabscontext.label "Menu kontekstowym paska kart">
+<!ENTITY menu.tabscontext.accesskey "A">
+<!ENTITY menuitem.grouplabel "Wyświetlaj poniższe elementy:">
+<!ENTITY menuitem.saveinarchive.label "Zapisz w archiwum">
+<!ENTITY menuitem.saveinarchive.accesskey "H">
 <!ENTITY pane.fileassociations.label "Skojarzenia plików">
 <!ENTITY associate.windowsonly.description "Ta funkcjonalność jest dostępna tylko w systemie Windows.">
 <!ENTITY associate.buttons.description "Aby skojarzyć Firefoksa z typami plików obsługiwanymi przez MAF, kliknij następujące przyciski.">
@@ -39,16 +39,16 @@
 <!ENTITY associate.maff.accesskey "M">
 <!ENTITY associate.mhtml.label "Utwórz skojarzenie dla rozszerzeń .mht i.mhtml">
 <!ENTITY associate.mhtml.accesskey "H">
-<!ENTITY associate.uninstall.description "Informacja: Skojarzenia plików utworzone tutaj nie będą usuwane podczas dezinstalacji MAF lub Firefoksa. Możesz zarządzać skojarzeniami plików z poziomu Panelu sterowania systemu Windows.">
+<!ENTITY associate.uninstall.description "Informacja: Skojarzenia plików tutaj utworzone nie będą usuwane podczas dezinstalacji MAF lub Firefoksa. Możesz zarządzać skojarzeniami plików z poziomu Panelu sterowania systemu Windows.">
 <!ENTITY pane.advanced.label "Zaawansowane">
 <!ENTITY temp.caption "Pliki tymczasowe">
 <!ENTITY temp.folder.label "Folder plików tymczasowych:">
 <!ENTITY temp.folder.accesskey "T">
-<!ENTITY temp.clearonexit.label "Wyczyść folder plików tymczasowych podczas zamykania przeglądarki">
+<!ENTITY temp.clearonexit.label "Czyść folder plików tymczasowych podczas zamykania przeglądarki">
 <!ENTITY temp.clearonexit.accesskey "C">
 <!ENTITY open.rewriteurls.label "Zapisz ponownie absolutne adresy URL w otwartych archiwach">
 <!ENTITY open.rewriteurls.accesskey "P">
-<!ENTITY open.usejarprotocol.label "Use the &quot;jar:&quot; protocol to access the contents of MAFF archives">
-<!ENTITY open.usejarprotocol.accesskey "j">
-<!ENTITY save.usemhtmlextension.label "Save using the .mhtml file extension instead of .mht by default">
-<!ENTITY save.usemhtmlextension.accesskey "m">
+<!ENTITY open.usejarprotocol.label "Użyj protokółu „jar:” do dostępu do zawartości archiwów MAFF">
+<!ENTITY open.usejarprotocol.accesskey "U">
+<!ENTITY save.usemhtmlextension.label "Zapisuj używając rozszerzenia pliku .mhtml zamiast .mht">
+<!ENTITY save.usemhtmlextension.accesskey "T">

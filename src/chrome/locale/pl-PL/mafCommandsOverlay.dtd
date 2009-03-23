@@ -2,25 +2,25 @@
 <!ENTITY command.browseopenarchives.modifiers "alt">
 <!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
-<!ENTITY menuitem.browseopenarchives.label "Browse Open Archives…">
-<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
-<!ENTITY menuitem.preferences.label "Preferences…">
-<!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
-<!ENTITY menuitem.savetabsas.label "Save Tabs As…">
-<!ENTITY menuitem.savetabsas.accesskey.filemenu "b">
-<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "b">
-<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "b">
-<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "b">
-<!ENTITY menuitem.savealltabsas.label "Save All Tabs As…">
-<!ENTITY menuitem.savealltabsas.accesskey.filemenu "S">
-<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "S">
-<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
-<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "S">
-<!ENTITY menuitem.savepageinarchive.label "Save Page In Archive…">
-<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
-<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
-<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
-<!ENTITY menuitem.saveframeinarchive.label "Save Frame In Archive…">
-<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "h">
-<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "h">
-<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "h">
+<!ENTITY menuitem.browseopenarchives.label "Przeglądaj otwarte archiwa…">
+<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "P">
+<!ENTITY menuitem.preferences.label "Ustawienia…">
+<!ENTITY menuitem.preferences.accesskey.toolsmenu "U">
+<!ENTITY menuitem.savetabsas.label "Zapisz karty jako…">
+<!ENTITY menuitem.savetabsas.accesskey.filemenu "K">
+<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "K">
+<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "K">
+<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "K">
+<!ENTITY menuitem.savealltabsas.label "Zapisz wszystkie karty jako…">
+<!ENTITY menuitem.savealltabsas.accesskey.filemenu "W">
+<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "W">
+<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "W">
+<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "W">
+<!ENTITY menuitem.savepageinarchive.label "Zapisz stronę w archiwum…">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "T">
+<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "T">
+<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "T">
+<!ENTITY menuitem.saveframeinarchive.label "Zapisz ramkę w archiwum…">
+<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "R">
+<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "R">
+<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "R">

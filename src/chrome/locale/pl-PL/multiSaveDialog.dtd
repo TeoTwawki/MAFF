@@ -1,5 +1,5 @@
-<!ENTITY window.title "Select tabs to save">
-<!ENTITY savebutton.label "Save">
-<!ENTITY tabs.title.header "Title">
-<!ENTITY tabs.location.header "Location">
-<!ENTITY tabs.all.label "All tabs in the window">
+<!ENTITY window.title "Wybierz karty do zapisania">
+<!ENTITY savebutton.label "Zapisz">
+<!ENTITY tabs.title.header "Tytuł">
+<!ENTITY tabs.location.header "Lokalizacja">
+<!ENTITY tabs.all.label "Wszystkie karty w oknie">
