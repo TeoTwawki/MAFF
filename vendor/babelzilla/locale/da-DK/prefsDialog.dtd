@@ -15,10 +15,22 @@
 <!ENTITY save.component.standard.accesskey "b">
 <!ENTITY save.component.savecomplete.label "Brug integreret &quot;Save Complete&quot;-udvidelse">
 <!ENTITY save.component.savecomplete.accesskey "u">
-<!ENTITY save.component.maf.label "Brug MAF internt gem-komponent (avanceret)">
-<!ENTITY save.component.maf.accesskey "M">
 <!ENTITY save.metadata.extended.label "Gem udvidede metadata i MAFF-arkiver">
 <!ENTITY save.metadata.extended.accesskey "u">
+<!ENTITY pane.interface.label "">
+<!ENTITY menu.caption "">
+<!ENTITY menu.grouplabel "">
+<!ENTITY menu.file.label "">
+<!ENTITY menu.file.accesskey "">
+<!ENTITY menu.tools.label "">
+<!ENTITY menu.tools.accesskey "">
+<!ENTITY menu.pagecontext.label "">
+<!ENTITY menu.pagecontext.accesskey "">
+<!ENTITY menu.tabscontext.label "">
+<!ENTITY menu.tabscontext.accesskey "">
+<!ENTITY menuitem.grouplabel "">
+<!ENTITY menuitem.saveinarchive.label "">
+<!ENTITY menuitem.saveinarchive.accesskey "">
 <!ENTITY pane.fileassociations.label "Fil-associationer">
 <!ENTITY associate.windowsonly.description "Denne funktionalitet er kun tilgængelig under Windows.">
 <!ENTITY associate.buttons.description "Klik på følgende knapper for at associere Firefox med filtyperne der håndteres af MAF.">
@@ -36,3 +48,7 @@
 <!ENTITY temp.clearonexit.accesskey "y">
 <!ENTITY open.rewriteurls.label "Omskriv absolutte URLer i åbne arkiver">
 <!ENTITY open.rewriteurls.accesskey "r">
+<!ENTITY open.usejarprotocol.label "">
+<!ENTITY open.usejarprotocol.accesskey "">
+<!ENTITY save.usemhtmlextension.label "">
+<!ENTITY save.usemhtmlextension.accesskey "">

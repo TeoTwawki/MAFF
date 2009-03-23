@@ -1,16 +1,5 @@
 <!ENTITY maf.loadArchive "Abrir archivo">
 <!ENTITY maf.loadArchiveKey "h">
-<!ENTITY maf.addSelectedTabsToArchive "Guardar pestañas en archivo">
-<!ENTITY maf.addSelectedTabsToArchiveKey "p">
-<!ENTITY maf.addAllTabsToArchive "Guardar todas las pestañas en archivo">
-<!ENTITY maf.addAllTabsToArchiveKey "t">
-<!ENTITY maf.saveTabsDialogTitle "Progreso de guardar las pestañas abiertas">
-<!ENTITY maf.openTabsDialogTitle "Progreso de abrir en pestañas">
-<!ENTITY maf.menuLabel "Formato de archivo Mozilla">
-<!ENTITY maf.preferences "Opciones">
-<!ENTITY maf.preferencesKey "O">
-<!ENTITY maf.browseOpenArchives "Seleccionar archivos para abrir">
-<!ENTITY maf.browseOpenArchivesKey "S">
 <!ENTITY maf.browseOpenArchivesDialog.title "Seleccionar archivos para abrir">
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Título">
 <!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Fecha de archivo">
@@ -20,11 +9,3 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Abrir en pestañas usando jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Abrir las URL originales en pestañas">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Cerrar">
-<!ENTITY maf.saveSelectedTabsDialog.title "Seleccionar las pestañas a archivar">
-<!ENTITY maf.saveSelectedTabsDialog.tree.title "Título">
-<!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "URL">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Archivar la selección">
-<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Seleccionar todo">
-<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Borrar selección">
-<!ENTITY maf.saveSelectedTabsDialog.btnclose "Cerrar">
-<!ENTITY maf.browseOpenArchivesAccessKey "S">

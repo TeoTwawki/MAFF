@@ -1,16 +1,5 @@
 <!ENTITY maf.loadArchive "Abrir Arquivo">
 <!ENTITY maf.loadArchiveKey "A">
-<!ENTITY maf.addSelectedTabsToArchive "Salvar Abas no Arquivo">
-<!ENTITY maf.addSelectedTabsToArchiveKey "B">
-<!ENTITY maf.addAllTabsToArchive "Salvar Todas as Abas no Arquivo">
-<!ENTITY maf.addAllTabsToArchiveKey "T">
-<!ENTITY maf.saveTabsDialogTitle "Progresso do Salvamento das Abas Abertas">
-<!ENTITY maf.openTabsDialogTitle "Progresso da Abertura das Abas">
-<!ENTITY maf.menuLabel "Mozilla Archive Format">
-<!ENTITY maf.preferences "Preferências">
-<!ENTITY maf.preferencesKey "f">
-<!ENTITY maf.browseOpenArchives "Mostrar Arquivos Abertos">
-<!ENTITY maf.browseOpenArchivesKey "R">
 <!ENTITY maf.browseOpenArchivesDialog.title "Mostrar Arquivos Abertos">
 <!ENTITY maf.browseOpenArchivesDialog.tree.title "Título">
 <!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Archive Time">
@@ -20,11 +9,3 @@
 <!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Abrir nas Abas Usando jar:">
 <!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Abrir Endereço Original nas Abas">
 <!ENTITY maf.browseOpenArchivesDialog.btnclose "Fechar">
-<!ENTITY maf.saveSelectedTabsDialog.title "Selecione Abas para salvar no Arquivo">
-<!ENTITY maf.saveSelectedTabsDialog.tree.title "Título">
-<!ENTITY maf.saveSelectedTabsDialog.tree.originalurl "Endereço">
-<!ENTITY maf.saveSelectedTabsDialog.btnsaveselected "Salvar Arquivo Selecionado">
-<!ENTITY maf.saveSelectedTabsDialog.btnselectall "Select All">
-<!ENTITY maf.saveSelectedTabsDialog.btnclearselection "Clear Selection">
-<!ENTITY maf.saveSelectedTabsDialog.btnclose "Fechar">
-<!ENTITY maf.browseOpenArchivesAccessKey "M">

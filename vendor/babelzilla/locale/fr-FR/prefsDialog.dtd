@@ -6,7 +6,7 @@
 <!ENTITY open.action.tabs.label "Ouvrir le contenu dans de nouveaux onglets">
 <!ENTITY open.action.tabs.accesskey "O">
 <!ENTITY open.action.ask.label "Afficher la liste des archives ouvertes et demander ce qu&apos;il faut faire">
-<!ENTITY open.action.ask.accesskey "S">
+<!ENTITY open.action.ask.accesskey "l">
 <!ENTITY open.action.remember.label "Uniquement ajouter à la liste des archives ouvertes, ne rien afficher">
 <!ENTITY open.action.remember.accesskey "n">
 <!ENTITY save.caption "Enregistrer">
@@ -15,10 +15,22 @@
 <!ENTITY save.component.standard.accesskey "s">
 <!ENTITY save.component.savecomplete.label "Utiliser l&apos;extension intégrée &quot;Save Complete&quot;">
 <!ENTITY save.component.savecomplete.accesskey "U">
-<!ENTITY save.component.maf.label "Utiliser le composant interne de sauvegarde de MAF (avancé)">
-<!ENTITY save.component.maf.accesskey "M">
 <!ENTITY save.metadata.extended.label "Enregistrer les métadonnées étendues dans les archives MAFF">
 <!ENTITY save.metadata.extended.accesskey "v">
+<!ENTITY pane.interface.label "Interface">
+<!ENTITY menu.caption "Menu">
+<!ENTITY menu.grouplabel "Afficher les menus MAF dans :">
+<!ENTITY menu.file.label "Menu Fichier">
+<!ENTITY menu.file.accesskey "F">
+<!ENTITY menu.tools.label "Menu Outils">
+<!ENTITY menu.tools.accesskey "O">
+<!ENTITY menu.pagecontext.label "Menu contextuel des pages">
+<!ENTITY menu.pagecontext.accesskey "p">
+<!ENTITY menu.tabscontext.label "Menu contextuel de la barre d&apos;onglets">
+<!ENTITY menu.tabscontext.accesskey "x">
+<!ENTITY menuitem.grouplabel "Afficher ces éléments supplémentaires :">
+<!ENTITY menuitem.saveinarchive.label "Enregistrer dans l&apos;archive">
+<!ENTITY menuitem.saveinarchive.accesskey "h">
 <!ENTITY pane.fileassociations.label "Association des fichiers">
 <!ENTITY associate.windowsonly.description "Cette fonctionnalité est disponible uniquement pour les systèmes Windows.">
 <!ENTITY associate.buttons.description "Cliquer sur le bouton suivant pour associer les fichiers supportés par MAF avec Firefox.">
@@ -36,3 +48,7 @@
 <!ENTITY temp.clearonexit.accesskey "V">
 <!ENTITY open.rewriteurls.label "Réécrire les URLs absolues dans les archives ouvertes">
 <!ENTITY open.rewriteurls.accesskey "R">
+<!ENTITY open.usejarprotocol.label "Utiliser le protocole &quot;jar:&quot; pour accéder au contenu des archives MAFF">
+<!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY save.usemhtmlextension.label "Enregistrer en utilisant l&apos;extension .mhtml plutôt que .mht par défaut">
+<!ENTITY save.usemhtmlextension.accesskey "m">
