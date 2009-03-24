@@ -76,8 +76,16 @@ code.maf-file-ext {
   background-color: lightgreen;
 }
 
+.maf-download-installation-page .maf-download-box-contents {
+  width: 31em;
+}
+
 .maf-download-box-contents.experimental {
   background-color: #FC0;
+}
+
+.maf-download-box-contents.redirect {
+  background-color: #CFF;
 }
 
 .maf-download-afterbox {
@@ -89,6 +97,17 @@ code.maf-file-ext {
   font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
   font-size: x-large;
   white-space: nowrap;
+}
+
+.maf-download-installation-page .maf-download-name {
+  white-space: normal;
+}
+
+.maf-download-redirect {
+  margin: 0px;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: x-large;
+  text-align: left;
 }
 
 .maf-download-info {
