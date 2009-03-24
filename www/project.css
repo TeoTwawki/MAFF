@@ -125,3 +125,15 @@ code.maf-file-ext {
 .maf-download-tips p {
   margin: 0px;
 }
+
+/* Footer */
+
+.maf-feedback {
+  clear: both;
+  padding: 10px 20px 0px 20px;
+}
+
+.maf-feedback p {
+  border-top: 2px solid #00C;
+  padding: 5px 0px;
+}
