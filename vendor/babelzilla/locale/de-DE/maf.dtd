@@ -1,0 +1,11 @@
+<!ENTITY maf.loadArchive "Archiv öffnen">
+<!ENTITY maf.loadArchiveKey "h">
+<!ENTITY maf.browseOpenArchivesDialog.title "Offene Archive durchsuchen">
+<!ENTITY maf.browseOpenArchivesDialog.tree.title "Titel">
+<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "Archivzeit">
+<!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "Originale URL">
+<!ENTITY maf.browseOpenArchivesDialog.tree.localurl "Lokale URL">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "In Tabs öffnen">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "Mithilfe von jar in Tabs öffnen">
+<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "Original URLs in Tabs öffnen">
+<!ENTITY maf.browseOpenArchivesDialog.btnclose "Schliessen">

@@ -1,0 +1,17 @@
+<!ENTITY window.title "配置">
+<!ENTITY browsebutton.label "浏览…">
+<!ENTITY pane.main.label "主要">
+<!ENTITY open.action.grouplabel "在档案被打开时：">
+<!ENTITY open.action.tabs.label "在新标签页中开启该档">
+<!ENTITY open.action.tabs.accesskey "O">
+<!ENTITY pane.advanced.label "高级">
+<!ENTITY temp.caption "临时文件">
+<!ENTITY temp.folder.label "临时文件夹(T)：">
+<!ENTITY temp.folder.accesskey "T">
+<!ENTITY temp.clearonexit.label "当浏览器关闭时清除 MAFF 临时文件夹">
+<!ENTITY temp.clearonexit.accesskey "C">
+<!ENTITY open.rewriteurls.accesskey "R">
+<!ENTITY open.usejarprotocol.label "使用“JAr:”协议访问 MAFF 档的内容">
+<!ENTITY open.usejarprotocol.accesskey "J">
+<!ENTITY save.usemhtmlextension.label "使用 .MHTML 代替 .MHT 成为默认文件扩展名">
+<!ENTITY save.usemhtmlextension.accesskey "M">

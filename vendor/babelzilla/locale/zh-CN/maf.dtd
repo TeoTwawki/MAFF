@@ -1,0 +1,11 @@
+<!ENTITY maf.loadArchive "打开档案">
+<!ENTITY maf.loadArchiveKey "h">
+<!ENTITY maf.browseOpenArchivesDialog.title "浏览已开启的档案">
+<!ENTITY maf.browseOpenArchivesDialog.tree.title "页面标题">
+<!ENTITY maf.browseOpenArchivesDialog.tree.archivetime "存档时间">
+<!ENTITY maf.browseOpenArchivesDialog.tree.originalurl "原始 URL">
+<!ENTITY maf.browseOpenArchivesDialog.tree.localurl "本地 URL">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabs "在标签页群中打开">
+<!ENTITY maf.browseOpenArchivesDialog.btnopentabsusingprotocol "使用 JAr: 协议在标签页群中打开">
+<!ENTITY maf.browseOpenArchivesDialog.btnopenorig "在标签页群中打开原始链接">
+<!ENTITY maf.browseOpenArchivesDialog.btnclose "关闭">
