@@ -1,0 +1,54 @@
+<!ENTITY window.title "Einstellungen">
+<!ENTITY browsebutton.label "Durchsuchen...">
+<!ENTITY pane.main.label "Allgemein">
+<!ENTITY open.caption "Öffnen">
+<!ENTITY open.action.grouplabel "Wenn ein Archiv geöffnet ist:">
+<!ENTITY open.action.tabs.label "Inhalt in neuen Tabs öffnen">
+<!ENTITY open.action.tabs.accesskey "I">
+<!ENTITY open.action.ask.label "Liste der offenen Archive anzeigen und nach Aktion fragen">
+<!ENTITY open.action.ask.accesskey "L">
+<!ENTITY open.action.remember.label "Nur die Liste der offenen Archive hinzugügen, nichts anzeigen">
+<!ENTITY open.action.remember.accesskey "n">
+<!ENTITY save.caption "Speichern">
+<!ENTITY save.component.grouplabel "Wenn eine ganze Website gespeichert wird:">
+<!ENTITY save.component.standard.label "Standard-Speichersystem des Browsers benützen">
+<!ENTITY save.component.standard.accesskey "B">
+<!ENTITY save.component.savecomplete.label "Integrierte &quot;Save Complete&quot;-Erweiterung verwenden">
+<!ENTITY save.component.savecomplete.accesskey "I">
+<!ENTITY save.metadata.extended.label "Erweiterte Metadaten in MAFF-Archiven speichern">
+<!ENTITY save.metadata.extended.accesskey "E">
+<!ENTITY pane.interface.label "Benutzeroberfläche">
+<!ENTITY menu.caption "Menü">
+<!ENTITY menu.grouplabel "Mozilla-Archiv-Format Menüpunkte anzeigen in:">
+<!ENTITY menu.file.label "Dateimenü">
+<!ENTITY menu.file.accesskey "D">
+<!ENTITY menu.tools.label "Werkzeugemenü">
+<!ENTITY menu.tools.accesskey "W">
+<!ENTITY menu.pagecontext.label "Seitenkontextmenü">
+<!ENTITY menu.pagecontext.accesskey "S">
+<!ENTITY menu.tabscontext.label "Tab-Leiste">
+<!ENTITY menu.tabscontext.accesskey "T">
+<!ENTITY menuitem.grouplabel "Diese zusätzlichen Menüpunkte zeigen:">
+<!ENTITY menuitem.saveinarchive.label "In Archiv speichern">
+<!ENTITY menuitem.saveinarchive.accesskey "h">
+<!ENTITY pane.fileassociations.label "Dateiverknüpfungen">
+<!ENTITY associate.windowsonly.description "Diese Funktion ist nur für Windows verfügbar.">
+<!ENTITY associate.buttons.description "Klicken Sie auf die folgenden Schaltflächen, um die mit MAF verarbeiteten Dateitypen mit Firefox zu verknüpfen.">
+<!ENTITY associate.adminprivs.description "Diese Aktion benötigt Administratorenrechte.">
+<!ENTITY associate.maff.label "Dateiverknüpfung für .maff-Erweiterung erstellen">
+<!ENTITY associate.maff.accesskey "t">
+<!ENTITY associate.mhtml.label "Dateiverknüpfung für .mht und .mhtml-Erweiterungen erstellen">
+<!ENTITY associate.mhtml.accesskey "a">
+<!ENTITY associate.uninstall.description "Bitte beachten Sie: Die Dateiverknüpfungen, die Sie hier erstellen, werden nicht entfernt, wenn MAF oder Firefox deinstalliert wird. Sie können aber die Dateiverknüpfungen in der Systemsteuerung von Windows bearbeiten.">
+<!ENTITY pane.advanced.label "Erweitert">
+<!ENTITY temp.caption "Temporäre Dateien">
+<!ENTITY temp.folder.label "Temporärer Ordner:">
+<!ENTITY temp.folder.accesskey "T">
+<!ENTITY temp.clearonexit.label "Temporärer Ordner leeren, wenn der Browser beendet wird">
+<!ENTITY temp.clearonexit.accesskey "l">
+<!ENTITY open.rewriteurls.label "Absolute URLs in Archive schreiben">
+<!ENTITY open.rewriteurls.accesskey "A">
+<!ENTITY open.usejarprotocol.label "Das &quot;.jar&quot;-Protokoll benützen, um auf MAFF-Archive zugrefien zu können">
+<!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY save.usemhtmlextension.label "Mit der Erweiterung .mhtml anstatt .mht speichern">
+<!ENTITY save.usemhtmlextension.accesskey "m">

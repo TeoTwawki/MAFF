@@ -4,7 +4,7 @@
 <!ENTITY open.caption "Åbn">
 <!ENTITY open.action.grouplabel "Når et arkiv åbnes:">
 <!ENTITY open.action.tabs.label "Åbn indhold i nyt faneblad">
-<!ENTITY open.action.tabs.accesskey "b">
+<!ENTITY open.action.tabs.accesskey "i">
 <!ENTITY open.action.ask.label "Vis liste over åbne arkiver, og spørg om handling">
 <!ENTITY open.action.ask.accesskey "V">
 <!ENTITY open.action.remember.label "Tilføj kun til liste over åbne arkiver, vis ingenting">
@@ -17,20 +17,20 @@
 <!ENTITY save.component.savecomplete.accesskey "u">
 <!ENTITY save.metadata.extended.label "Gem udvidede metadata i MAFF-arkiver">
 <!ENTITY save.metadata.extended.accesskey "u">
-<!ENTITY pane.interface.label "Interface">
+<!ENTITY pane.interface.label "Brugerflade">
 <!ENTITY menu.caption "Menu">
-<!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
-<!ENTITY menu.file.label "File menu">
+<!ENTITY menu.grouplabel "Vis Mozilla Archive Format menuelementer i:">
+<!ENTITY menu.file.label "Filer-menu">
 <!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tools.label "Tools menu">
-<!ENTITY menu.tools.accesskey "l">
-<!ENTITY menu.pagecontext.label "Page context menu">
-<!ENTITY menu.pagecontext.accesskey "p">
-<!ENTITY menu.tabscontext.label "Tab bar context menu">
-<!ENTITY menu.tabscontext.accesskey "x">
-<!ENTITY menuitem.grouplabel "Show these additional menu items:">
-<!ENTITY menuitem.saveinarchive.label "Save In Archive">
-<!ENTITY menuitem.saveinarchive.accesskey "h">
+<!ENTITY menu.tools.label "Funktioner-menu">
+<!ENTITY menu.tools.accesskey "u">
+<!ENTITY menu.pagecontext.label "Side kontekstmenu">
+<!ENTITY menu.pagecontext.accesskey "S">
+<!ENTITY menu.tabscontext.label "Fanebladslinje kontekstmenu">
+<!ENTITY menu.tabscontext.accesskey "o">
+<!ENTITY menuitem.grouplabel "Vis disse yderligere menuelementer:">
+<!ENTITY menuitem.saveinarchive.label "Gem i arkiv">
+<!ENTITY menuitem.saveinarchive.accesskey "r">
 <!ENTITY pane.fileassociations.label "Fil-associationer">
 <!ENTITY associate.windowsonly.description "Denne funktionalitet er kun tilgængelig under Windows.">
 <!ENTITY associate.buttons.description "Klik på følgende knapper for at associere Firefox med filtyperne der håndteres af MAF.">
@@ -48,7 +48,7 @@
 <!ENTITY temp.clearonexit.accesskey "y">
 <!ENTITY open.rewriteurls.label "Omskriv absolutte URLer i åbne arkiver">
 <!ENTITY open.rewriteurls.accesskey "r">
-<!ENTITY open.usejarprotocol.label "Use the &quot;jar:&quot; protocol to access the contents of MAFF archives">
+<!ENTITY open.usejarprotocol.label "Brug &quot;jar:&quot;-protokollen til at tilgå indholdet af MAFF-arkiver">
 <!ENTITY open.usejarprotocol.accesskey "j">
-<!ENTITY save.usemhtmlextension.label "Save using the .mhtml file extension instead of .mht by default">
+<!ENTITY save.usemhtmlextension.label "Gem ved hjælp af .mhtml filtypen i stedet for .mht som standard">
 <!ENTITY save.usemhtmlextension.accesskey "m">

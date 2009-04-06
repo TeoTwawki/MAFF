@@ -26,10 +26,13 @@
     <em:developer>Paolo Amadini</em:developer>
     <!-- Translators using BabelZilla -->
     <em:translator>da-DK: Finn S. Sørensen</em:translator>
+    <em:translator>de-DE: Lukas Diener</em:translator>
     <em:translator>es-ES: Proyecto Nave; http://www.proyectonave.es/</em:translator>
     <em:translator>fr-FR: Xavier Robin</em:translator>
     <em:translator>pl-PL: Leszek(teo)Życzkowski</em:translator>
     <em:translator>tr-TR: Ersen Yoldaç</em:translator>
+    <em:translator>zh-CN: 虞海</em:translator>
+    <em:translator>zh-TW: 虞海</em:translator>
     <!-- Translators for MAF 0.6.3 and earlier -->
     <em:translator>it-IT: Gioxx; eXtenZilla.it</em:translator>
     <em:translator>pl-PL: Bartosz Piec</em:translator>

@@ -1,0 +1,54 @@
+<!ENTITY window.title "配置">
+<!ENTITY browsebutton.label "浏览…">
+<!ENTITY pane.main.label "主要">
+<!ENTITY open.caption "Open">
+<!ENTITY open.action.grouplabel "在档案被打开时：">
+<!ENTITY open.action.tabs.label "在新标签页中开启该档">
+<!ENTITY open.action.tabs.accesskey "O">
+<!ENTITY open.action.ask.label "Show list of open archives, and ask for action">
+<!ENTITY open.action.ask.accesskey "S">
+<!ENTITY open.action.remember.label "Only add to the list of open archives, showing nothing">
+<!ENTITY open.action.remember.accesskey "n">
+<!ENTITY save.caption "Save">
+<!ENTITY save.component.grouplabel "When saving complete web page contents:">
+<!ENTITY save.component.standard.label "Use browser&apos;s standard save system">
+<!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.savecomplete.label "Use the integrated &quot;Save Complete&quot; extension">
+<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
+<!ENTITY save.metadata.extended.accesskey "v">
+<!ENTITY pane.interface.label "Interface">
+<!ENTITY menu.caption "Menu">
+<!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
+<!ENTITY menu.file.label "File menu">
+<!ENTITY menu.file.accesskey "F">
+<!ENTITY menu.tools.label "Tools menu">
+<!ENTITY menu.tools.accesskey "l">
+<!ENTITY menu.pagecontext.label "Page context menu">
+<!ENTITY menu.pagecontext.accesskey "p">
+<!ENTITY menu.tabscontext.label "Tab bar context menu">
+<!ENTITY menu.tabscontext.accesskey "x">
+<!ENTITY menuitem.grouplabel "Show these additional menu items:">
+<!ENTITY menuitem.saveinarchive.label "Save In Archive">
+<!ENTITY menuitem.saveinarchive.accesskey "h">
+<!ENTITY pane.fileassociations.label "File associations">
+<!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
+<!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
+<!ENTITY associate.adminprivs.description "This operation might require administrator privileges.">
+<!ENTITY associate.maff.label "Create association for .maff extension">
+<!ENTITY associate.maff.accesskey "e">
+<!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
+<!ENTITY associate.mhtml.accesskey "a">
+<!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
+<!ENTITY pane.advanced.label "高级">
+<!ENTITY temp.caption "临时文件">
+<!ENTITY temp.folder.label "临时文件夹(T)：">
+<!ENTITY temp.folder.accesskey "T">
+<!ENTITY temp.clearonexit.label "当浏览器关闭时清除 MAFF 临时文件夹">
+<!ENTITY temp.clearonexit.accesskey "C">
+<!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
+<!ENTITY open.rewriteurls.accesskey "R">
+<!ENTITY open.usejarprotocol.label "使用“JAr:”协议访问 MAFF 档的内容">
+<!ENTITY open.usejarprotocol.accesskey "J">
+<!ENTITY save.usemhtmlextension.label "使用 .MHTML 代替 .MHT 成为默认文件扩展名">
+<!ENTITY save.usemhtmlextension.accesskey "M">
