@@ -41,7 +41,7 @@ try {
    "jscomponents/nsMafUtil.js",
 
    // "Save Complete" extension integration
-   "savecomplete/savecomplete.js",
+   "savecomplete/saveCompleteWrapper.js",
    "savecomplete/saveCompletePersistObject.js",
 
    // Support objects for the saving front-end

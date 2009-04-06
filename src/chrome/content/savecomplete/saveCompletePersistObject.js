@@ -55,7 +55,14 @@ SaveCompletePersist.prototype = {
   // --- nsICancelable interface functions ---
 
   cancel: function(aReason) {
+    // Update the state of this object first, then send the notifications
     this.result = aReason;
+    this._onComplete();
+    // If the save operation started successfully, the worker object will
+    //  now handle the cancel operation and notify the progress listener
+    if (this._saver) {
+      this._saver.cancel(aReason);
+    }
   },
 
   // --- nsIWebBrowserPersist interface functions ---
@@ -81,20 +88,45 @@ SaveCompletePersist.prototype = {
    aEncodingFlags, aWrapColumn) {
     // Pass exceptions to the progress listener
     try {
-      // Operation in progress
+      // Set the object state to "operation in progress". The progress listener
+      //  is not notified that the operation started, since this is done later
+      //  by the worker object. In rare cases, this may lead to a finish
+      //  notification being sent without the corresponding start notification,
+      //  but this is not known to cause any problem.
       this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_SAVING;
-      if (this.progressListener) {
-        this.progressListener.onStateChange(null, null,
-         Ci.nsIWebProgressListener.STATE_START |
-         Ci.nsIWebProgressListener.STATE_IS_NETWORK, Cr.NS_OK);
-      }
 
       // Find the path of the file to save to
       var fileObject = aFile.QueryInterface(Ci.nsIFileURL).file;
 
       // Save the selected page to disk
-      var saveComplete = new MafSaveComplete().savecomplete;
-      saveComplete.save(aDocument, fileObject, aDataPath, this);
+      var thisObject = this;
+      var scOptions = {
+        rewriteLinks: true,
+        callback: function(aSaver, aStatus, aOtherInfo) {
+          // Report the error messages, if present
+          if (aOtherInfo.errors && aOtherInfo.errors.length) {
+            // ------------------------------------------------------------
+            //  Errors that are notified here are typically network issues
+            //  or problems with the page being saved, that are intercepted
+            //  and reported by the integrated Save Complete component.
+            // ------------------------------------------------------------
+            Cu.reportError(aOtherInfo.errors);
+          }
+          // Update the state of this object. The progress listener will be
+          //  notified later by the worker object itself.
+          thisObject.result = aOtherInfo.result;
+          thisObject._onComplete();
+        },
+        progressListener: this.progressListener
+      };
+      // Construct the integrated Save Complete object and start saving
+      var scSaver = new MafSaveComplete.scPageSaver(aDocument, fileObject,
+       aDataPath, scOptions);
+      scSaver.run();
+      // If the "run" method did not raise an exception, store a reference to
+      //  the worker object to allow canceling and to indicate that the worker
+      //  object will notify the listener when the operation is finished
+      this._saver = scSaver;
     } catch(e) {
       Cu.reportError(e);
       // Preserve the result code of XPCOM exceptions
@@ -104,7 +136,7 @@ SaveCompletePersist.prototype = {
         this.result = Cr.NS_ERROR_FAILURE;
       }
       // Report that the download is finished to the listener
-      this.onDownloadComplete();
+      this._onComplete();
     }
   },
 
@@ -112,15 +144,16 @@ SaveCompletePersist.prototype = {
     this.cancel(Cr.NS_BINDING_ABORTED);
   },
 
-  // --- Callback functions for the worker object ---
+  // --- Private methods and properties ---
 
-  onDownloadComplete: function() {
+  _onComplete: function() {
     // Never report the finished condition more than once
     if (this.currentState != Ci.nsIWebBrowserPersist.PERSIST_STATE_FINISHED) {
       // Operation completed
       this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_FINISHED;
-      // Signal success or failure in the archiving process
-      if (this.progressListener) {
+      // Signal success or failure in the archiving process, but only if the
+      //  task is not delegated to the worker object
+      if (this.progressListener && !this._saver) {
         this.progressListener.onStateChange(null, null,
          Ci.nsIWebProgressListener.STATE_STOP |
          Ci.nsIWebProgressListener.STATE_IS_NETWORK, this.result);
@@ -128,9 +161,5 @@ SaveCompletePersist.prototype = {
     }
   },
 
-  // --- Private methods and properties ---
-
-  _saveBrowser: null,
-  _saveTabs: null,
-  _archiveType: null
+  _saver: null
 }
