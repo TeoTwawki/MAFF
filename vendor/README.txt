@@ -45,14 +45,6 @@ Every first-level subfolder maps to a different project:
     These files are instead required to build the next version to be feeded to
     the WTS, combined with the new en-US locale.
 
-  * "savecomplete" subfolder
-
-    Contains the original source code of the "Save Complete" extension by
-    Stephen Augenstein (see <https://addons.mozilla.org/it/firefox/addon/4723>,
-    retrieved 2009-01-04), excluding the chrome overlays and localizations. The
-    integrated version of this source code can be found in the "savecomplete"
-    folder of the main MAF source code.
-
 
 
 Retrieving the original Mozilla files
