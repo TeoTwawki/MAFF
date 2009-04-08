@@ -1,5 +1,7 @@
+<!--  General window controls  -->
 <!ENTITY window.title "Préférences">
 <!ENTITY browsebutton.label "Parcourir…">
+<!--  Main pane  -->
 <!ENTITY pane.main.label "Général">
 <!ENTITY open.caption "Ouvrir">
 <!ENTITY open.action.grouplabel "Lorsqu&apos;une archive est ouverte :">
@@ -17,6 +19,7 @@
 <!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.metadata.extended.label "Enregistrer les métadonnées étendues dans les archives MAFF">
 <!ENTITY save.metadata.extended.accesskey "v">
+<!--  Interface pane  -->
 <!ENTITY pane.interface.label "Interface">
 <!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Afficher les menus MAF dans :">
@@ -31,6 +34,7 @@
 <!ENTITY menuitem.grouplabel "Afficher ces éléments supplémentaires :">
 <!ENTITY menuitem.saveinarchive.label "Enregistrer dans l&apos;archive">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
+<!--  File associations pane. This pane is visible only on Windows.  -->
 <!ENTITY pane.fileassociations.label "Association des fichiers">
 <!ENTITY associate.windowsonly.description "Cette fonctionnalité est disponible uniquement pour les systèmes Windows.">
 <!ENTITY associate.buttons.description "Cliquer sur le bouton suivant pour associer les fichiers supportés par MAF avec Firefox.">
@@ -40,6 +44,7 @@
 <!ENTITY associate.mhtml.label "Créer une association pour les extensions .mht et .mhtml">
 <!ENTITY associate.mhtml.accesskey "a">
 <!ENTITY associate.uninstall.description "Note : les associations de fichier créées ici ne seront pas supprimées à la désinstallation de MAF ou de Firefox. Vous pouvez gérer vos associations de fichiers en utilisant le panneau de configuration de Windows">
+<!--  Advanced pane  -->
 <!ENTITY pane.advanced.label "Avancé">
 <!ENTITY temp.caption "Fichiers temporaires">
 <!ENTITY temp.folder.label "Dossier temporaire :">

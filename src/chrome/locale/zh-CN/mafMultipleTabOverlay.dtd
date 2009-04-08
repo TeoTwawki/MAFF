@@ -1,2 +1,3 @@
+<!--  Additional menu items for "Multiple Tab Handler" integration  -->
 <!ENTITY menuitem.saveselectedtabsas.label "另存所选标签页为…">
 <!ENTITY menuitem.saveselectedtabsas.accesskey.tabselectionmenu "b">

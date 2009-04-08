@@ -1,5 +1,7 @@
+<!--  General window controls  -->
 <!ENTITY window.title "Opciones">
 <!ENTITY browsebutton.label "Seleccionar...">
+<!--  Main pane  -->
 <!ENTITY pane.main.label "Principal">
 <!ENTITY open.caption "Abrir">
 <!ENTITY open.action.grouplabel "Cuando se abre un archivo:">
@@ -17,6 +19,7 @@
 <!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.metadata.extended.label "Guardar datos extendidos en archivos MAFF">
 <!ENTITY save.metadata.extended.accesskey "e">
+<!--  Interface pane  -->
 <!ENTITY pane.interface.label "Interfaz">
 <!ENTITY menu.caption "Menú">
 <!ENTITY menu.grouplabel "Mostrar los elementos de menú de Mozilla Archive Format en:">
@@ -31,6 +34,7 @@
 <!ENTITY menuitem.grouplabel "Mostrar estos elementos adicionales:">
 <!ENTITY menuitem.saveinarchive.label "Guardar en archivo">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
+<!--  File associations pane. This pane is visible only on Windows.  -->
 <!ENTITY pane.fileassociations.label "Asociaciones de archivos">
 <!ENTITY associate.windowsonly.description "Esta funcionalidad está disponible sólo en sistemas Windows.">
 <!ENTITY associate.buttons.description "Pulse los siguientes botones para asociar Firefox con los tipos de archivos manejados por MAF.">
@@ -40,6 +44,7 @@
 <!ENTITY associate.mhtml.label "Crear asociación para las extensiones .mht y .mhtml">
 <!ENTITY associate.mhtml.accesskey "p">
 <!ENTITY associate.uninstall.description "Nota: Las asociaciones creadas no se eliminarán si desinstala MAF o Firefox. Puede administrar sus asociaciones de archivos desde el panel de control de Windows.">
+<!--  Advanced pane  -->
 <!ENTITY pane.advanced.label "Avanzado">
 <!ENTITY temp.caption "Archivos temporales">
 <!ENTITY temp.folder.label "Carpeta temporal:">

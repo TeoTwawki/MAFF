@@ -1,2 +1,3 @@
+<!--  Additional menu items for "Multiple Tab Handler" integration  -->
 <!ENTITY menuitem.saveselectedtabsas.label "Ausgewählten Tab speichern unter...">
 <!ENTITY menuitem.saveselectedtabsas.accesskey.tabselectionmenu "b">

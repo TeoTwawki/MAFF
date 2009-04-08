@@ -1,2 +1,3 @@
+<!--  Additional menu items for "Multiple Tab Handler" integration  -->
 <!ENTITY menuitem.saveselectedtabsas.label "Enregistrer les onglets sélectionnés comme…">
 <!ENTITY menuitem.saveselectedtabsas.accesskey.tabselectionmenu "b">

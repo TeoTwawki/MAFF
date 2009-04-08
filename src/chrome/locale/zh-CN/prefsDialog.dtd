@@ -1,5 +1,7 @@
+<!--  General window controls  -->
 <!ENTITY window.title "配置">
 <!ENTITY browsebutton.label "浏览…">
+<!--  Main pane  -->
 <!ENTITY pane.main.label "主要">
 <!ENTITY open.caption "Open">
 <!ENTITY open.action.grouplabel "在档案被打开时：">
@@ -17,6 +19,7 @@
 <!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
 <!ENTITY save.metadata.extended.accesskey "v">
+<!--  Interface pane  -->
 <!ENTITY pane.interface.label "Interface">
 <!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
@@ -31,6 +34,7 @@
 <!ENTITY menuitem.grouplabel "Show these additional menu items:">
 <!ENTITY menuitem.saveinarchive.label "Save In Archive">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
+<!--  File associations pane. This pane is visible only on Windows.  -->
 <!ENTITY pane.fileassociations.label "File associations">
 <!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
 <!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
@@ -40,6 +44,7 @@
 <!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
 <!ENTITY associate.mhtml.accesskey "a">
 <!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
+<!--  Advanced pane  -->
 <!ENTITY pane.advanced.label "高级">
 <!ENTITY temp.caption "临时文件">
 <!ENTITY temp.folder.label "临时文件夹(T)：">

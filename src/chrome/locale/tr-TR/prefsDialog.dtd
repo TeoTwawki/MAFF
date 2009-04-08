@@ -1,5 +1,7 @@
+<!--  General window controls  -->
 <!ENTITY window.title "Tercihler">
 <!ENTITY browsebutton.label "Tara...">
+<!--  Main pane  -->
 <!ENTITY pane.main.label "Ana">
 <!ENTITY open.caption "Aç">
 <!ENTITY open.action.grouplabel "Bir arşiv açıldığında:">
@@ -17,6 +19,7 @@
 <!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.metadata.extended.label "Genişletilmiş metaveriyi MAFF arşivlerine kaydet">
 <!ENTITY save.metadata.extended.accesskey "v">
+<!--  Interface pane  -->
 <!ENTITY pane.interface.label "Arayüz">
 <!ENTITY menu.caption "Menü">
 <!ENTITY menu.grouplabel "Mozilla Arşiv Biçimi menü ögelerini şunda göster:">
@@ -31,6 +34,7 @@
 <!ENTITY menuitem.grouplabel "Bu ek menü ögelerini göster:">
 <!ENTITY menuitem.saveinarchive.label "Arşive Kaydet">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
+<!--  File associations pane. This pane is visible only on Windows.  -->
 <!ENTITY pane.fileassociations.label "Dosya eşleştirmeleri">
 <!ENTITY associate.windowsonly.description "Bu işlev yalnızca Windows&apos;ta geçerlidir.">
 <!ENTITY associate.buttons.description "Firefox&apos;u MAF tarafından kullanılan belgelerle eşleştirmek için şu tuşlara basın:">
@@ -40,6 +44,7 @@
 <!ENTITY associate.mhtml.label ".mht ve .mhtml eklentileri için eşleştirme oluştur">
 <!ENTITY associate.mhtml.accesskey "a">
 <!ENTITY associate.uninstall.description "Not: Burada oluşturulan belge eşleştirmeleri MAF ya da Firefox kaldırılmadan  silinmeyecektir. Belge eşleştirmelerinizi Windows denetim masasını kullanarak yönetebilirsiniz.">
+<!--  Advanced pane  -->
 <!ENTITY pane.advanced.label "Gelişmiş">
 <!ENTITY temp.caption "Geçici belgeler">
 <!ENTITY temp.folder.label "Geçici klasör:">

@@ -1,11 +1,14 @@
+<!--  Shortcut keys  -->
 <!ENTITY command.browseopenarchives.key "M">
 <!ENTITY command.browseopenarchives.modifiers "alt">
+<!--  Menu items for general Mozilla Archive Format commands  -->
 <!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Parcourir les archives ouvertes…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
 <!ENTITY menuitem.preferences.label "Préférences">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
+<!--  Additional menu items for the "Save As" command  -->
 <!ENTITY menuitem.savetabsas.label "Enregistrer les onglets sous…">
 <!ENTITY menuitem.savetabsas.accesskey.filemenu "n">
 <!ENTITY menuitem.savetabsas.accesskey.toolsmenu "n">
@@ -16,6 +19,7 @@
 <!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "E">
 <!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
 <!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "E">
+<!--  Additional menu items for the "Save In Archive" command  -->
 <!ENTITY menuitem.savepageinarchive.label "Enregistrer la page dans l&apos;archive…">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
