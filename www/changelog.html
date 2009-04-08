@@ -1,6 +1,40 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
   <h2 class="page-header">Changelog for version 0.10</h2>
+  <h3><a name="whatwasnew"></a>What was new in version 0.10?</h3>
+  <p>MAF 0.10.2 had the following user-visible improvements over MAF 0.9.1:</p>
+  <ul>
+    <li>Integration with the
+     <a href="https://addons.mozilla.org/firefox/addon/4838">Multiple Tab
+     Handler</a> extension.</li>
+    <li>Now a single frame can be saved in an archive, and in this case the
+     extended metadata is not included.</li>
+    <li>New preference to use the <code>jar:</code> protocol to access
+     additional pages when opening multi-page MAFF archives.</li>
+    <li>Modified user interface elements:
+      <ul>
+        <li>The default visibility and layout of the MAF menu items has changed,
+         and is now customizable from the preferences dialog.</li>
+        <li>The tab selection dialog displayed on save has changed, and the
+         current tab is now preselected.</li>
+        <li>A single file filter is present for the MHTML file format in the
+         "Save As" dialog, and the default extension is a user preference.</li>
+        <li>The window with the progress bar shown when opening archives does
+         not appear anymore.</li>
+      </ul>
+    </li>
+    <li>Removed elements:
+      <ul>
+        <li>MAF internal save component, superseded by the integrated Save
+         Complete extension.</li>
+      </ul>
+    </li>
+    <li>Bugfixes:
+      <ul>
+        <li>Removed a half-second pause when opening archives.</li>
+      </ul>
+    </li>
+  </ul>
   <h3>Changes from 0.10.0 to 0.10.2</h3>
   <ul>
     <li><b>Change:</b> Now the Save Complete component is faster when saving
@@ -12,7 +46,7 @@
      undefined".</li>
   </ul>
   <h2>Changelog for version 0.9</h2>
-  <h3><a name="whatwasnew"></a>What was new in version 0.9?</h3>
+  <h3>What was new in version 0.9?</h3>
   <p>MAF 0.9.1 had the following user-visible improvements over MAF 0.8.7:</p>
   <ul>
     <li>Integration with the

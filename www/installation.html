@@ -95,34 +95,26 @@
    $maf_latest_fx); ?> has the following user-visible improvements over
    MAF <?php echo $maf_previous_fx; ?>:</p>
   <ul>
-    <li>Integration with the
-     <a href="https://addons.mozilla.org/firefox/addon/4838">Multiple Tab
-     Handler</a> extension.</li>
-    <li>Now a single frame can be saved in an archive, and in this case the
-     extended metadata is not included.</li>
-    <li>New preference to use the <code>jar:</code> protocol to access
-     additional pages when opening multi-page MAFF archives.</li>
-    <li>Modified user interface elements:
+    <li>The integrated
+     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
+     extension has been updated to version <b>1.0.1pre</b>.</li>
+    <li>Improvements in Save Complete 1.0.0:
       <ul>
-        <li>The default visibility and layout of the MAF menu items has changed,
-         and is now customizable from the preferences dialog.</li>
-        <li>The tab selection dialog displayed on save has changed, and the
-         current tab is now preselected.</li>
-        <li>A single file filter is present for the MHTML file format in the
-         "Save As" dialog, and the default extension is a user preference.</li>
-        <li>The window with the progress bar shown when opening archives does
-         not appear anymore.</li>
+        <li>Relative links in the page being saved are now converted to absolute
+         links.</li>
+        <li>Scripts and stylesheets referenced inside Internet Explorer
+         conditional comments are now saved.</li>
+        <li>Fixed some minor parsing bugs.</li>
+        <li>Improved parser performance.</li>
       </ul>
     </li>
-    <li>Removed elements:
+    <li>Improvements in Save Complete 1.0.1pre:
       <ul>
-        <li>MAF internal save component, superseded by the integrated Save
-         Complete extension.</li>
-      </ul>
-    </li>
-    <li>Bugfixes:
-      <ul>
-        <li>Removed a half-second pause when opening archives.</li>
+        <li>The download progress bar does not hang anymore in case of network
+         errors or problems with the page being saved.</li>
+        <li>More detailed error reporting if the download operation fails.</li>
+        <li>If some of the content embedded in the page is not available, the
+         download does not fail anymore, but a warning is reported.</li>
       </ul>
     </li>
   </ul>
