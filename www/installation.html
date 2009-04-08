@@ -3,6 +3,15 @@
   <h2 class="page-header">Installation</h2>
   <div class="maf-download-installation-page">
     <div class="maf-download-box">
+      <?php if ($maf_experimental_fx) { ?>
+      <div class="maf-download-box-contents experimental">
+        <p class="maf-download-name"><a
+         href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_experimental_fx; ?>.0-fx.xpi">Install
+         experimental MAF <?php echo $maf_experimental_fx; ?></a></p>
+        <p class="maf-download-info">For Firefox 3. &nbsp; Experimental. &nbsp;
+         Fast update schedule.</p>
+      </div>
+      <?php } else { ?>
       <div class="maf-download-box-contents">
         <p class="maf-download-name"><a
          href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>.0-fx.xpi">Install
@@ -10,6 +19,7 @@
         <p class="maf-download-info">For Firefox 3. &nbsp; Fast update
          schedule.</p>
       </div>
+      <?php } ?>
     </div>
     <div class="maf-download-tips">
       <div class="maf-download-tips-contents">
@@ -23,6 +33,27 @@
         </ul>
       </div>
     </div>
+    <?php if ($maf_experimental_fx) { ?>
+    <div class="maf-download-afterbox">
+      <div class="maf-download-box">
+        <div class="maf-download-box-contents">
+          <p class="maf-download-name"><a
+           href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>.0-fx.xpi">Install
+           now the latest MAF <?php echo $maf_latest_fx; ?></a></p>
+          <p class="maf-download-info">For Firefox 3. &nbsp; Fast update
+           schedule.</p>
+        </div>
+      </div>
+      <div class="maf-download-tips">
+        <div class="maf-download-tips-contents">
+          <p><b>This is the latest version included in updates.</b></p>
+          <p>It has been tested more extensively, but lacks the
+           <a href="#whatsnew">new features</a> of the experimental
+           version.</p>
+        </div>
+      </div>
+    </div>
+    <?php } ?>
     <div class="maf-download-afterbox">
       <div class="maf-download-box">
         <div class="maf-download-box-contents redirect">
@@ -60,8 +91,9 @@
    <a href="source.html">source code</a> for more information.</p>
 
   <h2><a name="whatsnew"></a>What's new in the latest version?</h2>
-  <p>MAF <?php echo $maf_latest_fx; ?> has the following user-visible
-   improvements over MAF 0.9.1:</p>
+  <p>MAF <?php echo ($maf_experimental_fx ? $maf_experimental_fx :
+   $maf_latest_fx); ?> has the following user-visible improvements over
+   MAF <?php echo $maf_previous_fx; ?>:</p>
   <ul>
     <li>Integration with the
      <a href="https://addons.mozilla.org/firefox/addon/4838">Multiple Tab
@@ -94,7 +126,8 @@
       </ul>
     </li>
   </ul>
-  <p>MAF <?php echo $maf_latest_fx; ?> has the following known issues:</p>
+  <p>MAF <?php echo ($maf_experimental_fx ? $maf_experimental_fx :
+   $maf_latest_fx); ?> has the following known issues:</p>
   <ul>
     <li>If the first entry of an archive is not a web page, but for instance an
      image, it cannot be displayed when opening the archive normally.</li>

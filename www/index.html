@@ -42,12 +42,21 @@
 
     <h2>Download and install</h2>
     <div class="maf-download-box">
+      <?php if ($maf_experimental_fx) { ?>
+      <div class="maf-download-box-contents experimental">
+        <p class="maf-download-name"><a
+         href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_experimental_fx; ?>.0-fx.xpi">Install
+         MAF <?php echo $maf_experimental_fx; ?></a></p>
+        <p class="maf-download-info">For Firefox 3. &nbsp; Experimental.</p>
+      </div>
+      <?php } else { ?>
       <div class="maf-download-box-contents">
         <p class="maf-download-name"><a
          href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>.0-fx.xpi">Install
          MAF <?php echo $maf_latest_fx; ?></a></p>
         <p class="maf-download-info">For Firefox 3. &nbsp; Fast updates.</p>
       </div>
+      <?php } ?>
     </div>
     <div class="maf-download-tips">
       <div class="maf-download-tips-contents">
@@ -62,6 +71,25 @@
         </ul>
       </div>
     </div>
+    <?php if ($maf_experimental_fx) { ?>
+    <div class="maf-download-afterbox">
+      <div class="maf-download-box">
+        <div class="maf-download-box-contents">
+          <p class="maf-download-name"><a
+           href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>.0-fx.xpi">Install
+           MAF <?php echo $maf_latest_fx; ?></a></p>
+          <p class="maf-download-info">For Firefox 3. &nbsp; Fast updates.</p>
+        </div>
+      </div>
+      <div class="maf-download-tips">
+        <div class="maf-download-tips-contents limitwidth">
+          <p>This version has been tested more extensively, but lacks the
+           <a href="installation.html#whatsnew">new features</a> of the
+           experimental version.</p>
+        </div>
+      </div>
+    </div>
+    <?php } ?>
     <p class="maf-download-more maf-download-afterbox">Licensed under the
      <a href="license.html">GNU General Public License</a>.</p>
     <p class="maf-download-more"><a href="installation.html">More downloads and

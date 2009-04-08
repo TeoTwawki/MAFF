@@ -141,6 +141,10 @@ code.maf-file-ext {
   text-align: left;
 }
 
+.maf-download-tips-contents.limitwidth {
+  max-width: 21em;
+}
+
 .maf-download-tips p {
   margin: 0px;
 }
