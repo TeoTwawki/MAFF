@@ -478,7 +478,9 @@ MafMhtDecoderClass.prototype = {
         var name = entry.substring(0, entry.indexOf("="));
         var value = entry.substring(entry.indexOf("=") + 1, entry.length);
         // Remove the quotes
-        value = value.substring(1, value.length - 1);
+        if (value.length > 1 && value[0] == '"' && value[value.length - 1] == '"') {
+          value = value.substring(1, value.length - 1);
+        }
         var record = new headerRecClass(name, value);
         result.push(record);
       }
