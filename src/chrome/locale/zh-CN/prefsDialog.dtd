@@ -3,15 +3,15 @@
 <!ENTITY browsebutton.label "浏览…">
 <!--  Main pane  -->
 <!ENTITY pane.main.label "主要">
-<!ENTITY open.caption "Open">
+<!ENTITY open.caption "打开档案时的操作">
 <!ENTITY open.action.grouplabel "在档案被打开时：">
 <!ENTITY open.action.tabs.label "在新标签页中开启该档">
 <!ENTITY open.action.tabs.accesskey "O">
-<!ENTITY open.action.ask.label "Show list of open archives, and ask for action">
+<!ENTITY open.action.ask.label "显示所开启档案中含有的页面，并询问操作">
 <!ENTITY open.action.ask.accesskey "S">
-<!ENTITY open.action.remember.label "Only add to the list of open archives, showing nothing">
+<!ENTITY open.action.remember.label "仅添加所开启档案中含有的页面至 MAF 后台文档列表，而并不显示它们">
 <!ENTITY open.action.remember.accesskey "n">
-<!ENTITY save.caption "Save">
+<!ENTITY save.caption "储存档案时的操作">
 <!ENTITY save.component.grouplabel "When saving complete web page contents:">
 <!ENTITY save.component.standard.label "Use browser&apos;s standard save system">
 <!ENTITY save.component.standard.accesskey "b">
