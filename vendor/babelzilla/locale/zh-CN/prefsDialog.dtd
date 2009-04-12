@@ -1,9 +1,15 @@
 <!ENTITY window.title "配置">
 <!ENTITY browsebutton.label "浏览…">
 <!ENTITY pane.main.label "主要">
+<!ENTITY open.caption "打开档案时的操作">
 <!ENTITY open.action.grouplabel "在档案被打开时：">
 <!ENTITY open.action.tabs.label "在新标签页中开启该档">
 <!ENTITY open.action.tabs.accesskey "O">
+<!ENTITY open.action.ask.label "显示所开启档案中含有的页面，并询问操作">
+<!ENTITY open.action.ask.accesskey "S">
+<!ENTITY open.action.remember.label "仅添加所开启档案中含有的页面至 MAF 后台文档列表，而并不显示它们">
+<!ENTITY open.action.remember.accesskey "n">
+<!ENTITY save.caption "储存档案时的操作">
 <!ENTITY pane.advanced.label "高级">
 <!ENTITY temp.caption "临时文件">
 <!ENTITY temp.folder.label "临时文件夹(T)：">

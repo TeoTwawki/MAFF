@@ -16,3 +16,11 @@
 <!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "S">
 <!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
 <!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "S">
+<!ENTITY menuitem.savepageinarchive.label "保存页面至档案…">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
+<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
+<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
+<!ENTITY menuitem.saveframeinarchive.label "保存帧（框架页）至档案…">
+<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "h">
+<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "h">
+<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "h">
