@@ -199,20 +199,20 @@ scPageSaver.prototype._extractURIs = function() {
 
     // Process images
     iter = this._doc.evaluate("//img[@src]", this._doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
-    while(e = iter.iterateNext()) {
+    while((e = iter.iterateNext())) {
         this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
     }
 
     // Process script tags
     iter = this._doc.evaluate("//script[@src]", this._doc, null, 0, null);
-    while(e = iter.iterateNext()) {
+    while((e = iter.iterateNext())) {
         this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
     }
 
     if(this._options['saveIframes']) {
         // Only save the html in the iframe - don't process the iframe document
         iter = this._doc.evaluate("//iframe[@src]", this._doc, null, 0, null);
-        while(e = iter.iterateNext()) {
+        while((e = iter.iterateNext())) {
             this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
         }
     }
@@ -220,13 +220,13 @@ scPageSaver.prototype._extractURIs = function() {
     if(this._options['saveObjects']) {
         // Process embed tags
         iter = this._doc.evaluate("//embed[@src]", this._doc, null, 0, null);
-        while(e = iter.iterateNext()) {
+        while((e = iter.iterateNext())) {
             this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
         }
 
         // Process object tags (or at least try to)
         iter = this._doc.evaluate("//object", this._doc, null, 0, null);
-        while(e = iter.iterateNext()) {
+        while((e = iter.iterateNext())) {
             if(e.getAttribute('data')) {
                 this._uris.push(new scPageSaver.scURI(e.getAttribute('data'), this._uri, 'attribute', 'base'));
             }
@@ -234,7 +234,7 @@ scPageSaver.prototype._extractURIs = function() {
             // Find param that references the object's data
             var p = null;
             var pIter = this._doc.evaluate('param', e, null, 0, null);
-            while(p = pIter.iterateNext()) {
+            while((p = pIter.iterateNext())) {
                 var param = p.getAttribute('name');
                 if(param == 'movie' || param == 'src') {
                     this._uris.push(new scPageSaver.scURI(p.getAttribute('value'), this._uri, 'attribute', 'base'));
@@ -246,19 +246,19 @@ scPageSaver.prototype._extractURIs = function() {
 
     // Process input elements with an image type
     iter = this._doc.evaluate("//input[@type='image']", this._doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
-    while(e = iter.iterateNext()) {
+    while((e = iter.iterateNext())) {
         this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
     }
 
     // Process elements which have a background attribute
     iter = this._doc.evaluate("//*[@background]", this._doc, null, 0, null);
-    while(e = iter.iterateNext()) {
+    while((e = iter.iterateNext())) {
         this._uris.push(new scPageSaver.scURI(e.getAttribute('background'), this._uri, 'attribute', 'base'));
     }
 
     // Process IE conditional comments
     iter = this._doc.evaluate("//comment()", this._doc, null, 0, null);
-    while(e = iter.iterateNext()) {
+    while((e = iter.iterateNext())) {
         if(typeof e.data != 'string') continue;
         if(!/^\[if[^\]]+\]>/.test(e.data)) continue; // Check if it starts with [if...]>
 
@@ -279,7 +279,7 @@ scPageSaver.prototype._extractURIs = function() {
 
     // Process elements with a style attribute
     iter = this._doc.evaluate("//*[@style]", this._doc, null, 0, null);
-    while(e = iter.iterateNext()) {
+    while((e = iter.iterateNext())) {
         var cssText = e.getAttribute("style");
         if(!cssText) continue;
 
