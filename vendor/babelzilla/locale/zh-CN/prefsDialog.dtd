@@ -10,6 +10,11 @@
 <!ENTITY open.action.remember.label "仅添加所开启档案中含有的页面至 MAF 后台文档列表，而并不显示它们">
 <!ENTITY open.action.remember.accesskey "n">
 <!ENTITY save.caption "储存档案时的操作">
+<!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.metadata.extended.accesskey "v">
+<!ENTITY pane.interface.label "界面">
+<!ENTITY menu.caption "菜单">
 <!ENTITY pane.advanced.label "高级">
 <!ENTITY temp.caption "临时文件">
 <!ENTITY temp.folder.label "临时文件夹(T)：">
