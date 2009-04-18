@@ -20,8 +20,8 @@
 <!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!--  Interface pane  -->
-<!ENTITY pane.interface.label "Interface">
-<!ENTITY menu.caption "Menu">
+<!ENTITY pane.interface.label "界面">
+<!ENTITY menu.caption "菜单">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
 <!ENTITY menu.file.label "File menu">
 <!ENTITY menu.file.accesskey "F">
