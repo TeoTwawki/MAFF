@@ -204,7 +204,8 @@ DlfRegisterer.prototype = {
     //  and register the DLF for handling it. See also
     //  <https://developer.mozilla.org/En/How_Mozilla_determines_MIME_Types>
     //  (retrieved 2008-11-21).
-    var realMimeType = this._mimeService.getTypeFromExtension(aExtension);
+    var realMimeType = this._getTypeFromExtensionSafely(aExtension,
+     aPossibleMimeType);
     this.addMimeType(realMimeType, aIsRecommended);
     return this;
   },
@@ -223,6 +224,22 @@ DlfRegisterer.prototype = {
          mimeTypeToHandle, this.dlfContractId,
          this._mimeList[mimeTypeToHandle]);
       }
+    }
+  },
+
+  /**
+   * Calls nsIMIMEService.getTypeFromExtension, and if the call fails
+   *  unexpectedly, returns the specified MIME type as a fallback.
+   */
+  _getTypeFromExtensionSafely: function(aExtension, aFallbackMimeType) {
+    try {
+      return this._mimeService.getTypeFromExtension(aExtension);
+    } catch (e if (e instanceof Ci.nsIException &&
+     e.result == Cr.NS_ERROR_NOT_INITIALIZED)) {
+      // The getTypeFromExtension call may throw NS_ERROR_NOT_INITIALIZED
+      //  because of Mozilla bug 484579. In this case, return an arbitrary
+      //  MIME type to mitigate the problem.
+      return aFallbackMimeType;
     }
   },
 
