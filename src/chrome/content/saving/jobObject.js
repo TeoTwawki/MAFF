@@ -264,6 +264,27 @@ Job.prototype = {
   },
 
   /**
+   * Execute the given inner function, and defer operations like disposing of
+   *  job resources until after a callback from a worker object is called,
+   *  unless the function raises an exception.
+   *
+   * The callback may also be called during the execution of the inner function.
+   */
+  _expectAsyncCallback: function(innerFunction, thisObject) {
+    // Defer disposal of this object until a completion callback is called
+    this._asyncWorkStarted();
+    try {
+      innerFunction.apply(thisObject);
+    } catch(e) {
+      // If the function raised an exception, assume that the callback will not
+      //  be called later, and execute any deferred operations immediately
+      this._asyncWorkCompleted();
+      // Forward the exception to the caller
+      throw e;
+    }
+  },
+
+  /**
    * Implementations must call this function after a callback from a worker
    *  object is called, if the callback indicates that the worker has finished.
    *
@@ -271,22 +292,16 @@ Job.prototype = {
    *  job has been canceled meanwhile, the handler function is not called.
    */
   _handleAsyncCallback: function(handlerFunction, thisObject) {
-    this._isWorkingAsynchronously = false;
+    // Indicate that the callback has been called, and perform the deferred
+    //  operations now that the worker objects terminated their execution
+    this._asyncWorkCompleted();
 
-    // If the operation was already canceled or completed
-    if (this.isCompleted) {
-      // We may perform the resource disposal now that the worker objects
-      //  terminated their execution
-      if (this._asyncDisposalRequested) {
-        this.dispose();
-      }
-      // Do not call the callback handler function
-      return;
+    // If the operation was not already canceled or completed
+    if (!this.isCompleted) {
+      // Execute the callback handler. If the handler raises an exception,
+      //  report it and cancel the operation.
+      this._executeAndCancelOnCaughtException(handlerFunction, thisObject);
     }
-
-    // Execute the callback handler. If the handler raises an exception, report
-    //  it and cancel the operation.
-    this._executeAndCancelOnCaughtException(handlerFunction, thisObject);
   },
 
   /**
@@ -318,6 +333,21 @@ Job.prototype = {
    *  true.
    */
   _asyncDisposalRequested: false,
+
+  /**
+   * Indicate that the asynchronous work is completed, and execute the deferred
+   *  operations.
+   */
+  _asyncWorkCompleted: function() {
+    if (this._isWorkingAsynchronously) {
+      this._isWorkingAsynchronously = false;
+
+      // Execute the deferred disposal of resources
+      if (this._asyncDisposalRequested) {
+        this.dispose();
+      }
+    }
+  },
 
   /**
    * Execute the provided function. If the function raises an exception, report
