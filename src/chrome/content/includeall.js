@@ -40,6 +40,12 @@ try {
    "jscomponents/nsMafState.js",
    "jscomponents/nsMafUtil.js",
 
+   // Web archive handling
+   "archiving/maffArchiveObject.js",
+   "archiving/maffArchivePageObject.js",
+   "archiving/zipCreatorObject.js",
+   "archiving/zipDirectoryObject.js",
+
    // "Save Complete" extension integration
    "savecomplete/saveCompleteWrapper.js",
    "savecomplete/saveCompletePersistObject.js",
