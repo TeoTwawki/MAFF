@@ -77,9 +77,11 @@ MafMhtEncoderClass.prototype = {
   encodeTo: function(dest) {
     if (this.filelist.length > 0) {
 
-      if (!dest.exists()) {
-        dest.create(0x00, 0644);
+      if (dest.exists()) {
+        dest.remove(false);
       }
+
+      dest.create(0x00, 0644);
 
       this.i = 0;
       this.boundaryString = "";
