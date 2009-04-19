@@ -113,13 +113,11 @@ SaveContentJob.prototype = {
     this._handleAsyncCallback(function() {
       // Archive using the specified format
       if (this.targetType == "TypeMHTML") {
-        // Add metadata near the saved file
-        new MafArchiverClass(this._document, this._targetDir.path,
-         this.targetBrowser, this._targetLeafName).addMetaData();
         // Save and wait for the callback from the worker object
         this._expectAsyncCallback(function() {
           MafMHTHandler.createArchive(
-           this.targetFile.path, this._targetDir.path, this);
+           this.targetFile.path, this._targetDir.path, this._document,
+            this._targetLeafName, this);
         }, this);
       } else {
         // Create a new MAFF archive, or add to an existing archive
