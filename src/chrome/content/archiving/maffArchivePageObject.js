@@ -69,20 +69,54 @@ MaffArchivePage.prototype = {
   indexLeafName: "",
 
   /**
+   * Document title or description explicitly associated with this page.
+   */
+  title: "",
+
+  /**
+   * String representing the original location this page was saved from.
+   */
+  originalUrl: "",
+
+  /**
+   * Date object representing the time the page was archived.
+   */
+  dateArchived: null,
+
+  /**
+   * String representing the character set selected by the user for rendering
+   *  the page at the time it was archived. This information may be used when
+   *  the archive is opened to override the default character set detected from
+   *  the saved page.
+   */
+  renderingCharacterSet: "",
+
+  /**
+   * Browser object to gather extended metadata from, or null if not available.
+   */
+  browserObjectForMetadata: null,
+
+  /**
    * Sets additional metadata about the page starting from the provided document
-   *  and browser objects. The indexLeafName property must have already been set
-   *  when calling this method.
+   *  and browser objects.
    */
   setMetadataFromDocumentAndBrowser: function(aDocument, aBrowser) {
-    // Create the "index.rdf" file near the main file
-    new MafArchiverClass(aDocument, this.tempDir.path, aBrowser,
-     this.indexLeafName).addMetaData();
+    // Set the properties of this page object appropriately. When saving a page
+    //  already located in an archive, use the metadata from the original page.
+    this.title = aDocument.title || "Unknown";
+    this.originalUrl = MafState.getOriginalURL(aDocument.location.href);
+    this.dateArchived = new Date();
+    this.renderingCharacterSet = aDocument.characterSet;
+    // Store the provided browser object
+    this.browserObjectForMetadata = aBrowser;
   },
 
   /**
    * Stores the page into the archive file.
    */
   save: function() {
+    // Create the "index.rdf" and "history.rdf" files near the main file
+    this._saveMetadata();
     // Prepare the archive for creation or modification
     var creator = new ZipCreator(this.archive.file, this.archive._createNew);
     try {
@@ -93,6 +127,61 @@ MaffArchivePage.prototype = {
       this.archive._createNew = false;
     } finally {
       creator.dispose();
+    }
+  },
+
+  // --- Private methods and properties ---
+
+  /**
+   * Save the metadata of this page to the "index.rdf" and "history.rdf" files
+   *  in the temporary directory.
+   */
+  _saveMetadata: function() {
+    // Set standard metadata for "index.rdf"
+    var indexMetadata = [
+     ["originalurl", this.originalUrl],
+     ["title", this.title],
+     ["archivetime", this.dateArchived],
+     ["indexfilename", this.indexLeafName],
+     ["charset", this.renderingCharacterSet]
+    ];
+
+    var historyMetadata = null;
+    var browser = this.browserObjectForMetadata;
+    if (Prefs.saveMetadataExtended && browser) {
+      // Set extended metadata for "index.rdf"
+      indexMetadata.push(
+       ["textzoom", browser.markupDocumentViewer.textZoom],
+       ["scrollx", browser.contentWindow.scrollX],
+       ["scrolly", browser.contentWindow.scrollY]
+      );
+      // Set extended metadata for "history.rdf"
+      var sessionHistory = browser.sessionHistory;
+      historyMetadata = [
+       ["current", sessionHistory.index],
+       ["noofentries", sessionHistory.count]
+      ];
+      for (var i = 0; i < sessionHistory.count; i++) {
+        historyMetadata.push(
+         ["entry" + i, sessionHistory.getEntryAtIndex(i, false).URI.spec]
+        );
+      }
+    }
+
+    // Write metadata to "index.rdf"
+    var dataSource = MafUtils.createRDF(this.tempDir.path, "index.rdf");
+    indexMetadata.forEach(function(keyValuePair) {
+      MafUtils.addStringData(dataSource, keyValuePair[0], keyValuePair[1]);
+    });
+    dataSource.Flush();
+
+    // Write metadata to "history.rdf" if required
+    if (historyMetadata) {
+      dataSource = MafUtils.createRDF(this.tempDir.path, "history.rdf");
+      historyMetadata.forEach(function(keyValuePair) {
+        MafUtils.addStringData(dataSource, keyValuePair[0], keyValuePair[1]);
+      });
+      dataSource.Flush();
     }
   }
 }
