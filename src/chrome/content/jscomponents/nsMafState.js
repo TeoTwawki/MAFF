@@ -162,18 +162,17 @@ MafStateServiceClass.prototype = {
             // If the metadata exists
             if (indexrdffile.exists()) {
               // Update the variables with the actual metadata info
-              var rdfdataresult = this.getMetaDataFrom(indexrdffile, currArchivePath);
-              if (rdfdataresult["title"] != "") {
-                title = rdfdataresult["title"];
-              }
-              if (rdfdataresult["originalurl"] != "") {
-                originalurl = rdfdataresult["originalurl"];
-              }
-              if (rdfdataresult["archivetime"] != "") {
-                archivetime = rdfdataresult["archivetime"];
-              }
-              if (rdfdataresult["indexfilename"] != "") {
-                indexfilename = rdfdataresult["indexfilename"];
+              var archive = new MaffArchive(null);
+              var page = archive.addPage();
+              page.tempDir = currDir.clone();
+              try {
+                page._loadMetadata();
+                title = page.title;
+                originalurl = page.originalUrl;
+                archivetime = page.dateArchived;
+                indexfilename = page.indexLeafName;
+              } catch (e) {
+                Cu.reportError(e);
               }
             }
 
@@ -252,100 +251,6 @@ MafStateServiceClass.prototype = {
     if (originalurl.indexOf("#") > 0) {
       this.urlToLocalFileMap[originalurl.substring(0,originalurl.indexOf("#"))] = localurl;
     }
-  },
-
-  /**
-   * Tries to read the data from the RDF for a specific file.
-   */
-  getMetaDataFrom: function(sourcefile, resourcePath) {
-    var result = new Array();
-    result["title"] = "Unknown";
-    result["originalurl"] = "Unknown";
-    result["archivetime"] = "Unknown";
-    result["indexfilename"] = "index.html";
-
-
-    var mdatasource;
-    // If loading the data source is a problem, we've probably loaded it already
-    try {
-      mdatasource = Components.classes["@mozilla.org/rdf/datasource;1?name=xml-datasource"]
-                       .createInstance(Components.interfaces.nsIRDFRemoteDataSource);
-      mdatasource.Init(MafUtils.getURI(sourcefile.nsIFile));
-      mdatasource.Refresh(true);
-      mdatasource.QueryInterface(Components.interfaces.nsIRDFDataSource);
-    } catch(e) {
-      mdatasource = gRDFService.GetDataSource(MafUtils.getURI(sourcefile.nsIFile));
-    }
-
-
-    try {
-      // This archive's unique archive URL resource
-      var rootSubject = gRDFService.GetResource("urn:root");
-
-      // Get the title
-      var predicate = gRDFService.GetResource(MAFNamespace + "title");
-
-      var titletarget = mdatasource.GetTarget(rootSubject, predicate, true);
-      titletarget = titletarget.QueryInterface(Components.interfaces.nsIRDFResource);
-      result["title"] = titletarget.Value;
-      if (resourcePath.length < result["title"].length) {
-        // If the resource is in the result, remove it
-        if (result["title"].substring(0, resourcePath.length) == resourcePath) {
-          result["title"] = result["title"].substring(resourcePath.length, result["title"].length);
-        }
-      }
-
-      // Convert the title to unicode
-      // Bug ref#: 8897
-      var oConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-                        .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-      oConverter.charset = "UTF-8";
-      result["title"] = oConverter.ConvertToUnicode(result["title"]);
-
-      // Get the original url
-      predicate = gRDFService.GetResource(MAFNamespace + "originalurl");
-
-      var originalurltarget = mdatasource.GetTarget(rootSubject, predicate, true);
-      originalurltarget = originalurltarget.QueryInterface(Components.interfaces.nsIRDFResource);
-      result["originalurl"] = originalurltarget.Value;
-      if (resourcePath.length < result["originalurl"].length) {
-        // If the resource is in the result, remove it
-        if (result["originalurl"].substring(0, resourcePath.length) == resourcePath) {
-          result["originalurl"] = result["originalurl"].substring(resourcePath.length, result["originalurl"].length);
-        }
-      }
-
-      // Get the archive time
-      predicate = gRDFService.GetResource(MAFNamespace + "archivetime");
-
-      var archivetimetarget = mdatasource.GetTarget(rootSubject, predicate, true);
-      archivetimetarget = archivetimetarget.QueryInterface(Components.interfaces.nsIRDFResource);
-      result["archivetime"] = archivetimetarget.Value;
-      if (resourcePath.length < result["archivetime"].length) {
-        // If the resource is in the result, remove it
-        if (result["archivetime"].substring(0, resourcePath.length) == resourcePath) {
-          result["archivetime"] = result["archivetime"].substring(resourcePath.length, result["archivetime"].length);
-        }
-      }
-
-      // Get the index file name
-      predicate = gRDFService.GetResource(MAFNamespace + "indexfilename");
-
-      var indexfilenametarget = mdatasource.GetTarget(rootSubject, predicate, true);
-      indexfilenametarget = indexfilenametarget.QueryInterface(Components.interfaces.nsIRDFResource);
-      result["indexfilename"] = indexfilenametarget.Value;
-      if (resourcePath.length < result["indexfilename"].length) {
-        // If the resource is in the result, remove it
-        if (result["indexfilename"].substring(0, resourcePath.length) == resourcePath) {
-          result["indexfilename"] = result["indexfilename"].substring(resourcePath.length, result["indexfilename"].length);
-        }
-      }
-
-    } catch (e) {
-      mafdebug(e);
-    }
-
-    return result;
   },
 
   isArchiveURL: function(url) {
