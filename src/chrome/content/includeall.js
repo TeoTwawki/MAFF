@@ -42,6 +42,7 @@ try {
    // Web archive handling
    "archiving/maffArchiveObject.js",
    "archiving/maffArchivePageObject.js",
+   "archiving/maffDataSourceObject.js",
    "archiving/zipCreatorObject.js",
    "archiving/zipDirectoryObject.js",
 
