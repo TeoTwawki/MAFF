@@ -133,7 +133,28 @@ MaffArchivePage.prototype = {
   // --- Private methods and properties ---
 
   /**
-   * Save the metadata of this page to the "index.rdf" and "history.rdf" files
+   * Loads the metadata of this page from the "index.rdf" file in the temporary
+   *  directory.
+   */
+  _loadMetadata: function() {
+    var ds = new MaffDataSource();
+    var res = ds.resources;
+
+    // Load the metadata from the "index.rdf" file
+    var indexFile = this.tempDir.clone();
+    indexFile.append("index.rdf");
+    ds.loadFromFile(indexFile);
+
+    // Store the metadata in this object, using defaults for missing entries
+    this.originalUrl = ds.getMafProperty(res.originalUrl) || "Unknown";
+    this.title = ds.getMafProperty(res.title) || "Unknown";
+    this.dateArchived = ds.getMafProperty(res.archiveTime) || "Unknown";
+    this.indexLeafName = ds.getMafProperty(res.indexFileName) || "index.html";
+    this.renderingCharacterSet = ds.getMafProperty(res.charset);
+  },
+
+  /**
+   * Saves the metadata of this page to the "index.rdf" and "history.rdf" files
    *  in the temporary directory.
    */
   _saveMetadata: function() {
@@ -168,20 +189,28 @@ MaffArchivePage.prototype = {
       }
     }
 
-    // Write metadata to "index.rdf"
-    var dataSource = MafUtils.createRDF(this.tempDir.path, "index.rdf");
-    indexMetadata.forEach(function(keyValuePair) {
-      MafUtils.addStringData(dataSource, keyValuePair[0], keyValuePair[1]);
-    });
-    dataSource.Flush();
-
-    // Write metadata to "history.rdf" if required
+    // Write the metadata to the required files
+    this._savePropertiesToFile(indexMetadata, "index.rdf")
     if (historyMetadata) {
-      dataSource = MafUtils.createRDF(this.tempDir.path, "history.rdf");
-      historyMetadata.forEach(function(keyValuePair) {
-        MafUtils.addStringData(dataSource, keyValuePair[0], keyValuePair[1]);
-      });
-      dataSource.Flush();
+      this._savePropertiesToFile(historyMetadata, "history.rdf")
     }
+  },
+
+  /**
+   * Save the provided metadata to the file with the given name in the temporary
+   *  directory.
+   */
+  _savePropertiesToFile: function(aPropertyArray, aFileName) {
+    // Create a new data source for writing
+    ds = new MaffDataSource();
+    ds.init();
+    // Set all the properties in the given order
+    aPropertyArray.forEach(function([propertyname, value]) {
+      ds.setMafProperty(ds.resourceForProperty(propertyname), value);
+    });
+    // Actually save the metadata to the file with the provided name
+    var destFile = this.tempDir.clone();
+    destFile.append(aFileName);
+    ds.saveToFile(destFile);
   }
 }
