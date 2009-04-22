@@ -35,6 +35,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+// Import XPCOMUtils to generate the QueryInterface functions
+Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+
 /**
  * Provides an RDF data source that represents the tabs available in browser
  *  windows. For each tab, a selection state is available, and the list of
