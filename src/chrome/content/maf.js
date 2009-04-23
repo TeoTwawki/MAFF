@@ -65,7 +65,7 @@ maf.prototype = {
   /**
    * Extract the archive using the specified program
    */
-  extractFromArchive: function(program, archivefile, destpath) {
+  extractFromArchive: function(program, archivefile, destpath, mhtmlPageMetadata) {
     MafUtils.createDir(destpath);
     if (program == "TypeMHTML") {
 
@@ -74,7 +74,7 @@ maf.prototype = {
 
       var realDestPath = MafUtils.appendToDir(destpath, folderNumber);
 
-      MafMHTHandler.extractArchive(archivefile, realDestPath);
+      MafMHTHandler.extractArchive(archivefile, realDestPath, mhtmlPageMetadata);
     } else {
       var oArchivefile = Components.classes["@mozilla.org/file/local;1"]
                              .createInstance(Components.interfaces.nsILocalFile);
@@ -136,14 +136,16 @@ maf.prototype = {
 
     var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random()*1000);
 
+    var mhtmlPageMetadata = {};
+
     MafUtils.createDir(tempPath);
     this.extractFromArchive(scriptPath, archivePath,
-     MafUtils.appendToDir(tempPath, folderNumber));
+     MafUtils.appendToDir(tempPath, folderNumber), mhtmlPageMetadata);
 
     var count = {};
     var archiveLocalURLs = {};
 
-    MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs);
+    MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs, mhtmlPageMetadata);
 
     if (Prefs.openUseJarProtocol && scriptPath == "TypeMAFF") {
       archiveLocalURLs.value = archiveLocalURLs.value.map(function(url) {

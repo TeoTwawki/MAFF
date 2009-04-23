@@ -49,15 +49,11 @@ function MafMhtHandlerServiceClass() {
 
 MafMhtHandlerServiceClass.prototype = {
 
-  extractArchive: function(archivefile, destpath) {
+  extractArchive: function(archivefile, destpath, datasource) {
     var end;
 
     // MafUtil service - Create destpath
     MafUtils.createDir(destpath);
-
-    // Create index.rdf in destpath
-    var datasource = MafUtils.createRDF(destpath, "index.rdf");
-    datasource.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
 
     try {
 
@@ -390,8 +386,8 @@ MafMhtHandlerServiceClass.prototype = {
       }
     }
 
-    this._updateMetaData(datasource, "title", subject);
-    this._updateMetaData(datasource, "archivetime", dateTimeArchived);
+    datasource.title = subject;
+    datasource.dateArchived = dateTimeArchived;
   },
 
   createArchive: function(archivefile, sourcepath, document, indexFilename, mafeventlistener) {
@@ -507,20 +503,6 @@ MafMhtHandlerServiceClass.prototype = {
     }
 
     return result;
-  },
-
-  /**
-   * Adds meta data gathered from the MHT to the RDF datasource used by MAF
-   *   Url = originalurl
-   *   Title = title
-   *   Date/Time archived = archivetime
-   *   Index file = indexfilename
-   */
-  _updateMetaData: function(datasource, fieldname, fieldvalue) {
-    MafUtils.addStringData(datasource, fieldname, fieldvalue);
-
-    // Write changes to physical file
-    datasource.Flush();
   }
 };
 
@@ -567,13 +549,8 @@ extractContentHandlerClass.prototype = {
         this.filename = "index.html";
         extensionType = ".html";
       }
-      this.handler._updateMetaData(this.datasource, "indexfilename", this.filename);
-
-      if (contentLocation != "") {
-        this.handler._updateMetaData(this.datasource, "originalurl", contentLocation);
-      } else {
-        this.handler._updateMetaData(this.datasource, "originalurl", "Unknown");
-      }
+      this.datasource.indexLeafName = this.filename;
+      this.datasource.originalUrl = contentLocation || "Unknown";
     } else {
       // We need to generate a filename
 

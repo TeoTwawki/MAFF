@@ -24,6 +24,8 @@
 
 // Provides MAF State service
 
+var MAFNamespace = "http://maf.mozdev.org/metadata/rdf#";
+
 var gRDFService = null;
 var gRDFCService = null;
 var gNETIOService = null;
@@ -83,7 +85,7 @@ MafStateServiceClass.prototype = {
   /**
    * Add archive file info to the state.
    */
-  addArchiveInfo: function(tempPath, foldernum, archivePath, count, localUrls) {
+  addArchiveInfo: function(tempPath, foldernum, archivePath, count, localUrls, mhtmlPageMetadata) {
     this.openArchives[MafUtils.getURIFromFilename(archivePath)] = MafUtils.appendToDir(tempPath, foldernum);
 
     this.noOfArchives++;
@@ -94,7 +96,7 @@ MafStateServiceClass.prototype = {
     archive1Sequence = gRDFCService.MakeSeq(this.datasource, archive1Subject);
 
     localUrls.value = this._addArchivePagesToDatasource(tempPath, foldernum, archiveRootSubjectStr, archive1Sequence,
-                                                         MafUtils.getURIFromFilename(archivePath));
+                                                         MafUtils.getURIFromFilename(archivePath), mhtmlPageMetadata);
     count.value = localUrls.value.length;
 
     var archiveRootSubject = gRDFService.GetResource(archiveRootSubjectStr);
@@ -118,7 +120,7 @@ MafStateServiceClass.prototype = {
   /**
    * For each saved page, there's an RDF file, process it to get the information.
    */
-  _addArchivePagesToDatasource: function(temp, expandedArchiveRoot, archiveSubjectRoot, archiveSequence, archiveUri) {
+  _addArchivePagesToDatasource: function(temp, expandedArchiveRoot, archiveSubjectRoot, archiveSequence, archiveUri, mhtmlPageMetadata) {
     try {
 
       var localUrls = new Array();
@@ -135,8 +137,6 @@ MafStateServiceClass.prototype = {
       if (oDir.exists() && oDir.isDirectory()) {
         var entries = oDir.directoryEntries;
 
-        var dirList = new Array();
-
         // For each folder in the expanded archive root
         while (entries.hasMoreElements()) {
 
@@ -147,39 +147,42 @@ MafStateServiceClass.prototype = {
             pageNo++;
             var currArchivePath = MafUtils.getURI(currDir.nsIFile);
 
-            dirList[dirList.length] = [currArchivePath, currDir.path]
-
-            var indexrdffile = Components.classes["@mozilla.org/file/local;1"]
-                                  .createInstance(Components.interfaces.nsILocalFile);
-            indexrdffile.initWithPath(currDir.path);
-            indexrdffile.append("index.rdf");
-
             var title = "Page " + pageNo;
             var originalurl = "Unknown";
             var archivetime = "Unknown";
             var indexfilename = "index.html";
 
-            // If the metadata exists
-            if (indexrdffile.exists()) {
-              // Update the variables with the actual metadata info
-              var archive = new MaffArchive(null);
-              var page = archive.addPage();
-              page.tempDir = currDir.clone();
-              try {
-                page._loadMetadata();
-                title = page.title;
-                originalurl = page.originalUrl;
-                archivetime = page.dateArchived;
-                indexfilename = page.indexLeafName;
-              } catch (e) {
-                Cu.reportError(e);
-              }
-            }
-
             // If not mht
             if (!isMHTArchive) {
+              var indexrdffile = Components.classes["@mozilla.org/file/local;1"]
+                                    .createInstance(Components.interfaces.nsILocalFile);
+              indexrdffile.initWithPath(currDir.path);
+              indexrdffile.append("index.rdf");
+
+              // If the metadata exists
+              if (indexrdffile.exists()) {
+                // Update the variables with the actual metadata info
+                var archive = new MaffArchive(null);
+                var page = archive.addPage();
+                page.tempDir = currDir.clone();
+                try {
+                  page._loadMetadata();
+                  title = page.title;
+                  originalurl = page.originalUrl;
+                  archivetime = page.dateArchived;
+                  indexfilename = page.indexLeafName;
+                } catch (e) {
+                  Cu.reportError(e);
+                }
+              }
+
               var archiveFilePart = currDir.leafName + "/" + indexfilename;
             } else {
+              title = mhtmlPageMetadata.title;
+              originalurl = mhtmlPageMetadata.originalUrl;
+              archivetime = mhtmlPageMetadata.dateArchived;
+              indexfilename = mhtmlPageMetadata.indexLeafName;
+
               var archiveFilePart = "/" + indexfilename;
             }
 

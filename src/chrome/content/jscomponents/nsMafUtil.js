@@ -24,31 +24,7 @@
 
 // Provides MAF Util service
 
-const MAFNamespaceId = "MAF";
-const MAFNamespace = "http://maf.mozdev.org/metadata/rdf#";
-
-const MAFRDFTemplate = '<?xml version="1.0"?>\n' +
-  '<RDF:RDF xmlns:'+ MAFNamespaceId +'="'+ MAFNamespace +'"\n' +
-  '     xmlns:NC="http://home.netscape.com/NC-rdf#"\n' +
-  '     xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n' +
-  '  <RDF:Description about="urn:root">\n'+
-  '  </RDF:Description>\n' +
-  '</RDF:RDF>\n';
-
-var gRDFService = null;
-var gRDFCService = null;
-
 function GetMafUtilServiceClass() {
-  if (gRDFService == null) {
-    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
-                     .getService(Components.interfaces.nsIRDFService);
-  }
-
-  if (gRDFCService == null) {
-    gRDFCService = Components.classes["@mozilla.org/rdf/container-utils;1"]
-                     .getService(Components.interfaces.nsIRDFContainerUtils);
-  }
-
   if (!sharedData.MafUtilService) {
     sharedData.MafUtilService = new MafUtilServiceClass();
   }
@@ -272,45 +248,6 @@ MafUtilServiceClass.prototype = {
   },
 
   /**
-   * Create RDF file based on template.
-   */
-  createRDF: function(path, filename) {
-    var dir = Components.classes["@mozilla.org/file/local;1"]
-                 .createInstance(Components.interfaces.nsILocalFile);
-    dir.initWithPath(path);
-    dir.append(filename);
-
-    try {
-      var oFile = Components.classes["@mozilla.org/file/local;1"]
-                     .createInstance(Components.interfaces.nsILocalFile);
-      oFile.initWithPath(dir.path);
-      if (!oFile.exists()) {
-        oFile.create(0x00, 0644);
-      }
-    } catch (e) {
-      mafdebug(e);
-    }
-
-    try {
-      var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                          .createInstance(Components.interfaces.nsIFileOutputStream);
-      oTransport.init( oFile, 0x04 | 0x08 | 0x10, 064, 0 );
-      oTransport.write(MAFRDFTemplate, MAFRDFTemplate.length);
-      oTransport.close();
-    } catch (e) {
-      mafdebug(e);
-    }
-
-    // Load a remote data source
-    var datasource = Components.classes["@mozilla.org/rdf/datasource;1?name=xml-datasource"]
-                        .createInstance(Components.interfaces.nsIRDFRemoteDataSource);
-    datasource.Init(this.getURI(oFile.nsIFile));
-    datasource.Refresh(true);
-
-    return datasource;
-  },
-
-  /**
    * Get the URL of the local file specified.
    */
   getURI: function(nsIFile) {
@@ -328,24 +265,6 @@ MafUtilServiceClass.prototype = {
                    .createInstance(Components.interfaces.nsILocalFile);
     oFile.initWithPath(filename);
     return this.getURI(oFile.nsIFile);
-  },
-
-  /**
-   * Add string data to the data source.
-   */
-  addStringData: function(datasource, name, value) {
-    try {
-    var rootSubject = gRDFService.GetResource("urn:root");
-    var predicate = gRDFService.GetResource(MAFNamespace + name);
-    var object = gRDFService.GetResource(value);
-
-    // Make sure we have an interface that we can assert to
-    modDataSource = datasource.QueryInterface(Components.interfaces.nsIRDFDataSource);
-
-    modDataSource.Assert(rootSubject, predicate, object, true);
-    } catch(e) {
-      mafdebug(e);
-    }
   },
 
   /**
