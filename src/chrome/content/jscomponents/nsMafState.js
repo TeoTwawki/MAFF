@@ -147,34 +147,23 @@ MafStateServiceClass.prototype = {
             pageNo++;
             var currArchivePath = MafUtils.getURI(currDir.nsIFile);
 
-            var title = "Page " + pageNo;
-            var originalurl = "Unknown";
-            var archivetime = "Unknown";
-            var indexfilename = "index.html";
+            var title, originalurl, archivetime, indexfilename;
 
             // If not mht
             if (!isMHTArchive) {
-              var indexrdffile = Components.classes["@mozilla.org/file/local;1"]
-                                    .createInstance(Components.interfaces.nsILocalFile);
-              indexrdffile.initWithPath(currDir.path);
-              indexrdffile.append("index.rdf");
-
-              // If the metadata exists
-              if (indexrdffile.exists()) {
-                // Update the variables with the actual metadata info
-                var archive = new MaffArchive(null);
-                var page = archive.addPage();
-                page.tempDir = currDir.clone();
-                try {
-                  page._loadMetadata();
-                  title = page.title;
-                  originalurl = page.originalUrl;
-                  archivetime = page.dateArchived;
-                  indexfilename = page.indexLeafName;
-                } catch (e) {
-                  Cu.reportError(e);
-                }
+              var archive = new MaffArchive(null);
+              var page = archive.addPage();
+              page.tempDir = currDir.clone();
+              try {
+                page._loadMetadata();
+              } catch (e) {
+                Cu.reportError(e);
               }
+
+              title = page.title || ("Page " + pageNo);
+              originalurl = page.originalUrl || "Unknown";
+              archivetime = page.dateArchived || "Unknown";
+              indexfilename = page.indexLeafName || "index.html";
 
               var archiveFilePart = currDir.leafName + "/" + indexfilename;
             } else {

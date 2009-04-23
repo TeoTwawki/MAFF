@@ -140,15 +140,19 @@ MaffArchivePage.prototype = {
     var ds = new MaffDataSource();
     var res = ds.resources;
 
-    // Load the metadata from the "index.rdf" file
+    // Get a reference to the "index.rdf" file
     var indexFile = this.tempDir.clone();
     indexFile.append("index.rdf");
-    ds.loadFromFile(indexFile);
+
+    // Load the metadata only if the file exists, otherwise use defaults
+    if (indexFile.exists()) {
+      ds.loadFromFile(indexFile);
+    }
 
     // Store the metadata in this object, using defaults for missing entries
-    this.originalUrl = ds.getMafProperty(res.originalUrl) || "Unknown";
-    this.title = ds.getMafProperty(res.title) || "Unknown";
-    this.dateArchived = ds.getMafProperty(res.archiveTime) || "Unknown";
+    this.originalUrl = ds.getMafProperty(res.originalUrl);
+    this.title = ds.getMafProperty(res.title);
+    this.dateArchived = ds.getMafProperty(res.archiveTime);
     this.indexLeafName = ds.getMafProperty(res.indexFileName) || "index.html";
     this.renderingCharacterSet = ds.getMafProperty(res.charset);
   },
