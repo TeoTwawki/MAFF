@@ -82,7 +82,60 @@ MaffArchive.prototype = {
     this._createNew = false;
   },
 
+  /**
+   * Extracts all the pages from the archive file.
+   */
+  extractAll: function() {
+    // Open the archive file for reading
+    var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].
+     createInstance(Ci.nsIZipReader);
+    zipReader.open(this.file);
+    try {
+      // Enumerate all the entries in the archive. ZIP entries are ordinary
+      //  strings representing the path of the file or directory, separated by
+      //  a forward slash ("/"). Directory entries end with a forward slash.
+      var zipEntries = zipReader.findEntries(null);
+      while (zipEntries.hasMore()) {
+        var zipEntry = zipEntries.getNext();
+
+        // Create a new page object for every first-level folder in the archive.
+        //  Since synthetic directory entries are created by the ZIP reader if
+        //  they are not explicitly stored in the archive, all the pages in the
+        //  archive will be detected.
+        if (/^[^/]+\/$/.test(zipEntry)) {
+          // Add the page and set the temporary directory name
+          var newPage = this.addPage();
+          newPage.tempDir = this._tempDir.clone();
+          newPage.tempDir.append(zipEntry.slice(0, -1));
+        }
+
+        // If this is a file entry
+        if (zipEntry.slice(-1) != "/") {
+          // Find the file whose path corresponds to the ZIP entry
+          var destFile = Cc["@mozilla.org/file/local;1"].
+           createInstance(Ci.nsILocalFile);
+          destFile.setRelativeDescriptor(this._tempDir, zipEntry);
+          // Ensure that the ancestors exist
+          if (!destFile.parent.exists()) {
+            destFile.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
+          }
+          // Extract the file in the temporary directory
+          zipReader.extract(zipEntry, destFile);
+        }
+      }
+    } finally {
+      // Close the file when extraction is finished or in case of exception
+      zipReader.close();
+    }
+  },
+
   // --- Private methods and properties ---
+
+  /**
+   * nsIFile representing a temporary directory whose subdirectories will
+   *  contain the expanded contents of the archived pages.
+   */
+  _tempDir: null,
 
   /**
    * Indicates that the archive file should be created from scratch. If false,

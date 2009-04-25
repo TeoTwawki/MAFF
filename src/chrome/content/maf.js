@@ -83,41 +83,10 @@ maf.prototype = {
       var oDestpath = Components.classes["@mozilla.org/file/local;1"]
                              .createInstance(Components.interfaces.nsILocalFile);
       oDestpath.initWithPath(destpath);
-          
-      if (!oDestpath.exists() || !oDestpath.isDirectory()) {
-        oDestpath.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
-      }
-      
-      var zipReader = Components.classes["@mozilla.org/libjar/zip-reader;1"]
-                        .createInstance(Components.interfaces.nsIZipReader);
-      zipReader.open(oArchivefile);
 
-      var it = zipReader.findEntries("*");
-      while (it.hasMore()) {
-      	entryname = it.getNext();
-        var entry = zipReader.getEntry(entryname);
-        entry = entry.QueryInterface(Components.interfaces.nsIZipEntry);	
-
-        var oDestpathentry = Components.classes["@mozilla.org/file/local;1"]
-                          .createInstance(Components.interfaces.nsILocalFile);
-        oDestpathentry.initWithPath(destpath);
-        oDestpathentry.setRelativeDescriptor(oDestpath, entryname);
-        
-        if (Maf_String_endsWith(entryname, "/")) {
-          // Folder
-          //alert("Extracting " + entryname);
-          if (!oDestpathentry.exists() || !oDestpathentry.isDirectory()) {
-            oDestpathentry.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
-          }          
-        } else {
-          //alert("Extracting " + entryname);
-          if (!oDestpathentry.parent.exists() || !oDestpathentry.parent.isDirectory()) {
-            oDestpathentry.parent.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 511);
-          }
-          zipReader.extract(entryname, oDestpathentry);        
-        }
-      }
-      zipReader.close();
+      var archive = new MaffArchive(oArchivefile);
+      archive._tempDir = oDestpath;
+      archive.extractAll();
     }
   },
 
