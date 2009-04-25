@@ -63,59 +63,38 @@ function maf() {
 maf.prototype = {
 
   /**
-   * Extract the archive using the specified program
-   */
-  extractFromArchive: function(program, archivefile, destpath, mhtmlPageMetadata) {
-    MafUtils.createDir(destpath);
-    if (program == "TypeMHTML") {
-
-      var dateTimeExpanded = new Date();
-      var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random() * 1000);
-
-      var realDestPath = MafUtils.appendToDir(destpath, folderNumber);
-
-      MafMHTHandler.extractArchive(archivefile, realDestPath, mhtmlPageMetadata);
-    } else {
-      var oArchivefile = Components.classes["@mozilla.org/file/local;1"]
-                             .createInstance(Components.interfaces.nsILocalFile);
-      oArchivefile.initWithPath(archivefile);
-
-      var oDestpath = Components.classes["@mozilla.org/file/local;1"]
-                             .createInstance(Components.interfaces.nsILocalFile);
-      oDestpath.initWithPath(destpath);
-
-      var archive = new MaffArchive(oArchivefile);
-      archive._tempDir = oDestpath;
-      archive.extractAll();
-    }
-  },
-
-  /**
    * Open a MAF archive and add the meta-data to the global state
    */
-  openFromArchive: function(scriptPath, archivePath, returnFirstItem) {
-    var tempPath = Prefs.tempFolder;
-
+  openFromArchive: function(scriptPath, archiveFile, returnFirstItem) {
     if (!scriptPath) {
       // Determine the format to use (MAF or MHT) from the file name
-      scriptPath = FileFilters.scriptPathFromFilePath(archivePath);
+      scriptPath = FileFilters.scriptPathFromFilePath(archiveFile.path);
     }
 
-    var dateTimeExpanded = new Date();
+    // Determine the name of the directory where the archive will be extracted
+    var dir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+    dir.initWithPath(Prefs.tempFolder);
+    dir.append(new Date().valueOf() + "_" + Math.floor(Math.random() * 1000));
 
-    var folderNumber = dateTimeExpanded.valueOf() + "_" + Math.floor(Math.random()*1000);
+    // Extract the archive
+    var archive = new MaffArchive(archiveFile);
+    if (scriptPath == "TypeMHTML") {
+      archive.type = "TypeMHTML";
+      var page = archive.addPage();
+      page.tempDir = dir;
+      MafMHTHandler.extractArchive(archiveFile.path, dir.path, page);
+    } else {
+      archive._tempDir = dir;
+      archive.extractAll();
+    }
 
-    var mhtmlPageMetadata = {};
-
-    MafUtils.createDir(tempPath);
-    this.extractFromArchive(scriptPath, archivePath,
-     MafUtils.appendToDir(tempPath, folderNumber), mhtmlPageMetadata);
-
+    // Add the metadata to the state object
     var count = {};
     var archiveLocalURLs = {};
 
-    MafState.addArchiveInfo(tempPath, folderNumber, archivePath, count, archiveLocalURLs, mhtmlPageMetadata);
+    MafState.addArchiveInfo(archive, count, archiveLocalURLs);
 
+    // Execute the open action
     if (Prefs.openUseJarProtocol && scriptPath == "TypeMAFF") {
       archiveLocalURLs.value = archiveLocalURLs.value.map(function(url) {
         return MafState.localFileToMafUrlMap[url];

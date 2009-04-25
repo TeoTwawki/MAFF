@@ -131,14 +131,14 @@ MafDocumentLoaderFactory.prototype = {
       throw Cr.NS_ERROR_NOT_IMPLEMENTED;
 
     // Currently we can only open MAF archives from "file://" URLs.
-    var localFilePath = aChannel.URI.QueryInterface(Ci.nsIFileURL).file.path;
+    var localFile = aChannel.URI.QueryInterface(Ci.nsIFileURL).file;
 
     // Extract the archive, and store the URI of the first page. Other pages are
     //  opened in other tabs at this point, if required. Note: there is
     //  currently no mechanism in place to avoid extracting the archive or
     //  opening the other tabs multiple times if the original page is refreshed.
     var contentURISpec = sharedData.mafObjectOfCurrentWindow.openFromArchive(
-     null, localFilePath, true);
+     null, localFile, true);
     // If no data is available or should be shown, display an empty page
     if (!contentURISpec) {
       contentURISpec = "about:blank";

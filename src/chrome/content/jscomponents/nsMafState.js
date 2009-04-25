@@ -67,9 +67,6 @@ function MafStateServiceClass() {
 }
 
 MafStateServiceClass.prototype = {
-  /** A list of open archives. */
-  openArchives: new Array(),
-
   /** A count of the number of open archives. */
   noOfArchives: 0,
 
@@ -85,9 +82,7 @@ MafStateServiceClass.prototype = {
   /**
    * Add archive file info to the state.
    */
-  addArchiveInfo: function(tempPath, foldernum, archivePath, count, localUrls, mhtmlPageMetadata) {
-    this.openArchives[MafUtils.getURIFromFilename(archivePath)] = MafUtils.appendToDir(tempPath, foldernum);
-
+  addArchiveInfo: function(archive, count, localUrls) {
     this.noOfArchives++;
 
     var archiveRootSubjectStr = "http://maf.mozdev.org/metadata/rdf/archive/" + this.noOfArchives + "/";
@@ -95,8 +90,8 @@ MafStateServiceClass.prototype = {
     archive1Subject = gRDFService.GetResource(archiveRootSubjectStr);
     archive1Sequence = gRDFCService.MakeSeq(this.datasource, archive1Subject);
 
-    localUrls.value = this._addArchivePagesToDatasource(tempPath, foldernum, archiveRootSubjectStr, archive1Sequence,
-                                                         MafUtils.getURIFromFilename(archivePath), mhtmlPageMetadata);
+    localUrls.value = this._addArchivePagesToDatasource(archiveRootSubjectStr, archive1Sequence,
+                                                         MafUtils.getURIFromFilename(archive.file.path), archive);
     count.value = localUrls.value.length;
 
     var archiveRootSubject = gRDFService.GetResource(archiveRootSubjectStr);
@@ -106,7 +101,7 @@ MafStateServiceClass.prototype = {
     this.datasource.Assert(archiveRootSubject, archivePredicate, archiveObject, true);
 
     archivePredicate = gRDFService.GetResource(MAFNamespace + "localurl");
-    archiveObject = gRDFService.GetResource(archivePath);
+    archiveObject = gRDFService.GetResource(archive.file.path);
 
     this.datasource.Assert(archiveRootSubject, archivePredicate, archiveObject, true);
 
@@ -120,82 +115,38 @@ MafStateServiceClass.prototype = {
   /**
    * For each saved page, there's an RDF file, process it to get the information.
    */
-  _addArchivePagesToDatasource: function(temp, expandedArchiveRoot, archiveSubjectRoot, archiveSequence, archiveUri, mhtmlPageMetadata) {
-    try {
-
-      var localUrls = new Array();
-
-      var pageNo = 1;
-
-      var oDir = Components.classes["@mozilla.org/file/local;1"]
-                     .createInstance(Components.interfaces.nsILocalFile);
-      oDir.initWithPath(MafUtils.appendToDir(temp, expandedArchiveRoot));
-
-      var isMHTArchive =
-       (FileFilters.scriptPathFromFilePath(archiveUri) == "TypeMHTML");
-
-      if (oDir.exists() && oDir.isDirectory()) {
-        var entries = oDir.directoryEntries;
-
-        // For each folder in the expanded archive root
-        while (entries.hasMoreElements()) {
-
-          var currDir = entries.getNext();
-          currDir.QueryInterface(Components.interfaces.nsILocalFile);
-
-          if (currDir.isDirectory()) {
-            pageNo++;
-            var currArchivePath = MafUtils.getURI(currDir.nsIFile);
-
-            var title, originalurl, archivetime, indexfilename;
-
-            // If not mht
-            if (!isMHTArchive) {
-              var archive = new MaffArchive(null);
-              var page = archive.addPage();
-              page.tempDir = currDir.clone();
-              try {
-                page._loadMetadata();
-              } catch (e) {
-                Cu.reportError(e);
-              }
-
-              title = page.title || ("Page " + pageNo);
-              originalurl = page.originalUrl || "Unknown";
-              archivetime = page.dateArchived || "Unknown";
-              indexfilename = page.indexLeafName || "index.html";
-
-              var archiveFilePart = currDir.leafName + "/" + indexfilename;
-            } else {
-              title = mhtmlPageMetadata.title;
-              originalurl = mhtmlPageMetadata.originalUrl;
-              archivetime = mhtmlPageMetadata.dateArchived;
-              indexfilename = mhtmlPageMetadata.indexLeafName;
-
-              var archiveFilePart = "/" + indexfilename;
-            }
-
-            var indexhtmlfile = Components.classes["@mozilla.org/file/local;1"]
-                                  .createInstance(Components.interfaces.nsILocalFile);
-            indexhtmlfile.initWithPath(currDir.path);
-            indexhtmlfile.append(indexfilename);
-
-            var thisPageRDFSubjectRoot = archiveSubjectRoot + "" + pageNo + "/";
-
-            // get file URL - temp + expandedArchiveRoot + currFolder + index.html
-            var localurl = MafUtils.getURI(indexhtmlfile.nsIFile);
-
-            localUrls[localUrls.length] = localurl;
-
-            this.addPageInfoToMetaData(thisPageRDFSubjectRoot, title, originalurl, archivetime, localurl, archiveSequence,
-                                        archiveUri, archiveFilePart);
-          }
+  _addArchivePagesToDatasource: function(archiveSubjectRoot, archiveSequence, archiveUri, archive) {
+    var localUrls = new Array();
+    // For each folder in the expanded archive root
+    archive.pages.forEach(function(page, pageIndex) {
+      if (archive.type != "TypeMHTML") {
+        try {
+          page._loadMetadata();
+        } catch (e) {
+          Cu.reportError(e);
         }
       }
-    } catch(e) {
-      mafdebug(e);
-    }
 
+      var title = page.title || ("Page " + (pageIndex + 1));
+      var originalurl = page.originalUrl || "Unknown";
+      var archivetime = page.dateArchived || "Unknown";
+      var indexfilename = page.indexLeafName || "index.html";
+
+      var archiveFilePart = page.tempDir.leafName + "/" + indexfilename;
+
+      var indexhtmlfile = page.tempDir.clone();
+      indexhtmlfile.append(indexfilename);
+
+      var thisPageRDFSubjectRoot = archiveSubjectRoot + "" + (pageIndex + 1) + "/";
+
+      // get file URL - temp + expandedArchiveRoot + currFolder + index.html
+      var localurl = MafUtils.getURI(indexhtmlfile.nsIFile);
+
+      localUrls[localUrls.length] = localurl;
+
+      this.addPageInfoToMetaData(thisPageRDFSubjectRoot, title, originalurl, archivetime, localurl, archiveSequence,
+                                  archiveUri, archiveFilePart);
+    }, this);
     return localUrls;
   },
 
