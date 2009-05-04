@@ -46,8 +46,6 @@ FileFilters.saveFilters.forEach(function(curFilter, curFilterIndex) {
   // Create the new save behavior object
   var newSaveBehavior = new InternalSaveBehavior();
   newSaveBehavior.isComplete = true;
-  newSaveBehavior.isMafArchive = true;
-  newSaveBehavior.mafArchiveType = curFilter.mafArchiveType;
   newSaveBehavior.mandatoryExtension = true;
   newSaveBehavior.isValidForSaveMode = function(aSaveMode) {
     return aSaveMode & SAVEMODE_MAFARCHIVE;
@@ -57,6 +55,9 @@ FileFilters.saveFilters.forEach(function(curFilter, curFilterIndex) {
     var filter = FileFilters.saveFilters[curFilterIndex];
     // Return the required values
     return {title: filter.title, extensionstring: filter.extensionString};
+  }
+  newSaveBehavior.getPersistObject = function(saveBrowsers) {
+    return new MafArchivePersist(saveBrowsers, curFilter.mafArchiveType);
   }
 
   // Add the save behavior to the browser, before the one already present at

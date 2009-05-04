@@ -228,9 +228,9 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     saveBehavior = gNormalSaveBehavior;
   }
 
-  // Handle saving a web archive using the Mozilla Archive Format extension
+  // Create a custom web browser persist object if required
   var mafPersistObject = null;
-  if (saveBehavior.isMafArchive) {
+  if (saveBehavior.getPersistObject) {
     // If the save wasn't initiated from a list of tabs, but the document to be
     //  saved is the main document in the browser window, ensure the browser
     //  object is passed to the archive persist object, to enable saving the
@@ -239,9 +239,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     if (!mafSaveTabs && (aDocument == curBrowser.contentDocument)) {
       mafSaveTabs = [curBrowser];
     }
-    // Create the special archive persist object
-    mafPersistObject = new MafArchivePersist(mafSaveTabs,
-     saveBehavior.mafArchiveType);
+    // Create the actual persist object
+    mafPersistObject = saveBehavior.getPersistObject(mafSaveTabs);
   }
 
   if (!fileURL)
