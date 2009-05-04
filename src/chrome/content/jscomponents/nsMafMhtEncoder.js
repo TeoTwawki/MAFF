@@ -245,7 +245,7 @@ MafMhtEncoderClass.prototype = {
     var eqtState = new encodeQuotedPrintableTimerState(this);
 
     eqtState.totalFileSize = obj_File.fileSize;
-    eqtState.charsToRead = this.READ_BUFFER_SIZE;
+    eqtState.charsToRead = obj_File.fileSize;
     eqtState.str = "";
     eqtState.obj_ScriptableIO = obj_ScriptableIO;
     eqtState.obj_InputStream = obj_InputStream;
