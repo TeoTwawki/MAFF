@@ -95,26 +95,17 @@
    $maf_latest_fx); ?> has the following user-visible improvements over
    MAF <?php echo $maf_previous_fx; ?>:</p>
   <ul>
-    <li>The integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     extension has been updated to version <b>1.0.1pre</b>.</li>
-    <li>Improvements in Save Complete 1.0.0:
+    <li>Improved internationalization and optimized metadata handling.</li>
+    <li>Bugfixes:
       <ul>
-        <li>Relative links in the page being saved are now converted to absolute
-         links.</li>
-        <li>Scripts and stylesheets referenced inside Internet Explorer
-         conditional comments are now saved.</li>
-        <li>Fixed some minor parsing bugs.</li>
-        <li>Improved parser performance.</li>
-      </ul>
-    </li>
-    <li>Improvements in Save Complete 1.0.1pre:
-      <ul>
-        <li>The download progress bar does not hang anymore in case of network
-         errors or problems with the page being saved.</li>
-        <li>More detailed error reporting if the download operation fails.</li>
-        <li>If some of the content embedded in the page is not available, the
-         download does not fail anymore, but a warning is reported.</li>
+        <li>When creating MHTML archives, MAF sometimes failed to encode files
+         larger than 10 KiB properly.</li>
+        <li>Attempting to overwrite an existing MHTML archive would not achieve
+         the expected result.</li>
+        <li>The file selection dialog allowed MAFF archives to be saved with an
+         MHTML file extension.</li>
+        <li>Under unusual circumstances, MAF could fail to open any MAFF or
+         MHTML archive.</li>
       </ul>
     </li>
   </ul>

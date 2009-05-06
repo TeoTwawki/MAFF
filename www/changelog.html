@@ -1,6 +1,32 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
   <h2 class="page-header">Changelog for version 0.11</h2>
+  <h3><a name="whatwasnew"></a>What was new in version 0.11?</h3>
+  <p>MAF 0.11.2 had the following user-visible improvements over MAF 0.10.2:</p>
+  <ul>
+    <li>The integrated
+     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
+     extension has been updated to version <b>1.0.1pre</b>.</li>
+    <li>Improvements in Save Complete 1.0.0:
+      <ul>
+        <li>Relative links in the page being saved are now converted to absolute
+         links.</li>
+        <li>Scripts and stylesheets referenced inside Internet Explorer
+         conditional comments are now saved.</li>
+        <li>Fixed some minor parsing bugs.</li>
+        <li>Improved parser performance.</li>
+      </ul>
+    </li>
+    <li>Improvements in Save Complete 1.0.1pre:
+      <ul>
+        <li>The download progress bar does not hang anymore in case of network
+         errors or problems with the page being saved.</li>
+        <li>More detailed error reporting if the download operation fails.</li>
+        <li>If some of the content embedded in the page is not available, the
+         download does not fail anymore, but a warning is reported.</li>
+      </ul>
+    </li>
+  </ul>
   <h3>Changes from 0.11.0 to 0.11.2</h3>
   <ul>
     <li><b>Fix:</b> MHTML files created by Opera couldn't be opened. Now MHTML
@@ -8,7 +34,7 @@
      <tt>Content-Type</tt> header can be opened correctly.</li>
   </ul>
   <h2>Changelog for version 0.10</h2>
-  <h3><a name="whatwasnew"></a>What was new in version 0.10?</h3>
+  <h3>What was new in version 0.10?</h3>
   <p>MAF 0.10.2 had the following user-visible improvements over MAF 0.9.1:</p>
   <ul>
     <li>Integration with the
