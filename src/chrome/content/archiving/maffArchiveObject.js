@@ -38,53 +38,32 @@
 /**
  * Represents a MAFF web archive.
  *
- * This object allows the creation and extraction of MAFF archives, and contains
- *  the metadata associated with the archive's contents.
+ * This class derives from Archive. See the Archive documentation for details.
+ *
+ * @param aFile   nsIFile representing the compressed archive. The file usually
+ *                 ends with the ".maff" extension.
  */
 function MaffArchive(aFile) {
+  Archive.call(this);
   this.file = aFile;
 
-  // Initialize object members explicitly
-  this.pages = [];
+  // Initialize other member variables explicitly for proper inheritance
+  this._createNew = true;
 }
 
 MaffArchive.prototype = {
+  // Derive from the Archive class in a Mozilla-specific way. See also
+  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
+  //  (retrieved 2009-02-01).
+  __proto__: Archive.prototype,
 
-  // --- Public methods and properties ---
+  // --- Overridden Archive methods ---
 
-  /**
-   * nsIFile representing the compressed archive. The file usually ends with
-   *  the ".maff" extension.
-   */
-  file: null,
-
-  /**
-   * Array of MaffPage objects holding information on each individual web page
-   *  included in the archive. The order of the items is important, and reflects
-   *  the index that can be used to select a specific page in the archive.
-   */
-  pages: [],
-
-  /**
-   * Adds a new page to the archive and returns the new page object.
-   */
-  addPage: function() {
-    var page = new MaffArchivePage(this);
-    this.pages.push(page);
-    return page;
-  },
-
-  /**
-   * Reloads all the pages from the archive file.
-   */
   load: function() {
     // Indicate that the file contains other saved pages that must be preserved
     this._createNew = false;
   },
 
-  /**
-   * Extracts all the pages from the archive file.
-   */
   extractAll: function() {
     // Open the archive file for reading
     var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].
@@ -129,13 +108,11 @@ MaffArchive.prototype = {
     }
   },
 
-  // --- Private methods and properties ---
+  _newPage: function() {
+    return new MaffArchivePage(this);
+  },
 
-  /**
-   * nsIFile representing a temporary directory whose subdirectories will
-   *  contain the expanded contents of the archived pages.
-   */
-  _tempDir: null,
+  // --- Private methods and properties ---
 
   /**
    * Indicates that the archive file should be created from scratch. If false,

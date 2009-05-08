@@ -40,6 +40,8 @@ try {
    "jscomponents/nsMafUtil.js",
 
    // Web archive handling
+   "archiving/archiveObject.js",
+   "archiving/archivePageObject.js",
    "archiving/maffArchiveObject.js",
    "archiving/maffArchivePageObject.js",
    "archiving/maffDataSourceObject.js",

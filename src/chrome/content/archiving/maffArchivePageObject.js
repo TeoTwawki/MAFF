@@ -38,82 +38,32 @@
 /**
  * Represents a page within a MAFF web archive.
  *
- * This object allows the creation and extraction of individual pages within
- *  MAFF archives, and handles the metadata associated with the page's contents.
- *
- * Instances of this object must be created using the methods in the MaffArchive
- *  object.
+ * This class derives from ArchivePage. See the ArchivePage documentation for
+ *  details.
  */
 function MaffArchivePage(aArchive) {
-  this.archive = aArchive;
+  ArchivePage.call(this, aArchive);
+
+  // Initialize member variables explicitly for proper inheritance
+  this._browserObjectForMetadata = null;
 }
 
 MaffArchivePage.prototype = {
+  // Derive from the ArchivePage class in a Mozilla-specific way. See also
+  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
+  //  (retrieved 2009-02-01).
+  __proto__: ArchivePage.prototype,
 
-  // --- Public methods and properties ---
+  // --- Overridden ArchivePage methods ---
 
-  /**
-   * The parent MaffArchive object.
-   */
-  archive: null,
-
-  /**
-   * nsIFile representing the temporary directory holding the expanded contents
-   *  of the page.
-   */
-  tempDir: null,
-
-  /**
-   * Name of the main file associated with the page. This is often "index.htm".
-   */
-  indexLeafName: "",
-
-  /**
-   * Document title or description explicitly associated with this page.
-   */
-  title: "",
-
-  /**
-   * String representing the original location this page was saved from.
-   */
-  originalUrl: "",
-
-  /**
-   * Date object representing the time the page was archived.
-   */
-  dateArchived: null,
-
-  /**
-   * String representing the character set selected by the user for rendering
-   *  the page at the time it was archived. This information may be used when
-   *  the archive is opened to override the default character set detected from
-   *  the saved page.
-   */
-  renderingCharacterSet: "",
-
-  /**
-   * Browser object to gather extended metadata from, or null if not available.
-   */
-  browserObjectForMetadata: null,
-
-  /**
-   * Sets additional metadata about the page starting from the provided document
-   *  and browser objects.
-   */
   setMetadataFromDocumentAndBrowser: function(aDocument, aBrowser) {
-    // Set the properties of this page object appropriately. When saving a page
-    //  already located in an archive, use the metadata from the original page.
-    this.title = aDocument.title || "Unknown";
-    this.originalUrl = MafState.getOriginalURL(aDocument.location.href);
-    this.dateArchived = new Date();
-    this.renderingCharacterSet = aDocument.characterSet;
+    // Set the page properties that are common to all archive types
+    ArchivePage.prototype.setMetadataFromDocumentAndBrowser.call(this,
+     aDocument, aBrowser);
     // Store the provided browser object
-    this.browserObjectForMetadata = aBrowser;
+    this._browserObjectForMetadata = aBrowser;
   },
 
-  /**
-   * Stores the page into the archive file.
-   */
   save: function() {
     // Create the "index.rdf" and "history.rdf" files near the main file
     this._saveMetadata();
@@ -131,6 +81,11 @@ MaffArchivePage.prototype = {
   },
 
   // --- Private methods and properties ---
+
+  /**
+   * Browser object to gather extended metadata from, or null if not available.
+   */
+  _browserObjectForMetadata: null,
 
   /**
    * Loads the metadata of this page from the "index.rdf" file in the temporary
@@ -172,7 +127,7 @@ MaffArchivePage.prototype = {
     ];
 
     var historyMetadata = null;
-    var browser = this.browserObjectForMetadata;
+    var browser = this._browserObjectForMetadata;
     if (Prefs.saveMetadataExtended && browser) {
       // Set extended metadata for "index.rdf"
       indexMetadata.push(
