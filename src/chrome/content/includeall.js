@@ -45,6 +45,8 @@ try {
    "archiving/maffArchiveObject.js",
    "archiving/maffArchivePageObject.js",
    "archiving/maffDataSourceObject.js",
+   "archiving/mhtmlArchiveObject.js",
+   "archiving/mhtmlArchivePageObject.js",
    "archiving/zipCreatorObject.js",
    "archiving/zipDirectoryObject.js",
 

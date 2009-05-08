@@ -119,7 +119,7 @@ MafStateServiceClass.prototype = {
     var localUrls = new Array();
     // For each folder in the expanded archive root
     archive.pages.forEach(function(page, pageIndex) {
-      if (archive.type != "TypeMHTML") {
+      if (archive instanceof MaffArchive) {
         try {
           page._loadMetadata();
         } catch (e) {

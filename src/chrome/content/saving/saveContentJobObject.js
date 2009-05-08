@@ -111,28 +111,32 @@ SaveContentJob.prototype = {
 
   onDownloadComplete: function() {
     this._handleAsyncCallback(function() {
-      // Archive using the specified format
+      // Create a new MAFF archive
+      var archive;
       if (this.targetType == "TypeMHTML") {
+        archive = new MhtmlArchive(this.targetFile);
+      } else {
+        archive = new MaffArchive(this.targetFile);
+      }
+      // Add to an existing MAFF archive if required
+      if (this.addToArchive) {
+        archive.load();
+      }
+      // Add the current page to the archive and save it immediately
+      var page = archive.addPage();
+      page.tempDir = this._targetDir;
+      page.indexLeafName = this._targetLeafName;
+      page.setMetadataFromDocumentAndBrowser(this._document,
+       this.targetBrowser);
+      // If the page can be saved asynchronously
+      if (page.asyncSave) {
         // Save and wait for the callback from the worker object
         this._expectAsyncCallback(function() {
-          MafMHTHandler.createArchive(
-           this.targetFile.path, this._targetDir.path, this._document,
-            this._targetLeafName, this);
+          page.asyncSave(this);
         }, this);
       } else {
-        // Create a new MAFF archive, or add to an existing archive
-        var archive = new MaffArchive(this.targetFile);
-        if (this.addToArchive) {
-          archive.load();
-        }
-        // Add the current page to the archive and save it immediately
-        var page = archive.addPage();
-        page.tempDir = this._targetDir;
-        page.indexLeafName = this._targetLeafName;
-        page.setMetadataFromDocumentAndBrowser(this._document,
-         this.targetBrowser);
+        // Save the page synchronously
         page.save();
-        // Archiving completed
         this._notifyCompletion();
       }
     }, this);

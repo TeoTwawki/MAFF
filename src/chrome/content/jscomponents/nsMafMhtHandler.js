@@ -390,7 +390,7 @@ MafMhtHandlerServiceClass.prototype = {
     datasource.dateArchived = dateTimeArchived;
   },
 
-  createArchive: function(archivefile, sourcepath, document, indexFilename, mafeventlistener) {
+  createArchive: function(archivefile, sourcepath, archivepage, indexFilename, mafeventlistener) {
     try {
 
       var encoder = new MafMhtEncoderClass(mafeventlistener);
@@ -398,13 +398,6 @@ MafMhtHandlerServiceClass.prototype = {
       var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
        createInstance(Ci.nsIScriptableUnicodeConverter);
       converter.charset = "UTF-8";
-
-      var originalURL = document.location.href;
-
-      // If we're saving an archive page, put back the real original url in the metadata
-      if (MafState.isArchiveURL(originalURL)) {
-        originalURL = MafState.getOriginalURL(originalURL);
-      }
 
       // Get hidden window
       var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
@@ -415,8 +408,8 @@ MafMhtHandlerServiceClass.prototype = {
 
       encoder.from = "<Saved by " + navigator.appCodeName + " " + navigator.appVersion + ">";
       encoder.subject = converter.ConvertFromUnicode(
-       document.title || "Unknown");
-      encoder.date = new Date();
+       archivepage.title || "Unknown");
+      encoder.date = archivepage.dateArchived;
 
       var indexFile = Components.classes["@mozilla.org/file/local;1"]
                          .createInstance(Components.interfaces.nsILocalFile);
@@ -427,7 +420,7 @@ MafMhtHandlerServiceClass.prototype = {
 
       // Add the index file
       encoder.addFile(indexFile.path, indexFileType,
-       converter.ConvertFromUnicode(originalURL), "");
+       converter.ConvertFromUnicode(archivepage.originalUrl), "");
 
       // Add supporting files
       var supportFilesList = this._getSupportingFilesList(sourcepath);

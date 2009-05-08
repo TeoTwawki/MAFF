@@ -77,16 +77,14 @@ maf.prototype = {
     dir.append(new Date().valueOf() + "_" + Math.floor(Math.random() * 1000));
 
     // Extract the archive
-    var archive = new MaffArchive(archiveFile);
+    var archive;
     if (scriptPath == "TypeMHTML") {
-      archive.type = "TypeMHTML";
-      var page = archive.addPage();
-      page.tempDir = dir;
-      MafMHTHandler.extractArchive(archiveFile.path, dir.path, page);
+      archive = new MhtmlArchive(archiveFile);
     } else {
-      archive._tempDir = dir;
-      archive.extractAll();
+      archive = new MaffArchive(archiveFile);
     }
+    archive._tempDir = dir;
+    archive.extractAll();
 
     // Add the metadata to the state object
     var count = {};
