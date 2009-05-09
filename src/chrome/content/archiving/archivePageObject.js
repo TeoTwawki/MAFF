@@ -55,6 +55,7 @@ function ArchivePage(aArchive) {
   this.originalUrl = "";
   this.dateArchived = null;
   this.renderingCharacterSet = "";
+  this._index = 0;
 }
 
 ArchivePage.prototype = {
@@ -100,6 +101,42 @@ ArchivePage.prototype = {
    */
   renderingCharacterSet: "",
 
+  /**
+   * nsIURI representing the specific page inside the compressed or encoded
+   *  archive.
+   */
+  get archiveUri() {
+    var pageArchiveUri = this.archive.uri.clone();
+    if (this._index) {
+      // If this is not the first page in the archive, add the index of the page
+      //  as the parameter part of the URI. The original archive URI does not
+      //  contain query or hash parts.
+      pageArchiveUri.QueryInterface(Ci.nsIURL).path += ";" + (this._index + 1);
+    }
+    return pageArchiveUri;
+  },
+
+  /**
+   * nsIURI representing the local temporary copy of the main file associated
+   *  with the page.
+   */
+  get tempUri() {
+    // Locate the main temporary file associated with with the page
+    var indexFile = this.tempDir.clone();
+    indexFile.append(this.indexLeafName);
+    // Return the associated URI object
+    return Cc["@mozilla.org/network/io-service;1"].
+     getService(Ci.nsIIOService).newFileURI(indexFile);
+  },
+
+  /**
+   * nsIURI representing the local temporary folder associated with the page.
+   */
+  get tempFolderUri() {
+    return Cc["@mozilla.org/network/io-service;1"].
+     getService(Ci.nsIIOService).newFileURI(this.tempDir);
+  },
+
   // --- Public methods and properties that can be overridden ---
 
   /**
@@ -120,5 +157,12 @@ ArchivePage.prototype = {
    */
   save: function() {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
-  }
+  },
+
+  // --- Private methods and properties ---
+
+  /**
+   * Zero-based index of the page in the archive.
+   */
+  _index: 0
 }

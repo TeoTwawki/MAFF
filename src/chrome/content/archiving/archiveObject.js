@@ -71,8 +71,27 @@ Archive.prototype = {
    */
   addPage: function() {
     var page = this._newPage();
+    page._index = this.pages.length;
     this.pages.push(page);
     return page;
+  },
+
+  /**
+   * nsIURI representing the compressed or encoded archive.
+   *
+   * The returned URI never contains query or hash parts.
+   */
+  get uri() {
+    return Cc["@mozilla.org/network/io-service;1"].
+     getService(Ci.nsIIOService).newFileURI(this.file);
+  },
+
+  /**
+   * String uniquely identifying the archive in the cache.
+   */
+  get cacheKey() {
+    // Store at most one archive object for every local file
+    return this.file.path;
   },
 
   // --- Public methods and properties that can be overridden ---

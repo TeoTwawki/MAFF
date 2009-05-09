@@ -54,6 +54,26 @@ MaffArchivePage.prototype = {
   //  (retrieved 2009-02-01).
   __proto__: ArchivePage.prototype,
 
+  // --- Public methods and properties ---
+
+  /**
+   * Internal path in the archive of the main file associated with the page.
+   */
+  get indexZipEntry() {
+    return this.tempDir.leafName + "/" + this.indexLeafName;
+  },
+
+  /**
+   * nsIURI providing direct access to the main file in the archive.
+   */
+  get directArchiveUri() {
+    // Compose the requested "jar:" URI
+    var jarUriSpec = "jar:" + this.archive.uri.spec + "!/" + this.indexZipEntry;
+    // Return the associated URI object
+    return Cc["@mozilla.org/network/io-service;1"].
+     getService(Ci.nsIIOService).newURI(jarUriSpec, null, null);
+  },
+
   // --- Overridden ArchivePage methods ---
 
   setMetadataFromDocumentAndBrowser: function(aDocument, aBrowser) {
