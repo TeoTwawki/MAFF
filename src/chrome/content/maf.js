@@ -86,24 +86,36 @@ maf.prototype = {
     archive._tempDir = dir;
     archive.extractAll();
 
+    // For each folder in the expanded archive root
+    var openUrlList = [];
+    archive.pages.forEach(function(page, pageIndex) {
+      // Load the metadata if necessary
+      if (archive instanceof MaffArchive) {
+        try {
+          page._loadMetadata();
+        } catch (e) {
+          Cu.reportError(e);
+        }
+      }
+      // Add to the list the appropriate URL to be opened
+      if (archive instanceof MaffArchive && Prefs.openUseJarProtocol) {
+        openUrlList.push(page.directArchiveUri.spec);
+      } else {
+        openUrlList.push(page.tempUri.spec);
+      }
+    });
+
+    // Register the archive in the cache
+    ArchiveCache.registerArchive(archive);
+
     // Add the metadata to the state object
-    var count = {};
-    var archiveLocalURLs = {};
-
-    MafState.addArchiveInfo(archive, count, archiveLocalURLs);
-
-    // Execute the open action
-    if (Prefs.openUseJarProtocol && scriptPath == "TypeMAFF") {
-      archiveLocalURLs.value = archiveLocalURLs.value.map(function(url) {
-        return MafState.localFileToMafUrlMap[url];
-      });
-    }
+    MafState.addArchiveInfo(archive);
 
     if (Prefs.openAction == Prefs.OPENACTION_TABS) {
       if(returnFirstItem) {
-        firstItem = archiveLocalURLs.value.shift();
+        firstItem = openUrlList.shift();
       }
-      this.openListInTabs(archiveLocalURLs.value);
+      this.openListInTabs(openUrlList);
       return firstItem;
     }
 
