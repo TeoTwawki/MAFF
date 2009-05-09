@@ -144,11 +144,19 @@ ArchivePage.prototype = {
    *  and browser objects.
    */
   setMetadataFromDocumentAndBrowser: function(aDocument, aBrowser) {
-    // Set the properties of this page object appropriately. When saving a page
-    //  already located in an archive, use the metadata from the original page.
+    // When saving a page that was extracted from an archive in this session,
+    //  use the metadata from the original archive
+    var documentUrlSpec = aDocument.location.href;
+    var originalPage = ArchiveCache.pageFromUriSpec(documentUrlSpec);
+    if (originalPage) {
+      this.originalUrl = originalPage.originalUrl;
+      this.dateArchived = originalPage.dateArchived;
+    } else {
+      this.originalUrl = documentUrlSpec;
+      this.dateArchived = new Date();
+    }
+    // Set the other properties of this page object appropriately
     this.title = aDocument.title || "Unknown";
-    this.originalUrl = MafState.getOriginalURL(aDocument.location.href);
-    this.dateArchived = new Date();
     this.renderingCharacterSet = aDocument.characterSet;
   },
 
