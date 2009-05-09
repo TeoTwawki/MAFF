@@ -144,19 +144,13 @@ ArchivePage.prototype = {
    *  and browser objects.
    */
   setMetadataFromDocumentAndBrowser: function(aDocument, aBrowser) {
-    // When saving a page that was extracted from an archive in this session,
-    //  use the metadata from the original archive
+    // Find the original metadata related to the page being saved, if present
     var documentUrlSpec = aDocument.location.href;
-    var originalPage = ArchiveCache.pageFromUriSpec(documentUrlSpec);
-    if (originalPage) {
-      this.originalUrl = originalPage.originalUrl;
-      this.dateArchived = originalPage.dateArchived;
-    } else {
-      this.originalUrl = documentUrlSpec;
-      this.dateArchived = new Date();
-    }
+    var originalData = this._getOriginalMetadata(documentUrlSpec, aDocument);
     // Set the other properties of this page object appropriately
     this.title = aDocument.title || "Unknown";
+    this.originalUrl = originalData.originalUrl || documentUrlSpec;
+    this.dateArchived = originalData.dateArchived || new Date();
     this.renderingCharacterSet = aDocument.characterSet;
   },
 
@@ -172,5 +166,49 @@ ArchivePage.prototype = {
   /**
    * Zero-based index of the page in the archive.
    */
-  _index: 0
+  _index: 0,
+
+  /**
+   * Returns an object containing the original metadata for the page, obtained
+   *  from the current archive cache or from the local file the page is being
+   *  saved from.
+   *
+   * @param aSaveUrl    URL of the page being saved.
+   * @param aDocument   Document that must be used to find the original URL the
+   *                     local page was saved from, if necessary.
+   */
+  _getOriginalMetadata: function(aSaveUrl, aDocument) {
+    // When saving a page that was extracted from an archive in this session,
+    //  use the metadata from the original archive
+    var originalPage = ArchiveCache.pageFromUriSpec(aSaveUrl);
+    if (originalPage) {
+      return originalPage;
+    }
+
+    // If the page is part of an archive but is not one of the main pages, use
+    //  only the date from the original archive
+    var parentPage = ArchiveCache.pageFromAnyTempUriSpec(aSaveUrl);
+    if (parentPage) {
+      return { dateArchived: parentPage.dateArchived };
+    }
+
+    // Check if the metadata from a locally saved page should be used
+    try {
+      // Get the file object associated with the page being saved
+      var fileUri = Cc["@mozilla.org/network/io-service;1"].
+       getService(Ci.nsIIOService).newURI(aSaveUrl, null, null);
+      var file = fileUri.QueryInterface(Ci.nsIFileURL).file;
+      // Ensure that the file being saved exists at this point
+      if (file.exists()) {
+        // Use the date and time from the local file
+        return { dateArchived: new Date(file.lastModifiedTime) };
+      }
+    } catch (e if (e instanceof Ci.nsIException && (e.result ==
+     Cr.NS_NOINTERFACE || e.result == Cr.NS_ERROR_MALFORMED_URI))) {
+      // The original save URL is not a local file
+    }
+
+    // No additonal metadata is available
+    return {};
+  }
 }
