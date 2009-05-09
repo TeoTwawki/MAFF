@@ -99,13 +99,16 @@
                editable="false"
                flex="1"
                label="&tabs.title.header;"
-               persist="width ordinal hidden" />
+               sort="urn:maf:vocabulary#title"
+               sortActive="true" sortDirection="ascending"
+               persist="width ordinal hidden sortActive sortDirection" />
       <splitter class="tree-splitter" />
       <treecol id="tcLocation"
                editable="false"
                flex="1"
                label="&tabs.location.header;"
-               persist="width ordinal hidden" />
+               sort="urn:maf:vocabulary#originalUrl"
+               persist="width ordinal hidden sortActive sortDirection" />
     </treecols>
     <template>
 
