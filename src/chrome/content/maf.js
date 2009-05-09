@@ -196,13 +196,14 @@ maf.prototype = {
 
         // Get the original url
         var originalURL = event.originalTarget.location.href;
+        var page = ArchiveCache.pageFromAnyTempUriSpec(originalURL);
 
         // Remove the hash if any
         if (originalURL.indexOf("#") > 0) {
           originalURL = originalURL.substring(0, originalURL.indexOf("#"));
         }
 
-        if (Prefs.openRewriteUrls && (MafState.isArchiveURL(originalURL))) {
+        if (Prefs.openRewriteUrls && page) {
           var doc = event.originalTarget;
           var baseUrl = doc.location.href;
 
@@ -222,7 +223,9 @@ maf.prototype = {
 
           try {
             Maf._makeLocalLinksAbsolute(doc, baseUrl, originalURL);
-            Maf._makeLocalLinksAbsolute(doc, MafState.getOriginalURL(baseUrl), "");
+            var basePage = ArchiveCache.pageFromUriSpec(baseUrl);
+            baseUrl = basePage && basePage.originalUrl;
+            Maf._makeLocalLinksAbsolute(doc, baseUrl, "");
           } catch(e) {
             mafdebug(e);
           }
@@ -231,18 +234,14 @@ maf.prototype = {
           var links = event.originalTarget.links;
 
           for (var j=0; j < links.length; j++) {
-            if (MafState.isLocallyMappableURL(links[j].href)) {
-              links[j].href=MafState.getLocalURL(links[j].href);
-            } else {
+            var targetPage = ArchiveCache.pageFromOriginalUriSpec(links[j].href);
+            if (targetPage) {
               // See if it is hashed
+              var hashPart = "";
               if (links[j].href.indexOf("#") > 0) {
-                var hashPart = links[j].href.substring(links[j].href.indexOf("#"), links[j].href.length);
-                var nonHashPart = links[j].href.substring(0, links[j].href.indexOf("#"));
-
-                if (MafState.isLocallyMappableURL(nonHashPart)) {
-                  links[j].href=MafState.getLocalURL(nonHashPart) + hashPart;
-                }
+                hashPart = links[j].href.substring(links[j].href.indexOf("#"), links[j].href.length);
               }
+              links[j].href = targetPage.archiveUri.spec + hashPart;
             }
           }
         }
