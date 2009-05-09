@@ -15,6 +15,7 @@ var Cr = Components.results;
 var Cu = Components.utils;
 
 const EXTENSION_CHROME_CONTENT_PATH = "chrome://maf/content/";
+const EXTENSION_RESOURCE_MODULES_PATH = "resource://maf/modules/";
 
 // This try-catch block is necessary to show more details in the error console
 try {
@@ -71,6 +72,9 @@ try {
      .getService(Components.interfaces.mozIJSSubScriptLoader)
      .loadSubScript(EXTENSION_CHROME_CONTENT_PATH + contentRelativePath);
   });
+
+  // Import the shared modules
+  Cu.import(EXTENSION_RESOURCE_MODULES_PATH + "archiveCacheObjects.jsm");
 }
 catch (ex) {
   Components.utils.reportError(ex);
