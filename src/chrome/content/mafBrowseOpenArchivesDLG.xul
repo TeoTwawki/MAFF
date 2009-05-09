@@ -105,7 +105,8 @@
           var level = document.getElementById("open-archives-tree").view.getLevel(v);
 
           if (level == 1) {
-            urlList[urlList.length] = MafState.getMafURL(url);
+            var page = ArchiveCache.pageFromUriSpec(url);
+            urlList[urlList.length] = page && page.directArchiveUri && page.directArchiveUri.spec;
           } else if (level == 0 ) {
 
             var levelZeroV = v + 1;
@@ -121,7 +122,8 @@
                 } else {
                   levelZeroUrl = document.getElementById("open-archives-tree").view.getCellText(levelZeroV, urlsource);
                 }        
-                urlList[urlList.length] = MafState.getMafURL(levelZeroUrl);
+                page = ArchiveCache.pageFromUriSpec(levelZeroUrl);
+                urlList[urlList.length] = page && page.directArchiveUri && page.directArchiveUri.spec;
                 levelZeroV++;
               }
             } catch(e) {
