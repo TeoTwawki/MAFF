@@ -200,8 +200,12 @@ ArchivePage.prototype = {
       var file = fileUri.QueryInterface(Ci.nsIFileURL).file;
       // Ensure that the file being saved exists at this point
       if (file.exists()) {
-        // Use the date and time from the local file
-        return { dateArchived: new Date(file.lastModifiedTime) };
+        // Use the date and time from the local file, and find the original save
+        //  location from the document
+        return {
+          dateArchived: new Date(file.lastModifiedTime),
+          originalUrl: this._getOriginalSaveUrl(aDocument)
+        };
       }
     } catch (e if (e instanceof Ci.nsIException && (e.result ==
      Cr.NS_NOINTERFACE || e.result == Cr.NS_ERROR_MALFORMED_URI))) {
@@ -210,5 +214,72 @@ ArchivePage.prototype = {
 
     // No additonal metadata is available
     return {};
+  },
+
+  /**
+   * Return the original URL the given document was saved from, if available.
+   */
+  _getOriginalSaveUrl: function(aDocument) {
+    // Find the first comment in the document, and return now if not found
+    var firstCommentNode = aDocument.evaluate('//comment()', aDocument, null,
+     XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    if (!firstCommentNode) {
+      return null;
+    }
+
+    // Check to see if the first comment in the document is the Mark of the Web
+    //  specified by Internet Explorer when the page was saved. Even though this
+    //  method is not exactly compliant with the original specification (see
+    //  <http://msdn.microsoft.com/en-us/library/ms537628.aspx>, retrieved
+    //  2009-05-10), it should provide accurate results most of the time.
+    var originalUrl = this._parseMotwComment(firstCommentNode.nodeValue);
+    if (originalUrl) {
+      // Exclude values with special meanings from being considered as the
+      //  original save location. The comparisons are case-sensitive.
+      if (originalUrl !== "http://localhost" &&
+          originalUrl !== "about:internet") {
+        return originalUrl;
+      } else {
+        return null;
+      }
+    }
+
+    // Check to see if the page was saved using Save Complete
+    originalUrl = this._parseSaveCompleteComment(firstCommentNode.nodeValue);
+    if (originalUrl) {
+      return originalUrl;
+    }
+
+    // No original save location is available
+    return null;
+  },
+
+  /**
+   * Parses the provided Mark of the Web comment and returns the specified URL,
+   *  or null if not available. For example, if the provided string contains
+   *  " saved from url=(0023)http://www.example.org/ ", this function returns
+   *  "http://www.example.org/".
+   */
+  _parseMotwComment: function(aMotwString) {
+    // Match "saved from url=" case-sensitively, followed by the mandatory
+    //  character count in parentheses, followed by the actual URL, containing
+    //  no whitespace. Ignore leading and trailing whitespace.
+    var match = /^\s*saved from url=\(\d{4}\)(\S+)\s*$/g.exec(aMotwString);
+    // Return the URL part, if found, or null if the format does not match
+    return match && match[1];
+  },
+
+  /**
+   * Parses the provided Save Complete original location comment and returns the
+   *  specified URL, or null if not available. For example, if the provided
+   *  string contains " Source is http://www.example.org/ ", this function
+   *  returns "http://www.example.org/".
+   */
+  _parseSaveCompleteComment: function(aSaveCompleteString) {
+    // Match "Source is" case-sensitively, followed by a space and the actual
+    //  URL, containing no whitespace. Ignore leading and trailing whitespace.
+    var match = /^\s*Source is (\S+)\s*$/g.exec(aSaveCompleteString);
+    // Return the URL part, if found, or null if the format does not match
+    return match && match[1];
   }
 }
