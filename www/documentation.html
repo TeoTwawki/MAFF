@@ -2,6 +2,28 @@
 <div class="maf-column-contents">
   <h2 class="page-header">Documentation</h2>
 
+<ul>
+  <li><a href="#introduction">Introduction</a>
+    <ul>
+      <li><a href="#saving">Saving web archives</a></li>
+      <li><a href="#metadata">Additional information saved in web archives</a></li>
+      <li><a href="#converting">Converting previously saved pages to web
+       archive format</a></li>
+      <li><a href="#opening">Opening web archives</a></li>
+    </ul>
+  </li>
+  <li><a href="#extensions">Integration with other extensions</a></li>
+  <li><a href="#preferences">Preferences</a>
+    <ul>
+      <li><a href="#main">Main preferences</a></li>
+      <li><a href="#interface">Interface preferences</a></li>
+      <li><a href="#fileassociations">File associations</a></li>
+      <li><a href="#advanced">Advanced preferences</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2><a name="introduction"></a>Introduction</h2>
 <p>Mozilla Archive Format, or MAF, is a Firefox extension that enables your
  browser to save, load and manage <i>web archives</i>. For a quick overview,
  have a look at the <a href="screenshots.html">screenshots page</a>.</p>
@@ -9,7 +31,7 @@
  since they allow you to store entire pages, including the images, in a single
  file. You can move around or rename a web archive without the risk of breaking
  the integrity of the saved pages it contains.</p>
-<h3>Saving web archives</h3>
+<h3><a name="saving"></a>Saving web archives</h3>
 <p>As soon as MAF is installed, you get two new options for the file type in
  the <i>Save As</i> dialog box:</p>
 <img src="images/saveAsDialog.png" alt="">
@@ -48,7 +70,7 @@
      page</a> for more information.</p>
   </dd>
 </dl>
-<h4>Additional information saved in web archives</h4>
+<h4><a name="metadata"></a>Additional information saved in web archives</h4>
 <p>When you save a page as a web archive, the following additional information
  about the save operation is stored in the archive:</p>
 <ul>
@@ -64,7 +86,8 @@
 </ul>
 <p>If you resave an already archived page to a different file, the save time and
  location from the original archive are preserved.</p>
-<h4>Converting previously saved pages to web archive format</h4>
+<h4><a name="converting"></a>Converting previously saved pages to web archive
+ format</h4>
 <p>You probably already have some web pages saved among your local files. These
  pages are often stored as file&nbsp;/&nbsp;folder pairs (like
  <tt>Page.html</tt> and <tt>Page_files</tt>), and you may want to convert them
@@ -89,7 +112,7 @@
      the original location is not available.</p>
   </li>
 </ul>
-<h3>Opening web archives</h3>
+<h3><a name="opening"></a>Opening web archives</h3>
 <p>By default, once MAF is installed, web archives can be opened using the
  ordinary <b>File &raquo; Open File</b> menu item of Firefox or using
  drag-and-drop, as you would open any other saved web page.</p>
@@ -141,7 +164,7 @@
   </dd>
 </dl>
 
-<h2>Preferences</h2>
+<h2><a name="preferences"></a>Preferences</h2>
 <p>The default settings in effect after installation are enough to allow correct
  loading and saving of both MAFF and MHTML archives, using the Firefox standard
  save system. To enable the integrated Save Complete extension, customize the
@@ -153,7 +176,7 @@
  the <b>Options</b> button in the <i>Add-ons</i> dialog, available from the
  <b>Tools &raquo; Add-ons</b> menu item.</p>
 
-<h3><a name="savecomplete"></a>Main preferences</h3>
+<h3><a name="main"></a><a name="savecomplete"></a>Main preferences</h3>
 
 <img src="images/prefsDialog-paneMain.png" alt="">
 
@@ -205,7 +228,7 @@
   </dd>
 </dl>
 
-<h3>Interface preferences</h3>
+<h3><a name="interface"></a>Interface preferences</h3>
 
 <img src="images/prefsDialog-paneInterface.png" alt="">
 
@@ -247,7 +270,7 @@
   </dd>
 </dl>
 
-<h3>Advanced preferences</h3>
+<h3><a name="advanced"></a>Advanced preferences</h3>
 
 <img src="images/prefsDialog-paneAdvanced.png" alt="">
 
