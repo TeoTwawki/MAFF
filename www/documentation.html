@@ -9,7 +9,7 @@
  since they allow you to store entire pages, including the images, in a single
  file. You can move around or rename a web archive without the risk of breaking
  the integrity of the saved pages it contains.</p>
-<h4>Saving web archives</h4>
+<h3>Saving web archives</h3>
 <p>As soon as MAF is installed, you get two new options for the file type in
  the <i>Save As</i> dialog box:</p>
 <img src="images/saveAsDialog.png" alt="">
@@ -48,6 +48,47 @@
      page</a> for more information.</p>
   </dd>
 </dl>
+<h4>Additional information saved in web archives</h4>
+<p>When you save a page as a web archive, the following additional information
+ about the save operation is stored in the archive:</p>
+<ul>
+  <li>The <b>original location</b> the page was saved from. This normally
+   matches what is displayed in the address bar of the browser.</li>
+  <li>The <b>date and time</b> of the save operation.</li>
+  <li>The <b>title</b> of the page, if present.</li>
+  <li>The <b>character set</b> in effect at the time the page was saved. If the
+   character set was changed manually using the <b>View &raquo; Character
+   Encoding</b> menu item of Firefox, the custom choice is remembered. This
+   allows the document to be displayed correctly when it is reopened from the
+   archive, even if it contains internationalized characters.</li>
+</ul>
+<p>If you resave an already archived page to a different file, the save time and
+ location from the original archive are preserved.</p>
+<h4>Converting previously saved pages to web archive format</h4>
+<p>You probably already have some web pages saved among your local files. These
+ pages are often stored as file&nbsp;/&nbsp;folder pairs (like
+ <tt>Page.html</tt> and <tt>Page_files</tt>), and you may want to convert them
+ to a web archive format for easier maintenance.</p>
+<p>The conversion is as easy as opening the old pages in the browser, and
+ resaving them as MAFF or MHTML. The information about the original save
+ operation, if available, is preserved.</p>
+<ul>
+  <li>The <b>date and time</b> of the original save operation is obtained from
+   the local file's last modification time.</li>
+  <li>
+    <p>The <b>original location</b> is obtained from the special comment some
+     browsers embed in the page when they save it. If not available, the local
+     address is used.</p>
+    <p>If the page was saved with Internet Explorer, the original location is
+     stored like <code>&lt;!-- saved from url=(0023)http://www.example.org/
+     --&gt;</code>.</p>
+    <p>If the page was saved using the standalone or the integrated Save
+     Complete extension for Firefox, the original location is stored like
+     <code>&lt;!-- Source is http://www.example.org/ --&gt;</code>.</p>
+    <p>If the page was saved using Firefox without the Save Complete extension,
+     the original location is not available.</p>
+  </li>
+</ul>
 <h3>Opening web archives</h3>
 <p>By default, once MAF is installed, web archives can be opened using the
  ordinary <b>File &raquo; Open File</b> menu item of Firefox or using
