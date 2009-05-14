@@ -624,59 +624,7 @@ extractContentHandlerClass.prototype = {
 
   onContent: function(data) { this.data += data; },
 
-  onBinaryContent: function(data) {
-    this.binaryContent = true;
-    this.bindata = data;
-  },
-
   onContentComplete: function() {
-    if (this.binaryContent) {
-      this.createBinaryFile();
-    } else {
-      this.createFile();
-    }
-  },
-
-  createBinaryFile: function() {
-
-    var fileToCreate = this.destfile;
-    var contents = this.bindata;
-
-    try {
-      var oFile = Components.classes["@mozilla.org/file/local;1"]
-                     .createInstance(Components.interfaces.nsILocalFile);
-      oFile.initWithPath(fileToCreate);
-      if (!oFile.exists()) {
-        oFile.create(0x00, 0644);
-      }
-    } catch (e) {
-      mafdebug(e);
-    }
-
-    try {
-      var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                          .createInstance(Components.interfaces.nsIFileOutputStream);
-      oTransport.init( oFile, 0x04 | 0x08 | 0x10, 064, 0 );
-
-      var obj_BinaryIO = Components.classes["@mozilla.org/binaryoutputstream;1"]
-                           .createInstance(Components.interfaces.nsIBinaryOutputStream);
-      obj_BinaryIO.setOutputStream(oTransport);
-
-      contents = (contents.toString()).split(",");
-      var aContents = new Array();
-      for (var i=0; i<contents.length; i++) {
-        aContents.push(parseInt(contents[i]));
-      }
-
-      obj_BinaryIO.writeByteArray(aContents, aContents.length);
-      oTransport.close();
-    } catch (e) {
-      mafdebug(e);
-    }
-  },
-
-  createFile: function() {
-
     var fileToCreate = this.destfile;
     var contents = this.data;
 

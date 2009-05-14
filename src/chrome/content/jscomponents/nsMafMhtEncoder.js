@@ -24,9 +24,7 @@
 
 // Provides MAF Mht Encoder Object
 
-const qpEncodeTimerDelay = 10;
 const fileEncodeTimerDelay = 100;
-const readBufferSize = 1024 * 10; // 10K Read buffer
 
 /**
  * The MAF Mht Encoder.
@@ -49,21 +47,6 @@ MafMhtEncoderClass.prototype = {
   subject : "",
 
   date : "",
-
-  base64s: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
-
-  /** Characters that are to be unaltered during quoted printable encoding */
-  QPENCODE_UNALTERED: String.fromCharCode(32) + String.fromCharCode(60) + String.fromCharCode(62)
-                      + String.fromCharCode(126),
-
-  /** Characters that are to be unaltered during quoted printable encoding if they are the last char*/
-  QPENCODE_UNALTEREDEND: String.fromCharCode(33) + String.fromCharCode(60) + String.fromCharCode(62)
-                         + String.fromCharCode(126),
-
-  /** The maximum number of characters before line wrap */
-  QPENCODE_MAXLINESIZE: 76,
-
-  READ_BUFFER_SIZE: readBufferSize,
 
   addFile: function(source, type, location, id) {
     var record = { };
@@ -225,7 +208,7 @@ MafMhtEncoderClass.prototype = {
    * Original author: samray
    */
   _encodeQuotedPrintable: function(sourcepath, oTransport) {
-
+    var str = "";
     try {
       var obj_File = Components.classes["@mozilla.org/file/local;1"]
                          .createInstance(Components.interfaces.nsILocalFile);
@@ -238,25 +221,20 @@ MafMhtEncoderClass.prototype = {
       var obj_ScriptableIO = Components.classes["@mozilla.org/scriptableinputstream;1"]
                                 .createInstance(Components.interfaces.nsIScriptableInputStream);
       obj_ScriptableIO.init(obj_InputStream);
+
+      str = obj_ScriptableIO.read(obj_File.fileSize);
+
+      obj_ScriptableIO.close();
+      obj_InputStream.close();
     } catch (e) {
       mafdebug(e);
     }
 
-    var eqtState = new encodeQuotedPrintableTimerState(this);
+    var result = MimeSupport.encodeQuotedPrintable(str);
 
-    eqtState.totalFileSize = obj_File.fileSize;
-    eqtState.charsToRead = obj_File.fileSize;
-    eqtState.str = "";
-    eqtState.obj_ScriptableIO = obj_ScriptableIO;
-    eqtState.obj_InputStream = obj_InputStream;
-    eqtState.obj_File = obj_File;
-    eqtState.encoder = this;
-    eqtState.oTransport = oTransport;
+    oTransport.write(result, result.length);
 
-    var timer = Components.classes["@mozilla.org/timer;1"]
-                  .createInstance(Components.interfaces.nsITimer);
-    eqtState.timer = timer;
-    timer.initWithCallback(eqtState, qpEncodeTimerDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+    this.onEncodingFinished();
   },
 
   /**
@@ -264,150 +242,9 @@ MafMhtEncoderClass.prototype = {
    *
    */
   _encodeBase64: function(decStr, oTransport) {
-    var result = "";
-
-    try {
-
-      var encOut = '';
-
-      // Get hidden window
-      var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
-                        .getService(Components.interfaces.nsIAppShellService);
-      var hiddenWnd = appShell.hiddenDOMWindow;
-
-      encOut = hiddenWnd.btoa(decStr);
-
-      result = encOut;
-    } catch(e) {
-      mafdebug(e);
-    }
-
-    if (encOut.length > this.QPENCODE_MAXLINESIZE) {
-      // Split into lines of QPENCODE_MAXLINESIZE characters or less
-      result = encOut.slice(0, this.QPENCODE_MAXLINESIZE);
-      i = this.QPENCODE_MAXLINESIZE;
-      while (i < encOut.length) {
-        result += "\r\n" + encOut.slice(i, i + this.QPENCODE_MAXLINESIZE);
-        i += this.QPENCODE_MAXLINESIZE;
-      }
-      oTransport.write(result, result.length);
-    } else {
-      oTransport.write(encOut, encOut.length);
-    }
-
-    result = "";
-    encOut = "";
-
+    var result = MimeSupport.encodeBase64(decStr);
+    oTransport.write(result, result.length);
     this.onEncodingFinished();
-  },
-
-
-  /**
-   * Encode a single line of text to be quoted printable.
-   * Based on code from: http://sourceforge.net/snippet/detail.php?type=snippet&id=101156
-   * Original author: samray
-   */
-  _encodeQuotedPrintableLine: function(srcLineString) {
-    var result;
-    result = "";
-
-    if (srcLineString.length > 0) {
-      var s = "";
-
-      for (var i = 0; i<srcLineString.length-1; i++) {
-        s += this._encodeQuotedPrintableCharacter(srcLineString.charCodeAt(i), this.QPENCODE_UNALTERED);
-      }
-
-      // Encode last character; if space, encode it
-      s += this._encodeQuotedPrintableCharacter(srcLineString.charCodeAt(srcLineString.length-1),
-                                                 this.QPENCODE_UNALTEREDEND);
-
-      result = s;
-
-      if (s.length > this.QPENCODE_MAXLINESIZE) {
-
-        // Split into lines of QPENCODE_MAXLINESIZE characters or less
-        result = s.slice(0, this.QPENCODE_MAXLINESIZE);
-        i = this.QPENCODE_MAXLINESIZE;
-
-        // If either the last character, character before is =
-        //   then we've split across a code - Bad idea for compatibility with
-        //   streaming decoders who may see == or =A= or such and upchuck.
-        if (result.charAt(result.length-1) == "=") {
-          result = result.slice(0, result.length - 1);
-          i -= 1;
-        } else if (result.charAt(result.length-2) == "=") {
-          result = result.slice(0, result.length - 2);
-          i -= 2;
-        }
-
-        while (i < s.length) {
-          result += "=\r\n" + s.slice(i, i + this.QPENCODE_MAXLINESIZE);
-          i += this.QPENCODE_MAXLINESIZE;
-
-          if (result.charAt(result.length-1) == "=") {
-            result = result.slice(0, result.length - 1);
-            i -= 1;
-          } else if (result.charAt(result.length-2) == "=") {
-            result = result.slice(0, result.length - 2);
-            i -= 2;
-          }
-        }
-      }
-
-      s = "";
-
-    }
-
-    return result;
-  },
-
-
-  /**
-   * Encode a single line of text to be quoted printable.
-   * Based on code from: http://sourceforge.net/snippet/detail.php?type=snippet&id=101156
-   * Original author: samray
-   */
-  encodeQuotedPrintableString: function(srcLineString) {
-    var result;
-    result = "";
-
-    if (srcLineString.length > 0) {
-      var s = "";
-
-      for (var i = 0; i<srcLineString.length-1; i++) {
-        s += this._encodeQuotedPrintableCharacter(srcLineString.charCodeAt(i), this.QPENCODE_UNALTERED);
-      }
-
-      // Encode last character; if space, encode it
-      s += this._encodeQuotedPrintableCharacter(srcLineString.charCodeAt(srcLineString.length-1),
-                                                 this.QPENCODE_UNALTEREDEND);
-
-      result = s;
-    }
-
-    return result;
-  },
-
-  /**
-   * Encode a character that isn't in range as a hex string
-   * Based on code from: http://sourceforge.net/snippet/detail.php?type=snippet&id=101156
-   * Original author: samray
-   */
-  _encodeQuotedPrintableCharacter: function(Character, UnAltered) {
-    var x, Alter=true;
-    for (var i=0; i<UnAltered.length; i+=2) {
-      if ((Character >= UnAltered.charCodeAt(i)) && (Character <= UnAltered.charCodeAt(i+1))) {
-        Alter=false;
-      }
-    }
-
-    if (!Alter) {
-      return String.fromCharCode(Character);
-    }
-
-    x = Character.toString(16).toUpperCase();
-    return (x.length == 1) ? "=0" + x : "=" + x;
   },
 
   /**
@@ -490,122 +327,6 @@ MafMhtEncoderClass.prototype = {
         this.mafeventlistener.onArchivingComplete(0);
       }
     }
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(Components.interfaces.nsITimerCallback) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
-  }
-
-};
-
-
-function encodeQuotedPrintableTimerState(encodingeventlistener) {
-  this.encodingeventlistener = encodingeventlistener;
-  this.totalFileSize = 0;
-  this.charsToRead = 0;
-  this.str = "";
-}
-
-encodeQuotedPrintableTimerState.prototype = {
-
-  notify: function(expiredtimer) {
-    if (this.timer == expiredtimer) {
-      if (this.totalFileSize > 0) {
-
-      //mafdebug("QP: TotalFileSize: " + this.totalFileSize);
-
-      var CRLF = "\r\n";
-      var LF = "\n";
-
-        var CRLFIndex = this.str.indexOf(CRLF);
-        var LFIndex = this.str.indexOf(LF);
-
-
-        if ((CRLFIndex == -1) && (LFIndex == -1)) {
-          while ((this.str.indexOf(CRLF) == -1) && (this.str.indexOf(LF) == -1) && (this.totalFileSize > 0)) {
-            if (this.charsToRead > this.totalFileSize) {
-              this.charsToRead = this.totalFileSize;
-            }
-            this.str += this.obj_ScriptableIO.read(this.charsToRead);
-            this.totalFileSize -= this.charsToRead;
-          }
-        }
-
-
-        do {
-
-        CRLFIndex = this.str.indexOf(CRLF);
-        LFIndex = this.str.indexOf(LF);
-
-        var index = this.str.length;
-        var indexOffset = 1;
-
-          if ((CRLFIndex == -1) && (LFIndex != -1)) {
-            index = LFIndex;
-            indexOffset = 1;
-          } else {
-            if ((CRLFIndex != -1) && (LFIndex == -1)) {
-              index = CRLFIndex;
-              indexOffset = 2;
-            } else {
-              if ((CRLFIndex != -1) && (LFIndex != -1)) {
-                index = Math.min(CRLFIndex, LFIndex);
-                if (index == CRLFIndex) {
-                  indexOffset = 2;
-                } else {
-                  indexOffset = 1;
-                }
-              }
-            }
-          }
-
-          var textLine = this.str.substring(0, index);
-          this.str = this.str.substring(index + indexOffset, this.str.length);
-
-          var result = this.encoder._encodeQuotedPrintableLine(textLine) + CRLF;
-          this.oTransport.write(result, result.length);
-
-          result = "";
-
-        } while ((CRLFIndex != -1) || (LFIndex != -1 ));
-
-        //mafdebug("No more CRLFs or LFs. Starting callback for QP Encode.");
-
-        //mafdebug("QP: TotalFileSize: " + this.totalFileSize);
-
-        // Timer
-        var timer = Components.classes["@mozilla.org/timer;1"]
-                      .createInstance(Components.interfaces.nsITimer);
-        this.timer = timer;
-        timer.initWithCallback(this, qpEncodeTimerDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-    } else {
-
-      //mafdebug("Done QP Encoding");
-
-      //mafdebug("QP: TotalFileSize: " + this.totalFileSize);
-
-      try {
-      // Done encoding
-      this.obj_ScriptableIO.close();
-      this.obj_InputStream.close();
-
-      this.obj_File = null;
-      this.obj_ScriptableIO = null;
-      this.obj_InputStream = null;
-      } catch(e) { }
-
-      this.encodingeventlistener.onEncodingFinished();
-      this.timer = null;
-    }
-
-    }
-
   },
 
   QueryInterface: function(iid) {

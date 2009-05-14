@@ -545,20 +545,16 @@ MafMhtDecoderClass.prototype = {
 
        var encoding = Maf_String_trim(this.getHeaderValue("Content-Transfer-Encoding")).toLowerCase();
 
-       if ((encoding == "quoted-printable") || (encoding == "base64")) {
-         // Decode with encoding and callback
-         new contentDecoderClass(encoding, this.body[0], contentType, callback);
+       if (encoding == "quoted-printable") {
+         callback.onContent(MimeSupport.decodeQuotedPrintable(this.body[0]));
+       } else if (encoding == "base64") {
+         callback.onContent(MimeSupport.decodeBase64(this.body[0]));
        } else {
          // No decoding
          callback.onContent(this.body[0]);
-         callback.onContentComplete();
        }
+       callback.onContentComplete();
     }
-  },
-
-  decodeQuotedPrintableString: function(source) {
-    var decoder = new contentDecoderClass(null, null, null, null);
-    return decoder._decodeQuotedPrintable(source);
   }
 };
 
@@ -592,120 +588,4 @@ headerEnumerator.prototype = {
 function headerRecClass(headerName, headerValue) {
   this.name = headerName;
   this.value = headerValue;
-};
-
-function contentDecoderClass(encoding, content, contentType, callback) {
-  this.encoding = encoding;
-  this.content = content;
-  this.callback = callback;
-  this.contentType = contentType;
-
-  this.startDecoding();
-};
-
-contentDecoderClass.prototype = {
-
-  base64s: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
-
-  startDecoding: function() {
-    if (this.encoding == "quoted-printable") {
-      this.callback.onContent(this._decodeQuotedPrintable(this.content));
-    }
-
-    if (this.encoding == "base64") {
-      this.callback.onBinaryContent(this._decodeBase64((this.content.split(/\r?\n/)).join("")));
-    }
-    try {
-      this.callback.onContentComplete();
-    } catch(e) {
-
-    }
-  },
-
-  /**
-   * Decode from base 64 using the hidden window's atob function
-   *
-   */
-  _decodeBase64: function(encodedString) {
-    var result = new Array();
-
-    try {
-      var undecOut = '';
-      var decOut = new Array()
-
-      // Get hidden window
-      var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
-                        .getService(Components.interfaces.nsIAppShellService);
-      var hiddenWnd = appShell.hiddenDOMWindow;
-
-      mafdebug(encodedString);
-
-      var decStr = hiddenWnd.atob(encodedString);
-      for (var i=0; i<decStr.length; i++) {
-        decOut.push(decStr.charCodeAt(i));
-      }
-
-      mafdebug(decOut);
-
-      result = decOut;
-    } catch(e) {
-      mafdebug(e);
-    }
-
-    return result;
-  },
-
-  /**
-   * Decode quoted printable text.
-   */
-  _decodeQuotedPrintable: function(encodedString) {
-    var result;
-
-    var decodedStrObj = new Object();
-
-    result = encodedString;
-
-    if (this.contentType != null) {
-      // Loose check to see if charset is UTF
-      // Should really parse contentType, get charset and check that.
-      if (this.contentType.toLowerCase().indexOf("utf-") > -1) {
-        if (Maf_String_startsWith(result, "=EF=BB=BF")) {
-          // Remove the three bytes
-          result = result.substring("=EF=BB=BF".length, result.length);
-        }
-      }
-      // Only do this content type check once.
-      this.contentType = null;
-    }
-
-    // = sign followed by new line, replaced by nothing.
-    result = result.replace(/=\r?\n/g, "");
-
-    var equalsArray = result.split("=");
-    var newresult = equalsArray[0];
-    for (var i=1; i<equalsArray.length; i++) {
-      if (equalsArray[i].length >= 2) {
-        newresult += this._hexToDec(equalsArray[i].substring(0,2));
-        if (equalsArray[i].length > 2) {
-          newresult += equalsArray[i].substring(2,equalsArray[i].length);
-        }
-      }
-    }
-
-    return newresult;
-  },
-
-  /**
-   * Convert a hex digit into decimal
-   */
-  _deHex: function(hexDigit) {
-    return("0123456789ABCDEF".indexOf(hexDigit));
-  },
-
-  /**
-   * Convert two digit hex code to ascii character
-   */
-  _hexToDec: function(hexString) {
-    return String.fromCharCode((this._deHex(hexString.substring(0,1)) << 4) + this._deHex(hexString.substring(1,2)));
-  }
 };
