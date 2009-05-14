@@ -24,8 +24,6 @@
 
 // Provides MAF Mht Encoder Object
 
-const fileEncodeTimerDelay = 100;
-
 /**
  * The MAF Mht Encoder.
  */
@@ -114,12 +112,8 @@ MafMhtEncoderClass.prototype = {
       }
     }
 
-
-    var timer = Components.classes["@mozilla.org/timer;1"]
-                 .createInstance(Components.interfaces.nsITimer);
-    this.timer = timer;
-    timer.initWithCallback(this, fileEncodeTimerDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-
+    var self = this;
+    setTimeout(function() { self.notify(); }, 0);
   },
 
   _getEncodedFile: function(index, oTransport) {
@@ -286,15 +280,11 @@ MafMhtEncoderClass.prototype = {
 
     //mafdebug("Incremented i, it's now: " + this.i);
 
-    var timer = Components.classes["@mozilla.org/timer;1"]
-                   .createInstance(Components.interfaces.nsITimer);
-    this.timer = timer;
-    timer.initWithCallback(this, fileEncodeTimerDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+    var self = this;
+    setTimeout(function() { self.notify(); }, 0);
   },
 
-  notify: function(expiredtimer) {
-    if (this.timer == expiredtimer) {
-
+  notify: function() {
       if (this.i < this.filelist.length) {
         if (this.boundaryString == "") {
 
@@ -323,20 +313,8 @@ MafMhtEncoderClass.prototype = {
         this.oTransport.close();
 
         this.filelist = [];
-        this.timer = null;
         this.mafeventlistener.onArchivingComplete(0);
       }
-    }
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(Components.interfaces.nsITimerCallback) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
 
 };
