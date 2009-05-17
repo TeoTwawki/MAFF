@@ -23,7 +23,6 @@
  */
 
 // Provides MAF Mht Decoder Object
-// TODO: Optimization: Dictionary holding headers instead of indexed array.
 
 
 /**
@@ -47,8 +46,6 @@ MafMhtDecoderClass.prototype = {
   rootLocationSet : false,
 
   body : new Array(),
-
-  headers : new Array(),
 
   initWithFile: function(file) {
     try {
@@ -93,7 +90,8 @@ MafMhtDecoderClass.prototype = {
     this.contentHeaders = headersAndBody[0];
     this.contentBody = headersAndBody[1];
 
-    this.headers = this.parseHeaders(this.contentHeaders);
+    this.headers = {};
+    this.parseHeaders(this.contentHeaders, this.headers);
     this.contentHeaders = "";
     this.parseBody();
     this.checkRootLocation();
@@ -153,7 +151,7 @@ MafMhtDecoderClass.prototype = {
     return result;
   },
 
-  parseHeaders: function(unparsedHeaders) {
+  parseHeaders: function(unparsedHeaders, resultObject) {
     var headerLines = unparsedHeaders.split(/\r?\n/);
     // Ensure that values that cross lines end up on only one line
     var normalizedHeaderLines = new Array();
@@ -170,6 +168,9 @@ MafMhtDecoderClass.prototype = {
         var headerValue = Maf_String_trim(normalizedHeaderLines[i].substring(headerDelimiter + 1, normalizedHeaderLines[i].length));
         var headerRec = new headerRecClass(headerName, headerValue);
         aheaders.push(headerRec);
+        if (resultObject) {
+          resultObject[headerName.toLowerCase()] = headerValue;
+        }
       }
     }
 
@@ -493,27 +494,8 @@ MafMhtDecoderClass.prototype = {
     return result;
   },
 
-  getHeaders: function() {
-    // Result is a nsISimpleEnumerator
-    return (new headerEnumerator(this.headers)).QueryInterface(Components.interfaces.nsISimpleEnumerator);
-  },
-
   getHeaderValue: function(headerName) {
-    var result = "";
-    try {
-      var hnames = this.getHeaders();
-      while (hnames.hasMoreElements()) {
-        var header = hnames.getNext();
-        if ((Maf_String_trim(header.name).toLowerCase()) == Maf_String_trim(headerName).toLowerCase()) {
-          result = header.value;
-          break;
-        }
-      }
-    } catch(e) {
-      mafdebug(e);
-    }
-
-    return result;
+    return this.headers[Maf_String_trim(headerName).toLowerCase()] || "";
   },
 
   noOfParts: function() {
@@ -556,33 +538,6 @@ MafMhtDecoderClass.prototype = {
        }
        callback.onContentComplete();
     }
-  }
-};
-
-function headerEnumerator(pheaders) {
-  this.headers = pheaders;
-  this.index = -1;
-};
-
-headerEnumerator.prototype = {
-
-  getNext: function() {
-    this.index += 1;
-    return this.headers[this.index];
-  },
-
-  hasMoreElements: function() {
-    return (this.index < (this.headers.length - 1));
-  },
-
-  QueryInterface: function(iid) {
-
-    if (!iid.equals(Components.interfaces.nsISimpleEnumerator) &&
-        !iid.equals(Components.interfaces.nsISupports)) {
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    }
-
-    return this;
   }
 };
 

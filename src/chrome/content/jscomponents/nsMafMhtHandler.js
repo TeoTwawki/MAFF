@@ -363,31 +363,9 @@ MafMhtHandlerServiceClass.prototype = {
 
 
   _addSubjectAndDateMetaData: function(decoder, datasource) {
-    var subject = "Unknown";
-    var dateTimeArchived = "Unknown";
-
-    var headers = decoder.getHeaders();
-    while (headers.hasMoreElements()) {
-      try {
-        var header = headers.getNext();
-        var name = Maf_String_trim(header.name).toLowerCase();
-        if (name == "subject") {
-           subject = header.value;
-        }
-        if (name == "date") {
-           dateTimeArchived = header.value;
-        }
-        if (name == "x-maf") {
-           this.xmafused = true;
-           this.xmafversion = header.value;
-        }
-      } catch (e) {
-        // The interface may not be available as yet?
-      }
-    }
-
-    datasource.title = subject;
-    datasource.dateArchived = dateTimeArchived;
+    datasource.title = decoder.getHeaderValue("subject") || "Unknown";
+    datasource.dateArchived = decoder.getHeaderValue("date") || "Unknown";
+    this.xmafused = !!decoder.getHeaderValue("x-maf");
   },
 
   createArchive: function(archivefile, sourcepath, archivepage, indexFilename, mafeventlistener) {
