@@ -182,5 +182,39 @@ var MimeSupport = {
   decodeBase64: function(aAsciiString) {
     // Pass only the valid characters to the decoding function
     return atob(aAsciiString.replace(/[^A-Za-z0-9+\/=]+/g, ""));
+  },
+
+  /**
+   * Returns an object having one property for each header field in the given
+   *  header section. For more information on header field syntax, see
+   *  <http://tools.ietf.org/html/rfc5322#section-2.2> (retrieved 2008-05-17).
+   *
+   * The property names in the returned object are the names of the header
+   *  fields, converted to lowercase. If more than one header field with the
+   *  same name is present in the section, the behavior is undefined.
+   *
+   * The property values correspond to the raw characters in the unfolded
+   *  headers. For more information on header folding and unfolding, see
+   *  <http://tools.ietf.org/html/rfc5322#section-2.2.3> (retrieved 2008-05-17).
+   */
+  collectHeadersFromSection: function(aHeaderSection) {
+    // Remove any line break that is followed by a whitespace character
+    var unfoldedHeders = aHeaderSection.replace(/(\r?\n|\r)(?=[\t ])/g, "");
+    // Examine each valid header line, that consists of a header name, followed
+    //  by a colon, followed by the header value. Header names cannot contain
+    //  whitespace. If whitespace is present around the colon or at the end of
+    //  the value, it is ignored. Leading whitespace on the first line of the
+    //  header section is also ignored. Lines that don't conform to this syntax
+    //  are ignored.
+    var headers = {};
+    unfoldedHeders.replace(
+      /^[\t ]*([^\t\r\n :]+)[\t ]*:[\t ]*(.*)/gm,
+      function(aAll, aHeaderName, aHeaderValue) {
+        // Set the property of the object, and remove the trailing whitespace
+        //  that may be still present in the header value
+        headers[aHeaderName.toLowerCase()] = aHeaderValue.replace(/\s+$/, "");
+      }
+    );
+    return headers;
   }
 }
