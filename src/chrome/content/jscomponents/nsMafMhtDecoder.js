@@ -158,23 +158,15 @@ MafMhtDecoderClass.prototype = {
 
     normalizedHeaderLines = this._normalizeHeaders(headerLines);
 
-    var aheaders = new Array();
-
     // Get the name value pairs
     for (var i=0; i<normalizedHeaderLines.length; i++) {
       var headerDelimiter = normalizedHeaderLines[i].indexOf(":");
       if (headerDelimiter > 0) {
         var headerName = Maf_String_trim(normalizedHeaderLines[i].substring(0, headerDelimiter));
         var headerValue = Maf_String_trim(normalizedHeaderLines[i].substring(headerDelimiter + 1, normalizedHeaderLines[i].length));
-        var headerRec = new headerRecClass(headerName, headerValue);
-        aheaders.push(headerRec);
-        if (resultObject) {
-          resultObject[headerName.toLowerCase()] = headerValue;
-        }
+        resultObject[headerName.toLowerCase()] = headerValue;
       }
     }
-
-    return aheaders;
   },
 
   /**
@@ -317,35 +309,31 @@ MafMhtDecoderClass.prototype = {
 
         for (var i=0; i<contentParts.length; i++) {
           var currentPart = contentParts[i];
+          var result = new MafMhtDecoderClass();
+          result.init(currentPart);
+
           // If there's a base content location, make sure that if the current part
           //   has a content location it is absolute
           if (baseContentLocation != "") {
-            currentPart = this._resolvePartToBaseContentLocation(currentPart, baseContentLocation);
+            this._resolvePartToBaseContentLocation(result, baseContentLocation);
           }
 
           // If current part has a content id or content location
           // that matches start, make that the root
           if (start != "") {
-            if (this._isStartPart(currentPart, start)) {
+            if (this._isStartPart(result, start)) {
               this.rootLocation = i;
               this.rootLocationSet = true;
             }
           }
 
-          // return new MafMhtDecoderClass inited with the content of the part
-          var result = new MafMhtDecoderClass();
-          result.init(currentPart);
           abody[abody.length] = result;
         }
 
         // If there's a base content location, make sure it's added to the root part
         if (baseContentLocation != "") {
-          var rootpart = abody[this.rootLocation].content;
-          rootpart = this._addContentLocationToRootPart(rootpart, baseContentLocation);
-          // return new MafMhtDecoderClass inited with the content of the part
-          var result = new MafMhtDecoderClass();
-          result.init(rootpart);
-          abody[this.rootLocation] = result;
+          var rootpart = abody[this.rootLocation];
+          this._addContentLocationToRootPart(rootpart, baseContentLocation);
         }
 
       }
@@ -355,41 +343,11 @@ MafMhtDecoderClass.prototype = {
   },
 
   _addContentLocationToRootPart: function(currentPart, baseContentLocation) {
-    var result = currentPart;
     if (baseContentLocation != "") {
-      // Parse the headers
-      var headersAndBody = this._parseOutHeadersAndBody(currentPart);
-
-      // Get the headers
-      var headers = this.parseHeaders(headersAndBody[0]);
-
-      var hasContentLocationAlready = false;
-
-      // Get the part's content location
-      for (var i=0; i<headers.length; i++) {
-        var entry = headers[i];
-        if (Maf_String_trim(entry.name).toLowerCase() == "content-location") {
-          hasContentLocationAlready = true;
-          break;
-        }
-      }
-
-      //  If there's no content location
-      if (!hasContentLocationAlready) {
-        // Reconstruct headers
-        var headerStr = "";
-        for (var i=0; i<headers.length; i++) {
-          var entry = headers[i];
-          headerStr += entry.name + ": " + entry.value + "\r\n";
-        }
-        headerStr += "Content-Location: " + baseContentLocation + "\r\n";
-
-        // Replace part headers with new headers in new part string
-        result = headerStr + "\r\n" + headersAndBody[1];
+      if (!currentPart.getHeaderValue("Content-Location")) {
+        currentPart.setHeaderValue("Content-Location", baseContentLocation);
       }
     }
-
-    return result;
   },
 
   _resolvePartToBaseContentLocation: function(currentPart, baseContentLocation) {
@@ -399,77 +357,21 @@ MafMhtDecoderClass.prototype = {
                             .createInstance(Components.interfaces.nsIURL);
       obj_baseUrl.spec = baseContentLocation;
 
-      // Parse the headers
-      var headersAndBody = this._parseOutHeadersAndBody(currentPart);
-
-      // Get the headers
-      var headers = this.parseHeaders(headersAndBody[0]);
-
-      var partContentLocation = "";
-
-      // Get the part's content location
-      for (var i=0; i<headers.length; i++) {
-        var entry = headers[i];
-        if (Maf_String_trim(entry.name).toLowerCase() == "content-location") {
-          partContentLocation = entry.value;
-          break;
-        }
-      }
+      var partContentLocation = currentPart.getHeaderValue("Content-Location");
 
       //  If there's a content location
       if (partContentLocation != "") {
-        var relativeContentLocation = partContentLocation;
-
+        currentPart.setHeaderValue("X-MAF-Content-Location", partContentLocation);
         // Resolve against the baseContentLocation
         partContentLocation = obj_baseUrl.resolve(partContentLocation);
-
-        // Reconstruct headers
-        var headerStr = "";
-        for (var i=0; i<headers.length; i++) {
-          var entry = headers[i];
-          if (Maf_String_trim(entry.name).toLowerCase() == "content-location") {
-            headerStr += entry.name + ": " + partContentLocation + "\r\n";
-            headerStr += "x-maf-content-location: " + relativeContentLocation + "\r\n";
-          } else {
-            headerStr += entry.name + ": " + entry.value + "\r\n";
-          }
-        }
-
-        // Replace part headers with new headers in new part string
-        result = headerStr + "\r\n" + headersAndBody[1];
+        currentPart.setHeaderValue("Content-Location", partContentLocation);
       }
     }
-
-    return result;
   },
 
   _isStartPart: function(contentPart, startid) {
-    var result = false;
-    try {
-      var partHeaders = "";
-      if (contentPart.indexOf("\r\n\r\n") != -1) {
-        partHeaders = contentPart.substring(0, contentPart.indexOf("\r\n\r\n"));
-      } else if (contentPart.indexOf("\n\n") != -1) {
-        partHeaders = contentPart.substring(0, contentPart.indexOf("\n\n"));
-      }
-
-      var parsedPartHeaders = this.parseHeaders(partHeaders);
-      for (var i=0; i<parsedPartHeaders.length; i++) {
-        var entry = parsedPartHeaders[i];
-        if ((Maf_String_trim(entry.name).toLowerCase() == "content-id") ||
-            (Maf_String_trim(entry.name).toLowerCase() == "content-location")) {
-          if (entry.value == startid) {
-            result = true;
-            break;
-          }
-        }
-      }
-
-    } catch(e) {
-
-    }
-
-    return result;
+    return startid == contentPart.getHeaderValue("Content-ID") ||
+           startid == contentPart.getHeaderValue("Content-Location");
   },
 
   _convertContentType: function(contentType) {
@@ -496,6 +398,10 @@ MafMhtDecoderClass.prototype = {
 
   getHeaderValue: function(headerName) {
     return this.headers[Maf_String_trim(headerName).toLowerCase()] || "";
+  },
+
+  setHeaderValue: function(headerName, headerValue) {
+    this.headers[Maf_String_trim(headerName).toLowerCase()] = headerValue;
   },
 
   noOfParts: function() {
