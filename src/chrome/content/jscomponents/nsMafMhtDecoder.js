@@ -92,7 +92,6 @@ MafMhtDecoderClass.prototype = {
 
     this.contentHeaders = headersAndBody[0];
     this.contentBody = headersAndBody[1];
-    this.content = "";
 
     this.headers = this.parseHeaders(this.contentHeaders);
     this.contentHeaders = "";
@@ -332,21 +331,26 @@ MafMhtDecoderClass.prototype = {
             }
           }
 
-          abody[abody.length] = currentPart;
+          // return new MafMhtDecoderClass inited with the content of the part
+          var result = new MafMhtDecoderClass();
+          result.init(currentPart);
+          abody[abody.length] = result;
         }
 
         // If there's a base content location, make sure it's added to the root part
         if (baseContentLocation != "") {
-          var rootpart = abody[this.rootLocation];
+          var rootpart = abody[this.rootLocation].content;
           rootpart = this._addContentLocationToRootPart(rootpart, baseContentLocation);
-          abody[this.rootLocation] = rootpart;
+          // return new MafMhtDecoderClass inited with the content of the part
+          var result = new MafMhtDecoderClass();
+          result.init(rootpart);
+          abody[this.rootLocation] = result;
         }
 
       }
     }
 
     this.body = abody;
-    this.contentBody = "";
   },
 
   _addContentLocationToRootPart: function(currentPart, baseContentLocation) {
@@ -520,10 +524,7 @@ MafMhtDecoderClass.prototype = {
     if (this.noOfParts() == 1) {
       return this;
     } else {
-      // return new MafMhtDecoderClass inited with the content of the part
-      var result = new MafMhtDecoderClass();
-      result.init(this.body[index]);
-      return result;
+      return this.body[index]
     }
   },
 
@@ -546,12 +547,12 @@ MafMhtDecoderClass.prototype = {
        var encoding = Maf_String_trim(this.getHeaderValue("Content-Transfer-Encoding")).toLowerCase();
 
        if (encoding == "quoted-printable") {
-         callback.onContent(MimeSupport.decodeQuotedPrintable(this.body[0]));
+         callback.onContent(MimeSupport.decodeQuotedPrintable(this.contentBody));
        } else if (encoding == "base64") {
-         callback.onContent(MimeSupport.decodeBase64(this.body[0]));
+         callback.onContent(MimeSupport.decodeBase64(this.contentBody));
        } else {
          // No decoding
-         callback.onContent(this.body[0]);
+         callback.onContent(this.contentBody);
        }
        callback.onContentComplete();
     }
