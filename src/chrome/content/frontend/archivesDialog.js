@@ -318,7 +318,7 @@ var ArchivesDialog = {
     ].forEach(function(type) {
       // For every node in the selection
       var dataString = "";
-      for ([, node] in Iterator(selectedNodes)) {
+      for (var [, node] in Iterator(selectedNodes)) {
         // Add the concatenation separator if necessary
         if (dataString) {
           dataString += NEWLINE;
@@ -354,7 +354,7 @@ var ArchivesDialog = {
       return;
 
     // For every node in the selection
-    for ([, node] in Iterator(selectedNodes)) {
+    for (var [, node] in Iterator(selectedNodes)) {
       // Find a reference to the page from the archives cache
       var page = ArchiveCache.pageFromUriSpec(node.uri);
       // If the page is still cached, remove its archive from the cache
@@ -378,7 +378,7 @@ var ArchivesDialog = {
 
     // For every node in the selection
     var urlsToOpen = [];
-    for ([, node] in Iterator(selectedNodes)) {
+    for (var [, node] in Iterator(selectedNodes)) {
       // Find the associated URL, and add it to the list if actually specified
       var value = ArchivesDialog.getNodeValue(node, aColumnId);
       if (value) {
@@ -431,7 +431,7 @@ var ArchivesDialog = {
       var actionDisabled = true;
 
       // Find the first node for which a value is actually present
-      for ([, node] in Iterator(selectedNodes)) {
+      for (var [, node] in Iterator(selectedNodes)) {
         // Get the node value with the appropriate data type
         var value = ArchivesDialog.getNodeValue(node, column.id);
         if (value) {
