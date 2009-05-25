@@ -120,9 +120,7 @@ maf.prototype = {
     }
 
     if (Prefs.openAction == Prefs.OPENACTION_ASK) {
-      if (!MafUtils.isWindowOpen("chrome://maf/content/mafBrowseOpenArchivesDLG.xul")) {
-        MafGUI.browseOpenArchives();
-      }
+      MafCommandsOverlay.browseOpenArchives();
     }
 
     return null;

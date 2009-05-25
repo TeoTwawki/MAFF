@@ -314,32 +314,6 @@ MafUtilServiceClass.prototype = {
   },
 
   /**
-   * Returns true if a window with that id is open
-   */
-  isWindowOpen: function(needleLocation) {
-    var result = false;
-
-    try {
-      var wmI = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                   .getService(Components.interfaces.nsIWindowMediator);
-      var entries = wmI.getEnumerator(null);
-
-      while (entries.hasMoreElements()) {
-        currWindow = entries.getNext();
-        if (currWindow.location == needleLocation) {
-          result = true;
-          break;
-        }
-      }
-    } catch (e) {
-      mafdebug(e);
-    }
-
-    return result;
-  },
-
-
-  /**
    * Adds a base tag to HTML.
    * Important so that relative urls not converted by save (such as paths to embedded objects,
    * relative form submit paths, javascripts, etc) can go online to get the missing data.
