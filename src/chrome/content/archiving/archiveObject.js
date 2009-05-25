@@ -77,6 +77,15 @@ Archive.prototype = {
   },
 
   /**
+   * String representing the leaf name of the archive file, without extension.
+   */
+  get name() {
+    // Returns the base name extracted from the URI object of the archive,
+    //  which always implements the nsIURL interface.
+    return this.uri.QueryInterface(Ci.nsIURL).fileBaseName;
+  },
+
+  /**
    * nsIURI representing the compressed or encoded archive.
    *
    * The returned URI never contains query or hash parts.
