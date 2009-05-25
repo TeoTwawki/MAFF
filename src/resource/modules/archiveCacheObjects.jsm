@@ -164,10 +164,10 @@ var ArchiveCache = {
    *                 access URL (for example, a "jar" URL).
    */
   pageFromUriSpec: function(aSpec) {
-    // As an optimization, if this is the main page in an archive, return now
     return this._pagesByArchiveUri[aSpec] ||
            this._pagesByDirectArchiveUri[aSpec] ||
-           this._pagesByTempUri[aSpec];
+           this._pagesByTempUri[aSpec] ||
+           null;
   },
 
   /**
