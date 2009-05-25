@@ -33,11 +33,9 @@ try {
    "integration/fileFiltersOverlay.js",
 
    // Original MAF JavaScript infrastructure
-   "jscomponents/nsMafGuiHandler.js",
    "jscomponents/nsMafMhtDecoder.js",
    "jscomponents/nsMafMhtEncoder.js",
    "jscomponents/nsMafMhtHandler.js",
-   "jscomponents/nsMafState.js",
    "jscomponents/nsMafUtil.js",
 
    // Web archive handling

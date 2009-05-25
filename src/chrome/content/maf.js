@@ -43,15 +43,6 @@ var MafUtils = GetMafUtilServiceClass();
 
 var MafMHTHandler = new MafMhtHandlerServiceClass();
 
-var MafGUI = new MAFGuiHandlerClass();
-MafGUI.init(browserWindow);
-
-var MafState = GetMafStateServiceClass();
-
-var MafStrBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                      .getService(Components.interfaces.nsIStringBundleService)
-                      .createBundle("chrome://maf/locale/maf.properties");
-
 } catch(e) {
   mafdebug(e);
 }
@@ -107,9 +98,6 @@ maf.prototype = {
 
     // Register the archive in the cache
     ArchiveCache.registerArchive(archive);
-
-    // Add the metadata to the state object
-    MafState.addArchiveInfo(archive);
 
     if (Prefs.openAction == Prefs.OPENACTION_TABS) {
       if(returnFirstItem) {

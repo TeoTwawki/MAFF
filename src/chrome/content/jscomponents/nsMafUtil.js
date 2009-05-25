@@ -268,30 +268,6 @@ MafUtilServiceClass.prototype = {
   },
 
   /**
-   * Opens a list of URLs in tabs.
-   */
-  openListInTabs: function(urlList, oBrowser) {
-    try {
-      var triedFirstTab = false;
-      for (var i=0; i<urlList.length; i++) {
-        if (triedFirstTab) {
-          oBrowser.addTab(urlList[i]);
-        } else {
-          triedFirstTab = true;
-          if ((oBrowser.browsers.length == 1) && (oBrowser.currentURI.spec == "about:blank")) {
-            oBrowser.loadURI(urlList[i], null, null);
-          } else {
-            oBrowser.addTab(urlList[i]);
-          }
-
-        }
-      }
-    } catch(e) {
-
-    }
-  },
-
-  /**
    * Returns the number of open windows
    */
   getNumberOfOpenWindows: function() {

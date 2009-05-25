@@ -33,10 +33,6 @@
     <em:translator>tr-TR: Ersen Yoldaç</em:translator>
     <em:translator>zh-CN: 虞海</em:translator>
     <em:translator>zh-TW: 虞海</em:translator>
-    <!-- Translators for MAF 0.6.3 and earlier -->
-    <em:translator>it-IT: Gioxx; eXtenZilla.it</em:translator>
-    <em:translator>pl-PL: Bartosz Piec</em:translator>
-    <em:translator>da-DK: Molle Bestefich</em:translator>
     <em:homepageURL>http://maf.mozdev.org/</em:homepageURL>
 
     <!-- Front End Integration Hooks (used by Extension Manager)-->
