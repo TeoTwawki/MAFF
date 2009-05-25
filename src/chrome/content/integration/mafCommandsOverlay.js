@@ -232,7 +232,19 @@ var MafCommandsOverlay = {
    * Displays the "Browse open archives" window.
    */
   browseOpenArchives: function() {
-    MafGUI.browseOpenArchives();
+    // If the archives window is already opened
+    var archivesDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
+     getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Archives");
+    if (archivesDialog) {
+      // Bring the window to the foreground
+      archivesDialog.focus();
+    } else {
+      // Open a new window to display the available archives
+      window.open(
+       "chrome://maf/content/frontend/archivesDialog.xul",
+       "maf-archivesDialog",
+       "chrome,titlebar,centerscreen,resizable=yes");
+    }
   },
 
   /**
