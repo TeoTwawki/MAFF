@@ -53,7 +53,7 @@ function ArchivePage(aArchive) {
   this.indexLeafName = "";
   this.title = "";
   this.originalUrl = "";
-  this.dateArchived = null;
+  this._dateArchived = null;
   this.renderingCharacterSet = "";
   this._index = 0;
 }
@@ -89,9 +89,23 @@ ArchivePage.prototype = {
   originalUrl: "",
 
   /**
-   * Date object representing the time the page was archived.
+   * Valid Date object representing the time the page was archived, or null if
+   *  the information is not available. This property can also be set using a
+   *  string value.
    */
-  dateArchived: null,
+  get dateArchived() {
+    return this._dateArchived;
+  },
+  set dateArchived(aValue) {
+    if (aValue) {
+      // If the provided value is not a Date object, create a new object
+      var date = aValue.getTime ? aValue : new Date(aValue);
+      // Ensure that the provided date is valid
+      this._dateArchived = isNaN(date.getTime()) ? null : date;
+    } else {
+      this._dateArchived = null;
+    }
+  },
 
   /**
    * String representing the character set selected by the user for rendering
