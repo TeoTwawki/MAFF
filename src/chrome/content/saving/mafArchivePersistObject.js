@@ -94,7 +94,7 @@ MafArchivePersist.prototype = {
       }
 
       // Find the local file to save to
-      targetFile = aFile.QueryInterface(Ci.nsIFileURL).file;
+      var targetFile = aFile.QueryInterface(Ci.nsIFileURL).file;
 
       // Create a save job and listen to its events
       var saveJob = new SaveJob(this);

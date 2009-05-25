@@ -724,7 +724,7 @@ gCompleteSaveBehavior.isValidForSaveMode = function(aSaveMode) {
 };
 gCompleteSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
   // Keep the same extensions as the normal behavior, override the description
-  filter = this.__proto__.getFileFilter(aContentType, aFileExtension);
+  var filter = this.__proto__.getFileFilter(aContentType, aFileExtension);
   filter.title = getStringBundle().GetStringFromName("WebPageCompleteFilter");
   return filter;
 };
