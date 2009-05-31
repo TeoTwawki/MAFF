@@ -121,30 +121,21 @@ MafDocumentLoaderFactory.prototype = {
     if (aCommand != "view")
       throw Cr.NS_ERROR_NOT_IMPLEMENTED;
 
-    // Currently we can only open MAF archives from "file://" URLs.
-    var localFile = aChannel.URI.QueryInterface(Ci.nsIFileURL).file;
+    // Import the MAF shared modules. We cannot do this in the global scope,
+    //  like we do for XPCOMUtils, since our resource protocol alias may not be
+    //  registered at that time. See also
+    //  <http://groups.google.com/group/mozilla.dev.tech.xpcom/browse_thread/thread/6a8ea7f803ac720a>
+    //  (retrieved 2008-12-07).
+    var mafObjects = {};
+    Cu.import("resource://maf/modules/mafObjects.jsm", mafObjects);
 
-    // Find the browser window associated with the document being opened
-    var browserWindow = aContainer.
-     QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebNavigation).
-     QueryInterface(Ci.nsIDocShellTreeItem).rootTreeItem.
-     QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
-
-    // Extract the archive, and store the URI of the first page. Other pages are
-    //  opened in other tabs at this point, if required. Note: there is
-    //  currently no mechanism in place to avoid extracting the archive or
-    //  opening the other tabs multiple times if the original page is refreshed.
-    var contentURISpec = browserWindow.Maf.openFromArchive(
-     null, localFile, true);
-    // If no data is available or should be shown, display an empty page
-    if (!contentURISpec) {
-      contentURISpec = "about:blank";
-    }
+    // Load the archive, and retrieve the URI of the content associated with the
+    //  page to be displayed. The called function may start a redirect and
+    //  return the URI of a page that will be displayed only temporarily.
+    var contentURI = mafObjects.ArchiveLoader.load(aChannel.URI, aContainer);
 
     // Create and start a content viewer for the archive contents. For now,
     //  assume that the content type is "text/html".
-    var contentURI = Cc['@mozilla.org/network/io-service;1']
-     .getService(Ci.nsIIOService).newURI(contentURISpec, "utf-8", null);
     var originalContentViewer = this._startActualContentViewer(contentURI,
      "text/html", aLoadGroup, aContainer, aExtraInfo);
 

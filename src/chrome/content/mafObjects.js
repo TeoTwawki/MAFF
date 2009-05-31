@@ -49,6 +49,9 @@ try {
    ["jscomponents/nsMafMhtHandler.js",            "MafMhtHandler"],
    ["jscomponents/nsMafUtil.js",                  "MafUtils"],
 
+   // Loading infrastructure
+   ["loading/archiveLoaderObject.js",             "ArchiveLoader"],
+
    // Preferences objects
    ["preferences/dynamicPrefsObject.js",          "DynamicPrefs"],
    ["preferences/prefsObject.js",                 "Prefs"],

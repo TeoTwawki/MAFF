@@ -121,8 +121,8 @@ ArchivePage.prototype = {
    */
   get archiveUri() {
     var pageArchiveUri = this.archive.uri.clone();
-    if (this._index) {
-      // If this is not the first page in the archive, add the index of the page
+    if (this.archive.pages.length > 1) {
+      // If this page is part of a multi-page archive, add the index of the page
       //  as the parameter part of the URI. The original archive URI does not
       //  contain query or hash parts.
       pageArchiveUri.QueryInterface(Ci.nsIURL).path += ";" + (this._index + 1);

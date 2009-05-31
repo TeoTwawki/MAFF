@@ -106,6 +106,14 @@ MaffArchive.prototype = {
       // Close the file when extraction is finished or in case of exception
       zipReader.close();
     }
+    // Load the metadata for every page that was added to the archive
+    this.pages.forEach(function(page) {
+      try {
+        page._loadMetadata();
+      } catch (e) {
+        Cu.reportError(e);
+      }
+    });
   },
 
   _newPage: function() {
