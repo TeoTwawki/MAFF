@@ -128,26 +128,6 @@ var Prefs = {
     return this._prefBranchForMaf.getBoolPref("save.usemhtmlextension");
   },
 
-  /** Enumeration for openAction */
-  OPENACTION_TABS: "tabs",
-  OPENACTION_ASK: "ask",
-  OPENACTION_REMEMBER: "remember",
-
-  /**
-   * Returns the action to be performed when an archive is opened.
-   *
-   * Possible values:
-   *   OPENACTION_TABS     - (default) Open each contained page in a new tab.
-   *   OPENACTION_ASK      - Show a dialog with the list of all open archives,
-   *                          that can be used to select an action.
-   *   OPENACTION_REMEMBER - Add the archive to the list of all open archives,
-   *                          but don't show the dialog.
-   *   (other)             - If the user has customized the preference.
-   */
-  get openAction() {
-    return this._prefBranchForMaf.getCharPref("open.action");
-  },
-
   /**
    * Returns true if the contents of MAFF archives should be accessed directly
    *  using the "jar:" protocol instead of extracting the archive to a

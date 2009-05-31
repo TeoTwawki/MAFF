@@ -4,7 +4,6 @@ pref("extensions.maf.interface.menu.tools", true);
 pref("extensions.maf.interface.menu.pagecontext", false);
 pref("extensions.maf.interface.menu.tabscontext", true);
 pref("extensions.maf.interface.menuitem.saveinarchive", false);
-pref("extensions.maf.open.action", "tabs");
 pref("extensions.maf.open.rewriteurls", true);
 pref("extensions.maf.open.usejarprotocol", false);
 pref("extensions.maf.save.component", "standard");

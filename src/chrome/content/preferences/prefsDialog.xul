@@ -59,29 +59,8 @@
    label="&pane.main.label;"
    >
     <preferences>
-      <preference id="prefOpenAction"                  name="extensions.maf.open.action"                  type="string"/>
       <preference id="prefSaveMetadataExtended"        name="extensions.maf.save.metadata.extended"       type="bool"/>
     </preferences>
-    <groupbox>
-      <caption label="&open.caption;" />
-      <label control="rgrOpenAction"
-             value=  "&open.action.grouplabel;"
-             />
-      <radiogroup id=        "rgrOpenAction"
-                  preference="prefOpenAction"
-                  class=     "indent"
-                  >
-        <radio value="tabs"       label=    "&open.action.tabs.label;"
-                                  accesskey="&open.action.tabs.accesskey;"
-                                  />
-        <radio value="ask"        label=    "&open.action.ask.label;"
-                                  accesskey="&open.action.ask.accesskey;"
-                                  />
-        <radio value="remember"   label=    "&open.action.remember.label;"
-                                  accesskey="&open.action.remember.accesskey;"
-                                  />
-      </radiogroup>
-    </groupbox>
     <groupbox>
       <caption label="&save.caption;" />
       <label control="rgrSaveComponents"
