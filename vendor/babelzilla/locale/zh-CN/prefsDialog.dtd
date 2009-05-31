@@ -1,4 +1,4 @@
-<!ENTITY window.title "配置">
+<!ENTITY window.title "偏好设定">
 <!ENTITY browsebutton.label "浏览…">
 <!ENTITY pane.main.label "主要">
 <!ENTITY open.caption "打开档案时的操作">
@@ -13,11 +13,23 @@
 <!ENTITY save.component.grouplabel "当保存完整网页档案内容时：">
 <!ENTITY save.component.standard.label "使用浏览器的标准保存系统">
 <!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.savecomplete.label "使用??的“Save Complete”扩展">
+<!ENTITY save.component.savecomplete.label "使用集成入 MAF 的原 Firefox “Save Complete” 扩展（注：Allows more content to be saved, thanks to the integrated Save Complete extension written by Stephen Augenstein. Note that if you also have a standalone version of Save Complete installed, MAF will continue to use the integrated one. Improvements to Save Complete are periodically included in new versions of MAF.）">
 <!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.metadata.extended.label "在 MAFF 档中保存扩展元数据（注：With this preference enabled, additional page information such as history, text zoom and scroll position is saved for each page. There is currently no preference to restore this saved information as yet.）">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!ENTITY pane.interface.label "界面">
 <!ENTITY menu.caption "菜单">
+<!ENTITY menu.grouplabel "显示 MAF 菜单于：">
+<!ENTITY menu.file.label "“文件(F)”菜单">
+<!ENTITY menu.file.accesskey "F">
+<!ENTITY menu.tools.label "“工具”菜单">
+<!ENTITY menu.tools.accesskey "l">
+<!ENTITY menu.pagecontext.label "页面内容菜单">
+<!ENTITY menu.pagecontext.accesskey "P">
+<!ENTITY menu.tabscontext.label "标签栏内容菜单">
+<!ENTITY menu.tabscontext.accesskey "x">
+<!ENTITY pane.fileassociations.label "文件关联">
+<!ENTITY associate.windowsonly.description "本功能仅用于 Windows。">
 <!ENTITY pane.advanced.label "高级">
 <!ENTITY temp.caption "临时文件">
 <!ENTITY temp.folder.label "临时文件夹(T)：">

@@ -1,8 +1,8 @@
 <!ENTITY command.browseopenarchives.key "M">
 <!ENTITY command.browseopenarchives.modifiers "alt">
-<!ENTITY menuitem.mafsubmenu.label "Mozilla 档案格式">
+<!ENTITY menuitem.mafsubmenu.label "Mozilla 档案格式 (MAF)">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
-<!ENTITY menuitem.browseopenarchives.label "浏览已开启档案…">
+<!ENTITY menuitem.browseopenarchives.label "浏览已装载档案…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
 <!ENTITY menuitem.preferences.label "配置…">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
