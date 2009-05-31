@@ -25,10 +25,6 @@
  * TODO: Add save frame functionality to alternative save component.
  */
 
-Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
- .getService(Components.interfaces.mozIJSSubScriptLoader)
- .loadSubScript("chrome://maf/content/includeall.js");
-
 var browserWindow = window;
 
 function maf() {

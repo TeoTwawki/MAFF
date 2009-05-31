@@ -236,7 +236,7 @@ ArchivePage.prototype = {
   _getOriginalSaveUrl: function(aDocument) {
     // Find the first comment in the document, and return now if not found
     var firstCommentNode = aDocument.evaluate('//comment()', aDocument, null,
-     XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+     Ci.nsIDOMXPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     if (!firstCommentNode) {
       return null;
     }

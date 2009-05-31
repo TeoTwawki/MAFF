@@ -55,7 +55,7 @@
  onload="MultiSaveDialog.onLoadDialog();"
  >
   <!-- Dialog machinery -->
-  <script type="application/x-javascript" src="../includeall.js" />
+  <script type="application/x-javascript" src="../mafChrome.js" />
   <script type="application/x-javascript" src="multiSaveDialog.js" />
 
   <!-- Tab selection tree -->

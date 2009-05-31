@@ -62,8 +62,13 @@ SaveContentJob.prototype = {
   _executeStart: function() {
     // Create the target folder
     this._targetDir.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
+    // Find the browser window associated with the document being saved
+    var browserWindow = this._document.defaultView.
+     QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebNavigation).
+     QueryInterface(Ci.nsIDocShellTreeItem).rootTreeItem.
+     QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
     // Save the document in the target folder
-    browserWindow.saveDocument(this._document,
+    browserWindow.wrappedJSObject.saveDocument(this._document,
      {saveDir: this._targetDir, mafEventListener: this});
     // Wait for the save completed callback
     this._asyncWorkStarted();

@@ -49,7 +49,10 @@
 
   <!-- Overlay machinery -->
   <script type="application/x-javascript"
-          src="chrome://maf/content/maf.js"
+          src="chrome://maf/content/mafChrome.js"
+          />
+  <script type="application/x-javascript"
+          src="chrome://maf/content/mafBrowser.js"
           />
   <script type="application/x-javascript"
           src="chrome://maf/content/integration/mafCommandsOverlay.js"
