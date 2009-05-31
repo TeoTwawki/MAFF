@@ -29,13 +29,7 @@ Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
  .getService(Components.interfaces.mozIJSSubScriptLoader)
  .loadSubScript("chrome://maf/content/includeall.js");
 
-try {
-
 var browserWindow = window;
-
-} catch(e) {
-  mafdebug(e);
-}
 
 function maf() {
 
@@ -215,7 +209,7 @@ maf.prototype = {
             baseUrl = basePage && basePage.originalUrl;
             Maf._makeLocalLinksAbsolute(doc, baseUrl, "");
           } catch(e) {
-            mafdebug(e);
+
           }
 
           // We have some work to do
@@ -272,8 +266,6 @@ maf.prototype = {
 
 };
 
-try {
-
 /**
  * Main object
  */
@@ -281,68 +273,3 @@ var Maf = new maf();
 
 browserWindow.addEventListener("close", Maf.onWindowClose, true);
 browserWindow.addEventListener("load", Maf.onWindowLoad, true);
-
-} catch(e) {
-  mafdebug(e);
-}
-
-function mafdebug(text) {
-//  var contents = "" + (new Date()).getTime() + ": " + text;
-
-  Components.classes["@mozilla.org/consoleservice;1"]
-    .getService(Components.interfaces.nsIConsoleService)
-    .logStringMessage(text);
-
-/*
-  var logFile = Components.classes["@mozilla.org/file/directory_service;1"]
-                  .getService(Components.interfaces.nsIProperties)
-                  .get("ProfD", Components.interfaces.nsIFile);
-  logFile.append("mafdebug.log");
-
-  if (!logFile.exists()) {
-    logFile.create(0x00, 0644);
-  }
-
-  contents += "\r\n";
-
-  try {
-    var oTransport = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                        .createInstance(Components.interfaces.nsIFileOutputStream);
-    oTransport.init( logFile, 0x04 | 0x08 | 0x10, 064, 0 );
-    oTransport.write(contents, contents.length);
-    oTransport.close();
-  } catch (e) {
-    alert(e);
-  }
-*/
-};
-
-/**
- * Copied from JS-Examples archives
- * Source: http://js-x.com/javascript/?view=932
- * Author: Brock Weaver - 0
- */
-var Maf_String_trim = function(x) {
-  // skip leading and trailing whitespace
-  // and return everything in between
-  x=x.replace(/^\s*(.*)/, "$1");
-  x=x.replace(/(.*?)\s*$/, "$1");
-  return x;
-};
-
-/**
- * Replace all needles with newneedles
- */
-var Maf_String_replaceAll = function(x, needle, newneedle) {
-  x=x.split(needle).join(newneedle);
-  return x;
-};
-
-var Maf_String_startsWith = function(x, needle) {
-  return (x.substring(0, needle.length) == needle);
-};
-
-var Maf_String_endsWith = function(x, needle) {
-  return (x.substring(x.length - needle.length, x.length) == needle);
-};
-
