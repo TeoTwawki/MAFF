@@ -78,6 +78,13 @@
 
 <!-- *** Other controls *** -->
 
+<!-- Allows the user to add archives to the list, without opening them -->
+<!ENTITY addbutton.label "Add…">
+<!ENTITY addbutton.accesskey "A">
+
+<!-- Title of the add archives dialog -->
+<!ENTITY addfilepicker.title "Add More Web Archives">
+
 <!-- Removes an archive from the list, without deleting the file -->
 <!ENTITY deletebutton.label "Forget">
 <!ENTITY deletebutton.accesskey "F">

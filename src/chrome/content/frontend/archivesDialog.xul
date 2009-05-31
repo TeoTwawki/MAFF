@@ -223,6 +223,12 @@
       <spacer flex="1" />
 
       <!-- Additional archive list commands -->
+      <button id=       "btnAdd"
+              label=    "&addbutton.label;"
+              accesskey="&addbutton.accesskey;"
+              fptitle=  "&addfilepicker.title;"
+              oncommand="ArchivesDialog.onAddClick(event);"
+              />
       <button id=       "btnDelete"
               label=    "&deletebutton.label;"
               accesskey="&deletebutton.accesskey;"

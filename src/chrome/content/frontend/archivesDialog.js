@@ -130,6 +130,45 @@ var ArchivesDialog = {
   },
 
   /**
+   * Loads information about archive files, without opening them in the browser.
+   */
+  onAddClick: function(aEvent) {
+    // Determine the title of the file picker dialog
+    var title = document.getElementById("btnAdd").getAttribute("fptitle");
+
+    // Initialize a new file picker with filters for web archives
+    var filePicker = Cc["@mozilla.org/filepicker;1"].
+     createInstance(Ci.nsIFilePicker);
+    filePicker.init(window, title, Ci.nsIFilePicker.modeOpenMultiple);
+    FileFilters.openFilters.forEach(function(curFilter) {
+      filePicker.appendFilter(curFilter.title, curFilter.extensionString);
+    });
+    filePicker.appendFilters(Ci.nsIFilePicker.filterAll);
+
+    // Show the file picker and exit now if canceled
+    if (filePicker.show() !== Ci.nsIFilePicker.returnOK) {
+      return;
+    }
+
+    // For every selected file
+    var filesEnumerator = filePicker.files;
+    while (filesEnumerator.hasMoreElements())
+    {
+      var file = filesEnumerator.getNext().QueryInterface(Ci.nsILocalFile);
+      // Attempt to load the archive and register it in the cache
+      try {
+        ArchiveLoader.extractAndRegister(file);
+      } catch (e) {
+        // If opening the archive failed, skip it and report the error
+        Cu.reportError(e);
+      }
+    }
+
+    // Ensure that the archives tree is refreshed immediately
+    ArchivesDialog.requeryPlaces();
+  },
+
+  /**
    * Invokes the delete command on the tree view.
    */
   onDeleteClick: function(aEvent) {
