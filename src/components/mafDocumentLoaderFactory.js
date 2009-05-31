@@ -134,10 +134,20 @@ MafDocumentLoaderFactory.prototype = {
     //  return the URI of a page that will be displayed only temporarily.
     var contentURI = mafObjects.ArchiveLoader.load(aChannel.URI, aContainer);
 
-    // Create and start a content viewer for the archive contents. For now,
-    //  assume that the content type is "text/html".
+    // Determine the probable MIME type associated with the content to display.
+    //  This is normally based on the extension of the main file in the archive.
+    var contentType;
+    var mimeService = Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService);
+    try {
+      contentType = mimeService.getTypeFromURI(contentURI);
+    } catch (e) {
+      // In case the MIME type cannot be determined, try with HTML
+      contentType = "text/html";
+    }
+
+    // Create and start a content viewer for the archive contents
     var originalContentViewer = this._startActualContentViewer(contentURI,
-     "text/html", aLoadGroup, aContainer, aExtraInfo);
+     contentType, aLoadGroup, aContainer, aExtraInfo);
 
     // Return the content viewer, which is already receiving data from our
     //  channel, and a dummy stream listener, to throw away data from the
