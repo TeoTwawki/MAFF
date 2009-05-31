@@ -3,14 +3,6 @@
 <!ENTITY browsebutton.label "浏览…">
 <!--  Main pane  -->
 <!ENTITY pane.main.label "主要">
-<!ENTITY open.caption "打开档案时的操作">
-<!ENTITY open.action.grouplabel "在档案被打开时：">
-<!ENTITY open.action.tabs.label "在新标签页中开启该档">
-<!ENTITY open.action.tabs.accesskey "O">
-<!ENTITY open.action.ask.label "显示所开启档案中含有的页面，并询问操作">
-<!ENTITY open.action.ask.accesskey "S">
-<!ENTITY open.action.remember.label "仅添加所开启档案中含有的页面至 MAF 后台文档列表，而并不显示它们">
-<!ENTITY open.action.remember.accesskey "n">
 <!ENTITY save.caption "储存档案时的操作">
 <!ENTITY save.component.grouplabel "当保存完整网页档案内容时：">
 <!ENTITY save.component.standard.label "使用浏览器的标准保存系统">
@@ -51,6 +43,7 @@
 <!ENTITY temp.folder.accesskey "T">
 <!ENTITY temp.clearonexit.label "当浏览器关闭时清除 MAFF 临时文件夹">
 <!ENTITY temp.clearonexit.accesskey "C">
+<!ENTITY open.caption "打开档案时的操作">
 <!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
 <!ENTITY open.rewriteurls.accesskey "R">
 <!ENTITY open.usejarprotocol.label "使用“JAr:”协议访问 MAFF 档的内容">

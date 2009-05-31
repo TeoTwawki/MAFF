@@ -3,14 +3,6 @@
 <!ENTITY browsebutton.label "Durchsuchen...">
 <!--  Main pane  -->
 <!ENTITY pane.main.label "Allgemein">
-<!ENTITY open.caption "Öffnen">
-<!ENTITY open.action.grouplabel "Wenn ein Archiv geöffnet ist:">
-<!ENTITY open.action.tabs.label "Inhalt in neuen Tabs öffnen">
-<!ENTITY open.action.tabs.accesskey "I">
-<!ENTITY open.action.ask.label "Liste der offenen Archive anzeigen und nach Aktion fragen">
-<!ENTITY open.action.ask.accesskey "L">
-<!ENTITY open.action.remember.label "Nur die Liste der offenen Archive hinzugügen, nichts anzeigen">
-<!ENTITY open.action.remember.accesskey "n">
 <!ENTITY save.caption "Speichern">
 <!ENTITY save.component.grouplabel "Wenn eine ganze Website gespeichert wird:">
 <!ENTITY save.component.standard.label "Standard-Speichersystem des Browsers benützen">
@@ -51,6 +43,7 @@
 <!ENTITY temp.folder.accesskey "T">
 <!ENTITY temp.clearonexit.label "Temporärer Ordner leeren, wenn der Browser beendet wird">
 <!ENTITY temp.clearonexit.accesskey "l">
+<!ENTITY open.caption "Öffnen">
 <!ENTITY open.rewriteurls.label "Absolute URLs in Archive schreiben">
 <!ENTITY open.rewriteurls.accesskey "A">
 <!ENTITY open.usejarprotocol.label "Das &quot;.jar&quot;-Protokoll benützen, um auf MAFF-Archive zugrefien zu können">
