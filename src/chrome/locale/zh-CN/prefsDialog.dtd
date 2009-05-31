@@ -1,5 +1,5 @@
 <!--  General window controls  -->
-<!ENTITY window.title "配置">
+<!ENTITY window.title "偏好设定">
 <!ENTITY browsebutton.label "浏览…">
 <!--  Main pane  -->
 <!ENTITY pane.main.label "主要">
@@ -15,28 +15,28 @@
 <!ENTITY save.component.grouplabel "当保存完整网页档案内容时：">
 <!ENTITY save.component.standard.label "使用浏览器的标准保存系统">
 <!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.savecomplete.label "使用??的“Save Complete”扩展">
+<!ENTITY save.component.savecomplete.label "使用集成入 MAF 的原 Firefox “Save Complete” 扩展">
 <!ENTITY save.component.savecomplete.accesskey "U">
-<!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
+<!ENTITY save.metadata.extended.label "在 MAFF 档中保存扩展元数据">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!--  Interface pane  -->
 <!ENTITY pane.interface.label "界面">
 <!ENTITY menu.caption "菜单">
-<!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
-<!ENTITY menu.file.label "File menu">
+<!ENTITY menu.grouplabel "显示 MAF 菜单于：">
+<!ENTITY menu.file.label "“文件(F)”菜单">
 <!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tools.label "Tools menu">
+<!ENTITY menu.tools.label "“工具”菜单">
 <!ENTITY menu.tools.accesskey "l">
-<!ENTITY menu.pagecontext.label "Page context menu">
-<!ENTITY menu.pagecontext.accesskey "p">
-<!ENTITY menu.tabscontext.label "Tab bar context menu">
+<!ENTITY menu.pagecontext.label "页面内容菜单">
+<!ENTITY menu.pagecontext.accesskey "P">
+<!ENTITY menu.tabscontext.label "标签栏内容菜单">
 <!ENTITY menu.tabscontext.accesskey "x">
 <!ENTITY menuitem.grouplabel "Show these additional menu items:">
 <!ENTITY menuitem.saveinarchive.label "Save In Archive">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
 <!--  File associations pane. This pane is visible only on Windows.  -->
-<!ENTITY pane.fileassociations.label "File associations">
-<!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
+<!ENTITY pane.fileassociations.label "文件关联">
+<!ENTITY associate.windowsonly.description "本功能仅用于 Windows。">
 <!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
 <!ENTITY associate.adminprivs.description "This operation might require administrator privileges.">
 <!ENTITY associate.maff.label "Create association for .maff extension">

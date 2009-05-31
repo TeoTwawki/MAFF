@@ -13,7 +13,7 @@
 <!ENTITY open.action.remember.accesskey "n">
 <!ENTITY save.caption "Save">
 <!ENTITY save.component.grouplabel "When saving complete web page contents:">
-<!ENTITY save.component.standard.label "Use browser&apos;s standard save system">
+<!ENTITY save.component.standard.label "Use browser\&apos;s standard save system">
 <!ENTITY save.component.standard.accesskey "b">
 <!ENTITY save.component.savecomplete.label "Use the integrated &quot;Save Complete&quot; extension">
 <!ENTITY save.component.savecomplete.accesskey "U">
