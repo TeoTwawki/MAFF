@@ -24,14 +24,6 @@
 
 // Provides MAF Util service
 
-function GetMafUtilServiceClass() {
-  if (!sharedData.MafUtilService) {
-    sharedData.MafUtilService = new MafUtilServiceClass();
-  }
-
-  return sharedData.MafUtilService;
-}
-
 /**
  * The MAF Util Service.
  */
@@ -392,3 +384,5 @@ MafUtilServiceClass.prototype = {
     return result;
   }
 };
+
+var MafUtils = new MafUtilServiceClass();

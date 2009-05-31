@@ -24,30 +24,14 @@
 
 // Provides MAF MHT Handler services
 
-var gRDFService = null;
-
-function GetMafMhtHandlerServiceClass() {
-  if (gRDFService == null) {
-    gRDFService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
-                     .getService(Components.interfaces.nsIRDFService);
-  }
-
-
-  if (!sharedData.MafMhtHandlerService) {
-    sharedData.MafMhtHandlerService = new MafMhtHandlerServiceClass();
-  }
-
-  return sharedData.MafMhtHandlerService;
-}
-
 /**
  * The MAF MHT Handler.
  */
-function MafMhtHandlerServiceClass() {
+function MafMhtHandler() {
 
 }
 
-MafMhtHandlerServiceClass.prototype = {
+MafMhtHandler.prototype = {
 
   extractArchive: function(archivefile, destpath, datasource) {
     var end;

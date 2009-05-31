@@ -61,7 +61,8 @@ MhtmlArchive.prototype = {
     var page = this.addPage();
     page.tempDir = this._tempDir;
     // Extract the archive
-    MafMHTHandler.extractArchive(this.file.path, this._tempDir.path, page);
+    var mhtHandler = new MafMhtHandler();
+    mhtHandler.extractArchive(this.file.path, this._tempDir.path, page);
   },
 
   _newPage: function() {

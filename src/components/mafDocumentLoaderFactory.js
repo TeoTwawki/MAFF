@@ -57,15 +57,6 @@ var Cu = Components.utils;
 //  (retrieved 2008-10-07).
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
-// Define a global variable shared between XUL and XPCOM
-var Application = Cc["@mozilla.org/fuel/application;1"]
- .getService(Ci.fuelIApplication);
-var sharedData = Application.storage.get("maf-data", null);
-if (!sharedData) {
-  sharedData = {};
-  Application.storage.set("maf-data", sharedData);
-}
-
 /**
  * Helper object for nsIDocumentLoaderFactory.createInstance implementation.
  */
@@ -133,11 +124,17 @@ MafDocumentLoaderFactory.prototype = {
     // Currently we can only open MAF archives from "file://" URLs.
     var localFile = aChannel.URI.QueryInterface(Ci.nsIFileURL).file;
 
+    // Find the browser window associated with the document being opened
+    var browserWindow = aContainer.
+     QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebNavigation).
+     QueryInterface(Ci.nsIDocShellTreeItem).rootTreeItem.
+     QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
+
     // Extract the archive, and store the URI of the first page. Other pages are
     //  opened in other tabs at this point, if required. Note: there is
     //  currently no mechanism in place to avoid extracting the archive or
     //  opening the other tabs multiple times if the original page is refreshed.
-    var contentURISpec = sharedData.mafObjectOfCurrentWindow.openFromArchive(
+    var contentURISpec = browserWindow.Maf.openFromArchive(
      null, localFile, true);
     // If no data is available or should be shown, display an empty page
     if (!contentURISpec) {

@@ -25,12 +25,6 @@
  * TODO: Add save frame functionality to alternative save component.
  */
 
-var sharedData = Application.storage.get("maf-data", null);
-if (!sharedData) {
-  sharedData = {};
-  Application.storage.set("maf-data", sharedData);
-}
-
 Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
  .getService(Components.interfaces.mozIJSSubScriptLoader)
  .loadSubScript("chrome://maf/content/includeall.js");
@@ -38,10 +32,6 @@ Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
 try {
 
 var browserWindow = window;
-
-var MafUtils = GetMafUtilServiceClass();
-
-var MafMHTHandler = new MafMhtHandlerServiceClass();
 
 } catch(e) {
   mafdebug(e);
@@ -278,12 +268,6 @@ maf.prototype = {
       }
     }
 
-  },
-
-  onWindowFocus: function(event) {
-    if (event.originalTarget == "[object XULDocument]") {
-      sharedData.mafObjectOfCurrentWindow = Maf;
-    }
   }
 
 };
@@ -297,17 +281,10 @@ var Maf = new maf();
 
 browserWindow.addEventListener("close", Maf.onWindowClose, true);
 browserWindow.addEventListener("load", Maf.onWindowLoad, true);
-browserWindow.addEventListener("focus", Maf.onWindowFocus, true);
 
 } catch(e) {
   mafdebug(e);
 }
-
-// When a new browser window initially loads, the current Maf object is updated
-//  so that archives will be opened in that window. This must be done here to
-//  support the case where an archive is specified on the command-line. When
-//  an existing window gets the focus, this reference is updated.
-sharedData.mafObjectOfCurrentWindow = Maf;
 
 function mafdebug(text) {
 //  var contents = "" + (new Date()).getTime() + ": " + text;

@@ -63,7 +63,8 @@ MhtmlArchivePage.prototype = {
    */
   asyncSave: function(aCallbackObject) {
     // Begin creating the MHTML archive asynchronously
-    MafMHTHandler.createArchive(
+    var mhtHandler = new MafMhtHandler();
+    mhtHandler.createArchive(
      this.archive.file.path, this.tempDir.path, this,
      this.indexLeafName, aCallbackObject);
   }
