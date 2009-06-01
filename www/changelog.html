@@ -1,6 +1,29 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
   <h2 class="page-header">Changelog for version 0.12</h2>
+  <h3><a name="whatwasnew"></a>What was new in version 0.12?</h3>
+  <p>MAF 0.12.3 had the following user-visible improvements over MAF 0.11.2:</p>
+  <ul>
+    <li>Opening and creating MHTML files is now up to <b>200 times</b>
+     faster.</li>
+    <li>Ability to convert previously saved complete HTML pages to MAFF or
+     MHTML, without losing the original information stored by the browser.</li>
+    <li>Improved internationalization and optimized metadata handling.</li>
+    <li>The multiple tab selection dialog now allows sorting by title or
+     location.</li>
+    <li>Bugfixes:
+      <ul>
+        <li>When creating MHTML archives, MAF sometimes failed to encode files
+         larger than 10 KiB properly.</li>
+        <li>Attempting to overwrite an existing MHTML archive would not achieve
+         the expected result.</li>
+        <li>The file selection dialog allowed MAFF archives to be saved with an
+         MHTML file extension.</li>
+        <li>Under unusual circumstances, MAF could fail to open any MAFF or
+         MHTML archive.</li>
+      </ul>
+    </li>
+  </ul>
   <h3>Changes from 0.12.2 to 0.12.3</h3>
   <ul>
     <li><b>Fix:</b> Now the integrated Save Complete component correctly reports
@@ -28,7 +51,7 @@
      title or location.</li>
   </ul>
   <h2>Changelog for version 0.11</h2>
-  <h3><a name="whatwasnew"></a>What was new in version 0.11?</h3>
+  <h3>What was new in version 0.11?</h3>
   <p>MAF 0.11.2 had the following user-visible improvements over MAF 0.10.2:</p>
   <ul>
     <li>The integrated

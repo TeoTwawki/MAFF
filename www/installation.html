@@ -95,34 +95,31 @@
    $maf_latest_fx); ?> has the following user-visible improvements over
    MAF <?php echo $maf_previous_fx; ?>:</p>
   <ul>
-    <li>Opening and creating MHTML files is now up to <b>200 times</b>
-     faster.</li>
-    <li>Ability to convert previously saved complete HTML pages to MAFF or
-     MHTML, without losing the original information stored by the browser.</li>
-    <li>Improved internationalization and optimized metadata handling.</li>
-    <li>The multiple tab selection dialog now allows sorting by title or
-     location.</li>
-    <li>Bugfixes:
+    <li>Redesigned the window that provides details on the open archives:
       <ul>
-        <li>When creating MHTML archives, MAF sometimes failed to encode files
-         larger than 10 KiB properly.</li>
-        <li>Attempting to overwrite an existing MHTML archive would not achieve
-         the expected result.</li>
-        <li>The file selection dialog allowed MAFF archives to be saved with an
-         MHTML file extension.</li>
-        <li>Under unusual circumstances, MAF could fail to open any MAFF or
-         MHTML archive.</li>
+        <li>The window can be kept open in the background while browsing.</li>
+        <li>The list of archives can be sorted by any column.</li>
+        <li>Ability to reopen the local archive address, original location,
+         temporary local address, or <code>jar:</code> address of all pages.</li>
+        <li>Ability to open links in new windows or new tabs.</li>
+        <li>Ability to copy the original page addresses to the clipboard.</li>
+        <li>Button to add multiple archives to the list at once, without opening
+         them in browser windows. This replaces the now removed "open action"
+         preference.</li>
+        <li>Dates are properly localized.</li>
       </ul>
     </li>
+    <li>Now the first entry of an archive is displayed correctly even if it is
+     not a web page, but for instance an image.</li>
+    <li>Multiple pages in a single MAFF archive are now displayed in tabs only
+     the first time the archive is opened, not at every refresh.</li>
+    <li>If the browser is closed and reopened while preserving the open tabs,
+     pages in multi-page archives are now displayed correctly.</li>
+    <li>Minor MHTML compatibility and performance improvements.</li>
   </ul>
   <p>MAF <?php echo ($maf_experimental_fx ? $maf_experimental_fx :
    $maf_latest_fx); ?> has the following known issues:</p>
   <ul>
-    <li>If the first entry of an archive is not a web page, but for instance an
-     image, it cannot be displayed when opening the archive normally.</li>
-    <li>If an archive contains multiple pages, refreshing the tab displaying
-     the first one may cause the other pages to be opened again in new
-     tabs.</li>
     <li>When saving a page in an archive fails, retrying the download from the
      <b>Downloads</b> window does not achieve the expected result.</li>
   </ul>
