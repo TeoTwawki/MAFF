@@ -113,7 +113,11 @@ MafMhtEncoderClass.prototype = {
     }
 
     var self = this;
-    setTimeout(function() { self.notify(); }, 0);
+    var threadManager = Cc["@mozilla.org/thread-manager;1"].
+     getService(Ci.nsIThreadManager);
+    threadManager.mainThread.dispatch({
+      run: function() { self.notify(); }
+    }, Ci.nsIThread.DISPATCH_NORMAL);
   },
 
   _getEncodedFile: function(index, oTransport) {
@@ -281,7 +285,11 @@ MafMhtEncoderClass.prototype = {
     //mafdebug("Incremented i, it's now: " + this.i);
 
     var self = this;
-    setTimeout(function() { self.notify(); }, 0);
+    var threadManager = Cc["@mozilla.org/thread-manager;1"].
+     getService(Ci.nsIThreadManager);
+    threadManager.mainThread.dispatch({
+      run: function() { self.notify(); }
+    }, Ci.nsIThread.DISPATCH_NORMAL);
   },
 
   notify: function() {
