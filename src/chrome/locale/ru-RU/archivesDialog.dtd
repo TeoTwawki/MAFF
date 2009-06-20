@@ -2,61 +2,61 @@
 <!ENTITY window.title "Archives">
 <!--  *** Column names in the archive list ***  -->
 <!--  Title of the page  -->
-<!ENTITY archives.placestitle.header "Titre de la page">
+<!ENTITY archives.placestitle.header "Page Title">
 <!--  Name of the archive the page is located into  -->
-<!ENTITY archives.mafarchivename.header "Nom de l&apos;archive">
+<!ENTITY archives.mafarchivename.header "Archive Name">
 <!--  Address of the archive the page is located into  -->
-<!ENTITY archives.placesurl.header "Emplacement de l&apos;archive">
+<!ENTITY archives.placesurl.header "Archive Location">
 <!--  Title of the page in the archive  -->
-<!ENTITY archives.maftitle.header "Titre original">
+<!ENTITY archives.maftitle.header "Original Page Title">
 <!--  Original address the page was saved from  -->
-<!ENTITY archives.maforiginalurl.header "Emplacement original">
+<!ENTITY archives.maforiginalurl.header "Original Location">
 <!--  Date and time the page was archived  -->
-<!ENTITY archives.mafdatearchived.header "Archivé">
+<!ENTITY archives.mafdatearchived.header "Archived">
 <!--  Temporary local URL that can be used to display the page  -->
-<!ENTITY archives.maftempuri.header "URL temporaire">
+<!ENTITY archives.maftempuri.header "Temporary Page URL">
 <!--  URL that can be used to display the page accessing the archive directly  -->
-<!ENTITY archives.mafdirectarchiveuri.header "URL directe">
+<!ENTITY archives.mafdirectarchiveuri.header "Direct Page URL">
 <!--  *** Column names in the details panel ***  -->
-<!ENTITY details.placestitle.label "Titre de la page :">
+<!ENTITY details.placestitle.label "Page title:">
 <!ENTITY details.placestitle.accesskey "P">
-<!ENTITY details.mafarchivename.label "Nom de l&apos;archive :">
+<!ENTITY details.mafarchivename.label "Archive name:">
 <!ENTITY details.mafarchivename.accesskey "r">
-<!ENTITY details.placesurl.label "Emplacement de l&apos;archive :">
+<!ENTITY details.placesurl.label "Archive location:">
 <!ENTITY details.placesurl.accesskey "h">
-<!ENTITY details.maftitle.label "Titre original :">
+<!ENTITY details.maftitle.label "Original page title:">
 <!ENTITY details.maftitle.accesskey "i">
-<!ENTITY details.maforiginalurl.label "Emplacement original :">
+<!ENTITY details.maforiginalurl.label "Original location:">
 <!ENTITY details.maforiginalurl.accesskey "g">
-<!ENTITY details.mafdatearchived.label "Archivé :">
+<!ENTITY details.mafdatearchived.label "Archived:">
 <!ENTITY details.mafdatearchived.accesskey "c">
-<!ENTITY details.maftempuri.label "URL temporaire :">
+<!ENTITY details.maftempuri.label "Temporary page URL:">
 <!ENTITY details.maftempuri.accesskey "T">
-<!ENTITY details.mafdirectarchiveuri.label "URL directe :">
+<!ENTITY details.mafdirectarchiveuri.label "Direct page URL:">
 <!ENTITY details.mafdirectarchiveuri.accesskey "D">
 <!--  *** Details panel ***  -->
-<!ENTITY details.caption "Détails">
-<!ENTITY morebutton.label "Plus de détails">
+<!ENTITY details.caption "Details">
+<!ENTITY morebutton.label "More details">
 <!--  Note: If possible, keep the same as "lessbutton.accesskey"  -->
 <!ENTITY morebutton.accesskey "e">
-<!ENTITY lessbutton.label "Moins de détails">
+<!ENTITY lessbutton.label "Less details">
 <!--  Note: If possible, keep the same as "morebutton.accesskey"  -->
 <!ENTITY lessbutton.accesskey "e">
 <!--  Displayed in the details textboxes when multiple items are selected  -->
-<!ENTITY multipleitems.text "(plusieurs éléments sélectionnés)">
+<!ENTITY multipleitems.text "(multiple items selected)">
 <!--  The following button is repeated for every URL field  -->
-<!ENTITY openintabsbutton.label "Ouvrir dans des onglets">
+<!ENTITY openintabsbutton.label "Open in Tabs">
 <!ENTITY openintabsbutton.accesskey.placesurl "O">
 <!ENTITY openintabsbutton.accesskey.originalurl "n">
-<!ENTITY openintabsbutton.accesskey.tempuri "u">
+<!ENTITY openintabsbutton.accesskey.tempuri "b">
 <!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
 <!--  *** Other controls ***  -->
 <!--  Allows the user to add archives to the list, without opening them  -->
-<!ENTITY addbutton.label "Ajouter…">
+<!ENTITY addbutton.label "Add…">
 <!ENTITY addbutton.accesskey "A">
 <!--  Title of the add archives dialog  -->
-<!ENTITY addfilepicker.title "Ajouter plus d&apos;archives web">
+<!ENTITY addfilepicker.title "Add More Web Archives">
 <!--  Removes an archive from the list, without deleting the file  -->
-<!ENTITY deletebutton.label "Oublier">
-<!ENTITY deletebutton.accesskey "b">
+<!ENTITY deletebutton.label "Forget">
+<!ENTITY deletebutton.accesskey "F">
 <!ENTITY deletebutton.accesskey.placescontextmenu "F">
