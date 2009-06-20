@@ -1,14 +1,6 @@
 <!ENTITY window.title "Indstillinger">
 <!ENTITY browsebutton.label "Gennemse...">
 <!ENTITY pane.main.label "Hoved">
-<!ENTITY open.caption "Åbn">
-<!ENTITY open.action.grouplabel "Når et arkiv åbnes:">
-<!ENTITY open.action.tabs.label "Åbn indhold i nyt faneblad">
-<!ENTITY open.action.tabs.accesskey "i">
-<!ENTITY open.action.ask.label "Vis liste over åbne arkiver, og spørg om handling">
-<!ENTITY open.action.ask.accesskey "V">
-<!ENTITY open.action.remember.label "Tilføj kun til liste over åbne arkiver, vis ingenting">
-<!ENTITY open.action.remember.accesskey "n">
 <!ENTITY save.caption "Gem">
 <!ENTITY save.component.grouplabel "Ved gem af komplet webside-indhold:">
 <!ENTITY save.component.standard.label "Brug browsers standard gem-system">
@@ -46,6 +38,7 @@
 <!ENTITY temp.folder.accesskey "t">
 <!ENTITY temp.clearonexit.label "Ryd midlertidig mappe når browseren lukkes">
 <!ENTITY temp.clearonexit.accesskey "y">
+<!ENTITY open.caption "Åbn">
 <!ENTITY open.rewriteurls.label "Omskriv absolutte URLer i åbne arkiver">
 <!ENTITY open.rewriteurls.accesskey "r">
 <!ENTITY open.usejarprotocol.label "Brug &quot;jar:&quot;-protokollen til at tilgå indholdet af MAFF-arkiver">

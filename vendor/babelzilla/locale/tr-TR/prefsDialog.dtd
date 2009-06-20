@@ -1,14 +1,6 @@
 <!ENTITY window.title "Tercihler">
 <!ENTITY browsebutton.label "Tara...">
 <!ENTITY pane.main.label "Ana">
-<!ENTITY open.caption "Aç">
-<!ENTITY open.action.grouplabel "Bir arşiv açıldığında:">
-<!ENTITY open.action.tabs.label "içeriği yeni sekmelerde aç">
-<!ENTITY open.action.tabs.accesskey "O">
-<!ENTITY open.action.ask.label "Açık arşivleri listele, ve eylem için sor">
-<!ENTITY open.action.ask.accesskey "S">
-<!ENTITY open.action.remember.label "Hiçbirşey göstermeden yalnızca açık arşivler listesine ekle">
-<!ENTITY open.action.remember.accesskey "n">
 <!ENTITY save.caption "Kaydet">
 <!ENTITY save.component.grouplabel "Tüm web sayfası içeriğini kaydederken:">
 <!ENTITY save.component.standard.label "Tarayıcının standart kayıt sistemini kullan">
@@ -46,6 +38,7 @@
 <!ENTITY temp.folder.accesskey "T">
 <!ENTITY temp.clearonexit.label "Tarayıcıdan çıkıldığında geçici klasörü temizle">
 <!ENTITY temp.clearonexit.accesskey "C">
+<!ENTITY open.caption "Aç">
 <!ENTITY open.rewriteurls.label "Tam URL&apos;leri açık arşivlere yaz">
 <!ENTITY open.rewriteurls.accesskey "R">
 <!ENTITY open.usejarprotocol.label "&quot;jar&quot; kullan: MAFF arşivlerinin içeriklerine erişmek için protokol">

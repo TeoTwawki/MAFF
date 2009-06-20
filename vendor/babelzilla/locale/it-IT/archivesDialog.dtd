@@ -1,0 +1,42 @@
+<!ENTITY window.title "Archivi">
+<!ENTITY archives.placestitle.header "Titolo pagina">
+<!ENTITY archives.mafarchivename.header "Nome archivio">
+<!ENTITY archives.placesurl.header "Indirizzo archivio">
+<!ENTITY archives.maftitle.header "Titolo pagina originale">
+<!ENTITY archives.maforiginalurl.header "Indirizzo originale">
+<!ENTITY archives.mafdatearchived.header "Data archiviazione">
+<!ENTITY archives.maftempuri.header "URL temporaneo pagina">
+<!ENTITY archives.mafdirectarchiveuri.header "URL diretto pagina">
+<!ENTITY details.placestitle.label "Titolo pagina:">
+<!ENTITY details.placestitle.accesskey "T">
+<!ENTITY details.mafarchivename.label "Nome archivio:">
+<!ENTITY details.mafarchivename.accesskey "N">
+<!ENTITY details.placesurl.label "Indirizzo archivio:">
+<!ENTITY details.placesurl.accesskey "I">
+<!ENTITY details.maftitle.label "Titolo pagina originale:">
+<!ENTITY details.maftitle.accesskey "o">
+<!ENTITY details.maforiginalurl.label "Indirizzo originale:">
+<!ENTITY details.maforiginalurl.accesskey "z">
+<!ENTITY details.mafdatearchived.label "Data archiviazione:">
+<!ENTITY details.mafdatearchived.accesskey "c">
+<!ENTITY details.maftempuri.label "URL temporaneo pagina:">
+<!ENTITY details.maftempuri.accesskey "U">
+<!ENTITY details.mafdirectarchiveuri.label "URL diretto pagina:">
+<!ENTITY details.mafdirectarchiveuri.accesskey "L">
+<!ENTITY details.caption "Dettagli">
+<!ENTITY morebutton.label "Altri dettagli">
+<!ENTITY morebutton.accesskey "e">
+<!ENTITY lessbutton.label "Meno dettagli">
+<!ENTITY lessbutton.accesskey "e">
+<!ENTITY multipleitems.text "(più di un elemento selezionato)">
+<!ENTITY openintabsbutton.label "Apri in schede">
+<!ENTITY openintabsbutton.accesskey.placesurl "A">
+<!ENTITY openintabsbutton.accesskey.originalurl "p">
+<!ENTITY openintabsbutton.accesskey.tempuri "r">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
+<!ENTITY addbutton.label "Aggiungi…">
+<!ENTITY addbutton.accesskey "g">
+<!ENTITY addfilepicker.title "Aggiungi altri archivi web">
+<!ENTITY deletebutton.label "Dimentica">
+<!ENTITY deletebutton.accesskey "D">
+<!ENTITY deletebutton.accesskey.placescontextmenu "D">

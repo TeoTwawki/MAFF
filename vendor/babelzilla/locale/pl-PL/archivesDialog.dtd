@@ -1,0 +1,42 @@
+<!ENTITY window.title "Archiwa">
+<!ENTITY archives.placestitle.header "Tytuł strony">
+<!ENTITY archives.mafarchivename.header "Nazwa archiwum">
+<!ENTITY archives.placesurl.header "Lokalizacja archiwum">
+<!ENTITY archives.maftitle.header "Nazwa oryginalna strony">
+<!ENTITY archives.maforiginalurl.header "Oryginalna lokalizacja">
+<!ENTITY archives.mafdatearchived.header "Zarchiwizowano">
+<!ENTITY archives.maftempuri.header "Adres URL strony tymczasowej">
+<!ENTITY archives.mafdirectarchiveuri.header "Bezpośredni adres URL strony">
+<!ENTITY details.placestitle.label "Tytuł strony:">
+<!ENTITY details.placestitle.accesskey "T">
+<!ENTITY details.mafarchivename.label "Nazwa archiwum:">
+<!ENTITY details.mafarchivename.accesskey "N">
+<!ENTITY details.placesurl.label "Lokalizacja archiwum:">
+<!ENTITY details.placesurl.accesskey "L">
+<!ENTITY details.maftitle.label "Oryginalny tytuł strony:">
+<!ENTITY details.maftitle.accesskey "O">
+<!ENTITY details.maforiginalurl.label "Oryginalna lokalizacja">
+<!ENTITY details.maforiginalurl.accesskey "R">
+<!ENTITY details.mafdatearchived.label "Zarchiwizowano:">
+<!ENTITY details.mafdatearchived.accesskey "A">
+<!ENTITY details.maftempuri.label "Adres URL strony tymczasowej:">
+<!ENTITY details.maftempuri.accesskey "D">
+<!ENTITY details.mafdirectarchiveuri.label "Bezpośredni adres URL strony:">
+<!ENTITY details.mafdirectarchiveuri.accesskey "B">
+<!ENTITY details.caption "Szczegóły">
+<!ENTITY morebutton.label "Więcej">
+<!ENTITY morebutton.accesskey "W">
+<!ENTITY lessbutton.label "Ukryj">
+<!ENTITY lessbutton.accesskey "U">
+<!ENTITY multipleitems.text "(zaznaczono wiele elementów)">
+<!ENTITY openintabsbutton.label "Otwórz w kartach">
+<!ENTITY openintabsbutton.accesskey.placesurl "O">
+<!ENTITY openintabsbutton.accesskey.originalurl "t">
+<!ENTITY openintabsbutton.accesskey.tempuri "M">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "B">
+<!ENTITY addbutton.label "Dodaj">
+<!ENTITY addbutton.accesskey "D">
+<!ENTITY addfilepicker.title "Dodawanie archiwów">
+<!ENTITY deletebutton.label "Usuń">
+<!ENTITY deletebutton.accesskey "U">
+<!ENTITY deletebutton.accesskey.placescontextmenu "U">

@@ -1,0 +1,42 @@
+<!ENTITY window.title "Archive">
+<!ENTITY archives.placestitle.header "Seitentitel">
+<!ENTITY archives.mafarchivename.header "Archivname">
+<!ENTITY archives.placesurl.header "Archivspeicherort">
+<!ENTITY archives.maftitle.header "Original-Seitentitel">
+<!ENTITY archives.maforiginalurl.header "Original Speicherort">
+<!ENTITY archives.mafdatearchived.header "Archiviert">
+<!ENTITY archives.maftempuri.header "Temporäre URL">
+<!ENTITY archives.mafdirectarchiveuri.header "Direkte URL">
+<!ENTITY details.placestitle.label "Seitentitel:">
+<!ENTITY details.placestitle.accesskey "S">
+<!ENTITY details.mafarchivename.label "Archivname:">
+<!ENTITY details.mafarchivename.accesskey "r">
+<!ENTITY details.placesurl.label "Archivspeicherort">
+<!ENTITY details.placesurl.accesskey "o">
+<!ENTITY details.maftitle.label "Original-Seitentitel:">
+<!ENTITY details.maftitle.accesskey "O">
+<!ENTITY details.maforiginalurl.label "Originalspeicherort">
+<!ENTITY details.maforiginalurl.accesskey "i">
+<!ENTITY details.mafdatearchived.label "Archiviert:">
+<!ENTITY details.mafdatearchived.accesskey "c">
+<!ENTITY details.maftempuri.label "Temporäre URL:">
+<!ENTITY details.maftempuri.accesskey "T">
+<!ENTITY details.mafdirectarchiveuri.label "Direkte URL:">
+<!ENTITY details.mafdirectarchiveuri.accesskey "D">
+<!ENTITY details.caption "Details">
+<!ENTITY morebutton.label "Mehr Details">
+<!ENTITY morebutton.accesskey "e">
+<!ENTITY lessbutton.label "Weniger Details">
+<!ENTITY lessbutton.accesskey "e">
+<!ENTITY multipleitems.text "(mehrere Objekte ausgewählt)">
+<!ENTITY openintabsbutton.label "In Tabs öffnen">
+<!ENTITY openintabsbutton.accesskey.placesurl "T">
+<!ENTITY openintabsbutton.accesskey.originalurl "n">
+<!ENTITY openintabsbutton.accesskey.tempuri "b">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
+<!ENTITY addbutton.label "Hinzufügen">
+<!ENTITY addbutton.accesskey "H">
+<!ENTITY addfilepicker.title "Mehr Web-Archive hinzufügen">
+<!ENTITY deletebutton.label "Vergessen">
+<!ENTITY deletebutton.accesskey "V">
+<!ENTITY deletebutton.accesskey.placescontextmenu "V">
