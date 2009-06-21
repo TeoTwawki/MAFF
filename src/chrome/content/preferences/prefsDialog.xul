@@ -219,6 +219,9 @@
                   />
   </stringbundleset>
   <script type="application/x-javascript"
+          src="../mafChrome.js"
+          />
+  <script type="application/x-javascript"
           src= "prefsDialog.js"
           />
 </prefwindow>

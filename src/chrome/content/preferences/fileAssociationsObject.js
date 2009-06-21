@@ -35,123 +35,56 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var Ci = Components.interfaces;
-var Cc = Components.classes;
-var Cr = Components.results;
-var Cu = Components.utils;
-
 /**
- * Handles the MAF preferences dialog.
+ * Allows the association of web archive file types with Firefox on Windows.
  */
-var PrefsDialog = {
+var FileAssociations = {
   /**
-   * Checks to see if the "file associations" pane should be active.
-   */
-  onLoadDialog: function() {
-    if (!this._isOnWindows()) {
-      document.getElementById("btnAssociateMAFF").disabled = true;
-      document.getElementById("btnAssociateMHTML").disabled = true;
-      document.getElementById("descAssociateWindowsOnly").hidden = false;
-    }
-  },
-
-  /* --- Interactive dialog functions and events --- */
-
-  /**
-   * Show a file selector allowing the user to select the absolute path of
-   *  the temporary folder used by MAF.
-   */
-  browseForTempFolder: function() {
-    // Initialize the file picker component
-    var filePicker = Cc["@mozilla.org/filepicker;1"]
-      .createInstance(Ci.nsIFilePicker);
-    filePicker.init(window, document.title, Ci.nsIFilePicker.modeGetFolder);
-    // Find the directory currently displayed in the user interface
-    var txtTempFolder = document.getElementById("txtTempFolder");
-    // If there is already a directory selected, attempt to use it as the
-    //  default in the file picker dialog. If the path is invalid, do nothing.
-    if (txtTempFolder.value) {
-      try {
-        var tempFolderFile = Cc["@mozilla.org/file/local;1"]
-         .createInstance(Ci.nsILocalFile);
-        tempFolderFile.initWithPath(txtTempFolder.value);
-        filePicker.displayDirectory = tempFolderFile;
-      } catch (e) { /* Ignore errors */ }
-    }
-    // If the user made a selection, update the displayed value
-    if (filePicker.show() == Ci.nsIFilePicker.returnOK) {
-      txtTempFolder.value = filePicker.file.path;
-    }
-  },
-
-  /**
-   * Interactive function. Creates file associations for the MAFF file format.
+   * Creates file associations for the MAFF file format.
    */
   createAssociationsForMAFF: function() {
-    try {
-      FileAssociations.createAssociationsForMAFF();
-      // Operation successful
-      this._prompts.alert(null, document.title,
-       this._str("associate.maff.done.msg"));
-    } catch(e) {
-      // Operation failed
-      Cu.reportError(e);
-      this._prompts.alert(null, document.title,
-       this._formattedStr("associate.failed.msg", [e.message]));    
-    }
+    // Create a new ProgID for the MAFF format
+    this._createWindowsFileTypeForBrowser(
+     "FirefoxMAFF",
+     this._str("associate.maff.sysfiletypedesc"));
+    // Associate file extensions with the file type
+    this._createWindowsFileExtensionAssociation(
+     ".maff",
+     "FirefoxMAFF");
   },
 
   /**
-   * Interactive function. Creates file associations for the MHTML file format.
+   * Creates file associations for the MHTML file format.
    */
   createAssociationsForMHTML: function() {
-    try {
-      FileAssociations.createAssociationsForMHTML();
-      // Operation successful
-      this._prompts.alert(null, document.title,
-       this._str("associate.mhtml.done.msg"));
-    } catch(e) {
-      // Operation failed
-      Cu.reportError(e);
-      this._prompts.alert(null, document.title,
-       this._formattedStr("associate.failed.msg", [e.message]));    
-    }
+    // Create a new ProgID for the MHTML format handled by Firefox
+    this._createWindowsFileTypeForBrowser(
+     "FirefoxMHTML",
+     this._str("associate.mhtml.sysfiletypedesc"));
+    // Associate file extensions with the file type
+    this._createWindowsFileExtensionAssociation(
+     ".mht",
+     "FirefoxMHTML");
+    this._createWindowsFileExtensionAssociation(
+     ".mhtml",
+     "FirefoxMHTML");
   },
 
-  /* --- Dialog support functions --- */
-
-  _prompts: Cc["@mozilla.org/embedcomp/prompt-service;1"]
-   .getService(Ci.nsIPromptService),
+  // --- String support functions ---
 
   /**
-   * Return the string whose key is specified from the dialog's stringbundle.
+   * Returns the string whose key is specified from the object's string bundle.
    */
   _str: function(aKey) {
-    return document.getElementById("bundleDialog").getString(aKey);
+    return this._prefsDialogStrBundle.GetStringFromName(aKey);
   },
 
-  /**
-   * Return the string whose key is specified from the dialog's stringbundle,
-   *  populating it with the arguments in the given array.
-   */
-  _formattedStr: function(aKey, aArgs) {
-    return document.getElementById("bundleDialog").getFormattedString(aKey,
-     aArgs);
-  },
+  // For convenience, we use the strings from the preferences dialog
+  _prefsDialogStrBundle: Cc["@mozilla.org/intl/stringbundle;1"]
+   .getService(Ci.nsIStringBundleService).createBundle(
+   "chrome://maf/locale/prefsDialog.properties"),
 
-  /* --- File association support functions --- */
-
-  /**
-   * Returns true if the application is executing on Windows.
-   */
-  _isOnWindows: function() {
-    // For more information, see
-    //  <https://developer.mozilla.org/en/nsIXULRuntime> and
-    //  <https://developer.mozilla.org/en/OS_TARGET> (retrieved 2008-11-19).
-    var xulRuntimeOs = Cc["@mozilla.org/xre/app-info;1"]
-     .getService(Ci.nsIXULRuntime).OS;
-    return (xulRuntimeOs == "WINNT");
-  },
+  // --- File association support functions ---
 
   /**
    * Creates a global Windows file type, under HKEY_CLASSES_ROOT, associating

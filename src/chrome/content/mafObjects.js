@@ -54,6 +54,7 @@ try {
 
    // Preferences objects
    ["preferences/dynamicPrefsObject.js",          "DynamicPrefs"],
+   ["preferences/fileAssociationsObject.js",      "FileAssociations"],
    ["preferences/prefsObject.js",                 "Prefs"],
 
    // Support objects for the saving front-end
