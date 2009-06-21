@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://maf/skin/general/general.css" type="text/css"?>
+<?xml-stylesheet href="chrome://maf/skin/frontend/welcomeDialog.css" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://maf/locale/welcomeDialog.dtd">
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Mozilla Archive Format.
+   -
+   - The Initial Developer of the Original Code is
+   - Paolo Amadini <http://www.amadzone.org/>.
+   - Portions created by the Initial Developer are Copyright (C) 2009
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the LGPL or the GPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<!--
+   - This window is shown on the first run of Mozilla Archive Format and allows
+   -  the user to set some common preferences, in addition to providing some
+   -  basic information on the extension's capabilities.
+   -
+   - The position of the window when it is closed is not preserved.
+   -->
+<dialog
+ id="welcomeDialog"
+ title="&window.title;"
+ buttons="accept"
+ buttonlabelaccept="&continuebutton.label;"
+ buttonlabelacceptok="&okbutton.label;"
+ ondialogaccept="return WelcomeDialog.onDialogAccept();"
+ onload="WelcomeDialog.onLoadDialog();"
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ >
+  <!-- Dialog machinery -->
+  <script type="application/x-javascript" src="../mafChrome.js" />
+  <script type="application/x-javascript" src="welcomeDialog.js" />
+
+  <stringbundleset>
+    <!-- For convenience, we use the strings from the preferences dialog. -->
+    <stringbundle id= "bundleDialog"
+                  src="chrome://maf/locale/prefsDialog.properties"
+                  />
+  </stringbundleset>
+
+  <broadcasterset>
+    <!--
+       - This broadcaster element is used to control the visibility of the
+       -  Windows-specific options.
+       -->
+    <broadcaster id=     "brShowOnlyOnWindows"
+                 hidden= "false"
+                 />
+  </broadcasterset>
+
+  <!--
+     - Main dialog body. The default namespace in this section is HTML, allowing
+     -  the description elements to contain plain HTML formatting tags.
+     -->
+  <xul:vbox id=       "innerbox"
+            flex=     "1"
+            xmlns=    "http://www.w3.org/1999/xhtml"
+            xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            >
+
+    <!-- Welcome message -->
+
+    <xul:description class="headerlabel">
+      &welcome.label;
+    </xul:description>
+
+    <xul:spacer height="10" />
+
+    <xul:description>
+      &welcome.para1.description;
+    </xul:description>
+    <xul:description>
+      &welcome.para2.description;
+    </xul:description>
+    <xul:description>
+      &welcome.para3.description;
+    </xul:description>
+
+    <xul:spacer height="20" />
+
+    <!--
+       - This deck is used to display the options first, and the changes
+       -  confirmation page later.
+       -->
+    <xul:deck id=           "deckOptions"
+              selectedIndex="0"
+              >
+
+      <!-- Options deck -->
+      <xul:vbox>
+
+        <xul:description>
+          &options.description;
+        </xul:description>
+
+        <xul:checkbox id=        "cbAssociate"
+                      checked=   "true"
+                      label=     "&options.associate.label;"
+                      accesskey= "&options.associate.accesskey;"
+                      observes=  "brShowOnlyOnWindows"
+                      class=     "option"
+                      />
+        <xul:description class=   "optiondescription"
+                         observes="brShowOnlyOnWindows"
+                         >
+          &options.associate.description;
+        </xul:description>
+
+        <xul:checkbox id=        "cbSaveComplete"
+                      checked=   "true"
+                      label=     "&options.savecomplete.label;"
+                      accesskey= "&options.savecomplete.accesskey;"
+                      class=     "option"
+                      />
+        <xul:description class="optiondescription">
+          &options.savecomplete.para1.description;
+        </xul:description>
+        <xul:description class="optiondescription">
+          &options.savecomplete.para2.description;
+        </xul:description>
+
+        <xul:checkbox id=        "cbSaveMaff"
+                      checked=   "true"
+                      label=     "&options.savemaff.label;"
+                      accesskey= "&options.savemaff.accesskey;"
+                      class=     "option"
+                      />
+        <xul:description class="optiondescription">
+          &options.savemaff.para1.description;
+        </xul:description>
+        <xul:description class="optiondescription">
+          &options.savemaff.para2.description;
+        </xul:description>
+      </xul:vbox>
+
+      <!-- Changes confirmation deck -->
+      <xul:vbox>
+        <xul:description class="headerlabel">
+          &changesapplied.label;
+        </xul:description>
+
+        <xul:spacer height="10" />
+
+        <xul:description>
+          &changesapplied.description;
+        </xul:description>
+      </xul:vbox>
+    </xul:deck>
+  </xul:vbox>
+</dialog>
