@@ -76,6 +76,11 @@ var StartupEvents = {
   afterProfileChange: function() {
     // Initialize the extension behavior
     StartupInitializer.initFromCurrentProfile();
+    // Display the welcome window if required
+    if (StartupPrefs.otherDisplayWelcome) {
+      StartupWelcome.welcomeDialog();
+      StartupPrefs.otherDisplayWelcome = false;
+    }
   },
 
   // --- nsIObserver interface functions ---
@@ -130,6 +135,43 @@ var StartupInitializer = {
      .addFileExtension("maff",  "application/x-maff", true)
      .register();
   },
+};
+
+/**
+ * Provides a global method to display the welcome dialog. This method can be
+ *  called even if no other window is visible.
+ */
+var StartupWelcome = {
+
+  welcomeDialog: function() {
+    // Opens the window using the window watcher component
+    Cc["@mozilla.org/embedcomp/window-watcher;1"].
+     getService(Ci.nsIWindowWatcher).openWindow(
+     null,
+     "chrome://maf/content/frontend/welcomeDialog.xul",
+     "maf-welcomeDialog",
+     "chrome,dialog,centerscreen,modal",
+     null);
+  }
+};
+
+/**
+ * Provides global methods to retrieve and set the preferences used on startup.
+ */
+var StartupPrefs = {
+
+  /**
+   * Returns true if the welcome dialog should be displayed on startup.
+   */
+  get otherDisplayWelcome() {
+    return StartupPrefs._prefBranchForMaf.getBoolPref("other.displaywelcome");
+  },
+  set otherDisplayWelcome(aValue) {
+    StartupPrefs._prefBranchForMaf.setBoolPref("other.displaywelcome", aValue);
+  },
+
+  _prefBranchForMaf: Cc["@mozilla.org/preferences-service;1"]
+    .getService(Ci.nsIPrefService).getBranch("extensions.maf.")
 };
 
 /**

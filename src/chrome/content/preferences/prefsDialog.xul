@@ -168,6 +168,7 @@
       <preference id="prefOpenUseJarProtocol"      name="extensions.maf.open.usejarprotocol"      type="bool"/>
       <preference id="prefSaveComponent"           name="extensions.maf.save.component"           type="string"/>
       <preference id="prefSaveUseMhtmlExtension"   name="extensions.maf.save.usemhtmlextension"   type="bool"/>
+      <preference id="prefOtherDisplayWelcome"     name="extensions.maf.other.displaywelcome"     type="bool"/>
     </preferences>
     <groupbox>
       <caption label="&temp.caption;" />
@@ -205,6 +206,13 @@
       <checkbox preference="prefSaveUseMhtmlExtension"
                 label=     "&save.usemhtmlextension.label;"
                 accesskey= "&save.usemhtmlextension.accesskey;"
+                />
+    </groupbox>
+    <groupbox>
+      <caption label="&other.caption;" />
+      <checkbox preference="prefOtherDisplayWelcome"
+                label=     "&other.displaywelcome.label;"
+                accesskey= "&other.displaywelcome.accesskey;"
                 />
     </groupbox>
   </prefpane>
