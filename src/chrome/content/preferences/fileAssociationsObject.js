@@ -43,6 +43,50 @@ var FileAssociations = {
    * Creates file associations for the MAFF file format.
    */
   createAssociationsForMAFF: function() {
+    // First, create an explicit file association for the current user. This
+    //  operation does not require administrator privileges, but should be done
+    //  also for administrators, to ensure that no user-specific settings will
+    //  take priority over the association for all users.
+    new FileAssociationsCreator(true).createAssociationsForMAFF();
+    // Create a file association for all other users, but ignore errors if the
+    //  current user does not have administrator privileges
+    new FileAssociationsCreator(false).createAssociationsForMAFF();
+  },
+
+  /**
+   * Creates file associations for the MHTML file format.
+   */
+  createAssociationsForMHTML: function() {
+    // First, create an explicit file association for the current user. This
+    //  operation does not require administrator privileges, but should be done
+    //  also for administrators, to ensure that no user-specific settings will
+    //  take priority over the association for all users.
+    new FileAssociationsCreator(true).createAssociationsForMHTML();
+    // Create a file association for all other users, but ignore errors if the
+    //  current user does not have administrator privileges
+    new FileAssociationsCreator(false).createAssociationsForMHTML();
+  }
+}
+
+/**
+ * This object allows the creation of file association entries in the Windows
+ *  registry, either for the current user or for all users in the system.
+ *
+ * @param aForCurrentUser   If true, creates entries for the current user.
+ *                          If false, creates entries for all users, but ignores
+ *                           errors caused by lack of privileges.
+ */
+function FileAssociationsCreator(aForCurrentUser) {
+  this._forCurrentUser = aForCurrentUser;
+}
+
+FileAssociationsCreator.prototype = {
+  _forCurrentUser: false,
+
+  /**
+   * Creates file associations for the MAFF file format.
+   */
+  createAssociationsForMAFF: function() {
     // Create a new ProgID for the MAFF format
     this._createWindowsFileTypeForBrowser(
      "FirefoxMAFF",
@@ -85,6 +129,14 @@ var FileAssociations = {
    "chrome://maf/locale/prefsDialog.properties"),
 
   // --- File association support functions ---
+
+  /**
+   * Returns the appropriate root key to use based on this object settings.
+   */
+  get _rootKey() {
+    return this._forCurrentUser ? Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER :
+                                  Ci.nsIWindowsRegKey.ROOT_KEY_LOCAL_MACHINE;
+  },
 
   /**
    * Creates a global Windows file type, under HKEY_CLASSES_ROOT, associating
@@ -141,10 +193,17 @@ var FileAssociations = {
     // Create or open the key of the given ProgID
     var keyProgID = Cc["@mozilla.org/windows-registry-key;1"]
      .createInstance(Ci.nsIWindowsRegKey);
-    keyProgID.create(
-     keyProgID.ROOT_KEY_CLASSES_ROOT,
-     aProgID,
-     keyProgID.ACCESS_WRITE);
+    try {
+      keyProgID.create(
+       this._rootKey,
+       "Software\\Classes\\" + aProgID,
+       keyProgID.ACCESS_WRITE);
+    } catch (e if !this._forCurrentUser) {
+      // If we are creating a file type for all users in the system, but opening
+      //  or creating the first key failed, we ignore the error.
+      return;
+    }
+    // Continue with the newly opened key
     try {
       // Set the display name shown in the Windows file association GUI
       keyProgID.writeStringValue("", aDisplayName);
@@ -196,10 +255,17 @@ var FileAssociations = {
     // Create or open the key of the given file extension
     var keyExtension = Cc["@mozilla.org/windows-registry-key;1"]
      .createInstance(Ci.nsIWindowsRegKey);
-    keyExtension.create(
-     keyExtension.ROOT_KEY_CLASSES_ROOT,
-     aFileExtension,
-     keyExtension.ACCESS_WRITE);
+    try {
+      keyExtension.create(
+       this._rootKey,
+       "Software\\Classes\\" + aFileExtension,
+       keyExtension.ACCESS_WRITE);
+    } catch (e if !this._forCurrentUser) {
+      // If we are creating a file type association for all users in the system,
+      //  but opening or creating the first key failed, we ignore the error.
+      return;
+    }
+    // Continue with the newly opened key
     try {
       // Set the file type association
       keyExtension.writeStringValue("", aProgID);
