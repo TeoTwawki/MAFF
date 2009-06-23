@@ -5,9 +5,9 @@
 <!ENTITY save.component.grouplabel "当保存完整网页档案内容时：">
 <!ENTITY save.component.standard.label "使用浏览器的标准保存系统">
 <!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.savecomplete.label "使用集成入 MAF 的原 Firefox “Save Complete” 扩展（注：Allows more content to be saved, thanks to the integrated Save Complete extension written by Stephen Augenstein. Note that if you also have a standalone version of Save Complete installed, MAF will continue to use the integrated one. Improvements to Save Complete are periodically included in new versions of MAF.）">
+<!ENTITY save.component.savecomplete.label "使用集成入 MAF 的原 Firefox “Save Complete” 扩展">
 <!ENTITY save.component.savecomplete.accesskey "U">
-<!ENTITY save.metadata.extended.label "在 MAFF 档中保存扩展元数据（注：With this preference enabled, additional page information such as history, text zoom and scroll position is saved for each page. There is currently no preference to restore this saved information as yet.）">
+<!ENTITY save.metadata.extended.label "在 MAFF 档中保存扩展元数据">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!ENTITY pane.interface.label "界面">
 <!ENTITY menu.caption "菜单">
