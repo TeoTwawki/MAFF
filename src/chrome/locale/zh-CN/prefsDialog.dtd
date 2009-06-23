@@ -48,5 +48,8 @@
 <!ENTITY open.rewriteurls.accesskey "R">
 <!ENTITY open.usejarprotocol.label "使用“JAr:”协议访问 MAFF 档的内容">
 <!ENTITY open.usejarprotocol.accesskey "J">
+<!ENTITY other.caption "Other">
+<!ENTITY other.displaywelcome.label "Display welcome window at next startup">
+<!ENTITY other.displaywelcome.accesskey "D">
 <!ENTITY save.usemhtmlextension.label "使用 .MHTML 代替 .MHT 成为默认文件扩展名">
 <!ENTITY save.usemhtmlextension.accesskey "M">
