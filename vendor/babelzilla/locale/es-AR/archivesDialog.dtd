@@ -1,0 +1,12 @@
+<!ENTITY window.title "*** Controles generales de la ventana **">
+<!ENTITY archives.placestitle.header "Título de la página">
+<!ENTITY archives.mafarchivename.header "Nombre del Archivo">
+<!ENTITY archives.placesurl.header "Ubicación del Archivo">
+<!ENTITY archives.maftitle.header "Título Original de la Página">
+<!ENTITY archives.maforiginalurl.header "Ubicación Original">
+<!ENTITY archives.mafdatearchived.header "Archivado">
+<!ENTITY details.placestitle.label "Título de página:">
+<!ENTITY details.mafarchivename.label "Nombre de archivo:">
+<!ENTITY details.placesurl.label "Ubicación de archivo">
+<!ENTITY details.maftitle.label "Título original de la página:">
+<!ENTITY details.maforiginalurl.label "Ubicación original:">
