@@ -4,15 +4,12 @@ locale	maf	en-US	chrome/locale/en-US/
 
 locale	maf	da-DK	chrome/locale/da-DK/
 locale	maf	de-DE	chrome/locale/de-DE/
-locale	maf	es-AR	chrome/locale/es-AR/
 locale	maf	es-ES	chrome/locale/es-ES/
 locale	maf	fr-FR	chrome/locale/fr-FR/
 locale	maf	it-IT	chrome/locale/it-IT/
 locale	maf	pl-PL	chrome/locale/pl-PL/
-locale	maf	ru-RU	chrome/locale/ru-RU/
 locale	maf	tr-TR	chrome/locale/tr-TR/
 locale	maf	zh-CN	chrome/locale/zh-CN/
-locale	maf	zh-TW	chrome/locale/zh-TW/
 
 skin	maf	classic/1.0	chrome/skin/
 
