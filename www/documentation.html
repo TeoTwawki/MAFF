@@ -169,10 +169,10 @@
 
 <h2><a name="preferences"></a>Preferences</h2>
 <p>The default settings in effect after installation are enough to allow correct
- loading and saving of both MAFF and MHTML archives, using the Firefox standard
- save system. To enable the integrated Save Complete extension, customize the
- interface, or modify advanced aspects of page loading and archiving, you can
- change extension's preferences.</p>
+ loading and saving of both MAFF and MHTML archives. To enable or disable the
+ integrated Save Complete extension, customize the interface, or modify advanced
+ aspects of page loading and archiving, you can change the extension's
+ preferences.</p>
 <p>The preferences dialog can be accessed from the <b>Tools &raquo; Mozilla
  Archive Format &raquo; Preferences</b> menu item. If the <b>Mozilla Archive
  Format</b> submenu is not visible, you can open the preferences dialog using
@@ -184,22 +184,6 @@
 <img src="images/prefsDialog-paneMain.png" alt="">
 
 <dl>
-  <dt>When an archive is opened:</dt>
-  <dd>
-    <ol>
-      <li><b>Open contents in new tabs</b> (default) - Opens all resources in
-       new tabs. If your archive is big, this could cause opening the archive to
-       take a long time.</li>
-      <li><b>Show list of open archives, and ask for action</b> - Displays a
-       dialog of all the open archives in a tree form, you select which files
-       you would like displayed in tabs. You can also perform other actions from
-       the same dialog, like opening MAFF archives using the <tt>jar:</tt>
-       protocol.</li>
-      <li><b>Only add to the list of open archives, showing nothing</b> - Allows
-       you to open as many archives as you want and browse to display any of the
-       saved resources after complete.</li>
-    </ol>
-  </dd>
   <dt>When saving complete web page contents:</dt>
   <dd>
     <p>This preference controls which method is used to find all the web
@@ -268,6 +252,9 @@
   <dd>
     <p>This preferences pane allows you to create or refresh file associations
      on Windows, for the MAFF and MHTML formats separately.</p>
+    <p>File associations are always created explicitly for the current user of
+     the system. In addition, if the current user has administration privileges,
+     default file associations for all users are also created.</p>
     <p>File associations are not removed when uninstalling MAF of Firefox
      itself.</p>
   </dd>
@@ -324,6 +311,15 @@
      <code class="maf-file-ext">.mhtml</code> extension will be appended to the
      file name of MHTML archives, instead of the more common
      <code class="maf-file-ext">.mht</code> extension.</p>
+  </dd>
+  <dt>Display welcome window at next startup</dt>
+  <dd>
+    <p>The welcome dialog is usually displayed only when MAF is installed for
+     the first time. All the options that are set by the welcome dialog are also
+     available from the preferences, thus it is usually not necessary to display
+     the dialog again. This option is only provided as a convenience for
+     translators in need of proofreading the text in the welcome dialog
+     multiple times.</p>
   </dd>
 </dl>
 
