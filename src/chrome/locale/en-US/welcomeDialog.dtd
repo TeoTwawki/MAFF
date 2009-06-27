@@ -1,18 +1,23 @@
-<!-- Note: Some of the labels in this file use HTML formatting tags, like <b>bold</b> and <i>italics</i>. -->
+<!-- *** Note *** -->
+<!-- Some of the labels in this file use pairs of XML entity references for formatting. -->
+<!-- %BS; and %BE; are like <b> and </b> for bold -->
+<!-- %IS; and %IE; are like <i> and </i> for italics -->
+<!-- %TTS; and %TTE; are like <tt> and </tt> for teletype -->
+<!-- HTML entities are not used directly for compatibility with the BabelZilla Web Translation System. -->
 
-<!-- General window controls -->
+<!-- *** General window controls *** -->
 <!ENTITY window.title "Welcome">
 <!ENTITY continuebutton.label "Continue">
 <!ENTITY okbutton.label "OK">
 
-<!-- Welcome message -->
+<!-- *** Welcome message *** -->
 
 <!ENTITY welcome.label "Welcome to Mozilla Archive Format!">
-<!ENTITY welcome.para1.description "Thank you for installing MAF! Your Firefox is now capable of opening and saving complete web pages in single-file <i>web archives</i>, supporting both the <tt>MAFF</tt> and <tt>MHTML</tt> types.">
-<!ENTITY welcome.para2.description "You can open web archives using the <b>Open File</b> item in the File menu, and create them by selecting the desired archive type in the <b>Save As</b> dialog box.">
-<!ENTITY welcome.para3.description "You can find additional archive management commands in the <b>Tools</b> menu.">
+<!ENTITY welcome.para1.description "Thank you for installing MAF! Your Firefox is now capable of opening and saving complete web pages in single-file %IS;web archives%IE;, supporting both the %TTS;MAFF%TTE; and %TTS;MHTML%TTE; types.">
+<!ENTITY welcome.para2.description "You can open web archives using the %BS;Open File%BE; item in the File menu, and create them by selecting the desired archive type in the %BS;Save As%BE; dialog box.">
+<!ENTITY welcome.para3.description "You can find additional archive management commands in the %BS;Tools%BE; menu.">
 
-<!-- Options page -->
+<!-- *** Options page *** -->
 
 <!ENTITY options.description "Even though you can already open and save web archives, the following enhancements to your computer configuration are recommended:">
 
@@ -29,9 +34,9 @@
 <!ENTITY options.savemaff.label "Save using the MAFF web archive type by default">
 <!ENTITY options.savemaff.accesskey "S">
 <!ENTITY options.savemaff.para1.description "MAFF is a cross-platform, open file format based on ZIP. MAFF files can be opened on Linux or any other platform that supports ZIP files, but cannot be easily exchanged with Internet Explorer users.">
-<!ENTITY options.savemaff.para2.description "You can change the archive type at any time in the <b>Save As</b> dialog box.">
+<!ENTITY options.savemaff.para2.description "You can change the archive type at any time in the %BS;Save As%BE; dialog box.">
 
-<!-- Changes confirmation message -->
+<!-- *** Changes confirmation message *** -->
 
 <!ENTITY changesapplied.label "Congratulations!">
 <!ENTITY changesapplied.description "Your system has been configured as you requested, and is ready for use.">
