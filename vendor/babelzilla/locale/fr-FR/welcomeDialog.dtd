@@ -1,0 +1,6 @@
+<!ENTITY window.title "Bienvenue">
+<!ENTITY continuebutton.label "Continuer">
+<!ENTITY okbutton.label "OK">
+<!ENTITY welcome.label "Bienvenue dans Mozilla Archive Format !">
+<!ENTITY changesapplied.label "Félicitations !">
+<!ENTITY changesapplied.description "Votre système a été configuré conformément à votre demande, et est prêt à être utilisé.">

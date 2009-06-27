@@ -1,0 +1,12 @@
+<!ENTITY window.title "偏好設定">
+<!ENTITY browsebutton.label "瀏覽…">
+<!ENTITY pane.main.label "主要">
+<!ENTITY save.caption "儲存歸檔檔案時的操作">
+<!ENTITY save.component.grouplabel "當保存完整網頁檔案內容時：">
+<!ENTITY save.component.standard.label "使用瀏覽器的標準保存系統(b)">
+<!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.savecomplete.label "使用整合入 MAF 的 「Save Complete」 擴展［而不是您在瀏覽器中安裝的（如果有的話）］">
+<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.metadata.extended.label "在 MAFF 檔中保存擴展中介資料(v)">
+<!ENTITY save.metadata.extended.accesskey "v">
+<!ENTITY associate.uninstall.description "注意：在此處建立的檔案關聯在您移除 MAF 時並不會被刪除，您需要到 Windows 控制台的「資料夾選項」中手工修正。">

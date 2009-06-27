@@ -1,0 +1,8 @@
+<!ENTITY details.caption "Детали">
+<!ENTITY morebutton.label "Повеќе детали">
+<!ENTITY morebutton.accesskey "е">
+<!ENTITY lessbutton.label "Помалку детали">
+<!ENTITY lessbutton.accesskey "е">
+<!ENTITY openintabsbutton.label "Отвори во јазичиња">
+<!ENTITY openintabsbutton.accesskey.placesurl "О">
+<!ENTITY openintabsbutton.accesskey.originalurl "и">

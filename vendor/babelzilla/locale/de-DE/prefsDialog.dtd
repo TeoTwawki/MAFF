@@ -43,5 +43,8 @@
 <!ENTITY open.rewriteurls.accesskey "A">
 <!ENTITY open.usejarprotocol.label "Das &quot;.jar&quot;-Protokoll benützen, um auf MAFF-Archive zugrefien zu können">
 <!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY other.caption "Andere">
+<!ENTITY other.displaywelcome.label "Willkommensfenster beim nächsten Start anzeigen">
+<!ENTITY other.displaywelcome.accesskey "W">
 <!ENTITY save.usemhtmlextension.label "Mit der Erweiterung .mhtml anstatt .mht speichern">
 <!ENTITY save.usemhtmlextension.accesskey "m">

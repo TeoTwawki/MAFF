@@ -1,0 +1,14 @@
+<!ENTITY window.title "档案">
+<!ENTITY archives.placestitle.header "存档页面标题">
+<!ENTITY archives.mafarchivename.header "档案名称">
+<!ENTITY archives.placesurl.header "档案位置">
+<!ENTITY archives.maftitle.header "原始页面标题">
+<!ENTITY archives.maforiginalurl.header "原始页面位置">
+<!ENTITY archives.mafdatearchived.header "存档时间">
+<!ENTITY archives.maftempuri.header "临时解包页地址">
+<!ENTITY details.caption "细节">
+<!ENTITY morebutton.label "更多细节">
+<!ENTITY morebutton.accesskey "e">
+<!ENTITY lessbutton.label "更少细节">
+<!ENTITY lessbutton.accesskey "e">
+<!ENTITY multipleitems.text "（选择了多于一个的存档页）">

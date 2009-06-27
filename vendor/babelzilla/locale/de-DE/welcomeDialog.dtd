@@ -1,0 +1,21 @@
+<!ENTITY window.title "Willkommen">
+<!ENTITY continuebutton.label "Weiter">
+<!ENTITY okbutton.label "OK">
+<!ENTITY welcome.label "Willkommen beim Mozilla Archiv-Format!">
+<!ENTITY welcome.para1.description "Vielen Dank, dass Sie MAF installiert haben! Ihr Firefox ist nun fähig, Websites in einer einzigen &lt;i&gt;Web-Archiv&lt;/i&gt;-Datei zu speichern, wobei sowohl &lt;tt&gt;MAFF&lt;/tt&gt; als auch &lt;tt&gt;MHTML&lt;/tt&gt; unterstützt wird.">
+<!ENTITY welcome.para2.description "Sie können Web-Archive über &lt;b&gt;Datei öffnen&lt;/b&gt; im Dateimenü öffnen. Zum Erstellen eines Archivs, wählen Sie die Archivart im &lt;b&gt;Speichern unter...&lt;/b&gt;-Dialog.">
+<!ENTITY welcome.para3.description "Zusätzliche Archiveinstellungen finden Sie im Menü &lt;b&gt;Extras&lt;/b&gt;.">
+<!ENTITY options.description "Obwohl Sie schon Web-Archive öffnen und speichern können, werden die folgenden Einstellungen an Ihrem Computer empfohlen:">
+<!ENTITY options.associate.label "Web-Archive mit Firefox öffnen">
+<!ENTITY options.associate.accesskey "ö">
+<!ENTITY options.associate.description "Wählen Sie diese Option, um Web-Archive mit Firefox zu öffnen, wenn Sie auf sie klicken.">
+<!ENTITY options.savecomplete.label "Die integrierte &quot;Save Complete&quot;-Komponente aktivieren">
+<!ENTITY options.savecomplete.accesskey "i">
+<!ENTITY options.savecomplete.para1.description "&quot;Save Complete&quot; ist eine Erweiterung für Firefox, die Websites originalgetreuer speichert als das Standard-Firefox-Speichersystem.">
+<!ENTITY options.savecomplete.para2.description "Sie können &quot;Save Complete&quot; jederzeit in den MAF-Einstellungen aktivieren/deaktivieren.">
+<!ENTITY options.savemaff.label "Die MAFF-Archivart als Standard festlegen">
+<!ENTITY options.savemaff.accesskey "S">
+<!ENTITY options.savemaff.para1.description "MAFF ist ein plattformübergreifendes, ZIP-basiertes Dateiformat. MAFF-Dateien können problemlos auf Linux oder anderen Systemen, die ZIP unterstützen, geöffnet werden, nicht jedoch von Internet Explorer-Benützern.">
+<!ENTITY options.savemaff.para2.description "Sie können die Archivart jederzeit im &lt;b&gt;Speichern unter...&lt;/b&gt;-Dialog ändern.">
+<!ENTITY changesapplied.label "Gratulation!">
+<!ENTITY changesapplied.description "Das System wurde nach Ihren Wünschen konfiguriert und ist bereit.">

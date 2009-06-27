@@ -1,0 +1,21 @@
+<!ENTITY window.title "Benvenuti">
+<!ENTITY continuebutton.label "Continua">
+<!ENTITY okbutton.label "OK">
+<!ENTITY welcome.label "Benvenuti in Mozilla Archive Format!">
+<!ENTITY welcome.para1.description "Grazie per aver installato MAF! Il vostro Firefox è ora in grado di aprire e salvare pagine web complete all&apos;interno di &lt;i&gt;archivi web&lt;/i&gt; in unico file, con supporto per entrambi i tipi &lt;tt&gt;MAFF&lt;/tt&gt; e &lt;tt&gt;MHTML&lt;/tt&gt;.">
+<!ENTITY welcome.para2.description "È possibile aprire gli archivi web usando il comando &lt;b&gt;Apri File&lt;/b&gt; dal menu File, e crearli selezionando il tipo di archivio desiderato dalla finestra di dialogo &lt;b&gt;Salva con nome&lt;/b&gt;.">
+<!ENTITY welcome.para3.description "Nel menu &lt;b&gt;Strumenti&lt;/b&gt; sono disponibili comandi aggiuntivi per la gestione degli archivi.">
+<!ENTITY options.description "Anche se è già possibile aprire e salvare gli archivi web, i seguenti miglioramenti alla configurazione del proprio computer sono consigliati:">
+<!ENTITY options.associate.label "Apri archivi web con Firefox per impostazione predefinita">
+<!ENTITY options.associate.accesskey "A">
+<!ENTITY options.associate.description "Selezionare questa opzione se si desidera aprire i file di archivio web facendo clic sull&apos;icona.">
+<!ENTITY options.savecomplete.label "Abilita il componente Save Complete integrato">
+<!ENTITY options.savecomplete.accesskey "b">
+<!ENTITY options.savecomplete.para1.description "Save Complete è un&apos;estensione per Firefox che consente di salvare le pagine web in modo più fedele all&apos;originale, rispetto al sistema di salvataggio standard di Firefox.">
+<!ENTITY options.savecomplete.para2.description "È possibile abilitare o disabilitare Save Complete in ogni momento dalle preferenze di MAF.">
+<!ENTITY options.savemaff.label "Salva usando il formato di archivio MAFF per impostazione predefinita">
+<!ENTITY options.savemaff.accesskey "S">
+<!ENTITY options.savemaff.para1.description "MAFF è un formato di file aperto e multi-piattaforma, basato su ZIP. I file MAFF possono essere aperti su Linux e su ogni altra piattaforma che supporta i file ZIP, ma non può essere facilmente scambiato con gli utenti di Internet Explorer.">
+<!ENTITY options.savemaff.para2.description "È possibile cambiare il tipo di archivio in ogni momento nella finestra di dialogo &lt;b&gt;Salva con nome&lt;/b&gt;.">
+<!ENTITY changesapplied.label "Congratulazioni!">
+<!ENTITY changesapplied.description "Il sistema è stato configurato come richiesto, ed è pronto per l&apos;uso.">
