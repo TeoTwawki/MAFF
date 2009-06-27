@@ -1,0 +1,32 @@
+<!--  *** Note ***  -->
+<!--  Some of the labels in this file use pairs of XML entity references for formatting.  -->
+<!--  %BS; and %BE; are like <b> and </b> for bold  -->
+<!--  %IS; and %IE; are like <i> and </i> for italics  -->
+<!--  %TTS; and %TTE; are like <tt> and </tt> for teletype  -->
+<!--  HTML entities are not used directly for compatibility with the BabelZilla Web Translation System.  -->
+<!--  *** General window controls ***  -->
+<!ENTITY window.title "歡迎">
+<!ENTITY continuebutton.label "繼續">
+<!ENTITY okbutton.label "確定">
+<!--  *** Welcome message ***  -->
+<!ENTITY welcome.label "歡迎使用 Mozilla 歸檔格式（Mozilla Archive Format）！">
+<!ENTITY welcome.para1.description "感謝您選擇並安裝 MAF！您的瀏覽器已具備opening and 保存完整網頁於單個檔案（Web 歸檔檔案）的功能。MAF 支援兩種格式：%TTS;MAFF%TTE; 和 %TTS;MHTML%TTE;。">
+<!ENTITY welcome.para2.description "You can open web archives using the %BS;Open File%BE; item in the File menu, and create them by selecting the desired archive type in the %BS;Save As%BE; dialog box.">
+<!ENTITY welcome.para3.description "You can find additional archive management commands in the %BS;Tools%BE; menu.">
+<!--  *** Options page ***  -->
+<!ENTITY options.description "Even though you can already open and save web archives, the following enhancements to your computer configuration are recommended:">
+<!ENTITY options.associate.label "Open web archives with Firefox by default">
+<!ENTITY options.associate.accesskey "O">
+<!ENTITY options.associate.description "Select this option if you wish to open web archive files by clicking on their icon.">
+<!--  Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages.  -->
+<!ENTITY options.savecomplete.label "Enable the integrated Save Complete component">
+<!ENTITY options.savecomplete.accesskey "E">
+<!ENTITY options.savecomplete.para1.description "Save Complete is a Firefox extension that allows you to save web pages in a way that is more faithful to the original, compared to the standard Firefox save system.">
+<!ENTITY options.savecomplete.para2.description "You can enable or disable Save Complete at any time from the MAF preferences.">
+<!ENTITY options.savemaff.label "Save using the MAFF web archive type by default">
+<!ENTITY options.savemaff.accesskey "S">
+<!ENTITY options.savemaff.para1.description "MAFF is a cross-platform, open file format based on ZIP. MAFF files can be opened on Linux or any other platform that supports ZIP files, but cannot be easily exchanged with Internet Explorer users.">
+<!ENTITY options.savemaff.para2.description "You can change the archive type at any time in the %BS;Save As%BE; dialog box.">
+<!--  *** Changes confirmation message ***  -->
+<!ENTITY changesapplied.label "Congratulations!">
+<!ENTITY changesapplied.description "Your system has been configured as you requested, and is ready for use.">

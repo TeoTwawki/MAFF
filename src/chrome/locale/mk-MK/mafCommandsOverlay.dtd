@@ -1,0 +1,30 @@
+<!--  Shortcut keys  -->
+<!ENTITY command.browseopenarchives.key "M">
+<!ENTITY command.browseopenarchives.modifiers "alt">
+<!--  Menu items for general Mozilla Archive Format commands  -->
+<!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
+<!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
+<!ENTITY menuitem.browseopenarchives.label "Browse Open Archives…">
+<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
+<!ENTITY menuitem.preferences.label "Параметри">
+<!ENTITY menuitem.preferences.accesskey.toolsmenu "П">
+<!--  Additional menu items for the "Save As" command  -->
+<!ENTITY menuitem.savetabsas.label "Зачувај ги јазичињата како">
+<!ENTITY menuitem.savetabsas.accesskey.filemenu "з">
+<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "з">
+<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "з">
+<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "з">
+<!ENTITY menuitem.savealltabsas.label "Зачувај ги сите јазичиња како">
+<!ENTITY menuitem.savealltabsas.accesskey.filemenu "З">
+<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "З">
+<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "г">
+<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "З">
+<!--  Additional menu items for the "Save In Archive" command  -->
+<!ENTITY menuitem.savepageinarchive.label "Save Page In Archive…">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
+<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
+<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
+<!ENTITY menuitem.saveframeinarchive.label "Save Frame In Archive…">
+<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "h">
+<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "h">
+<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "h">

@@ -1,0 +1,55 @@
+<!--  General window controls  -->
+<!ENTITY window.title "偏好設定">
+<!ENTITY browsebutton.label "瀏覽…">
+<!--  Main pane  -->
+<!ENTITY pane.main.label "主要">
+<!ENTITY save.caption "儲存歸檔檔案時的操作">
+<!ENTITY save.component.grouplabel "當保存完整網頁檔案內容時：">
+<!ENTITY save.component.standard.label "使用瀏覽器的標準保存系統(b)">
+<!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.savecomplete.label "使用整合入 MAF 的 「Save Complete」 擴展［而不是您在瀏覽器中安裝的（如果有的話）］">
+<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.metadata.extended.label "在 MAFF 檔中保存擴展中介資料(v)">
+<!ENTITY save.metadata.extended.accesskey "v">
+<!--  Interface pane  -->
+<!ENTITY pane.interface.label "Interface">
+<!ENTITY menu.caption "Menu">
+<!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
+<!ENTITY menu.file.label "File menu">
+<!ENTITY menu.file.accesskey "F">
+<!ENTITY menu.tools.label "Tools menu">
+<!ENTITY menu.tools.accesskey "l">
+<!ENTITY menu.pagecontext.label "Page context menu">
+<!ENTITY menu.pagecontext.accesskey "p">
+<!ENTITY menu.tabscontext.label "Tab bar context menu">
+<!ENTITY menu.tabscontext.accesskey "x">
+<!ENTITY menuitem.grouplabel "Show these additional menu items:">
+<!ENTITY menuitem.saveinarchive.label "Save In Archive">
+<!ENTITY menuitem.saveinarchive.accesskey "h">
+<!--  File associations pane. This pane is visible only on Windows.  -->
+<!ENTITY pane.fileassociations.label "File associations">
+<!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
+<!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
+<!ENTITY associate.adminprivs.description "This operation might require administrator privileges.">
+<!ENTITY associate.maff.label "Create association for .maff extension">
+<!ENTITY associate.maff.accesskey "e">
+<!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
+<!ENTITY associate.mhtml.accesskey "a">
+<!ENTITY associate.uninstall.description "注意：在此處建立的檔案關聯在您移除 MAF 時並不會被刪除，您需要到 Windows 控制台的「資料夾選項」中手工修正。">
+<!--  Advanced pane  -->
+<!ENTITY pane.advanced.label "Advanced">
+<!ENTITY temp.caption "Temporary files">
+<!ENTITY temp.folder.label "Temporary folder:">
+<!ENTITY temp.folder.accesskey "T">
+<!ENTITY temp.clearonexit.label "Clear temporary folder when browser exits">
+<!ENTITY temp.clearonexit.accesskey "C">
+<!ENTITY open.caption "Open">
+<!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
+<!ENTITY open.rewriteurls.accesskey "R">
+<!ENTITY open.usejarprotocol.label "Use the &quot;jar:&quot; protocol to access the contents of MAFF archives">
+<!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY other.caption "Other">
+<!ENTITY other.displaywelcome.label "Display welcome window at next startup">
+<!ENTITY other.displaywelcome.accesskey "D">
+<!ENTITY save.usemhtmlextension.label "Save using the .mhtml file extension instead of .mht by default">
+<!ENTITY save.usemhtmlextension.accesskey "m">

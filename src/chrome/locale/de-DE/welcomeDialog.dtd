@@ -1,27 +1,32 @@
-<!--  Note: Some of the labels in this file use HTML formatting tags, like <b>bold</b> and <i>italics</i>.  -->
-<!--  General window controls  -->
-<!ENTITY window.title "Welcome">
-<!ENTITY continuebutton.label "Continue">
+<!--  *** Note ***  -->
+<!--  Some of the labels in this file use pairs of XML entity references for formatting.  -->
+<!--  %BS; and %BE; are like <b> and </b> for bold  -->
+<!--  %IS; and %IE; are like <i> and </i> for italics  -->
+<!--  %TTS; and %TTE; are like <tt> and </tt> for teletype  -->
+<!--  HTML entities are not used directly for compatibility with the BabelZilla Web Translation System.  -->
+<!--  *** General window controls ***  -->
+<!ENTITY window.title "Willkommen">
+<!ENTITY continuebutton.label "Weiter">
 <!ENTITY okbutton.label "OK">
-<!--  Welcome message  -->
-<!ENTITY welcome.label "Welcome to Mozilla Archive Format!">
-<!ENTITY welcome.para1.description "Thank you for installing MAF! Your Firefox is now capable of opening and saving complete web pages in single-file <i>web archives</i>, supporting both the <tt>MAFF</tt> and <tt>MHTML</tt> types.">
-<!ENTITY welcome.para2.description "You can open web archives using the <b>Open File</b> item in the File menu, and create them by selecting the desired archive type in the <b>Save As</b> dialog box.">
-<!ENTITY welcome.para3.description "You can find additional archive management commands in the <b>Tools</b> menu.">
-<!--  Options page  -->
-<!ENTITY options.description "Even though you can already open and save web archives, the following enhancements to your computer configuration are recommended:">
-<!ENTITY options.associate.label "Open web archives with Firefox by default">
-<!ENTITY options.associate.accesskey "O">
-<!ENTITY options.associate.description "Select this option if you wish to open web archive files by clicking on their icon.">
+<!--  *** Welcome message ***  -->
+<!ENTITY welcome.label "Willkommen beim Mozilla Archiv-Format!">
+<!ENTITY welcome.para1.description "Vielen Dank, dass Sie MAF installiert haben! Ihr Firefox ist nun fähig, Websites in einer einzigen %IS;Web-Archiv%IE;-Datei zu speichern, wobei sowohl %TTS;MAFF%TTE; als auch %TTS;MHTML%TTE; unterstützt wird.">
+<!ENTITY welcome.para2.description "Sie können Web-Archive über %BS;Datei öffnen%BE; im Dateimenü öffnen. Zum Erstellen eines Archivs, wählen Sie die Archivart im %BS;Speichern unter...%BE;-Dialog.">
+<!ENTITY welcome.para3.description "Zusätzliche Archiveinstellungen finden Sie im Menü %BS;Extras%BE;.">
+<!--  *** Options page ***  -->
+<!ENTITY options.description "Obwohl Sie schon Web-Archive öffnen und speichern können, werden die folgenden Einstellungen an Ihrem Computer empfohlen:">
+<!ENTITY options.associate.label "Web-Archive mit Firefox öffnen">
+<!ENTITY options.associate.accesskey "ö">
+<!ENTITY options.associate.description "Wählen Sie diese Option, um Web-Archive mit Firefox zu öffnen, wenn Sie auf sie klicken.">
 <!--  Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages.  -->
-<!ENTITY options.savecomplete.label "Enable the integrated Save Complete component">
-<!ENTITY options.savecomplete.accesskey "E">
-<!ENTITY options.savecomplete.para1.description "Save Complete is a Firefox extension that allows you to save web pages in a way that is more faithful to the original, compared to the standard Firefox save system.">
-<!ENTITY options.savecomplete.para2.description "You can enable or disable Save Complete at any time from the MAF preferences.">
-<!ENTITY options.savemaff.label "Save using the MAFF web archive type by default">
+<!ENTITY options.savecomplete.label "Die integrierte &quot;Save Complete&quot;-Komponente aktivieren">
+<!ENTITY options.savecomplete.accesskey "i">
+<!ENTITY options.savecomplete.para1.description "&quot;Save Complete&quot; ist eine Erweiterung für Firefox, die Websites originalgetreuer speichert als das Standard-Firefox-Speichersystem.">
+<!ENTITY options.savecomplete.para2.description "Sie können &quot;Save Complete&quot; jederzeit in den MAF-Einstellungen aktivieren/deaktivieren.">
+<!ENTITY options.savemaff.label "Die MAFF-Archivart als Standard festlegen">
 <!ENTITY options.savemaff.accesskey "S">
-<!ENTITY options.savemaff.para1.description "MAFF is a cross-platform, open file format based on ZIP. MAFF files can be opened on Linux or any other platform that supports ZIP files, but cannot be easily exchanged with Internet Explorer users.">
-<!ENTITY options.savemaff.para2.description "You can change the archive type at any time in the <b>Save As</b> dialog box.">
-<!--  Changes confirmation message  -->
-<!ENTITY changesapplied.label "Congratulations!">
-<!ENTITY changesapplied.description "Your system has been configured as you requested, and is ready for use.">
+<!ENTITY options.savemaff.para1.description "MAFF ist ein plattformübergreifendes, ZIP-basiertes Dateiformat. MAFF-Dateien können problemlos auf Linux oder anderen Systemen, die ZIP unterstützen, geöffnet werden, nicht jedoch von Internet Explorer-Benützern.">
+<!ENTITY options.savemaff.para2.description "Sie können die Archivart jederzeit im %BS;Speichern unter...%BE;-Dialog ändern.">
+<!--  *** Changes confirmation message ***  -->
+<!ENTITY changesapplied.label "Gratulation!">
+<!ENTITY changesapplied.description "Das System wurde nach Ihren Wünschen konfiguriert und ist bereit.">
