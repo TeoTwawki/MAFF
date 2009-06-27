@@ -136,13 +136,17 @@ MafUtilServiceClass.prototype = {
     while (file.exists()) {
       var parts = /.+-(\d+)(\..*)?$/.exec(file.leafName);
       if (parts) {
-        file.leafName = file.leafName.replace(/((\d+)\.)/,
+        file.leafName = file.leafName.replace(/((\d+)(\.|$))/,
                                               function (str, p1, part, s) {
                                                 return (parseInt(part) + 1) + ".";
                                               });
       }
       else {
-        file.leafName = file.leafName.replace(/\./, "-1$&");
+        if (file.leafName.indexOf(".") >= 0) {
+          file.leafName = file.leafName.replace(/\./, "-1$&");
+        } else {
+          file.leafName = file.leafName + "-1";
+        }
       }
     }
 
@@ -160,13 +164,17 @@ MafUtilServiceClass.prototype = {
     do {
       var parts = /.+-(\d+)(\..*)?$/.exec(file.leafName);
       if (parts) {
-        file.leafName = file.leafName.replace(/((\d+)\.)/,
+        file.leafName = file.leafName.replace(/((\d+)(\.|$))/,
                                               function (str, p1, part, s) {
                                                 return (parseInt(part) + 1) + ".";
                                               });
       }
       else {
-        file.leafName = file.leafName.replace(/\./, "-1$&");
+        if (file.leafName.indexOf(".") >= 0) {
+          file.leafName = file.leafName.replace(/\./, "-1$&");
+        } else {
+          file.leafName = file.leafName + "-1";
+        }
       }
     } while (file.exists());
   },
