@@ -1,12 +1,42 @@
-<!ENTITY window.title "*** Controles generales de la ventana **">
+<!ENTITY window.title "Archivos">
 <!ENTITY archives.placestitle.header "Título de la página">
-<!ENTITY archives.mafarchivename.header "Nombre del Archivo">
-<!ENTITY archives.placesurl.header "Ubicación del Archivo">
-<!ENTITY archives.maftitle.header "Título Original de la Página">
-<!ENTITY archives.maforiginalurl.header "Ubicación Original">
+<!ENTITY archives.mafarchivename.header "Nombre del archivo">
+<!ENTITY archives.placesurl.header "Ubicación del archivo">
+<!ENTITY archives.maftitle.header "Título original de la página">
+<!ENTITY archives.maforiginalurl.header "Ubicación original">
 <!ENTITY archives.mafdatearchived.header "Archivado">
-<!ENTITY details.placestitle.label "Título de página:">
-<!ENTITY details.mafarchivename.label "Nombre de archivo:">
-<!ENTITY details.placesurl.label "Ubicación de archivo">
-<!ENTITY details.maftitle.label "Título original de la página:">
+<!ENTITY archives.maftempuri.header "URL de la página temporal">
+<!ENTITY archives.mafdirectarchiveuri.header "URL directa de la página">
+<!ENTITY details.placestitle.label "Título de la página">
+<!ENTITY details.placestitle.accesskey "T">
+<!ENTITY details.mafarchivename.label "Nombre del archivo:">
+<!ENTITY details.mafarchivename.accesskey "r">
+<!ENTITY details.placesurl.label "Ubicación del archivo">
+<!ENTITY details.placesurl.accesskey "U">
+<!ENTITY details.maftitle.label "Título original de la página">
+<!ENTITY details.maftitle.accesskey "u">
 <!ENTITY details.maforiginalurl.label "Ubicación original:">
+<!ENTITY details.maforiginalurl.accesskey "g">
+<!ENTITY details.mafdatearchived.label "Archivado:">
+<!ENTITY details.mafdatearchived.accesskey "c">
+<!ENTITY details.maftempuri.label "URL de la página temporal:">
+<!ENTITY details.maftempuri.accesskey "d">
+<!ENTITY details.mafdirectarchiveuri.label "URL de la página directa:">
+<!ENTITY details.mafdirectarchiveuri.accesskey "l">
+<!ENTITY details.caption "Detalles">
+<!ENTITY morebutton.label "Más detalles">
+<!ENTITY morebutton.accesskey "e">
+<!ENTITY lessbutton.label "Menos detalles">
+<!ENTITY lessbutton.accesskey "e">
+<!ENTITY multipleitems.text "(múltiples elementos seleccionados)">
+<!ENTITY openintabsbutton.label "Abrir en pestañas">
+<!ENTITY openintabsbutton.accesskey.placesurl "U">
+<!ENTITY openintabsbutton.accesskey.originalurl "g">
+<!ENTITY openintabsbutton.accesskey.tempuri "b">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
+<!ENTITY addbutton.label "Añadir">
+<!ENTITY addbutton.accesskey "A">
+<!ENTITY addfilepicker.title "Añadir más archivos web">
+<!ENTITY deletebutton.label "Borrar">
+<!ENTITY deletebutton.accesskey "B">
+<!ENTITY deletebutton.accesskey.placescontextmenu "B">
