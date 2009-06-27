@@ -2,9 +2,9 @@
 <!ENTITY continuebutton.label "Continuar">
 <!ENTITY okbutton.label "OK">
 <!ENTITY welcome.label "¡Bienvenido a Mozilla Archive Format!">
-<!ENTITY welcome.para1.description "¡Gracias por instalar MAF! Su Firefox es ahora capaz de abrir y guardar páginas web completas en un único &lt;i&gt;archivo web&lt;/i&gt;, soportando los formatos &lt;tt&gt;MAFF&lt;/tt&gt; y &lt;tt&gt;MHTML&lt;/tt&gt;.">
-<!ENTITY welcome.para2.description "Puede abrir archivos web usando el elemento &lt;b&gt;Abrir archivo&lt;/b&gt; del menú Archivo, y crearlos seleccionando el tipo de archivo deseado en el cuadro de diálogo &lt;b&gt;Guardar como&lt;/b&gt;.">
-<!ENTITY welcome.para3.description "Puede encontrar comandos adicionales en el menú &lt;b&gt;Herramientas&lt;/b&gt;.">
+<!ENTITY welcome.para1.description "¡Gracias por instalar MAF! Su Firefox es ahora capaz de abrir y guardar páginas web completas en un único %IS;archivo web%IE;, soportando los formatos %TTS;MAFF%TTE; y %TTS;MHTML%TTE;.">
+<!ENTITY welcome.para2.description "Puede abrir archivos web usando el elemento %BS;Abrir archivo%BE; del menú Archivo, y crearlos seleccionando el tipo de archivo deseado en el cuadro de diálogo %BS;Guardar como%BE;.">
+<!ENTITY welcome.para3.description "Puede encontrar comandos adicionales en el menú %BS;Herramientas%BE;.">
 <!ENTITY options.description "Aunque ya puede abrir y guardar archivos web, le recomendamos los siguientes cambios en la configuración de su equipo:">
 <!ENTITY options.associate.label "Abrir archivos web usando Firefox por defecto">
 <!ENTITY options.associate.accesskey "A">
@@ -16,6 +16,6 @@
 <!ENTITY options.savemaff.label "Guardar usando el tipo de archivo web por defecto">
 <!ENTITY options.savemaff.accesskey "G">
 <!ENTITY options.savemaff.para1.description "MAFF es un sistema de archivos multi plataforma basado en ZIP. Los archivos MAFF pueden abrirse en Linux y otras plataformas que soporten los archivos ZIP, pero no pueden ser intercambiados con los usuarios de Internet Explorer.">
-<!ENTITY options.savemaff.para2.description "Puede cambiar el tipo de archivo n cualquier momento en el cuadro de diálogo &lt;b&gt;Guardar como&lt;/b&gt;.">
+<!ENTITY options.savemaff.para2.description "Puede cambiar el tipo de archivo n cualquier momento en el cuadro de diálogo %BS;Guardar como%BE;.">
 <!ENTITY changesapplied.label "¡Enhorabuena!">
 <!ENTITY changesapplied.description "Su sistema se ha configurado en base a sus preferencias, y está listo para usarse.">

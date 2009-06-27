@@ -5,9 +5,9 @@
 <!ENTITY okbutton.label "OK">
 <!--   Welcome message   -->
 <!ENTITY welcome.label "Witamy w Mozilla Archive Format!">
-<!ENTITY welcome.para1.description "Dziękujemy za zainstalowanie MAF! Firefox ma teraz możliwość zapisywania i otwierania całych witryn internetowych w pojedynczym pliku jako &lt;i&gt;archiwa sieciowe&lt;/i&gt; obsługującym typy &lt;tt&gt;MAFF&lt;/tt&gt; i&lt;tt&gt;MHTML&lt;/tt&gt;.">
-<!ENTITY welcome.para2.description "Można otwierać te archiwa za pomocą elementu &lt;b&gt;Otwórz plik&lt;/b&gt; z poziomu menu &lt;b&gt;Plik&lt;/b&gt; i tworzyć je wybierając odpowiedni typ archiwum w oknie dialogowym &lt;b&gt;Zapisz jako…&lt;/b&gt;.">
-<!ENTITY welcome.para3.description "W menu &lt;b&gt;Narzędzia&lt;/b&gt; znajdują się dodatkowe polecenia zarządzania archiwami.">
+<!ENTITY welcome.para1.description "Dziękujemy za zainstalowanie MAF! Firefox ma teraz możliwość zapisywania i otwierania całych witryn internetowych w pojedynczym pliku jako %IS;archiwa sieciowe%IE; obsługującym typy %TTS;MAFF%TTE; i %TTS;MHTML%TTE;.">
+<!ENTITY welcome.para2.description "Można otwierać te archiwa za pomocą elementu %BS;Otwórz plik%BE; z poziomu menu %BS;Plik%BE; i tworzyć je wybierając odpowiedni typ archiwum w oknie dialogowym %BS;Zapisz jako…%BE;.">
+<!ENTITY welcome.para3.description "W menu %BS;Narzędzia%BE; znajdują się dodatkowe polecenia zarządzania archiwami.">
 <!--   Options page   -->
 <!ENTITY options.description "Możesz już zapisywać i otwierać archiwa internetowe, niemniej polecamy następujące usprawnienia:">
 <!ENTITY options.associate.label "Otwieraj archiwa za pomocą Firefoksa">
@@ -21,7 +21,7 @@
 <!ENTITY options.savemaff.label "Zapisuj archiwa jako MAFF">
 <!ENTITY options.savemaff.accesskey "M">
 <!ENTITY options.savemaff.para1.description "MAFF jest działającym na wielu platformach formatem opartym na formacie ZIP. Pliki MAFF mogą być otwierane na każdej platformie systemowej obsługującej format ZIP, ale nie mogą być wymieniane z użytkownikami przeglądarki Internet Explorer.">
-<!ENTITY options.savemaff.para2.description "W każdej chwili można zmienić typ archiwum z poziomu okna dialogowego &lt;b&gt;Zapisz jako…&lt;/b&gt;.">
+<!ENTITY options.savemaff.para2.description "W każdej chwili można zmienić typ archiwum z poziomu okna dialogowego %BS;Zapisz jako…%BE;.">
 <!--   Changes confirmation message   -->
 <!ENTITY changesapplied.label "Gratulacje!">
 <!ENTITY changesapplied.description "System został skonfigurowany według Twojego życzenia i jest gotowy do używania.">
