@@ -2,4 +2,4 @@
 <!ENTITY continuebutton.label "繼續">
 <!ENTITY okbutton.label "確定">
 <!ENTITY welcome.label "歡迎使用 Mozilla 歸檔格式（Mozilla Archive Format）！">
-<!ENTITY welcome.para1.description "感謝您選擇並安裝 MAF！您的瀏覽器已具備opening and 保存完整網頁於單個檔案（Web 歸檔檔案）的功能。MAF 支援兩種格式：%TTS;MAFF%TTE; 和 %TTS;MHTML%TTE;。">
+<!ENTITY welcome.para1.description "感謝您選擇並安裝 MAF！您的瀏覽器已具備opening and 保存完整網頁於單個檔案（Web 歸檔檔案）的功能。MAF 支援兩種格式：[tt]MAFF[/tt] 和 [tt]MHTML[/tt]。">

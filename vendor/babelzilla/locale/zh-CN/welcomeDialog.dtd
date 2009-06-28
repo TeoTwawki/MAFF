@@ -2,5 +2,5 @@
 <!ENTITY continuebutton.label "继续">
 <!ENTITY okbutton.label "确定">
 <!ENTITY welcome.label "欢迎使用 Mozilla 档案格式（Mozilla Archive Format）！">
-<!ENTITY welcome.para1.description "感谢您选择并安装 MAF！您的浏览器已具备opening and 保存完整网页于单个文件（Web 档案）的功能。MAF 支持两种格式：%TTS;MAFF%TTE; 和 %TTS;MHTML%TTE;。">
-<!ENTITY welcome.para2.description "You can open web archives using the %BS;打开文件%BE; item in the File menu, and create them by selecting the desired archive type in the %BS;页面另存为%BE; dialog box.">
+<!ENTITY welcome.para1.description "感谢您选择并安装 MAF！您的浏览器已具备opening and 保存完整网页于单个文件（Web 档案）的功能。MAF 支持两种格式：[tt]MAFF[/tt] 和 [tt]MHTML[/tt]。">
+<!ENTITY welcome.para2.description "You can open web archives using the [b]打开文件[/b] item in the File menu, and create them by selecting the desired archive type in the [b]页面另存为[/b] dialog box.">

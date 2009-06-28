@@ -2,9 +2,9 @@
 <!ENTITY continuebutton.label "Weiter">
 <!ENTITY okbutton.label "OK">
 <!ENTITY welcome.label "Willkommen beim Mozilla Archiv-Format!">
-<!ENTITY welcome.para1.description "Vielen Dank, dass Sie MAF installiert haben! Ihr Firefox ist nun fähig, Websites in einer einzigen %IS;Web-Archiv%IE;-Datei zu speichern, wobei sowohl %TTS;MAFF%TTE; als auch %TTS;MHTML%TTE; unterstützt wird.">
-<!ENTITY welcome.para2.description "Sie können Web-Archive über %BS;Datei öffnen%BE; im Dateimenü öffnen. Zum Erstellen eines Archivs, wählen Sie die Archivart im %BS;Speichern unter...%BE;-Dialog.">
-<!ENTITY welcome.para3.description "Zusätzliche Archiveinstellungen finden Sie im Menü %BS;Extras%BE;.">
+<!ENTITY welcome.para1.description "Vielen Dank, dass Sie MAF installiert haben! Ihr Firefox ist nun fähig, Websites in einer einzigen [i]Web-Archiv[/i]-Datei zu speichern, wobei sowohl [tt]MAFF[/tt] als auch [tt]MHTML[/tt] unterstützt wird.">
+<!ENTITY welcome.para2.description "Sie können Web-Archive über [b]Datei öffnen[/b] im Dateimenü öffnen. Zum Erstellen eines Archivs, wählen Sie die Archivart im [b]Speichern unter...[/b]-Dialog.">
+<!ENTITY welcome.para3.description "Zusätzliche Archiveinstellungen finden Sie im Menü [b]Extras[/b].">
 <!ENTITY options.description "Obwohl Sie schon Web-Archive öffnen und speichern können, werden die folgenden Einstellungen an Ihrem Computer empfohlen:">
 <!ENTITY options.associate.label "Web-Archive mit Firefox öffnen">
 <!ENTITY options.associate.accesskey "ö">
@@ -16,6 +16,6 @@
 <!ENTITY options.savemaff.label "Die MAFF-Archivart als Standard festlegen">
 <!ENTITY options.savemaff.accesskey "S">
 <!ENTITY options.savemaff.para1.description "MAFF ist ein plattformübergreifendes, ZIP-basiertes Dateiformat. MAFF-Dateien können problemlos auf Linux oder anderen Systemen, die ZIP unterstützen, geöffnet werden, nicht jedoch von Internet Explorer-Benützern.">
-<!ENTITY options.savemaff.para2.description "Sie können die Archivart jederzeit im %BS;Speichern unter...%BE;-Dialog ändern.">
+<!ENTITY options.savemaff.para2.description "Sie können die Archivart jederzeit im [b]Speichern unter...[/b]-Dialog ändern.">
 <!ENTITY changesapplied.label "Gratulation!">
 <!ENTITY changesapplied.description "Das System wurde nach Ihren Wünschen konfiguriert und ist bereit.">
