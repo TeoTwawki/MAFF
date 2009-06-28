@@ -51,6 +51,8 @@ var WelcomeDialog = {
    * Initializes the dialog.
    */
   onLoadDialog: function() {
+    // Apply rich text formatting to the description elements
+    this._formatDescriptionElements();
     // File associations are supported on Windows only
     document.getElementById("brShowOnlyOnWindows").setAttribute("hidden",
      this._isOnWindows() ? "false" : "true");
@@ -137,6 +139,44 @@ var WelcomeDialog = {
 
     // Preselect the "All Files" open filter
     DynamicPrefs.openFilterIndex = 4 + FileFilters.openFilters.length;
+  },
+
+  /**
+   * Converts the pseudo-tags like [b] and [/b] to actual formatting inside the
+   *  description elements that are present in the dialog. Real tags or entity
+   *  references cannot be included in translated strings for compatibility with
+   *  the BabelZilla Web Translation System used to localize the extension.
+   */
+  _formatDescriptionElements: function() {
+    // Create the helper objects for manipulating the dialog document. For a
+    //  description of the techniques used in this function, see
+    //  also <https://developer.mozilla.org/en/Parsing_and_serializing_XML>
+    //  (retrieved 2009-06-28).
+    var xmlSerializer = new XMLSerializer();
+    var domParser = new DOMParser();
+    // Repeat for every "description" element in the document
+    var descriptionElements = document.getElementsByTagNameNS(
+     document.documentElement.namespaceURI, "description");
+    for (var [, description] in Iterator(descriptionElements)) {
+      // Ensure that the HTML namespace is explicitly defined as the default
+      //  namespace in the element to be modified. This ensures that the child
+      //  HTML tags added after the serialization will work as expected.
+      description.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+      // Retrieve an XML string representing the entire element with inner text
+      var descXml = xmlSerializer.serializeToString(description);
+      // Replace the pseudo-tags with actual tags, for example [b] with <b> and
+      //  [/tt] with </tt>. The resulting tags work as expected since the
+      //  default XML namespace has been defined as HTML above.
+      descXml = descXml.replace(/\[(\/?\w{1,2})\]/g, "<$1>");
+      // Create a new DOM tree containing the element and its descendants
+      var newDescription = domParser.parseFromString(descXml, "text/xml").
+       documentElement;
+      // Ignore parsing errors due to malformed localized strings
+      if (newDescription.nodeName != "parsererror") {
+        // If parsing succeeded, replace the actual element in the dialog
+        description.parentNode.replaceChild(newDescription, description);
+      }
+    }
   },
 
   /**
