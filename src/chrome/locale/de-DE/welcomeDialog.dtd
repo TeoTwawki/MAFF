@@ -1,18 +1,19 @@
 <!--  *** Note ***  -->
-<!--  Some of the labels in this file use pairs of XML entity references for formatting.  -->
-<!--  %BS; and %BE; are like <b> and </b> for bold  -->
-<!--  %IS; and %IE; are like <i> and </i> for italics  -->
-<!--  %TTS; and %TTE; are like <tt> and </tt> for teletype  -->
-<!--  HTML entities are not used directly for compatibility with the BabelZilla Web Translation System.  -->
+<!--  Some of the labels in this file use pseudo-tags for formatting.  -->
+<!--  [b] and [/b] are for bold  -->
+<!--  [i] and [/i] are for italics  -->
+<!--  [tt] and [/tt] are for teletype  -->
+<!--  The tags must be written exactly as they are, using lowercase letters.  -->
+<!--  HTML tags and XML entity references are avoided for compatibility with the BabelZilla Web Translation System.  -->
 <!--  *** General window controls ***  -->
 <!ENTITY window.title "Willkommen">
 <!ENTITY continuebutton.label "Weiter">
 <!ENTITY okbutton.label "OK">
 <!--  *** Welcome message ***  -->
 <!ENTITY welcome.label "Willkommen beim Mozilla Archiv-Format!">
-<!ENTITY welcome.para1.description "Vielen Dank, dass Sie MAF installiert haben! Ihr Firefox ist nun fähig, Websites in einer einzigen %IS;Web-Archiv%IE;-Datei zu speichern, wobei sowohl %TTS;MAFF%TTE; als auch %TTS;MHTML%TTE; unterstützt wird.">
-<!ENTITY welcome.para2.description "Sie können Web-Archive über %BS;Datei öffnen%BE; im Dateimenü öffnen. Zum Erstellen eines Archivs, wählen Sie die Archivart im %BS;Speichern unter...%BE;-Dialog.">
-<!ENTITY welcome.para3.description "Zusätzliche Archiveinstellungen finden Sie im Menü %BS;Extras%BE;.">
+<!ENTITY welcome.para1.description "Vielen Dank, dass Sie MAF installiert haben! Ihr Firefox ist nun fähig, Websites in einer einzigen [i]Web-Archiv[/i]-Datei zu speichern, wobei sowohl [tt]MAFF[/tt] als auch [tt]MHTML[/tt] unterstützt wird.">
+<!ENTITY welcome.para2.description "Sie können Web-Archive über [b]Datei öffnen[/b] im Dateimenü öffnen. Zum Erstellen eines Archivs, wählen Sie die Archivart im [b]Speichern unter...[/b]-Dialog.">
+<!ENTITY welcome.para3.description "Zusätzliche Archiveinstellungen finden Sie im Menü [b]Extras[/b].">
 <!--  *** Options page ***  -->
 <!ENTITY options.description "Obwohl Sie schon Web-Archive öffnen und speichern können, werden die folgenden Einstellungen an Ihrem Computer empfohlen:">
 <!ENTITY options.associate.label "Web-Archive mit Firefox öffnen">
@@ -26,7 +27,7 @@
 <!ENTITY options.savemaff.label "Die MAFF-Archivart als Standard festlegen">
 <!ENTITY options.savemaff.accesskey "S">
 <!ENTITY options.savemaff.para1.description "MAFF ist ein plattformübergreifendes, ZIP-basiertes Dateiformat. MAFF-Dateien können problemlos auf Linux oder anderen Systemen, die ZIP unterstützen, geöffnet werden, nicht jedoch von Internet Explorer-Benützern.">
-<!ENTITY options.savemaff.para2.description "Sie können die Archivart jederzeit im %BS;Speichern unter...%BE;-Dialog ändern.">
+<!ENTITY options.savemaff.para2.description "Sie können die Archivart jederzeit im [b]Speichern unter...[/b]-Dialog ändern.">
 <!--  *** Changes confirmation message ***  -->
 <!ENTITY changesapplied.label "Gratulation!">
 <!ENTITY changesapplied.description "Das System wurde nach Ihren Wünschen konfiguriert und ist bereit.">

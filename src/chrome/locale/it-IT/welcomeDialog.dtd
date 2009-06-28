@@ -1,18 +1,19 @@
 <!--  *** Note ***  -->
-<!--  Some of the labels in this file use pairs of XML entity references for formatting.  -->
-<!--  %BS; and %BE; are like <b> and </b> for bold  -->
-<!--  %IS; and %IE; are like <i> and </i> for italics  -->
-<!--  %TTS; and %TTE; are like <tt> and </tt> for teletype  -->
-<!--  HTML entities are not used directly for compatibility with the BabelZilla Web Translation System.  -->
+<!--  Some of the labels in this file use pseudo-tags for formatting.  -->
+<!--  [b] and [/b] are for bold  -->
+<!--  [i] and [/i] are for italics  -->
+<!--  [tt] and [/tt] are for teletype  -->
+<!--  The tags must be written exactly as they are, using lowercase letters.  -->
+<!--  HTML tags and XML entity references are avoided for compatibility with the BabelZilla Web Translation System.  -->
 <!--  *** General window controls ***  -->
 <!ENTITY window.title "Benvenuti">
 <!ENTITY continuebutton.label "Continua">
 <!ENTITY okbutton.label "OK">
 <!--  *** Welcome message ***  -->
 <!ENTITY welcome.label "Benvenuti in Mozilla Archive Format!">
-<!ENTITY welcome.para1.description "Grazie per aver installato MAF! Il vostro Firefox è ora in grado di aprire e salvare pagine web complete all&apos;interno di %IS;archivi web%IE; in unico file, con supporto per entrambi i tipi %TTS;MAFF%TTE; e %TTS;MHTML%TTE;.">
-<!ENTITY welcome.para2.description "È possibile aprire gli archivi web usando il comando %BS;Apri File%BE; dal menu File, e crearli selezionando il tipo di archivio desiderato dalla finestra di dialogo %BS;Salva con nome%BE;.">
-<!ENTITY welcome.para3.description "Nel menu %BS;Strumenti%BE; sono disponibili comandi aggiuntivi per la gestione degli archivi.">
+<!ENTITY welcome.para1.description "Grazie per aver installato MAF! Il vostro Firefox è ora in grado di aprire e salvare pagine web complete all&apos;interno di [i]archivi web[/i] in unico file, con supporto per entrambi i tipi [tt]MAFF[/tt] e [tt]MHTML[/tt].">
+<!ENTITY welcome.para2.description "È possibile aprire gli archivi web usando il comando [b]Apri File[/b] dal menu File, e crearli selezionando il tipo di archivio desiderato dalla finestra di dialogo [b]Salva con nome[/b].">
+<!ENTITY welcome.para3.description "Nel menu [b]Strumenti[/b] sono disponibili comandi aggiuntivi per la gestione degli archivi.">
 <!--  *** Options page ***  -->
 <!ENTITY options.description "Anche se è già possibile aprire e salvare gli archivi web, i seguenti miglioramenti alla configurazione del proprio computer sono consigliati:">
 <!ENTITY options.associate.label "Apri archivi web con Firefox per impostazione predefinita">
@@ -26,7 +27,7 @@
 <!ENTITY options.savemaff.label "Salva usando il formato di archivio MAFF per impostazione predefinita">
 <!ENTITY options.savemaff.accesskey "S">
 <!ENTITY options.savemaff.para1.description "MAFF è un formato di file aperto e multi-piattaforma, basato su ZIP. I file MAFF possono essere aperti su Linux e su ogni altra piattaforma che supporta i file ZIP, ma non può essere facilmente scambiato con gli utenti di Internet Explorer.">
-<!ENTITY options.savemaff.para2.description "È possibile cambiare il tipo di archivio in ogni momento nella finestra di dialogo %BS;Salva con nome%BE;.">
+<!ENTITY options.savemaff.para2.description "È possibile cambiare il tipo di archivio in ogni momento nella finestra di dialogo [b]Salva con nome[/b].">
 <!--  *** Changes confirmation message ***  -->
 <!ENTITY changesapplied.label "Congratulazioni!">
 <!ENTITY changesapplied.description "Il sistema è stato configurato come richiesto, ed è pronto per l&apos;uso.">

@@ -4,15 +4,16 @@
 <!--    Options page    -->
 <!--    Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages.    -->
 <!--    Changes confirmation message    -->
+<!--  HTML tags and XML entity references are avoided for compatibility with the BabelZilla Web Translation System.  -->
 <!--  *** General window controls ***  -->
 <!ENTITY window.title "Witamy!">
 <!ENTITY continuebutton.label "Kontynuuj">
 <!ENTITY okbutton.label "OK">
 <!--  *** Welcome message ***  -->
 <!ENTITY welcome.label "Witamy w Mozilla Archive Format!">
-<!ENTITY welcome.para1.description "Dziękujemy za zainstalowanie MAF! Firefox ma teraz możliwość zapisywania i otwierania całych witryn internetowych w pojedynczym pliku jako %IS;archiwa sieciowe%IE; obsługującym typy %TTS;MAFF%TTE; i %TTS;MHTML%TTE;.">
-<!ENTITY welcome.para2.description "Można otwierać te archiwa za pomocą elementu %BS;Otwórz plik%BE; z poziomu menu %BS;Plik%BE; i tworzyć je wybierając odpowiedni typ archiwum w oknie dialogowym %BS;Zapisz jako…%BE;.">
-<!ENTITY welcome.para3.description "W menu %BS;Narzędzia%BE; znajdują się dodatkowe polecenia zarządzania archiwami.">
+<!ENTITY welcome.para1.description "Dziękujemy za zainstalowanie MAF! Firefox ma teraz możliwość zapisywania i otwierania całych witryn internetowych w pojedynczym pliku jako [i]archiwa sieciowe[/i] obsługującym typy [tt]MAFF[/tt] i [tt]MHTML[/tt].">
+<!ENTITY welcome.para2.description "Można otwierać te archiwa za pomocą elementu [b]Otwórz plik[/b] z poziomu menu [b]Plik[/b] i tworzyć je wybierając odpowiedni typ archiwum w oknie dialogowym [b]Zapisz jako…[/b].">
+<!ENTITY welcome.para3.description "W menu [b]Narzędzia[/b] znajdują się dodatkowe polecenia zarządzania archiwami.">
 <!--  *** Options page ***  -->
 <!ENTITY options.description "Możesz już zapisywać i otwierać archiwa internetowe, niemniej polecamy następujące usprawnienia:">
 <!ENTITY options.associate.label "Otwieraj archiwa za pomocą Firefoksa">
@@ -26,7 +27,7 @@
 <!ENTITY options.savemaff.label "Zapisuj archiwa jako MAFF">
 <!ENTITY options.savemaff.accesskey "M">
 <!ENTITY options.savemaff.para1.description "MAFF jest działającym na wielu platformach formatem opartym na formacie ZIP. Pliki MAFF mogą być otwierane na każdej platformie systemowej obsługującej format ZIP, ale nie mogą być wymieniane z użytkownikami przeglądarki Internet Explorer.">
-<!ENTITY options.savemaff.para2.description "W każdej chwili można zmienić typ archiwum z poziomu okna dialogowego %BS;Zapisz jako…%BE;.">
+<!ENTITY options.savemaff.para2.description "W każdej chwili można zmienić typ archiwum z poziomu okna dialogowego [b]Zapisz jako…[/b].">
 <!--  *** Changes confirmation message ***  -->
 <!ENTITY changesapplied.label "Gratulacje!">
 <!ENTITY changesapplied.description "System został skonfigurowany według Twojego życzenia i jest gotowy do używania.">
