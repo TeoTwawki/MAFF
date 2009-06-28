@@ -11,23 +11,23 @@
 <!ENTITY okbutton.label "OK">
 <!--  *** Welcome message ***  -->
 <!ENTITY welcome.label "Bienvenue dans Mozilla Archive Format !">
-<!ENTITY welcome.para1.description "Thank you for installing MAF! Your Firefox is now capable of opening and saving complete web pages in single-file [i]web archives[/i], supporting both the [tt]MAFF[/tt] and [tt]MHTML[/tt] types.">
-<!ENTITY welcome.para2.description "You can open web archives using the [b]Open File[/b] item in the File menu, and create them by selecting the desired archive type in the [b]Save As[/b] dialog box.">
-<!ENTITY welcome.para3.description "You can find additional archive management commands in the [b]Tools[/b] menu.">
+<!ENTITY welcome.para1.description "Merci d&apos;avoir installé MAF ! Votre Firefox est maintenant capable d&apos;ouvrir et d&apos;enregistrer des pages web complètes dans un seul fichier, appelé [i]archive web[/i], aux formats [tt]MAFF[/tt] ou [tt]MHTML[/tt].">
+<!ENTITY welcome.para2.description "Vous pouvez ouvrir des archives web en utilisant le bouton [b]Ouvrir un fichier…[/b] du menu Fichier. Pour créer une telle archive, sélectionnez le type d&apos;archive désiré dans la boîte de dialogue [b]Enregistrer sous…[/b].">
+<!ENTITY welcome.para3.description "Vous trouverez des commandes supplémentaires pour gérer les archives dans le menu [b]Outils[/b].">
 <!--  *** Options page ***  -->
-<!ENTITY options.description "Even though you can already open and save web archives, the following enhancements to your computer configuration are recommended:">
-<!ENTITY options.associate.label "Open web archives with Firefox by default">
+<!ENTITY options.description "Même si vous pouvez déjà ouvrir et sauvegarder des archives web, les améliorations suivantes pour votre ordinateur sont recommandées :">
+<!ENTITY options.associate.label "Ouvrir les archives web avec Firefox par défaut">
 <!ENTITY options.associate.accesskey "O">
-<!ENTITY options.associate.description "Select this option if you wish to open web archive files by clicking on their icon.">
+<!ENTITY options.associate.description "Sélectionnez cette option si vous voulez ouvrir des archives web en cliquant sur leur icône.">
 <!--  Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages.  -->
-<!ENTITY options.savecomplete.label "Enable the integrated Save Complete component">
+<!ENTITY options.savecomplete.label "Activer le composant « Save Complete »">
 <!ENTITY options.savecomplete.accesskey "E">
-<!ENTITY options.savecomplete.para1.description "Save Complete is a Firefox extension that allows you to save web pages in a way that is more faithful to the original, compared to the standard Firefox save system.">
-<!ENTITY options.savecomplete.para2.description "You can enable or disable Save Complete at any time from the MAF preferences.">
-<!ENTITY options.savemaff.label "Save using the MAFF web archive type by default">
+<!ENTITY options.savecomplete.para1.description "Save Complete est une extension pour Firefox qui vous permettra de sauvegarder les pages web de manière plus respectueuse de l&apos;original par rapport au système standard de Firefox.">
+<!ENTITY options.savecomplete.para2.description "Vous pouvez activer ou désactiver Save Complete à n&apos;importe quel moment depuis les préférences de MAF">
+<!ENTITY options.savemaff.label "Sauvegarder en utilisant le type « Archive web MAFF » par défaut">
 <!ENTITY options.savemaff.accesskey "S">
-<!ENTITY options.savemaff.para1.description "MAFF is a cross-platform, open file format based on ZIP. MAFF files can be opened on Linux or any other platform that supports ZIP files, but cannot be easily exchanged with Internet Explorer users.">
-<!ENTITY options.savemaff.para2.description "You can change the archive type at any time in the [b]Save As[/b] dialog box.">
+<!ENTITY options.savemaff.para1.description "MAFF est un format multiplate-forme basé sur ZIP. Les fichiers MAFF peuvent être ouverts sous Linux ou n&apos;importe quelle autre plate-forme gérant les fichiers ZIP, mais ne peuvent pas être échangés avec les utilisateurs d&apos;Internet Explorer">
+<!ENTITY options.savemaff.para2.description "Vous pouvez changer le type d&apos;archive à tout moment dans la boîte de dialogue [b]Enregistrer sous…[/b]">
 <!--  *** Changes confirmation message ***  -->
 <!ENTITY changesapplied.label "Félicitations !">
 <!ENTITY changesapplied.description "Votre système a été configuré conformément à votre demande, et est prêt à être utilisé.">

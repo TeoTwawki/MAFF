@@ -16,23 +16,23 @@
 <!--  Temporary local URL that can be used to display the page  -->
 <!ENTITY archives.maftempuri.header "临时解包页地址">
 <!--  URL that can be used to display the page accessing the archive directly  -->
-<!ENTITY archives.mafdirectarchiveuri.header "Direct Page URL">
+<!ENTITY archives.mafdirectarchiveuri.header "直接访问地址">
 <!--  *** Column names in the details panel ***  -->
-<!ENTITY details.placestitle.label "Page title:">
+<!ENTITY details.placestitle.label "存档页面标题：">
 <!ENTITY details.placestitle.accesskey "P">
-<!ENTITY details.mafarchivename.label "Archive name:">
+<!ENTITY details.mafarchivename.label "档案名称(r)：">
 <!ENTITY details.mafarchivename.accesskey "r">
-<!ENTITY details.placesurl.label "Archive location:">
+<!ENTITY details.placesurl.label "档案位置(h)：">
 <!ENTITY details.placesurl.accesskey "h">
-<!ENTITY details.maftitle.label "Original page title:">
+<!ENTITY details.maftitle.label "原始页面标题(i)：">
 <!ENTITY details.maftitle.accesskey "i">
-<!ENTITY details.maforiginalurl.label "Original location:">
+<!ENTITY details.maforiginalurl.label "原始页面位置(g)：">
 <!ENTITY details.maforiginalurl.accesskey "g">
-<!ENTITY details.mafdatearchived.label "Archived:">
+<!ENTITY details.mafdatearchived.label "存档时间(c)：">
 <!ENTITY details.mafdatearchived.accesskey "c">
-<!ENTITY details.maftempuri.label "Temporary page URL:">
+<!ENTITY details.maftempuri.label "临时解包页地址：">
 <!ENTITY details.maftempuri.accesskey "T">
-<!ENTITY details.mafdirectarchiveuri.label "Direct page URL:">
+<!ENTITY details.mafdirectarchiveuri.label "直接访问地址：">
 <!ENTITY details.mafdirectarchiveuri.accesskey "D">
 <!--  *** Details panel ***  -->
 <!ENTITY details.caption "细节">
