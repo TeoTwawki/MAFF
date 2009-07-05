@@ -153,39 +153,6 @@ maf.prototype = {
         }
       }
     }
-  },
-
-  onWindowClose: function(event) {
-    // Check to see it's the last open window
-    var numberOfOpenWindows = MafUtils.getNumberOfOpenWindows();
-
-    // If it's the last window
-    if (numberOfOpenWindows < 2) {
-
-      if (Prefs.tempClearOnExit) {
-        // Remove everything in the temp directory
-        try {
-          var oDir = Components.classes["@mozilla.org/file/local;1"]
-                        .createInstance(Components.interfaces.nsILocalFile);
-          oDir.initWithPath(Prefs.tempFolder);
-
-          if (oDir.exists() && oDir.isDirectory()) {
-            var entries = oDir.directoryEntries;
-
-            // If there's something to delete
-            while (entries.hasMoreElements()) {
-              // Remove entry
-              var currFile = entries.getNext();
-              currFile.QueryInterface(Components.interfaces.nsILocalFile);
-              currFile.remove(true);
-            }
-          }
-        } catch(e) {
-
-        }
-      }
-    }
-
   }
 
 };
@@ -195,5 +162,4 @@ maf.prototype = {
  */
 var Maf = new maf();
 
-browserWindow.addEventListener("close", Maf.onWindowClose, true);
 browserWindow.addEventListener("load", Maf.onWindowLoad, true);

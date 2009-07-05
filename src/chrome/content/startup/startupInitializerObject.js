@@ -68,5 +68,35 @@ var StartupInitializer = {
      .addFileExtension("mht",   "application/x-mht",  false)
      .addFileExtension("maff",  "application/x-maff", true)
      .register();
+  },
+
+  /**
+   * This function is called when the application is shutting down.
+   *
+   * The temporary folder is cleaned up at this point, if requested. The folder
+   *  itself is not removed, since it may be a user-chosen folder with custom
+   *  permissions, that would be lost.
+   */
+  terminate: function() {
+    if (Prefs.tempClearOnExit) {
+      // Find the temporary directory
+      var dir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+      dir.initWithPath(Prefs.tempFolder);
+      // The directory may not exist if no archive has been extracted or saved
+      if (dir.exists()) {
+        // Enumerate all the files and subdirectories in the specified directory
+        var dirEntries = dir.directoryEntries;
+        while (dirEntries.hasMoreElements()) {
+          try {
+            // Get the local file or directory object and delete it recursively
+            var dirEntry = dirEntries.getNext().QueryInterface(Ci.nsILocalFile);
+            dirEntry.remove(true);
+          } catch (e) {
+            // Ignore errors and go on with the next file or subdirectory
+            Cu.reportError(e);
+          }
+        }
+      }
+    }
   }
 }

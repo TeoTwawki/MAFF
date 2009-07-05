@@ -49,12 +49,14 @@ var StartupEvents = {
    */
   onAppStartup: function() {
     this._observerService.addObserver(this, "profile-after-change", false);
+    this._observerService.addObserver(this, "quit-application", false);
     this._observerService.addObserver(this, "xpcom-shutdown", false);
   },
 
   /** Called when it is time to unregister all the observers. */
   onAppShutdown: function() {
     this._observerService.removeObserver(this, "profile-after-change");
+    this._observerService.removeObserver(this, "quit-application");
     this._observerService.removeObserver(this, "xpcom-shutdown");
   },
 
@@ -69,6 +71,12 @@ var StartupEvents = {
     }
   },
 
+  /** Called when the application is shutting down. */
+  onAppQuit: function() {
+    // Clean up on application shutdown
+    StartupInitializer.terminate();
+  },
+
   // --- nsIObserver interface functions ---
 
   /**
@@ -78,6 +86,7 @@ var StartupEvents = {
    */
   observe: function(aSubject, aTopic, aData) {
     if (aTopic == "profile-after-change") { this.afterProfileChange(); }
+    if (aTopic == "quit-application")     { this.onAppQuit();          }
     if (aTopic == "xpcom-shutdown")       { this.onAppShutdown();      }
   },
 
