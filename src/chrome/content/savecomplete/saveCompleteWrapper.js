@@ -9,15 +9,9 @@
  */
 
 // Define a constructor function for the namespace wrapper
-function MafSaveCompleteConstructor() {
+var MafSaveComplete = new function() {
   // Load Save Complete inside this function's namespace
   Cc["@mozilla.org/moz/jssubscript-loader;1"].
    getService(Ci.mozIJSSubScriptLoader).
-   loadSubScript(EXTENSION_CHROME_CONTENT_PATH + "savecomplete/saver.js");
-
-  // Provide public access to the constructor of the saver object
-  this.scPageSaver = scPageSaver;
-}
-
-// Construct the namespace wrapper
-var MafSaveComplete = new MafSaveCompleteConstructor();
+   loadSubScript("chrome://maf/content/savecomplete/saver.js", this);
+}();

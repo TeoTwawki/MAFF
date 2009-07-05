@@ -72,16 +72,16 @@ function BrowserOpenFileWindow()
                      nsIFilePicker.filterXML | nsIFilePicker.filterHTML);
 
     // Add filters from Mozilla Archive Format
-    FileFilters.openFilters.forEach(function(curFilter) {
+    MozillaArchiveFormat.FileFilters.openFilters.forEach(function(curFilter) {
       fp.appendFilter(curFilter.title, curFilter.extensionString);
     });
 
     fp.appendFilters(nsIFilePicker.filterAll);
 
     // Show the filepicker, and remember the selected file filter
-    fp.filterIndex = DynamicPrefs.openFilterIndex;
+    fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.openFilterIndex;
     if (fp.show() == nsIFilePicker.returnOK) {
-      DynamicPrefs.openFilterIndex = fp.filterIndex;
+      MozillaArchiveFormat.DynamicPrefs.openFilterIndex = fp.filterIndex;
       openTopWin(fp.fileURL.spec);
     }
   } catch (ex) {

@@ -300,7 +300,8 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   var persist;
   if (persistArgs.persistObject) {
     persist = persistArgs.persistObject;
-  } else if (Prefs.saveComponent == Prefs.SAVECOMPONENT_SAVECOMPLETE &&
+  } else if (MozillaArchiveFormat.Prefs.saveComponent ==
+      MozillaArchiveFormat.Prefs.SAVECOMPONENT_SAVECOMPLETE &&
       persistArgs.sourceDocument && !persistArgs.targetContentType &&
       (persistArgs.sourceDocument.contentType == "text/html" ||
       persistArgs.sourceDocument.contentType == "application/xhtml+xml")) {
@@ -328,7 +329,8 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   //  provided download listener instead of creating a transfer object.
   var tr;
   if (typeof aSkipPrompt == "object") {
-    tr = new MafWebProgressListener(aSkipPrompt.mafEventListener);
+    tr = new MozillaArchiveFormat.MafWebProgressListener(
+                                  aSkipPrompt.mafEventListener);
   } else {
     // Create download and initiate it (below)
     tr = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
@@ -432,7 +434,7 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
         // In Mozilla Archive Format, use a special preference to store the
         //  selected filter if only the archive save filters are shown
         if (aFpP.saveMode == SAVEMODE_MAFARCHIVE)
-          fp.filterIndex = DynamicPrefs.saveFilterIndex;
+          fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
         else
           fp.filterIndex = prefs.getIntPref("save_converter_index");
       }
@@ -524,7 +526,7 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
       // In Mozilla Archive Format, use a special preference to store the
       //  selected filter if only the archive save filters are shown
       if (aFpP.saveMode == SAVEMODE_MAFARCHIVE)
-        DynamicPrefs.saveFilterIndex = fp.filterIndex;
+        MozillaArchiveFormat.DynamicPrefs.saveFilterIndex = fp.filterIndex;
       else
         prefs.setIntPref("save_converter_index", fp.filterIndex);
     }

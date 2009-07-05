@@ -126,7 +126,7 @@ var MafCommandsOverlay = {
     //  related preference
     if (aEvent.target.id == "menu_ToolsPopup") {
       document.getElementById("mafMenuMafSubMenu_toolsMenu").hidden =
-       !Prefs.interfaceMenuTools;
+       !MozillaArchiveFormat.Prefs.interfaceMenuTools;
     }
 
     // For the other menus, a preference controls whether any MAF menu item is
@@ -136,16 +136,16 @@ var MafCommandsOverlay = {
     var isVisibleInMenu;
     switch (aEvent.target.id) {
       case "menu_FilePopup":
-        isVisibleInMenu = Prefs.interfaceMenuFile;
+        isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuFile;
         break;
       case "menu_ToolsPopup":
-        isVisibleInMenu = Prefs.interfaceMenuTools;
+        isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTools;
         break;
       case "contentAreaContextMenu":
-        isVisibleInMenu = Prefs.interfaceMenuPageContext;
+        isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuPageContext;
         break;
       default: // Assume this is the tab bar context menu, which has no ID
-        isVisibleInMenu = Prefs.interfaceMenuTabsContext;
+        isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTabsContext;
         break;
     }
 
@@ -177,7 +177,7 @@ var MafCommandsOverlay = {
         //  always visible in the Tools menu, while in the other menus it
         //  depends on a specific user preference.
         } else if (aEvent.target.id != "menu_ToolsPopup" && isSaveInArchive &&
-         !Prefs.interfaceMenuItemSaveInArchive) {
+         !MozillaArchiveFormat.Prefs.interfaceMenuItemSaveInArchive) {
           element.hidden = true;
 
         // The "Save Frame" commands appear only if there is a focused frame.
@@ -193,7 +193,7 @@ var MafCommandsOverlay = {
         //  are not present in the tab bar context menu
         } else if (aEvent.target.id == "contentAreaContextMenu" &&
          isSaveTabs) {
-          element.hidden = Prefs.interfaceMenuTabsContext;
+          element.hidden = MozillaArchiveFormat.Prefs.interfaceMenuTabsContext;
 
         // The "Save Page In Archive" menu item appears in the context menu only
         //  if the "Save Page As" item also appears

@@ -12,9 +12,6 @@ var Cc = Components.classes;
 var Cr = Components.results;
 var Cu = Components.utils;
 
-const EXTENSION_CHROME_CONTENT_PATH = "chrome://maf/content/";
-const EXTENSION_RESOURCE_MODULES_PATH = "resource://maf/modules/";
-
 // Since this file is loaded as part of a JavaScript code module, we must name
 //  every object to be exported explicitly. For more information, see
 //  <https://developer.mozilla.org/en/Using_JavaScript_code_modules> (retrieved
@@ -82,7 +79,7 @@ try {
     // Load the source code file where the object is defined
     Cc["@mozilla.org/moz/jssubscript-loader;1"]
      .getService(Ci.mozIJSSubScriptLoader)
-     .loadSubScript(EXTENSION_CHROME_CONTENT_PATH + contentRelativePath);
+     .loadSubScript("chrome://maf/content/" + contentRelativePath);
     // Export the object's constructor or the singleton object itself
     EXPORTED_SYMBOLS.push(objectName);
   });

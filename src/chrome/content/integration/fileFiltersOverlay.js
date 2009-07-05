@@ -41,8 +41,8 @@
 
 var gMafDefaultSaveBehavior;
 
-FileFilters.saveFilters.forEach(function(curFilter, curFilterIndex) {
-
+MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
+                                                              curFilterIndex) {
   // Create the new save behavior object
   var newSaveBehavior = new InternalSaveBehavior();
   newSaveBehavior.isComplete = true;
@@ -52,12 +52,13 @@ FileFilters.saveFilters.forEach(function(curFilter, curFilterIndex) {
   }
   newSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
     // Access the current values in the MAF save filter objects array
-    var filter = FileFilters.saveFilters[curFilterIndex];
+    var filter = MozillaArchiveFormat.FileFilters.saveFilters[curFilterIndex];
     // Return the required values
     return {title: filter.title, extensionstring: filter.extensionString};
   }
   newSaveBehavior.getPersistObject = function(saveBrowsers) {
-    return new MafArchivePersist(saveBrowsers, curFilter.mafArchiveType);
+    return new MozillaArchiveFormat.MafArchivePersist(saveBrowsers,
+                                                      curFilter.mafArchiveType);
   }
 
   // Add the save behavior to the browser, before the one already present at
