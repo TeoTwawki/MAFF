@@ -17,4 +17,3 @@ const EXTENSION_RESOURCE_MODULES_PATH = "resource://maf/modules/";
 
 // Import the common objects from the shared modules
 Cu.import(EXTENSION_RESOURCE_MODULES_PATH + "mafObjects.jsm");
-Cu.import(EXTENSION_RESOURCE_MODULES_PATH + "archiveCacheObjects.jsm");

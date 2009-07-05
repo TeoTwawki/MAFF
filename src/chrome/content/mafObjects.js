@@ -15,9 +15,6 @@ var Cu = Components.utils;
 const EXTENSION_CHROME_CONTENT_PATH = "chrome://maf/content/";
 const EXTENSION_RESOURCE_MODULES_PATH = "resource://maf/modules/";
 
-// Import the objects from the other shared modules
-Cu.import(EXTENSION_RESOURCE_MODULES_PATH + "archiveCacheObjects.jsm");
-
 // Since this file is loaded as part of a JavaScript code module, we must name
 //  every object to be exported explicitly. For more information, see
 //  <https://developer.mozilla.org/en/Using_JavaScript_code_modules> (retrieved
@@ -39,6 +36,10 @@ try {
    ["archiving/mimeSupportObject.js",             "MimeSupport"],
    ["archiving/zipCreatorObject.js",              "ZipCreator"],
    ["archiving/zipDirectoryObject.js",            "ZipDirectory"],
+
+   // Web archive caching
+   ["caching/archiveCacheObject.js",              "ArchiveCache"],
+   ["caching/archiveAnnotationsObject.js",        "ArchiveAnnotations"],
 
    // Support objects for integration with the host application
    ["integration/fileFiltersObject.js",           "FileFilters"],
@@ -67,7 +68,10 @@ try {
    ["saving/mafWebProgressListenerObject.js",     "MafWebProgressListener"],
    ["saving/saveArchiveJobObject.js",             "SaveArchiveJob"],
    ["saving/saveContentJobObject.js",             "SaveContentJob"],
-   ["saving/saveJobObject.js",                    "SaveJob"]
+   ["saving/saveJobObject.js",                    "SaveJob"],
+
+   // Extension initialization
+   ["startup/startupEvents.js",                   "StartupEvents"]
 
   ].forEach(function([contentRelativePath, objectName]) {
     // Load the source code file where the object is defined

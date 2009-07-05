@@ -36,20 +36,6 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
- * This module contains all the objects that are used only during the extension
- *  initialization and, symmetrically, on shutdown. The main entry point is the
- *  "StartupEvents.onAppStartup" method.
- */
-
-var Ci = Components.interfaces;
-var Cc = Components.classes;
-var Cr = Components.results;
-var Cu = Components.utils;
-
-// Define symbols available to users of this JavaScript Module
-var EXPORTED_SYMBOLS = ["StartupEvents"];
-
-/**
  * This object handles extension startup and shutdown, and acts as bookkeeper
  *  for the related observer registrations. Actual work is delegated to the
  *  StartupInitializer object.

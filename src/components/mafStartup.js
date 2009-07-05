@@ -37,7 +37,8 @@
 
 /**
  * Implements an application startup observer. This module is just a stub, and
- *  the actual initialization of the extension is done in "startupObjects.jsm".
+ *  the actual initialization of the extension is done by the objects in the
+ *  "startup" chrome folder, loaded through the "mafObjects.jsm" module.
  */
 
 var Ci = Components.interfaces;
@@ -82,9 +83,9 @@ MafStartup.prototype = {
     //  See also
     //  <http://groups.google.com/group/mozilla.dev.tech.xpcom/browse_thread/thread/6a8ea7f803ac720a>
     //  (retrieved 2008-12-07).
-    var startupObjects = {};
-    Cu.import("resource://maf/modules/startupObjects.jsm", startupObjects);
-    startupObjects.StartupEvents.onAppStartup();
+    var mafObjects = {};
+    Cu.import("resource://maf/modules/mafObjects.jsm", mafObjects);
+    mafObjects.StartupEvents.onAppStartup();
   }
 };
 
