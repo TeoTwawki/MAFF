@@ -41,6 +41,9 @@ try {
    ["caching/archiveCacheObject.js",              "ArchiveCache"],
    ["caching/archiveAnnotationsObject.js",        "ArchiveAnnotations"],
 
+   // Support objects for the front-end
+   ["frontend/welcomeObject.js",                  "Welcome"],
+
    // Support objects for integration with the host application
    ["integration/fileFiltersObject.js",           "FileFilters"],
 
@@ -71,7 +74,9 @@ try {
    ["saving/saveJobObject.js",                    "SaveJob"],
 
    // Extension initialization
-   ["startup/startupEvents.js",                   "StartupEvents"]
+   ["startup/dlfRegistererObject.js",             "DlfRegisterer"],
+   ["startup/startupEventsObject.js",             "StartupEvents"],
+   ["startup/startupInitializerObject.js",        "StartupInitializer"]
 
   ].forEach(function([contentRelativePath, objectName]) {
     // Load the source code file where the object is defined

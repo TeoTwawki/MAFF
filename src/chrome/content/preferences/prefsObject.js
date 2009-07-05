@@ -90,6 +90,16 @@ var Prefs = {
      getBoolPref("interface.menuitem.saveinarchive");
   },
 
+  /**
+   * Returns true if the welcome dialog should be displayed on startup.
+   */
+  get otherDisplayWelcome() {
+    return this._prefBranchForMaf.getBoolPref("other.displaywelcome");
+  },
+  set otherDisplayWelcome(aValue) {
+    this._prefBranchForMaf.setBoolPref("other.displaywelcome", aValue);
+  },
+
   /** Enumeration for saveComponent */
   SAVECOMPONENT_STANDARD: "standard",
   SAVECOMPONENT_SAVECOMPLETE: "savecomplete",
