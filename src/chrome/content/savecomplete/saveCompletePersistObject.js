@@ -105,13 +105,15 @@ SaveCompletePersist.prototype = {
       var thisObject = this;
       var scOptions = {
         rewriteLinks: true,
-        callback: function(aSaver, aStatus, aResultObject) {
+        callback: function(aSaver, aResultCode, aResultObject) {
           try {
             // If the operation was canceled, update the result object to
             //  reflect this condition, since Save Complete only provides the
             //  NS_ERROR_FAILURE result code
             if (thisObject.result == Cr.NS_BINDING_ABORTED) {
               aResultObject.result = Cr.NS_BINDING_ABORTED;
+            } else {
+              aResultObject.result = aResultCode;
             }
             // Report errors to the user through the progress listener, and log
             //  both errors and warnings to the error console
@@ -128,8 +130,12 @@ SaveCompletePersist.prototype = {
         progressListener: this.progressListener
       };
       // Construct the integrated Save Complete object and start saving
-      var scSaver = new MafSaveComplete.scPageSaver(aDocument, fileObject,
-       aDataPath, scOptions);
+      var scFileSaver = new
+       MafSaveComplete.scPageSaver.scDefaultFileSaver(fileObject);
+      var scFileProvider = new
+       MafSaveComplete.scPageSaver.scDefaultFileProvider();
+      var scSaver = new MafSaveComplete.scPageSaver(aDocument, scFileSaver,
+       scFileProvider, scOptions);
       scSaver.run();
       // If the "run" method did not raise an exception, store a reference to
       //  the worker object to allow canceling and to indicate that the worker
