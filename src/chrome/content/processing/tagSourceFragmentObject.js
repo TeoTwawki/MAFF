@@ -117,8 +117,8 @@ TagSourceFragment.prototype = {
         //  <http://www.w3.org/TR/REC-html40/index/attributes.html> (retrieved
         //  2009-07-14).
         var isUrlAttribute = aAttrName && ["action", "background", "cite",
-         "classid", "codebase", "data", "href", "longdesc", "profile", "src",
-         "usemap"].indexOf(aAttrName.toLowerCase()) >= 0;
+         "classid", "codebase", "data", "href", "longdesc", "poster", "profile",
+         "src", "usemap"].indexOf(aAttrName.toLowerCase()) >= 0;
         if (!isUrlAttribute) {
           // Treat the entire result as normal text
           aAddFn(SourceFragment, aAll);
