@@ -106,6 +106,7 @@ SaveCompletePersist.prototype = {
       var thisObject = this;
       var scOptions = {
         rewriteLinks: true,
+        saveObjects: this.saveWithMedia,
         callback: function(aSaver, aResultCode, aResultObject) {
           try {
             // If the operation was canceled, update the result object to
@@ -184,6 +185,11 @@ SaveCompletePersist.prototype = {
   },
 
   // --- Additional public methods and properties ---
+
+  /**
+   * If set to true, objects and media files will be included when saving.
+   */
+  saveWithMedia: false,
 
   /**
    * If set to true, the page will be saved for inclusion in an MHTML file.

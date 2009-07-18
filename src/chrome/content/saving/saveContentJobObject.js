@@ -70,6 +70,7 @@ SaveContentJob.prototype = {
     // Save the document in the target folder
     browserWindow.wrappedJSObject.saveDocument(this._document, {
       saveDir: this._targetDir,
+      saveWithMedia: (this.targetType == "TypeMAFF"),
       saveWithContentLocation: (this.targetType == "TypeMHTML"),
       mafEventListener: this
     });

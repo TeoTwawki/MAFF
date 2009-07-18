@@ -96,6 +96,8 @@
  *         - saveDir: nsILocalFile instance pointing to the directory where the
  *           specified document should be saved. The filename is determined
  *           automatically, using "index" as the basename.
+ *         - saveWithMedia: If true, the Save Complete persist object is
+ *           configured to save the media files that are present in the page.
  *         - saveWithContentLocation: If true, the Save Complete persist object
  *           is configured to save the page for inclusion in an MHTML file.
  *         - mafEventListener: Object implementing the onSaveNameDetermined,
@@ -314,6 +316,7 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
     // If the document saving was initiated by MAF
     if (typeof aSkipPrompt == "object") {
       // Configure the persist object appropriately
+      persist.saveWithMedia = aSkipPrompt.saveWithMedia;
       persist.saveWithContentLocation = aSkipPrompt.saveWithContentLocation;
       // Make the actual persist object available to the callback functions
       aSkipPrompt.mafEventListener.persistObject = persist;
