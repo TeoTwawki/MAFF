@@ -108,6 +108,11 @@ var ArchiveAnnotations = {
       //  as a string, and not a numeric value
       annotationValue = parseFloat(annotationValue);
       annotationValue = annotationValue ? new Date(annotationValue) : null;
+    // If the value represents an URI, store this information in the value
+    //  itself. This allows for properly displaying the value later.
+    } else if (ArchiveAnnotations.annotationIsEscapedAsUri(aAnnotationName)) {
+      annotationValue = new String(annotationValue);
+      annotationValue.isEscapedAsUri = true;
     }
     // Return the string, numeric or date value
     return annotationValue;
@@ -118,6 +123,18 @@ var ArchiveAnnotations = {
    */
   annotationIsDate: function(aAnnotationName) {
     return (aAnnotationName === ArchiveAnnotations.MAFANNO_DATEARCHIVED);
+  },
+
+  /**
+   * Returns True if the specified annotation represents an URI or part of it.
+   */
+  annotationIsEscapedAsUri: function(aAnnotationName) {
+    return [
+     ArchiveAnnotations.MAFANNO_ORIGINALURL,
+     ArchiveAnnotations.MAFANNO_ARCHIVENAME,
+     ArchiveAnnotations.MAFANNO_TEMPURI,
+     ArchiveAnnotations.MAFANNO_DIRECTARCHIVEURI
+    ].indexOf(aAnnotationName) >= 0;
   },
 
   // --- Private methods and properties ---

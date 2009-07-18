@@ -276,18 +276,11 @@ var ArchivesDialog = {
    *  to the Places view object.
    */
   viewGetCellText: function(aRow, aCol) {
-    // Handle the columns that display custom annotations
-    var annotationName = ArchivesDialog.getColumnAnnotationName(aCol.element);
-    if (annotationName) {
-      // Get the annotation value with the appropriate data type
-      var value = ArchivesDialog.getNodeValue(this.nodeForTreeIndex(aRow),
-       aCol.element.id);
-      // Display localized short dates or plain string values
-      return ArchivesDialog.formatValueForDisplay(value, true);
-    }
-
-    // If this is not a custom column, forward the call to the original function
-    return this._originalGetCellText(aRow, aCol);
+    // Get the annotation value with the appropriate data type
+    var value = ArchivesDialog.getNodeValue(this.nodeForTreeIndex(aRow),
+     aCol.element.id);
+    // Display localized short dates or plain string values
+    return ArchivesDialog.formatValueForDisplay(value, true);
   },
 
   /**
@@ -518,7 +511,9 @@ var ArchivesDialog = {
     if (aColumnId === "tcPlacesTitle") {
       return aNode.title;
     } else if (aColumnId === "tcPlacesUrl") {
-      return aNode.uri;
+      var annotationValue = new String(aNode.uri);
+      annotationValue.isEscapedAsUri = true;
+      return annotationValue;
     }
     // Get a reference to the page object associated with the node. If the page
     //  is not available anymore, exit now.
@@ -538,10 +533,14 @@ var ArchivesDialog = {
    *  If the argument is null, an empty string is returned.
    */
   formatValueForDisplay: function(aValue, aForColumn) {
+    // Return an empty string in place of null values
+    if (!aValue) {
+      return "";
+    }
     // Check if the value is a date and handle it appropriately. The
     //  "instanceof" operator cannot be used for this check since sometimes the
     //  type information is not propagated along with the Date object.
-    if (aValue && aValue.getYear) {
+    if (aValue.getYear) {
       // Format the Date object
       if (aForColumn) {
         // Use the date formatting service to display a short localized date
@@ -557,7 +556,21 @@ var ArchivesDialog = {
         return aValue.toLocaleString();
       }
     }
-    // Return an empty string in place of null values
-    return aValue || "";
-  }
+    // Check if the value has been tagged as an URI and handle it appropriately
+    if (aValue.isEscapedAsUri) {
+      try {
+        // Unescape the URI for displaying it in the user interface, assuming
+        //  its character set after unescaping is UTF-8
+        return ArchivesDialog._textToSubURI.unEscapeURIForUI("UTF-8", aValue);
+      } catch (e) {
+        // In case of errors, display the unescaped URI
+        return aValue;
+      }
+    }
+    // Return the unprocessed value
+    return aValue;
+  },
+
+  _textToSubURI: Cc["@mozilla.org/intl/texttosuburi;1"].
+   getService(Ci.nsITextToSubURI)
 }
