@@ -234,6 +234,27 @@ scPageSaver.prototype._extractURIs = function() {
             this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
         }
 
+        // Process video tags
+        iter = this._doc.evaluate("//video[@src]", this._doc, null, 0, null);
+        while((e = iter.iterateNext())) {
+            if(e.getAttribute('poster')) {
+                this._uris.push(new scPageSaver.scURI(e.getAttribute('poster'), this._uri, 'attribute', 'base'));
+            }
+            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+        }
+
+        // Process audio tags
+        iter = this._doc.evaluate("//audio[@src]", this._doc, null, 0, null);
+        while((e = iter.iterateNext())) {
+            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+        }
+
+        // Process source tags
+        iter = this._doc.evaluate("//source[@src]", this._doc, null, 0, null);
+        while((e = iter.iterateNext())) {
+            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+        }
+
         // Process object tags (or at least try to)
         iter = this._doc.evaluate("//object", this._doc, null, 0, null);
         while((e = iter.iterateNext())) {
