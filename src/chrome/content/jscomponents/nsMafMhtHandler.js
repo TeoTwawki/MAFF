@@ -134,20 +134,65 @@ MafMhtHandler.prototype = {
       }
     }
 
-    // Change all the UIDs to local urls
-    // Original plan: DOM Parse all the html, get all the tags, check the state, replace if attribute has key value
-    //    Issues: DOM Parsing dies due to security exceptions and is not easily synchronous
-    // New plan: Use regular expressions
-    //              - O(3n*m) algorithm. - Can optimize to make it O(n*m) but harder to manage
     if (!this.xmafused) {
       for (var i=0; i<state.htmlFiles.length; i++) {
 
         var thisPage = MafUtils.readFile(state.htmlFiles[i]);
 
         try {
-          thisPage = this._makeUrlsAbsolute(thisPage, state.baseUrl[i]);
-          thisPage = this._replaceCids(thisPage, state);
-          thisPage = this._replaceUrls(thisPage, state);
+          var baseUrl = state.baseUrl[i];
+          if (baseUrl != "") {
+            var obj_baseUrl =  Components.classes["@mozilla.org/network/standard-url;1"]
+                                  .createInstance(Components.interfaces.nsIURL);
+            obj_baseUrl.spec = baseUrl;
+          } else {
+            var obj_baseUrl = null;
+          }
+
+          var entireSourceFile;
+          if (state.htmlIsCSS[i]) {
+            entireSourceFile = new CssSourceFragment(thisPage);
+          } else {
+            entireSourceFile = new HtmlSourceFragment(thisPage);
+          }
+
+          for (var curFragment in entireSourceFile) {
+            if (curFragment instanceof UrlSourceFragment) {
+
+              var originalUrl = curFragment.urlSpec;
+
+              // Retrieve absolute URL if possible
+              if (obj_baseUrl) {
+                originalUrl = obj_baseUrl.resolve(originalUrl);
+              }
+
+              // Convert "cid:" scheme to lowercase
+              if (originalUrl.slice(0, "cid:".length).toLowerCase() == "cid:") {
+                originalUrl = "cid:" + originalUrl.substring("cid:".length, originalUrl.length);
+              }
+
+              // Cater for Hashes
+              var baseUrl = originalUrl.split("#")[0];
+              var leftOver = originalUrl.split("#")[1];
+
+              if (state.uidToLocalFilenameMap.hasOwnProperty(baseUrl)) {
+                try {
+                  var newBaseUrlValue = state.uidToLocalFilenameMap[baseUrl];
+                  originalUrl = MafUtils.getURIFromFilename(
+                                           newBaseUrlValue);
+                } catch(e) {
+                  originalUrl = baseUrl;
+                }
+                if (typeof(leftOver) != "undefined") {
+                  originalUrl += "#" + leftOver;
+                }
+              }
+
+              curFragment.urlSpec = originalUrl;
+            }
+          }
+          thisPage = entireSourceFile.sourceData;
+
           MafUtils.deleteFile(state.htmlFiles[i]);
           MafUtils.createFile(state.htmlFiles[i], thisPage);
         } catch(e) {
@@ -155,194 +200,6 @@ MafMhtHandler.prototype = {
         }
       }
     }
-  },
-
-  _makeUrlsAbsolute: function(sourceString, baseUrl) {
-    var resultString = "";
-    var unprocessedString = sourceString;
-
-    if (baseUrl != "") {
-      var obj_baseUrl =  Components.classes["@mozilla.org/network/standard-url;1"]
-                            .createInstance(Components.interfaces.nsIURL);
-      obj_baseUrl.spec = baseUrl;
-
-      var tagre = new RegExp("<[\s]*[a-z]+[^><]*>", "i");
-      var urlattribre = new RegExp("(action|background|cite|classid|codebase|data|href|longdesc|profile|src|usemap){1}"
-                                  + "[\s]*=[\s]*(('[^'<>]+')|(\"[^\"<>]+\")|([^'\"<>\s]+)){1}", "i");
-      var m = tagre.exec(unprocessedString);
-      while (m != null) {
-        resultString += unprocessedString.substring(0, m.index);
-        var tagstr = m.toString();
-
-        // Now we have the tag, find the attribute in it that has a url
-        var newTagstr = "";
-
-        var u = urlattribre.exec(tagstr);
-        while (u != null) {
-          newTagstr += tagstr.substring(0, u.index);
-          var urlattribstr = u[0].toString();
-
-          var newUrlattribstr = urlattribstr.substring(0, urlattribstr.indexOf("=") + 1);
-
-          newTagstr += newUrlattribstr;
-
-          var attribstr = Maf_String_trim(urlattribstr.substring(urlattribstr.indexOf("=") + 1, urlattribstr.length));
-
-          var quote = "";
-          var unquotedattrib = attribstr;
-          // If the attribute is quoted, store the quote and remove it
-          if (Maf_String_startsWith(attribstr, "\"") || Maf_String_startsWith(attribstr, "'")) {
-            quote = attribstr.substring(0, 1);
-            unquotedattrib = attribstr.substring(1, attribstr.length -1);
-          }
-
-          unquotedattrib = obj_baseUrl.resolve(unquotedattrib);
-
-          newTagstr += quote + unquotedattrib + quote;
-
-          tagstr = tagstr.substring(u.index + urlattribstr.length, tagstr.length);
-          u = urlattribre.exec(tagstr);
-        }
-
-        newTagstr += tagstr;
-
-        resultString += newTagstr;
-
-        unprocessedString = unprocessedString.substring(m.index + m.toString().length, unprocessedString.length);
-        m = tagre.exec(unprocessedString);
-      }
-
-
-    }
-
-    resultString += unprocessedString;
-
-    return resultString;
-  },
-
-  /**
-   * Use a regular expression to replace cid URLs with ones from the archive
-   */
-  _replaceCids: function(sourceString, state) {
-    var resultString = "";
-    var unprocessedString = sourceString;
-
-    var re = new RegExp("cid:[^>\"']+", "i"); // Absolute URL regular expression
-
-    var m = re.exec(unprocessedString);
-    while (m != null) {
-      resultString += unprocessedString.substring(0, m.index);
-      var originalUrl = m.toString();
-
-      // TODO, decode anything else that might give trouble
-      originalUrl = Maf_String_replaceAll(originalUrl, "&amp;", "&");
-
-      // Cater for Hashes
-      var baseUrl = originalUrl.split("#")[0];
-      var leftOver = originalUrl.split("#")[1];
-
-      baseUrl = "cid:" + baseUrl.substring("cid:".length, baseUrl.length);
-
-      if (state.uidToLocalFilenameMap.hasOwnProperty(baseUrl)) {
-        try {
-          var newBaseUrlValue = state.uidToLocalFilenameMap[baseUrl];
-          resultString += MafUtils.getURIFromFilename(
-                                   newBaseUrlValue);
-        } catch(e) {
-          resultString += baseUrl;
-        }
-        if (typeof(leftOver) != "undefined") {
-          resultString += "#" + leftOver;
-        }
-      } else {
-        resultString += m.toString();
-      }
-
-      unprocessedString = unprocessedString.substring(m.index + m.toString().length, unprocessedString.length);
-      m = re.exec(unprocessedString);
-    }
-
-    resultString += unprocessedString;
-
-    return resultString;
-  },
-
-  /**
-   * Use a regular expression to replace URLs with ones from the archive
-   */
-  _replaceUrls: function(sourceString, state) {
-    var resultString = "";
-    var unprocessedString = sourceString;
-
-      var tagre = new RegExp("<[\s]*[a-z]+[^><]*>", "i");
-      var urlattribre = new RegExp("(action|background|cite|classid|codebase|data|href|longdesc|profile|src|usemap){1}"
-                                  + "[\s]*=[\s]*(('[^'<>]+')|(\"[^\"<>]+\")|([^'\"<>\s]+)){1}", "i");
-      var m = tagre.exec(unprocessedString);
-      while (m != null) {
-        resultString += unprocessedString.substring(0, m.index);
-        var tagstr = m.toString();
-
-        // Now we have the tag, find the attribute in it that has a url
-        var newTagstr = "";
-
-        var u = urlattribre.exec(tagstr);
-        while (u != null) {
-          newTagstr += tagstr.substring(0, u.index);
-          var urlattribstr = u[0].toString();
-
-          var newUrlattribstr = urlattribstr.substring(0, urlattribstr.indexOf("=") + 1);
-
-          newTagstr += newUrlattribstr;
-
-          var attribstr = Maf_String_trim(urlattribstr.substring(urlattribstr.indexOf("=") + 1, urlattribstr.length));
-
-          var quote = "";
-          var unquotedattrib = attribstr;
-          // If the attribute is quoted, store the quote and remove it
-          if (Maf_String_startsWith(attribstr, "\"") || Maf_String_startsWith(attribstr, "'")) {
-            quote = attribstr.substring(0, 1);
-            unquotedattrib = attribstr.substring(1, attribstr.length -1);
-          }
-
-          var originalUrl = Maf_String_trim(unquotedattrib);
-
-          // TODO, decode anything else that might give trouble
-          originalUrl = Maf_String_replaceAll(originalUrl, "&amp;", "&");
-
-          // Cater for Hashes
-          var baseUrl = originalUrl.split("#")[0];
-          var leftOver = originalUrl.split("#")[1];
-
-          if (state.uidToLocalFilenameMap.hasOwnProperty(baseUrl)) {
-            try {
-              var newBaseUrlValue = state.uidToLocalFilenameMap[baseUrl];
-              originalUrl = MafUtils.getURIFromFilename(
-                                     newBaseUrlValue);
-            } catch(e) {
-              originalUrl = baseUrl;
-            }
-            if (typeof(leftOver) != "undefined") {
-              originalUrl += "#" + leftOver;
-            }
-          }
-
-          newTagstr += quote + originalUrl + quote;
-
-          tagstr = tagstr.substring(u.index + urlattribstr.length, tagstr.length);
-          u = urlattribre.exec(tagstr);
-        }
-
-        newTagstr += tagstr;
-
-        resultString += newTagstr;
-
-        unprocessedString = unprocessedString.substring(m.index + m.toString().length, unprocessedString.length);
-        m = tagre.exec(unprocessedString);
-      }
-
-    resultString += unprocessedString;
-
-    return resultString;
   },
 
 
@@ -471,6 +328,7 @@ extractContentHandlerStateClass.prototype = {
   uidToLocalFilenameMap: {},
 
   htmlFiles: new Array(),
+  htmlIsCSS: new Array(),
 
   baseUrl: new Array()
 
@@ -569,9 +427,11 @@ extractContentHandlerClass.prototype = {
     // text/html. To cater for this assume the MIME service is working and has
     // identified the extension to use as either html or htm.
     if ((contentType.toLowerCase().indexOf("text/html") >= 0) ||
+        (contentType.toLowerCase().indexOf("text/css") >= 0) ||
         (extensionType.toLowerCase() == ".html") ||
         (extensionType.toLowerCase() == ".htm")) {
       this.state.htmlFiles.push(this.destfile);
+      this.state.htmlIsCSS.push((contentType.toLowerCase().indexOf("text/css") >= 0));
       this.state.baseUrl.push(contentLocation);
     }
 
