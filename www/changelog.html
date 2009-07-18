@@ -1,6 +1,32 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
   <h2 class="page-header">Changelog for version 0.13</h2>
+  <h3><a name="whatwasnew"></a>What was new in version 0.13?</h3>
+  <p>MAF 0.13.4 had the following user-visible improvements over MAF 0.12.3:</p>
+  <ul>
+    <li>Redesigned the window that provides details on the open archives:
+      <ul>
+        <li>The window can be kept open in the background while browsing.</li>
+        <li>The list of archives can be sorted by any column.</li>
+        <li>Ability to reopen the local archive address, original location,
+         temporary local address, or <code>jar:</code> address of all pages.</li>
+        <li>Ability to open links in new windows or new tabs.</li>
+        <li>Ability to copy the original page addresses to the clipboard.</li>
+        <li>Button to add multiple archives to the list at once, without opening
+         them in browser windows. This replaces the now removed "open action"
+         preference.</li>
+        <li>Dates are properly localized.</li>
+      </ul>
+    </li>
+    <li>A welcome dialog is now displayed after the first installation.</li>
+    <li>Now the first entry of an archive is displayed correctly even if it is
+     not a web page, but for instance an image.</li>
+    <li>Multiple pages in a single MAFF archive are now displayed in tabs only
+     the first time the archive is opened, not at every refresh.</li>
+    <li>If the browser is closed and reopened while preserving the open tabs,
+     pages in multi-page archives are now displayed correctly.</li>
+    <li>Minor MHTML compatibility and performance improvements.</li>
+  </ul>
   <h3>Changes from 0.13.3 to 0.13.4</h3>
   <ul>
     <li><b>Fix:</b> In some cases, the browser might stop responding while
@@ -20,7 +46,7 @@
     <li><b>Fix:</b> MHTML files couldn't be saved.</li>
   </ul>
   <h2>Changelog for version 0.12</h2>
-  <h3><a name="whatwasnew"></a>What was new in version 0.12?</h3>
+  <h3>What was new in version 0.12?</h3>
   <p>MAF 0.12.3 had the following user-visible improvements over MAF 0.11.2:</p>
   <ul>
     <li>Opening and creating MHTML files is now up to <b>200 times</b>
