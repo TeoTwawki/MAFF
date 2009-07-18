@@ -58,6 +58,13 @@ try {
    ["preferences/fileAssociationsObject.js",      "FileAssociations"],
    ["preferences/prefsObject.js",                 "Prefs"],
 
+   // Objects for processing source files
+   ["processing/sourceFragmentObject.js",         "SourceFragment"],
+   ["processing/cssSourceFragmentObject.js",      "CssSourceFragment"],
+   ["processing/htmlSourceFragmentObject.js",     "HtmlSourceFragment"],
+   ["processing/tagSourceFragmentObject.js",      "TagSourceFragment"],
+   ["processing/urlSourceFragmentObject.js",      "UrlSourceFragment"],
+
    // Support objects for the saving front-end
    ["savefrontend/tabsDataSourceObject.js",       "TabsDataSource"],
 
