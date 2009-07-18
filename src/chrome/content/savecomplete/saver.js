@@ -718,14 +718,12 @@ scPageSaver.scDefaultFileSaver.prototype.documentPath = function(uri, relativeUR
 }
 
 /**
- * Saves the contents of the given uri to disk using the given charset if valid
- * @function saveURIContents
- * @param {scPageSaver.scURI} uri - The uri for the file being saved
- * @param {String} contents - The contents of the file in UTF-8
- * @param {String} charset - The character set to use when saving the file
+ * Returns the file object corresponding to the location where the given scURI
+ * should be saved.
+ * @function {nsIFile} documentLocalFile
+ * @param {scPageSaver.scURI} uri - The URI to generate the file object for
  */
-scPageSaver.scDefaultFileSaver.prototype.saveURIContents = function(uri, contents, charset) {
-    // Get the file object that we're saving to
+scPageSaver.scDefaultFileSaver.prototype.documentLocalFile = function(uri) {
     var file = null;
     if(uri.type == 'index') {
         file = this._file;
@@ -734,6 +732,19 @@ scPageSaver.scDefaultFileSaver.prototype.saveURIContents = function(uri, content
         if(typeof this._saveMap[uri.toString()] == 'undefined') this.documentPath(uri, {type:null}); // Force saveMap to be populated
         file.append(this._saveMap[uri.toString()]);
     }
+    return file;
+}
+
+/**
+ * Saves the contents of the given uri to disk using the given charset if valid
+ * @function saveURIContents
+ * @param {scPageSaver.scURI} uri - The uri for the file being saved
+ * @param {String} contents - The contents of the file in UTF-8
+ * @param {String} charset - The character set to use when saving the file
+ */
+scPageSaver.scDefaultFileSaver.prototype.saveURIContents = function(uri, contents, charset) {
+    // Get the file object that we're saving to
+    var file = this.documentLocalFile(uri);
 
     // Write the file to disk
     var failed = false;
@@ -763,9 +774,7 @@ scPageSaver.scDefaultFileSaver.prototype.saveURIContents = function(uri, content
  */
 scPageSaver.scDefaultFileSaver.prototype.saveURI = function(uri) {
     this._currentURI = uri;
-    var file = this._dataFolder.clone();
-    if(typeof this._saveMap[uri.toString()] == 'undefined') this.documentPath(uri, {type:null}); // Force saveMap to be populated
-    file.append(this._saveMap[uri.toString()]);
+    var file = this.documentLocalFile(uri);
 
     this._persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(Components.interfaces.nsIWebBrowserPersist);
     this._persist.progressListener = new scPageSaver.scPersistListener(this);
