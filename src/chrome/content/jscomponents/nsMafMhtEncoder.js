@@ -46,6 +46,8 @@ MafMhtEncoderClass.prototype = {
 
   date : "",
 
+  xmafused: true,
+
   addFile: function(source, type, location, id) {
     var record = { };
     record.source = source;
@@ -91,7 +93,14 @@ MafMhtEncoderClass.prototype = {
           MHTContentString += "Content-Type: multipart/related;\r\n";
           MHTContentString += "\tboundary=\"" + boundaryString + "\";\r\n"
           MHTContentString += "\ttype=\"" + this.filelist[0].type + "\"\r\n";
-          MHTContentString += "X-MAF: " + this.xMafHeaderValue + "\r\n";
+          if (this.xmafused) {
+            MHTContentString += "X-MAF: " + this.xMafHeaderValue + "\r\n";
+          } else {
+            // The format is not MAF specific, so no X-MAF header is required.
+            // However, store the MAF version used for saving anyway because
+            // it could be needed to help with decoding in the future.
+            MHTContentString += "X-MAF-Version: " + this.xMafHeaderValue + "\r\n";
+          }
           MHTContentString += "\r\nThis is a multi-part message in MIME format.\r\n";
 
           oTransport.write(MHTContentString, MHTContentString.length);

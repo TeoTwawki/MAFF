@@ -241,11 +241,25 @@ MafMhtHandler.prototype = {
       encoder.addFile(indexFile.path, indexFileType,
        converter.ConvertFromUnicode(archivepage.originalUrl), "");
 
+      // Find the file to original URI mapping made by Save Complete
+      var originalUriByPath = mafeventlistener.persistObject &&
+       mafeventlistener.persistObject.saveWithContentLocation &&
+       mafeventlistener.persistObject.originalUriByPath;
+
+      // Use the MAF special format if required
+      encoder.xmafused = !originalUriByPath;
+
       // Add supporting files
       var supportFilesList = this._getSupportingFilesList(sourcepath);
 
       for (var i=0; i<supportFilesList.length; i++) {
         var entry = supportFilesList[i];
+        if (originalUriByPath && originalUriByPath[entry.filepath]) {
+          // Record the original URL in the "Content-Location" header. Note that
+          //  in rare cases, this may be equal to the original URL saved in the
+          //  "Content-Location" header for the index file.
+          entry.originalurl = originalUriByPath[entry.filepath];
+        }
         encoder.addFile(entry.filepath, entry.type, entry.originalurl, entry.id);
       }
 

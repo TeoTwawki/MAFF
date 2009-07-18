@@ -68,8 +68,11 @@ SaveContentJob.prototype = {
      QueryInterface(Ci.nsIDocShellTreeItem).rootTreeItem.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
     // Save the document in the target folder
-    browserWindow.wrappedJSObject.saveDocument(this._document,
-     {saveDir: this._targetDir, mafEventListener: this});
+    browserWindow.wrappedJSObject.saveDocument(this._document, {
+      saveDir: this._targetDir,
+      saveWithContentLocation: (this.targetType == "TypeMHTML"),
+      mafEventListener: this
+    });
     // Wait for the save completed callback
     this._asyncWorkStarted();
   },

@@ -43,7 +43,8 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  *  Save Complete extension in the normal save process.
  */
 function SaveCompletePersist() {
-
+  // Initialize member variables explicitly
+  this.originalUriByPath = {};
 }
 
 SaveCompletePersist.prototype = {
@@ -132,6 +133,30 @@ SaveCompletePersist.prototype = {
       // Construct the integrated Save Complete object and start saving
       var scFileSaver = new
        MafSaveComplete.scPageSaver.scDefaultFileSaver(fileObject);
+      // If the files will be stored in a compatible MHTML file
+      if (this.saveWithContentLocation) {
+        // Modify the default file saver to create a map of the original URIs
+        var originalUriByPath = this.originalUriByPath;
+        var _documentLocalFile = scFileSaver.documentLocalFile;
+        scFileSaver.documentLocalFile = function(aUri) {
+          // Call the original function
+          var file = _documentLocalFile.call(scFileSaver, aUri);
+          // Store the original URI before returning the file object
+          originalUriByPath[file.path] = aUri.uri.spec;
+          return file;
+        };
+        // Modify the default file saver to replace URIs in source files with
+        //  their complete version that will appear in the "Content-Location"
+        //  headers of the MHTML file.
+        var _documentPath = scFileSaver.documentPath;
+        scFileSaver.documentPath = function(aUri, aRelativeURI) {
+          // Call the original function to update the state of the object
+          _documentPath.call(scFileSaver, aUri, aRelativeURI);
+          // Return the complete original URI instead of the local relative path
+          return aUri.uri.spec;
+        };
+      }
+      // Continue with the normal save process using the Save Complete objects
       var scFileProvider = new
        MafSaveComplete.scPageSaver.scDefaultFileProvider();
       var scSaver = new MafSaveComplete.scPageSaver(aDocument, scFileSaver,
@@ -157,6 +182,18 @@ SaveCompletePersist.prototype = {
   cancelSave: function() {
     this.cancel(Cr.NS_BINDING_ABORTED);
   },
+
+  // --- Additional public methods and properties ---
+
+  /**
+   * If set to true, the page will be saved for inclusion in an MHTML file.
+   */
+  saveWithContentLocation: false,
+
+  /**
+   * Associates the local path of each persisted file with its original URL.
+   */
+  originalUriByPath: {},
 
   // --- Private methods and properties ---
 

@@ -96,8 +96,11 @@
  *         - saveDir: nsILocalFile instance pointing to the directory where the
  *           specified document should be saved. The filename is determined
  *           automatically, using "index" as the basename.
+ *         - saveWithContentLocation: If true, the Save Complete persist object
+ *           is configured to save the page for inclusion in an MHTML file.
  *         - mafEventListener: Object implementing the onSaveNameDetermined,
- *           onDownloadComplete, and onDownloadFailed event functions.
+ *           onDownloadComplete, and onDownloadFailed event functions. The
+ *           persistObject property may also be set on the object.
  *        When this function is called, directly or indirectly, by Mozilla
  *        Archive Format to ask the user to save an archive, this parameter can
  *        also be an object with the following properties:
@@ -308,6 +311,13 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
     // This component can only save a complete HTML document without converting
     //  its content type
     persist = new SaveCompletePersist();
+    // If the document saving was initiated by MAF
+    if (typeof aSkipPrompt == "object") {
+      // Configure the persist object appropriately
+      persist.saveWithContentLocation = aSkipPrompt.saveWithContentLocation;
+      // Make the actual persist object available to the callback functions
+      aSkipPrompt.mafEventListener.persistObject = persist;
+    }
   } else {
     persist = makeWebBrowserPersist();
   }
