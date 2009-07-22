@@ -914,7 +914,14 @@ scPageSaver.scURI = function(extractedURI, base, type, where) {
  * @return Whether they have the same path
  */
 scPageSaver.scURI.prototype.isDupe = function(compare) {
-    return this.uri.equals(compare.uri);
+    try {
+        // Compare the two URLs intelligently, based on their scheme
+        return this.uri.equals(compare.uri);
+    } catch(e) {
+        // If the URLs cannot be compared, for example if one of them is an
+        // invalid file:// URL, compare their string version
+        return (this.toString() == compare.toString());
+    }
 }
 
 /**
