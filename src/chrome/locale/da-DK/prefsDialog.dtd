@@ -48,8 +48,8 @@
 <!ENTITY open.rewriteurls.accesskey "r">
 <!ENTITY open.usejarprotocol.label "Brug &quot;jar:&quot;-protokollen til at tilgå indholdet af MAFF-arkiver">
 <!ENTITY open.usejarprotocol.accesskey "j">
-<!ENTITY other.caption "Other">
-<!ENTITY other.displaywelcome.label "Display welcome window at next startup">
-<!ENTITY other.displaywelcome.accesskey "D">
+<!ENTITY other.caption "Andet">
+<!ENTITY other.displaywelcome.label "Vis velkomstvindue ved næste opstart">
+<!ENTITY other.displaywelcome.accesskey "d">
 <!ENTITY save.usemhtmlextension.label "Gem ved hjælp af .mhtml filtypen i stedet for .mht som standard">
 <!ENTITY save.usemhtmlextension.accesskey "m">
