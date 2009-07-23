@@ -207,6 +207,19 @@
      archives, but also when saving complete pages using the <b>Save Page
      As</b>, <b>Web Page, complete</b> command of Firefox.</p>
   </dd>
+  <dt>Create MHTML files fully compatible with other browsers</dt>
+  <dd>
+    <p>When this preference is enabled, Mozilla Archive Format will create MHTML
+     files according to the original specification, allowing any browser to open
+     the archives correctly, even in case of very complex pages. If this
+     preference is disabled, MAF will generate a specific MHTML variant, that
+     will open much more quickly in Firefox, even for very large documents, but
+     that other browsers would not be able to display with proper formatting if
+     the saved page contains nested CSS stylesheets or inner frames.</p>
+    <p>MAF is only able to create compatible MHTML files using the integrated
+     Save Complete component. If the Save Complete component is disabled, only
+     the MAF-specific MHTML variant is available.</p>
+  </dd>
   <dt>Save extended metadata in MAFF archives</dt>
   <dd>
     <p>With this preference enabled, additional page information such as
