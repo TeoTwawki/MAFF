@@ -15,7 +15,7 @@
 <!ENTITY options.savecomplete.para2.description "È possibile abilitare o disabilitare Save Complete in ogni momento dalle preferenze di MAF.">
 <!ENTITY options.savemaff.label "Salva usando il formato di archivio MAFF per impostazione predefinita">
 <!ENTITY options.savemaff.accesskey "S">
-<!ENTITY options.savemaff.para1.description "MAFF è un formato di file aperto e multi-piattaforma, basato su ZIP. I file MAFF possono essere aperti su Linux e su ogni altra piattaforma che supporta i file ZIP, ma non può essere facilmente scambiato con gli utenti di Internet Explorer.">
+<!ENTITY options.savemaff.para1.description "MAFF è un formato di file aperto e multi-piattaforma, basato su ZIP. I file MAFF possono essere aperti su Linux e su ogni altra piattaforma che supporta i file ZIP, ma non possono essere facilmente scambiati con gli utenti di Internet Explorer.">
 <!ENTITY options.savemaff.para2.description "È possibile cambiare il tipo di archivio in ogni momento nella finestra di dialogo [b]Salva con nome[/b].">
 <!ENTITY changesapplied.label "Congratulazioni!">
 <!ENTITY changesapplied.description "Il sistema è stato configurato come richiesto, ed è pronto per l&apos;uso.">
