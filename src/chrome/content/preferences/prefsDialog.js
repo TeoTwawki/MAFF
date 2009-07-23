@@ -45,17 +45,28 @@ var Cu = Components.utils;
  */
 var PrefsDialog = {
   /**
-   * Checks to see if the "file associations" pane should be active.
+   * Initializes the controls when the dialog is displayed.
    */
   onLoadDialog: function() {
+    // Checks to see if the "file associations" pane should be active
     if (!this._isOnWindows()) {
       document.getElementById("btnAssociateMAFF").disabled = true;
       document.getElementById("btnAssociateMHTML").disabled = true;
       document.getElementById("descAssociateWindowsOnly").hidden = false;
     }
+    // Updates the status of the dialog controls
+    this.onSaveComponentChange();
   },
 
   /* --- Interactive dialog functions and events --- */
+
+  /**
+   * Enables other dialog controls depending on the selected save component.
+   */
+  onSaveComponentChange: function() {
+    document.getElementById("cbSaveMhtmlCompatible").disabled =
+     (document.getElementById("prefSaveComponent").value != "savecomplete");
+  },
 
   /**
    * Show a file selector allowing the user to select the absolute path of

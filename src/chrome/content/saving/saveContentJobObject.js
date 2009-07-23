@@ -71,7 +71,8 @@ SaveContentJob.prototype = {
     browserWindow.wrappedJSObject.saveDocument(this._document, {
       saveDir: this._targetDir,
       saveWithMedia: (this.targetType == "TypeMAFF"),
-      saveWithContentLocation: (this.targetType == "TypeMHTML"),
+      saveWithContentLocation: (this.targetType == "TypeMHTML" &&
+                                Prefs.saveMhtmlCompatible),
       mafEventListener: this
     });
     // Wait for the save completed callback

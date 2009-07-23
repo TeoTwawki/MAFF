@@ -8,6 +8,7 @@ pref("extensions.maf.open.rewriteurls", true);
 pref("extensions.maf.open.usejarprotocol", false);
 pref("extensions.maf.other.displaywelcome", true);
 pref("extensions.maf.save.component", "standard");
+pref("extensions.maf.save.mhtml.compatible", true);
 pref("extensions.maf.save.metadata.extended", false);
 pref("extensions.maf.save.usemhtmlextension", false);
 pref("extensions.maf.temp.clearonexit", true);

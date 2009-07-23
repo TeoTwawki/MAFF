@@ -131,6 +131,17 @@ var Prefs = {
   },
 
   /**
+   * Returns true if MHTML files should be created to be compatible with other
+   *  browsers. If false, a special kind of MHTML file with the "X-MAF" header
+   *  will be created.
+   *
+   * This preference is effective only if Save Complete is enabled.
+   */
+  get saveMhtmlCompatible() {
+    return this._prefBranchForMaf.getBoolPref("save.mhtml.compatible");
+  },
+
+  /**
    * Returns true if the ".mhtml" file extension should be preferred over
    *  ".mht" in the file filters for the "Save As" dialogs.
    */

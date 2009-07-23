@@ -60,6 +60,12 @@
    >
     <preferences>
       <preference id="prefSaveMetadataExtended"        name="extensions.maf.save.metadata.extended"       type="bool"/>
+      <preference id="prefSaveMhtmlCompatible"         name="extensions.maf.save.mhtml.compatible"        type="bool"/>
+      <preference id=      "prefSaveComponent"
+                  name=    "extensions.maf.save.component"
+                  type=    "string"
+                  onchange="PrefsDialog.onSaveComponentChange();"
+                  />
     </preferences>
     <groupbox>
       <caption label="&save.caption;" />
@@ -76,7 +82,14 @@
         <radio value="savecomplete"   label=    "&save.component.savecomplete.label;"
                                       accesskey="&save.component.savecomplete.accesskey;"
                                       />
+        <checkbox id=        "cbSaveMhtmlCompatible"
+                  preference="prefSaveMhtmlCompatible"
+                  label=     "&save.mhtml.compatible.label;"
+                  accesskey= "&save.mhtml.compatible.accesskey;"
+                  class=     "indent"
+                  />
       </radiogroup>
+      <spacer height="10" />
       <checkbox preference="prefSaveMetadataExtended" 
                 label=     "&save.metadata.extended.label;"
                 accesskey= "&save.metadata.extended.accesskey;"
@@ -166,7 +179,6 @@
       <preference id="prefTempClearOnExit"         name="extensions.maf.temp.clearonexit"         type="bool"/>
       <preference id="prefOpenRewriteUrls"         name="extensions.maf.open.rewriteurls"         type="bool"/>
       <preference id="prefOpenUseJarProtocol"      name="extensions.maf.open.usejarprotocol"      type="bool"/>
-      <preference id="prefSaveComponent"           name="extensions.maf.save.component"           type="string"/>
       <preference id="prefSaveUseMhtmlExtension"   name="extensions.maf.save.usemhtmlextension"   type="bool"/>
       <preference id="prefOtherDisplayWelcome"     name="extensions.maf.other.displaywelcome"     type="bool"/>
     </preferences>
