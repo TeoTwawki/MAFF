@@ -9,6 +9,8 @@
 <!ENTITY save.component.standard.accesskey "b">
 <!ENTITY save.component.savecomplete.label "使用集成入 MAF 的 “Save Complete” 扩展［而不是您在浏览器中安装的（如果有的话）］">
 <!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.mhtml.compatible.label "Create MHTML files fully compatible with other browsers">
+<!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.metadata.extended.label "在 MAFF 档中保存扩展元数据(v)">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!--  Interface pane  -->

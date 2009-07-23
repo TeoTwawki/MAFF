@@ -9,6 +9,8 @@
 <!ENTITY save.component.standard.accesskey "b">
 <!ENTITY save.component.savecomplete.label "Tümleşik &quot;Tamamını Kaydet&quot; eklentisini kullan">
 <!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.mhtml.compatible.label "Create MHTML files fully compatible with other browsers">
+<!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.metadata.extended.label "Genişletilmiş metaveriyi MAFF arşivlerine kaydet">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!--  Interface pane  -->

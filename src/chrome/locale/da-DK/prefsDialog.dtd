@@ -9,6 +9,8 @@
 <!ENTITY save.component.standard.accesskey "b">
 <!ENTITY save.component.savecomplete.label "Brug integreret &quot;Save Complete&quot;-udvidelse">
 <!ENTITY save.component.savecomplete.accesskey "u">
+<!ENTITY save.mhtml.compatible.label "Create MHTML files fully compatible with other browsers">
+<!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.metadata.extended.label "Gem udvidede metadata i MAFF-arkiver">
 <!ENTITY save.metadata.extended.accesskey "u">
 <!--  Interface pane  -->
