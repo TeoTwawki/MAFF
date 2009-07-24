@@ -107,6 +107,7 @@ SaveCompletePersist.prototype = {
       var scOptions = {
         rewriteLinks: true,
         saveObjects: this.saveWithMedia,
+        saveIframes: true,
         callback: function(aSaver, aResultCode, aResultObject) {
           try {
             // If the operation was canceled, update the result object to
