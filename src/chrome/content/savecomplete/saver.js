@@ -468,6 +468,10 @@ scPageSaver.prototype._processNextURI = function() {
 
     // Skip processing of failed downloads
     if(download.failed) {
+        // Notify that the given URI was not saved
+        if (this._fileSaver.notifyURIFailed) {
+            this._fileSaver.notifyURIFailed(download.uri);
+        }
         this._warnings.push("Download failed for uri: "+download.uri);
         this._currentDownloadIndex++;
         this._processorTimeout = setTimeout(function() { me._processNextURI();}, 2);
@@ -780,6 +784,7 @@ scPageSaver.scDefaultFileSaver.prototype.saveURIContents = function(uri, content
         os.writeString(contents);
         os.close();
     } catch(e) {
+        this.notifyURIFailed(uri);
         failed = true;
     }
     foStream.close();
@@ -803,10 +808,25 @@ scPageSaver.scDefaultFileSaver.prototype.saveURI = function(uri) {
     try {
         this._persist.saveURI(uri.uri, null , null , null , null , file);
     } catch(e) {
+        this.notifyURIFailed(uri);
         this._currentURI = null;
         this._persist = null;
         this.callback(uri, false);
     }
+}
+
+/**
+ * Called instead of the save functions if the download of the given URI failed.
+ * @function notifyURIFailed
+ * @param {scPageSaver.scURI} uri - The uri whose download failed
+ */
+scPageSaver.scDefaultFileSaver.prototype.notifyURIFailed = function(uri) {
+    var file = this.documentLocalFile(uri);
+
+    // Remove the file that was created as a placeholder, if possible
+    try {
+        file.remove(false);
+    } catch(e) { }
 }
 
 /**
