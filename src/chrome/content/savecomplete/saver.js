@@ -205,70 +205,90 @@ scPageSaver.prototype.QueryInterface = function(iid) {
  * @function _extractURIs
  */
 scPageSaver.prototype._extractURIs = function() {
+    // Extract all URIs from this document and its subdocuments
+    this._extractURIsFromDocument(this._doc);
+
+    // Process all dupes
+    this._processDupes();
+
+    // Add base document path to the beginning (now because dupe processing messes with _uris array)
+    this._uris.unshift(new scPageSaver.scURI(this._url, this._uri, 'index', 'base'));
+};
+
+/**
+ * Extracts all URIs from the document, tagging them and storing them for processing.
+ * @function _extractURIs
+ * @param {Object} doc - The document to extract URLs from
+ */
+scPageSaver.prototype._extractURIsFromDocument = function(doc) {
     var e = null, iter = null;
 
+    // Get the base URL object for the document
+    var baseUri = doc.baseURIObject;
+
     // Process images
-    iter = this._doc.evaluate("//img[@src]", this._doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+    iter = doc.evaluate("//img[@src]", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     while((e = iter.iterateNext())) {
-        this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+        this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
     }
 
     // Process script tags
-    iter = this._doc.evaluate("//script[@src]", this._doc, null, 0, null);
+    iter = doc.evaluate("//script[@src]", doc, null, 0, null);
     while((e = iter.iterateNext())) {
-        this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+        this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
     }
 
     if(this._options['saveIframes']) {
-        // Only save the html in the iframe - don't process the iframe document
-        iter = this._doc.evaluate("//iframe[@src]", this._doc, null, 0, null);
+        // Save the html in the iframe and process the iframe document
+        iter = doc.evaluate("//iframe[@src]", doc, null, 0, null);
         while((e = iter.iterateNext())) {
-            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
+            this._extractURIsFromDocument(e.contentDocument);
         }
     }
 
     if(this._options['saveObjects']) {
         // Process embed tags
-        iter = this._doc.evaluate("//embed[@src]", this._doc, null, 0, null);
+        iter = doc.evaluate("//embed[@src]", doc, null, 0, null);
         while((e = iter.iterateNext())) {
-            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
         }
 
         // Process video tags
-        iter = this._doc.evaluate("//video[@src]", this._doc, null, 0, null);
+        iter = doc.evaluate("//video[@src]", doc, null, 0, null);
         while((e = iter.iterateNext())) {
             if(e.getAttribute('poster')) {
-                this._uris.push(new scPageSaver.scURI(e.getAttribute('poster'), this._uri, 'attribute', 'base'));
+                this._uris.push(new scPageSaver.scURI(e.getAttribute('poster'), baseUri, 'attribute', 'base'));
             }
-            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
         }
 
         // Process audio tags
-        iter = this._doc.evaluate("//audio[@src]", this._doc, null, 0, null);
+        iter = doc.evaluate("//audio[@src]", doc, null, 0, null);
         while((e = iter.iterateNext())) {
-            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
         }
 
         // Process source tags
-        iter = this._doc.evaluate("//source[@src]", this._doc, null, 0, null);
+        iter = doc.evaluate("//source[@src]", doc, null, 0, null);
         while((e = iter.iterateNext())) {
-            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
         }
 
         // Process object tags (or at least try to)
-        iter = this._doc.evaluate("//object", this._doc, null, 0, null);
+        iter = doc.evaluate("//object", doc, null, 0, null);
         while((e = iter.iterateNext())) {
             if(e.getAttribute('data')) {
-                this._uris.push(new scPageSaver.scURI(e.getAttribute('data'), this._uri, 'attribute', 'base'));
+                this._uris.push(new scPageSaver.scURI(e.getAttribute('data'), baseUri, 'attribute', 'base'));
             }
 
             // Find param that references the object's data
             var p = null;
-            var pIter = this._doc.evaluate('param', e, null, 0, null);
+            var pIter = doc.evaluate('param', e, null, 0, null);
             while((p = pIter.iterateNext())) {
                 var param = p.getAttribute('name');
                 if(param == 'movie' || param == 'src') {
-                    this._uris.push(new scPageSaver.scURI(p.getAttribute('value'), this._uri, 'attribute', 'base'));
+                    this._uris.push(new scPageSaver.scURI(p.getAttribute('value'), baseUri, 'attribute', 'base'));
                     break;
                 }
             }
@@ -276,19 +296,19 @@ scPageSaver.prototype._extractURIs = function() {
     }
 
     // Process input elements with an image type
-    iter = this._doc.evaluate("//input[@type='image']", this._doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+    iter = doc.evaluate("//input[@type='image']", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     while((e = iter.iterateNext())) {
-        this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), this._uri, 'attribute', 'base'));
+        this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
     }
 
     // Process elements which have a background attribute
-    iter = this._doc.evaluate("//*[@background]", this._doc, null, 0, null);
+    iter = doc.evaluate("//*[@background]", doc, null, 0, null);
     while((e = iter.iterateNext())) {
-        this._uris.push(new scPageSaver.scURI(e.getAttribute('background'), this._uri, 'attribute', 'base'));
+        this._uris.push(new scPageSaver.scURI(e.getAttribute('background'), baseUri, 'attribute', 'base'));
     }
 
     // Process IE conditional comments
-    iter = this._doc.evaluate("//comment()", this._doc, null, 0, null);
+    iter = doc.evaluate("//comment()", doc, null, 0, null);
     while((e = iter.iterateNext())) {
         if(typeof e.data != 'string') continue;
         if(!/^\[if[^\]]+\]>/.test(e.data)) continue; // Check if it starts with [if...]>
@@ -298,46 +318,40 @@ scPageSaver.prototype._extractURIs = function() {
         // Extract link element refs (stylesheets)
         var linkRe = /<link[^>]+href=(["'])([^"']*)\1/igm;
         while((results = linkRe.exec(e.data)) != null) {
-            this._uris.push(new scPageSaver.scURI(results[2], this._uri, 'attribute', 'base'));
+            this._uris.push(new scPageSaver.scURI(results[2], baseUri, 'attribute', 'base'));
         }
 
         // Extract script elements refs
         var scriptRe = /<script[^>]+src=(["'])([^"']*)\1/igm;
         while((results = scriptRe.exec(e.data)) != null) {
-            this._uris.push(new scPageSaver.scURI(results[2], this._uri, 'attribute', 'base'));
+            this._uris.push(new scPageSaver.scURI(results[2], baseUri, 'attribute', 'base'));
         }
     }
 
     // Process elements with a style attribute
-    iter = this._doc.evaluate("//*[@style]", this._doc, null, 0, null);
+    iter = doc.evaluate("//*[@style]", doc, null, 0, null);
     while((e = iter.iterateNext())) {
         var cssText = e.getAttribute("style");
         if(!cssText) continue;
 
         var results = null;
         while((results = scPageSaver.cssURIRegex.exec(cssText)) != null) {
-            this._uris.push(new scPageSaver.scURI(results[2], this._uri, 'css', 'base'));
+            this._uris.push(new scPageSaver.scURI(results[2], baseUri, 'css', 'base'));
         }
     }
 
     // Process internal stylesheets
-    var styleSheets = this._doc.styleSheets;
+    var styleSheets = doc.styleSheets;
     for(var i = 0; i < styleSheets.length; i++) {
         if (styleSheets[i].ownerNode && styleSheets[i].ownerNode.getAttribute) {
             if(styleSheets[i].ownerNode.getAttribute("href")) {
-                this._uris.push(new scPageSaver.scURI(styleSheets[i].ownerNode.getAttribute("href"), this._uri, 'attribute', 'base'));
+                this._uris.push(new scPageSaver.scURI(styleSheets[i].ownerNode.getAttribute("href"), baseUri, 'attribute', 'base'));
                 this._extractURIsFromStyleSheet(styleSheets[i], styleSheets[i].href)
             } else {
-                this._extractURIsFromStyleSheet(styleSheets[i], this._uri, true);
+                this._extractURIsFromStyleSheet(styleSheets[i], doc.documentURI, true);
             }
         }
     }
-
-    // Process all dupes
-    this._processDupes();
-
-    // Add base document path to the beginning (now because dupe processing messes with _uris array)
-    this._uris.unshift(new scPageSaver.scURI(this._url, this._uri, 'index', 'base'));
 };
 
 /**
@@ -479,79 +493,71 @@ scPageSaver.prototype._processNextURI = function() {
     }
 
     if(download.uri.type == 'index' || download.contentType == "text/html" || download.contentType == "application/xhtml+xml") {
-        // Fix all URLs in this HTML document
-        if (download.uri.type == 'index') {
-            // The root HTML document
-
-            // Mark the document as coming from a certain URL (Like IE)
-            if(data.match(/<html[^>]*>/i)) {
-                data = data.replace(/(<html[^>]*>)/i,"$1<!-- Source is "+download.uri.toString()+" -->");
-            } else {
-                data = "<!-- Source is "+download.uri.toString()+" -->\n" + data;
-            }
-
-            // Comment out "base" element, which messes everything up
-            data = data.replace(/(<base[^>]*>)/i,"<!--$1-->");
-
-            // Fix all URLs so they point to the proper place
-            for(var n = 0; n < this._uris.length; n++) {
-                var uri = this._uris[n];
-
-                // Skip empty urls or ones that aren't for the base document
-                if(!uri.extractedURI || uri.type == 'index' || uri.where != "base") continue;
-
-                var found = this._regexEscape(uri.extractedURI);
-                var savePathURL = this._fileSaver.documentPath(uri, download.uri);
-                if(uri.type == "attribute") {
-                    // Fix all instances where this url is found in an attribute
-                    var re = new RegExp("(<[^>]+=([\"'])\\s*)"+found+"(\\s*\\2)","g");
-                    data = data.replace(re, "$1"+savePathURL+"$3");
-                } else if(uri.type == "css") {
-                    // Fix all instances where this url is found in a URL command in css
-                    // Fix in style attributes
-                    var re = new RegExp("(<[^>]+style=\"\\s*[^\"]+)url\\((\\s*([\"']?)\\s*)"+found+"(\\s*\\3\\s*)\\)([^\"]*\")","g");
-                    data = data.replace(re, "$1url($3"+savePathURL+"$4)$5");
-
-                    // Fix in inlined style sheets
-                    var re = new RegExp("<style[^>]*>((?:.*?[\r\n\t ]*)*?)</style>","gmi");
-                    var urlRe = new RegExp("url\\((\\s*([\"']?)\\s*)"+found+"(\\s*\\2\\s*)\\)","g");
-                    var replaceFunc = function(all, match, offset) {
-                        return all.replace(urlRe, "url($1"+savePathURL+"$3)");
-                    };
-                    data = data.replace(re, replaceFunc);
-                } else if(uri.type == "import") {
-                    // Fix all instances where this url is found in an import rule
-                    var re = new RegExp("<style[^>]*>((?:.*?[\r\n\t ]*)*?)</style>","gmi");
-                    var noURLImportRe = new RegExp("(@import\\s*([\"'])\\s*)"+found+"(\\s*\\2)","g");
-                    var urlImportRe   = new RegExp("(@import\\s+url\\(\\s*([\"']?)\\s*)"+found+"(\\s*\\2\\s*)\\)","g");
-                    var replaceFunc = function(all, match, offset) {
-                        all = all.replace(noURLImportRe, "$1"+savePathURL+"$3");
-                        all = all.replace(urlImportRe ,  "$1"+savePathURL+"$3)");
-                        return all;
-                    };
-                    data = data.replace(re, replaceFunc);
-                }
-            }
-
-            // Fix anchors to point to absolute location instead of relative
-            if(this._options['rewriteLinks']) {
-                // TODO: See if adding a negative lookahead for the https?: would improve performance
-                var replaceFunc = function() {
-                    var match = /^([^:]+):/.exec(arguments[0]);
-                    if(match && match[1] != 'http' && match[1] != 'https')
-                        return arguments[0];
-                    else
-                        return arguments[1]+arguments[2]+me._uri.resolve(arguments[3])+arguments[2];
-                }
-                data = data.replace(/(<a[^>]+href=)(["'])([^"']+)\2/igm, replaceFunc);
-            }
-
-            // Save adjusted file
-            this._fileSaver.saveURIContents(download.uri, data, download.charset);
+        // Mark the document as coming from a certain URL (Like IE)
+        if(data.match(/<html[^>]*>/i)) {
+            data = data.replace(/(<html[^>]*>)/i,"$1<!-- Source is "+download.uri.toString()+" -->");
         } else {
-            // Other HTML files, if found
-            this._fileSaver.saveURIContents(download.uri, data, download.charset);
+            data = "<!-- Source is "+download.uri.toString()+" -->\n" + data;
         }
+
+        // Comment out "base" element, which messes everything up
+        data = data.replace(/(<base[^>]*>)/i,"<!--$1-->");
+
+        // Fix all URLs so they point to the proper place
+        for(var n = 0; n < this._uris.length; n++) {
+            var uri = this._uris[n];
+
+            // Skip empty urls or ones that aren't for the base document
+            if(!uri.extractedURI || uri.type == 'index' || uri.where != "base") continue;
+
+            var found = this._regexEscape(uri.extractedURI);
+            var savePathURL = this._fileSaver.documentPath(uri, download.uri);
+            if(uri.type == "attribute") {
+                // Fix all instances where this url is found in an attribute
+                var re = new RegExp("(<[^>]+=([\"'])\\s*)"+found+"(\\s*\\2)","g");
+                data = data.replace(re, "$1"+savePathURL+"$3");
+            } else if(uri.type == "css") {
+                // Fix all instances where this url is found in a URL command in css
+                // Fix in style attributes
+                var re = new RegExp("(<[^>]+style=\"\\s*[^\"]+)url\\((\\s*([\"']?)\\s*)"+found+"(\\s*\\3\\s*)\\)([^\"]*\")","g");
+                data = data.replace(re, "$1url($3"+savePathURL+"$4)$5");
+
+                // Fix in inlined style sheets
+                var re = new RegExp("<style[^>]*>((?:.*?[\r\n\t ]*)*?)</style>","gmi");
+                var urlRe = new RegExp("url\\((\\s*([\"']?)\\s*)"+found+"(\\s*\\2\\s*)\\)","g");
+                var replaceFunc = function(all, match, offset) {
+                    return all.replace(urlRe, "url($1"+savePathURL+"$3)");
+                };
+                data = data.replace(re, replaceFunc);
+            } else if(uri.type == "import") {
+                // Fix all instances where this url is found in an import rule
+                var re = new RegExp("<style[^>]*>((?:.*?[\r\n\t ]*)*?)</style>","gmi");
+                var noURLImportRe = new RegExp("(@import\\s*([\"'])\\s*)"+found+"(\\s*\\2)","g");
+                var urlImportRe   = new RegExp("(@import\\s+url\\(\\s*([\"']?)\\s*)"+found+"(\\s*\\2\\s*)\\)","g");
+                var replaceFunc = function(all, match, offset) {
+                    all = all.replace(noURLImportRe, "$1"+savePathURL+"$3");
+                    all = all.replace(urlImportRe ,  "$1"+savePathURL+"$3)");
+                    return all;
+                };
+                data = data.replace(re, replaceFunc);
+            }
+        }
+
+        // Fix anchors to point to absolute location instead of relative
+        if(this._options['rewriteLinks']) {
+            // TODO: See if adding a negative lookahead for the https?: would improve performance
+            var replaceFunc = function() {
+                var match = /^([^:]+):/.exec(arguments[0]);
+                if(match && match[1] != 'http' && match[1] != 'https')
+                    return arguments[0];
+                else
+                    return arguments[1]+arguments[2]+me._uri.resolve(arguments[3])+arguments[2];
+            }
+            data = data.replace(/(<a[^>]+href=)(["'])([^"']+)\2/igm, replaceFunc);
+        }
+
+        // Save adjusted file
+        this._fileSaver.saveURIContents(download.uri, data, download.charset);
     } else if(download.contentType == "text/css") {
         // Fix all URLs in this stylesheet
         for(var n = 0; n < this._uris.length; n++) {
