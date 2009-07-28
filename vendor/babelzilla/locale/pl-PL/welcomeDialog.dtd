@@ -1,9 +1,9 @@
-<!--    Note: Some of the labels in this file use HTML formatting tags, like <b>bold</b> and <i>italics</i>.    -->
-<!--    General window controls    -->
-<!--    Welcome message    -->
-<!--    Options page    -->
-<!--    Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages.    -->
-<!--    Changes confirmation message    -->
+<!--     Note: Some of the labels in this file use HTML formatting tags, like <b>bold</b> and <i>italics</i>.     -->
+<!--     General window controls     -->
+<!--     Welcome message     -->
+<!--     Options page     -->
+<!--     Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages.     -->
+<!--     Changes confirmation message     -->
 <!ENTITY window.title "Witamy!">
 <!ENTITY continuebutton.label "Kontynuuj">
 <!ENTITY okbutton.label "OK">

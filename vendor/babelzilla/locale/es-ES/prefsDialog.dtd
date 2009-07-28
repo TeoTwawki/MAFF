@@ -7,6 +7,8 @@
 <!ENTITY save.component.standard.accesskey "g">
 <!ENTITY save.component.savecomplete.label "Usar la extensión integrada &quot;Save Complete&quot;">
 <!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.mhtml.compatible.label "Crea archivos MHTML compatibles con otros navegadores">
+<!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.metadata.extended.label "Guardar datos extendidos en archivos MAFF">
 <!ENTITY save.metadata.extended.accesskey "e">
 <!ENTITY pane.interface.label "Interfaz">
