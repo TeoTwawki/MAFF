@@ -216,5 +216,115 @@ var MimeSupport = {
       }
     );
     return headers;
+  },
+
+  /**
+   * Returns a string of characters representing the decoded version of the
+   *  provided unstructured header field value. For more information, see
+   *  <http://tools.ietf.org/html/rfc5322#section-2.2.1> (retrieved 2009-08-01).
+   *
+   * This function attempts to decode "encoded words". For more information, see
+   *  <http://tools.ietf.org/html/rfc2047#section-2> (retrieved 2009-08-01). The
+   *  decoding algorithm is slightly different from the specification in that
+   *  the maximum length of an encoded word is not taken into account.
+   *
+   * This function recognizes and ignores the optional language specification in
+   *  encoded words. For more information on the subject, see
+   *  <http://tools.ietf.org/html/rfc2231#section-5> (retrieved 2009-08-01).
+   *
+   * @param aHeaderValue   ASCII encoded value of an unstructured header field.
+   *                        The string must consist of a single line of text.
+   */
+  parseUnstructuredValue: function(aHeaderValue) {
+    // Initialize the state variable used to find adjacent encoded words
+    var wordWasEncoded = false;
+    // Process individual words separated by whitespace
+    return aHeaderValue.replace(
+      /*
+       * The regular expression below is composed of the following parts:
+       *
+       * aWhitespace   ( [\t ]* )
+       *
+       * Optional whitespace before the encoded or normal word. Whitespace
+       *  between two encoded words will be omitted from the output.
+       *
+       * aWord   ( [^\t ]+ )
+       *
+       * The word that will be examined to determine if it is encoded. This part
+       *  will be replaced with the decoded word.
+       */
+      /([\t ]*)([^\t ]+)/g,
+      function(aAll, aWhitespace, aWord) {
+        // Remember if the previous word was encoded 
+        var previousWordWasEncoded = wordWasEncoded;
+        // Decode the current word and remember if decoding has been performed
+        wordWasEncoded = false;
+        var decodedWord = aWord.replace(
+          /*
+           * The regular expression below is composed of the following parts:
+           *
+           * aCharset   ( [^*?]+ )
+           *
+           * Character set specification defined inside the charset portion that
+           *  immediately follows the initial "=?" sequence.
+           *
+           * aLanguage   ( [^?]+ )
+           *
+           * Optional language tag, defined after the asterisk ("*") inside the
+           *  charset portion that follows the initial "=?" sequence.
+           *
+           * aEncoding   ( [^?]+ )
+           *
+           * Encoding portion that follows the first question mark ("?").
+           *
+           * aText   ( [^?]+ )
+           *
+           * Encoded text portion that follows the second question mark ("?")
+           *  and comes before the final "?=" sequence.
+           */
+          /^=\?([^*?]+)(?:\*([^?]+))?\?([^?]+)\?([^?]+)\?=$/,
+          function(aAll, aCharset, aLanguage, aEncoding, aText) {
+            // Decode the octets specified in the encoded text
+            var octets;
+            switch (aEncoding.toUpperCase()) {
+              case "B":
+                // For the "B" encoding, we can use "base64" decoding
+                octets = MimeSupport.decodeBase64(aText);
+                break;
+              case "Q":
+                // For the "Q" encoding, we can use "Quoted-Printable" decoding,
+                //  except that the underscore ("_") must be translated to space
+                //  before the operation.
+                octets = MimeSupport.decodeQuotedPrintable(
+                 aText.replace("_", "=20"));
+                break;
+              default:
+                // The encoding is unknown, stop now and don't alter the word
+                return aAll;
+            }
+            // Decode the characters represented by the octets
+            var decodedText;
+            try {
+              // Convert the octets to characters using the specified charset
+              var converter =
+               Cc["@mozilla.org/intl/scriptableunicodeconverter"].
+               createInstance(Ci.nsIScriptableUnicodeConverter);
+              converter.charset = aCharset;
+              decodedText = converter.ConvertToUnicode(octets);
+            } catch (e) {
+              // If decoding failed, stop now and don't alter the word
+              return aAll;
+            }
+            // Remember that the word was successfully decoded and replace it
+            wordWasEncoded = true;
+            return decodedText;
+          }
+        );
+        // If both this word and the previous one have been decoded, remove the
+        //  whitespace between the two
+        return (previousWordWasEncoded && wordWasEncoded ? "" : aWhitespace) +
+         decodedWord;
+      }
+    );
   }
 }
