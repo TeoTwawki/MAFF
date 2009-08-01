@@ -204,9 +204,30 @@ MafMhtHandler.prototype = {
 
 
   _addSubjectAndDateMetaData: function(decoder, datasource) {
-    datasource.title = decoder.getHeaderValue("subject") || "Unknown";
-    datasource.dateArchived = decoder.getHeaderValue("date") || "Unknown";
     this.xmafused = !!decoder.getHeaderValue("x-maf");
+    if (this.xmafused || decoder.getHeaderValue("x-maf-version")) {
+      // If the archive was created by MAF, the subject is saved as UTF-8
+      var octets = decoder.getHeaderValue("subject");
+      var decodedText = ""
+      var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
+       createInstance(Ci.nsIScriptableUnicodeConverter);
+      try {
+        // Convert the octets to characters using the specified charset
+        converter.charset = "utf-8";
+        decodedText = converter.ConvertToUnicode(octets);
+      } catch (e) {
+        // Convert the octets to characters using the specified charset
+        converter.charset = "iso-8859-1";
+        decodedText = converter.ConvertToUnicode(octets);
+      }
+      datasource.title = decodedText || "Unknown";
+    } else {
+      // If the archive was created by another browser, probably the subject is
+      //  properly encoded as an unstructured value
+      datasource.title = MimeSupport.parseUnstructuredValue(
+       decoder.getHeaderValue("subject")) || "Unknown";
+    }
+    datasource.dateArchived = decoder.getHeaderValue("date") || null;
   },
 
   createArchive: function(archivefile, sourcepath, archivepage, indexFilename, mafeventlistener) {
