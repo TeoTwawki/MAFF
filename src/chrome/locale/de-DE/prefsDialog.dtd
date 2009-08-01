@@ -1,7 +1,7 @@
-<!--  General window controls  -->
+<!-- General window controls -->
 <!ENTITY window.title "Einstellungen">
 <!ENTITY browsebutton.label "Durchsuchen...">
-<!--  Main pane  -->
+<!-- Main pane -->
 <!ENTITY pane.main.label "Allgemein">
 <!ENTITY save.caption "Speichern">
 <!ENTITY save.component.grouplabel "Wenn eine ganze Website gespeichert wird:">
@@ -13,7 +13,7 @@
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.metadata.extended.label "Erweiterte Metadaten in MAFF-Archiven speichern">
 <!ENTITY save.metadata.extended.accesskey "E">
-<!--  Interface pane  -->
+<!-- Interface pane -->
 <!ENTITY pane.interface.label "Benutzeroberfläche">
 <!ENTITY menu.caption "Menü">
 <!ENTITY menu.grouplabel "Mozilla-Archiv-Format Menüpunkte anzeigen in:">
@@ -28,7 +28,7 @@
 <!ENTITY menuitem.grouplabel "Diese zusätzlichen Menüpunkte zeigen:">
 <!ENTITY menuitem.saveinarchive.label "In Archiv speichern">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
-<!--  File associations pane. This pane is visible only on Windows.  -->
+<!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.fileassociations.label "Dateiverknüpfungen">
 <!ENTITY associate.windowsonly.description "Diese Funktion ist nur für Windows verfügbar.">
 <!ENTITY associate.buttons.description "Klicken Sie auf die folgenden Schaltflächen, um die mit MAF verarbeiteten Dateitypen mit Firefox zu verknüpfen.">
@@ -38,7 +38,7 @@
 <!ENTITY associate.mhtml.label "Dateiverknüpfung für .mht und .mhtml-Erweiterungen erstellen">
 <!ENTITY associate.mhtml.accesskey "a">
 <!ENTITY associate.uninstall.description "Bitte beachten Sie: Die Dateiverknüpfungen, die Sie hier erstellen, werden nicht entfernt, wenn MAF oder Firefox deinstalliert wird. Sie können aber die Dateiverknüpfungen in der Systemsteuerung von Windows bearbeiten.">
-<!--  Advanced pane  -->
+<!-- Advanced pane -->
 <!ENTITY pane.advanced.label "Erweitert">
 <!ENTITY temp.caption "Temporäre Dateien">
 <!ENTITY temp.folder.label "Temporärer Ordner:">

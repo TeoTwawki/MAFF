@@ -1,7 +1,7 @@
-<!--  General window controls  -->
+<!-- General window controls -->
 <!ENTITY window.title "偏好設定">
 <!ENTITY browsebutton.label "瀏覽…">
-<!--  Main pane  -->
+<!-- Main pane -->
 <!ENTITY pane.main.label "主要">
 <!ENTITY save.caption "儲存歸檔檔案時的操作">
 <!ENTITY save.component.grouplabel "當保存完整網頁檔案內容時：">
@@ -13,7 +13,7 @@
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.metadata.extended.label "在 MAFF 檔中保存擴展中介資料(v)">
 <!ENTITY save.metadata.extended.accesskey "v">
-<!--  Interface pane  -->
+<!-- Interface pane -->
 <!ENTITY pane.interface.label "Interface">
 <!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
@@ -28,7 +28,7 @@
 <!ENTITY menuitem.grouplabel "Show these additional menu items:">
 <!ENTITY menuitem.saveinarchive.label "Save In Archive">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
-<!--  File associations pane. This pane is visible only on Windows.  -->
+<!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.fileassociations.label "File associations">
 <!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
 <!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
@@ -38,7 +38,7 @@
 <!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
 <!ENTITY associate.mhtml.accesskey "a">
 <!ENTITY associate.uninstall.description "注意：在此處建立的檔案關聯在您移除 MAF 時並不會被刪除，您需要到 Windows 控制台的「資料夾選項」中手工修正。">
-<!--  Advanced pane  -->
+<!-- Advanced pane -->
 <!ENTITY pane.advanced.label "Advanced">
 <!ENTITY temp.caption "Temporary files">
 <!ENTITY temp.folder.label "Temporary folder:">

@@ -1,23 +1,23 @@
-<!--  *** General window controls ***  -->
+<!-- *** General window controls *** -->
 <!ENTITY window.title "Archive">
-<!--  *** Column names in the archive list ***  -->
-<!--  Title of the page  -->
+<!-- *** Column names in the archive list *** -->
+<!-- Title of the page -->
 <!ENTITY archives.placestitle.header "Seitentitel">
-<!--  Name of the archive the page is located into  -->
+<!-- Name of the archive the page is located into -->
 <!ENTITY archives.mafarchivename.header "Archivname">
-<!--  Address of the archive the page is located into  -->
+<!-- Address of the archive the page is located into -->
 <!ENTITY archives.placesurl.header "Archivspeicherort">
-<!--  Title of the page in the archive  -->
+<!-- Title of the page in the archive -->
 <!ENTITY archives.maftitle.header "Original-Seitentitel">
-<!--  Original address the page was saved from  -->
+<!-- Original address the page was saved from -->
 <!ENTITY archives.maforiginalurl.header "Original Speicherort">
-<!--  Date and time the page was archived  -->
+<!-- Date and time the page was archived -->
 <!ENTITY archives.mafdatearchived.header "Archiviert">
-<!--  Temporary local URL that can be used to display the page  -->
+<!-- Temporary local URL that can be used to display the page -->
 <!ENTITY archives.maftempuri.header "Temporäre URL">
-<!--  URL that can be used to display the page accessing the archive directly  -->
+<!-- URL that can be used to display the page accessing the archive directly -->
 <!ENTITY archives.mafdirectarchiveuri.header "Direkte URL">
-<!--  *** Column names in the details panel ***  -->
+<!-- *** Column names in the details panel *** -->
 <!ENTITY details.placestitle.label "Seitentitel:">
 <!ENTITY details.placestitle.accesskey "S">
 <!ENTITY details.mafarchivename.label "Archivname:">
@@ -34,29 +34,29 @@
 <!ENTITY details.maftempuri.accesskey "T">
 <!ENTITY details.mafdirectarchiveuri.label "Direkte URL:">
 <!ENTITY details.mafdirectarchiveuri.accesskey "D">
-<!--  *** Details panel ***  -->
+<!-- *** Details panel *** -->
 <!ENTITY details.caption "Details">
 <!ENTITY morebutton.label "Mehr Details">
-<!--  Note: If possible, keep the same as "lessbutton.accesskey"  -->
+<!-- Note: If possible, keep the same as "lessbutton.accesskey" -->
 <!ENTITY morebutton.accesskey "e">
 <!ENTITY lessbutton.label "Weniger Details">
-<!--  Note: If possible, keep the same as "morebutton.accesskey"  -->
+<!-- Note: If possible, keep the same as "morebutton.accesskey" -->
 <!ENTITY lessbutton.accesskey "e">
-<!--  Displayed in the details textboxes when multiple items are selected  -->
+<!-- Displayed in the details textboxes when multiple items are selected -->
 <!ENTITY multipleitems.text "(mehrere Objekte ausgewählt)">
-<!--  The following button is repeated for every URL field  -->
+<!-- The following button is repeated for every URL field -->
 <!ENTITY openintabsbutton.label "In Tabs öffnen">
 <!ENTITY openintabsbutton.accesskey.placesurl "T">
 <!ENTITY openintabsbutton.accesskey.originalurl "n">
 <!ENTITY openintabsbutton.accesskey.tempuri "b">
 <!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
-<!--  *** Other controls ***  -->
-<!--  Allows the user to add archives to the list, without opening them  -->
+<!-- *** Other controls *** -->
+<!-- Allows the user to add archives to the list, without opening them -->
 <!ENTITY addbutton.label "Hinzufügen">
 <!ENTITY addbutton.accesskey "H">
-<!--  Title of the add archives dialog  -->
+<!-- Title of the add archives dialog -->
 <!ENTITY addfilepicker.title "Mehr Web-Archive hinzufügen">
-<!--  Removes an archive from the list, without deleting the file  -->
+<!-- Removes an archive from the list, without deleting the file -->
 <!ENTITY deletebutton.label "Vergessen">
 <!ENTITY deletebutton.accesskey "V">
 <!ENTITY deletebutton.accesskey.placescontextmenu "V">

@@ -1,7 +1,7 @@
-<!--  General window controls  -->
+<!-- General window controls -->
 <!ENTITY window.title "Параметри">
 <!ENTITY browsebutton.label "Прелистај...">
-<!--  Main pane  -->
+<!-- Main pane -->
 <!ENTITY pane.main.label "Главно">
 <!ENTITY save.caption "Зачувај">
 <!ENTITY save.component.grouplabel "When saving complete web page contents:">
@@ -13,7 +13,7 @@
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
 <!ENTITY save.metadata.extended.accesskey "v">
-<!--  Interface pane  -->
+<!-- Interface pane -->
 <!ENTITY pane.interface.label "Интерфејс">
 <!ENTITY menu.caption "Мени">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
@@ -28,7 +28,7 @@
 <!ENTITY menuitem.grouplabel "Show these additional menu items:">
 <!ENTITY menuitem.saveinarchive.label "Save In Archive">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
-<!--  File associations pane. This pane is visible only on Windows.  -->
+<!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.fileassociations.label "File associations">
 <!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
 <!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
@@ -38,7 +38,7 @@
 <!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
 <!ENTITY associate.mhtml.accesskey "a">
 <!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
-<!--  Advanced pane  -->
+<!-- Advanced pane -->
 <!ENTITY pane.advanced.label "Напредно">
 <!ENTITY temp.caption "Temporary files">
 <!ENTITY temp.folder.label "Temporary folder:">

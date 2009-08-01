@@ -1,14 +1,14 @@
-<!--  Shortcut keys  -->
+<!-- Shortcut keys -->
 <!ENTITY command.browseopenarchives.key "M">
 <!ENTITY command.browseopenarchives.modifiers "alt">
-<!--  Menu items for general Mozilla Archive Format commands  -->
+<!-- Menu items for general Mozilla Archive Format commands -->
 <!ENTITY menuitem.mafsubmenu.label "Mozilla 歸檔格式 (MAF)">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "瀏覽已裝載檔案(r)…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
 <!ENTITY menuitem.preferences.label "配置…">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
-<!--  Additional menu items for the "Save As" command  -->
+<!-- Additional menu items for the "Save As" command -->
 <!ENTITY menuitem.savetabsas.label "選擇標籤頁並存檔(b)…">
 <!ENTITY menuitem.savetabsas.accesskey.filemenu "b">
 <!ENTITY menuitem.savetabsas.accesskey.toolsmenu "b">
@@ -19,7 +19,7 @@
 <!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "S">
 <!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
 <!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "S">
-<!--  Additional menu items for the "Save In Archive" command  -->
+<!-- Additional menu items for the "Save In Archive" command -->
 <!ENTITY menuitem.savepageinarchive.label "保存頁面至檔案(g)…">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">

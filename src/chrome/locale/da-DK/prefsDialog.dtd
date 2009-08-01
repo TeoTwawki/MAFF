@@ -1,7 +1,7 @@
-<!--  General window controls  -->
+<!-- General window controls -->
 <!ENTITY window.title "Indstillinger">
 <!ENTITY browsebutton.label "Gennemse...">
-<!--  Main pane  -->
+<!-- Main pane -->
 <!ENTITY pane.main.label "Hoved">
 <!ENTITY save.caption "Gem">
 <!ENTITY save.component.grouplabel "Ved gem af komplet webside-indhold:">
@@ -13,7 +13,7 @@
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.metadata.extended.label "Gem udvidede metadata i MAFF-arkiver">
 <!ENTITY save.metadata.extended.accesskey "u">
-<!--  Interface pane  -->
+<!-- Interface pane -->
 <!ENTITY pane.interface.label "Brugerflade">
 <!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Vis Mozilla Archive Format menuelementer i:">
@@ -28,7 +28,7 @@
 <!ENTITY menuitem.grouplabel "Vis disse yderligere menuelementer:">
 <!ENTITY menuitem.saveinarchive.label "Gem i arkiv">
 <!ENTITY menuitem.saveinarchive.accesskey "r">
-<!--  File associations pane. This pane is visible only on Windows.  -->
+<!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.fileassociations.label "Fil-associationer">
 <!ENTITY associate.windowsonly.description "Denne funktionalitet er kun tilgængelig under Windows.">
 <!ENTITY associate.buttons.description "Klik på følgende knapper for at associere Firefox med filtyperne der håndteres af MAF.">
@@ -38,7 +38,7 @@
 <!ENTITY associate.mhtml.label "Opret association for .mht og .mhtml filtyperne">
 <!ENTITY associate.mhtml.accesskey "a">
 <!ENTITY associate.uninstall.description "Bemærk: Disse associationer vil ikke blive fjernet ved afinstallation af MAF eller Firefox. Du kan administrere dine filassociationer ved hjælp af Windows kontrolpanel.">
-<!--  Advanced pane  -->
+<!-- Advanced pane -->
 <!ENTITY pane.advanced.label "Avanceret">
 <!ENTITY temp.caption "Midlertidige filer">
 <!ENTITY temp.folder.label "Midlertidig mappe:">

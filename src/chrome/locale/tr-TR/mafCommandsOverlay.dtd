@@ -1,14 +1,14 @@
-<!--  Shortcut keys  -->
+<!-- Shortcut keys -->
 <!ENTITY command.browseopenarchives.key "M">
 <!ENTITY command.browseopenarchives.modifiers "alt">
-<!--  Menu items for general Mozilla Archive Format commands  -->
+<!-- Menu items for general Mozilla Archive Format commands -->
 <!ENTITY menuitem.mafsubmenu.label "Mozilla Arşiv Biçimi">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Açık Arşivleri Tara...">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
 <!ENTITY menuitem.preferences.label "Tercihler...">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
-<!--  Additional menu items for the "Save As" command  -->
+<!-- Additional menu items for the "Save As" command -->
 <!ENTITY menuitem.savetabsas.label "Sekmeleri Farklı Kaydet...">
 <!ENTITY menuitem.savetabsas.accesskey.filemenu "b">
 <!ENTITY menuitem.savetabsas.accesskey.toolsmenu "b">
@@ -19,7 +19,7 @@
 <!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "S">
 <!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
 <!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "S">
-<!--  Additional menu items for the "Save In Archive" command  -->
+<!-- Additional menu items for the "Save In Archive" command -->
 <!ENTITY menuitem.savepageinarchive.label "SAyfayı Arşive Kaydet...">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">

@@ -1,25 +1,25 @@
-<!--  *** Note ***  -->
-<!--  Some of the labels in this file use pseudo-tags for formatting.  -->
-<!--  [b] and [/b] are for bold  -->
-<!--  [i] and [/i] are for italics  -->
-<!--  [tt] and [/tt] are for teletype  -->
-<!--  The tags must be written exactly as they are, using lowercase letters.  -->
-<!--  HTML tags and XML entity references are avoided for compatibility with the BabelZilla Web Translation System.  -->
-<!--  *** General window controls ***  -->
+<!-- *** Note *** -->
+<!-- Some of the labels in this file use pseudo-tags for formatting. -->
+<!-- [b] and [/b] are for bold -->
+<!-- [i] and [/i] are for italics -->
+<!-- [tt] and [/tt] are for teletype -->
+<!-- The tags must be written exactly as they are, using lowercase letters. -->
+<!-- HTML tags and XML entity references are avoided for compatibility with the BabelZilla Web Translation System. -->
+<!-- *** General window controls *** -->
 <!ENTITY window.title "欢迎">
 <!ENTITY continuebutton.label "继续">
 <!ENTITY okbutton.label "确定">
-<!--  *** Welcome message ***  -->
+<!-- *** Welcome message *** -->
 <!ENTITY welcome.label "欢迎使用 Mozilla 档案格式（Mozilla Archive Format）！">
 <!ENTITY welcome.para1.description "感谢您选择并安装 MAF！您的浏览器已具备opening and 保存完整网页于单个文件（Web 档案）的功能。MAF 支持两种格式：[tt]MAFF[/tt] 和 [tt]MHTML[/tt]。">
 <!ENTITY welcome.para2.description "You can open web archives using the [b]打开文件[/b] item in the File menu, and create them by selecting the desired archive type in the [b]页面另存为[/b] dialog box.">
 <!ENTITY welcome.para3.description "You can find additional archive management commands in the [b]Tools[/b] menu.">
-<!--  *** Options page ***  -->
+<!-- *** Options page *** -->
 <!ENTITY options.description "Even though you can already open and save web archives, the following enhancements to your computer configuration are recommended:">
 <!ENTITY options.associate.label "Open web archives with Firefox by default">
 <!ENTITY options.associate.accesskey "O">
 <!ENTITY options.associate.description "Select this option if you wish to open web archive files by clicking on their icon.">
-<!--  Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages.  -->
+<!-- Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages. -->
 <!ENTITY options.savecomplete.label "Enable the integrated Save Complete component">
 <!ENTITY options.savecomplete.accesskey "E">
 <!ENTITY options.savecomplete.para1.description "Save Complete is a Firefox extension that allows you to save web pages in a way that is more faithful to the original, compared to the standard Firefox save system.">
@@ -28,6 +28,6 @@
 <!ENTITY options.savemaff.accesskey "S">
 <!ENTITY options.savemaff.para1.description "MAFF is a cross-platform, open file format based on ZIP. MAFF files can be opened on Linux or any other platform that supports ZIP files, but cannot be easily exchanged with Internet Explorer users.">
 <!ENTITY options.savemaff.para2.description "You can change the archive type at any time in the [b]Save As[/b] dialog box.">
-<!--  *** Changes confirmation message ***  -->
+<!-- *** Changes confirmation message *** -->
 <!ENTITY changesapplied.label "Congratulations!">
 <!ENTITY changesapplied.description "Your system has been configured as you requested, and is ready for use.">
