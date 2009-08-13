@@ -1,0 +1,14 @@
+<!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
+<!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
+<!ENTITY menuitem.preferences.label "Preferências...">
+<!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
+<!ENTITY menuitem.savetabsas.label "Salvar abas como...">
+<!ENTITY menuitem.savetabsas.accesskey.filemenu "b">
+<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "b">
+<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "b">
+<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "b">
+<!ENTITY menuitem.savealltabsas.label "Salvar todas as abas como...">
+<!ENTITY menuitem.savealltabsas.accesskey.filemenu "t">
+<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "t">
+<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "t">
+<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "t">

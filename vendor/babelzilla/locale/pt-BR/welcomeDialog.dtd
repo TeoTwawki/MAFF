@@ -1,0 +1,21 @@
+<!ENTITY window.title "Bem-vindo">
+<!ENTITY continuebutton.label "Continuar">
+<!ENTITY okbutton.label "OK">
+<!ENTITY welcome.label "Bem-vindo ao Mozilla Archive Format!">
+<!ENTITY welcome.para1.description "Obrigado por instalar MAF! Seu Firefox agora é capaz de abrir e salvar páginas da web completas em [i]arquivos simples da web[/i], tanto no formato [tt]MAFF[/tt] quanto no [tt]MHTML[/tt].">
+<!ENTITY welcome.para2.description "Você pode abrir arquivos simples da web através do comando [b]Abrir arquivo...[/b] no menu Arquivo, e salvá-los escolhendo o tipo de arquivo na janela [b]Savar como[/b].">
+<!ENTITY welcome.para3.description "Você encontrará ferramentas extras para lidar com os arquivos simples da web no menu [b]Ferramentas[/b].">
+<!ENTITY options.description "Você já pode abrir e salvar arquivos simples da web usando o Firefox. Entretanto, as seguintes melhorias de configurações são sugeridas:">
+<!ENTITY options.associate.label "Abrir arquivos simples da web no Firefox">
+<!ENTITY options.associate.accesskey "A">
+<!ENTITY options.associate.description "Selecione essa opção para fazer o computador abrir arquivos simples da web usando o Firefox quando você dá um duplo clique neles.">
+<!ENTITY options.savecomplete.label "Salvar páginas usando o componente integrado Save Complete">
+<!ENTITY options.savecomplete.accesskey "S">
+<!ENTITY options.savecomplete.para1.description "Save Complete é uma extensão para Firefox que permite salvar páginas de forma mais fiel ao original do que o método de salvar padrão do Firefox. Mozilla Archive Format já vem com uma cópia integrada do Save Complete para a sua conveniência.">
+<!ENTITY options.savecomplete.para2.description "Você pode mudar sua decisão a qualquer momento na janela de preferências do MAF.">
+<!ENTITY options.savemaff.label "Salvar no formato MAFF por padrão">
+<!ENTITY options.savemaff.accesskey "f">
+<!ENTITY options.savemaff.para1.description "MAFF é um formato de arquivo simples da web baseado em ZIP. Ele pode ser aberto no Linux e em qualquer outra plataforma que suporte arquivos ZIP, porém não são abertos diretamente pelo Internet Expolrer.">
+<!ENTITY options.savemaff.para2.description "Você pode mudar o tipo de arquivo a ser salvo na janela [b]Salvar como[/b] toda vez que for salvar uma página.">
+<!ENTITY changesapplied.label "Parabéns!">
+<!ENTITY changesapplied.description "Seu sistema foi configurado como você pediu e está pronto para ser usado.">

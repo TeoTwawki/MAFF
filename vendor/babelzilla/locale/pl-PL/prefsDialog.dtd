@@ -1,7 +1,7 @@
-<!--     General window controls     -->
+<!--    General window controls    -->
 <!ENTITY window.title "Ustawienia">
 <!ENTITY browsebutton.label "Przeglądaj…">
-<!--     Main pane     -->
+<!--    Main pane    -->
 <!ENTITY pane.main.label "Główne">
 <!ENTITY save.caption "Zapisywanie">
 <!ENTITY save.component.grouplabel "Zapisuj zawartość strony internetowej używając:">
@@ -13,7 +13,7 @@
 <!ENTITY save.mhtml.compatible.accesskey "M">
 <!ENTITY save.metadata.extended.label "Zapisuj rozszerzone metadane w archiwach MAFF">
 <!ENTITY save.metadata.extended.accesskey "Z">
-<!--     Interface pane     -->
+<!--    Interface pane    -->
 <!ENTITY pane.interface.label "Interfejs">
 <!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Wyświetlaj element Mozilla Archive Format w:">
@@ -28,7 +28,7 @@
 <!ENTITY menuitem.grouplabel "Wyświetlaj poniższe elementy:">
 <!ENTITY menuitem.saveinarchive.label "Zapisz w archiwum">
 <!ENTITY menuitem.saveinarchive.accesskey "H">
-<!--     File associations pane. This pane is visible only on Windows.     -->
+<!--    File associations pane. This pane is visible only on Windows.    -->
 <!ENTITY pane.fileassociations.label "Skojarzenia plików">
 <!ENTITY associate.windowsonly.description "Ta funkcjonalność jest dostępna tylko w systemie Windows.">
 <!ENTITY associate.buttons.description "Aby skojarzyć Firefoksa z typami plików obsługiwanymi przez MAF, kliknij znajdujące się poniżej przyciski.">
@@ -38,7 +38,7 @@
 <!ENTITY associate.mhtml.label "Utwórz skojarzenie dla rozszerzeń .mht i.mhtml">
 <!ENTITY associate.mhtml.accesskey "H">
 <!ENTITY associate.uninstall.description "Informacja: Skojarzenia plików tutaj utworzone nie będą usuwane podczas dezinstalacji MAF lub Firefoksa. Możesz zarządzać skojarzeniami plików z poziomu Panelu sterowania systemu Windows.">
-<!--     Advanced pane     -->
+<!--    Advanced pane    -->
 <!ENTITY pane.advanced.label "Zaawansowane">
 <!ENTITY temp.caption "Pliki tymczasowe">
 <!ENTITY temp.folder.label "Folder plików tymczasowych:">

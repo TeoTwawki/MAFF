@@ -1,0 +1,5 @@
+<!ENTITY window.title "Selecione as abas a serem salvas">
+<!ENTITY savebutton.label "Salvar">
+<!ENTITY tabs.title.header "Título">
+<!ENTITY tabs.location.header "Pasta">
+<!ENTITY tabs.all.label "Todas as abas da janela atual">

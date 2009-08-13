@@ -2,5 +2,10 @@
 <!ENTITY continuebutton.label "继续">
 <!ENTITY okbutton.label "确定">
 <!ENTITY welcome.label "欢迎使用 Mozilla 档案格式（Mozilla Archive Format）！">
-<!ENTITY welcome.para1.description "感谢您选择并安装 MAF！您的浏览器已具备opening and 保存完整网页于单个文件（Web 档案）的功能。MAF 支持两种格式：[tt]MAFF[/tt] 和 [tt]MHTML[/tt]。">
-<!ENTITY welcome.para2.description "You can open web archives using the [b]打开文件[/b] item in the File menu, and create them by selecting the desired archive type in the [b]页面另存为[/b] dialog box.">
+<!ENTITY welcome.para1.description "感谢您选择并安装 MAF！您的浏览器已具备保存完整网页于单个文件（Web 档案）及打开这种文件的功能。MAF 支持两种格式：[tt]MAFF[/tt] 和 [tt]MHTML[/tt]。">
+<!ENTITY welcome.para2.description "您可以通过文件菜单中的[b]打开文件[/b]菜单项打开 Web 档案，并通过在[b]页面另存为[/b]对话框中选择所需的文件类型来创建它们。">
+<!ENTITY welcome.para3.description "还可在[b]工具[/b]菜单中找到附加的档案管理命令。">
+<!ENTITY options.description "尽管您已可打开并保存 Web 档案，下面的对您的系统配置的加强是 recommended：">
+<!ENTITY options.savecomplete.label "启用集成的 Save Complete 组件">
+<!ENTITY options.savecomplete.accesskey "E">
+<!ENTITY options.savecomplete.para1.description "Save Complete 是一个 Firefox 扩展，使浏览器在保存网页时使用浏览器标准保存系统更可靠的方法，并存入较浏览器标准保存系统更全面的信息。">

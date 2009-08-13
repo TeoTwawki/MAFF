@@ -5,7 +5,7 @@
 <!ENTITY save.component.grouplabel "Quando si salva il contenuto completo di una pagina:">
 <!ENTITY save.component.standard.label "Usa il sistema di salvataggio standard del browser">
 <!ENTITY save.component.standard.accesskey "U">
-<!ENTITY save.component.savecomplete.label "Usa l&apos;estensione &quot;Save Complete&quot; integrata">
+<!ENTITY save.component.savecomplete.label "Usa l'estensione &quot;Save Complete&quot; integrata">
 <!ENTITY save.component.savecomplete.accesskey "n">
 <!ENTITY save.mhtml.compatible.label "Crea file MHTML pienamente compatibili con altri browser">
 <!ENTITY save.mhtml.compatible.accesskey "a">
@@ -29,7 +29,7 @@
 <!ENTITY associate.windowsonly.description "Questa funzionalità è disponibile solo su Windows.">
 <!ENTITY associate.buttons.description "Fare clic sui bottoni seguenti per associare Firefox con i tipi di file gestiti da MAF.">
 <!ENTITY associate.adminprivs.description "Questa operazione richiede privilegi di amministratore.">
-<!ENTITY associate.maff.label "Crea associazione per l&apos;estensione .maff">
+<!ENTITY associate.maff.label "Crea associazione per l'estensione .maff">
 <!ENTITY associate.maff.accesskey "C">
 <!ENTITY associate.mhtml.label "Crea associazione per le estensioni .mht e .mhtml">
 <!ENTITY associate.mhtml.accesskey "r">

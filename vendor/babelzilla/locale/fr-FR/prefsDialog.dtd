@@ -5,7 +5,7 @@
 <!ENTITY save.component.grouplabel "Lors de la sauvegarde du contenu complet des pages web :">
 <!ENTITY save.component.standard.label "Utiliser le système de sauvegarde standard du système">
 <!ENTITY save.component.standard.accesskey "s">
-<!ENTITY save.component.savecomplete.label "Utiliser l&apos;extension intégrée &quot;Save Complete&quot;">
+<!ENTITY save.component.savecomplete.label "Utiliser l'extension intégrée &quot;Save Complete&quot;">
 <!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.mhtml.compatible.label "Créer des fichiers MHTML complètement compatibles avec les autres navigateurs">
 <!ENTITY save.mhtml.compatible.accesskey "o">
@@ -20,16 +20,16 @@
 <!ENTITY menu.tools.accesskey "O">
 <!ENTITY menu.pagecontext.label "Menu contextuel des pages">
 <!ENTITY menu.pagecontext.accesskey "p">
-<!ENTITY menu.tabscontext.label "Menu contextuel de la barre d&apos;onglets">
+<!ENTITY menu.tabscontext.label "Menu contextuel de la barre d'onglets">
 <!ENTITY menu.tabscontext.accesskey "x">
 <!ENTITY menuitem.grouplabel "Afficher ces éléments supplémentaires :">
-<!ENTITY menuitem.saveinarchive.label "Enregistrer dans l&apos;archive">
+<!ENTITY menuitem.saveinarchive.label "Enregistrer dans l'archive">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
 <!ENTITY pane.fileassociations.label "Association des fichiers">
 <!ENTITY associate.windowsonly.description "Cette fonctionnalité est disponible uniquement pour les systèmes Windows.">
 <!ENTITY associate.buttons.description "Cliquer sur le bouton suivant pour associer les fichiers supportés par MAF avec Firefox.">
 <!ENTITY associate.adminprivs.description "Cette opération pourrait nécessiter les privilèges administrateur.">
-<!ENTITY associate.maff.label "Créer une association pour l&apos;extension .maff">
+<!ENTITY associate.maff.label "Créer une association pour l'extension .maff">
 <!ENTITY associate.maff.accesskey "e">
 <!ENTITY associate.mhtml.label "Créer une association pour les extensions .mht et .mhtml">
 <!ENTITY associate.mhtml.accesskey "a">
