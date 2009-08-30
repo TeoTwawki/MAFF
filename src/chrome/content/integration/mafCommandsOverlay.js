@@ -251,23 +251,31 @@ var MafCommandsOverlay = {
    * Displays the "Preferences" window.
    */
   preferences: function() {
-    // Determine the expected behavior of preferences windows
-    try {
-      var instantApply =
-       Components.classes["@mozilla.org/preferences-service;1"]
-       .getService(Components.interfaces.nsIPrefService)
-       .getBranch("").getBoolPref("browser.preferences.instantApply");
-    } catch(e) {
-      instantApply = false;
+    // If the preferences window is already opened
+    var prefsDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
+     getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Prefs");
+    if (prefsDialog) {
+      // Bring the window to the foreground
+      prefsDialog.focus();
+    } else {
+      // Determine the expected behavior of preferences windows
+      try {
+        var instantApply =
+         Components.classes["@mozilla.org/preferences-service;1"]
+         .getService(Components.interfaces.nsIPrefService)
+         .getBranch("").getBoolPref("browser.preferences.instantApply");
+      } catch(e) {
+        instantApply = false;
+      }
+      // Open the preferences window. If instant apply is on, the window will
+      //  be minimizable (dialog=no), conversely if instant apply is not enabled
+      //  the window will be modal and not minimizable.
+      window.openDialog(
+       "chrome://maf/content/preferences/prefsDialog.xul",
+       "maf-prefsDialog",
+       "chrome,titlebar,toolbar,centerscreen," +
+       (instantApply ? "dialog=no" : "modal"));
     }
-    // Open the preferences window. If instant apply is on, the window will
-    //  be minimizable (dialog=no), conversely if instant apply is not enabled
-    //  the window will be modal and not minimizable.
-    window.openDialog(
-     "chrome://maf/content/preferences/prefsDialog.xul",
-     "maf-prefsDialog",
-     "chrome,titlebar,toolbar,centerscreen," +
-     (instantApply ? "dialog=no" : "modal"));
   },
 
   /**

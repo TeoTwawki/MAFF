@@ -42,15 +42,19 @@
    - This dialog allows modification of the extension's preferences.
    -
    - When adding a preference here, also update "prefsObject.js" accordingly.
+   -
+   - The window type "Maf:Prefs" is used to find and focus the window if it is
+   -  already opened, instead of opening a new one.
    -->
 
 <prefwindow
- id="prefsDialog"
- title="&window.title;"
- buttons="accept,cancel"
- xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
- persist="lastSelected screenX screenY"
- onload="PrefsDialog.onLoadDialog();"
+ id=        "prefsDialog"
+ title=     "&window.title;"
+ windowtype="Maf:Prefs"
+ buttons=   "accept,cancel"
+ xmlns=     "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ persist=   "lastSelected screenX screenY"
+ onload=    "PrefsDialog.onLoadDialog();"
  >
 
   <!-- Main pane -->
