@@ -58,16 +58,23 @@ var MafInterfaceOverlay = {
     // Remove the previously added event listener
     window.removeEventListener("load", MafInterfaceOverlay.onLoad, false);
 
-    // Listen for when the browser window closes, to perform shutdown
-    window.addEventListener("unload", MafInterfaceOverlay.onUnload, false);
+    // Get references to some of the elements of the MAF user interface
+    MafInterfaceOverlay._initElementReferences();
+
+    // Ensure the initial state of the interface for new windows is consistent
+    MafInterfaceOverlay._updateArchiveInfo();
 
     // Register the web progress listener defined in this object, and receive
     //  only the onLocationChange notifications
     gBrowser.addProgressListener(MafInterfaceOverlay.webProgressListener,
      Ci.nsIWebProgress.NOTIFY_LOCATION);
 
-    // Get references to some of the elements of the MAF user interface
-    MafInterfaceOverlay._initElementReferences();
+    // Register a preference observer to update the visibility of the icons
+    MozillaArchiveFormat.Prefs.prefBranchForMaf.addObserver(
+     "interface.icon.location", MafInterfaceOverlay.prefObserver, false);
+
+    // Listen for when the browser window closes, to perform shutdown
+    window.addEventListener("unload", MafInterfaceOverlay.onUnload, false);
   },
 
   /**
@@ -76,6 +83,10 @@ var MafInterfaceOverlay = {
   onUnload: function() {
     // Remove the previously added event listener
     window.removeEventListener("unload", MafInterfaceOverlay.onUnload, false);
+
+    // Remove the preference observer defined in this object
+    MozillaArchiveFormat.Prefs.prefBranchForMaf.removeObserver(
+     "interface.icon.location", MafInterfaceOverlay.prefObserver);
 
     // Remove the web progress listener defined in this object
     gBrowser.removeProgressListener(MafInterfaceOverlay.webProgressListener);
@@ -310,6 +321,24 @@ var MafInterfaceOverlay = {
     },
     onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) { },
     onSecurityChange: function(aWebProgress, aRequest, aState) { }
+  },
+
+  /**
+   * This preference observer detects changes that affect the display of the MAF
+   *  interface elements in the main browser window.
+   */
+  prefObserver: {
+
+    // --- nsISupports interface functions ---
+
+    QueryInterface: XPCOMUtils.generateQI([Ci.nsIObserver]),
+
+    // --- nsIObserver interface functions ---
+
+    observe: function(aSubject, aTopic, aData) {
+      // Refresh the visibility of the icons
+      MafInterfaceOverlay._checkArchiveInfoIcons();
+    }
   }
 };
 

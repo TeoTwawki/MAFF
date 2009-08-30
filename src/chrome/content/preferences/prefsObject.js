@@ -67,28 +67,28 @@ var Prefs = {
    *   (other)                      - If the user has customized the preference.
    */
   get interfaceIconLocation() {
-    return this._prefBranchForMaf.getCharPref("interface.icon.location");
+    return this.prefBranchForMaf.getCharPref("interface.icon.location");
   },
 
   /**
    * Returns true if MAF menu items should be shown in the File menu.
    */
   get interfaceMenuFile() {
-    return this._prefBranchForMaf.getBoolPref("interface.menu.file");
+    return this.prefBranchForMaf.getBoolPref("interface.menu.file");
   },
 
   /**
    * Returns true if MAF menu items should be shown in the Tools menu.
    */
   get interfaceMenuTools() {
-    return this._prefBranchForMaf.getBoolPref("interface.menu.tools");
+    return this.prefBranchForMaf.getBoolPref("interface.menu.tools");
   },
 
   /**
    * Returns true if MAF menu items should be shown in the page context menu.
    */
   get interfaceMenuPageContext() {
-    return this._prefBranchForMaf.getBoolPref("interface.menu.pagecontext");
+    return this.prefBranchForMaf.getBoolPref("interface.menu.pagecontext");
   },
 
   /**
@@ -98,7 +98,7 @@ var Prefs = {
    *  appear in the page context menu instead.
    */
   get interfaceMenuTabsContext() {
-    return this._prefBranchForMaf.getBoolPref("interface.menu.tabscontext");
+    return this.prefBranchForMaf.getBoolPref("interface.menu.tabscontext");
   },
 
   /**
@@ -107,7 +107,7 @@ var Prefs = {
    *  menu item is always present in the Tools menu.
    */
   get interfaceMenuItemSaveInArchive() {
-    return this._prefBranchForMaf.
+    return this.prefBranchForMaf.
      getBoolPref("interface.menuitem.saveinarchive");
   },
 
@@ -115,10 +115,10 @@ var Prefs = {
    * Returns true if the welcome dialog should be displayed on startup.
    */
   get otherDisplayWelcome() {
-    return this._prefBranchForMaf.getBoolPref("other.displaywelcome");
+    return this.prefBranchForMaf.getBoolPref("other.displaywelcome");
   },
   set otherDisplayWelcome(aValue) {
-    this._prefBranchForMaf.setBoolPref("other.displaywelcome", aValue);
+    this.prefBranchForMaf.setBoolPref("other.displaywelcome", aValue);
   },
 
   /** Enumeration for saveComponent */
@@ -136,7 +136,7 @@ var Prefs = {
    *   (other)                    - If the user has customized the preference.
    */
   get saveComponent() {
-    var prefValue = this._prefBranchForMaf.getCharPref("save.component");
+    var prefValue = this.prefBranchForMaf.getCharPref("save.component");
     // The "maf" value represented the internal save component, that is not
     //  available anymore. If that value is specified in the preference, the
     //  Save Complete component is used instead.
@@ -148,7 +148,7 @@ var Prefs = {
    *  and scroll position, must be saved in new archives.
    */
   get saveMetadataExtended() {
-    return this._prefBranchForMaf.getBoolPref("save.metadata.extended");
+    return this.prefBranchForMaf.getBoolPref("save.metadata.extended");
   },
 
   /**
@@ -159,7 +159,7 @@ var Prefs = {
    * This preference is effective only if Save Complete is enabled.
    */
   get saveMhtmlCompatible() {
-    return this._prefBranchForMaf.getBoolPref("save.mhtml.compatible");
+    return this.prefBranchForMaf.getBoolPref("save.mhtml.compatible");
   },
 
   /**
@@ -167,7 +167,7 @@ var Prefs = {
    *  ".mht" in the file filters for the "Save As" dialogs.
    */
   get saveUseMhtmlExtension() {
-    return this._prefBranchForMaf.getBoolPref("save.usemhtmlextension");
+    return this.prefBranchForMaf.getBoolPref("save.usemhtmlextension");
   },
 
   /**
@@ -178,7 +178,7 @@ var Prefs = {
    * The "jar:" protocol may be faster but using it may lock the archive file.
    */
   get openUseJarProtocol() {
-    return this._prefBranchForMaf.getBoolPref("open.usejarprotocol");
+    return this.prefBranchForMaf.getBoolPref("open.usejarprotocol");
   },
 
   /**
@@ -186,7 +186,7 @@ var Prefs = {
    *  they refer to a page that was saved in any of the open archives.
    */
   get openRewriteUrls() {
-    return this._prefBranchForMaf.getBoolPref("open.rewriteurls");
+    return this.prefBranchForMaf.getBoolPref("open.rewriteurls");
   },
 
   /**
@@ -194,7 +194,7 @@ var Prefs = {
    */
   get tempFolder() {
     // Get the value as an Unicode string
-    var tempFolderPath = this._prefBranchForMaf.getComplexValue(
+    var tempFolderPath = this.prefBranchForMaf.getComplexValue(
      "temp.folder", Ci.nsISupportsString).data;
     // If the string is empty, use the default path, that is a subdirectory
     //  of the system temporary directory
@@ -212,15 +212,26 @@ var Prefs = {
    * Returns true if the temporary folder must be cleaned up on exit.
    */
   get tempClearOnExit() {
-    return this._prefBranchForMaf.getBoolPref("temp.clearonexit");
+    return this.prefBranchForMaf.getBoolPref("temp.clearonexit");
   },
+
+  /*
+   * Other public properties
+   */
+
+  /**
+   * Returns a reference to the MAF preferences branch, that can be used to add
+   * and remove preference observers. For more information, see
+   * <https://developer.mozilla.org/en/Code_snippets/Preferences#Using_preference_observers>
+   * (retrieved 2009-08-30).
+   */
+  prefBranchForMaf: Cc["@mozilla.org/preferences-service;1"].
+   getService(Ci.nsIPrefService).getBranch("extensions.maf.").
+   QueryInterface(Ci.nsIPrefBranch2),
 
   /*
    * Private methods and properties
    */
 
-  _DEFAULT_TEMPFOLDER_NAME: "maftemp",
-
-  _prefBranchForMaf: Cc["@mozilla.org/preferences-service;1"]
-    .getService(Ci.nsIPrefService).getBranch("extensions.maf.")
+  _DEFAULT_TEMPFOLDER_NAME: "maftemp"
 }
