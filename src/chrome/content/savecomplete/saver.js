@@ -718,6 +718,7 @@ scPageSaver.scDefaultFileSaver.prototype.documentPath = function(uri, relativeUR
         var fileName = uri.uri.path.split('/').pop();
         fileName = fileName.replace(/\?.*$/,"");
         fileName = fileName.replace(/[\"\*\:\?\<\>\|\\]+/g,"");
+        if(fileName.length > 50) fileName = fileName.slice(0, 25)+fileName.slice(-25);
         if(fileName == "") fileName = "unnamed";
 
         /* Here we must check if the file can be saved to disk with the chosen
