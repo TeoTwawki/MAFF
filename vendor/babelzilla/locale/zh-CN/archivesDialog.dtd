@@ -9,15 +9,15 @@
 <!ENTITY archives.mafdirectarchiveuri.header "直接访问地址">
 <!ENTITY details.placestitle.label "存档页面标题:">
 <!ENTITY details.placestitle.accesskey "P">
-<!ENTITY details.mafarchivename.label "档案名称(r):">
+<!ENTITY details.mafarchivename.label "档案名称 (r):">
 <!ENTITY details.mafarchivename.accesskey "r">
-<!ENTITY details.placesurl.label "档案位置(h):">
+<!ENTITY details.placesurl.label "档案位置 (h):">
 <!ENTITY details.placesurl.accesskey "h">
-<!ENTITY details.maftitle.label "原始页面标题(i):">
+<!ENTITY details.maftitle.label "原始页面标题 (i):">
 <!ENTITY details.maftitle.accesskey "i">
-<!ENTITY details.maforiginalurl.label "原始页面位置(g):">
+<!ENTITY details.maforiginalurl.label "原始页面位置 (g):">
 <!ENTITY details.maforiginalurl.accesskey "g">
-<!ENTITY details.mafdatearchived.label "存档时间(c):">
+<!ENTITY details.mafdatearchived.label "存档时间 (c):">
 <!ENTITY details.mafdatearchived.accesskey "c">
 <!ENTITY details.maftempuri.label "临时解包页地址:">
 <!ENTITY details.maftempuri.accesskey "T">
@@ -29,3 +29,14 @@
 <!ENTITY lessbutton.label "更少细节">
 <!ENTITY lessbutton.accesskey "e">
 <!ENTITY multipleitems.text "（选择了多于一个的存档页）">
+<!ENTITY openintabsbutton.label "在标签页群中打开">
+<!ENTITY openintabsbutton.accesskey.placesurl "O">
+<!ENTITY openintabsbutton.accesskey.originalurl "n">
+<!ENTITY openintabsbutton.accesskey.tempuri "b">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
+<!ENTITY addbutton.label "添加…">
+<!ENTITY addbutton.accesskey "A">
+<!ENTITY addfilepicker.title "添加 Web 档案">
+<!ENTITY deletebutton.label "移出">
+<!ENTITY deletebutton.accesskey "F">
+<!ENTITY deletebutton.accesskey.placescontextmenu "F">
