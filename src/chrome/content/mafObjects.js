@@ -39,6 +39,7 @@ try {
    ["caching/archiveAnnotationsObject.js",        "ArchiveAnnotations"],
 
    // Support objects for the front-end
+   ["frontend/interfaceObject.js",                "Interface"],
    ["frontend/welcomeObject.js",                  "Welcome"],
 
    // Support objects for integration with the host application

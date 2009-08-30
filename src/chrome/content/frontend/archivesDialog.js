@@ -280,7 +280,7 @@ var ArchivesDialog = {
     var value = ArchivesDialog.getNodeValue(this.nodeForTreeIndex(aRow),
      aCol.element.id);
     // Display localized short dates or plain string values
-    return ArchivesDialog.formatValueForDisplay(value, true);
+    return Interface.formatValueForDisplay(value, true);
   },
 
   /**
@@ -471,7 +471,7 @@ var ArchivesDialog = {
           actionDisabled = false;
           if (selectedNodes.length == 1) {
             // Display a localized long date or the plain string value
-            displayValue = ArchivesDialog.formatValueForDisplay(value, false);
+            displayValue = Interface.formatValueForDisplay(value, false);
           } else {
             // Display a placeholder for multiple nodes
             displayValue = txtValue.getAttribute("multivalue");
@@ -525,52 +525,5 @@ var ArchivesDialog = {
     var element = document.getElementById(aColumnId);
     var annotationName = ArchivesDialog.getColumnAnnotationName(element);
     return ArchiveAnnotations.getAnnotationForPage(page, annotationName);
-  },
-
-  /**
-   * Returns a string representing the localized value to display in the tree
-   *  view column or in the details view, for the given string or Date object.
-   *  If the argument is null, an empty string is returned.
-   */
-  formatValueForDisplay: function(aValue, aForColumn) {
-    // Return an empty string in place of null values
-    if (!aValue) {
-      return "";
-    }
-    // Check if the value is a date and handle it appropriately. The
-    //  "instanceof" operator cannot be used for this check since sometimes the
-    //  type information is not propagated along with the Date object.
-    if (aValue.getYear) {
-      // Format the Date object
-      if (aForColumn) {
-        // Use the date formatting service to display a short localized date
-        return Cc["@mozilla.org/intl/scriptabledateformat;1"].
-         getService(Ci.nsIScriptableDateFormat).FormatDateTime("",
-          Ci.nsIScriptableDateFormat.dateFormatShort,
-          Ci.nsIScriptableDateFormat.timeFormatNoSeconds,
-          aValue.getFullYear(), aValue.getMonth() + 1,
-          aValue.getDate(), aValue.getHours(),
-          aValue.getMinutes(), aValue.getSeconds());
-      } else {
-        // Display a long localized date
-        return aValue.toLocaleString();
-      }
-    }
-    // Check if the value has been tagged as an URI and handle it appropriately
-    if (aValue.isEscapedAsUri) {
-      try {
-        // Unescape the URI for displaying it in the user interface, assuming
-        //  its character set after unescaping is UTF-8
-        return ArchivesDialog._textToSubURI.unEscapeURIForUI("UTF-8", aValue);
-      } catch (e) {
-        // In case of errors, display the unescaped URI
-        return aValue;
-      }
-    }
-    // Return the unprocessed value
-    return aValue;
-  },
-
-  _textToSubURI: Cc["@mozilla.org/intl/texttosuburi;1"].
-   getService(Ci.nsITextToSubURI)
+  }
 }
