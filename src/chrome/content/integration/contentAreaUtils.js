@@ -213,16 +213,6 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     }
 
     saveBehavior = fpParams.saveBehavior;
-    
-    // When asking to save in an archive, if All Files is selected we will save
-    //  the file using the default archive format
-    if (mafAskSaveArchive && saveBehavior == gNormalSaveBehavior) {
-      // Note: in this case, aDocument is specified and the original saveMode
-      //  includes SAVEMODE_MAFARCHIVE, so we needn't worry that saveBehavior
-      //  be changed later
-      saveBehavior = gMafDefaultSaveBehavior;
-    }
-
     file = fpParams.file;
     fileURL = fpParams.fileURL;
   }
@@ -621,7 +611,13 @@ function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension,
 
   // Always append the all files (*) filter
   aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
-  aReturnBehaviorArray.push(gNormalSaveBehavior);
+  if (aSaveMode == SAVEMODE_MAFARCHIVE) {
+    // When asking to save in an archive, if All Files is selected we will save
+    //  the file using the default archive format
+    aReturnBehaviorArray.push(gMafDefaultSaveBehavior);
+  } else {
+    aReturnBehaviorArray.push(gNormalSaveBehavior);
+  }
 }
 
 /**
