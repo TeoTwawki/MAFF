@@ -688,7 +688,8 @@ scPageSaver.scDefaultFileSaver = function(file) {
     this._file = file;
 
     // Initialize data folder (Delete and re-created so that it's clean)
-    var folderName = file.leafName.replace(/\.\w*$/,"") + "_files";
+    var nameWithoutExtension = file.leafName.replace(/\.[^.]*$/,"");
+    var folderName = getStringBundle().formatStringFromName("filesFolder", [nameWithoutExtension], 1);
     var dataFolderExisting = file.clone();
     dataFolderExisting.leafName = folderName;
     if(dataFolderExisting.exists()) dataFolderExisting.remove(true);
