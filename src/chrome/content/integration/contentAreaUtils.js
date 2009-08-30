@@ -439,6 +439,18 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
       }
     }
 
+    // In Mozilla Archive Format on Windows, when asking to save in an archive,
+    //  the default extension is replaced with the one of the default archive
+    //  file type
+    if (isOnWindows && aFpP.saveMode == SAVEMODE_MAFARCHIVE) {
+      // Use a MAF specific call to retrieve the filter string
+      var filterStringForDefaultType =
+       gMafDefaultSaveBehavior.getFileFilter().extensionstring;
+      // Get the first valid extension for the file type, excluding the initial
+      //  star and dot ("*.")
+      defaultExtension = filterStringForDefaultType.split(";")[0].slice(2);
+    }
+
     fp.defaultExtension = defaultExtension;
     fp.defaultString = defaultString;
 
