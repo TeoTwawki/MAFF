@@ -160,7 +160,7 @@ var ArchiveAnnotations = {
     // Set the annotation on the page's specific archive URI. The annotations
     //  will expire when the current session terminates.
     ArchiveAnnotations._annotationService.setPageAnnotation(
-     aPage.archiveUri, aAnnotationName, annotationValue, 0,
+     aPage.archiveUri, aAnnotationName, annotationValue || "", 0,
      Ci.nsIAnnotationService.EXPIRE_SESSION);
   },
 
