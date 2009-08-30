@@ -180,9 +180,17 @@ var MafInterfaceOverlay = {
   _checkArchiveInfoIcons: function() {
     // Determine the status of the page
     var pageStatus = this._currentPageInfo ? "archived" : "normal";
+    // Determine where the icons should be displayed
+    var iconLocation = MozillaArchiveFormat.Prefs.interfaceIconLocation;
+    var showInUrlbar =
+     (iconLocation == MozillaArchiveFormat.Prefs.ICONLOCATION_URLBAR) ||
+     (iconLocation == MozillaArchiveFormat.Prefs.ICONLOCATION_URLBAR_AUTOHIDE &&
+     this._currentPageInfo);
+    var showInStatus =
+     (iconLocation == MozillaArchiveFormat.Prefs.ICONLOCATION_STATUS);
     // Hide or display the icons based on the preferences
-    this._archiveInfoUrlbarBox.hidden = !this._currentPageInfo;
-    this._archiveInfoStatusButton.hidden = !this._currentPageInfo;
+    this._archiveInfoUrlbarBox.hidden = !showInUrlbar;
+    this._archiveInfoStatusButton.hidden = !showInStatus;
     // Set the attributes used for styling the icons
     this._archiveInfoUrlbarButton.setAttribute("status", pageStatus);
     this._archiveInfoStatusButton.setAttribute("status", pageStatus);

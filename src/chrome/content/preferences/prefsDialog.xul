@@ -103,12 +103,35 @@
    label="&pane.interface.label;"
    >
     <preferences>
+      <preference id="prefInterfaceIconLocation"            name="extensions.maf.interface.icon.location"             type="string"/>
       <preference id="prefInterfaceMenuFile"                name="extensions.maf.interface.menu.file"                 type="bool"/>
       <preference id="prefInterfaceMenuTools"               name="extensions.maf.interface.menu.tools"                type="bool"/>
       <preference id="prefInterfaceMenuPageContext"         name="extensions.maf.interface.menu.pagecontext"          type="bool"/>
       <preference id="prefInterfaceMenuTabsContext"         name="extensions.maf.interface.menu.tabscontext"          type="bool"/>
       <preference id="prefInterfaceMenuItemSaveInArchive"   name="extensions.maf.interface.menuitem.saveinarchive"    type="bool"/>
     </preferences>
+    <groupbox>
+      <caption label="&icon.caption;" />
+      <label control="rgrInterfaceIconLocations"
+             value=  "&iconlocation.grouplabel;"
+             />
+      <radiogroup id=        "rgrInterfaceIconLocations"
+                  preference="prefInterfaceIconLocation"
+                  >
+        <radio value="urlbar"            label=    "&iconlocation.urlbar.label;"
+                                         accesskey="&iconlocation.urlbar.accesskey;"
+                                         />
+        <radio value="urlbar-autohide"   label=    "&iconlocation.urlbar-autohide.label;"
+                                         accesskey="&iconlocation.urlbar-autohide.accesskey;"
+                                         />
+        <radio value="status"            label=    "&iconlocation.status.label;"
+                                         accesskey="&iconlocation.status.accesskey;"
+                                         />
+        <radio value="none"              label=    "&iconlocation.none.label;"
+                                         accesskey="&iconlocation.none.accesskey;"
+                                         />
+      </radiogroup>
+    </groupbox>
     <groupbox>
       <caption label="&menu.caption;" />
       <label value="&menu.grouplabel;" />

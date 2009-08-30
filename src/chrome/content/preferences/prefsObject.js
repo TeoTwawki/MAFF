@@ -49,6 +49,27 @@ var Prefs = {
    * Public properties to read preferences
    */
 
+  /** Enumeration for interfaceIconLocation */
+  ICONLOCATION_URLBAR:          "urlbar",
+  ICONLOCATION_URLBAR_AUTOHIDE: "urlbar-autohide",
+  ICONLOCATION_STATUS:          "status",
+  ICONLOCATION_NONE:            "none",
+
+  /**
+   * Determines where the archive information icon should be displayed.
+   *
+   * Possible values:
+   *   ICONLOCATION_URLBAR          - Display in the address bar.
+   *   ICONLOCATION_URLBAR_AUTOHIDE - (default) Display in the address bar, but
+   *                                   only when the current page is archived.
+   *   ICONLOCATION_STATUS          - Display in the status bar.
+   *   ICONLOCATION_NONE            - Do not display.
+   *   (other)                      - If the user has customized the preference.
+   */
+  get interfaceIconLocation() {
+    return this._prefBranchForMaf.getCharPref("interface.icon.location");
+  },
+
   /**
    * Returns true if MAF menu items should be shown in the File menu.
    */
