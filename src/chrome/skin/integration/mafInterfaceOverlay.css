@@ -1,0 +1,42 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* Address bar and status bar integration */
+
+#mafArchiveInfoUrlbarBox {
+  -moz-box-align: center;
+  padding-left: 4px;
+}
+
+#mafArchiveInfoUrlbarButton {
+  padding: 0 2px;
+}
+
+#mafArchiveInfoUrlbarButton,
+#mafArchiveInfoStatusButton {
+  list-style-image: url("page-archived.png");
+}
+
+#mafArchiveInfoUrlbarButton:hover,
+#mafArchiveInfoStatusButton:hover {
+  list-style-image: url("page-archived-hover.png");
+}
+
+#mafArchiveInfoUrlbarButton[status="normal"] {
+  list-style-image: url("page-normal.png");
+}
+
+#mafArchiveInfoStatusButton[status="normal"] {
+  /* The following image provides better contrast on a grey background. */
+  list-style-image: url("page-normal-statusbar.png");
+}
+
+/* Archive information popup */
+
+#mafArchiveInfoPopup > vbox {
+  padding: 10px;
+}
+
+#mafArchiveInfoPopup > vbox > label,
+#mafArchiveInfoPopup > vbox > grid {
+  margin-bottom: 8px;
+}
