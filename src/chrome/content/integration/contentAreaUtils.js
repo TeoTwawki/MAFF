@@ -432,9 +432,26 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     fp.init(window, bundle.GetStringFromName(titleKey), 
             Components.interfaces.nsIFilePicker.modeSave);
     
-    fp.defaultExtension = aFpP.fileInfo.fileExt;
-    fp.defaultString = getNormalizedLeafName(aFpP.fileInfo.fileName,
-                                             aFpP.fileInfo.fileExt);
+    var defaultExtension = aFpP.fileInfo.fileExt;
+    var defaultString = getNormalizedLeafName(aFpP.fileInfo.fileName,
+                                              aFpP.fileInfo.fileExt);
+
+    // With Mozilla Archive Format on Windows, ensure the default file extension
+    //  is not included as a part of the file name, since the file picker will
+    //  add the extension automatically based on the selected filter.
+    var isOnWindows = Components.classes["@mozilla.org/xre/app-info;1"].
+     getService(Components.interfaces.nsIXULRuntime).OS == "WINNT";
+    if (isOnWindows && defaultExtension) {
+      var extensionToCheck = "." + defaultExtension;
+      if (extensionToCheck.toLowerCase() ==
+       defaultString.slice(-extensionToCheck.length).toLowerCase()) {
+        defaultString = defaultString.slice(0, -extensionToCheck.length);
+      }
+    }
+
+    fp.defaultExtension = defaultExtension;
+    fp.defaultString = defaultString;
+
     var saveBehaviors = [];
     appendFiltersForContentType(fp, aFpP.contentType, aFpP.fileInfo.fileExt,
                                 aFpP.saveMode, saveBehaviors);
