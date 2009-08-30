@@ -15,6 +15,16 @@
 <!ENTITY save.metadata.extended.accesskey "v">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Интерфејс">
+<!ENTITY icon.caption "Icon">
+<!ENTITY iconlocation.grouplabel "Show Mozilla Archive Format icon in:">
+<!ENTITY iconlocation.urlbar.label "Address bar">
+<!ENTITY iconlocation.urlbar.accesskey "A">
+<!ENTITY iconlocation.urlbar-autohide.label "Address bar, for archived pages only">
+<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
+<!ENTITY iconlocation.status.label "Status bar">
+<!ENTITY iconlocation.status.accesskey "S">
+<!ENTITY iconlocation.none.label "None">
+<!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.caption "Мени">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
 <!ENTITY menu.file.label "Мени на датотеката">
