@@ -13,6 +13,8 @@
       <li><a href="#converting">Converting previously saved pages to web
        archive format</a></li>
       <li><a href="#opening">Opening web archives</a></li>
+      <li><a href="#archiveinfo">Viewing information about archived
+       pages</a></li>
     </ul>
   </li>
   <li><a href="#extensions">Integration with other extensions</a></li>
@@ -115,6 +117,24 @@
 <p>Under Windows, MAF can also create for you the
  <a href="#fileassociations">file associations</a> that allow opening the web
  archives by double-clicking them from Windows Explorer.</p>
+<h4><a name="archiveinfo"></a>Viewing information about archived pages</h4>
+<img src="images/viewArchive.png" alt="">
+<p>By default, when you are displaying an archived page, an additional icon
+ appears in the address bar of the browser. You can click the icon to display
+ the following information about the archived page:</p>
+<ul>
+  <li>The <b>original location</b> the page was saved from, if available.</li>
+  <li>The <b>date and time</b> of the save operation, if available.</li>
+</ul>
+<p>The original location is a link. You can click it with the left mouse button
+ to open the original page in the same tab, or you can use the appropriate key
+ combinations to open the link in a new tab or a new window.</p>
+<p>From the popup panel with the information on the page, you can also access
+ the <i>Archives</i> dialog, that provides additional information on all the
+ archives that have been opened during the current browsing session.</p>
+<p>The icon can also be displayed in the status bar. You can control the
+ visibility and position of the icon from the <a href="#interface">interface
+ preferences</a>.</p>
 
 <h2><a name="extensions"></a>Integration with other extensions</h2>
 <p>One of the key features of Mozilla Archive Format is that it integrates not
@@ -174,10 +194,11 @@
  aspects of page loading and archiving, you can change the extension's
  preferences.</p>
 <p>The preferences dialog can be accessed from the <b>Tools &raquo; Mozilla
- Archive Format &raquo; Preferences</b> menu item. If the <b>Mozilla Archive
- Format</b> submenu is not visible, you can open the preferences dialog using
- the <b>Options</b> button in the <i>Add-ons</i> dialog, available from the
- <b>Tools &raquo; Add-ons</b> menu item.</p>
+ Archive Format &raquo; Preferences</b> menu item or from the button in the
+ archive information popup. If the <b>Mozilla Archive Format</b> submenu or the
+ icon to display the popup are hidden, you can still open the preferences dialog
+ using the <b>Options</b> button in the <i>Add-ons</i> dialog, available from
+ the <b>Tools &raquo; Add-ons</b> menu item.</p>
 
 <h3><a name="main"></a><a name="savecomplete"></a>Main preferences</h3>
 
@@ -233,6 +254,28 @@
 <img src="images/prefsDialog-paneInterface.png" alt="">
 
 <dl>
+  <dt>Show Mozilla Archive Format icon in:</dt>
+  <dd>
+    <p>You can control the visibility and position of the icon that provides
+     access to the additional information about an archived page.</p>
+    <ol>
+      <li><b>Address bar</b> - Always display the icon in the address bar. If
+       the current page is not saved in an archive, the icon is grayed out, but
+       you can still use it to access the <i>Archives</i> dialog or the
+       preferences.</li>
+      <li><b>Address bar, for archived pages only</b> (default) - Keep the icon
+       hidden during normal browsing, and display it only when viewing a page
+       that is saved in an archive.</li>
+      <li><b>Status bar</b> - Display the icon in the status bar. If the current
+       page is not stored in an archive, the icon is grayed out, but you can
+       still use it to access the <i>Archives</i> dialog or the preferences.
+       This option is recommended if you are using a theme that is not
+       compatible with additional icons in the address bar.</li>
+      <li><b>None</b> - Do not display the icon. Note that if you hide the icon,
+       you can still access the MAF preferences from the <b>Tools</b> menu or
+       the <i>Add-ons</i> dialog.</li>
+    </ol>
+  </dd>
   <dt>Show Mozilla Archive Format menu items in:</dt>
   <dd>
     <p>You can select which menus will display the Mozilla Archive Format items.
