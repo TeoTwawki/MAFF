@@ -122,10 +122,20 @@
   <p>MAF <?php echo ($maf_experimental_fx ? $maf_experimental_fx :
    $maf_latest_fx); ?> has the following known issues:</p>
   <ul>
+    <li>In order to open MHTML files when the
+     <a href="https://addons.mozilla.org/firefox/addon/1419">IE Tab</a>
+     extension is installed, the filter <tt>/^file:\/\/\/.*\.(mht|mhtml)$/</tt>
+     must be disabled from the IE Tab options.</li>
+    <li>The <a href="https://addons.mozilla.org/firefox/addon/25">Download
+     Sort</a> extension has a known incompatibility with MAF. The conflict
+     cannot be resolved without proper modifications to both extensions, and
+     Download Sort is not actively maintained at this time.</li>
     <li>When saving a page in an archive fails, retrying the download from the
      <b>Downloads</b> window does not achieve the expected result.</li>
     <li>Opening very long documents contained inside MHTML files may cause the
      browser to stop responding temporarily.</li>
+    <li>With versions of Firefox prior to 3.5.3, web archive files files must
+     have a lowercase file name extension in order to be opened.</li>
   </ul>
   <p><a href="changelog.html#whatwasnew">What was new in the previous
    version?</a></p>
