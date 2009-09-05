@@ -49,6 +49,7 @@ function MaffArchive(aFile) {
 
   // Initialize other member variables explicitly for proper inheritance
   this._createNew = true;
+  this._useDirectAccess = false;
 }
 
 MaffArchive.prototype = {
@@ -65,6 +66,8 @@ MaffArchive.prototype = {
   },
 
   extractAll: function() {
+    // Determine if the data files should be extracted
+    this._useDirectAccess = Prefs.openUseJarProtocol;
     // Open the archive file for reading
     var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].
      createInstance(Ci.nsIZipReader);
@@ -88,8 +91,20 @@ MaffArchive.prototype = {
           newPage.tempDir.append(zipEntry.slice(0, -1));
         }
 
-        // If this is a file entry
-        if (zipEntry.slice(-1) != "/") {
+        // If the archive should be opened using direct access to the files
+        var shouldExtract;
+        if (this._useDirectAccess) {
+          // Extract only the metadata files "index.rdf" and "history.rdf". The
+          //  file names are compared case insensitively, even though their
+          //  names in the archive should always be lowercase.
+          shouldExtract = /^[^/]+\/(index|history)\.rdf$/i.test(zipEntry);
+        } else {
+          // Extract all the file entries that are present in the archive
+          shouldExtract = zipEntry.slice(-1) != "/";
+        }
+
+        // If the current entry must be extracted
+        if (shouldExtract) {
           // Find the file whose path corresponds to the ZIP entry
           var destFile = Cc["@mozilla.org/file/local;1"].
            createInstance(Ci.nsILocalFile);
@@ -128,5 +143,13 @@ MaffArchive.prototype = {
    *  or that the archive contains other unloaded pages and should not be
    *  overwritten.
    */
-  _createNew: true
+  _createNew: true,
+
+  /**
+   * Indicates that the saved pages in the archive should be opened directly
+   *  from the archive itself, instead of being extracted and read from the
+   *  temporary directory. Even when this property is true, metadata files are
+   *  still extracted in the temporary directory.
+   */
+  _useDirectAccess: false
 }

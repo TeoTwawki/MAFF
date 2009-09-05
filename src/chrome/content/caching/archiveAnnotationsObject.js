@@ -63,7 +63,8 @@ var ArchiveAnnotations = {
      [ArchiveAnnotations.MAFANNO_ORIGINALURL, aPage.originalUrl],
      [ArchiveAnnotations.MAFANNO_DATEARCHIVED, aPage.dateArchived],
      [ArchiveAnnotations.MAFANNO_ARCHIVENAME, aPage.archive.name],
-     [ArchiveAnnotations.MAFANNO_TEMPURI, aPage.tempUri.spec],
+     [ArchiveAnnotations.MAFANNO_TEMPURI,
+      (aPage.tempUri ? aPage.tempUri.spec : "")],
      [ArchiveAnnotations.MAFANNO_DIRECTARCHIVEURI,
       (aPage.directArchiveUri ? aPage.directArchiveUri.spec : "")],
     ].forEach(function([annotationName, annotationValue]) {

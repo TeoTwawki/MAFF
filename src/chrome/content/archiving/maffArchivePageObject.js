@@ -76,6 +76,16 @@ MaffArchivePage.prototype = {
 
   // --- Overridden ArchivePage methods ---
 
+  get tempUri() {
+    // If the archive that contains the page was extracted while requiring
+    //  direct access to the page, no temporary local page is available
+    if (this.archive._useDirectAccess) {
+      return null;
+    }
+    // By default, return the temporary URL determined by the base object
+    return ArchivePage.prototype.__lookupGetter__("tempUri").call(this);
+  },
+
   setMetadataFromDocumentAndBrowser: function(aDocument, aBrowser) {
     // Set the page properties that are common to all archive types
     ArchivePage.prototype.setMetadataFromDocumentAndBrowser.call(this,

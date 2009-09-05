@@ -132,7 +132,7 @@ ArchivePage.prototype = {
 
   /**
    * nsIURI representing the local temporary copy of the main file associated
-   *  with the page.
+   *  with the page, or null if the page was not extracted locally.
    */
   get tempUri() {
     // Locate the main temporary file associated with with the page

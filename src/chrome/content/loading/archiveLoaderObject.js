@@ -83,8 +83,10 @@ var ArchiveLoader = {
 
     // Display the content associated with the page. Depending on the current
     //  preferences, the content is loaded from the temporary directory or
-    //  directly from the archive, if possible.
-    if (page.directArchiveUri && Prefs.openUseJarProtocol) {
+    //  directly from the archive. If either the version in the temporary
+    //  directory or the one in archive is not available for this particular
+    //  page, the other access method is used.
+    if (!page.tempUri || (page.directArchiveUri && Prefs.openUseJarProtocol)) {
       return page.directArchiveUri;
     } else {
       return page.tempUri;

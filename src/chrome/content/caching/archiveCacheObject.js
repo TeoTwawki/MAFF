@@ -59,7 +59,9 @@ var ArchiveCache = {
     for (var [, page] in Iterator(aArchive.pages)) {
       // The following URLs are normally unique for every extracted page
       this._pagesByArchiveUri[page.archiveUri.spec] = page;
-      this._pagesByTempUri[page.tempUri.spec] = page;
+      if (page.tempUri) {
+        this._pagesByTempUri[page.tempUri.spec] = page;
+      }
       this._pagesByTempFolderUri[page.tempFolderUri.spec] = page;
       if (page.directArchiveUri) {
         this._pagesByDirectArchiveUri[page.directArchiveUri.spec] = page;
@@ -90,7 +92,9 @@ var ArchiveCache = {
     for (var [, page] in Iterator(aArchive.pages)) {
       // The following URLs are normally unique for every extracted page
       delete this._pagesByArchiveUri[page.archiveUri.spec];
-      delete this._pagesByTempUri[page.tempUri.spec];
+      if (page.tempUri) {
+        delete this._pagesByTempUri[page.tempUri.spec];
+      }
       delete this._pagesByTempFolderUri[page.tempFolderUri.spec];
       if (page.directArchiveUri) {
         delete this._pagesByDirectArchiveUri[page.directArchiveUri.spec];
