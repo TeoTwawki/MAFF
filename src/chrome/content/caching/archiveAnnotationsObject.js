@@ -110,8 +110,11 @@ var ArchiveAnnotations = {
       annotationValue = parseFloat(annotationValue);
       annotationValue = annotationValue ? new Date(annotationValue) : null;
     // If the value represents an URI, store this information in the value
-    //  itself. This allows for properly displaying the value later.
-    } else if (ArchiveAnnotations.annotationIsEscapedAsUri(aAnnotationName)) {
+    //  itself. This allows for properly displaying the value later. The
+    //  annotation should not be added if the value is empty, otherwise the
+    //  tests to detect this condition will provide incorrect results.
+    } else if (annotationValue && ArchiveAnnotations.annotationIsEscapedAsUri(
+     aAnnotationName)) {
       annotationValue = new String(annotationValue);
       annotationValue.isEscapedAsUri = true;
     }
