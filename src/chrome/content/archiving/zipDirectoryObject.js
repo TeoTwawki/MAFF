@@ -70,7 +70,7 @@ ZipDirectory.prototype = {
         this._addDirEntry();
         // Add a new file to the archive
         this._zipCreator._zipWriter.addEntryFile(zipEntry,
-         Ci.nsIZipWriter.COMPRESSION_BEST, dirEntry, false);
+         this._compressionLevelForFile(dirEntry), dirEntry, false);
       }
     }
   },
@@ -95,6 +95,30 @@ ZipDirectory.prototype = {
       // Indicate that the entry has been created
       this._zipEntryPresent = true;
     }
+  },
+
+  /**
+   * Returns the compression level to use when adding a file to the archive.
+   *  The result is based on the file extension and the current preferences.
+   */
+  _compressionLevelForFile: function(aFile) {
+    // If all the files should be stored with maximum compression
+    if (Prefs.saveMaffCompression == Prefs.MAFFCOMPRESSION_BEST) {
+      return Ci.nsIZipWriter.COMPRESSION_BEST;
+    }
+    // If all the files should be stored uncompressed
+    if (Prefs.saveMaffCompression == Prefs.MAFFCOMPRESSION_NONE) {
+      return Ci.nsIZipWriter.COMPRESSION_NONE;
+    }
+    // Do not re-compress media files for which there's not a significant gain
+    //  since they're already compressed. The file type is recognized using the
+    //  extension, and currently only ".ogg", ".oga" and ".ogv" files are not
+    //  re-compressed.
+    if (/\.og[gav]$/i.test(aFile.leafName)) {
+      return Ci.nsIZipWriter.COMPRESSION_NONE;
+    }
+    // Use the best compression for all the other files
+    return Ci.nsIZipWriter.COMPRESSION_BEST;
   },
 
   /**

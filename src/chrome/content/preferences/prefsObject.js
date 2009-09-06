@@ -162,6 +162,27 @@ var Prefs = {
     return this.prefBranchForMaf.getBoolPref("save.mhtml.compatible");
   },
 
+  /** Enumeration for saveMaffCompression */
+  MAFFCOMPRESSION_DYNAMIC: "dynamic",
+  MAFFCOMPRESSION_BEST:    "best",
+  MAFFCOMPRESSION_NONE:    "none",
+
+  /**
+   * Returns the compression level to use when saving files in a MAFF archive.
+   *
+   * Possible values:
+   *   MAFFCOMPRESSION_DYNAMIC  - (default) Use maximum compression for all
+   *                               files, but do not re-compress media files.
+   *   MAFFCOMPRESSION_BEST     - Use maximum compression for all files.
+   *   MAFFCOMPRESSION_NONE     - Store all the files uncompressed.
+   *   (other)                  - If the user has customized the preference.
+   *
+   * This preference is not displayed in the preferences dialog.
+   */
+  get saveMaffCompression() {
+    return this.prefBranchForMaf.getCharPref("save.maff.compression");
+  },
+
   /**
    * Returns true if the ".mhtml" file extension should be preferred over
    *  ".mht" in the file filters for the "Save As" dialogs.
