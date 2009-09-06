@@ -814,7 +814,13 @@ scPageSaver.scDefaultFileSaver.prototype.saveURI = function(uri) {
     this._persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(Components.interfaces.nsIWebBrowserPersist);
     this._persist.progressListener = new scPageSaver.scPersistListener(this);
     try {
-        this._persist.saveURI(uri.uri, null , null , null , null , file);
+        var fileURI = uri.toString().replace(/#.*$/, "");
+        var channel = scPageSaver.nsIIOService.newChannel(fileURI, "", null);
+
+        channel.loadFlags |= scPageSaver.nsIRequest.LOAD_FROM_CACHE;
+        channel.loadFlags |= scPageSaver.nsIRequest.VALIDATE_NEVER;
+
+        this._persist.saveChannel(channel, file);
     } catch(e) {
         this.notifyURIFailed(uri);
         this._currentURI = null;
@@ -1031,6 +1037,7 @@ scPageSaver.scDownload.prototype.start = function() {
     }
 
     this._channel.loadFlags |= scPageSaver.nsIRequest.LOAD_FROM_CACHE;
+    this._channel.loadFlags |= scPageSaver.nsIRequest.VALIDATE_NEVER;
 
     // Set post data if it can be gotten
     try {
