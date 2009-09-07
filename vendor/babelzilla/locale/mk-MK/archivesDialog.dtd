@@ -1,3 +1,6 @@
+<!ENTITY window.title "Архиви">
+<!ENTITY archives.mafarchivename.header "Име на Архивата">
+<!ENTITY details.mafarchivename.label "Име на Архивата:">
 <!ENTITY details.caption "Детали">
 <!ENTITY morebutton.label "Повеќе детали">
 <!ENTITY morebutton.accesskey "е">

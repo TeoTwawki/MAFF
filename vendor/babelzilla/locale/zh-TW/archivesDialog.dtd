@@ -1,0 +1,42 @@
+<!ENTITY window.title "歸檔">
+<!ENTITY archives.placestitle.header "存檔頁面標題">
+<!ENTITY archives.mafarchivename.header "歸檔名稱">
+<!ENTITY archives.placesurl.header "歸檔位置">
+<!ENTITY archives.maftitle.header "存檔頁面標題（副本，儲於頁面 HTML 之外）">
+<!ENTITY archives.maforiginalurl.header "原始頁面位置">
+<!ENTITY archives.mafdatearchived.header "存檔時間">
+<!ENTITY archives.maftempuri.header "臨時解包頁網址">
+<!ENTITY archives.mafdirectarchiveuri.header "直接存取網址">
+<!ENTITY details.placestitle.label "存檔頁面標題:">
+<!ENTITY details.placestitle.accesskey "P">
+<!ENTITY details.mafarchivename.label "歸檔名稱 (r):">
+<!ENTITY details.mafarchivename.accesskey "r">
+<!ENTITY details.placesurl.label "歸檔位置 (h):">
+<!ENTITY details.placesurl.accesskey "h">
+<!ENTITY details.maftitle.label "存檔頁面標題（副本，儲於頁面 HTML 之外） (i):">
+<!ENTITY details.maftitle.accesskey "i">
+<!ENTITY details.maforiginalurl.label "原始頁面位置 (g):">
+<!ENTITY details.maforiginalurl.accesskey "g">
+<!ENTITY details.mafdatearchived.label "存檔時間 (c):">
+<!ENTITY details.mafdatearchived.accesskey "c">
+<!ENTITY details.maftempuri.label "臨時解包頁網址:">
+<!ENTITY details.maftempuri.accesskey "T">
+<!ENTITY details.mafdirectarchiveuri.label "直接存取網址:">
+<!ENTITY details.mafdirectarchiveuri.accesskey "D">
+<!ENTITY details.caption "細節">
+<!ENTITY morebutton.label "更多細節 (e)">
+<!ENTITY morebutton.accesskey "e">
+<!ENTITY lessbutton.label "更少細節 (e)">
+<!ENTITY lessbutton.accesskey "e">
+<!ENTITY multipleitems.text "（多個存檔頁被選擇）">
+<!ENTITY openintabsbutton.label "在標籤頁（群）中開啟">
+<!ENTITY openintabsbutton.accesskey.placesurl "O">
+<!ENTITY openintabsbutton.accesskey.originalurl "n">
+<!ENTITY openintabsbutton.accesskey.tempuri "b">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
+<!ENTITY addbutton.label "添加…">
+<!ENTITY addbutton.accesskey "A">
+<!ENTITY addfilepicker.title "添加 Web 歸檔">
+<!ENTITY deletebutton.label "移出">
+<!ENTITY deletebutton.accesskey "F">
+<!ENTITY deletebutton.accesskey.placescontextmenu "F">

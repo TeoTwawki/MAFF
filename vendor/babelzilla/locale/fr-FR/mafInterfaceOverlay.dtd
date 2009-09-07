@@ -1,0 +1,10 @@
+<!ENTITY archiveinfo.status.normal.label "Cette page n'est pas contenue dans une archive">
+<!ENTITY archiveinfo.status.archived.label "Ceci est une page archivée">
+<!ENTITY archiveinfo.maforiginalurl.label "Enregistré depuis :">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(non disponible)">
+<!ENTITY archiveinfo.mafdatearchived.label "Enregistré le :">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(non disponible)">
+<!ENTITY commands.browseopenarchives.label "Parcourir les archives ouvertes…">
+<!ENTITY commands.browseopenarchives.accesskey "r">
+<!ENTITY commands.preferences.label "Préférences…">
+<!ENTITY commands.preferences.accesskey "P">

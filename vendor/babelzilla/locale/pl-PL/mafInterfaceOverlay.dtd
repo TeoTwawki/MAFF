@@ -1,0 +1,10 @@
+<!ENTITY archiveinfo.status.normal.label "Tej strony nie ma w archiwum">
+<!ENTITY archiveinfo.status.archived.label "Ta strona jest zarchiwizowana.">
+<!ENTITY archiveinfo.maforiginalurl.label "Zapisana z:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(niedostępna)">
+<!ENTITY archiveinfo.mafdatearchived.label "Zapisana w:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(niedostępna)">
+<!ENTITY commands.browseopenarchives.label "Przeglądaj archiwa…">
+<!ENTITY commands.browseopenarchives.accesskey "P">
+<!ENTITY commands.preferences.label "Ustawienia…">
+<!ENTITY commands.preferences.accesskey "U">

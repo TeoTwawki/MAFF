@@ -12,6 +12,16 @@
 <!ENTITY save.metadata.extended.label "Guardar datos extendidos en archivos MAFF">
 <!ENTITY save.metadata.extended.accesskey "e">
 <!ENTITY pane.interface.label "Interfaz">
+<!ENTITY icon.caption "Icono">
+<!ENTITY iconlocation.grouplabel "Mostrar el icono de Mozilla Archive Format en:">
+<!ENTITY iconlocation.urlbar.label "Barra de direcciones">
+<!ENTITY iconlocation.urlbar.accesskey "A">
+<!ENTITY iconlocation.urlbar-autohide.label "Barra de direcciones, sólo para las páginas archivadas">
+<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
+<!ENTITY iconlocation.status.label "Barra de estado">
+<!ENTITY iconlocation.status.accesskey "S">
+<!ENTITY iconlocation.none.label "Ninguna">
+<!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.caption "Menú">
 <!ENTITY menu.grouplabel "Mostrar los elementos de menú de Mozilla Archive Format en:">
 <!ENTITY menu.file.label "Menú Archivo">

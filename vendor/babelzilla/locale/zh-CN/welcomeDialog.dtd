@@ -5,15 +5,17 @@
 <!ENTITY welcome.para1.description "感谢您选择并安装 MAF！您的浏览器已具备保存完整网页于单个文件（Web 档案）及打开这种文件的功能。MAF 支持两种格式：[tt]MAFF[/tt] 和 [tt]MHTML[/tt]。">
 <!ENTITY welcome.para2.description "您可以通过文件菜单中的[b]打开文件[/b]菜单项打开 Web 档案，并通过在[b]页面另存为[/b]对话框中选择所需的文件类型来创建它们。">
 <!ENTITY welcome.para3.description "还可在[b]工具[/b]菜单中找到附加的档案管理命令。">
-<!ENTITY options.description "尽管您已可打开并保存 Web 档案，下面的对您的系统配置的加强是 recommended：">
-<!ENTITY options.associate.label "将 Firefox 设为打开 Web 档案的默认程序。">
+<!ENTITY options.description "尽管您已可打开并保存 Web 档案，仍建议您依下面的方式对您的系统配置进行加强：">
+<!ENTITY options.associate.label "将 Firefox 设为打开 Web 档案的默认程序(O)">
 <!ENTITY options.associate.accesskey "O">
 <!ENTITY options.associate.description "如果您希望通过点击文件图标的方式打开它们，请选择此选项。">
-<!ENTITY options.savecomplete.label "启用集成的 Save Complete 组件">
+<!ENTITY options.savecomplete.label "启用集成的 Save Complete 组件(E)">
 <!ENTITY options.savecomplete.accesskey "E">
 <!ENTITY options.savecomplete.para1.description "Save Complete 是一个 Firefox 扩展，使浏览器在保存网页时使用浏览器标准保存系统更可靠的方法，并存入较浏览器标准保存系统更全面的信息。">
 <!ENTITY options.savecomplete.para2.description "您可随时在 MAF 偏好设定中启用或停用 Save Complete 组件。">
-<!ENTITY options.savemaff.label "将 MAFF Web 档案设为保存网页的默认格式">
+<!ENTITY options.savemaff.label "将 MAFF Web 档案设为保存网页的默认格式(S)">
 <!ENTITY options.savemaff.accesskey "S">
 <!ENTITY options.savemaff.para1.description "MAFF 是一个基于 Zip 格式的开放文件格式。MAFF 文件可以在 Linux 或其他支持 Zip 文件的平台中被打开，但不能很方便地与 Internet Explorer 用户交换。">
+<!ENTITY options.savemaff.para2.description "您随时可在[b]另存为[/b]对话框中更改档案类型。">
 <!ENTITY changesapplied.label "Congratulations!">
+<!ENTITY changesapplied.description "已按您的要求配置您的系统；系统现在已可用。">
