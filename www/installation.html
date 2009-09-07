@@ -100,6 +100,9 @@
      omitted from the suggested file name when saving. In most cases, this
      prevents double extensions from appearing in the names of the saved
      archives.</li>
+    <li>It is now possible to configure MAF to open MAFF archives without
+     extracting their contents to the temporary directory, thus obtaining a
+     significant speed gain.</li>
     <li>Now the <b>Preferences</b> menu items and button bring the dialog to
      front if it is already open.</li>
     <li>In the file selection dialog of the <b>Save In Archive</b> commands, now
@@ -116,6 +119,9 @@
         <li>Now the length of the names of the additional saved files is limited
          to 50 characters, to prevent problems when saving or when extracting
          archives on some file systems.</li>
+        <li>Now pages are saved as they appear, without fetching them again from
+         the server, in all the cases where it is possible. This may speed up
+         saving web pages with highly dynamic content.</li>
       </ul>
     </li>
   </ul>

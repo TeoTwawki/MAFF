@@ -1,6 +1,21 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
-  <h2 class="page-header">Changelog for version 0.14</h2>
+  <h2 class="page-header">Changelog for version 0.15</h2>
+  <h3>Changes from 0.15.0 to 0.15.1</h3>
+  <ul>
+    <li><b>Change:</b> Audio and video files in OGG containers are not
+     re-compressed when archived, in order to provide faster access when opening
+     the media files directly from the archive.</li>
+    <li><b>Change:</b> If the "jar:" protocol is used to access the contents of
+     MAFF archives, the archived files are not extracted to the temporary
+     directory anymore, thus obtaining a significant speed gain.</li>
+    <li><b>Change:</b> The integrated Save Complete component now saves pages as
+     they appear, without fetching them again from the server, in all the cases
+     where it is possible.</li>
+    <li><b>Fix:</b> The <b>Open in Tabs</b> buttons in the <i>Archives</i>
+     dialog could be enabled even if there were no addresses to open.</li>
+  </ul>
+  <h2>Changelog for version 0.14</h2>
   <h3><a name="whatwasnew"></a>What was new in version 0.14?</h3>
   <ul>
     <li>The integrated
