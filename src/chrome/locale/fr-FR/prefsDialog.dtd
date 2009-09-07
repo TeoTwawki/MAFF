@@ -15,16 +15,16 @@
 <!ENTITY save.metadata.extended.accesskey "v">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Interface">
-<!ENTITY icon.caption "Icon">
-<!ENTITY iconlocation.grouplabel "Show Mozilla Archive Format icon in:">
-<!ENTITY iconlocation.urlbar.label "Address bar">
+<!ENTITY icon.caption "Icône">
+<!ENTITY iconlocation.grouplabel "Afficher l'icône de Mozilla Archive Format dans :">
+<!ENTITY iconlocation.urlbar.label "Barre d'adresse">
 <!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "Address bar, for archived pages only">
+<!ENTITY iconlocation.urlbar-autohide.label "Barre d'adresse, pour les pages archivées uniquement">
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Status bar">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.none.label "None">
-<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY iconlocation.status.label "Barre d'état">
+<!ENTITY iconlocation.status.accesskey "t">
+<!ENTITY iconlocation.none.label "Rien">
+<!ENTITY iconlocation.none.accesskey "R">
 <!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Afficher les menus MAF dans :">
 <!ENTITY menu.file.label "Menu Fichier">

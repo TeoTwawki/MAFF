@@ -1,16 +1,16 @@
 <!-- *** Archive information popup *** -->
 <!-- Status of the current page -->
-<!ENTITY archiveinfo.status.normal.label "This page is not contained in an archive.">
-<!ENTITY archiveinfo.status.archived.label "This is an archived page.">
+<!ENTITY archiveinfo.status.normal.label "本页不属于任何一个已载入 MAF 的档案。">
+<!ENTITY archiveinfo.status.archived.label "这是一个 Web 档案中的页面。">
 <!-- Original address the page was saved from -->
-<!ENTITY archiveinfo.maforiginalurl.label "Saved from:">
-<!ENTITY archiveinfo.maforiginalurl.missing.label "(not available)">
+<!ENTITY archiveinfo.maforiginalurl.label "原始地址：">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "（未知位置）">
 <!-- Date and time the page was archived -->
-<!ENTITY archiveinfo.mafdatearchived.label "Saved on:">
-<!ENTITY archiveinfo.mafdatearchived.missing.label "(not available)">
+<!ENTITY archiveinfo.mafdatearchived.label "存档时间：">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "（未知时间）">
 <!-- *** Commands in the archive information popup *** -->
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
-<!ENTITY commands.browseopenarchives.label "Browse Open Archives…">
+<!ENTITY commands.browseopenarchives.label "浏览已装载档案…">
 <!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.preferences.label "Preferences…">
+<!ENTITY commands.preferences.label "配置…">
 <!ENTITY commands.preferences.accesskey "P">

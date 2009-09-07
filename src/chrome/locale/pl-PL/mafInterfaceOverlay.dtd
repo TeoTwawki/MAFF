@@ -1,16 +1,16 @@
 <!-- *** Archive information popup *** -->
 <!-- Status of the current page -->
-<!ENTITY archiveinfo.status.normal.label "This page is not contained in an archive.">
-<!ENTITY archiveinfo.status.archived.label "This is an archived page.">
+<!ENTITY archiveinfo.status.normal.label "Tej strony nie ma w archiwum">
+<!ENTITY archiveinfo.status.archived.label "Ta strona jest zarchiwizowana.">
 <!-- Original address the page was saved from -->
-<!ENTITY archiveinfo.maforiginalurl.label "Saved from:">
-<!ENTITY archiveinfo.maforiginalurl.missing.label "(not available)">
+<!ENTITY archiveinfo.maforiginalurl.label "Zapisana z:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(niedostępna)">
 <!-- Date and time the page was archived -->
-<!ENTITY archiveinfo.mafdatearchived.label "Saved on:">
-<!ENTITY archiveinfo.mafdatearchived.missing.label "(not available)">
+<!ENTITY archiveinfo.mafdatearchived.label "Zapisana w:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(niedostępna)">
 <!-- *** Commands in the archive information popup *** -->
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
-<!ENTITY commands.browseopenarchives.label "Browse Open Archives…">
-<!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.preferences.label "Preferences…">
-<!ENTITY commands.preferences.accesskey "P">
+<!ENTITY commands.browseopenarchives.label "Przeglądaj archiwa…">
+<!ENTITY commands.browseopenarchives.accesskey "P">
+<!ENTITY commands.preferences.label "Ustawienia…">
+<!ENTITY commands.preferences.accesskey "U">

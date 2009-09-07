@@ -1,10 +1,10 @@
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Archives">
+<!ENTITY window.title "Архиви">
 <!-- *** Column names in the archive list *** -->
 <!-- Title of the page -->
 <!ENTITY archives.placestitle.header "Page Title">
 <!-- Name of the archive the page is located into -->
-<!ENTITY archives.mafarchivename.header "Archive Name">
+<!ENTITY archives.mafarchivename.header "Име на Архивата">
 <!-- Address of the archive the page is located into -->
 <!ENTITY archives.placesurl.header "Archive Location">
 <!-- Title of the page in the archive -->
@@ -20,7 +20,7 @@
 <!-- *** Column names in the details panel *** -->
 <!ENTITY details.placestitle.label "Page title:">
 <!ENTITY details.placestitle.accesskey "P">
-<!ENTITY details.mafarchivename.label "Archive name:">
+<!ENTITY details.mafarchivename.label "Име на Архивата:">
 <!ENTITY details.mafarchivename.accesskey "r">
 <!ENTITY details.placesurl.label "Archive location:">
 <!ENTITY details.placesurl.accesskey "h">

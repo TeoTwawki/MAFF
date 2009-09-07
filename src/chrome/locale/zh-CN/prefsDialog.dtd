@@ -5,7 +5,7 @@
 <!ENTITY pane.main.label "主要">
 <!ENTITY save.caption "储存档案时的操作">
 <!ENTITY save.component.grouplabel "当保存完整网页档案内容时：">
-<!ENTITY save.component.standard.label "使用浏览器的标准保存系统">
+<!ENTITY save.component.standard.label "使用浏览器的标准保存系统 (b)">
 <!ENTITY save.component.standard.accesskey "b">
 <!ENTITY save.component.savecomplete.label "使用集成入 MAF 的原 Firefox “Save Complete” 扩展">
 <!ENTITY save.component.savecomplete.accesskey "U">
@@ -15,28 +15,28 @@
 <!ENTITY save.metadata.extended.accesskey "v">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "界面">
-<!ENTITY icon.caption "Icon">
-<!ENTITY iconlocation.grouplabel "Show Mozilla Archive Format icon in:">
-<!ENTITY iconlocation.urlbar.label "Address bar">
+<!ENTITY icon.caption "图标">
+<!ENTITY iconlocation.grouplabel "在下列位置显示 Mozilla 档案格式的图标：">
+<!ENTITY iconlocation.urlbar.label "地址栏">
 <!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "Address bar, for archived pages only">
+<!ENTITY iconlocation.urlbar-autohide.label "地址栏，仅对档案中的页面 (d)">
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Status bar">
+<!ENTITY iconlocation.status.label "状态栏">
 <!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.none.label "None">
+<!ENTITY iconlocation.none.label "无">
 <!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.caption "菜单">
-<!ENTITY menu.grouplabel "显示 MAF 菜单于：">
+<!ENTITY menu.grouplabel "显示 MAF 菜单项于：">
 <!ENTITY menu.file.label "“文件 (F)”菜单">
 <!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tools.label "“工具”菜单">
+<!ENTITY menu.tools.label "“工具”菜单 (l)">
 <!ENTITY menu.tools.accesskey "l">
 <!ENTITY menu.pagecontext.label "页面内容菜单">
 <!ENTITY menu.pagecontext.accesskey "P">
 <!ENTITY menu.tabscontext.label "标签栏内容菜单 (x)">
 <!ENTITY menu.tabscontext.accesskey "x">
 <!ENTITY menuitem.grouplabel "显示如下附加菜单项：">
-<!ENTITY menuitem.saveinarchive.label "保存…至档案 (h)">
+<!ENTITY menuitem.saveinarchive.label "保存╳╳至档案 (h)">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
 <!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.fileassociations.label "文件关联">

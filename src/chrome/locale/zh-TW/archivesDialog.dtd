@@ -1,62 +1,62 @@
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Archives">
+<!ENTITY window.title "歸檔">
 <!-- *** Column names in the archive list *** -->
 <!-- Title of the page -->
-<!ENTITY archives.placestitle.header "Page Title">
+<!ENTITY archives.placestitle.header "存檔頁面標題">
 <!-- Name of the archive the page is located into -->
-<!ENTITY archives.mafarchivename.header "Archive Name">
+<!ENTITY archives.mafarchivename.header "歸檔名稱">
 <!-- Address of the archive the page is located into -->
-<!ENTITY archives.placesurl.header "Archive Location">
+<!ENTITY archives.placesurl.header "歸檔位置">
 <!-- Title of the page in the archive -->
-<!ENTITY archives.maftitle.header "Original Page Title">
+<!ENTITY archives.maftitle.header "存檔頁面標題（副本，儲於頁面 HTML 之外）">
 <!-- Original address the page was saved from -->
-<!ENTITY archives.maforiginalurl.header "Original Location">
+<!ENTITY archives.maforiginalurl.header "原始頁面位置">
 <!-- Date and time the page was archived -->
-<!ENTITY archives.mafdatearchived.header "Archived">
+<!ENTITY archives.mafdatearchived.header "存檔時間">
 <!-- Temporary local URL that can be used to display the page -->
-<!ENTITY archives.maftempuri.header "Temporary Page URL">
+<!ENTITY archives.maftempuri.header "臨時解包頁網址">
 <!-- URL that can be used to display the page accessing the archive directly -->
-<!ENTITY archives.mafdirectarchiveuri.header "Direct Page URL">
+<!ENTITY archives.mafdirectarchiveuri.header "直接存取網址">
 <!-- *** Column names in the details panel *** -->
-<!ENTITY details.placestitle.label "Page title:">
+<!ENTITY details.placestitle.label "存檔頁面標題:">
 <!ENTITY details.placestitle.accesskey "P">
-<!ENTITY details.mafarchivename.label "Archive name:">
+<!ENTITY details.mafarchivename.label "歸檔名稱 (r):">
 <!ENTITY details.mafarchivename.accesskey "r">
-<!ENTITY details.placesurl.label "Archive location:">
+<!ENTITY details.placesurl.label "歸檔位置 (h):">
 <!ENTITY details.placesurl.accesskey "h">
-<!ENTITY details.maftitle.label "Original page title:">
+<!ENTITY details.maftitle.label "存檔頁面標題（副本，儲於頁面 HTML 之外） (i):">
 <!ENTITY details.maftitle.accesskey "i">
-<!ENTITY details.maforiginalurl.label "Original location:">
+<!ENTITY details.maforiginalurl.label "原始頁面位置 (g):">
 <!ENTITY details.maforiginalurl.accesskey "g">
-<!ENTITY details.mafdatearchived.label "Archived:">
+<!ENTITY details.mafdatearchived.label "存檔時間 (c):">
 <!ENTITY details.mafdatearchived.accesskey "c">
-<!ENTITY details.maftempuri.label "Temporary page URL:">
+<!ENTITY details.maftempuri.label "臨時解包頁網址:">
 <!ENTITY details.maftempuri.accesskey "T">
-<!ENTITY details.mafdirectarchiveuri.label "Direct page URL:">
+<!ENTITY details.mafdirectarchiveuri.label "直接存取網址:">
 <!ENTITY details.mafdirectarchiveuri.accesskey "D">
 <!-- *** Details panel *** -->
-<!ENTITY details.caption "Details">
-<!ENTITY morebutton.label "More details">
+<!ENTITY details.caption "細節">
+<!ENTITY morebutton.label "更多細節 (e)">
 <!-- Note: If possible, keep the same as "lessbutton.accesskey" -->
 <!ENTITY morebutton.accesskey "e">
-<!ENTITY lessbutton.label "Less details">
+<!ENTITY lessbutton.label "更少細節 (e)">
 <!-- Note: If possible, keep the same as "morebutton.accesskey" -->
 <!ENTITY lessbutton.accesskey "e">
 <!-- Displayed in the details textboxes when multiple items are selected -->
-<!ENTITY multipleitems.text "(multiple items selected)">
+<!ENTITY multipleitems.text "（多個存檔頁被選擇）">
 <!-- The following button is repeated for every URL field -->
-<!ENTITY openintabsbutton.label "Open in Tabs">
+<!ENTITY openintabsbutton.label "在標籤頁（群）中開啟">
 <!ENTITY openintabsbutton.accesskey.placesurl "O">
 <!ENTITY openintabsbutton.accesskey.originalurl "n">
 <!ENTITY openintabsbutton.accesskey.tempuri "b">
 <!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
 <!-- *** Other controls *** -->
 <!-- Allows the user to add archives to the list, without opening them -->
-<!ENTITY addbutton.label "Add…">
+<!ENTITY addbutton.label "添加…">
 <!ENTITY addbutton.accesskey "A">
 <!-- Title of the add archives dialog -->
-<!ENTITY addfilepicker.title "Add More Web Archives">
+<!ENTITY addfilepicker.title "添加 Web 歸檔">
 <!-- Removes an archive from the list, without deleting the file -->
-<!ENTITY deletebutton.label "Forget">
+<!ENTITY deletebutton.label "移出">
 <!ENTITY deletebutton.accesskey "F">
 <!ENTITY deletebutton.accesskey.placescontextmenu "F">

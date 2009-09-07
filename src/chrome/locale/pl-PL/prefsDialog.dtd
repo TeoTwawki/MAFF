@@ -15,16 +15,16 @@
 <!ENTITY save.metadata.extended.accesskey "Z">
 <!--    Interface pane    -->
 <!ENTITY pane.interface.label "Interfejs">
-<!ENTITY icon.caption "Icon">
-<!ENTITY iconlocation.grouplabel "Show Mozilla Archive Format icon in:">
-<!ENTITY iconlocation.urlbar.label "Address bar">
+<!ENTITY icon.caption "Ikona">
+<!ENTITY iconlocation.grouplabel "Wyświetlaj ikonę rozszerzenia:">
+<!ENTITY iconlocation.urlbar.label "w pasku adresu">
 <!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "Address bar, for archived pages only">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Status bar">
+<!ENTITY iconlocation.urlbar-autohide.label "w pasku adresu – tylko dla zarchiwizowanych stron">
+<!ENTITY iconlocation.urlbar-autohide.accesskey "Z">
+<!ENTITY iconlocation.status.label "na pasku stanu">
 <!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.none.label "None">
-<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY iconlocation.none.label "nie wyświetlaj">
+<!ENTITY iconlocation.none.accesskey "W">
 <!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Wyświetlaj element Mozilla Archive Format w:">
 <!ENTITY menu.file.label "menu Plik">
@@ -34,7 +34,7 @@
 <!ENTITY menu.pagecontext.label "menu kontekstowym strony">
 <!ENTITY menu.pagecontext.accesskey "K">
 <!ENTITY menu.tabscontext.label "menu kontekstowym paska kart">
-<!ENTITY menu.tabscontext.accesskey "A">
+<!ENTITY menu.tabscontext.accesskey "M">
 <!ENTITY menuitem.grouplabel "Wyświetlaj poniższe elementy:">
 <!ENTITY menuitem.saveinarchive.label "Zapisz w archiwum">
 <!ENTITY menuitem.saveinarchive.accesskey "H">

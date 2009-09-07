@@ -2,13 +2,13 @@
 <!ENTITY window.title "档案">
 <!-- *** Column names in the archive list *** -->
 <!-- Title of the page -->
-<!ENTITY archives.placestitle.header "存档页面标题">
+<!ENTITY archives.placestitle.header "页面标题">
 <!-- Name of the archive the page is located into -->
 <!ENTITY archives.mafarchivename.header "档案名称">
 <!-- Address of the archive the page is located into -->
 <!ENTITY archives.placesurl.header "档案位置">
 <!-- Title of the page in the archive -->
-<!ENTITY archives.maftitle.header "原始页面标题">
+<!ENTITY archives.maftitle.header "页面标题（副本，页面 HTML 之外）">
 <!-- Original address the page was saved from -->
 <!ENTITY archives.maforiginalurl.header "原始页面位置">
 <!-- Date and time the page was archived -->
@@ -18,15 +18,15 @@
 <!-- URL that can be used to display the page accessing the archive directly -->
 <!ENTITY archives.mafdirectarchiveuri.header "直接访问地址">
 <!-- *** Column names in the details panel *** -->
-<!ENTITY details.placestitle.label "存档页面标题:">
+<!ENTITY details.placestitle.label "页面标题:">
 <!ENTITY details.placestitle.accesskey "P">
 <!ENTITY details.mafarchivename.label "档案名称 (r):">
 <!ENTITY details.mafarchivename.accesskey "r">
 <!ENTITY details.placesurl.label "档案位置 (h):">
 <!ENTITY details.placesurl.accesskey "h">
-<!ENTITY details.maftitle.label "原始页面标题 (i):">
+<!ENTITY details.maftitle.label "页面标题（副本，页面 HTML 之外） (g):">
 <!ENTITY details.maftitle.accesskey "i">
-<!ENTITY details.maforiginalurl.label "原始页面位置 (g):">
+<!ENTITY details.maforiginalurl.label "原始页面位置:">
 <!ENTITY details.maforiginalurl.accesskey "g">
 <!ENTITY details.mafdatearchived.label "存档时间 (c):">
 <!ENTITY details.mafdatearchived.accesskey "c">
@@ -36,16 +36,16 @@
 <!ENTITY details.mafdirectarchiveuri.accesskey "D">
 <!-- *** Details panel *** -->
 <!ENTITY details.caption "细节">
-<!ENTITY morebutton.label "更多细节">
+<!ENTITY morebutton.label "更多细节 (e)">
 <!-- Note: If possible, keep the same as "lessbutton.accesskey" -->
 <!ENTITY morebutton.accesskey "e">
-<!ENTITY lessbutton.label "更少细节">
+<!ENTITY lessbutton.label "更少细节 (e)">
 <!-- Note: If possible, keep the same as "morebutton.accesskey" -->
 <!ENTITY lessbutton.accesskey "e">
 <!-- Displayed in the details textboxes when multiple items are selected -->
-<!ENTITY multipleitems.text "（选择了多于一个的存档页）">
+<!ENTITY multipleitems.text "（多个存档页被选择）">
 <!-- The following button is repeated for every URL field -->
-<!ENTITY openintabsbutton.label "在标签页群中打开">
+<!ENTITY openintabsbutton.label "在标签页（群）中打开">
 <!ENTITY openintabsbutton.accesskey.placesurl "O">
 <!ENTITY openintabsbutton.accesskey.originalurl "n">
 <!ENTITY openintabsbutton.accesskey.tempuri "b">
