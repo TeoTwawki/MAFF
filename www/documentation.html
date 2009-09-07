@@ -26,6 +26,7 @@
       <li><a href="#advanced">Advanced preferences</a></li>
     </ul>
   </li>
+  <li><a href="#internalsettings">Internal configuration settings</a></li>
 </ul>
 
 <h2><a name="introduction"></a>Introduction</h2>
@@ -349,13 +350,8 @@
   <dt>Use the "jar:" protocol to access the contents of MAFF archives</dt>
   <dd>
     <p>If this preference is enabled, when you open a MAFF archive its contents
-     will be accessed directly using the "jar:" protocol. The archive is still
-     extracted to a temporary directory.</p>
-    <p>If you enable this option, when you open an archive that contains
-     multiple pages, the pages that are opened in other tabs will use a "jar:"
-     URL instead of a "file:" URL. The "jar:" URL can be bookmarked and is valid
-     until the archive is moved, while the "file:" URL is usually valid only
-     during the current Firefox session.</p>
+     will be accessed directly using the "jar:" protocol, without being
+     extracted.</p>
     <p>However, if you enable this option, the archive files you open will be
      locked, and you will be unable to move, rename or delete them until Firefox
      is closed.</p>
@@ -376,6 +372,27 @@
      the dialog again. This option is only provided as a convenience for
      translators in need of proofreading the text in the welcome dialog
      multiple times.</p>
+  </dd>
+</dl>
+
+<h2><a name="internalsettings"></a>Internal configuration settings</h2>
+
+<p>These configuration settings are not available from the preferences dialog,
+but only from the <tt>about:config</tt> page. Usually, they should not be
+changed unless there is a specific reason, and non-default settings may
+adversely impact functionality or performance.</p>
+
+<dl>
+  <dt><tt>extensions.maf.save.maff.compression</tt></dt>
+  <dd>
+    <p>Controls the compression level to use when saving files in a MAFF
+     archive.</p>
+    <ol>
+      <li><b><tt>dynamic</tt></b> (default) - Use maximum compression for all
+       files, but do not re-compress media files.</li>
+      <li><b><tt>best</tt></b> - Use maximum compression for all files.</li>
+      <li><b><tt>none</tt></b> - Store all the files uncompressed.</li>
+    </ol>
   </dd>
 </dl>
 
