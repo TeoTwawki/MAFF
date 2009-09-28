@@ -109,6 +109,18 @@ DataSourceWrapper.prototype = {
    */
   resources: {},
 
+  /**
+   * Replaces the literal to which the given property points.
+   */
+  replaceLiteral: function(aSource, aProperty, aNewValue) {
+    // Find the RDF nodes to be modified, assuming that the required assertion
+    //  already exists in the data source
+    var oldRdfLiteral = this.GetTarget(aSource, aProperty, true);
+    var newRdfLiteral = this._rdf.GetLiteral(aNewValue);
+    // Execute the change
+    this.Change(aSource, aProperty, oldRdfLiteral, newRdfLiteral);
+  },
+
   // --- nsISupports interface functions ---
 
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIRDFDataSource]),

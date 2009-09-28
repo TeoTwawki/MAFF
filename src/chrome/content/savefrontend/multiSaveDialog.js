@@ -76,16 +76,9 @@ var MultiSaveDialog = {
     //  data source.
     treeView.setCellValue = function(aRow, aCol, aValue) {
       if (aCol.id == "tcChecked") {
-        // Find the RDF nodes to be modified, assuming that the "checked"
-        //  assertion already exists in the data source
-        var rdfResource = treeView.getResourceAtIndex(aRow);
-        var oldRdfValue = tabsDataSource.GetTarget(rdfResource,
-         tabsDataSource.resources.checked, true);
-        var newRdfValue = Cc["@mozilla.org/rdf/rdf-service;1"]
-         .getService(Ci.nsIRDFService).GetLiteral(aValue);
         // Execute the change
-        tabsDataSource.Change(rdfResource, tabsDataSource.resources.checked,
-         oldRdfValue, newRdfValue);
+        tabsDataSource.replaceLiteral(treeView.getResourceAtIndex(aRow),
+         tabsDataSource.resources.checked, aValue);
         // Update the dialog buttons
         MultiSaveDialog.checkButtonState();
       }
