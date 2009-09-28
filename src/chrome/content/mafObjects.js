@@ -22,6 +22,9 @@ var EXPORTED_SYMBOLS = [];
 try {
   // Export each object defined in the associated JavaScript file
   [
+   // General-purpose support objects
+   ["general/dataSourceWrapperObject.js",         "DataSourceWrapper"],
+
    // Web archive handling
    ["archiving/archiveObject.js",                 "Archive"],
    ["archiving/archivePageObject.js",             "ArchivePage"],

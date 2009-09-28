@@ -42,69 +42,28 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  * Provides an RDF data source that gives access to the files containing the
  *  saved page metadata of MAFF archives, both for reading and for writing.
  *
- * For general information about RDF data sources in Mozilla, see
- *  <https://developer.mozilla.org/en/RDF_in_Mozilla_FAQ> (retrieved
- *  2009-02-22). For more information on RDF data source implementation
- *  techniques, see <https://developer.mozilla.org/en/RDF_Datasource_How-To>
- *  (retrieved 2009-02-22).
+ * This class derives from DataSourceWrapper. See the DataSourceWrapper
+ *  documentation for details.
  */
 function MaffDataSource() {
-  // This object implements the nsIRDFDataSource interface by forwarding most
-  //  of the calls to an XML data source. The first part of the initialization
-  //  consists in creating the wrapper functions.
-
-  // Create an empty in-memory XML data source to hold the data
-  var wrappedObject =
+  // Construct the base class wrapping an in-memory XML data source
+  DataSourceWrapper.call(this,
    Cc["@mozilla.org/rdf/datasource;1?name=xml-datasource"].
-   createInstance(Ci.nsIRDFDataSource);
-
-  // This function creates a forwarding function for wrappedObject
-  function makeForwardingFunction(functionName) {
-    return function() {
-      return wrappedObject[functionName].apply(wrappedObject, arguments);
-    }
-  }
-
-  // Forward all the functions that are not explicitly overridden
-  for (var propertyName in wrappedObject) {
-    if (typeof wrappedObject[propertyName] == "function" &&
-     !(propertyName in this)) {
-      this[propertyName] = makeForwardingFunction(propertyName);
-    }
-  }
-
-  // We also set up a convenience access to some of the RDF resource objects
-  //  that are commonly used with this data source. This way, users don't need
-  //  to call GetResource repeatedly.
-  for (var resourceId in this.resources) {
-    if (this.resources.hasOwnProperty(resourceId)) {
-      var resource = this.resources[resourceId];
-      // Since the inner "resources" object is stored in the prototype, it is
-      //  shared by all the instances of the data source created from the same
-      //  prototype, and the translation from URL to RDF resource may have been
-      //  already done.
-      if (typeof resource == "string") {
-        this.resources[resourceId] = this._rdf.GetResource(resource);
-      }
-    }
-  }
-
-  // Store a reference to the wrapped object
-  this._wrappedObject = wrappedObject;
+   createInstance(Ci.nsIRDFDataSource));
 }
 
 MaffDataSource.prototype = {
+  // Derive from the DataSourceWrapper class in a Mozilla-specific way. See also
+  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
+  //  (retrieved 2009-02-01).
+  __proto__: DataSourceWrapper.prototype,
 
-  // --- Public methods and properties ---
+  // --- Overridden DataSourceWrapper methods and properties ---
 
   /**
-   * Collection of RDF resource objects that form the common subjects and the
-   *  vocabulary of this RDF data source.
-   *
-   * Note: The strings are converted to actual RDF resources as soon as this
-   *  data source is constructed, so GetResource must not be called. The
-   *  original resource URL can be retrieved using the ValueUTF8 property of
-   *  the resource object.
+   * Note: These strings are converted to actual RDF resources by the base class
+   *  as soon as this data source is constructed, so GetResource must not be
+   *  called. See the DataSourceWrapper documentation for details.
    */
   resources: {
     // Subjects and objects
@@ -116,6 +75,8 @@ MaffDataSource.prototype = {
     indexFileName:   "http://maf.mozdev.org/metadata/rdf#indexfilename",
     charset:         "http://maf.mozdev.org/metadata/rdf#charset"
   },
+
+  // --- Public methods and properties ---
 
   /**
    * Getter for an RDF resource representing a predicate in the MAF namespace.
@@ -181,10 +142,6 @@ MaffDataSource.prototype = {
     // Store the value as the target of the provided predicate
     this._wrappedObject.Assert(this.resources.root, aPredicate, valueRes, true);
   },
-
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIRDFDataSource]),
 
   // --- Private methods and properties ---
 
@@ -280,12 +237,5 @@ MaffDataSource.prototype = {
     });
     // Return the generated string
     return mafNamespaceXml;
-  },
-
-  /**
-   * XML/RDF data source that is wrapped by this object.
-   */
-  _wrappedObject: null,
-
-  _rdf: Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService)
+  }
 }

@@ -43,74 +43,35 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  *  windows. For each tab, a selection state is available, and the list of
  *  selected tabs can be retrieved.
  *
- * For general information about RDF data sources in Mozilla, see
- *  <https://developer.mozilla.org/en/RDF_in_Mozilla_FAQ> (retrieved
- *  2009-02-22). For more information on RDF data source implementation
- *  techniques, see <https://developer.mozilla.org/en/RDF_Datasource_How-To>
- *  (retrieved 2009-02-22).
+ * This class derives from DataSourceWrapper. See the DataSourceWrapper
+ *  documentation for details.
  *
  * @param aBrowserWindow   Browser window object whose tabs will be available
  *                          for selection.
  */
 function TabsDataSource(aBrowserWindow) {
-  // This object implements the nsIRDFDataSource interface by forwarding most
-  //  of the calls to an in-memory data source. The first part of the
-  //  initialization consists in creating the wrapper functions.
+  // Construct the base class wrapping an in-memory RDF data source
+  DataSourceWrapper.call(this,
+   Cc["@mozilla.org/rdf/datasource;1?name=in-memory-datasource"].
+   createInstance(Ci.nsIRDFDataSource));
 
-  // Create an empty in-memory data source to hold the data
-  var wrappedObject =
-   Cc["@mozilla.org/rdf/datasource;1?name=in-memory-datasource"]
-   .createInstance(Ci.nsIRDFDataSource);
-
-  // This function creates a forwarding function for wrappedObject
-  function makeForwardingFunction(functionName) {
-    return function() {
-      return wrappedObject[functionName].apply(wrappedObject, arguments);
-    }
-  }
-
-  // Forward all the functions that are not explicitly overridden
-  for (var propertyName in wrappedObject) {
-    if (typeof wrappedObject[propertyName] == "function" &&
-     !(propertyName in this)) {
-      this[propertyName] = makeForwardingFunction(propertyName);
-    }
-  }
-
-  // We also set up a convenience access to some of the RDF resource objects
-  //  that are commonly used with this data source. This way, users don't need
-  //  to call GetResource repeatedly.
-  for (var resourceId in this.resources) {
-    if (this.resources.hasOwnProperty(resourceId)) {
-      var resource = this.resources[resourceId];
-      // Since the inner "resources" object is stored in the prototype, it is
-      //  shared by all the instances of the data source created from the same
-      //  prototype, and the translation from URL to RDF resource may have been
-      //  already done.
-      if (typeof resource == "string") {
-        this.resources[resourceId] = this._rdf.GetResource(resource);
-      }
-    }
-  }
-
-  // Store a reference to the wrapped object and initialize the actual data
-  this._wrappedObject = wrappedObject;
+  // Initialize the actual data
   this._browsers = [];
   this._createDataFromWindow(aBrowserWindow);
 }
 
 TabsDataSource.prototype = {
+  // Derive from the DataSourceWrapper class in a Mozilla-specific way. See also
+  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
+  //  (retrieved 2009-02-01).
+  __proto__: DataSourceWrapper.prototype,
 
-  // --- Public methods and properties ---
+  // --- Overridden DataSourceWrapper methods and properties ---
 
   /**
-   * Collection of RDF resource objects that form the common subjects and the
-   *  vocabulary of this RDF data source.
-   *
-   * Note: The strings are converted to actual RDF resources as soon as this
-   *  data source is constructed, so GetResource must not be called. The
-   *  original resource URL can be retrieved using the ValueUTF8 property of
-   *  the resource object.
+   * Note: These strings are converted to actual RDF resources by the base class
+   *  as soon as this data source is constructed, so GetResource must not be
+   *  called. See the DataSourceWrapper documentation for details.
    */
   resources: {
     // Subjects and objects
@@ -126,6 +87,8 @@ TabsDataSource.prototype = {
     originalUrl:     "urn:maf:vocabulary#originalUrl",
     checked:         "urn:maf:vocabulary#checked"
   },
+
+  // --- Public methods and properties ---
 
   /**
    * Getter for an RDF resource representing a window.
@@ -167,16 +130,7 @@ TabsDataSource.prototype = {
     return tabsArray;
   },
 
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIRDFDataSource]),
-
-  // --- nsIRDFDataSource interface functions ---
-
-  Assert: function(aSource, aProperty, aTarget, aTruthValue) {
-    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
-    throw Cr.NS_ERROR_NOT_IMPLEMENTED;
-  },
+  // --- Overridden nsIRDFDataSource interface functions ---
 
   Change: function(aSource, aProperty, aOldTarget, aNewTarget) {
     // Only allow changing the "checked" property
@@ -215,16 +169,6 @@ TabsDataSource.prototype = {
       this._wrappedObject.Unassert(windowResource, this.resources.checked,
        this._rdfBool(!allTabsSelected));
     }
-  },
-
-  Move: function(aOldSource, aNewSource, aProperty, aTarget) {
-    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
-    throw Cr.NS_ERROR_NOT_IMPLEMENTED;
-  },
-
-  Unassert: function(aSource, aProperty, aTarget) {
-    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
-    throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
   // --- Private methods and properties ---
@@ -364,30 +308,7 @@ TabsDataSource.prototype = {
   },
 
   /**
-   * Return an RDF literal containing either "true" or "false".
-   */
-  _rdfBool: function(aBooleanValue) {
-    return this._rdf.GetLiteral(aBooleanValue ? "true" : "false");
-  },
-
-  /**
-   * Make an RDF sequence associated with the wrapped data source.
-   */
-  _rdfSequence: function(aResource) {
-    return Cc["@mozilla.org/rdf/container-utils;1"]
-     .getService(Ci.nsIRDFContainerUtils).MakeSeq(this._wrappedObject,
-     aResource);
-  },
-
-  /**
    * Actual browser objects associated with this data source.
    */
-  _browsers: [],
-
-  /**
-   * In-memory RDF data source that is wrapped by this object.
-   */
-  _wrappedObject: null,
-
-  _rdf: Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService)
+  _browsers: []
 }
