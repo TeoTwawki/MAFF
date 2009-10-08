@@ -118,9 +118,9 @@ TabsDataSource.prototype = {
       var tabResource = windowEnum.getNext();
       // Get the properties of the tab
       var tabCheckedLiteral = this._wrappedObject.GetTarget(tabResource,
-       this.resources.checked, true);
+       this.resources.checked, true).QueryInterface(Ci.nsIRDFLiteral);
       var tabInternalIndexLiteral = this._wrappedObject.GetTarget(tabResource,
-       this.resources.internalIndex, true);
+       this.resources.internalIndex, true).QueryInterface(Ci.nsIRDFInt);
       // Add the tab to the array if required
       if (tabCheckedLiteral.Value == "true") {
         tabsArray.push(this._browsers[tabInternalIndexLiteral.Value]);
