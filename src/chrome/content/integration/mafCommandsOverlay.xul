@@ -60,6 +60,9 @@
     <command id=       "mafCmdBrowseOpenArchives"
              oncommand="MafCommandsOverlay.browseOpenArchives();"
              />
+    <command id=       "mafCmdConvertSavedPages"
+             oncommand="MafCommandsOverlay.convertSavedPages();"
+             />
     <command id=       "mafCmdPreferences"
              oncommand="MafCommandsOverlay.preferences();"
              />
@@ -154,6 +157,12 @@
                   label=      "&menuitem.savealltabsas.label;"
                   accesskey=  "&menuitem.savealltabsas.accesskey.toolsmenu;"
                   command=    "mafCmdSaveAllTabsAs"
+                  />
+        <menuseparator />
+        <menuitem id=         "mafMenuConvertSavedPages_toolsMenu"
+                  label=      "&menuitem.convertsavedpages.label;"
+                  accesskey=  "&menuitem.convertsavedpages.accesskey.toolsmenu;"
+                  command=    "mafCmdConvertSavedPages"
                   />
         <menuseparator />
         <menuitem id=         "mafMenuPreferences_toolsMenu"

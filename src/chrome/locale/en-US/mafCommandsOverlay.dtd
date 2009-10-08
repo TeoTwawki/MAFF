@@ -11,6 +11,9 @@
 <!ENTITY menuitem.browseopenarchives.label "Browse Open Archives…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
 
+<!ENTITY menuitem.convertsavedpages.label "Convert Saved Pages…">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
+
 <!ENTITY menuitem.preferences.label "Preferences…">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
 

@@ -248,6 +248,25 @@ var MafCommandsOverlay = {
   },
 
   /**
+   * Displays the "Convert saved pages" window.
+   */
+  convertSavedPages: function() {
+    // If the convert window is already opened
+    var convertDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
+     getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Convert");
+    if (convertDialog) {
+      // Bring the window to the foreground
+      convertDialog.focus();
+    } else {
+      // Open a new window to allow the conversion
+      window.open(
+       "chrome://maf/content/frontend/convertDialog.xul",
+       "maf-convertDialog",
+       "chrome,titlebar,centerscreen,resizable=yes");
+    }
+  },
+
+  /**
    * Displays the "Preferences" window.
    */
   preferences: function() {
