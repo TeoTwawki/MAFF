@@ -8,6 +8,8 @@ File sources
 The following files were copied from the Mozilla "comm-central" codebase:
   general/cbox.gif
   general/cbox-check.gif
+  general/cbox-dis.gif
+  general/cbox-dis-check.gif
 
 The files are assumed to be licensed under the tri-license (MPL/GPL/LGPL) used
 throughout the original codebase.
