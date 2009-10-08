@@ -23,6 +23,7 @@ try {
   // Export each object defined in the associated JavaScript file
   [
    // General-purpose support objects
+   ["general/asyncEnumeratorObject.js",           "AsyncEnumerator"],
    ["general/dataSourceWrapperObject.js",         "DataSourceWrapper"],
 
    // Web archive handling
