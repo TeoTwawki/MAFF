@@ -110,6 +110,14 @@ DataSourceWrapper.prototype = {
   resources: {},
 
   /**
+   * Returns the value of the literal to which the given property points.
+   */
+  getLiteralValue: function(aSource, aProperty) {
+    return this.GetTarget(aSource, aProperty, true).
+     QueryInterface(Ci.nsIRDFLiteral).Value;
+  },
+
+  /**
    * Replaces the literal to which the given property points.
    */
   replaceLiteral: function(aSource, aProperty, aNewValue) {
