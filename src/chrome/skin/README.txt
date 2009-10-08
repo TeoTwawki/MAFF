@@ -14,6 +14,12 @@ The following files were copied from the Mozilla "comm-central" codebase:
 The files are assumed to be licensed under the tri-license (MPL/GPL/LGPL) used
 throughout the original codebase.
 
+The following files are modified versions of the above files:
+  frontend/cbox-status-enqueued.gif
+  frontend/cbox-status-failure.gif
+  frontend/cbox-status-success.gif
+  frontend/cbox-status-working.gif
+
 
 
 Retrieving the original Mozilla files

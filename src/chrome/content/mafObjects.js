@@ -42,7 +42,13 @@ try {
    ["caching/archiveCacheObject.js",              "ArchiveCache"],
    ["caching/archiveAnnotationsObject.js",        "ArchiveAnnotations"],
 
+   // File format conversion
+   ["converting/candidateFinderObject.js",        "CandidateFinder"],
+   ["converting/candidateLocationObject.js",      "CandidateLocation"],
+   ["converting/candidateObject.js",              "Candidate"],
+
    // Support objects for the front-end
+   ["frontend/candidatesDataSourceObject.js",     "CandidatesDataSource"],
    ["frontend/interfaceObject.js",                "Interface"],
    ["frontend/welcomeObject.js",                  "Welcome"],
 
