@@ -54,6 +54,14 @@ var MultiSaveDialog = {
    */
   _tabsDataSource: null,
 
+  /**
+   * The customized view for the tabs tree. The purpose of this property is to
+   *  keep a reference to the customized JavaScript object implementing the
+   *  view. If this explicit reference is not kept, the tree view can lose its
+   *  customizations during garbage collection.
+   */
+  _tabsTreeView: null,
+
   // --- Interactive dialog functions and events ---
 
   /**
@@ -63,6 +71,10 @@ var MultiSaveDialog = {
     // Get references to the controls to be initialized
     var tabsTree = document.getElementById("treeTabs");
     var treeView = tabsTree.view;
+
+    // Store a reference to the tree view to prevent it from losing its
+    //  customizations during garbage collection
+    this._tabsTreeView = treeView;
 
     // Create the data source for the tree and assign it. The tabs data source
     //  created here always loads synchronously.
