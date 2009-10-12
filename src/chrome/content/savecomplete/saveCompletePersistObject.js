@@ -132,6 +132,25 @@ SaveCompletePersist.prototype = {
         },
         progressListener: this.progressListener
       };
+
+      // When saving a page that was extracted from an archive, use the
+      //  information from the original archive to save the page correctly
+      var originalPage = MozillaArchiveFormat.ArchiveCache.pageFromUriSpec(
+       this._saveUrlSpec);
+      if (originalPage) {
+        // Preserve the original URL the page was saved from, if present
+        if (originalPage.originalUrl) {
+          scOptions.originalUrl = originalPage.originalUrl;
+        }
+        // Save the extracted or decoded version of the page. If this is not
+        //  done, the archive itself would be saved, instead of its contents.
+        if (originalPage.tempUri) {
+          scOptions.actualSaveUrl = originalPage.tempUri.spec;
+        } else if (originalPage.directArchiveUri) {
+          scOptions.actualSaveUrl = originalPage.directArchiveUri.spec;
+        }
+      }
+
       // Construct the integrated Save Complete object and start saving
       var scFileSaver = new
        MafSaveComplete.scPageSaver.scDefaultFileSaver(fileObject);
