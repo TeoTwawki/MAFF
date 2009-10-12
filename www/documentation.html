@@ -10,14 +10,21 @@
     <ul>
       <li><a href="#saving">Saving web archives</a></li>
       <li><a href="#metadata">Additional information saved in web archives</a></li>
-      <li><a href="#converting">Converting previously saved pages to web
-       archive format</a></li>
       <li><a href="#opening">Opening web archives</a></li>
       <li><a href="#archiveinfo">Viewing information about archived
        pages</a></li>
     </ul>
   </li>
   <li><a href="#extensions">Integration with other extensions</a></li>
+  <li><a href="#converting">Converting previously saved pages to other file
+   formats</a>
+    <ul>
+      <li><a href="#convertingonepage">Converting single pages</a></li>
+      <li><a href="#convertingmorepages">Converting multiple pages</a></li>
+      <li><a href="#selectfiles">Selecting which files to convert</a></li>
+      <li><a href="#convertfiles">Completing the conversion</a></li>
+    </ul>
+  </li>
   <li><a href="#preferences">Preferences</a>
     <ul>
       <li><a href="#main">Main preferences</a></li>
@@ -85,32 +92,6 @@
 </ul>
 <p>If you resave an already archived page to a different file, the save time and
  location from the original archive are preserved.</p>
-<h4><a name="converting"></a>Converting previously saved pages to web archive
- format</h4>
-<p>You probably already have some web pages saved among your local files. These
- pages are often stored as file&nbsp;/&nbsp;folder pairs (like
- <tt>Page.html</tt> and <tt>Page_files</tt>), and you may want to convert them
- to a web archive format for easier maintenance.</p>
-<p>The conversion is as easy as opening the old pages in the browser, and
- resaving them as MAFF or MHTML. The information about the original save
- operation, if available, is preserved.</p>
-<ul>
-  <li>The <b>date and time</b> of the original save operation is obtained from
-   the local file's last modification time.</li>
-  <li>
-    <p>The <b>original location</b> is obtained from the special comment some
-     browsers embed in the page when they save it. If not available, the local
-     address is used.</p>
-    <p>If the page was saved with Internet Explorer, the original location is
-     stored like <code>&lt;!-- saved from url=(0023)http://www.example.org/
-     --&gt;</code>.</p>
-    <p>If the page was saved using the standalone or the integrated Save
-     Complete extension for Firefox, the original location is stored like
-     <code>&lt;!-- Source is http://www.example.org/ --&gt;</code>.</p>
-    <p>If the page was saved using Firefox without the Save Complete extension,
-     the original location is not available.</p>
-  </li>
-</ul>
 <h3><a name="opening"></a>Opening web archives</h3>
 <p>By default, once MAF is installed, web archives can be opened using the
  ordinary <b>File &raquo; Open File</b> menu item of Firefox or using
@@ -187,6 +168,175 @@
      MAFF archives, while MHTML archives are opened with UnMHT.</p>
   </dd>
 </dl>
+
+<h2><a name="converting"></a>Converting previously saved pages to other file
+ formats</h2>
+<p>You probably already have some web pages saved among your local files. These
+ pages are often stored as file&nbsp;/&nbsp;folder pairs (like
+ <tt>Page.html</tt> and <tt>Page_files</tt>), and you may want to convert them
+ to a web archive format for easier maintenance.</p>
+<p>You may also want to convert saved pages from a web archive format to
+ another, for example from MHTML to MAFF to save disk space or vice versa to
+ achieve compatibility with Internet Explorer.</p>
+<h3><a name="convertingonepage"></a>Converting single pages</h3>
+<p>Converting a single page that was previously saved locally is as easy as
+ opening the page in the browser and resaving it in another file format. The
+ Mozilla Archive Format extension handles the details of the conversion process,
+ and preserves the information about the original source, if available.</p>
+<p>When converting a web page that is not stored in an archive, the following
+ information is preserved:</p>
+<ul>
+  <li>The <b>date and time</b> of the original save operation is obtained from
+   the local file's last modification time.</li>
+  <li>
+    <p>The <b>original location</b> is obtained from the special comment some
+     browsers embed in the page when they save it. If not available, the local
+     address is used.</p>
+    <p>If the page was saved with Internet Explorer, the original location is
+     stored like <code>&lt;!-- saved from url=(0023)http://www.example.org/
+     --&gt;</code>.</p>
+    <p>If the page was saved using the standalone or the integrated Save
+     Complete extension for Firefox, the original location is stored like
+     <code>&lt;!-- Source is http://www.example.org/ --&gt;</code>.</p>
+    <p>If the page was saved using Firefox without the Save Complete extension,
+     the original location is not available.</p>
+  </li>
+</ul>
+<p>When converting a web archive to another archive format, all the information
+ that is supported by the destination file format is preserved.</p>
+<p>When saving an archived page as a complete page outside of an archive, if the
+ integrated Save Complete extension is enabled, the original source location is
+ stored in a comment inside the saved page.</p>
+<h3><a name="convertingmorepages"></a>Converting multiple pages</h3>
+<p>If you have many saved pages that you want to convert to another file format,
+ you can use the <i>Saved Pages Conversion Wizard</i>. You can start the wizard
+ using the <b>Tools &raquo; Mozilla Archive Format &raquo; Convert Saved
+ Pages</b> menu item. If the <b>Mozilla Archive Format</b> submenu is hidden,
+ you must first enable it from the <a href="#interface">interface
+ preferences</a>.</p>
+<p>The wizard allows you to convert all the pages located in one folder,
+ optionally including all its subfolders, automating the task of opening each
+ page and saving it using another file format. When using the conversion wizard,
+ the following information must be considered:</p>
+<ul>
+  <li>The wizard operates on multiple files, but the results for each file are
+   equivalent to <a href="#convertingonepage">converting a single page</a> by
+   opening and saving it manually. The same information about the original
+   location is preserved, and the <b>fidelity</b> of the resulting page depends
+   on the destination file formats and the current
+   <a href="#main">preferences</a>.</li>
+  <li>For best results, it is recommended that you
+   <a href="#savecomplete">enable the Save Complete component</a> before
+    starting the conversion.</li>
+  <li>If you want to convert from MHTML to another file format, like MAFF, and
+   you have installed the
+   <a href="https://addons.mozilla.org/firefox/addon/8051">UnMHT</a> extension,
+   you must disable it for the duration of the conversion process.</li>
+  <li>The wizard only operates on one page for each file. If you want to convert
+   from a multi-page MAFF archive to another file format, you should extract the
+   archive first, using an ordinary ZIP utility. If you want, you can then
+   convert the resulting complete web pages to MHTML using the conversion
+   wizard.</li>
+  <li>If you are converting from a web archive format, ensure you have enough
+   free space in your temporary folder, since the archives are normally
+   extracted to the temporary folder before conversion. If you need to convert
+   many pages and don't have enough free space, you may want to convert only
+   some of them at a time, and restart the browser between each conversion
+   batch. You can also move the temporary folder to a different drive in the
+   <a href="#advanced">advanced preferences</a>.</li>
+  <li>In some cases, the automatic conversion of complex web pages may fail.
+   These pages may need manual conversion.</li>
+</ul>
+<h4><a name="selectfiles"></a>Selecting which files to convert</h4>
+<img src="images/convertDialog-pageFormats.png" alt="" vspace="2">
+<img src="images/convertDialog-pageFoldersSource.png" alt="" vspace="2">
+<p>First, you must select the source and destination file formats, and the
+ source folder to be sought for source files. You can decide to look in
+ subfolders of the selected folder or to convert only the files that are placed
+ directly inside the selected folder.</p>
+<p>The selected source format determines how the wizard will look for source
+ files. The MAFF and MHTML web archive formats are recognized by their
+ extension, respectively <code class="maf-file-ext">.maff</code> and either
+ <code class="maf-file-ext">.mht</code> or
+ <code class="maf-file-ext">.mhtml</code>. Complete web pages are recognized
+ because they have an associated support folder, for example <tt>Page.html</tt>
+ and <tt>Page_files</tt>, but also <tt>Page</tt> (without extension) and
+ <tt>Page_files</tt>. Web pages saved as single files, without support folders,
+ are recognized by their extension only.</p>
+<p>If you are using Firefox in a language other than English, the recognition of
+ additional support folder suffixes will be enabled. For example, if you are
+ using Firefox in French, a support folder named <tt>Page_fichiers</tt> can be
+ recognized, in addition to <tt>Page_files</tt>. If you previously saved pages
+ using a browser in a different language than the one in which you are using
+ Firefox, the support folder names may not be recognized correctly.</p>
+<p>The selected destination format determines how the wizard will assign the
+ output file names. The extension in the source file name, if present, is
+ always replaced with the correct extension for the destination file format. For
+ MHTML, the <a href="#advanced">advanced preferences</a> determine whether the
+ <code class="maf-file-ext">.mht</code> or
+ <code class="maf-file-ext">.mhtml</code> extension is used.</p>
+<img src="images/convertDialog-pageFoldersDest.png" alt="">
+<p>The next step consists in selecting the destination folder. If you want, you
+ can place the converted files in a different folder from the original files.
+ This is particularly useful if you are converting from a read-only source, like
+ a CD-ROM or a DVD. The original folder structure is always preserved, so that
+ if a source file is located in a subfolder of the original folder, the
+ converted file will be located in a subfolder with the same name in the
+ destination folder.</p>
+<p>You may also choose to place the converted files near the original files.
+ Each converted file will be placed in the same folder as its original, with the
+ same file name, but with a different extension. In this case, you may want to
+ move the original out of the way, by selecting a folder that will be used as a
+ bin for the original files that have been successfully converted.</p>
+<p>If you are converting from the MAFF file format and the use of the "jar:"
+ protocol is enabled in the <a href="#advanced">advanced preferences</a>, you
+ will not be able to move the source files to another folder, since Firefox will
+ lock the files in place until it is closed. If you want to use this feature
+ when converting from MAFF to another format, you should disable the use of
+ the "jar:" protocol for the duration of the conversion process.</p>
+<p>The conversion wizard will never delete or overwrite the source files. Since
+ the converted pages may not be entirely faithful to the original, you should
+ always keep a backup of your source files available, even after a successful
+ conversion.</p>
+<img src="images/convertDialog-pageCandidates-select.png" alt="">
+<p>Finally, the source folder is scanned to locate the original files. Depending
+ on how many files are present in the source, this operation may require some
+ time. If you are working with large folder trees, you may want to repeat the
+ wizard multiple times, converting one subfolder at a time.</p>
+<p>Before the actual conversion begins, you have the option of fine-tuning your
+ selection, and you can verify that the source files have been identified
+ correctly. In the list of files, in addition to the source file name, support
+ folder name and subfolder, you may display other columns like the full source,
+ destination and bin paths.</p>
+<p>If for any reason the destination file or support folder is already present,
+ or if a file or support folder is already present in the folder where the
+ source file would be moved after conversion, the source file name will appear
+ in the list, but the selection checkbox will be disabled. This often indicates
+ that the source file was converted successfully during a previous run of the
+ wizard.</p>
+<h4><a name="convertfiles"></a>Completing the conversion</h4>
+<img src="images/convertDialog-pageCandidates-results.png" alt="">
+<p>After you have selected the files to be converted, click the <b>Finish</b>
+ button to start the conversion process. Depending on the number of files, this
+ process may require some time.</p>
+<p>You can cancel the conversion at any time by closing the wizard or by using
+ the <b>Back</b> button. Canceling the operation may require some time.</p>
+<p>When the operation is finished, you can see the count of how many files have
+ been successfully converted and how many files failed. The icon near each file
+ name indicates its current status: <img src="images/cbox-dis.gif" alt=""> not
+ selected, <img src="images/cbox-dis-check.gif" alt=""> already converted,
+ <img src="images/cbox-status-enqueued.gif" alt=""> waiting for conversion,
+ <img src="images/cbox-status-working.gif" alt=""> currently converting,
+ <img src="images/cbox-status-failure.gif" alt=""> conversion failed, or
+ <img src="images/cbox-status-success.gif" alt=""> conversion
+ succeeded.</p>
+<p>Detailed information about the reasons for conversion failures is available
+ in the <i>Error Console</i>, accessible from the <b>Tools &raquo; Error
+ Console</b> menu item.</p>
+<p>If you are satisfied with the results, click the <b>Finish</b> button to
+ close the window. You may also use the <b>Back</b> button to retry the
+ conversion process with the same settings, or to change your selection and
+ repeat the process with different folders.</p>
 
 <h2><a name="preferences"></a>Preferences</h2>
 <p>The default settings in effect after installation are enough to allow correct
