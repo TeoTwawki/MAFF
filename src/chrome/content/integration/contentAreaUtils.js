@@ -109,6 +109,13 @@
  *         - mafAskSaveArchive: True to ask to save archives only.
  *         - mafSaveTabs [optional]: Array of browser objects corresponding to
  *           the tabs to be saved.
+ *        When this function is called, directly or indirectly, by Mozilla
+ *        Archive Format to create an archive automatically, this parameter can
+ *        also be an object with the following properties:
+ *         - targetFile: nsIFile of the final destination page or archive.
+ *         - saveBehavior: Save behavior to use when creating the file.
+ *         - mafProgressListener: Object implementing the nsIWebProgressListener
+ *           interface, used to detect when the operation completes.
  */
 function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                       aContentType, aShouldBypassCache, aFilePickerTitleKey,
@@ -178,36 +185,42 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     //  prompt is shown and the file is saved in the specified directory using
     //  "index" as the basename.
     if (typeof aSkipPrompt == "object") {
-      // Find the leaf name of the file to be saved. Since in some cases the
-      //  browser erroneously reads the default extension from the page title,
-      //  if the content we are saving has a known document type, use the
-      //  well-known extension for that type.
-      var fileExtension = fileInfo.fileExt;
-      switch (aContentType) {
-      case "text/html":
-        fileExtension = "html";
-        break;
-      case "application/xhtml+xml":
-        fileExtension = "xhtml";
-        break;
-      case "image/svg+xml":
-        fileExtension = "svg";
-        break;
-      case "text/xml":
-      case "application/xml":
-        fileExtension = "xml";
-        break;
+      if (aSkipPrompt.targetFile) {
+        // Use the parameters from the provided object
+        fpParams.file = aSkipPrompt.targetFile.clone();
+        fpParams.saveBehavior = aSkipPrompt.saveBehavior;
+      } else {
+        // Find the leaf name of the file to be saved. Since in some cases the
+        //  browser erroneously reads the default extension from the page title,
+        //  if the content we are saving has a known document type, use the
+        //  well-known extension for that type.
+        var fileExtension = fileInfo.fileExt;
+        switch (aContentType) {
+        case "text/html":
+          fileExtension = "html";
+          break;
+        case "application/xhtml+xml":
+          fileExtension = "xhtml";
+          break;
+        case "image/svg+xml":
+          fileExtension = "svg";
+          break;
+        case "text/xml":
+        case "application/xml":
+          fileExtension = "xml";
+          break;
+        }
+        var saveFileName = getNormalizedLeafName("index", fileExtension);
+        // Notify the Mozilla Archive Format saving component
+        try {
+          aSkipPrompt.mafEventListener.onSaveNameDetermined(saveFileName);
+        } catch(e) {
+          Components.utils.reportError(e);
+        }
+        // Build the target file object
+        fpParams.file = aSkipPrompt.saveDir.clone();
+        fpParams.file.append(saveFileName);
       }
-      var saveFileName = getNormalizedLeafName("index", fileExtension);
-      // Notify the Mozilla Archive Format saving component
-      try {
-        aSkipPrompt.mafEventListener.onSaveNameDetermined(saveFileName);
-      } catch(e) {
-        Components.utils.reportError(e);
-      }
-      // Build the target file object
-      fpParams.file = aSkipPrompt.saveDir.clone();
-      fpParams.file.append(saveFileName);
     } else {
       if (!getTargetFile(fpParams, aSkipPrompt))
         // If the method returned false this is because the user cancelled from
@@ -307,7 +320,7 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
     //  its content type
     persist = new SaveCompletePersist();
     // If the document saving was initiated by MAF
-    if (typeof aSkipPrompt == "object") {
+    if (typeof aSkipPrompt == "object" && aSkipPrompt.mafEventListener) {
       // Configure the persist object appropriately
       persist.saveWithMedia = aSkipPrompt.saveWithMedia;
       persist.saveWithContentLocation = aSkipPrompt.saveWithContentLocation;
@@ -334,7 +347,9 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   //  archive. If the document saving was initiated by MAF, we use the
   //  provided download listener instead of creating a transfer object.
   var tr;
-  if (typeof aSkipPrompt == "object") {
+  if (typeof aSkipPrompt == "object" && aSkipPrompt.mafProgressListener) {
+    tr = aSkipPrompt.mafProgressListener;
+  } else if (typeof aSkipPrompt == "object" && aSkipPrompt.mafEventListener) {
     tr = new MozillaArchiveFormat.MafWebProgressListener(
                                   aSkipPrompt.mafEventListener);
   } else {
