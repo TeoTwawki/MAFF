@@ -443,6 +443,9 @@ var ConvertDialog = {
         ds.replaceLiteral(resource, ds.resources.converting, "converting");
         // Update the controls based on the current state
         self.checkCandidatesControls();
+        // Set the required references to use this window for conversion
+        candidate.conversionWindow = window;
+        candidate.conversionFrame = document.getElementById("frmConvert");
         // Stop the enumeration temporarily and start the conversion process
         self._conversionEnumerator.pause();
         self._currentCandidate = candidate;

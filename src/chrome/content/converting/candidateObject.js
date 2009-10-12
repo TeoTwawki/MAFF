@@ -35,6 +35,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+// Import XPCOMUtils to generate the QueryInterface functions
+Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+
 /**
  * Represents a saved page that can be converted from one format to another.
  */
@@ -195,37 +198,37 @@ Candidate.prototype = {
   },
 
   /**
+   * DOM window hosting the save infrastructure required for the conversion.
+   */
+  conversionWindow: null,
+
+  /**
+   * Reference to the "iframe" element to be used for the conversion.
+   */
+  conversionFrame: null,
+
+  /**
    * Starts the actual conversion process. When the process is finished, the
    *  given function is called, passing true if the operation succeeded, or
    *  false if the operation failed.
    */
   convert: function(aCompleteFn) {
+    // Store a reference to the function to be called when finished
+    this._onComplete = aCompleteFn;
     try {
-      // Ensure that the destination file does not exist
-      if (this.location.dest.exists()) {
-        throw new Components.Exception(
-          "The destination location is unexpectedly obstructed.");
-      }
-      // Ensure that the destination support folder does not exist
-      if (this.dataFolderLocation && this.dataFolderLocation.dest &&
-       this.location.dest.exists()) {
-        throw new Components.Exception(
-          "The destination location is unexpectedly obstructed.");
-      }
-      // TODO: Implement the actual conversion
-      this.location.source.copyTo(this.location.dest.parent,
-       this.location.dest.leafName);
-      // Conversion completed successfully, move the source to the bin folder
-      this._moveToBin();
+      // Check the destination location for obstruction before starting
+      this._checkDestination();
+      // Register the load listeners
+      this._addLoadListeners();
+      // Load the URL associated with the source file in the conversion frame
+      var sourceUrl = Cc["@mozilla.org/network/io-service;1"].
+       getService(Ci.nsIIOService).newFileURI(this.location.source);
+      this.conversionFrame.webNavigation.loadURI(sourceUrl.spec, 0, null, null,
+       null);
     } catch (e) {
-      // An error occurred while converting or completing the operation
-      this._reportConversionError(e);
-      // Report that the conversion of this candidate failed and exit
-      aCompleteFn(false);
-      return;
+      // Report the error and notify the caller
+      this._onFailure(e);
     }
-    // Report that the conversion was successful
-    aCompleteFn(true);
   },
 
   /**
@@ -233,10 +236,269 @@ Candidate.prototype = {
    *  callback function will not be called in this case.
    */
   cancelConversion: function() {
-    // TODO: Implement the actual conversion
+    // Remember that the conversion was canceled
+    this._canceled = true;
+    // Ensure that all the event listeners are removed immediately
+    this._removeLoadListeners();
   },
 
+  // --- nsISupports interface functions ---
+
+  QueryInterface: XPCOMUtils.generateQI([Ci.nsIWebProgressListener,
+                                         Ci.nsIWebProgressListener2,
+                                         Ci.nsISupportsWeakReference]),
+
+  // --- nsIWebProgressListener interface functions ---
+
+  onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
+    // Remember if at least one failure notification was received while loading
+    //  or saving. This will cause the load or save to fail when finished.
+    if (aStatus != Cr.NS_OK) {
+      this._listeningException = new Components.Exception("Operation failed",
+       aStatus);
+    }
+    // Detect when the current load or save operation is finished
+    if ((aStateFlags & Ci.nsIWebProgressListener.STATE_STOP) &&
+     (aStateFlags & Ci.nsIWebProgressListener.STATE_IS_NETWORK)) {
+      // Notify the appropriate function based on the current state
+      if (this._isListeningForLoad) {
+        // Notify that the network activity for the current load stopped
+        this._loadNetworkDone = true;
+        this._onLoadCompleted();
+      } else if (this._isListeningForSave) {
+        // Notify that the save operation completed
+        this._onSaveCompleted();
+      }
+    }
+  },
+  onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
+   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
+  onLocationChange: function(aWebProgress, aRequest, aLocation) { },
+  onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) { },
+  onSecurityChange: function(aWebProgress, aRequest, aState) { },
+
+  // --- nsIWebProgressListener2 interface functions ---
+
+  onProgressChange64: function(aWebProgress, aRequest, aCurSelfProgress,
+   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
+  onRefreshAttempted: function(aWebProgress, aRefreshURI, aMillis,
+   aSameURI) { },
+
   // --- Private methods and properties ---
+
+  /**
+   * Reference to the callback function to be called on completion.
+   */
+  _onComplete: null,
+
+  /**
+   * nsIWebProgress interface associated with the conversion frame.
+   */
+  _webProgress: null,
+
+  /**
+   * True while the load operation is in progress.
+   */
+  _isListeningForLoad: false,
+
+  /**
+   * Dynamically-generated listener function for the "load" event.
+   */
+  _loadListener: null,
+
+  /**
+   * True if the "load" event was fired for the conversion frame.
+   */
+  _loadContentDone: false,
+
+  /**
+   * True if the network activity for the current load stopped.
+   */
+  _loadNetworkDone: false,
+
+  /**
+   * True while the save operation is in progress.
+   */
+  _isListeningForSave: false,
+
+  /**
+   * Excpetion object representing an error that occurred during the load or
+   *  save operations, or null if no error occurred.
+   */
+  _listeningException: null,
+
+  /**
+   * True if the operation was explicitly canceled.
+   */
+  _canceled: false,
+
+  /**
+   * Registers the required load listeners.
+   */
+  _addLoadListeners: function() {
+    // Get a reference to the interface to add and remove web progress listeners
+    this._webProgress = this.conversionFrame.docShell.
+     QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebProgress);
+    // Build the event listener for the "load" event on the frame
+    var self = this;
+    this._loadListener = function(aEvent) {
+      // If the current "load" event is for a subframe, ignore it
+      if (aEvent.target != self.conversionFrame.contentDocument) {
+        return;
+      }
+      // Notify only if appropriate based on the current state
+      if (self._isListeningForLoad) {
+        // Notify that the "load" event was fired
+        self._loadContentDone = true;
+        self._onLoadCompleted();
+      }
+    };
+    // Register the web progress listener defined in this object
+    this._webProgress.addProgressListener(this,
+     Ci.nsIWebProgress.NOTIFY_STATE_NETWORK);
+    // Register the load event listener defined in this object
+    this.conversionFrame.addEventListener("load", this._loadListener, true);
+    // Set the state variables appropriately
+    this._listeningException = null;
+    this._isListeningForLoad = true;
+  },
+
+  /**
+   * Removes the load listeners registered previously, if necessary.
+   */
+  _removeLoadListeners: function() {
+    // Check the current state before continuing
+    if (!this._isListeningForLoad) {
+      return;
+    }
+    // Remove the web progress listener defined in this object
+    this._webProgress.removeProgressListener(this);
+    // Remove the load event listener defined in this object
+    this.conversionFrame.removeEventListener("load", this._loadListener, true);
+    // Set the state variables appropriately
+    this._isListeningForLoad = false;
+  },
+
+  /**
+   * Called when the source page has been loaded.
+   */
+  _onLoadCompleted: function(aEvent) {
+    // Wait for both triggering conditions be true
+    if (!this._loadNetworkDone || !this._loadContentDone) {
+      return;
+    }
+    try {
+      // Remove the load listeners first
+      this._removeLoadListeners();
+
+      // Report any error that occurred while loading, and stop the operation
+      if (this._listeningException) {
+        throw this._listeningException;
+      }
+
+      // Wait for all events to be dispatched before continuing, to prevent this
+      //  load from interfering with subsequent loads in the same frame.
+      var mainThread = Cc["@mozilla.org/thread-manager;1"].
+       getService(Ci.nsIThreadManager).mainThread;
+      while (mainThread.processNextEvent(false));
+      // Check if the operation was canceled while dispatching the events
+      if (this._canceled) {
+        return;
+      }
+
+      // Check the destination location for obstruction again
+      this._checkDestination();
+      // Ensure that the destination folder exists, and create it if required
+      if (!this.location.dest.parent.exists()) {
+        this.location.dest.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
+      }
+
+      // Start the save operation
+      this._startSaving();
+    } catch (e) {
+      // Report the error and notify the caller
+      this._onFailure(e);
+    }
+  },
+
+  /**
+   * Starts the save operation, which is the second step of the conversion.
+   */
+  _startSaving: function() {
+    // Select the save behavior that is appropriate for the destination format
+    var saveBehavior;
+    switch (this.destFormat) {
+      case "mhtml":
+        saveBehavior = this.conversionWindow.gMafMhtmlSaveBehavior;
+        break;
+      case "maff":
+        saveBehavior = this.conversionWindow.gMafMaffSaveBehavior;
+        break;
+      default:
+        saveBehavior = this.conversionWindow.gCompleteSaveBehavior
+    }
+    // Set the state variables appropriately before starting the save operation
+    this._listeningException = null;
+    this._isListeningForSave = true;
+    try {
+      // Use the global saveDocument function with the special MAF parameters
+      this.conversionWindow.saveDocument(this.conversionFrame.contentDocument, {
+        targetFile: this.location.dest,
+        saveBehavior: saveBehavior,
+        mafProgressListener: this
+      });
+    } catch (e) {
+      // If the operation failed before starting, reset the listening state
+      this._isListeningForSave = false;
+      throw e;
+    }
+  },
+
+  /**
+   * Called when the source page has been saved.
+   */
+  _onSaveCompleted: function(aEvent) {
+    try {
+      // Indicate that the save notification has been processed
+      this._isListeningForSave = false;
+
+      // Check if the operation was canceled while saving
+      if (this._canceled) {
+        return;
+      }
+
+      // Report any error that occurred while saving, and stop the operation
+      if (this._listeningException) {
+        throw this._listeningException;
+      }
+
+      // Conversion completed successfully, move the source to the bin folder
+      this._moveToBin();
+    } catch (e) {
+      // Report the error and notify the caller, then exit
+      this._onFailure(e);
+      return;
+    }
+    // Report that the conversion was successful
+    this._onComplete(true);
+  },
+
+  /**
+   * Throws an exception if the destination location is obstructed.
+   */
+  _checkDestination: function() {
+    // Ensure that the destination file does not exist
+    if (this.location.dest.exists()) {
+      throw new Components.Exception(
+        "The destination location is unexpectedly obstructed.");
+    }
+    // Ensure that the destination support folder does not exist
+    if (this.dataFolderLocation && this.dataFolderLocation.dest &&
+     this.location.dest.exists()) {
+      throw new Components.Exception(
+        "The destination location is unexpectedly obstructed.");
+    }
+  },
 
   /**
    * Moves the source file and support folder to the bin folder, if required.
@@ -267,6 +529,24 @@ Candidate.prototype = {
          this.dataFolderLocation.bin.leafName);
       }
     }
+  },
+
+  /**
+   * Reports the given exception that occurred during the conversion of this
+   *  candidate, and notifies the appropriate object that the operation failed.
+   */
+  _onFailure: function(aException) {
+    try {
+      // Clean up all the possible registered listeners
+      this._removeLoadListeners();
+    } catch (e) {
+      // Ignore errors during the cleanup phase
+      Cu.reportError(e);
+    }
+    // Report the error message
+    this._reportConversionError(aException);
+    // Report that the conversion of this candidate failed
+    this._onComplete(false);
   },
 
   /**
