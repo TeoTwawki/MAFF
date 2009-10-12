@@ -126,6 +126,9 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     aSkipPrompt = false;
   }
 
+  // Get a reference to the main content browser, if available in the window
+  var mainBrowser = window.getBrowser && window.getBrowser().selectedBrowser;
+
   // Note: aDocument == null when this code is used by save-link-as...
 
   // Note: GetSaveModeForContentType can return a value different from
@@ -140,7 +143,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   //                    =>  saveMode == SAVEMODE_SAMEFORMAT
 
   var saveMode = GetSaveModeForContentType(aContentType, aDocument);
-  var isDocument = (aDocument == getBrowser().selectedBrowser.contentDocument);
+  var isDocument = mainBrowser && (aDocument == mainBrowser.contentDocument);
 
   var file, fileURL, sourceURI, saveBehavior;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
@@ -230,9 +233,9 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     //  saved is the main document in the browser window, ensure the browser
     //  object is passed to the archive persist object, to enable saving the
     //  additional metadata.
-    var curBrowser = getBrowser().selectedBrowser;
-    if (!mafSaveTabs && (aDocument == curBrowser.contentDocument)) {
-      mafSaveTabs = [curBrowser];
+    if (!mafSaveTabs && mainBrowser &&
+        (aDocument == mainBrowser.contentDocument)) {
+      mafSaveTabs = [mainBrowser];
     }
     // Create the actual persist object
     mafPersistObject = saveBehavior.getPersistObject(mafSaveTabs);
