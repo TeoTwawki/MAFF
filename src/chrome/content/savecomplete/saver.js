@@ -705,7 +705,6 @@ scPageSaver.scDefaultFileSaver = function(file) {
     this._saveMap = {};
 
     // Initialize target file
-    if(file.exists() == false) file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0644);
     this._file = file;
 
     // Initialize data folder (Delete and re-created so that it's clean)
