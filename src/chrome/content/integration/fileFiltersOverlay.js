@@ -40,6 +40,8 @@
  */
 
 var gMafDefaultSaveBehavior;
+var gMafMaffSaveBehavior;
+var gMafMhtmlSaveBehavior;
 
 MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
                                                               curFilterIndex) {
@@ -68,5 +70,8 @@ MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
   // Save a reference to the first save behavior, considered the default
   if (curFilterIndex == 0) {
     gMafDefaultSaveBehavior = newSaveBehavior;
+    gMafMaffSaveBehavior = newSaveBehavior;
+  } else {
+    gMafMhtmlSaveBehavior = newSaveBehavior;
   }
 });

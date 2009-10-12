@@ -69,6 +69,9 @@ var FileFilters = {
    *  preferences, this function is called every time the dialog is displayed,
    *  assuming however that the positions of the objects in the returned array
    *  will not vary.
+   *
+   * Note: Other code depends on MAFF being the first element and MHTML being
+   *  the second element in the returned array.
    */
   get saveFilters() {
     // Determine the default extension to use for MHTML archives
