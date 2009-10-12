@@ -71,6 +71,8 @@
  * @... {Function} callback - The optional callback on save completion
  * @... {Object} progressListener - Progress listener that can QueryInterface to nsIWebProgressListener2.
  *                                  Pass false to prevent the progress from showing in the download manager.
+ * @... {String} actualSaveUrl - Actual URL where the document to be saved is located. Overrides the document location.
+ * @... {String} originalUrl - URL from which the document to be saved was originally saved.
  */
 var scPageSaver = function(doc, fileSaver, fileProvider, options) {
     if(!options) options = {};
@@ -86,7 +88,9 @@ var scPageSaver = function(doc, fileSaver, fileProvider, options) {
     this._downloads = [];
     this._timers = {};
     this._url = doc.location.href;
-    this._uri = scPageSaver.nsIIOService.newURI(this._url, null, null);
+    this._displayUrl = this._url;
+    this._originalUrl = this._url;
+    this._displayUri = scPageSaver.nsIIOService.newURI(this._displayUrl, null, null);
     this._doc = doc;
 
     // Initialize file saver & file provider
@@ -107,8 +111,20 @@ var scPageSaver = function(doc, fileSaver, fileProvider, options) {
         delete options['progressListener'];
     } else {
         this._listener = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
-        this._listener.init(this._uri, this._fileSaver.targetURI, "", null, null, null, this);
+        this._listener.init(this._displayUri, this._fileSaver.targetURI, "", null, null, null, this);
     }
+
+    if(options.hasOwnProperty('originalUrl')) {
+        this._originalUrl = options['originalUrl'];
+        delete options['originalUrl'];
+    }
+
+    // Check if the save location is different from the location of the document
+    if(options.hasOwnProperty('actualSaveUrl')) {
+        this._url = options['actualSaveUrl'];
+        delete options['actualSaveUrl'];
+    }
+    this._uri = scPageSaver.nsIIOService.newURI(this._url, null, null);
 
     // Optional settings
     this._options = { // Defaults
@@ -495,7 +511,12 @@ scPageSaver.prototype._processNextURI = function() {
     if(download.uri.type == 'index' || download.contentType == "text/html" || download.contentType == "application/xhtml+xml") {
         // Mark the document as coming from a certain URL (Like IE)
         if(data.match(/<html[^>]*>/i)) {
-            data = data.replace(/(<html[^>]*>)/i,"$1<!-- Source is "+download.uri.toString()+" -->");
+            var originalUrl = download.uri.toString();
+            // For the main document, use the provided original location
+            if(download.uri.type == 'index') {
+                originalUrl = this._originalUrl;
+            }
+            data = data.replace(/(<html[^>]*>)/i,"$1<!-- Source is "+originalUrl+" -->");
         } else {
             data = "<!-- Source is "+download.uri.toString()+" -->\n" + data;
         }
