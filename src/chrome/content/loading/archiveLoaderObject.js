@@ -133,11 +133,14 @@ var ArchiveLoader = {
      QueryInterface(Ci.nsIDocShellTreeItem).rootTreeItem.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
 
-    // Open all the pages, except the main one, in other tabs
-    var browser = browserWindow.getBrowser();
-    for ([, page] in Iterator(aArchive.pages)) {
-      if (page !== aMainPage) {
-        browser.addTab(page.archiveUri.spec);
+    // If a tabbed browser is present in the window that loaded the document
+    if (browserWindow.getBrowser) {
+      // Open all the pages, except the main one, in other tabs
+      var browser = browserWindow.getBrowser();
+      for ([, page] in Iterator(aArchive.pages)) {
+        if (page !== aMainPage) {
+          browser.addTab(page.archiveUri.spec);
+        }
       }
     }
 
