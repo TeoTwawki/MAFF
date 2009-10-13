@@ -15,16 +15,16 @@
 <!ENTITY save.metadata.extended.accesskey "v">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Интерфејс">
-<!ENTITY icon.caption "Icon">
+<!ENTITY icon.caption "Икона">
 <!ENTITY iconlocation.grouplabel "Show Mozilla Archive Format icon in:">
 <!ENTITY iconlocation.urlbar.label "Address bar">
 <!ENTITY iconlocation.urlbar.accesskey "A">
 <!ENTITY iconlocation.urlbar-autohide.label "Address bar, for archived pages only">
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Status bar">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.none.label "None">
-<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY iconlocation.status.label "Статусна лента">
+<!ENTITY iconlocation.status.accesskey "С">
+<!ENTITY iconlocation.none.label "Ништо">
+<!ENTITY iconlocation.none.accesskey "Н">
 <!ENTITY menu.caption "Мени">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
 <!ENTITY menu.file.label "Мени на датотеката">
@@ -36,8 +36,8 @@
 <!ENTITY menu.tabscontext.label "Tab bar context menu">
 <!ENTITY menu.tabscontext.accesskey "x">
 <!ENTITY menuitem.grouplabel "Show these additional menu items:">
-<!ENTITY menuitem.saveinarchive.label "Save In Archive">
-<!ENTITY menuitem.saveinarchive.accesskey "h">
+<!ENTITY menuitem.saveinarchive.label "Зачувај во архивата">
+<!ENTITY menuitem.saveinarchive.accesskey "х">
 <!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.fileassociations.label "File associations">
 <!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
