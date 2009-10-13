@@ -6,6 +6,8 @@
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "瀏覽已裝載歸檔 (r)…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
+<!ENTITY menuitem.convertsavedpages.label "Convert Saved Pages…">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.preferences.label "配置…">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
 <!-- Additional menu items for the "Save As" command -->

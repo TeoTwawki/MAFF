@@ -6,6 +6,8 @@
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Açık Arşivleri Tara...">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
+<!ENTITY menuitem.convertsavedpages.label "Convert Saved Pages…">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.preferences.label "Tercihler...">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
 <!-- Additional menu items for the "Save As" command -->

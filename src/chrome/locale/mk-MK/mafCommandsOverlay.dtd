@@ -6,6 +6,8 @@
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Прелистај ги отворените архиви...">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "р">
+<!ENTITY menuitem.convertsavedpages.label "Convert Saved Pages…">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.preferences.label "Параметри">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "П">
 <!-- Additional menu items for the "Save As" command -->
