@@ -3,11 +3,18 @@
 <!ENTITY pane.main.label "Главно">
 <!ENTITY save.caption "Зачувај">
 <!ENTITY pane.interface.label "Интерфејс">
+<!ENTITY icon.caption "Икона">
+<!ENTITY iconlocation.status.label "Статусна лента">
+<!ENTITY iconlocation.status.accesskey "С">
+<!ENTITY iconlocation.none.label "Ништо">
+<!ENTITY iconlocation.none.accesskey "Н">
 <!ENTITY menu.caption "Мени">
 <!ENTITY menu.file.label "Мени на датотеката">
 <!ENTITY menu.file.accesskey "М">
 <!ENTITY menu.tools.label "Мени на алатките">
 <!ENTITY menu.tools.accesskey "н">
+<!ENTITY menuitem.saveinarchive.label "Зачувај во архивата">
+<!ENTITY menuitem.saveinarchive.accesskey "х">
 <!ENTITY pane.advanced.label "Напредно">
 <!ENTITY open.caption "Отвори">
 <!ENTITY other.caption "Други">
