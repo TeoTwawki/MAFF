@@ -93,35 +93,18 @@
    $maf_latest_fx); ?> has the following user-visible improvements over
    MAF <?php echo $maf_previous_fx; ?>:</p>
   <ul>
-    <li>An icon in the address bar or in the status bar provides quick access to
-     the original location from which an archived page was saved, as well as the
-     date of the save operation.</li>
-    <li>In the "Save As" dialog on Windows, the default file extension is now
-     omitted from the suggested file name when saving. In most cases, this
-     prevents double extensions from appearing in the names of the saved
-     archives.</li>
-    <li>It is now possible to configure MAF to open MAFF archives without
-     extracting their contents to the temporary directory, thus obtaining a
-     significant speed gain.</li>
-    <li>Now the <b>Preferences</b> menu items and button bring the dialog to
-     front if it is already open.</li>
-    <li>In the file selection dialog of the <b>Save In Archive</b> commands, now
-     the default extension for "All Files" is set appropriately on Windows.</li>
-    <li>An error occurred when opening for the first time any archived page with
-     no information on the original location the page was saved from.</li>
+    <li>A new dialog for conversion of previously saved pages is now available.
+     See the related <a href="documentation.html#converting">documentation</a>
+     for details.</li>
+    <li>In the multiple tab selection dialog, occasionally it was not possible
+     to change the current selection after some time passed.</li>
     <li>Improvements to the integrated
      <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
      extension:
       <ul>
-        <li>When saving a complete web page outside of an archive, now the name
-         of the directory containing the additional files is properly
-         localized.</li>
-        <li>Now the length of the names of the additional saved files is limited
-         to 50 characters, to prevent problems when saving or when extracting
-         archives on some file systems.</li>
-        <li>Now pages are saved as they appear, without fetching them again from
-         the server, in all the cases where it is possible. This may speed up
-         saving web pages with highly dynamic content.</li>
+        <li>Pages that are contained in an archive are now saved correctly.</li>
+        <li>When the save operation fails, an empty file isn't created anymore
+         in place of the target file.</li>
       </ul>
     </li>
   </ul>
@@ -140,8 +123,8 @@
      <b>Downloads</b> window does not achieve the expected result.</li>
     <li>Opening very long documents contained inside MHTML files may cause the
      browser to stop responding temporarily.</li>
-    <li>With versions of Firefox prior to 3.5.3, web archive files files must
-     have a lowercase file name extension in order to be opened.</li>
+    <li>With versions of Firefox prior to 3.5.3, web archive files must have a
+     lowercase file name extension in order to be opened.</li>
   </ul>
   <p><a href="changelog.html#whatwasnew">What was new in the previous
    version?</a></p>
