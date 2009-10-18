@@ -140,6 +140,7 @@ scPageSaver.nsIIOService = Components.classes["@mozilla.org/network/io-service;1
 scPageSaver.nsIThreadManager = Components.classes["@mozilla.org/thread-manager;1"].getService(Components.interfaces.nsIThreadManager);
 scPageSaver.nsIRequest = Components.interfaces.nsIRequest;
 scPageSaver.webProgress = Components.interfaces.nsIWebProgressListener;
+scPageSaver.XPathResult = Components.interfaces.nsIDOMXPathResult;
 /* Constants */
 scPageSaver.cssURIRegex = /url\(\s*(["']?)([^)"' \n\r\t]+)\1\s*\)/gm;
 scPageSaver.STYLE_RULE = 1;
@@ -244,7 +245,7 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
     var baseUri = doc.baseURIObject;
 
     // Process images
-    iter = doc.evaluate("//img[@src]", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+    iter = doc.evaluate("//img[@src]", doc, null, scPageSaver.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     while((e = iter.iterateNext())) {
         this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
     }
@@ -313,7 +314,7 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
     }
 
     // Process input elements with an image type
-    iter = doc.evaluate("//input[@type='image']", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+    iter = doc.evaluate("//input[@type='image']", doc, null, scPageSaver.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     while((e = iter.iterateNext())) {
         this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
     }
