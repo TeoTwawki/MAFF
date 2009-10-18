@@ -185,7 +185,6 @@ scPageSaver.prototype.run = function() {
  * @param {nsresult} reason - The reason why the operation was canceled
  */
 scPageSaver.prototype.cancel = function(reason) {
-    clearTimeout(this._processorTimeout);
     this._fileProvider.cancel();
 
     // Report the reason
