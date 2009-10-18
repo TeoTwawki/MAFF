@@ -1125,9 +1125,9 @@ scPageSaver.scDownload.prototype._done = function(failed) {
     if(typeof failed == 'undefined') failed = false;
     this._channel = null;
     this._loader = null;
+    this.failed = failed;
     this._fileProvider.downloadDone(this);
     this._fileProvider = null;
-    this.failed = failed;
 };
 
 
