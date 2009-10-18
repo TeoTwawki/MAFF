@@ -137,6 +137,7 @@ var scPageSaver = function(doc, fileSaver, fileProvider, options) {
 
 /* XPCOM Shortcuts */
 scPageSaver.nsIIOService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+scPageSaver.nsIThreadManager = Components.classes["@mozilla.org/thread-manager;1"].getService(Components.interfaces.nsIThreadManager);
 scPageSaver.nsIRequest = Components.interfaces.nsIRequest;
 scPageSaver.webProgress = Components.interfaces.nsIWebProgressListener;
 /* Constants */
@@ -482,6 +483,21 @@ scPageSaver.prototype._downloadFinished = function(download) {
 }
 
 /**
+ * Enqueues the _processNextURI function for execution on the main thread.
+ * @function _prepareToProcessNextURI
+ */
+scPageSaver.prototype._prepareToProcessNextURI = function() {
+    var me = this;
+    scPageSaver.nsIThreadManager.mainThread.dispatch({
+        run: function() {
+            if (!me._hasFinished) {
+                me._processNextURI();
+            }
+        }
+    }, Ci.nsIThread.DISPATCH_NORMAL);
+}
+
+/**
  * Fixes the next URI in the stack and saves it to disk.
  * @function _processNextURI
  */
@@ -504,7 +520,7 @@ scPageSaver.prototype._processNextURI = function() {
         }
         this._warnings.push("Download failed for uri: "+download.uri);
         this._currentDownloadIndex++;
-        this._processorTimeout = setTimeout(function() { me._processNextURI();}, 2);
+        this._prepareToProcessNextURI();
         return;
     }
 
@@ -636,8 +652,7 @@ scPageSaver.prototype._saveDone = function(uri, success) {
         }
     }
 
-    var me = this;
-    this._processorTimeout = setTimeout(function() { me._processNextURI();}, 2);
+    this._prepareToProcessNextURI();
 }
 
 /**
@@ -645,6 +660,8 @@ scPageSaver.prototype._saveDone = function(uri, success) {
  * @function _finished
  */
 scPageSaver.prototype._finished = function() {
+    this._hasFinished = true;
+
     if(this._timers.process) this._timers.process.finish = new Date();
 
     var nsResult = this._errors.length == 0 ? Components.results.NS_OK : Components.results.NS_ERROR_FAILURE;
