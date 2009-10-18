@@ -318,7 +318,7 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
       persistArgs.sourceDocument.contentType == "application/xhtml+xml")) {
     // This component can only save a complete HTML document without converting
     //  its content type
-    persist = new SaveCompletePersist();
+    persist = new MozillaArchiveFormat.SaveCompletePersist();
     // If the document saving was initiated by MAF
     if (typeof aSkipPrompt == "object" && aSkipPrompt.mafEventListener) {
       // Configure the persist object appropriately

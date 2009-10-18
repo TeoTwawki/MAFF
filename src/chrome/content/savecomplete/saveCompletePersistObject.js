@@ -135,8 +135,7 @@ SaveCompletePersist.prototype = {
 
       // When saving a page that was extracted from an archive, use the
       //  information from the original archive to save the page correctly
-      var originalPage = MozillaArchiveFormat.ArchiveCache.pageFromUriSpec(
-       this._saveUrlSpec);
+      var originalPage = ArchiveCache.pageFromUriSpec(this._saveUrlSpec);
       if (originalPage) {
         // Preserve the original URL the page was saved from, if present
         if (originalPage.originalUrl) {

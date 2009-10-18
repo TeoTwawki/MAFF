@@ -76,6 +76,10 @@ try {
    ["processing/tagSourceFragmentObject.js",      "TagSourceFragment"],
    ["processing/urlSourceFragmentObject.js",      "UrlSourceFragment"],
 
+   // "Save Complete" extension integration
+   ["savecomplete/saveCompleteWrapper.js",        "MafSaveComplete"],
+   ["savecomplete/saveCompletePersistObject.js",  "SaveCompletePersist"],
+
    // Support objects for the saving front-end
    ["savefrontend/tabsDataSourceObject.js",       "TabsDataSource"],
 

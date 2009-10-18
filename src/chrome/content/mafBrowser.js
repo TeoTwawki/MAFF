@@ -31,11 +31,7 @@ try {
    "integration/fileFiltersOverlay.js",
 
    // Original MAF JavaScript infrastructure
-   "maf.js",
-
-   // "Save Complete" extension integration
-   "savecomplete/saveCompleteWrapper.js",
-   "savecomplete/saveCompletePersistObject.js"
+   "maf.js"
 
   ].forEach(function(contentRelativePath) {
     Cc["@mozilla.org/moz/jssubscript-loader;1"]
