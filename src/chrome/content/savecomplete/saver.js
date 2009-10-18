@@ -726,7 +726,8 @@ scPageSaver.scDefaultFileSaver = function(file) {
 
     // Initialize data folder (Delete and re-created so that it's clean)
     var nameWithoutExtension = file.leafName.replace(/\.[^.]*$/,"");
-    var folderName = getStringBundle().formatStringFromName("filesFolder", [nameWithoutExtension], 1);
+    var stringBundle = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService).createBundle("chrome://global/locale/contentAreaCommands.properties");
+    var folderName = stringBundle.formatStringFromName("filesFolder", [nameWithoutExtension], 1);
     var dataFolderExisting = file.clone();
     dataFolderExisting.leafName = folderName;
     if(dataFolderExisting.exists()) dataFolderExisting.remove(true);
