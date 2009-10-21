@@ -455,6 +455,11 @@ scPageSaver.prototype._downloadNextURI = function() {
  * @param {scPageSaver.scDownload} download - The download that was completed
  */
 scPageSaver.prototype._downloadFinished = function(download) {
+    // Do not execute the callback if the process has been canceled
+    if (this._hasFinished) {
+        return;
+    }
+
     this._simultaneousDownloads--;
     this._downloads.push(download);
 
@@ -642,6 +647,11 @@ scPageSaver.prototype._processNextURI = function() {
  * @param {Boolean} success - Whether or not the save was successful
  */
 scPageSaver.prototype._saveDone = function(uri, success) {
+    // Do not execute the callback if the process has been canceled
+    if (this._hasFinished) {
+        return;
+    }
+
     if(!success) {
         if(uri.type == 'index') {
             this._errors.push('Failed to write main file');
@@ -660,6 +670,11 @@ scPageSaver.prototype._saveDone = function(uri, success) {
  * @function _finished
  */
 scPageSaver.prototype._finished = function() {
+    // If the operation finished, no action is required
+    if (this._hasFinished) {
+      return;
+    }
+
     this._hasFinished = true;
 
     if(this._timers.process) this._timers.process.finish = new Date();
@@ -675,12 +690,7 @@ scPageSaver.prototype._finished = function() {
     this._listener = null;
     this._fileSaver = null;
     this._fileProvider = null;
-    this._uris = null;
-    this._downloads = null;
     this._callback = null;
-    this._errors = null;
-    this._warnings = null;
-    this._timers = null;
 }
 
 /**
