@@ -61,11 +61,16 @@ SaveArchiveJob.prototype = {
 
   // --- Public methods and properties ---
 
-  addContentFromDocumentAndBrowser: function(aDocument, aBrowser) {
-    // Determine the name of the directory where the page will be saved
+  addContentFromDocumentAndBrowser: function(aDocument, aBrowser, aFolderName) {
+    // Determine the leaf name of the directory where the page will be saved.
+    //  This name will also be used for the first-level folder in the archive.
+    var folderLeafName = aFolderName ||
+     new Date().valueOf() + "_" + Math.floor(Math.random() * 1000);
+
+    // Determine the path of the directory where the page will be saved
     var dir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
     dir.initWithPath(Prefs.tempFolder);
-    dir.append(new Date().valueOf() + "_" + Math.floor(Math.random() * 1000));
+    dir.append(folderLeafName);
 
     // Create a new object for saving page contents
     var job = new SaveContentJob(this, aDocument, dir);

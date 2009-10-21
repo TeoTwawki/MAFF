@@ -66,12 +66,25 @@ SaveJob.prototype = {
     // If we are saving to a MAFF archive
     if (aTargetType == "TypeMAFF") {
 
+      // Create a pool of first-level folder names, in the format used by all
+      //  the recent versions of the Mozilla Archive Format extension.
+      var baseName = new Date().valueOf() + "_";
+      var randomIndex = Math.floor(Math.random() * (1000 - aBrowsers.length));
+      var pageFolderNames = aBrowsers.map(function() {
+        return baseName + (randomIndex++);
+      });
+
+      // Sort the page folder names alphabetically. This allows the pages to be
+      //  displayed in the same order in which they are organized when the save
+      //  operation is invoked.
+      pageFolderNames.sort();
+
       // Create a single archive with all the pages
       var maffArchiveJob = new SaveArchiveJob(this, aTargetFile, aTargetType);
-      aBrowsers.forEach(function(curBrowser) {
+      for (var [curIndex, curBrowser] in Iterator(aBrowsers)) {
         maffArchiveJob.addContentFromDocumentAndBrowser(
-         curBrowser.contentDocument, curBrowser);
-      }, this);
+         curBrowser.contentDocument, curBrowser, pageFolderNames[curIndex]);
+      }
       this._addJob(maffArchiveJob);
 
     } else {
