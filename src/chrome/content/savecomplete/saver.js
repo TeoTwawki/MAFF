@@ -696,13 +696,13 @@ scPageSaver.prototype._finished = function() {
 }
 
 /**
- * Escapes a string for insertion into a regex.
+ * Escapes a string for insertion into a regex for recognition of escaped URLs.
  * @function {String} _regexEscape
  * @param {String} str - The string to escape
  * @return The escaped string
  */
 scPageSaver.prototype._regexEscape = function(str) {
-    return str.replace(/([?+$&|./()\[\]^*])/g,"\\$1");
+    return str.replace(/([?+$|./()\[\]^*])/g,"\\$1").replace(/ /g, "(?: |%20)").replace(/&/g, "&(?:amp;)?").replace(/"/g, '(?:"|&quot;)').replace(/'/g, "(?:'|&apos;)").replace(/</g, "(?:<|&lt;)").replace(/>/g, "(?:>|&gt;)");
 };
 //}
 
