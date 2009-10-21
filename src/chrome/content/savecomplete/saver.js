@@ -554,10 +554,11 @@ scPageSaver.prototype._processNextURI = function() {
 
             var found = this._regexEscape(uri.extractedURI);
             var savePathURL = this._fileSaver.documentPath(uri, download.uri);
+            savePathURL = encodeURIComponent(savePathURL).replace('%2F', '/');
             if(uri.type == "attribute") {
                 // Fix all instances where this url is found in an attribute
                 var re = new RegExp("(<[^>]+=([\"'])\\s*)"+found+"(\\s*\\2)","g");
-                data = data.replace(re, "$1"+savePathURL+"$3");
+                data = data.replace(re, "$1"+savePathURL.replace(/'/g, "&apos;")+"$3");
             } else if(uri.type == "css") {
                 // Fix all instances where this url is found in a URL command in css
                 // Fix in style attributes
@@ -610,6 +611,7 @@ scPageSaver.prototype._processNextURI = function() {
 
             var found = this._regexEscape(uri.extractedURI);
             var savePathURL = this._fileSaver.documentPath(uri, download.uri);
+            savePathURL = encodeURIComponent(savePathURL).replace('%2F', '/');
             if(uri.type == "css") {
                 // Fix url functions in CSS
                 var re = new RegExp("url\\((\\s*([\"']?)\\s*)"+found+"(\\s*\\2\\s*)\\)","g");
