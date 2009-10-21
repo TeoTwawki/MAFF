@@ -68,6 +68,8 @@ MaffArchive.prototype = {
   extractAll: function() {
     // Determine if the data files should be extracted
     this._useDirectAccess = Prefs.openUseJarProtocol;
+    // Prepare a list of all the page folders available in the archive
+    var pageFolderNames = [];
     // Open the archive file for reading
     var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].
      createInstance(Ci.nsIZipReader);
@@ -80,15 +82,12 @@ MaffArchive.prototype = {
       while (zipEntries.hasMore()) {
         var zipEntry = zipEntries.getNext();
 
-        // Create a new page object for every first-level folder in the archive.
+        // Store the name of every first-level folder contained in the archive.
         //  Since synthetic directory entries are created by the ZIP reader if
         //  they are not explicitly stored in the archive, all the pages in the
         //  archive will be detected.
         if (/^[^/]+\/$/.test(zipEntry)) {
-          // Add the page and set the temporary directory name
-          var newPage = this.addPage();
-          newPage.tempDir = this._tempDir.clone();
-          newPage.tempDir.append(zipEntry.slice(0, -1));
+          pageFolderNames.push(zipEntry.slice(0, -1));
         }
 
         // If the archive should be opened using direct access to the files
@@ -121,14 +120,23 @@ MaffArchive.prototype = {
       // Close the file when extraction is finished or in case of exception
       zipReader.close();
     }
-    // Load the metadata for every page that was added to the archive
-    this.pages.forEach(function(page) {
+    // Sort the page folder names alphabetically. This ensures that the pages
+    //  will be displayed always in the same sequence regardless of the order in
+    //  which their folder names are returned by the ZIP reader.
+    pageFolderNames.sort();
+    // For every page folder name in the correct order
+    for (var [, pageFolderName] in Iterator(pageFolderNames)) {
+      // Add a new page object to the archive and set its temporary directory
+      var newPage = this.addPage();
+      newPage.tempDir = this._tempDir.clone();
+      newPage.tempDir.append(pageFolderName);
+      // Load the metadata for the page
       try {
-        page._loadMetadata();
+        newPage._loadMetadata();
       } catch (e) {
         Cu.reportError(e);
       }
-    });
+    }
   },
 
   _newPage: function() {
