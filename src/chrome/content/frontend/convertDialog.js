@@ -372,10 +372,10 @@ var ConvertDialog = {
 
   /**
    * This function is called when the "candidates" wizard page is being hidden
-   *  because either the back or the finish button has been clicked. This
-   *  function is also called indirectly when the window is being closed.
+   *  because the back button has been clicked. This function is also called
+   *  indirectly when the window is being closed.
    */
-  onCandidatesPageHide: function() {
+  onCandidatesPageRewound: function() {
     // Before stopping the conversion enumerator, ensure that no candidate is
     //  being converted. If a candidate is being converted, the conversion
     //  enumerator is always present and paused. Canceling the conversion
@@ -403,6 +403,12 @@ var ConvertDialog = {
    * Starts the actual conversion process or closes the window.
    */
   onWizardFinish: function() {
+    // Since this function may be re-entered if the Enter key is pressed, even
+    //  if the finish button is disabled, explicitly check for this condition
+    if (this._wizard.getButton("finish").disabled) {
+      return false;
+    }
+
     // If the conversion process finished, close the window and exit now
     if (this._conversionFinished) {
       return true;
@@ -493,7 +499,7 @@ var ConvertDialog = {
    * Performs the necessary cleanup before closing the window.
    */
   onWizardCancel: function() {
-    this.onCandidatesPageHide();
+    this.onCandidatesPageRewound();
     return true;
   },
 

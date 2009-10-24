@@ -231,9 +231,9 @@
   </wizardpage>
 
   <!-- Candidates selection -->
-  <wizardpage label=     "&candidates.pagelabel;"
-              onpageshow="ConvertDialog.onCandidatesPageShow();"
-              onpagehide="ConvertDialog.onCandidatesPageHide();"
+  <wizardpage label=        "&candidates.pagelabel;"
+              onpageshow=   "ConvertDialog.onCandidatesPageShow();"
+              onpagerewound="ConvertDialog.onCandidatesPageRewound();"
               >
     <description>
       &candidates.description;
