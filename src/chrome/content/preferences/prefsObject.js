@@ -192,6 +192,14 @@ var Prefs = {
   },
 
   /**
+   * Returns true if the character set specified in MAFF files should be ignored
+   *  instead of being enforced when the page is displayed.
+   */
+  get openMaffIgnoreCharacterSet() {
+    return this.prefBranchForMaf.getBoolPref("open.maff.ignorecharacterset");
+  },
+
+  /**
    * Returns true if the contents of MAFF archives should be accessed directly
    *  using the "jar:" protocol instead of extracting the archive to a
    *  temporary folder and using the "file:" protocol.

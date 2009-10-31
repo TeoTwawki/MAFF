@@ -81,6 +81,17 @@ var ArchiveLoader = {
       }
     }
 
+    // If a character set is explicitly specified in the archive and the
+    //  preference to ignore this value is not set, force the use of the
+    //  character set specified in the archive, regardless of any other override
+    if (page.renderingCharacterSet && !Prefs.openMaffIgnoreCharacterSet) {
+      // For more information, see the "SetCharset" function in
+      //  <http://mxr.mozilla.org/mozilla-central/source/docshell/base/nsDocShell.cpp>
+      //  (retrieved 2009-10-31).
+      aContainer.QueryInterface(Ci.nsIDocCharset).charset =
+       page.renderingCharacterSet;
+    }
+
     // Display the content associated with the page. Depending on the current
     //  preferences, the content is loaded from the temporary directory or
     //  directly from the archive. If either the version in the temporary
