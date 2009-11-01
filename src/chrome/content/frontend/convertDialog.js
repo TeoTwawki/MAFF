@@ -71,6 +71,12 @@ var ConvertDialog = {
   _convertingCountsText: "",
 
   /**
+   * Original label and access key for the wizard's Finish button.
+   */
+  _wizardFinishLabel: "",
+  _wizardFinishAccessKey: "",
+
+  /**
    * The CandidateFinder worker object. The properties of this object will be
    *  set by various pages of the wizard.
    */
@@ -120,7 +126,6 @@ var ConvertDialog = {
      ["lblFoldersSourceContinue",   "next"],
      ["lblFoldersDestContinue",     "next"],
      ["lblCandidatesNone",          "back"],
-     ["lblCandidatesContinue",      "finish"],
      ["lblCandidatesFinish",        "finish"],
     ])) {
       // Replace "$1" with the current label of the correct wizard button
@@ -129,11 +134,14 @@ var ConvertDialog = {
        this._getWizardButtonLabel(buttonName));
     }
 
-    // Retrieve the text of the counts labels and store it for later use
+    // Retrieve the text of some controls and store it for later use
     this._searchingCountsText = document.
      getElementById("descCandidatesCounts").getAttribute("valuesearching");
     this._convertingCountsText = document.
      getElementById("descCandidatesCounts").getAttribute("valueconverting");
+    this._wizardFinishLabel = this._wizard.getButton("finish").label;
+    this._wizardFinishAccessKey = this._wizard.getButton("finish").
+     getAttribute("accesskey");
 
     // Store a reference to the tree view to prevent it from losing its
     //  customizations during garbage collection
@@ -304,10 +312,22 @@ var ConvertDialog = {
      ["lblCandidatesConverting",converting                                    ],
      ["lblCandidatesNone",      selecting && !selectableCount                 ],
      ["lblCandidatesInvalid",   selecting && selectableCount && !selectedCount],
-     ["lblCandidatesContinue",  selecting && selectedCount                    ],
+     ["lblCandidatesConvert",   selecting && selectedCount                    ],
      ["lblCandidatesFinish",    finished                                      ],
     ])) {
       document.getElementById(labelName).hidden = !visible;
+    }
+
+    // Set the appropriate label for the Finish button
+    var finishButton = this._wizard.getButton("finish");
+    if (searching || selecting) {
+      var convertButton = document.getElementById("btnCandidatesConvert");
+      finishButton.label = convertButton.label;
+      finishButton.setAttribute("accesskey",
+        convertButton.getAttribute("accesskey"));
+    } else {
+      finishButton.label = this._wizardFinishLabel;
+      finishButton.setAttribute("accesskey", this._wizardFinishAccessKey);
     }
 
     // Disable the finish button unless conversion is ready or finished

@@ -510,8 +510,8 @@
     <label id=   "lblCandidatesInvalid"
            value="&candidates.invalid.label;"
            />
-    <label id=   "lblCandidatesContinue"
-           value="&candidates.continue.label;"
+    <label id=   "lblCandidatesConvert"
+           value="&candidates.convert.label;"
            />
     <label id=   "lblCandidatesConverting"
            value="&candidates.converting.label;"
@@ -519,5 +519,12 @@
     <label id=   "lblCandidatesFinish"
            value="&candidates.finish.label;"
            />
+
+    <!-- Hidden button that replaces the standard Finish button -->
+    <button id=       "btnCandidatesConvert"
+            label=    "&candidates.convertbutton.label;"
+            accesskey="&candidates.convertbutton.accesskey;"
+            hidden=   "true"
+            />
   </wizardpage>
 </wizard>
