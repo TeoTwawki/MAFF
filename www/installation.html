@@ -96,12 +96,28 @@
     <li>A new dialog for conversion of previously saved pages is now available.
      See the related <a href="documentation.html#converting">documentation</a>
      for details.</li>
+    <li>New preference to use the page title instead of the default suggested
+     file name in the "Save As" dialog. Enabling this preference provides
+     functionality comparable to the
+     <a href="https://addons.mozilla.org/firefox/addon/834">File Title</a> and
+     <a href="https://addons.mozilla.org/firefox/addon/712">Title Save</a>
+     extensions.</li>
+    <li>The order of the tabs is now preserved when opening and saving
+     multi-page MAFF archives.</li>
+    <li>Now the character set specified in MAFF archives is always enforced, and
+     a different character set cannot be selected.</li>
     <li>In the multiple tab selection dialog, occasionally it was not possible
      to change the current selection after some time passed.</li>
     <li>Improvements to the integrated
      <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
      extension:
       <ul>
+        <li>Improved performance when saving pages containing many images or
+         other content.</li>
+        <li>Improved reliability in handling references to images or other
+         content.</li>
+        <li>Errors that occur while downloading the main file are now
+         reported correctly.</li>
         <li>Pages that are contained in an archive are now saved correctly.</li>
         <li>When the save operation fails, an empty file isn't created anymore
          in place of the target file.</li>
