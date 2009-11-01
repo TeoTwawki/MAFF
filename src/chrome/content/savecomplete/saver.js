@@ -222,14 +222,20 @@ scPageSaver.prototype.QueryInterface = function(iid) {
  * @function _extractURIs
  */
 scPageSaver.prototype._extractURIs = function() {
+    // Add base document path
+    this._uris.push(new scPageSaver.scURI(this._url, this._uri, 'index', 'base'));
+
     // Extract all URIs from this document and its subdocuments
     this._extractURIsFromDocument(this._doc);
 
     // Process all dupes
     this._processDupes();
 
-    // Add base document path to the beginning (now because dupe processing messes with _uris array)
-    this._uris.unshift(new scPageSaver.scURI(this._url, this._uri, 'index', 'base'));
+    // Move the base document path to the beginning
+    this._uris.sort(function(a,b) {
+        if (a.type == 'index') return -1;
+        return 0;
+    });
 };
 
 /**
@@ -1046,6 +1052,7 @@ scPageSaver.scURI.prototype.toString = function() {
 scPageSaver.scURI.compare = function(a,b) {
     if (a.toString() < b.toString()) return -1;
     if (a.toString() > b.toString()) return 1;
+    if (a.type == 'index') return -1;
     return 0;
 };
 //}
