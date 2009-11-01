@@ -74,7 +74,7 @@ MozillaArchiveFormat.getDefaultFileName = function(aDefaultFileName, aURI,
 
   // Use the alternative naming strategy only when saving web pages
   if (!aDocument || (aDocument.contentType != "text/html" &&
-   aDocument.contentType != "text/xhtml")) {
+   aDocument.contentType != "application/xhtml+xml")) {
     return false;
   }
 
