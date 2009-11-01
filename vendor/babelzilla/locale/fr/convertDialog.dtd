@@ -42,7 +42,6 @@
 <!ENTITY folders.bin.folder.label "Déplacer les originaux dans ce dossier (en préservant les chemins relatifs)">
 <!ENTITY folders.bin.folder.accesskey "M">
 <!ENTITY folders.dest.invalid.label "Merci de spécifier le nom complet de dossier.">
-<!ENTITY candidates.pagelabel "Fin de l'assistant de conversion de pages enregistrées">
 <!ENTITY candidates.description "Sélectionnez les fichiers que vous souhaitez convertir dans la liste ci-dessous.">
 <!ENTITY candidates.sourcename.header "Nom du fichier source">
 <!ENTITY candidates.sourcedatafoldername.header "Nom du dossier de support">

@@ -42,7 +42,6 @@
 <!ENTITY folders.bin.folder.label "Mover los originales a esta carpeta (mantener las rutas relativas):">
 <!ENTITY folders.bin.folder.accesskey "M">
 <!ENTITY folders.dest.invalid.label "Por favor, especifique el nombre completo de la carpeta.">
-<!ENTITY candidates.pagelabel "Completando el asistente de conversión de páginas guardadas">
 <!ENTITY candidates.description "Por favor, revise la lista siguiente y seleccione los archivos que quiere convertir.">
 <!ENTITY candidates.sourcename.header "Nombre del archivo fuente">
 <!ENTITY candidates.sourcedatafoldername.header "Nombre de la carpeta de soporte">

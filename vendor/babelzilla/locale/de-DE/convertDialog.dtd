@@ -42,7 +42,6 @@
 <!ENTITY folders.bin.folder.label "Originale in diesen Ordner verschieben:">
 <!ENTITY folders.bin.folder.accesskey "v">
 <!ENTITY folders.dest.invalid.label "Bitte den gesamten Ordnernamen angeben.">
-<!ENTITY candidates.pagelabel "Der Gespeicherte-Seiten-Konvertierungsassistenten wird abgeschlossen">
 <!ENTITY candidates.description "Bitte wählen Sie aus der untenstehenden Liste die Dateien aus, die konvertiert werden sollen.">
 <!ENTITY candidates.sourcename.header "Quelldateiname">
 <!ENTITY candidates.sourcedatafoldername.header "Unterstützungsordnername">

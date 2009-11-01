@@ -42,7 +42,6 @@
 <!ENTITY folders.bin.folder.label "将原始文件移动至（保留相对路径）：">
 <!ENTITY folders.bin.folder.accesskey "M">
 <!ENTITY folders.dest.invalid.label "请指定完整文件夹地址。">
-<!ENTITY candidates.pagelabel "正在完成 已保存页面转换向导">
 <!ENTITY candidates.description "请查看下面的列表，并选择您想要转换的文件：">
 <!ENTITY candidates.sourcename.header "原始文件名称">
 <!ENTITY candidates.sourcedatafoldername.header "“files”文件夹名">

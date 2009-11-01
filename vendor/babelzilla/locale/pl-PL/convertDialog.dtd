@@ -42,7 +42,6 @@
 <!ENTITY folders.bin.folder.label "Przenieś oryginały do tego folderu (zachowaj relatywne ścieżki):">
 <!ENTITY folders.bin.folder.accesskey "D">
 <!ENTITY folders.dest.invalid.label "Określ pełną nazwę folderu.">
-<!ENTITY candidates.pagelabel "Finalizowanie kreatora konwersji zapisanych stron">
 <!ENTITY candidates.description "Przejrzyj poniższą listę i wybierz pliki, które chcesz skonwertować.">
 <!ENTITY candidates.sourcename.header "Nazwa pliku źródłowego">
 <!ENTITY candidates.sourcedatafoldername.header "Nazwa obsługiwanego folderu">

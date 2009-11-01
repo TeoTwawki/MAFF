@@ -42,7 +42,6 @@
 <!ENTITY folders.bin.folder.label "Sposta gli originali in questa cartella (conservando i percorsi relativi):">
 <!ENTITY folders.bin.folder.accesskey "S">
 <!ENTITY folders.dest.invalid.label "Specificare il nome completo della cartella.">
-<!ENTITY candidates.pagelabel "Completamento della conversione guidata pagine salvate">
 <!ENTITY candidates.description "Rivedere la lista sottostante, e selezionare i file che si desidera convertire.">
 <!ENTITY candidates.sourcename.header "Nome file di origine">
 <!ENTITY candidates.sourcedatafoldername.header "Nome cartella di supporto">
