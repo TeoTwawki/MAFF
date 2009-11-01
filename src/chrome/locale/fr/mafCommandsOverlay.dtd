@@ -6,7 +6,7 @@
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Parcourir les archives ouvertes…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
-<!ENTITY menuitem.convertsavedpages.label "Convert Saved Pages…">
+<!ENTITY menuitem.convertsavedpages.label "Convertir les pages enregistrées…">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.preferences.label "Préférences">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
@@ -22,11 +22,11 @@
 <!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
 <!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "E">
 <!-- Additional menu items for the "Save In Archive" command -->
-<!ENTITY menuitem.savepageinarchive.label "Enregistrer la page dans l&apos;archive…">
+<!ENTITY menuitem.savepageinarchive.label "Enregistrer la page dans l'archive…">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
-<!ENTITY menuitem.saveframeinarchive.label "Enregistrer le cadre dans l&apos;archive…">
+<!ENTITY menuitem.saveframeinarchive.label "Enregistrer le cadre dans l'archive…">
 <!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "c">
 <!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "c">
 <!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "c">

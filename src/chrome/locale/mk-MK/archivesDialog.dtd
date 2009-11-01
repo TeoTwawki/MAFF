@@ -2,13 +2,13 @@
 <!ENTITY window.title "Архиви">
 <!-- *** Column names in the archive list *** -->
 <!-- Title of the page -->
-<!ENTITY archives.placestitle.header "Page Title">
+<!ENTITY archives.placestitle.header "Наслов на страницата">
 <!-- Name of the archive the page is located into -->
 <!ENTITY archives.mafarchivename.header "Име на Архивата">
 <!-- Address of the archive the page is located into -->
 <!ENTITY archives.placesurl.header "Archive Location">
 <!-- Title of the page in the archive -->
-<!ENTITY archives.maftitle.header "Original Page Title">
+<!ENTITY archives.maftitle.header "Оригинален наслов на страницата">
 <!-- Original address the page was saved from -->
 <!ENTITY archives.maforiginalurl.header "Original Location">
 <!-- Date and time the page was archived -->
@@ -18,14 +18,14 @@
 <!-- URL that can be used to display the page accessing the archive directly -->
 <!ENTITY archives.mafdirectarchiveuri.header "Direct Page URL">
 <!-- *** Column names in the details panel *** -->
-<!ENTITY details.placestitle.label "Page title:">
-<!ENTITY details.placestitle.accesskey "P">
+<!ENTITY details.placestitle.label "Наслов на страницата:">
+<!ENTITY details.placestitle.accesskey "Н">
 <!ENTITY details.mafarchivename.label "Име на Архивата:">
 <!ENTITY details.mafarchivename.accesskey "r">
 <!ENTITY details.placesurl.label "Archive location:">
 <!ENTITY details.placesurl.accesskey "h">
-<!ENTITY details.maftitle.label "Original page title:">
-<!ENTITY details.maftitle.accesskey "i">
+<!ENTITY details.maftitle.label "Оригинален наслов на страницата:">
+<!ENTITY details.maftitle.accesskey "и">
 <!ENTITY details.maforiginalurl.label "Original location:">
 <!ENTITY details.maforiginalurl.accesskey "g">
 <!ENTITY details.mafdatearchived.label "Archived:">

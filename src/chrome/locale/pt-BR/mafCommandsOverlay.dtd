@@ -4,9 +4,9 @@
 <!-- Menu items for general Mozilla Archive Format commands -->
 <!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
-<!ENTITY menuitem.browseopenarchives.label "Browse Open Archives…">
-<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
-<!ENTITY menuitem.convertsavedpages.label "Convert Saved Pages…">
+<!ENTITY menuitem.browseopenarchives.label "Navegar nos arquivos da web abertos...">
+<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "N">
+<!ENTITY menuitem.convertsavedpages.label "Converter páginas salvas...">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.preferences.label "Preferências...">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
@@ -22,11 +22,11 @@
 <!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "t">
 <!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "t">
 <!-- Additional menu items for the "Save In Archive" command -->
-<!ENTITY menuitem.savepageinarchive.label "Save Page In Archive…">
+<!ENTITY menuitem.savepageinarchive.label "Salvar como arquivo da web...">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
-<!ENTITY menuitem.saveframeinarchive.label "Save Frame In Archive…">
-<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "h">
-<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "h">
-<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "h">
+<!ENTITY menuitem.saveframeinarchive.label "Salvar quadro como arquivo da web...">
+<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "b">
+<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "b">
+<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "b">

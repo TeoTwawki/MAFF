@@ -30,4 +30,4 @@
 <!ENTITY options.savemaff.para2.description "您随时可在[b]另存为[/b]对话框中更改档案类型。">
 <!-- *** Changes confirmation message *** -->
 <!ENTITY changesapplied.label "Congratulations!">
-<!ENTITY changesapplied.description "已按您的要求配置您的系统；系统现在已可用。">
+<!ENTITY changesapplied.description "已按您的要求配置您的系统；系统现在已可用。\n\n译者注：此中文翻译版仍在[b]测试阶段[/b]中，如果您对此翻译有什么不满意之处，请发送邮件至 [i]MAF@MozDev.Org[/i]，并在邮件标题中注明“Chinese translation feedback”，邮件内容可用中文。软件使用中的问题亦可发送至该邮箱，但要用英文。感谢您选择本软件！">

@@ -6,8 +6,8 @@
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Przeglądaj otwarte archiwa…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "P">
-<!ENTITY menuitem.convertsavedpages.label "Convert Saved Pages…">
-<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
+<!ENTITY menuitem.convertsavedpages.label "Konwertuj zapisane strony…">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "N">
 <!ENTITY menuitem.preferences.label "Ustawienia…">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "U">
 <!--    Additional menu items for the "Save As" command    -->

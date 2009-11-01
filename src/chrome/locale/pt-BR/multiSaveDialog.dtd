@@ -3,5 +3,5 @@
 <!ENTITY savebutton.label "Salvar">
 <!-- Tab selection -->
 <!ENTITY tabs.title.header "Título">
-<!ENTITY tabs.location.header "Pasta">
-<!ENTITY tabs.all.label "Todas as abas da janela atual">
+<!ENTITY tabs.location.header "Endereço">
+<!ENTITY tabs.all.label "Todas as abas da janela">

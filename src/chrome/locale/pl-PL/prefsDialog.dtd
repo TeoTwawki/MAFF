@@ -9,7 +9,7 @@
 <!ENTITY save.component.standard.accesskey "S">
 <!ENTITY save.component.savecomplete.label "zintegrowanego rozszerzenia „Save Complete”">
 <!ENTITY save.component.savecomplete.accesskey "N">
-<!ENTITY save.mhtml.compatible.label "Utwórz pliki MHTML w pełni kompatybilne z innymi przeglądarkami">
+<!ENTITY save.mhtml.compatible.label "Twórz pliki MHTML w pełni kompatybilne z innymi przeglądarkami">
 <!ENTITY save.mhtml.compatible.accesskey "M">
 <!ENTITY save.metadata.extended.label "Zapisuj rozszerzone metadane w archiwach MAFF">
 <!ENTITY save.metadata.extended.accesskey "Z">
@@ -41,7 +41,7 @@
 <!--    File associations pane. This pane is visible only on Windows.    -->
 <!ENTITY pane.fileassociations.label "Skojarzenia plików">
 <!ENTITY associate.windowsonly.description "Ta funkcjonalność jest dostępna tylko w systemie Windows.">
-<!ENTITY associate.buttons.description "Aby skojarzyć Firefoksa z typami plików obsługiwanymi przez MAF, kliknij znajdujące się poniżej przyciski.">
+<!ENTITY associate.buttons.description "Aby skojarzyć Firefoksa z typami plików obsługiwanymi przez MAF, naciśnij znajdujące się poniżej przyciski.">
 <!ENTITY associate.adminprivs.description "Ta operacja wymaga uprawnień administratora.">
 <!ENTITY associate.maff.label "Utwórz skojarzenie dla rozszerzenia .maff">
 <!ENTITY associate.maff.accesskey "M">
