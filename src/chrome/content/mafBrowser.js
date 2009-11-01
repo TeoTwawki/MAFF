@@ -28,6 +28,7 @@ try {
    // Integration overlays
    "integration/browser.js",
    "integration/contentAreaUtils.js",
+   "integration/defaultFileNameOverlay.js",
    "integration/fileFiltersOverlay.js",
 
    // Original MAF JavaScript infrastructure

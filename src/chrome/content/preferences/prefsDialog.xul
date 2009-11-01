@@ -65,6 +65,7 @@
     <preferences>
       <preference id="prefSaveMetadataExtended"        name="extensions.maf.save.metadata.extended"       type="bool"/>
       <preference id="prefSaveMhtmlCompatible"         name="extensions.maf.save.mhtml.compatible"        type="bool"/>
+      <preference id="prefSaveNamingStrategy"          name="extensions.maf.save.namingstrategy"          type="string"/>
       <preference id=      "prefSaveComponent"
                   name=    "extensions.maf.save.component"
                   type=    "string"
@@ -92,6 +93,21 @@
                   accesskey= "&save.mhtml.compatible.accesskey;"
                   class=     "indent"
                   />
+      </radiogroup>
+      <spacer height="10" />
+      <label control="rgrSaveNamingStrategy"
+             value=  "&save.namingstrategy.grouplabel;"
+             />
+      <radiogroup id=        "rgrSaveNamingStrategy"
+                  preference="prefSaveNamingStrategy"
+                  class=     "indent"
+                  >
+        <radio value="standard"    label=    "&save.namingstrategy.standard.label;"
+                                   accesskey="&save.namingstrategy.standard.accesskey;"
+                                   />
+        <radio value="pagetitle"   label=    "&save.namingstrategy.pagetitle.label;"
+                                   accesskey="&save.namingstrategy.pagetitle.accesskey;"
+                                   />
       </radiogroup>
       <spacer height="10" />
       <checkbox preference="prefSaveMetadataExtended" 

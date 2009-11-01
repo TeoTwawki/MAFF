@@ -14,6 +14,7 @@ pref("extensions.maf.save.component", "standard");
 pref("extensions.maf.save.maff.compression", "dynamic");
 pref("extensions.maf.save.mhtml.compatible", true);
 pref("extensions.maf.save.metadata.extended", false);
+pref("extensions.maf.save.namingstrategy", "standard");
 pref("extensions.maf.save.usemhtmlextension", false);
 pref("extensions.maf.temp.clearonexit", true);
 pref("extensions.maf.temp.folder", "");
