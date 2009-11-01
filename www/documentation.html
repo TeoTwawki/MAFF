@@ -148,6 +148,8 @@
   <dt><a href="https://addons.mozilla.org/firefox/addon/834">File Title</a>, by
    Pavel Cvrcek</dt>
   <dd>
+    <p><i>The functionality of the File Title extension is also available from
+     the MAF <a href="#main">preferences</a>.</i></p>
     <p>This extension replaces the default file name suggested in the <i>Save
      As</i> dialog box with the title of the page being saved.</p>
   </dd>
@@ -158,6 +160,11 @@
      behavior and adds a new item in the <b>File</b> menu to use the title of
      the page instead of the file name in the <i>Save As</i> dialog box.</p>
     <p>You can use the new command to save MAFF and MHTML archives too.</p>
+    <p>You may install this extension if you want to selectively use the page
+     title instead of the original file name. In this case, ensure that the
+     default browser's naming strategy is selected in the MAF
+     <a href="#main">preferences</a>, otherwise the title of the page might be
+     used in all cases.</i></p>
   </dd>
   <dt><a href="https://addons.mozilla.org/firefox/addon/8051">UnMHT</a>, by
    Arai</dt>
@@ -392,6 +399,26 @@
      Save Complete component. If the Save Complete component is disabled, only
      the MAF-specific MHTML variant is available.</p>
   </dd>
+  <dt>For the suggested file name:</dt>
+  <dd>
+    <p>This preference controls which method is used to select the default file
+     name in the <i>Save As</i> dialog box.</p>
+    <ol>
+      <li><b>Use browser's standard naming strategy</b> (default) - With this
+       setting, the Mozilla Archive Format extension does not alter the current
+       behavior, which is determined by the browser or by
+       <a href="#extensions">other installed extensions</a>. If no other
+       extension affecting this behavior is installed, the original name of the
+       file will be preferred to the title of the page.</li>
+      <li><b>Use the title of the page whenever possible</b> - With this
+       setting, the title of the page will be preferred to the original file
+       name. This is done for all HTML and XHTML pages, unless the server you
+       are downloading the page from explicitly asked the browser to use a
+       specific file name. Note that if <a href="#extensions">other
+       extensions</a> affecting this behavior are installed, this setting may
+       not work as expected.</li>
+    </ol>
+  </dd>
   <dt>Save extended metadata in MAFF archives</dt>
   <dd>
     <p>With this preference enabled, additional page information such as
@@ -533,6 +560,14 @@ changed unless there is a specific reason, and non-default settings may
 adversely impact functionality or performance.</p>
 
 <dl>
+  <dt><tt>extensions.maf.open.maff.ignorecharacterset</tt></dt>
+  <dd>
+    <p>When this setting is enabled, the character set specified for pages saved
+     inside MAFF archives is ignored, instead of being enforced when the page is
+     displayed. Enabling this option may be useful to troubleshoot
+     internationalization issues, but will cause saved pages to be displayed
+     incorrectly in most cases.</p>
+  </dd>
   <dt><tt>extensions.maf.save.maff.compression</tt></dt>
   <dd>
     <p>Controls the compression level to use when saving files in a MAFF
