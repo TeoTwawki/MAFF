@@ -11,6 +11,11 @@
 <!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.mhtml.compatible.label "建立與其它瀏覽器完全相容的 MHTML 檔案 (o)">
 <!ENTITY save.mhtml.compatible.accesskey "o">
+<!ENTITY save.namingstrategy.grouplabel "For the suggested file name:">
+<!ENTITY save.namingstrategy.standard.label "Use browser's standard naming strategy">
+<!ENTITY save.namingstrategy.standard.accesskey "w">
+<!ENTITY save.namingstrategy.pagetitle.label "Use the title of the page whenever possible">
+<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!ENTITY save.metadata.extended.label "在 MAFF 檔中保存擴充套件中介資料 (v)">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!-- Interface pane -->

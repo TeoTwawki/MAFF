@@ -11,6 +11,11 @@
 <!ENTITY save.component.savecomplete.accesskey "S">
 <!ENTITY save.mhtml.compatible.label "Criar arquivos MHTML compatíveis com outros navegadores">
 <!ENTITY save.mhtml.compatible.accesskey "c">
+<!ENTITY save.namingstrategy.grouplabel "For the suggested file name:">
+<!ENTITY save.namingstrategy.standard.label "Use browser's standard naming strategy">
+<!ENTITY save.namingstrategy.standard.accesskey "w">
+<!ENTITY save.namingstrategy.pagetitle.label "Use the title of the page whenever possible">
+<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!ENTITY save.metadata.extended.label "Salvar metadados adicionais nos arquivos MAFF">
 <!ENTITY save.metadata.extended.accesskey "m">
 <!-- Interface pane -->

@@ -50,7 +50,7 @@
 <!ENTITY folders.bin.folder.accesskey "M">
 <!ENTITY folders.dest.invalid.label "Please specify the complete folder name.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY candidates.pagelabel "Completing the Saved Pages Conversion Wizard">
+<!ENTITY candidates.pagelabel "Conversion">
 <!ENTITY candidates.description "Please review the list below, and select the files you wish to convert.">
 <!ENTITY candidates.sourcename.header "Source file name">
 <!ENTITY candidates.sourcedatafoldername.header "Support folder name">
@@ -64,6 +64,8 @@
 <!ENTITY candidates.searching.label "Searching for source files...">
 <!ENTITY candidates.none.label "No convertible files found. To modify the search parameters, click $1.">
 <!ENTITY candidates.invalid.label "Please select at least one file to convert.">
-<!ENTITY candidates.continue.label "Click $1 to convert your files.">
+<!ENTITY candidates.convert.label "Click Convert to convert your files.">
 <!ENTITY candidates.converting.label "Converting your files...">
 <!ENTITY candidates.finish.label "Please review the conversion results, then click $1 to close the window.">
+<!ENTITY candidates.convertbutton.label "Convert">
+<!ENTITY candidates.convertbutton.accesskey "C">

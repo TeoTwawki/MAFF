@@ -50,7 +50,7 @@
 <!ENTITY folders.bin.folder.accesskey "M">
 <!ENTITY folders.dest.invalid.label "请指定完整文件夹地址。">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY candidates.pagelabel "正在完成 已保存页面转换向导">
+<!ENTITY candidates.pagelabel "Conversion">
 <!ENTITY candidates.description "请查看下面的列表，并选择您想要转换的文件：">
 <!ENTITY candidates.sourcename.header "原始文件名称">
 <!ENTITY candidates.sourcedatafoldername.header "“files”文件夹名">
@@ -64,6 +64,8 @@
 <!ENTITY candidates.searching.label "正在查找来源文件…">
 <!ENTITY candidates.none.label "未找到可转换文件。要改变搜寻选项，单击$1。">
 <!ENTITY candidates.invalid.label "请至少选择一个文件以便转换。">
-<!ENTITY candidates.continue.label "单击$1以转换您的文件。">
+<!ENTITY candidates.convert.label "Click Convert to convert your files.">
 <!ENTITY candidates.converting.label "转换中，请稍候……">
 <!ENTITY candidates.finish.label "请复检转换结果，并单击$1已结束。">
+<!ENTITY candidates.convertbutton.label "Convert">
+<!ENTITY candidates.convertbutton.accesskey "C">
