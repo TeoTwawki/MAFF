@@ -554,7 +554,6 @@ scPageSaver.prototype._processNextURI = function() {
 
             var found = this._regexEscape(uri.extractedURI);
             var savePathURL = this._fileSaver.documentPath(uri, download.uri);
-            savePathURL = encodeURIComponent(savePathURL).replace('%2F', '/');
             if(uri.type == "attribute") {
                 // Fix all instances where this url is found in an attribute
                 var re = new RegExp("(<[^>]+=([\"'])\\s*)"+found+"(\\s*\\2)","g");
@@ -611,7 +610,6 @@ scPageSaver.prototype._processNextURI = function() {
 
             var found = this._regexEscape(uri.extractedURI);
             var savePathURL = this._fileSaver.documentPath(uri, download.uri);
-            savePathURL = encodeURIComponent(savePathURL).replace('%2F', '/');
             if(uri.type == "css") {
                 // Fix url functions in CSS
                 var re = new RegExp("url\\((\\s*([\"']?)\\s*)"+found+"(\\s*\\2\\s*)\\)","g");
@@ -795,9 +793,9 @@ scPageSaver.scDefaultFileSaver.prototype.documentPath = function(uri, relativeUR
     }
 
     if(relativeURI.type == 'index') {
-        return (this._dataFolder.leafName+'/'+this._saveMap[saveKey]).replace(' ', '%20', 'g');
+        return (encodeURIComponent(this._dataFolder.leafName)+'/'+encodeURIComponent(this._saveMap[saveKey]));
     } else {
-        return (this._saveMap[saveKey]).replace(' ', '%20', 'g');
+        return (encodeURIComponent(this._saveMap[saveKey]));
     }
 }
 
