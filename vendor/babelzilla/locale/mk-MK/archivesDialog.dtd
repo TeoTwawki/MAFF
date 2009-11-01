@@ -1,6 +1,12 @@
 <!ENTITY window.title "Архиви">
+<!ENTITY archives.placestitle.header "Наслов на страницата">
 <!ENTITY archives.mafarchivename.header "Име на Архивата">
+<!ENTITY archives.maftitle.header "Оригинален наслов на страницата">
+<!ENTITY details.placestitle.label "Наслов на страницата:">
+<!ENTITY details.placestitle.accesskey "Н">
 <!ENTITY details.mafarchivename.label "Име на Архивата:">
+<!ENTITY details.maftitle.label "Оригинален наслов на страницата:">
+<!ENTITY details.maftitle.accesskey "и">
 <!ENTITY details.caption "Детали">
 <!ENTITY morebutton.label "Повеќе детали">
 <!ENTITY morebutton.accesskey "е">

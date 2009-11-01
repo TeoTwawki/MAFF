@@ -1,0 +1,10 @@
+<!ENTITY archiveinfo.status.normal.label "Esta página não faz parte de um arquivo da web.">
+<!ENTITY archiveinfo.status.archived.label "Esta página está salva dentro de um arquivo da web.">
+<!ENTITY archiveinfo.maforiginalurl.label "Salvo de:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(não disponível)">
+<!ENTITY archiveinfo.mafdatearchived.label "Salvo em:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(não disponível)">
+<!ENTITY commands.browseopenarchives.label "Navegar nos arquivos da web abertos...">
+<!ENTITY commands.browseopenarchives.accesskey "N">
+<!ENTITY commands.preferences.label "Preferências">
+<!ENTITY commands.preferences.accesskey "P">

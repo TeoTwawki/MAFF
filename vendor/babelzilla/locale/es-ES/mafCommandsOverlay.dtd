@@ -4,6 +4,8 @@
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Buscar archivos abiertos...">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
+<!ENTITY menuitem.convertsavedpages.label "Convertir páginas guardardas...">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.preferences.label "Opciones...">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "O">
 <!ENTITY menuitem.savetabsas.label "Guardar pestañas como...">

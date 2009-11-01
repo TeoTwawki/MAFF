@@ -4,6 +4,8 @@
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Offene Archive durchsuchen...">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "O">
+<!ENTITY menuitem.convertsavedpages.label "Gerspeicherte Seiten konvertieren...">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "k">
 <!ENTITY menuitem.preferences.label "Einstellungen...">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "E">
 <!ENTITY menuitem.savetabsas.label "Tab speichern unter...">

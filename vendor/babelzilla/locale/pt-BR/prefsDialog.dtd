@@ -1,0 +1,45 @@
+<!ENTITY window.title "Preferências">
+<!ENTITY browsebutton.label "Procurar...">
+<!ENTITY pane.main.label "Principal">
+<!ENTITY save.caption "Salvar">
+<!ENTITY save.component.grouplabel "Ao salvar o conteúdo das páginas:">
+<!ENTITY save.component.standard.label "usar o método padrão do navegador">
+<!ENTITY save.component.standard.accesskey "p">
+<!ENTITY save.component.savecomplete.label "usar o &quot;Save Complete&quot; integrado">
+<!ENTITY save.component.savecomplete.accesskey "S">
+<!ENTITY save.mhtml.compatible.label "Criar arquivos MHTML compatíveis com outros navegadores">
+<!ENTITY save.mhtml.compatible.accesskey "c">
+<!ENTITY save.metadata.extended.label "Salvar metadados adicionais nos arquivos MAFF">
+<!ENTITY save.metadata.extended.accesskey "m">
+<!ENTITY pane.interface.label "Interface">
+<!ENTITY icon.caption "Ícone">
+<!ENTITY iconlocation.grouplabel "Exibir o ícone do Mozilla Archive Format:">
+<!ENTITY iconlocation.urlbar.label "na barra de endereço">
+<!ENTITY iconlocation.urlbar.accesskey "e">
+<!ENTITY iconlocation.urlbar-autohide.label "na barra de endereço, apenas ao exibir uma página salva num arquivo da web">
+<!ENTITY iconlocation.urlbar-autohide.accesskey "e">
+<!ENTITY iconlocation.status.label "na barra de status">
+<!ENTITY iconlocation.status.accesskey "s">
+<!ENTITY iconlocation.none.label "em nenhum lugar">
+<!ENTITY iconlocation.none.accesskey "n">
+<!ENTITY menu.caption "Menu">
+<!ENTITY menu.grouplabel "Mostrar os comandos do Mozilla Archive Format:">
+<!ENTITY menu.file.label "no menu Arquivo">
+<!ENTITY menu.file.accesskey "A">
+<!ENTITY menu.tools.label "no menu Ferramentas">
+<!ENTITY menu.tools.accesskey "F">
+<!ENTITY menu.pagecontext.label "no menu de contexto da página">
+<!ENTITY menu.pagecontext.accesskey "c">
+<!ENTITY menu.tabscontext.label "no menu de contexto das abas">
+<!ENTITY menu.tabscontext.accesskey "a">
+<!ENTITY menuitem.grouplabel "Exibir também estes comandos:">
+<!ENTITY menuitem.saveinarchive.label "Salvar em arquivo da web">
+<!ENTITY menuitem.saveinarchive.accesskey "w">
+<!ENTITY pane.fileassociations.label "Associação de arquivos">
+<!ENTITY associate.windowsonly.description "Esse recurso está disponível apenas para Windows.">
+<!ENTITY associate.adminprivs.description "Essa operação poderá requerer privilégios de administrador.">
+<!ENTITY associate.maff.label "Associar a arquivos .maff">
+<!ENTITY associate.maff.accesskey "f">
+<!ENTITY associate.mhtml.label "Associar a arquivos .mht e .mhtml">
+<!ENTITY associate.mhtml.accesskey "h">
+<!ENTITY associate.uninstall.description "Observação: as associações feitas aqui não são removidas automaticamente quando o MAF ou o Firefox é desinstalado. Você pode gerenciar as associações de arquivos através do Painel de Controle do Windows.">

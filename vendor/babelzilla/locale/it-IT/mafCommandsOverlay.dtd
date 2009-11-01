@@ -4,6 +4,8 @@
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Sfoglia archivi aperti…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
+<!ENTITY menuitem.convertsavedpages.label "Converti pagine salvate…">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.preferences.label "Preferenze…">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
 <!ENTITY menuitem.savetabsas.label "Salva schede con nome…">
