@@ -152,7 +152,7 @@ SaveCompletePersist.prototype = {
 
       // Construct the integrated Save Complete object and start saving
       var scFileSaver = new
-       MafSaveComplete.scPageSaver.scDefaultFileSaver(fileObject);
+       MafSaveComplete.scPageSaver.scDefaultFileSaver(fileObject, aDataPath);
       // If the files will be stored in a compatible MHTML file
       if (this.saveWithContentLocation) {
         // Modify the default file saver to create a map of the original URIs

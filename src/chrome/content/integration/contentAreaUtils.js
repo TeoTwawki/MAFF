@@ -368,12 +368,18 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
       // Create the local directory into which to save associated files.
       filesFolder = persistArgs.targetFile.clone();
 
-      var nameWithoutExtension = getFileBaseName(filesFolder.leafName);
-      var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
-                                                                       [nameWithoutExtension],
-                                                                       1);
-
-      filesFolder.leafName = filesFolderLeafName;
+      // When Mozilla Archive Format calls this function to save a file for an
+      //  archive, always use "index_files" as the data folder name
+      if (typeof aSkipPrompt == "object" && aSkipPrompt.saveDir) {
+        filesFolder.leafName = "index_files";
+      } else {
+        var nameWithoutExtension = getFileBaseName(filesFolder.leafName);
+        var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
+                                                                         [nameWithoutExtension],
+                                                                         1);
+  
+        filesFolder.leafName = filesFolderLeafName;
+      }
     }
 
     var encodingFlags = 0;
