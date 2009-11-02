@@ -733,22 +733,27 @@ scPageSaver.prototype._regexEscape = function(str) {
  * Creates a file saver object
  * @constructor scDefaultFileSaver
  * @param {nsIFile} file - The ouput file for the HTML
+ * @param {nsIFile} dataPath - Optional support folder for data files
  */
-scPageSaver.scDefaultFileSaver = function(file) {
+scPageSaver.scDefaultFileSaver = function(file, dataPath) {
     this._saveMap = {};
 
     // Initialize target file
     this._file = file;
 
-    // Initialize data folder (Delete and re-created so that it's clean)
-    var nameWithoutExtension = file.leafName.replace(/\.[^.]*$/,"");
-    var stringBundle = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService).createBundle("chrome://global/locale/contentAreaCommands.properties");
-    var folderName = stringBundle.formatStringFromName("filesFolder", [nameWithoutExtension], 1);
-    var dataFolderExisting = file.clone();
-    dataFolderExisting.leafName = folderName;
-    if(dataFolderExisting.exists()) dataFolderExisting.remove(true);
-    this._dataFolder = file.clone();
-    this._dataFolder.leafName = folderName;
+    // Initialize data folder
+    if (!dataPath) {
+        var nameWithoutExtension = file.leafName.replace(/\.[^.]*$/,"");
+        var stringBundle = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService).createBundle("chrome://global/locale/contentAreaCommands.properties");
+        var folderName = stringBundle.formatStringFromName("filesFolder", [nameWithoutExtension], 1);
+        this._dataFolder = file.clone();
+        this._dataFolder.leafName = folderName;
+    } else {
+        this._dataFolder = dataPath.clone();
+    }
+
+    // Delete and re-create data folder so that it's clean
+    if(this._dataFolder.exists()) this._dataFolder.remove(true);
 
     // Define the target URI property for the listener
     this.targetURI = scPageSaver.nsIIOService.newFileURI(file);
