@@ -536,16 +536,14 @@ scPageSaver.prototype._processNextURI = function() {
     }
 
     if(download.uri.type == 'index' || download.contentType == "text/html" || download.contentType == "application/xhtml+xml") {
-        // Mark the document as coming from a certain URL (Like IE)
-        if(data.match(/<html[^>]*>/i)) {
-            var originalUrl = download.uri.toString();
-            // For the main document, use the provided original location
-            if(download.uri.type == 'index') {
-                originalUrl = this._originalUrl;
+        // Only for the main document, if the content type is correct
+        if(download.uri.type == 'index' && (download.contentType == "text/html" || download.contentType == "application/xhtml+xml")) {
+            // Mark the document as coming from a certain URL (Like IE)
+            if(data.match(/<html[^>]*>/i)) {
+                data = data.replace(/(<html[^>]*>)/i,"$1<!-- Source is "+this._originalUrl+" -->");
+            } else {
+                data = "<!-- Source is "+this._originalUrl+" -->\n" + data;
             }
-            data = data.replace(/(<html[^>]*>)/i,"$1<!-- Source is "+originalUrl+" -->");
-        } else {
-            data = "<!-- Source is "+download.uri.toString()+" -->\n" + data;
         }
 
         // Comment out "base" element, which messes everything up
