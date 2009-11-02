@@ -1,5 +1,118 @@
 @import url("http://www.mozdev.org/project.css");
 
+/* Page header */
+
+.project-name {
+  /* The name of the project is only shown when no styles are applied */
+  display: none;
+}
+
+/* Navigation links, inline version for Internet Explorer 6 */
+
+#main-content-no-nav {
+  /* Ensure that the navigation links are aligned to the left */
+  text-align: left;
+}
+
+.maf-column-contents {
+  /* Use the justified alignment for the other content */
+  text-align: justify;
+}
+
+ul.maf-navigation,
+ul.maf-navigation li,
+ul.maf-navigation div,
+ul.maf-navigation ul {
+  /* Treat all the navigation elements as plain inline content */
+  display: inline;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+ul.maf-navigation li {
+  /* Treat all the navigation elements as plain inline content */
+  list-style-type: none;
+}
+
+ul.maf-navigation span {
+  /* Hide elements that are used as top level menu items */
+  display: none;
+}
+
+ul.maf-navigation a {
+  /* Ensure that each navigation link is not split across multiple lines */
+  white-space: nowrap;
+  /* Separate each link from the next one */
+  padding-right: 0.5em !important;
+  border-right: 1px solid black;
+  margin-right: 0.5em !important;
+}
+
+/* Navigation links, dropdown menu version for modern browsers */
+
+ul.maf-navigation > li {
+  /* The top level items are aligned together on the left */
+  float: left;
+}
+
+ul.maf-navigation > li > div {
+  /* This item is empty and only serves as a reference for the dropdown */
+  position: relative;
+}
+
+ul.maf-navigation > li > div > ul {
+  /* This dropdown is not part of the normal flow of the page */
+  position: absolute;
+  /* The dropdown must appear above other elements in case of overlapping */
+  z-index: 1;
+  /* Hide the dropdown when the mouse is not over the top level item */
+  display: none;
+}
+
+ul.maf-navigation > li:hover > div > ul {
+  /* Display the dropdown when the mouse is over the top level item */
+  display: block;
+}
+
+ul.maf-navigation > li a,
+ul.maf-navigation > li span {
+  /* Effective style for all menu items */
+  display: block;
+  padding: 1px 8px !important;
+  border: 1px solid #CDE;
+  margin: 0px !important;
+  background-color: #DEF;
+  color: #900;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+ul.maf-navigation > li a:hover,
+ul.maf-navigation > li:hover span {
+  /* Effective style for all menu items when the mouse is over them */
+  background-color: #EFF;
+}
+
+ul.maf-navigation > li span {
+  /* For top level elements that cannot be selected, always use the arrow */
+  cursor: default;
+}
+
+/* Boxes around the navigation links */
+
+#main-content-no-nav > div.maf-navigation-image {
+  float: left;
+  width: 76px;
+  height: 20px;
+  background-image: url(index_files/boxes.gif);
+  background-repeat: no-repeat;
+  background-position: 7px 7px;
+}
+
+#main-content-no-nav > ul.maf-navigation {
+  float: left;
+}
+
 /* Column layout*/
 
 .maf-column-outer {
