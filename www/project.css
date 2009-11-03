@@ -55,6 +55,11 @@ ul.maf-navigation > li {
   float: left;
 }
 
+#main-content-no-nav > div.maf-navigation-end {
+  /* This element is placed after the list to terminate it */
+  clear: left;
+}
+
 ul.maf-navigation > li > div {
   /* This item is empty and only serves as a reference for the dropdown */
   position: relative;
