@@ -1,0 +1,340 @@
+<!-- MAIN CONTENT -->
+<div class="maf-column-contents">
+  <h2 class="page-header">The MAFF specification</h2>
+
+<p>This document is a <b>working draft</b> aimed at providing a detailed
+ specification for the <a href="maff-file-format.html">MAFF file format</a>,
+ with the goal of ensuring the interoperability between different
+ implementations.</p>
+
+<p>In this stage of development, this document describes the essential aspects
+ of the file format and is updated to reflect actual technical questions or
+ foreseen implementation issues. Implementations based solely on this document
+ are not recommended; developers are instead encouraged to discuss their
+ implementations on the <a href="#feedback">mailing list of the MAF
+ project</a>.</p>
+
+<p>The <a href="index.html">Mozilla Archive Format</a> extension for Firefox
+ currently implements the MAFF specification at the
+ <a href="#level-basic">basic</a> conformance level. Eventually, the MAF
+ extension will be updated to the <a href="#level-normal">normal</a>
+ conformance level, when the related aspects of the specification are
+ stabilized.</p>
+
+<h2><a name="feedback"></a>Feedback</h2>
+<p>This working draft for the MAFF specification is maintained by the <a
+ href="members.html">MAF project</a>. Feedback from interested people or
+ implementors is welcome on the <b>MAF mailing list</b>.</p>
+<p>See the <a href="feedback.html">feedback page</a> of the MAF project for
+ information on how to subscribe and send messages to the mailing list.</p>
+
+<h2><a name="feedback"></a>Introduction</h2>
+
+<h3>Purpose</h3>
+<p>MAFF is meant to be a <b>simple</b> format for <b>archiving</b> a copy of
+ some <b>web content</b> in a <b>single file</b>.</p>
+<ul>
+  <li>
+    <p><b>Saving web pages</b></p>
+    <p>MAFF can be used by a web browser as a destination file format when
+     saving a web page, and all the other resources required for rendering it,
+     to a local file system for later reference.</p>
+    <p>Even though the same operation could be done by saving multiple files
+     with relative references to each other, in practice this approach is not
+     robust. When moving the saved files in the same file system, care should be
+     taken not to change their relative locations, lest the content become
+     unusable. Moreover, when files are moved across file systems that support
+     different naming restrictions, like when authoring a CD-ROM, automatic
+     renames performed on the individual files may make the archived page
+     unusable, and recovering at a later time can be difficult.</p>
+    <p>Collections of MAFF files, instead, can be safely organized using the
+     operating system's file manager, and moved across different file systems
+     with no risk of making the content unusable. No additional software besides
+     the file manager is required in order to organize the collection.</p>
+    <p>For this use case, MAFF is comparable to MHTML, even though the two
+     formats are very different in other regards.</p>
+  </li>
+  <li>
+    <p><b>Tracking the source of archived content</b></p>
+    <p>The original URL the content was saved from, and the local date and time
+     of the save operation, are the essential information required to locate the
+     source of the saved content. This information can be used for later
+     reference.</p>
+  </li>
+  <li>
+    <p><b>Packaging related content together</b></p>
+    <p>MAFF files can also be authored originally, instead of being saved by a
+     web browser. In this case, they can be used to package related resources
+     that are not meant to be severed.</p>
+    <p>The fact that MAFF files can be easily inspected and edited with existing
+     tools helps in making this independent authoring very easy.</p>
+  </li>
+  <li>
+    <p><b>Other considerations</b></p>
+    <p>In MAFF files, dynamic features like JavaScript are available, even
+     though they can be expected to work properly only as long as they do not
+     depend on external resources.</p>
+    <p>The MAFF file format is not meant to be a complete offline cache, or a
+     file format that can be used to replay client-server transactions. Pages
+     saved inside MAFF archives should be treated as an atomic unit. For
+     example, when fetching the content from its original location for updating
+     an archive, user agents should not mix portions of the saved page and
+     portions of the updated content.</p>
+    <p>It sould be possible to render the contents of a MAFF file consistently
+     after it has been extracted to a local file system and metadata has been
+     removed.</p>
+  </li>
+</ul>
+
+<h3>Design goals</h3>
+<ul>
+  <li>
+    <p><b>Easy to use and implement</b></p>
+    <p>The specification of the file format must allow very simple
+     implementations. For complex details, implementations should be able to
+     rely on available libraries.<p>
+  </li>
+  <li>
+    <p><b>Based on existing and widely used technologies</b></p>
+    <p>When considering solutions of similar complexity, in order to reach a
+     particular goal, existing web standards and widely used specifications
+     should be preferred to a custom implementation.</p>
+    <p>Custom solutions may be appropriate if they are much more easy to
+     implement compared to an existing specification, and the benefits of the
+     existing specification do not apply to the particular use case.</p>
+  </li>
+  <li>
+    <p><b>Compatible with the original MAFF format</b></p>
+    <p>The file format previously referred to as <i>MAFF version 1</i> provides
+     the baseline for all the future enhancements of the MAFF specification.
+     This format is defined on the basis of the implementation of the Mozilla
+     Archive Format extension version 0.6.3, for Firefox 2 and Mozilla 1.7-1.8,
+     and version 0.8.0, for Firefox 3.0. Different versions of the extension are
+     not considered.</p>
+    <p>The MAFF format will be extended while ensuring that all implementations
+     will still be able to read MAFF archives created with version 0.6.3 and
+     0.8.0 of Mozilla Archive Format.</p>
+  </li>
+</ul>
+
+<h3>Conformance levels</h3>
+<p>In order to satisfy the requirement of simplicity of implementation, and to
+ encourage early adoption of the format, different conformance levels are
+ available to implementors.</p>
+<ul>
+  <li>
+    <p><b><a name="level-elementary"></a>Elementary</b></p>
+    <p>Read-enabled implementations at this level can display the contents of
+     most of the MAFF files generated by implementations at the elementary or
+     basic level, and almost all of the MAFF files generated by implementations
+     at the normal level, but may not always be able to access the metadata.</p>
+    <p>Write-enabled implementations at this level do not store metadata, or
+     store it in such a way that does not guarantee that conforming readers will
+     be able to read it. Implementations at the elementary or basic level will
+     be able to display the contents of most of the MAFF files generated by
+     implementations at this level, while implementations at the normal level
+     will be able to display the contents of almost all of the generated MAFF
+     files.</p>
+  </li>
+  <li>
+    <p><b><a name="level-basic"></a>Basic</b></p>
+    <p>Read-enabled implementations at this level can display the contents of
+     most of the MAFF files generated by implementations at the elementary or
+     basic level, and almost all of the MAFF files generated by implementations
+     at the normal level. Implementations at this level can access the metadata
+     of most of the MAFF files generated by implementations at the basic level,
+     and almost all of the MAFF files generated by implementations at the
+     normal level.</p>
+    <p>Write-enabled implementations at this level may store metadata.
+     Implementations at the elementary or basic level will be able to display
+     the contents of most of the MAFF files generated by implementations at this
+     level, while implementations at the normal level will be able to display
+     the contents of almost all of the generated MAFF files. Implementations at
+     the basic level will be able to access the metadata of most of the MAFF
+     files generated by implementations at this level, while implementations at
+     the normal level will be able to access the metadata of almost all of the
+     generated MAFF files.</p>
+  </li>
+  <li>
+    <p><b><a name="level-normal"></a>Normal</b></p>
+    <p><i>This level is not yet formalized, and no conforming implementations
+     can exist at this time. Implementations at this level should keep into
+     account most of the possible interoperability issues. Implementations that
+     aim at reaching this level should be updated to reflect the evolution of
+     the stabilized aspects of this specification.</i></p>
+    <p>Read-enabled implementations at this level can display the contents of
+     almost all of the MAFF files generated by implementations at the elementary
+     or basic level, and virtually all of the MAFF files generated by
+     implementations at the normal level. Implementations at this level can
+     access the metadata of almost all of the MAFF files generated by
+     implementations at the basic level, and virtually all of the MAFF files
+     generated by implementations at the normal level.</p>
+    <p>Write-enabled implementations at this level may store metadata.
+     Implementations at the elementary or basic level will be able to display
+     the contents of almost all of the MAFF files generated by implementations
+     at this level, while implementations at the normal level will be able to
+     display the contents of virtually all of the generated MAFF files.
+     Implementations at the basic level will be able to access the metadata of
+     almost all of the MAFF files generated by implementations at this level,
+     while implementations at the normal level will be able to access the
+     metadata of virtually all of the generated MAFF files.</p>
+  </li>
+  <li>
+    <p><b><a name="level-custom"></a>Custom or extended</b></p>
+    <p>This level applies to ideas and requirements that are not part of the
+     base specification, even though they are related to the file format and are
+     under discussion. Some of these requirements may be outside of the scope of
+     the base specification, and should be considered extensions, while others
+     may be considered for inclusion in the basic or normal conformance
+     levels.</p>
+    <p>Since none of the custom or extended requirements are meant to be stable,
+     implementors may need to change their implementations substantially if
+     conflicting requirements are introduced in the basic or standard
+     conformance levels.</p>
+  </li>
+</ul>
+
+<h2>Definitions</h2>
+<dl>
+  <dt>Page</dt>
+  <dd>
+    <p>An atomic unit of related archived content. Multiple independent pages
+     can be stored in a single MAFF archive.</p>
+  </dd>
+  <dt>Main document</dt>
+  <dd>
+    <p>The top-level file of a page, that is generally displayed in a web
+     browser window.</p>
+  </dd>
+</dl>
+
+<h2>File extension and type</h2>
+<p>MAFF files should be saved using the <code class="maf-file-ext">.maff</code>
+ file extension (lowercase is recommended), even on systems where file
+ extensions are not normally used to identify file types. [Conformance level:
+ <a href="#level-elementary">elementary</a>]</p>
+<p>Implementations should treat files with the
+ <code class="maf-file-ext">.maff</code> file extension (case insensitive)
+ as MAFF files, even on systems where file extensions are not normally used to
+ identify file types. [Conformance level: <a href="#level-basic">basic</a>]</p>
+<p>Internally, the Mozilla Archive Format extension for Firefox registers the
+ MIME type <code class="maf-mime-type">application/x-maff</code> for files with
+ the <code class="maf-file-ext">.maff</code> extension, unless there is already
+ another MIME type association in the system. However, this MIME type is not
+ advertised outside of Firefox, for example when the file type is registered
+ with the operating system on Windows. [Information]</p>
+
+<h2>ZIP implementation</h2>
+<p>The ZIP implementation must be based on
+ <a href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">PKWARE's ZIP
+ Application Note</a> [Conformance level:
+ <a href="#level-elementary">elementary</a>].</p>
+<p>File and directory names must be stored using UTF-8 [Conformance level:
+ <a href="#level-basic">basic</a>].</p>
+<p><i>This section needs expansion.</i></p>
+
+<h2>Directory structure</h2>
+<p>The root directory of the archive must be empty. [Conformance level:
+ <a href="#level-elementary">elementary</a>]</p>
+<p>One first-level directory must be present for every saved page. At least one
+ page must be present in the archive. No additional first-level directories must
+ be present. [Conformance level: <a href="#level-elementary">elementary</a>]</p>
+<p>Every first-level directory should contain a file named <tt>index.rdf</tt>,
+ with the metadata. [Conformance level: <a href="#level-basic">basic</a>].</p>
+<p>If the <tt>index.rdf</tt> file is not present, the main document must be
+ stored in a file named <tt>index</tt>, with a file extension based on the
+ content type. If the content type of the main document is HTML, the file must
+ be named <tt>index.html</tt>. [Conformance level:
+ <a href="#level-elementary">elementary</a>]</p>
+<p>If the <tt>index.rdf</tt> file is present, the metadata must contain the name
+ of the file containing the main document. This file must be located in the same
+ folder as the <tt>index.rdf</tt> file. This file must be named <tt>index</tt>,
+ with a file extension based on the content type, unless the file type is RDF.
+ [Conformance level: <a href="#level-basic">basic</a>]</p>
+<p>Assignment of MIME type to individual files is implemented by ensuring that
+ the file names of supported content match a list of well-known file
+ extensions. [Conformance level: <a href="#level-normal">normal</a>]</p>
+<p><i>This section needs expansion.</i></p>
+
+<h2>Metadata</h2>
+<p>The format used for storing metadata about the archived files in the
+ <tt>index.rdf</tt> and <tt>history.rdf</tt> files is RDF/XML.</p>
+<p>Some restrictions for the RDF/XML file format are still to be specified.
+ These restrictions are required to allow for read-enabled implementations that
+ are as simple as possible. In particular, only one of the possible XML
+ representations of the RDF graph is valid. This is the current representation
+ that uses the <tt>MAF</tt> XML namespace. In this way, a full RDF parser would
+ not be required to read the metadata.</p>
+<p>Further restrictions on the structure and format of the XML files are under
+ consideration. For example, implementations might be required to put one tag
+ per line, always use UTF-8 encoding, and never encode characters as entities
+ unless necessary. This would make room for very simple implementations that
+ don't embed an XML parser.</p>
+<p>The following information is stored in <tt>index.rdf</tt>:</p>
+<ul>
+  <li>The <b>file name</b> of the main document.</li>
+  <li>The <b>original URL</b> the page was saved from.</li>
+  <li>The <b>date and time</b> of the save operation.</li>
+  <li>The <b>title</b> of the page, if present.</li>
+  <li>The <b>character set</b> to use when parsing files that are part of the
+   page.</li>
+</ul>
+<p><i>This section needs expansion.</i></p>
+
+<h3>Date and time</h3>
+<p>The date and time of the save operation should be stored using the format
+ described in <a href="http://tools.ietf.org/html/rfc5322#section-3.3">RFC 5322
+ section 3.3</a>. If this format is not used, the Mozilla JavaScript Date format
+ must be used. Implementations must be able to parse both formats. [Conformance
+ level: <a href="#level-basic">basic</a>]</p>
+
+<h3>Title</h3>
+<p>If the file format of the main document allows an explicit page title to be
+ specified, like HTML does, the title from the metadata should match the title
+ from the main document, and if the title is not available, this field should be
+ omitted. [Conformance level: <a href="#level-basic">basic</a>]</p>
+<p>This metadata field allows applications that want to display information
+ about the contents of MAFF archives to do this without embedding an HTML
+ parser. For example, an extension for a file manager might only use the title
+ from the metadata, while a web browser might ignore this field and only display
+ the title resulting from parsing the main document. [Information]</p>
+<p>When the title of the page is not available, some versions of the Mozilla
+ Archive Format extension for Firefox write the literal English string
+ "Unknown", even though the field should be omitted. [Information]</p>
+
+<h3>Character set</h3>
+<p>The character set declared in the MAFF archive should be used when parsing
+ the contents of all the files that do not declare a different character set.
+ [Conformance level: <a href="#level-basic">basic</a>]</p>
+
+<h2>Extended metadata</h2>
+<p>The base specification does not provide a facility for storing the original
+ URL from which each individual file was copied from, as each page is handled as
+ an atomic unit. This feature is under consideration as an extension, but even
+ if this information is present, implementations must not rely on it to be able
+ to properly display the page. [Conformance level:
+ <a href="#level-custom">extended</a>]</p>
+<p>The base specification does not consider custom MIME or HTTP headers
+ associated with individual files, as the MAFF format is designed to work in the
+ same way as when a saved page is opened directly from a local file system. This
+ feature is however under discussion as an extension. Implementations should not
+ rely on this feature unless necessary, since it may not be available in other
+ implementations. [Conformance level: <a href="#level-custom">extended</a>]</p>
+<p>Storing and replaying arbitrary MIME headers in an archive can be subject to
+ security considerations. While static information about the content itself,
+ like the <tt>Content-Type</tt> header, is generally safe to be used from every
+ location, information about the relation of the content with other resources
+ may not apply anymore when the resource is moved. For example, a site may be
+ listed as allowed in a Content Security Policy header, but this trust
+ relationship is only relevant at the time the content is generated, and should
+ not be used later.</p>
+
+<h2>Roadmap</h2>
+<p>Current work on this specification is focused on documenting the essential
+ aspects of the MAFF file format and improving the level of detail in response
+ to specific questions.</p>
+<p>In order to participate in this process, interested people and implementors
+ are encouraged to provide feedback on the <a href="#feedback">mailing list of
+ the MAF project</a>.</p>
+
+</div>

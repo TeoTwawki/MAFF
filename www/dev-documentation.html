@@ -1,0 +1,173 @@
+<!-- MAIN CONTENT -->
+<div class="maf-column-contents">
+  <h2 class="page-header">Developing with Mozilla Archive Format</h2>
+
+<p>This document is a <b>reference for add-on developers</b>, describing the
+ services that Mozilla Archive Format offers to other extensions installed on
+ the same user profile. Services available to other extensions include web
+ archive creation and extraction, metadata handling, and integration with user
+ interface enhancements, like the ability to add file types to the save
+ dialogs.</p>
+
+<h3>Supporting the MAFF file format</h3>
+
+<p>If you want to enable your application to use the
+ <a href="maff-file-format.html">MAFF file format</a>, the MAF project provides
+ support in two ways:</p>
+
+<ul>
+  <li>
+    <p><b>For Firefox extensions</b></p>
+    <p>If you are working on a Firefox extension and would like to add web
+     archive support, including MAFF and MHTML, it is advisable to use the
+     services of Mozilla Archive Format, rather than writing a custom
+     implementation. This is also the easiest way to get bugfixes as new
+     versions of MAF are released.</p>
+    <p>Alternatively, since most of the <a href="source.html">source code</a> of
+     MAF is available under a <a href="http://www.mozilla.org/MPL/">MPL 1.1+,
+     GPL 2.0+, LGPL 2.1+</a> disjunctive tri-license, you can integrate it with
+     other extensions released under a compatible license.</p>
+  </li>
+  <li>
+    <p><b>For other applications</b></p>
+    <p>If you want to add support for the MAFF file format to other applications, the
+     <a href="maff-specification.html">MAFF specification</a> provides some of
+     the required technical information. The specification does not depend on a
+     specific programming language or Mozilla-based technology.</p>
+  </li>
+</ul>
+
+<h2>Feedback and updates</h2>
+<p>The Mozilla Archive Format interfaces described in this document are not
+ finalized, and are likely to change as new versions are published. Extensions
+ that use these APIs will need to be updated from time to time to reflect those
+ changes. How often depends on the <a href="#stability">stability levels</a> of
+ the referenced APIs.</p>  
+<p>All of the internal MAF objects are available to other extensions, but only
+ the methods marked as <a href="#status-public">public</a> in this API reference
+ are actually checked for backwards compatibility. If you plan to use other
+ methods in your extension, please <a href="feedback.html">get in touch</a> and
+ those methods will be added to the list of public methods.</p>
+<p>Relevant changes in the interfaces of public methods will be announced on the
+ <b>MAF mailing list</b>. If you would like to be notified of updates, please
+ see the <a href="feedback.html">feedback page</a> for information on how to
+ subscribe and send messages to the mailing list.</p>
+
+<h3>Compatible extensions</h3>
+<p>Some extensions, like
+ <a href="https://addons.mozilla.org/firefox/addon/4838">Multiple Tab
+ Handler</a>, are particularly suited to work together with the Mozilla Archive
+ Format user experience. If you think your extension is in this category, or if
+ your extension makes use of the MAF services, feel free to write to the <b>MAF
+ mailing list</b>. Your extension will be taken into consideration for inclusion
+ into the list of <a href="documentation.html#extensions">compatible
+ extensions</a>.</p>
+<p>Compatible extensions are tested periodically with the latest version of MAF,
+ in the areas in which they actually work together. For example, the
+ <a href="https://addons.mozilla.org/firefox/addon/8051">UnMHT</a> extension
+ makes use of the services to add file types to the "Save As" dialog, and
+ includes its own copy of the file type identification and MHTML encoding
+ routines of MAF. Considering that the encoding routines work separately, the
+ areas subject to testing are save integration and MHTML file opening.</p>
+
+<h2><a name="stability"></a>Stability levels</h2>
+<ul>
+  <li>
+    <p><b><a name="status-internal"></a>Internal</b></p>
+    <p>Internal methods of the MAF objects are always available to other
+     extensions installed in the same user profile as MAF, but may change
+     without notice.</p>
+    <p>All the methods that aren't listed in the API documentation are
+     considered internal.</p>
+  </li>
+  <li>
+    <p><b><a name="status-public"></a></a>Public</b></p>
+    <p>Public methods and techniques are designed for use by other extensions.
+     Changes to the interfaces of these methods will be announced on the <b>MAF
+     mailing list</b> and will appear in the
+     <a href="changelog.html">changelog</a>.</p>
+    <ul>
+      <li>
+        <p><b><a name="status-unstable"></a>Unstable</b></p>
+        <p>Unstable public methods and techniques are likely to change in future
+         versions of MAF. Changes will typically appear in new minor versions,
+         and will be available in experimental releases first.</p>
+      </li>
+      <li>
+        <p><b><a name="status-stable"></a>Stable</b></p>
+        <p>Stable public methods and techniques will not change very often. If
+         support for a stable method is dropped, this will be announced some
+         time before the support is actually removed. This will typically happen
+         only when a new major version is released.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2>API documentation</h2>
+
+<h3>Accessing the internal MAF objects</h3>
+<p>You can access the MAF JavaScript module using the following technique:</p>
+<p>[API status: <a href="#status-unstable">public unstable</a>]</p>
+<pre class="code"><code>// Import the Mozilla Archive Format objects
+var MafObjects = {};
+try {
+  Components.utils.import("resource://maf/modules/mafObjects.jsm", MafObjects);
+} catch (e) {
+  // If MAF is not installed, an exception is thrown.
+  // You may want to check for a more specialized exception type here.
+}</code></pre>
+<p>You can then access the MAF objects using the <tt>MafObjects</tt> variable.
+ For example:</p>
+<p>[API status: <a href="#status-internal">internal</a>]</p>
+<pre class="code"><code>// Create a new object
+var exampleObject = new MafObjects.MaffArchive();
+
+// Use a method from a singleton object
+var exampleMethodResult = MafObjects.MimeSupport.encodeQuotedPrintable("a=b");</code></pre>
+
+<h3>Adding a new file type to the save dialog</h3>
+<p>You can add a file type to the standard "Save As" dialog of Firefox using the
+ following technique:</p>
+<p>[API status: <a href="#status-unstable">public unstable</a>]</p>
+<ol>
+  <li>
+    <p>Create an overlay for
+     <tt>chrome://maf/content/integration/mafCommandsOverlay.xul</tt>.</p>
+  </li>
+  <li>
+    <p>Add code similar to the following:</p>
+    <pre class="code"><code>// Create the new save behavior object
+var newSaveBehavior = new InternalSaveBehavior();
+newSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
+  // Return the required values
+  return {title: "Display name", extensionstring: "*.ext;*.otherext"};
+}
+newSaveBehavior.mandatoryExtension = true;
+newSaveBehavior.isValidForSaveMode = function(aSaveMode) {
+  // aSaveMode is a bitmask. Return true if the filter must be
+  // displayed. Display it only if the file is a type that can
+  // be saved in an archive.
+  return aSaveMode &amp; SAVEMODE_MAFARCHIVE;
+}
+newSaveBehavior.isComplete = true;
+newSaveBehavior.getPersistObject = function(aSaveBrowsers) {
+  // saveBrowsers is an array of browser objects
+  return new MyPersistObject(aSaveBrowsers);
+}
+
+// Add the save behavior to the browser, before the one already
+//  present at index 2, assuming it is the one for saving as
+//  text only.
+gInternalSaveBehaviors.splice(2, 0, newSaveBehavior);</code></pre>
+  </li>
+  <li>
+    <p>Implement the <tt>nsIWebBrowserPersist</tt> XPCOM interface in
+     <tt>MyPersistObject</tt>. You can find an example of a JavaScript
+     implementation in the
+     <a href="http://hg.mozdev.org/maf/file/c31112db19e5/src/chrome/content/saving/mafArchivePersistObject.js">MAF
+     source code</a>.</p>
+  </li>
+</ol>
+
+</div>

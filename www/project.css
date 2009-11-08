@@ -179,6 +179,25 @@ code.maf-file-ext {
   font-weight: bold;
 }
 
+/* Code blocks */
+
+pre.code {
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: 16px;
+  margin: 0px;
+}
+
+pre.code code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  border: 1px dotted #999999;
+  margin: 0px;
+  background-color: #EEEEEE;
+  font-size: small;
+}
+
 /* Download boxes */
 
 .maf-download-box {
