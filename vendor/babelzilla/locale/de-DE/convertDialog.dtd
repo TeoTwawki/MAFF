@@ -42,6 +42,7 @@
 <!ENTITY folders.bin.folder.label "Originale in diesen Ordner verschieben:">
 <!ENTITY folders.bin.folder.accesskey "v">
 <!ENTITY folders.dest.invalid.label "Bitte den gesamten Ordnernamen angeben.">
+<!ENTITY candidates.pagelabel "Konbertierung">
 <!ENTITY candidates.description "Bitte wählen Sie aus der untenstehenden Liste die Dateien aus, die konvertiert werden sollen.">
 <!ENTITY candidates.sourcename.header "Quelldateiname">
 <!ENTITY candidates.sourcedatafoldername.header "Unterstützungsordnername">
@@ -55,6 +56,8 @@
 <!ENTITY candidates.searching.label "Nach Quelldateien wird gesucht...">
 <!ENTITY candidates.none.label "Keine konvertierbaren Dateien gefunden. $1 klicken, um die Suchparameter zu ändern.">
 <!ENTITY candidates.invalid.label "Bitte mindestens eine Datei zum Konvertieren auswählen.">
-<!ENTITY candidates.continue.label "$1 klicken um die Dateien zu konvertieren">
+<!ENTITY candidates.convert.label "Konvertieren klicken, um die Konvertierung zu starten.">
 <!ENTITY candidates.converting.label "Dateien werden konvertiert...">
 <!ENTITY candidates.finish.label "Bitte die Konversions-Resultate durchsehen und dann $1 klicken, um das Fenster zu schliessen.">
+<!ENTITY candidates.convertbutton.label "Konvertieren">
+<!ENTITY candidates.convertbutton.accesskey "K">

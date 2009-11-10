@@ -1,17 +1,35 @@
 <!ENTITY window.title "Архиви">
 <!ENTITY archives.placestitle.header "Наслов на страницата">
 <!ENTITY archives.mafarchivename.header "Име на Архивата">
+<!ENTITY archives.placesurl.header "Локација на архивата">
 <!ENTITY archives.maftitle.header "Оригинален наслов на страницата">
+<!ENTITY archives.maforiginalurl.header "Оригинална локација">
+<!ENTITY archives.mafdatearchived.header "Архивирани">
 <!ENTITY details.placestitle.label "Наслов на страницата:">
 <!ENTITY details.placestitle.accesskey "Н">
 <!ENTITY details.mafarchivename.label "Име на Архивата:">
+<!ENTITY details.mafarchivename.accesskey "м">
+<!ENTITY details.placesurl.label "Локација на архивата:">
+<!ENTITY details.placesurl.accesskey "ц">
 <!ENTITY details.maftitle.label "Оригинален наслов на страницата:">
 <!ENTITY details.maftitle.accesskey "и">
+<!ENTITY details.maforiginalurl.label "Оригинална локација:">
+<!ENTITY details.maforiginalurl.accesskey "г">
+<!ENTITY details.mafdatearchived.label "Архивирани:">
+<!ENTITY details.mafdatearchived.accesskey "х">
 <!ENTITY details.caption "Детали">
 <!ENTITY morebutton.label "Повеќе детали">
 <!ENTITY morebutton.accesskey "е">
 <!ENTITY lessbutton.label "Помалку детали">
 <!ENTITY lessbutton.accesskey "е">
 <!ENTITY openintabsbutton.label "Отвори во јазичиња">
-<!ENTITY openintabsbutton.accesskey.placesurl "О">
+<!ENTITY openintabsbutton.accesskey.placesurl "O">
 <!ENTITY openintabsbutton.accesskey.originalurl "и">
+<!ENTITY openintabsbutton.accesskey.tempuri "љ">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "а">
+<!ENTITY addbutton.label "Додај...">
+<!ENTITY addbutton.accesskey "Д">
+<!ENTITY addfilepicker.title "Додај повеќе веб архиви">
+<!ENTITY deletebutton.label "Заборави">
+<!ENTITY deletebutton.accesskey "З">
+<!ENTITY deletebutton.accesskey.placescontextmenu "З">

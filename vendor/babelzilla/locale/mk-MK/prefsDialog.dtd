@@ -16,5 +16,8 @@
 <!ENTITY menuitem.saveinarchive.label "Зачувај во архивата">
 <!ENTITY menuitem.saveinarchive.accesskey "х">
 <!ENTITY pane.advanced.label "Напредно">
+<!ENTITY temp.caption "Привремени датотеки">
+<!ENTITY temp.folder.label "Привремена папка:">
+<!ENTITY temp.folder.accesskey "П">
 <!ENTITY open.caption "Отвори">
 <!ENTITY other.caption "Други">

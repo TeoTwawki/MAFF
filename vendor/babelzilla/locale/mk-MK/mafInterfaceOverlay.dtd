@@ -1,2 +1,10 @@
+<!ENTITY archiveinfo.status.normal.label "Оваа страница не е содржана во архива.">
+<!ENTITY archiveinfo.status.archived.label "Ова е архивирана страница.">
+<!ENTITY archiveinfo.maforiginalurl.label "Зачувано од:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(не е достапно)">
+<!ENTITY archiveinfo.mafdatearchived.label "Зачувано на:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(не е достапно)">
+<!ENTITY commands.browseopenarchives.label "Прелистај ги отворените архиви...">
+<!ENTITY commands.browseopenarchives.accesskey "р">
 <!ENTITY commands.preferences.label "Параметри...">
 <!ENTITY commands.preferences.accesskey "П">

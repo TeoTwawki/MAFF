@@ -4,14 +4,16 @@
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Прелистај ги отворените архиви...">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "р">
-<!ENTITY menuitem.preferences.label "Параметри">
+<!ENTITY menuitem.convertsavedpages.label "Претвори ги зачуваните страници...">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "П">
+<!ENTITY menuitem.preferences.label "Параметри...">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "П">
-<!ENTITY menuitem.savetabsas.label "Зачувај ги јазичињата како">
+<!ENTITY menuitem.savetabsas.label "Зачувај ги јазичињата како...">
 <!ENTITY menuitem.savetabsas.accesskey.filemenu "з">
 <!ENTITY menuitem.savetabsas.accesskey.toolsmenu "з">
 <!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "з">
 <!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "з">
-<!ENTITY menuitem.savealltabsas.label "Зачувај ги сите јазичиња како">
+<!ENTITY menuitem.savealltabsas.label "Зачувај ги сите јазичиња како...">
 <!ENTITY menuitem.savealltabsas.accesskey.filemenu "З">
 <!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "З">
 <!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "г">

@@ -42,6 +42,7 @@
 <!ENTITY folders.bin.folder.label "Déplacer les originaux dans ce dossier (en préservant les chemins relatifs)">
 <!ENTITY folders.bin.folder.accesskey "M">
 <!ENTITY folders.dest.invalid.label "Merci de spécifier le nom complet de dossier.">
+<!ENTITY candidates.pagelabel "Conversion">
 <!ENTITY candidates.description "Sélectionnez les fichiers que vous souhaitez convertir dans la liste ci-dessous.">
 <!ENTITY candidates.sourcename.header "Nom du fichier source">
 <!ENTITY candidates.sourcedatafoldername.header "Nom du dossier de support">
@@ -55,6 +56,8 @@
 <!ENTITY candidates.searching.label "Recherche de fichiers source…">
 <!ENTITY candidates.none.label "Aucun fichier convertible n'a été trouvé. Pour modifier les paramètres de recherche, cliquez sur $1.">
 <!ENTITY candidates.invalid.label "Merci de sélectionner au moins un fichier à convertir">
-<!ENTITY candidates.continue.label "Cliquez sur $1 pour convertir vos fichiers.">
+<!ENTITY candidates.convert.label "Cliquez pour convertir vos fichiers">
 <!ENTITY candidates.converting.label "Conversion de vos fichiers…">
 <!ENTITY candidates.finish.label "Vérifiez les résultats de la conversion et cliquez sur $1.">
+<!ENTITY candidates.convertbutton.label "Convertir">
+<!ENTITY candidates.convertbutton.accesskey "C">

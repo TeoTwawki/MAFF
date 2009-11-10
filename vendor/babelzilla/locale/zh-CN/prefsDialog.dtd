@@ -9,6 +9,11 @@
 <!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.mhtml.compatible.label "创建与其它浏览器完全兼容的 MHTML 文件 (o)">
 <!ENTITY save.mhtml.compatible.accesskey "o">
+<!ENTITY save.namingstrategy.grouplabel "默认文件名：">
+<!ENTITY save.namingstrategy.standard.label "使用浏览器的标准命名策略(w)">
+<!ENTITY save.namingstrategy.standard.accesskey "w">
+<!ENTITY save.namingstrategy.pagetitle.label "在可能时使用页面标题作为文件名(g)">
+<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!ENTITY save.metadata.extended.label "在 MAFF 档中保存扩展元数据 (v)">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!ENTITY pane.interface.label "界面">
