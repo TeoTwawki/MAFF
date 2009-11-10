@@ -64,8 +64,8 @@
 <!ENTITY candidates.searching.label "Recherche de fichiers source…">
 <!ENTITY candidates.none.label "Aucun fichier convertible n'a été trouvé. Pour modifier les paramètres de recherche, cliquez sur $1.">
 <!ENTITY candidates.invalid.label "Merci de sélectionner au moins un fichier à convertir">
-<!ENTITY candidates.convert.label "Click Convert to convert your files.">
+<!ENTITY candidates.convert.label "Cliquez pour convertir vos fichiers">
 <!ENTITY candidates.converting.label "Conversion de vos fichiers…">
 <!ENTITY candidates.finish.label "Vérifiez les résultats de la conversion et cliquez sur $1.">
-<!ENTITY candidates.convertbutton.label "Convert">
+<!ENTITY candidates.convertbutton.label "Convertir">
 <!ENTITY candidates.convertbutton.accesskey "C">

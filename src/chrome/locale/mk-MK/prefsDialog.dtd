@@ -55,9 +55,9 @@
 <!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
 <!-- Advanced pane -->
 <!ENTITY pane.advanced.label "Напредно">
-<!ENTITY temp.caption "Temporary files">
-<!ENTITY temp.folder.label "Temporary folder:">
-<!ENTITY temp.folder.accesskey "T">
+<!ENTITY temp.caption "Привремени датотеки">
+<!ENTITY temp.folder.label "Привремена папка:">
+<!ENTITY temp.folder.accesskey "П">
 <!ENTITY temp.clearonexit.label "Clear temporary folder when browser exits">
 <!ENTITY temp.clearonexit.accesskey "C">
 <!ENTITY open.caption "Отвори">
