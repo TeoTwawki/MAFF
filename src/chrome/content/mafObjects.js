@@ -42,6 +42,10 @@ try {
    ["caching/archiveCacheObject.js",              "ArchiveCache"],
    ["caching/archiveAnnotationsObject.js",        "ArchiveAnnotations"],
 
+   // Objects for collecting and storing web resources locally
+   ["collecting/persistBundleObject.js",          "PersistBundle"],
+   ["collecting/persistResourceObject.js",        "PersistResource"],
+
    // File format conversion
    ["converting/candidateFinderObject.js",        "CandidateFinder"],
    ["converting/candidateLocationObject.js",      "CandidateLocation"],
