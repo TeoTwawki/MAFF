@@ -325,28 +325,6 @@ MafUtilServiceClass.prototype = {
   },
 
   /**
-   * Get the mime type for a URI using the MIME service
-   */
-  getMIMETypeForURI: function(url) {
-    var result = "application/octet-stream";
-    try {
-      // Create URI object from url string
-      var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-                         .getService(Components.interfaces.nsIIOService);
-      var aURI = ioService.newURI(url, null, null);
-
-      // Query MIME service
-      var mimeSvc = Components.classes["@mozilla.org/mime;1"]
-                       .getService(Components.interfaces.nsIMIMEService);
-      result = mimeSvc.getTypeFromURI(aURI);
-
-    } catch (e) {
-      // Not available, network url and offline?
-    }
-    return result;
-  },
-
-  /**
    * Mutated from same named function in contentAreaUtils.js
    */
   getDefaultFileName: function(aDefaultFileName, aDocumentURI) {

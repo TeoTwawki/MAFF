@@ -230,7 +230,7 @@ MafMhtHandler.prototype = {
     datasource.dateArchived = decoder.getHeaderValue("date") || null;
   },
 
-  createArchive: function(archivefile, sourcepath, archivepage, indexFilename, mafeventlistener) {
+  createArchive: function(archivefile, originalUriByPath, archivepage, bundle, mafeventlistener) {
     try {
 
       var encoder = new MafMhtEncoderClass(mafeventlistener);
@@ -251,37 +251,15 @@ MafMhtHandler.prototype = {
        archivepage.title || "Unknown");
       encoder.date = archivepage.dateArchived;
 
-      var indexFile = Components.classes["@mozilla.org/file/local;1"]
-                         .createInstance(Components.interfaces.nsILocalFile);
-      indexFile.initWithPath(sourcepath);
-      indexFile.append(indexFilename);
-
-      var indexFileType = MafUtils.getMIMETypeForURI(MafUtils.getURI(indexFile));
-
-      // Add the index file
-      encoder.addFile(indexFile.path, indexFileType,
-       converter.ConvertFromUnicode(archivepage.originalUrl), "");
-
-      // Find the file to original URI mapping made by Save Complete
-      var originalUriByPath = mafeventlistener.persistObject &&
-       mafeventlistener.persistObject.saveWithContentLocation &&
-       mafeventlistener.persistObject.originalUriByPath;
-
       // Use the MAF special format if required
       encoder.xmafused = !originalUriByPath;
 
-      // Add supporting files
-      var supportFilesList = this._getSupportingFilesList(sourcepath);
+      // Set the absolute content location for the index file
+      bundle.resources[0].contentLocation = converter.ConvertFromUnicode(archivepage.originalUrl);
 
-      for (var i=0; i<supportFilesList.length; i++) {
-        var entry = supportFilesList[i];
-        if (originalUriByPath && originalUriByPath[entry.filepath]) {
-          // Record the original URL in the "Content-Location" header. Note that
-          //  in rare cases, this may be equal to the original URL saved in the
-          //  "Content-Location" header for the index file.
-          entry.originalurl = originalUriByPath[entry.filepath];
-        }
-        encoder.addFile(entry.filepath, entry.type, entry.originalurl, entry.id);
+      // Add supporting files
+      for (var [, resource] in Iterator(bundle.resources)) {
+        encoder.addFile(resource.file.path, resource.mimeType, resource.contentLocation, "");
       }
 
       var f = Components.classes["@mozilla.org/file/local;1"]
@@ -291,65 +269,6 @@ MafMhtHandler.prototype = {
     } catch(e) {
       mafdebug(e);
     }
-  },
-
-
-  /**
-   * Returns an array of supporting index files
-   */
-  _getSupportingFilesList: function(sourcepath) {
-    var result = new Array();
-
-    var subDirList = new Array();
-    subDirList[subDirList.length] = ["index_files"];
-
-    var indexFilesRootURI = "";
-
-    while (subDirList.length > 0) {
-      var subDirEntry = subDirList.pop();
-
-      var oDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-      oDir.initWithPath(sourcepath);
-
-      if (indexFilesRootURI == "") {
-        indexFilesRootURI = MafUtils.getURI(oDir);
-      }
-
-      for (var i=0; i<subDirEntry.length; i++) {
-        oDir.append(subDirEntry[i]);
-      }
-
-      if (oDir.exists() && oDir.isDirectory()) {
-        var entries = oDir.directoryEntries;
-
-        while (entries.hasMoreElements()) {
-          var currFile = entries.getNext();
-          currFile.QueryInterface(Components.interfaces.nsILocalFile);
-
-          if (!currFile.isDirectory()) {
-            var resultRec = {};
-            resultRec.filepath = currFile.path;
-            resultRec.type = MafUtils.getMIMETypeForURI(MafUtils.getURI(currFile));
-            resultRec.originalurl = MafUtils.getURI(currFile);
-            resultRec.originalurl = resultRec.originalurl.substring(indexFilesRootURI.length, resultRec.originalurl.length);
-            resultRec.id = "";
-
-            result.push(resultRec);
-
-          } else {
-            var newSubDir = new Array();
-            for (var j=0; j<subDirEntry.length; j++) {
-              newSubDir[newSubDir.length] = subDirEntry[j];
-            }
-            newSubDir[newSubDir.length] = currFile.leafName;
-            subDirList[subDirList.length] = newSubDir;
-          }
-        }
-
-      }
-    }
-
-    return result;
   }
 };
 

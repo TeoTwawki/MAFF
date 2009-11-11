@@ -62,10 +62,17 @@ MhtmlArchivePage.prototype = {
    *  called, passing the error code as its first argument.
    */
   asyncSave: function(aCallbackObject) {
+    // Find the file to original URI mapping made by Save Complete, if present
+    var originalUriByPath = aCallbackObject.persistObject &&
+     aCallbackObject.persistObject.saveWithContentLocation &&
+     aCallbackObject.persistObject.originalUriByPath;
+    // Collect the support files associated with this archiving operation
+    var archiveBundle = new PersistBundle();
+    archiveBundle.scanFolder(this.tempDir, originalUriByPath);
     // Begin creating the MHTML archive asynchronously
     var mhtHandler = new MafMhtHandler();
     mhtHandler.createArchive(
-     this.archive.file.path, this.tempDir.path, this,
-     this.indexLeafName, aCallbackObject);
+     this.archive.file.path, originalUriByPath, this,
+     archiveBundle, aCallbackObject);
   }
 }

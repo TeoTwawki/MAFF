@@ -162,7 +162,7 @@ SaveCompletePersist.prototype = {
           // Call the original function
           var file = _documentLocalFile.call(scFileSaver, aUri);
           // Store the original URI before returning the file object
-          originalUriByPath[file.path] = aUri.uri.spec;
+          originalUriByPath[file.path] = aUri.uri;
           return file;
         };
         // Modify the default file saver to replace URIs in source files with
