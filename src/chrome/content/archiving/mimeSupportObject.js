@@ -185,6 +185,33 @@ var MimeSupport = {
   },
 
   /**
+   * Returns the given string of bytes encoded to "Q" encoding. For more
+   *  information, see <http://tools.ietf.org/html/rfc2047#section-4.2>
+   *  (retrieved 2009-11-12).
+   *
+   * @param aOctets   String containing the octets to be encoded. Every single
+   *                   character in this string must have a character code
+   *                   between 0 and 255.
+   */
+  encodeQ: function(aOctets) {
+    // Encode the mandatory characters, that is any non-printable character, in
+    //  addition to the space character, the underscore and the question mark.
+    return aOctets.replace(
+      /[^\x21-\x3C\x3E\x40-\x5E\x60-\x7E]/g,
+      function (aMatch) {
+        // Encode the space character as an underscore
+        if (aMatch === " ") {
+          return "_";
+        }
+        // Convert the octet to hexadecimal representation
+        var hexString = "0" + aMatch.charCodeAt(0).toString(16).toUpperCase();
+        // Consider only the last two digits of the number
+        return "=" + hexString.slice(-2);
+      }
+    );
+  },
+
+  /**
    * Returns an object having one property for each header field in the given
    *  header section. For more information on header field syntax, see
    *  <http://tools.ietf.org/html/rfc5322#section-2.2> (retrieved 2008-05-17).
@@ -216,6 +243,312 @@ var MimeSupport = {
       }
     );
     return headers;
+  },
+
+  /**
+   * Returns an "encoded word" corresponding to the specified string, encoded
+   *  using the given character set, or an empty string if the given constraints
+   *  cannot be satisfied. For more information on encoded words, see
+   *  <http://tools.ietf.org/html/rfc2047#section-2> (retrieved 2009-11-12).
+   *
+   * This function always returns encoded words using the "Q" encoding.
+   *
+   * @param aUnicodeString   String to be encoded. Any character is allowed,
+   *                          even though characters that cannot be represented
+   *                          using the specified character set may be replaced.
+   * @param aCharset         Character set to use for encoding the given string.
+   * @param aMaxLength       Maximum length of the returned encoded word,
+   *                          including all delimiters. This value must be at
+   *                          most 75 characters to achieve proper results.
+   * @param aRemainder       If the entire string in aUnicodeString does not fit
+   *                          in the allowed maximum length, the remaining
+   *                          portion is copied to the "value" property of this
+   *                          object.
+   */
+  encodeWord: function(aUnicodeString, aCharset, aMaxLength, aRemainder) {
+    // Initialize a converter for the specified charset
+    var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
+     createInstance(Ci.nsIScriptableUnicodeConverter);
+    converter.charset = aCharset;
+    // Set the value that will be returned if even a single character cannot be
+    //  encoded while satisfying the given constraint on the maximum length
+    var lastEncodedWord = "";
+    // Add one character at a time until the specified limit is reached
+    for (var tryLength = 1; tryLength <= aUnicodeString.length; tryLength++) {
+      // Attempt to encode the initial portion of the string
+      var tryString = aUnicodeString.slice(0, tryLength);
+      // Convert the characters to octets using the specified charset. Values
+      //  that cannot be represented are replaced with a question mark ("?").
+      var octets = converter.ConvertFromUnicode(tryString) + converter.Finish();
+      // Build the entire encoded word using the "Q" encoding
+      var encodedWord = "=?" + aCharset + "?Q?" + MimeSupport.encodeQ(octets) +
+       "?=";
+      // If the limit of characters to be returned is exceeded
+      if (encodedWord.length > aMaxLength) {
+        // Return the encoded word and the remainder from the previous attempt
+        break;
+      }
+      // Store the successfully encoded word for later
+      lastEncodedWord = encodedWord;
+    }
+    // Return the values from the last successful encoding attempt
+    aRemainder.value = aUnicodeString.slice(tryLength - 1);
+    return lastEncodedWord;
+  },
+
+  /**
+   * Returns an ASCII string that can be used for the encoded value of an
+   *  unstructured header field, with header folding already applied. For more
+   *  information, see <http://tools.ietf.org/html/rfc5322#section-2.2.1>
+   *  (retrieved 2009-11-12).
+   *
+   * This function does not encode words made entirely of printable ASCII
+   *  characters, and attempts to create "encoded words" with the specified
+   *  character set in other cases. For more information on encoded words, see
+   *  <http://tools.ietf.org/html/rfc2047#section-2> (retrieved 2009-11-12).
+   *  For more information on how the character set should be selected, see
+   *  <http://tools.ietf.org/html/rfc2047#section-3> (retrieved 2009-11-12).
+   *
+   * This function does not ensure that character sets that use code-switching
+   *  techniques are handled correctly according to section 3 of RFC 2047.
+   *
+   * The text lines generated by this function are limited to 76 characters,
+   *  excluding the CRLF line ending, even if no encoded words are created. The
+   *  first line may be shorter, based on the aFoldingCount parameter.
+   *
+   * @param aUnicodeString   String to be encoded. Any character is allowed,
+   *                          even though characters that cannot be represented
+   *                          using the specified character set may be replaced.
+   * @param aCharset         Character set to use for encoded words.
+   * @param aFoldingCount    Number of characters to subtract from the maximum
+   *                          line length for the first line of returned text.
+   *                          This value must be at least 1 character to achieve
+   *                          proper results.
+   */
+  buildUnstructuredValue: function(aUnicodeString, aCharset, aFoldingCount) {
+    // Define the absolute maximum limit on the length of the line
+    const maxLineLimit = 76;
+    // Initialize the length limit for the first line
+    var lineLimit = maxLineLimit - aFoldingCount;
+
+    // Initialize the line-based output buffers
+    var resultLines = ""; // ASCII output buffer with completed lines
+    var lineStart = "";   // ASCII initial line part, may be empty at first
+    var wordMiddle = "";  // Unicode source string for the middle of the line
+    var lineMiddle = "";  // ASCII encoded word in the middle of the line
+    var lineEnd = "";     // ASCII part at the end of the line
+
+    // Define a function to apply header folding to the output buffer
+    var fold = function() {
+      // Concatenate the current line to the output buffer
+      resultLines += lineStart + lineMiddle + lineEnd + "\r\n";
+      // Reset the character count limit for the next line
+      lineLimit = maxLineLimit;
+      // Reset the buffer for the current line
+      lineStart = "";
+      wordMiddle = "";
+      lineMiddle = "";
+      lineEnd = "";
+    };
+
+    // Process individual words separated by whitespace
+    aUnicodeString.replace(
+      /*
+       * The regular expression below is composed of the following parts:
+       *
+       * aWhitespace   ( [\t ]* )
+       *
+       * Optional whitespace before the word to be encoded.
+       *
+       * aWord   ( [^\t ]*([\t ]+$)? )
+       *
+       * The word that will be examined to determine if it should be encoded.
+       *  This word includes trailing whitespace at the end of the string.
+       *
+       * aTrailingWhitespace   ( [\t ]+$ )
+       *
+       * Trailing whitespace at the end of the string, if present. Whitespace
+       *  between words is included in aWhitespace instead.
+       */
+      /([\t ]*)([^\t ]*([\t ]+$)?)/g,
+      function(aAll, aWhitespace, aWord, aTrailingWhitespace) {
+        // Prepare the variables required to handle all the variants of the
+        //  encoding strategy for the current word
+        var whitespace = aWhitespace;
+        var wordToEncode = aWord;
+        var encodedWord;
+        var remainder = {};
+        var mustFold = false;
+        var outputReady = false;
+
+        // The aWord parameter may be empty only if the string is made entirely
+        //  of whitespace, or in the last iteration of the replace function
+        if (!aWord) {
+          if (!aWhitespace) {
+            // This is the last iteration of the function, no action is needed
+            return;
+          }
+          // Encode only the whitespace instead of a word
+          whitespace = "";
+          wordToEncode = aWhitespace;
+        } else {
+          // Determine if the current word must be encoded, because it:
+          //  - Contains non-ASCII characters or unprintable characters
+          //  - Is the last word and contains trailing whitespace
+          //  - Can't fit on a single line, including preceding whitespace
+          //  - Can't fit on the first line, and isn't preceded by whitespace
+          //  - Begins and ends with reserved character sequences
+          var mustEncode = !/^[\x20-\x7E]+$/.test(aWord) ||
+           aTrailingWhitespace ||
+           aAll.length > maxLineLimit ||
+           (!whitespace && aWord.length > lineLimit) ||
+           (aWord.slice(0, 2) === "=?" && aWord.slice(-2) === "?=");
+
+          // If the word doesn't need encoding
+          if (!mustEncode) {
+            // Fold the initial whitespace if there is not enough room
+            if ((lineStart + lineMiddle + lineEnd + aAll).length > lineLimit) {
+              fold();
+            }
+            // If no encoded words are present on this line yet, add the plain
+            //  word to the initial portion of the line, otherwise add it to the
+            //  end. Words at the end may be absorbed by the encoded word later.
+            if (!lineMiddle) {
+              lineStart += aAll;
+            } else {
+              lineEnd += aAll;
+            }
+            // Continue with the next input word
+            return;
+          }
+        }
+
+        // If another encoded word is already present on the same output line,
+        //  and both words encoded together fit on the line, it's generally more
+        //  efficient to encode both words together, including any unencoded
+        //  word in the middle, to avoid the overhead of a separate character
+        //  set and encoding declaration on the same or on the next line.
+        if (lineMiddle) {
+          // Compute the new encoded word. The length limit is at maximum 75
+          //  characters, since lineStart contains at least one character.
+          encodedWord = MimeSupport.encodeWord(wordMiddle + lineEnd + aAll,
+           aCharset, lineLimit - lineStart.length, remainder);
+          // If the new encoded word does fit on the current line
+          if (!remainder.value) {
+            // Modify the current output
+            whitespace = "";
+            wordToEncode = wordMiddle + lineEnd + aAll;
+            // Output for the current line is ready
+            outputReady = true;
+          }
+        } else if (whitespace) {
+          // If no other encoded word is present, check if the encoded word
+          //  alone fits entirely on the current line, without encoding the
+          //  preceding whitespace. The length limit is at maximum 75
+          //  characters, since whitespace contains at least one character.
+          encodedWord = MimeSupport.encodeWord(wordToEncode, aCharset,
+           lineLimit - lineStart.length - whitespace.length, remainder);
+          // If the new encoded word does fit on the current line
+          if (!remainder.value) {
+            // Output for the current line is ready
+            outputReady = true;
+          }
+        }
+
+        // At this point, we can check if the encoded word alone fits entirely
+        //  on the next line, without encoding the preceding whitespace. This
+        //  operation can be done only if the preceding output word is not
+        //  encoded, and cannot be done on the first input word if not preceded
+        //  by whitespace.
+        if (!outputReady && (!lineMiddle || lineEnd) && whitespace) {
+          // Compute the new encoded word. The length limit is at most 75
+          //  characters, since whitespace contains at least one character.
+          encodedWord = MimeSupport.encodeWord(wordToEncode, aCharset,
+           maxLineLimit - whitespace.length, remainder);
+          // If the new encoded word fits entirely on the next line, or if it
+          //  fits partially but an encoded word is not present on this line
+          if (!remainder.value || (encodedWord && !lineMiddle)) {
+            // Terminate the current line
+            fold();
+            // Output for the next line is ready, including the remainder for
+            //  the following line, if present
+            outputReady = true;
+          }
+        }
+
+        // Unless the attempt to place the word on the next line succeeded, now
+        //  we know that we must necessarily encode the word starting from the
+        //  current line, wrapping it exactly when it reaches the end of the
+        //  available line space.
+        if (!outputReady) {
+          // If another encoded word is present on the same line, we must
+          //  concatenate it to the current word before starting, and encode
+          //  all the whitespace in-between. Moreover, at this point, we must
+          //  always encode the preceding whitespace, if present, if this is
+          //  the first word of the entire encoding process.
+          if (lineMiddle || !lineStart) {
+            // Concatenate all the available data
+            whitespace = "";
+            wordToEncode = wordMiddle + lineEnd + aAll;
+          } else {
+            // We may have to fold the initial whitespace, if present, but we
+            //  must encode all of it except the first character, since there
+            //  may be enough input whitespace to span multiple lines.
+            wordToEncode = whitespace.slice(1) + wordToEncode;
+            whitespace = whitespace.slice(0, 1);
+          }
+        }
+
+        // If a word is ready to be encoded on the current line or on the next
+        while (wordToEncode) {
+          // At the first iteration, we may encode the initial part of the word
+          //  on the current line, if enough space is present. On subsequent
+          //  iterations, if other portions of the same word are still present,
+          //  the current line usually contains an encoded word until its end,
+          //  and the encoding of the remaining portion must necessarily be done
+          //  on the next line.
+          if (mustFold) {
+            // Send the line with the encoded word to the output buffer
+            fold();
+            lineStart = whitespace;
+            whitespace = "";
+          }
+          // If output hasn't been already prepared outside of the loop
+          if (!outputReady) {
+            // Compute the new encoded word. The length limit is at most 75
+            //  characters, since lineStart contains at least one character,
+            //  except on the first line where lineLimit is always less than
+            //  and never equal to maxLineLimit.
+            encodedWord = MimeSupport.encodeWord(wordToEncode, aCharset,
+             lineLimit - lineStart.length - whitespace.length, remainder);
+            // If the word does not fit on the current line
+            if (!encodedWord) {
+              // If the current line has its maximum length, or we cannot fold
+              //  the encoded word on the next line since there is no whitespace
+              if (mustFold || !whitespace) {
+                throw new Components.Exception(
+                 "Unable to encode the input string in the available space.");
+              }
+              // Retry on the next line
+              mustFold = true;
+              continue;
+            }
+          }
+          // Add the encoded output to the current line
+          lineStart += whitespace;
+          wordMiddle = wordToEncode;
+          lineMiddle = encodedWord;
+          lineEnd = "";
+          // Prepare the word to be encoded on the next iteration, if present
+          wordToEncode = remainder.value;
+          whitespace = " ";
+          mustFold = true;
+          outputReady = false;
+        }
+      }
+    );
+    // Return the generated lines
+    return resultLines + lineStart + lineMiddle + lineEnd;
   },
 
   /**
