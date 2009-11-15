@@ -69,10 +69,169 @@ MhtmlArchivePage.prototype = {
     // Collect the support files associated with this archiving operation
     var archiveBundle = new PersistBundle();
     archiveBundle.scanFolder(this.tempDir, originalUriByPath);
-    // Begin creating the MHTML archive asynchronously
-    var mhtHandler = new MafMhtHandler();
-    mhtHandler.createArchive(
-     this.archive.file.path, originalUriByPath, this,
-     archiveBundle, aCallbackObject);
+    // Build a standard or MAF-specific MHTML message from the collected files
+    var mhtmlMessage = this._buildMessage(archiveBundle, !originalUriByPath);
+    // Write the MHTML archive to disk
+    this._writeArchive(mhtmlMessage.text);
+    // Notify that the archiving operation is completed
+    aCallbackObject.onArchivingComplete(0);
+  },
+
+  // --- Private methods and properties ---
+
+  /**
+   * Returns a MimePart object containing the entire encoded MHMTL message
+   *  corresponding to the given resources.
+   *
+   * @param aPersistBundle   The resources to encode as a MIME message.
+   * @param aUseMafVariant   True if the resources have been prepared without
+   *                          using MHTML-compatible content locations. If true,
+   *                          the "Content-Location" and "Subject" headers will
+   *                          be compatible with the Mozilla Archive Format
+   *                          extension, but not with other browsers.
+   */
+  _buildMessage: function(aPersistBundle, aUseMafVariant) {
+    // Identify the root resource in the given bundle
+    var rootResource = aPersistBundle.resources[0];
+
+    // When saving an archived page, the content location to use may be
+    //  different from the one the root resource was currently saved from
+    if (this.originalUrl) {
+      // Set the new content location. Since this value may have been copied
+      //  from the metadata of another page, the resulting content location may
+      //  not be a valid absolute or relative URL. As a basic validation, ensure
+      //  at least that the new value contains printable ASCII characters only.
+      rootResource.contentLocation = this.originalUrl.
+       replace(/[^\x20-\x7E]+/g, "_");
+    }
+
+    // Create a new MIME message with normal or multipart content type
+    var isMultipart = (aPersistBundle.resources.length > 1);
+    var mimeMessage = new (isMultipart ? MultipartMimePart : MimePart)();
+
+    // Add the general message headers
+    mimeMessage.addRawHeader("From", this._getRawFromHeaderValue());
+    if (aUseMafVariant) {
+      // Add the custom version of the "Subject" header
+      mimeMessage.addRawHeader("Subject",
+       this._getRawMafSubjectHeaderValue(this.title || "Unknown"));
+    } else {
+      // Add the "Subject" header with the proper encoding
+      mimeMessage.addUnstructuredHeader("Subject", this.title || "");
+    }
+    if (this.dateArchived) {
+      mimeMessage.addRawHeader("Date", this.dateArchived);
+    }
+    mimeMessage.addRawHeader("MIME-Version", "1.0");
+
+    // Add the content headers and the actual content
+    if (isMultipart) {
+      // Add the content headers for the multipart type
+      mimeMessage.addRawHeader("Content-Type",
+       'multipart/related;\r\n\t' +
+       'type="' + rootResource.mimeType + '";\r\n\t' +
+       'boundary="' + mimeMessage.boundary + '"');
+      // Add the content parts with their own content headers
+      for (var [, resource] in Iterator(aPersistBundle.resources)) {
+        var childPart = new MimePart();
+        this._setMimePartContent(childPart, resource);
+        mimeMessage.parts.push(childPart);
+      }
+    } else {
+      // Add the content headers and the content to the message
+      this._setMimePartContent(mimeMessage, rootResource);
+    }
+
+    // If the MAF variant of the MHTML format is used, the "X-MAF" message
+    //  header must be present to inform the recipient that content locations
+    //  must be interpreted as relative to the root folder. For compatible MHTML
+    //  files, instead, the "X-MAF" header must not be present, and in this case
+    //  the "X-MAF-Information" header is added to store the version of MAF used
+    //  for saving, that may be needed to help with decoding in the future. This
+    //  version of MAF never includes the "X-MAF-Version" header, that indicates
+    //  that the content locations conform to the original specification, but
+    //  the "Subject" header is encoded on a single line using UTF-8.
+    var mafHeaderName = aUseMafVariant ? "X-MAF" : "X-MAF-Information";
+    mimeMessage.addRawHeader(mafHeaderName, this._getRawVersionHeaderValue());
+
+    // Return the newly built message
+    return mimeMessage;
+  },
+
+  /**
+   * Returns the encoded string to be used in the "From" header of saved files.
+   */
+  _getRawFromHeaderValue: function() {
+    // Get the source object for the browser's version information
+    var nav = Cc["@mozilla.org/appshell/appShellService;1"].
+     getService(Ci.nsIAppShellService).hiddenDOMWindow.navigator;
+    // Return the version information, assuming it is compatible with the
+    //  encoding required for the structured "From" header
+    return "<Saved by " + nav.appCodeName + " " + nav.appVersion + ">";
+  },
+
+  /**
+   * Returns the encoded string to be used in the version header of saved files.
+   */
+  _getRawVersionHeaderValue: function() {
+    // Get the object with the version information of Mozilla Archive Format
+    var extUpdateInfo = Cc["@mozilla.org/extensions/manager;1"]
+     .getService(Ci.nsIExtensionManager)
+     .getItemForID("{7f57cf46-4467-4c2d-adfa-0cba7c507e54}");
+    // Return the version information, which contains ASCII characters only
+    return "Produced By MAF V" + extUpdateInfo.version;
+  },
+
+  /**
+   * Returns the string to be used in the "Subject" header when building the
+   *  variant of MHTML that is not fully compatible with other browsers.
+   */
+  _getRawMafSubjectHeaderValue: function(aSubject) {
+    // Initialize the UTF-8 converter for the subject line
+    var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
+     createInstance(Ci.nsIScriptableUnicodeConverter);
+    converter.charset = "UTF-8";
+    // Build the subject as a single line of characters
+    return (converter.ConvertFromUnicode(aSubject) + converter.Finish()).
+     replace(/[\r\n]+/g, "");
+  },
+
+  /**
+   * Adds to the given MIME part the body of the given resource, as well as the
+   *  relevant headers describing it. The resource must have a MIME type and a
+   *  content location set.
+   */
+  _setMimePartContent: function(aMimePart, aResource) {
+    // Add the content type header first
+    aMimePart.addRawHeader("Content-Type", aResource.mimeType);
+    // Select the appropriate encoding for the body based on the MIME type
+    var encoding = ["text/html", "application/xhtml+xml", "image/svg+xml",
+     "text/xml", "application/xml", "text/css", "text/javascript",
+     "application/x-javascript"].indexOf(aResource.mimeType) >= 0 ?
+     "quoted-printable" : "base64";
+    aMimePart.addRawHeader("Content-Transfer-Encoding", encoding);
+    // Add the content location header
+    aMimePart.addRawHeader("Content-Location", aResource.contentLocation);
+    // Set the body of the MIME part, using the selected encoding
+    aMimePart.contentTransferEncoding = encoding;
+    aMimePart.body = aResource.body;
+  },
+
+  /**
+   * Saves the given text in the current archive file.
+   */
+  _writeArchive: function(aContents) {
+    // Create and initialize an output stream to write to the archive file
+    var outputStream = Cc["@mozilla.org/network/file-output-stream;1"].
+     createInstance(Ci.nsIFileOutputStream);
+    outputStream.init(this.archive.file, -1, -1, 0);
+    try {
+      // Write the entire file to disk at once. If the content to be written is
+      //  4 GiB or more in size, an exception will be raised.
+      outputStream.write(aContents, aContents.length);
+    } finally {
+      // Close the underlying stream
+      outputStream.close();
+    }
   }
 }

@@ -34,7 +34,9 @@ try {
    ["archiving/maffDataSourceObject.js",          "MaffDataSource"],
    ["archiving/mhtmlArchiveObject.js",            "MhtmlArchive"],
    ["archiving/mhtmlArchivePageObject.js",        "MhtmlArchivePage"],
+   ["archiving/mimePartObject.js",                "MimePart"],
    ["archiving/mimeSupportObject.js",             "MimeSupport"],
+   ["archiving/multipartMimePartObject.js",       "MultipartMimePart"],
    ["archiving/zipCreatorObject.js",              "ZipCreator"],
    ["archiving/zipDirectoryObject.js",            "ZipDirectory"],
 
@@ -61,7 +63,6 @@ try {
 
    // Original MAF JavaScript infrastructure
    ["jscomponents/nsMafMhtDecoder.js",            "MafMhtDecoderClass"],
-   ["jscomponents/nsMafMhtEncoder.js",            "MafMhtEncoderClass"],
    ["jscomponents/nsMafMhtHandler.js",            "MafMhtHandler"],
    ["jscomponents/nsMafUtil.js",                  "MafUtils"],
 

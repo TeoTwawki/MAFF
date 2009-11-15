@@ -228,47 +228,6 @@ MafMhtHandler.prototype = {
        decoder.getHeaderValue("subject")) || "Unknown";
     }
     datasource.dateArchived = decoder.getHeaderValue("date") || null;
-  },
-
-  createArchive: function(archivefile, originalUriByPath, archivepage, bundle, mafeventlistener) {
-    try {
-
-      var encoder = new MafMhtEncoderClass(mafeventlistener);
-
-      var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
-       createInstance(Ci.nsIScriptableUnicodeConverter);
-      converter.charset = "UTF-8";
-
-      // Get hidden window
-      var appShell = Components.classes["@mozilla.org/appshell/appShellService;1"]
-                        .getService(Components.interfaces.nsIAppShellService);
-      var hiddenWnd = appShell.hiddenDOMWindow;
-
-      var navigator = hiddenWnd.navigator;
-
-      encoder.from = "<Saved by " + navigator.appCodeName + " " + navigator.appVersion + ">";
-      encoder.subject = converter.ConvertFromUnicode(
-       archivepage.title || "Unknown");
-      encoder.date = archivepage.dateArchived;
-
-      // Use the MAF special format if required
-      encoder.xmafused = !originalUriByPath;
-
-      // Set the absolute content location for the index file
-      bundle.resources[0].contentLocation = converter.ConvertFromUnicode(archivepage.originalUrl);
-
-      // Add supporting files
-      for (var [, resource] in Iterator(bundle.resources)) {
-        encoder.addFile(resource.file.path, resource.mimeType, resource.contentLocation, "");
-      }
-
-      var f = Components.classes["@mozilla.org/file/local;1"]
-                 .createInstance(Components.interfaces.nsILocalFile);
-      f.initWithPath(archivefile);
-      encoder.encodeTo(f);
-    } catch(e) {
-      mafdebug(e);
-    }
   }
 };
 

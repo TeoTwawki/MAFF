@@ -47,6 +47,11 @@ PersistResource.prototype = {
   // --- Public methods and properties ---
 
   /**
+   * Raw octets with the contents of the web resource.
+   */
+  body: "",
+
+  /**
    * nsIFile object containing the local copy of the web resource.
    */
   file: null,
@@ -85,6 +90,38 @@ PersistResource.prototype = {
     } catch (e) {
       // In case the MIME type cannot be determined, use a binary file type
       this.mimeType = "application/octet-stream";
+    }
+    // Read the binary contents from the local file
+    this._readBodyFromFile();
+  },
+
+  // --- Private methods and properties ---
+
+  /**
+   * Populates the body with the contents read from the local file.
+   */
+  _readBodyFromFile: function() {
+    // Create and initialize an input stream to read from the local file
+    var inputStream = Cc["@mozilla.org/network/file-input-stream;1"].
+     createInstance(Ci.nsIFileInputStream);
+    inputStream.init(this.file, -1, 0, 0);
+    try {
+      // Create and initialize a scriptable binary stream reader
+      var binInputStream = Cc["@mozilla.org/binaryinputstream;1"].
+       createInstance(Ci.nsIBinaryInputStream);
+      binInputStream.setInputStream(inputStream);
+      try {
+        // Read the entire file and store the contents in the body property. If
+        //  the file is 4 GiB or more in size, an exception will be raised.
+        this.body = binInputStream.readBytes(this.file.fileSize);
+      } finally {
+        // Close the binary stream before returning or in case of exception
+        binInputStream.close();
+      }
+    } finally {
+      // Close the underlying stream. This instruction has no effect if the
+      //  binary stream has been already closed successfully.
+      inputStream.close();
     }
   }
 }
