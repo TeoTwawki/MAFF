@@ -32,45 +32,6 @@ function MafUtilServiceClass() {
 }
 
 MafUtilServiceClass.prototype = {
-
-  /**
-   * Cross platform append
-   */
-  appendToDir: function(initialDirectory, subDirectory) {
-    var result = initialDirectory;
-    try {
-      var dir = Components.classes["@mozilla.org/file/local;1"]
-                   .createInstance(Components.interfaces.nsILocalFile);
-      dir.initWithPath(initialDirectory);
-      dir.append(subDirectory);
-      result = dir.path;
-    } catch(e) {
-
-    }
-    return result;
-  },
-
-  /**
-   * Create directory
-   */
-  createDir: function(dirToCreate) {
-    var dir = null;
-    try {
-      dir = Components.classes["@mozilla.org/file/local;1"]
-              .createInstance(Components.interfaces.nsILocalFile);
-      dir.initWithPath(dirToCreate);
-
-      // Make the directory!!!
-      if (!dir.exists()) {
-        dir.create(0x01, 0777);
-      }
-    } catch (e) {
-
-    }
-    return dir;
-  },
-
-
   /**
    * Create file
    */
@@ -112,48 +73,6 @@ MafUtilServiceClass.prototype = {
 
     }
   },
-
-  /**
-   * Based on the suggested filename, new file names are created so as
-   * not to overwite existing ones.
-   * Code from contentUtils.js
-   */
-  getUniqueFilename: function(destDir, suggestedFilename) {
-    var dir = null;
-    try {
-      dir = Components.classes["@mozilla.org/file/local;1"]
-              .createInstance(Components.interfaces.nsILocalFile);
-      dir.initWithPath(destDir);
-    } catch (e) {
-
-    }
-
-    var file;
-
-    dir.append(suggestedFilename);
-    file = dir;
-
-    while (file.exists()) {
-      var parts = /.+-(\d+)(\..*)?$/.exec(file.leafName);
-      if (parts) {
-        file.leafName = file.leafName.replace(/((\d+)(\.|$))/,
-                                              function (str, p1, part, s) {
-                                                return (parseInt(part) + 1) + ".";
-                                              });
-      }
-      else {
-        if (file.leafName.indexOf(".") >= 0) {
-          file.leafName = file.leafName.replace(/\./, "-1$&");
-        } else {
-          file.leafName = file.leafName + "-1";
-        }
-      }
-    }
-
-
-    return file.leafName;
-  },
-
 
   /**
    * Based on the suggested filename, new file names are created so as
@@ -211,42 +130,6 @@ MafUtilServiceClass.prototype = {
     return str;
   },
 
-
-  /**
-   * Read the contents of a file as bytes
-   */
-  readBinaryFile: function(str_Filename) {
-    try {
-      var obj_File = Components.classes["@mozilla.org/file/local;1"]
-                        .createInstance(Components.interfaces.nsILocalFile);
-      obj_File.initWithPath(str_Filename);
-
-      var obj_InputStream = Components.classes["@mozilla.org/network/file-input-stream;1"]
-                               .createInstance(Components.interfaces.nsIFileInputStream);
-      obj_InputStream.init(obj_File, 0x01, 0444, null);
-
-      var obj_BinaryIO = Components.classes["@mozilla.org/binaryinputstream;1"]
-                            .createInstance(Components.interfaces.nsIBinaryInputStream);
-
-      obj_BinaryIO.setInputStream(obj_InputStream);
-    } catch (e) {
-      mafdebug(e);
-    }
-
-    try {
-      //var str = obj_BinaryIO.readBytes(obj_File.fileSize);
-
-      var str = obj_BinaryIO.readByteArray(obj_File.fileSize);
-
-    } catch (e) {
-      mafdebug(e);
-    }
-    obj_BinaryIO.close();
-    obj_InputStream.close();
-
-    return str;
-  },
-
   /**
    * Get the URL of the local file specified.
    */
@@ -265,28 +148,6 @@ MafUtilServiceClass.prototype = {
                    .createInstance(Components.interfaces.nsILocalFile);
     oFile.initWithPath(filename);
     return this.getURI(oFile.nsIFile);
-  },
-
-  /**
-   * Returns the number of open windows
-   */
-  getNumberOfOpenWindows: function() {
-    var numberOfOpenWindows = 0;
-
-    try {
-      var wmI = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                   .getService(Components.interfaces.nsIWindowMediator);
-      var entries = wmI.getEnumerator(null);
-
-      while (entries.hasMoreElements()) {
-        currWindow = entries.getNext();
-        numberOfOpenWindows++;
-      }
-    } catch (e) {
-      mafdebug(e);
-    }
-
-    return numberOfOpenWindows;
   },
 
   /**
@@ -322,52 +183,6 @@ MafUtilServiceClass.prototype = {
 
     }
     return resultString;
-  },
-
-  /**
-   * Mutated from same named function in contentAreaUtils.js
-   */
-  getDefaultFileName: function(aDefaultFileName, aDocumentURI) {
-    try {
-      var url = aDocumentURI.QueryInterface(Components.interfaces.nsIURL);
-        if (url.fileName != "") {
-          // Use the actual file name, if present
-          return this.validateFileName(url.fileName);
-        }
-    } catch (e) {
-       
-    }
-
-    if (aDefaultFileName) {
-      // Use the caller-provided name, if any
-      return this.validateFileName(aDefaultFileName);
-    }
-
-    try {
-      if (aDocumentURI.host) {
-        // Use the host.
-        return aDocumentURI.host;
-      }
-    } catch (e) {
-      // Some files have no information at all, like Javascript generated pages
-    }
-
-    // If all else fails, use "index"
-    return "index";
-  },
-
-  getExtensionByType: function(contentType) {
-    var result = ""; // By default, unknown
-    try {
-      result = "." + Components.classes["@mozilla.org/mime;1"]
-                        .getService(Components.interfaces.nsIMIMEService)
-                        .getPrimaryExtension(contentType, "");
-
-      if (result.toLowerCase() == ".bin") { result = ""; }
-    } catch(e) {
-      mafdebug(e);
-    }
-    return result;
   }
 };
 
@@ -427,8 +242,4 @@ var Maf_String_replaceAll = function(x, needle, newneedle) {
 
 var Maf_String_startsWith = function(x, needle) {
   return (x.substring(0, needle.length) == needle);
-};
-
-var Maf_String_endsWith = function(x, needle) {
-  return (x.substring(x.length - needle.length, x.length) == needle);
 };
