@@ -36,9 +36,6 @@ MafMhtHandler.prototype = {
   extractArchive: function(archivefile, destpath, datasource) {
     var end;
 
-    // MafUtil service - Create destpath
-    MafUtils.createDir(destpath);
-
     try {
 
       var decoder = new MafMhtDecoderClass();
@@ -69,12 +66,6 @@ MafMhtHandler.prototype = {
 
     // If there is more than one part, we have supporting files.
     if (decoder.noOfParts() > 1) {
-
-      var index_filesDir = MafUtils.appendToDir(destpath, "index_files");
-
-      // Create index_files
-      MafUtils.createDir(index_filesDir);
-
       multipartDecodeList.push(decoder);
     }
 
@@ -124,7 +115,7 @@ MafMhtHandler.prototype = {
             if (thisPart.noOfParts() > 1) {
               multipartDecodeList.push(thisPart);
             } else {
-              var thisContentHandler = new extractContentHandlerClass(index_filesDir, state, datasource, false, this);
+              var thisContentHandler = new extractContentHandlerClass(destpath, state, datasource, false, this);
               thisPart.getContent(thisContentHandler);
             }
           } catch(e) {
@@ -259,82 +250,39 @@ function extractContentHandlerClass(destpath, state, datasource, isindex, handle
 extractContentHandlerClass.prototype = {
 
   onContentStart: function(contentType, contentId, contentLocation, relativeContentLocation) {
-    this.destPathWithFolder = this.destpath;
+    var dir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+    dir.initWithPath(this.destpath);
 
     var extensionType = "";
+    contentType = contentType.replace(/\s*;.*/, "").toLowerCase();
+    if (!contentType) {
+      contentType = this.isindex ? "text/html" : "application/octet-stream";
+    }
+    resource = new PersistResource();
+    resource.mimeType = contentType;
+    resource.contentLocation = this.isindex ? "index" : contentLocation;
+    if (!this.state.folder) {
+      this.state.folder = new PersistFolder(dir);
+    }
+    this.state.folder.addUnique(resource);
+    this.destfile = resource.file.path;
     if (this.isindex) {
-      if (contentType != "") { // If there's a type use it
-        extensionType = MafUtils.getExtensionByType(contentType);
-        // If the service has no idea what the extension should be
-        if (extensionType == "") {
-          // Assume html
-          extensionType = ".html";
-        }
-        this.filename = "index" + extensionType;
-      } else { // Otherwise assume it's html
-        this.filename = "index.html";
-        extensionType = ".html";
-      }
-      this.datasource.indexLeafName = this.filename;
+      this.datasource.indexLeafName = resource.file.leafName;
       this.datasource.originalUrl = contentLocation || "Unknown";
     } else {
-      // We need to generate a filename
-
-      // If we have a contentLocation, base it on that
-      if (contentLocation != "") {
-        var url = Components.classes["@mozilla.org/network/standard-url;1"]
-                     .createInstance(Components.interfaces.nsIURL);
-        url.spec = contentLocation;
-
-        var relativeIndexFilesUsed = false;
-
-        if (Maf_String_startsWith(relativeContentLocation, "index_files/")) {
-          relativeContentLocation = relativeContentLocation.substring("index_files/".length,
-                                    relativeContentLocation.length);
-          relativeIndexFilesUsed = true;
+      if (Maf_String_startsWith(relativeContentLocation, "index_files/")) {
+        var ioService = Cc["@mozilla.org/network/io-service;1"].
+         getService(Ci.nsIIOService);
+        var folderUri = ioService.newFileURI(dir).QueryInterface(Ci.nsIURL);
+        var fileUrl = ioService.newURI(relativeContentLocation, null, folderUri);
+        // The following function checks whether fileUrl is located under the
+        //  folder represented by folderUri
+        if (folderUri.getCommonBaseSpec(fileUrl) !== folderUri.spec) {
+          throw new Components.Exception("Invalid relative content location");
         }
-
-
-        var defaultFilename = MafUtils.getDefaultFileName("", url);
-
-        if (relativeIndexFilesUsed) {
-          var subFolders = relativeContentLocation;
-
-          var subDir = this.destPathWithFolder;
-
-          while (subFolders.indexOf("/") > -1) {
-            var subFolder = subFolders.substring(0, subFolders.indexOf("/"));
-            subFolders = subFolders.substring(subFolders.indexOf("/") + 1, subFolders.length);
-
-            subDir = MafUtils.appendToDir(subDir, subFolder);
-            MafUtils.createDir(subDir);
-          }
-
-          this.destPathWithFolder = subDir;
-
-          defaultFilename = subFolders;
-        }
-
-        // If there's no extension, add one based on type
-        if (defaultFilename.indexOf(".") == -1) {
-          extensionType = MafUtils.getExtensionByType(contentType);
-          defaultFilename += extensionType;
-        } else {
-          extensionType = defaultFilename.substring(defaultFilename.lastIndexOf("."),
-                            defaultFilename.length).toLowerCase();
-        }
-
-        this.filename = MafUtils.getUniqueFilename(this.destPathWithFolder, defaultFilename);
-
-      } else {
-        // Otherwise base it on the content type
-        extensionType = MafUtils.getExtensionByType(contentType);
-        this.filename = MafUtils.getUniqueFilename(this.destPathWithFolder,
-                            "index" + extensionType);
+        this.destfile = fileUrl.QueryInterface(Ci.nsIFileURL).file.path;
       }
     }
-
-    this.destfile = MafUtils.appendToDir(this.destPathWithFolder, this.filename);
 
     // In framed pages the content type may be application/octet-stream instead of
     // text/html. To cater for this assume the MIME service is working and has
