@@ -46,6 +46,7 @@ try {
 
    // Objects for collecting and storing web resources locally
    ["collecting/persistBundleObject.js",          "PersistBundle"],
+   ["collecting/persistFolderObject.js",          "PersistFolder"],
    ["collecting/persistResourceObject.js",        "PersistResource"],
 
    // File format conversion
