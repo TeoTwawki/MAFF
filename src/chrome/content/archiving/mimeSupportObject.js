@@ -212,6 +212,23 @@ var MimeSupport = {
   },
 
   /**
+   * Returns a string containing the sequence of octets decoded from the given
+   *  percent-encoded ASCII string. This function always decodes the entire
+   *  range of byte values, and never applies character set conversions.
+   *
+   * If the input string contains invalid characters or sequences, they are
+   *  propagated to the output without errors.
+   */
+  decodePercent: function(aAsciiString) {
+    return aAsciiString.replace(
+      /%([A-Fa-f0-9]{2})/g,
+      function(aAll, aEncodedOctet) {
+        return String.fromCharCode(parseInt(aEncodedOctet, 16));
+      }
+    );
+  },
+
+  /**
    * Returns an object having one property for each header field in the given
    *  header section. For more information on header field syntax, see
    *  <http://tools.ietf.org/html/rfc5322#section-2.2> (retrieved 2008-05-17).
@@ -659,5 +676,247 @@ var MimeSupport = {
          decodedWord;
       }
     );
+  },
+
+  /**
+   * Returns the lowercase media type obtained by parsing the given value of the
+   *  "Content-Type" header, and populates the given object with one lowercase
+   *  property for each of the additional parameters in the header. For more
+   *  information on the syntax of the "Content-Type" header field, see
+   *  <http://tools.ietf.org/html/rfc2045#section-5> (retrieved 2009-11-22).
+   *
+   * This function recognizes continuations in parameter values, as well as
+   *  character set and language information, even though the latter is ignored.
+   *  For more information, see <http://tools.ietf.org/html/rfc2231#section-3>
+   *  (retrieved 2009-11-22).
+   *
+   * @param aHeaderValue   Unfolded value of the "Content-Type" header,
+   *                        consisting of a single line of text.
+   * @param aParameters    Empty object that will be populated with the
+   *                        parsed parameter values.
+   */
+  parseContentTypeValue: function(aHeaderValue, aParameters) {
+    // Get the content type and raw parameter values
+    var rawParameters = {};
+    var contentType = MimeSupport.rawParseContentTypeValue(aHeaderValue,
+     rawParameters);
+    // Build the continuations map
+    var knownParameters = {};
+    var knownCharsets = {};
+    for (let [paramName, paramValue] in Iterator(rawParameters)) {
+      // Separate the section number and extension flag from the parameter name
+      var sectionNumber = -1;
+      var isExtended = false;
+      paramName = paramName.replace(
+        /*
+         * The regular expression below is composed of the following parts:
+         *
+         * aName   ( [^*]+ )
+         *
+         * Actual name of the parameter.
+         *
+         * aSectionNumber   ( [\d]{1,9} )
+         *
+         * Digits that represent the section number in a parameter continuation.
+         *
+         * aExtendedFlag   ( \*? )
+         *
+         * If present, indicates that the parameter value uses the extended
+         *  syntax for character set and language information.
+         */
+        /^([^*]+)(?:\*([\d]{1,9}))?(\*?)$/,
+        function(aAll, aName, aSectionNumber, aExtendedFlag) {
+          if (aSectionNumber) {
+            sectionNumber = parseInt(aSectionNumber);
+          }
+          isExtended = !!aExtendedFlag;
+          return aName;
+        }
+      );
+      // For the first section in a parameter with extended syntax
+      if (isExtended && sectionNumber === 0) {
+        // Separate the character set and language from the parameter value
+        paramValue = paramValue.replace(
+          /*
+           * The regular expression below is composed of the following parts:
+           *
+           * aCharset   ( [^']* )
+           *
+           * Optional character set specification that precedes the first single
+           *  quote ("'") character.
+           *
+           * aLanguage   ( [^']* )
+           *
+           * Language specification that follows the first "'" character.
+           *
+           * aValue   ( .* )
+           *
+           * Encoded text portion that follows the second "'" character.
+           */
+          /^([^']*)'([^']*)'(.*)$/,
+          function(aAll, aCharset, aLanguage, aValue) {
+            knownCharsets[paramName] = aCharset;
+            return aValue;
+          }
+        );
+      }
+      // Ensure that the value array for the parameter name is present
+      let paramValues = knownParameters[paramName];
+      if (!paramValues) {
+        paramValues = [];
+        knownParameters[paramName] = paramValues;
+      }
+      // Store either the individual parameter at index -1, or the sections
+      //  at index 0 or above, indicating whether the value should be decoded
+      paramValues[sectionNumber] = [isExtended, paramValue];
+    }
+    // Prepare an uninitialized converter object
+    var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
+     createInstance(Ci.nsIScriptableUnicodeConverter);
+    // Actually perform the parameter reordering and decoding
+    for (let [paramName, paramValues] in Iterator(knownParameters)) {
+      // Reinitialize the conversion object using the specified character set
+      var currentCharset = knownCharsets[paramName];
+      if (currentCharset) {
+        converter.charset = currentCharset;
+      }
+      // Examine each possible continuation starting from the first section
+      var compositeValue = "";
+      for (var [, [paramIsExtended, paramValue]] in Iterator(paramValues)) {
+        // If the parameter has extended syntax, decode it now that the
+        //  character set to use is certainly known, regardless of the order of
+        //  the parameter continuations in the header
+        if (paramIsExtended) {
+          // Obtain the octets from the original value
+          paramValue = MimeSupport.decodePercent(paramValue);
+          // Use the given character set to obtain the characters if required
+          if (currentCharset) {
+            try {
+              paramValue = converter.ConvertToUnicode(paramValue);
+            } catch (e) {
+              // If decoding failed, don't alter the value
+            }
+          }
+        }
+        // Concatenate the value of the parameter
+        compositeValue += paramValue;
+      }
+      // Return the composite value to the caller
+      aParameters[paramName] = compositeValue;
+    }
+    // Finally, return the content type
+    return contentType;
+  },
+
+  /**
+   * Returns the lowercase media type obtained by parsing the given value of the
+   *  "Content-Type" header, and populates the given object with one lowercase
+   *  property for each of the additional parameters in the header. For more
+   *  information on the syntax of the "Content-Type" header field, see
+   *  <http://tools.ietf.org/html/rfc2045#section-5> (retrieved 2009-11-22).
+   *
+   * @param aHeaderValue     Unfolded value of the "Content-Type" header,
+   *                          consisting of a single line of text.
+   * @param aRawParameters   Empty object that will be populated with the
+   *                          parsed raw parameter values. Continuations and
+   *                          language information are not parsed.
+   */
+  rawParseContentTypeValue: function(aHeaderValue, aRawParameters) {
+    // Since the header value may contain nested comments, we use a parsing
+    //  strategy based on recursive parsing functions
+    var currentText = aHeaderValue;
+    function eatComment() {
+      // If the current value starts with an open parenthesis
+      if (currentText && currentText[0] === "(") {
+        // Remove the opening parenthesis
+        currentText = currentText.slice(1);
+        do {
+          // Eat all the characters until the next open or closed parenthesis,
+          //  excluding parentheses appearing in quoted pairs
+          currentText = currentText.replace(/^(\\.|[^()])*/, "");
+          // Recursively eat inner comments
+          eatComment();
+          // Repeat until there is no more text in the comment
+        } while (currentText && currentText[0] !== ")");
+        // Remove the closing parenthesis, if found
+        currentText = currentText.slice(1);
+      }
+    }
+    function eatCommentsAndWhitespace() {
+      do {
+        var currentLength = currentText.length;
+        // Eat initial whitespace, if present
+        currentText = currentText.replace(/^[\t ]*/, "");
+        // Eat one comment, if present
+        eatComment();
+        // Repeat until there are no more comments and whitespace to remove
+      } while (currentText.length < currentLength);
+    }
+    function getToken() {
+      // If no token is present, an empty string is returned
+      var innerText = "";
+      // Look for a string of allowed characters, excluding the special ones
+      currentText = currentText.replace(/^[^\t ()<>@,;:\\"\/\[\]?=]+/,
+        function(aAll) {
+          // A valid token was found
+          innerText = aAll;
+          // Remove the token from the current text
+          return "";
+        }
+      );
+      return innerText;
+    }
+    function getQuotedString() {
+      // If no quoted string is present, an empty string is returned
+      var innerText = "";
+      // Look for a string that begins and ends with double quotes, excluding
+      //  double quote characters appearing in quoted pairs inside the string
+      currentText = currentText.replace(/^"((?:\\.|[^"])*)"/,
+        function(aAll, aInnerString) {
+          // Store the contents of the quoted string, while parsing quoted pairs
+          innerText = aInnerString.replace(/\\(.)/g, "$1");
+          // Remove the quoted string from the current text
+          return "";
+        }
+      );
+      return innerText;
+    }
+    // Start by parsing the media type and subtype
+    eatCommentsAndWhitespace();
+    var type = getToken();
+    var subtype = "";
+    if (currentText && currentText[0] === "/") {
+      currentText = currentText.slice(1);
+      subtype = getToken();
+    }
+    // Continue only if the header value is valid so far
+    if (!type || !subtype) {
+      return "";
+    }
+    // Parse the parameters
+    eatCommentsAndWhitespace();
+    while (currentText && currentText[0] === ";") {
+      // Remove the separating semicolon
+      currentText = currentText.slice(1);
+      eatCommentsAndWhitespace();
+      // Parse the parameter name
+      var paramName = getToken();
+      eatCommentsAndWhitespace();
+      // Parse the mandatory parameter value
+      if (currentText && currentText[0] === "=") {
+        // Remove the separating equal sign
+        currentText = currentText.slice(1);
+        eatCommentsAndWhitespace();
+        // Parse the parameter value
+        var paramValue = getToken() || getQuotedString();
+        eatCommentsAndWhitespace();
+        // Set the property on the provided object if the parameter is present
+        if (paramName && paramValue) {
+          aRawParameters[paramName.toLowerCase()] = paramValue;
+        }
+      }
+    }
+    // Return the lowercase media type
+    return (type + "/" + subtype).toLowerCase();
   }
 }
