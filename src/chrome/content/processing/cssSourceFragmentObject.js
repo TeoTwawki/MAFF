@@ -91,7 +91,7 @@ CssSourceFragment.prototype = {
        *
        *   Recognizes the body of the URL, that must be placed on a single line.
        *
-       *   End of URL lookahead   ( (?=\3\)) )
+       *   End of URL lookahead   ( (?=\s*\3\)) )
        *
        *   This positive lookahead expression recognizes the end of the URL. The
        *    text in this section will be included in the aBefore part during the
@@ -115,14 +115,14 @@ CssSourceFragment.prototype = {
        *
        *   Recognizes the body of the URL, that must be placed on a single line.
        *
-       *   End of URL lookahead   ( (?=\6) )
+       *   End of URL lookahead   ( (?=\s*\6) )
        *
        *   This positive lookahead expression recognizes the end of the URL. The
        *    text in this section will be included in the aBefore part during the
        *    next iteration.
        *
        */
-      /([\w\W]*?)(?:(\burl\(\s*(['"])?)([^\r\n]*?)(?=\3\))|(@import\s+(['"]))([^\r\n]*?)(?=\6)|$)/gi,
+      /([\w\W]*?)(?:(\burl\(\s*(['"])?)([^\r\n]*?)(?=\s*\3\))|(@import\s+(['"]))([^\r\n]*?)(?=\s*\6)|$)/gi,
       function(aAll, aBefore, aUrlBefore, aUrlQuote, aUrlText, aImportUrlBefore,
        aImportUrlQuote, aImportUrlText) {
         aAddFn(SourceFragment,    aBefore + aUrlBefore);
