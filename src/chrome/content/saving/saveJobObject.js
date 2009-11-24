@@ -102,7 +102,7 @@ SaveJob.prototype = {
         this._addJob(mhtmlArchiveJob);
 
         // Get the next target file name
-        MafUtils.getFullUniqueFilename(uniqueTargetFile);
+        this._changeCountInFilename(uniqueTargetFile);
       }, this);
 
     }
@@ -117,5 +117,21 @@ SaveJob.prototype = {
     var maffArchiveJob = new SaveArchiveJob(this, aTargetFile, aTargetType);
     maffArchiveJob.addContentFromDocumentAndBrowser(aDocument, null);
     this._addJob(maffArchiveJob);
+  },
+
+  // --- Private methods and properties ---
+
+  /**
+   * Always modifies the leaf name of the given nsIFile object, preserving the
+   *  extension and ensuring that a file with the new name does not exist.
+   */
+  _changeCountInFilename: function(aLocalFile) {
+    do {
+      // For more information on this routine, see the "uniqueFile" function in
+      //  <http://mxr.mozilla.org/firefox2/source/xpfe/communicator/resources/content/contentAreaUtils.js>
+      //  (retrieved 2009-11-24).
+      parts = /(-\d+)?(\.[^.]+)?$/.test(aLocalFile.leafName);
+      aLocalFile.leafName = RegExp.leftContext + (RegExp.$1 - 1) + RegExp.$2;
+    } while (aLocalFile.exists());
   }
 }
