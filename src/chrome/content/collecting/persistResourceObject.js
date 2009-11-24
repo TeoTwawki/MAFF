@@ -95,6 +95,29 @@ PersistResource.prototype = {
     this._readBodyFromFile();
   },
 
+  /**
+   * Writes the body of the resource to the associated local file. If the parent
+   *  directory of the file does not exist, all missing ancestors are created.
+   */
+  writeToFile: function() {
+    // Ensure that the ancestors exist
+    if (!this.file.parent.exists()) {
+      this.file.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
+    }
+    // Create and initialize an output stream to write to the local file
+    var outputStream = Cc["@mozilla.org/network/file-output-stream;1"].
+     createInstance(Ci.nsIFileOutputStream);
+    outputStream.init(this.file, -1, -1, 0);
+    try {
+      // Write the entire file to disk at once. If the content to be written is
+      //  4 GiB or more in size, an exception will be raised.
+      outputStream.write(this.body, this.body.length);
+    } finally {
+      // Close the underlying stream
+      outputStream.close();
+    }
+  },
+
   // --- Private methods and properties ---
 
   /**

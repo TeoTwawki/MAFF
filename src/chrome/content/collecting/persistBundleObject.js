@@ -92,6 +92,15 @@ PersistBundle.prototype = {
     }
   },
 
+  /**
+   * Saves all the resources in the bundle to the associated local files.
+   */
+  writeAll: function() {
+    for (var [, resource] in Iterator(this.resources)) {
+      resource.writeToFile();
+    }
+  },
+
   // --- Private methods and properties ---
 
   /**
