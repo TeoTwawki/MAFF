@@ -62,11 +62,6 @@ try {
    // Support objects for integration with the host application
    ["integration/fileFiltersObject.js",           "FileFilters"],
 
-   // Original MAF JavaScript infrastructure
-   ["jscomponents/nsMafMhtDecoder.js",            "MafMhtDecoderClass"],
-   ["jscomponents/nsMafMhtHandler.js",            "MafMhtHandler"],
-   ["jscomponents/nsMafUtil.js",                  "MafUtils"],
-
    // Loading infrastructure
    ["loading/archiveLoaderObject.js",             "ArchiveLoader"],
 
