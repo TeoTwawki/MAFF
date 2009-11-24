@@ -72,6 +72,25 @@ MultipartMimePart.prototype = {
    */
   parts: [],
 
+  /**
+   * Returns the MimePart object for the current start part. At least one child
+   *  part must be present when this property is read.
+   */
+  get startPart() {
+    // Locate the start part using the "start" parameter of the "Content-Type"
+    //  header, if present
+    var startValue = this.contentTypeParameters.start;
+    if (startValue) {
+      for (let [, contentPart] in Iterator(this.parts)) {
+        if (startValue == contentPart.headersByLowercaseName["content-id"]) {
+          return contentPart;
+        }
+      }
+    }
+    // The first part is assumed to be the start part
+    return this.parts[0];
+  },
+
   // --- Overridden MimePart methods and properties ---
 
   get bodySection() {
@@ -84,5 +103,33 @@ MultipartMimePart.prototype = {
     }
     // Add the trailing boundary
     return sectionText + "\r\n--" + this.boundary + "--\r\n";
+  },
+  set bodySection(aValue) {
+    // Check that the boundary is actually set
+    if (!this.boundary) {
+      throw new Components.Exception("Missing mandatory boundary field");
+    }
+    // Build a regular expression that will detect the provided boundary string
+    //  preceded by a newline and optionally followed by a newline, even if the
+    //  newline does not immediately follow the boundary string
+    var boundaryRe = new RegExp("(?:\\r?\\n|\\r|^)--" +
+     this.boundary.replace(/[^\w]/g, "\\$&") +
+     "[^\\r\\n]*(?:\\r\\n?|\\n)?", "g");
+    // Get the various parts separated by the boundary strings
+    var partsArray = aValue.split(boundaryRe);
+    // For all the parts except the preamble and the epilogue
+    for (var partNum = 1; partNum < partsArray.length - 1; partNum++) {
+      try {
+        // Create a new part to parse the contents
+        var newPart = new MimePart();
+        newPart.text = partsArray[partNum];
+        newPart = newPart.promoteToDerivedClass();
+        // Add the new part to this object
+        this.parts.push(newPart);
+      } catch (e) {
+        // Ignore content parts with parsing errors
+        Cu.reportError(e);
+      }
+    }
   }
 }

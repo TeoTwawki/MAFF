@@ -77,6 +77,34 @@ MhtmlArchivePage.prototype = {
     aCallbackObject.onArchivingComplete(0);
   },
 
+  /**
+   * Reads the metadata about the current page from the specified MIME message.
+   */
+  setMetadataFromMimePart: function(aMimePart) {
+    // Shorthand for the object containing the unfolded headers in the MIME part
+    var headers = aMimePart.headersByLowercaseName;
+    // The presence of the "X-MAF" or "X-MAF-Version" headers indicate that the
+    //  "Subject" header is encoded on a single line, probably using UTF-8.
+    if (headers["x-maf"] || headers["x-maf-version"]) {
+      this.title = headers.subject || "";
+      // Convert the raw subject header value using UTF-8, if possible
+      var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
+       createInstance(Ci.nsIScriptableUnicodeConverter);
+      converter.charset = "UTF-8";
+      try {
+        this.title = converter.ConvertToUnicode(this.title);
+      } catch (e) {
+        // If the subject line is not valid UTF-8, use the original bytes, that
+        //  are assumed to be in the ISO-8859-1 character set.
+      }
+    } else {
+      // The subject is properly encoded as an unstructured value
+      this.title = MimeSupport.parseUnstructuredValue(headers.subject || "");
+    }
+    // Parse the date from the "Date" header
+    this.dateArchived = headers.date || null;
+  },
+
   // --- Private methods and properties ---
 
   /**
