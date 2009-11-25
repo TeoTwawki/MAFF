@@ -1,6 +1,42 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
   <h2 class="page-header">Changelog for version 0.16</h2>
+  <h3><a name="whatwasnew"></a>What was new in version 0.16?</h3>
+  <p>MAF 0.16.4 had the following user-visible improvements over MAF 0.15.1:</p>
+  <ul>
+    <li>A new dialog for conversion of previously saved pages is now available.
+     See the related <a href="documentation.html#converting">documentation</a>
+     for details.</li>
+    <li>New preference to use the page title instead of the default suggested
+     file name in the "Save As" dialog. Enabling this preference provides
+     functionality comparable to the
+     <a href="https://addons.mozilla.org/firefox/addon/834">File Title</a> and
+     <a href="https://addons.mozilla.org/firefox/addon/712">Title Save</a>
+     extensions.</li>
+    <li>The order of the tabs is now preserved when opening and saving
+     multi-page MAFF archives.</li>
+    <li>Now the character set specified in MAFF archives is always enforced, and
+     a different character set cannot be selected.</li>
+    <li>MHTML files couldn't be created properly when the browser operated in
+     some languages other than English.<li>
+    <li>In the multiple tab selection dialog, occasionally it was not possible
+     to change the current selection after some time passed.</li>
+    <li>Improvements to the integrated
+     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
+     extension:
+      <ul>
+        <li>Improved performance when saving pages containing many images or
+         other content.</li>
+        <li>Improved reliability in handling references to images or other
+         content.</li>
+        <li>Errors that occur while downloading the main file are now
+         reported correctly.</li>
+        <li>Pages that are contained in an archive are now saved correctly.</li>
+        <li>When the save operation fails, an empty file isn't created anymore
+         in place of the target file.</li>
+      </ul>
+    </li>
+  </ul>
   <h3>Changes from 0.16.3 to 0.16.4</h3>
   <ul>
     <li><b>Change:</b> Now the MAF items in the <b>File</b> menu are displayed
@@ -42,7 +78,7 @@
      behavior if the Enter key was pressed while converting.</li>
   </ul>
   <h2>Changelog for version 0.15</h2>
-  <h3><a name="whatwasnew"></a>What was new in version 0.15?</h3>
+  <h3>What was new in version 0.15?</h3>
   <p>MAF 0.15.1 had the following user-visible improvements over MAF 0.14.3:</p>
   <ul>
     <li>An icon in the address bar or in the status bar provides quick access to
