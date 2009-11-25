@@ -148,7 +148,8 @@ MhtmlArchivePage.prototype = {
       mimeMessage.addUnstructuredHeader("Subject", this.title || "");
     }
     if (this.dateArchived) {
-      mimeMessage.addRawHeader("Date", this.dateArchived);
+      mimeMessage.addRawHeader("Date", MimeSupport.getDateTimeSpecification(
+       this.dateArchived));
     }
     mimeMessage.addRawHeader("MIME-Version", "1.0");
 

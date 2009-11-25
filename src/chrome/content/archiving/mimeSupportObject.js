@@ -918,5 +918,21 @@ var MimeSupport = {
     }
     // Return the lowercase media type
     return (type + "/" + subtype).toLowerCase();
+  },
+
+  /**
+   * Returns a string with a date and time specification conforming to RFC 822,
+   *  RFC 2822 or RFC 5322. For more information on the date format used, see
+   *  <http://tools.ietf.org/html/rfc5322#section-3.3> (retrieved 2009-11-25).
+   *
+   * @param aDate   Valid Date object representing the date to be encoded.
+   */
+  getDateTimeSpecification: function(aDate) {
+    // The following function converts the Mozilla JavaScript date format, like
+    //  "Mon Sep 28 1998 14:36:22 GMT-0700 (Pacific Daylight Time)", to the
+    //  expected RFC 5322 format, like "Mon, 28 Sep 1998 14:36:22 -0700".
+    return aDate.toString().replace(
+     /^(...) (...) (..) (.... ..:..:..) ...(.....).*$/,
+     "$1, $3 $2 $4 $5");
   }
 }
