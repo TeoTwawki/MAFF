@@ -155,6 +155,14 @@ MhtmlArchivePage.prototype = {
 
     // Add the content headers and the actual content
     if (isMultipart) {
+      // If the MAF variant of the MHTML format is used, specify a global
+      //  content location for the message. This information will be used by
+      //  other browsers to resolve relative references in content parts, and
+      //  display the document correctly if possible.
+      if (aUseMafVariant) {
+        mimeMessage.addRawHeader("Content-Location",
+         rootResource.contentLocation);
+      }
       // Add the content headers for the multipart type
       mimeMessage.addRawHeader("Content-Type",
        'multipart/related;\r\n\t' +
