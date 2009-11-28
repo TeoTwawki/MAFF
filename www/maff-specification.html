@@ -334,6 +334,26 @@
  [Conformance level: <a href="#level-basic">basic</a>]</p>
 
 <h2>Extended metadata</h2>
+<p>Inside each first-level directory of a MAFF archive, the second-level
+ directory named <tt>^metadata^</tt> (case-sensitive) is reserved and should not
+ contain actual content. A file or folder named <tt>^metadata^</tt>
+ (case-insensitive) should not exist inside any first-level directory.
+ [Conformance level: <a href="#level-custom">extended</a>].</p>
+<p>File names inside the <tt>^metadata^</tt> folder should be limited to a
+ sequence of up to 20 lowercase ASCII characters or hyphens (<tt>-</tt>),
+ followed by an optional lowercase file extension beginning with dot
+ (<tt>.</tt>). [Conformance level: <a href="#level-custom">extended</a>].</p>
+<p>Inside the <tt>^metadata^</tt> folder, file names that begin with <tt>x-</tt>
+ are reserved for custom extensions to the MAFF format. Implementors that want
+ to store additional metadata that is not documented in this specification must
+ store it using such reserved names, for example
+ <tt>12345678_123/^metadata^/x-custom-info.rdf</tt>.</p>
+<p><i>The provisions above are candidates for inclusion in the
+ <a href="#level-normal">normal</a> conformance level. However, at present they
+ are considered <a href="#level-custom">extended</a> and are subject to
+ change.</i></p>
+
+<h3>Contents of extended metadata</h3>
 <p>The base specification does not provide a facility for storing the original
  URL from which each individual file was copied from, as each page is handled as
  an atomic unit. This feature is under consideration as an extension, but even
