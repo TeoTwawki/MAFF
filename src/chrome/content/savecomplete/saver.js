@@ -311,8 +311,10 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
             while((p = pIter.iterateNext())) {
                 var param = p.getAttribute('name');
                 if(param == 'movie' || param == 'src') {
-                    this._uris.push(new scPageSaver.scURI(p.getAttribute('value'), baseUri, 'attribute', 'base'));
-                    break;
+                    if(p.getAttribute('value')) {
+                        this._uris.push(new scPageSaver.scURI(p.getAttribute('value'), baseUri, 'attribute', 'base'));
+                        break;
+                    }
                 }
             }
         }
@@ -321,7 +323,9 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
     // Process input elements with an image type
     iter = doc.evaluate("//input[@type='image']", doc, null, scPageSaver.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     while((e = iter.iterateNext())) {
-        this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
+        if(e.getAttribute('src')) {
+            this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
+        }
     }
 
     // Process elements which have a background attribute
@@ -391,7 +395,7 @@ scPageSaver.prototype._extractURIsFromStyleSheet = function(styleSheet, importPa
     for(var r = 0; r < cssRules.length; r++) {
         var rule = cssRules[r];
 
-        if(rule.type == scPageSaver.IMPORT_RULE) {
+        if(rule.type == scPageSaver.IMPORT_RULE && rule.href) {
             // Add import url and process imported stylesheet
             var importRuleURI = new scPageSaver.scURI(rule.href, importPath, 'import', inline?'base':'extcss');
             this._uris.push(importRuleURI);
