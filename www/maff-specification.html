@@ -251,10 +251,36 @@
  folder as the <tt>index.rdf</tt> file. This file must be named <tt>index</tt>,
  with a file extension based on the content type, unless the file type is RDF.
  [Conformance level: <a href="#level-basic">basic</a>]</p>
+<p><i>This section needs expansion.</i></p>
+
+<h3>Matching file extensions with MIME media types</h3>
 <p>Assignment of MIME type to individual files is implemented by ensuring that
  the file names of supported content match a list of well-known file
  extensions. [Conformance level: <a href="#level-normal">normal</a>]</p>
-<p><i>This section needs expansion.</i></p>
+<p>The well-known file extensions, with their related media types, are as
+ follows:</p>
+<ul>
+  <li><tt>audio/ogg</tt> = <tt>.oga</tt></li>
+  <li><tt>audio/x-wav</tt> = <tt>.wav</tt></li>
+  <li><tt>application/ogg</tt> = <tt>.ogg</tt></li>
+  <li><tt>application/x-javascript</tt>, <tt>application/ecmascript</tt>,
+   <tt>application/javascript</tt>, <tt>text/ecmascript</tt>,
+   <tt>text/javascript</tt> = <tt>.js</tt></li>
+  <li><tt>application/xhtml+xml</tt> = <tt>.xhtml</tt>, <tt>.xht</tt></li>
+  <li><tt>image/gif</tt> = <tt>.gif</tt></li>
+  <li><tt>image/png</tt> = <tt>.png</tt></li>
+  <li><tt>image/jpeg</tt> = <tt>.jpg</tt>, <tt>.jpeg</tt></li>
+  <li><tt>image/svg+xml</tt> = <tt>.svg</tt></li>
+  <li><tt>text/css</tt> = <tt>.css</tt></li>
+  <li><tt>text/html</tt> = <tt>.html</tt>, <tt>.htm</tt></li>
+  <li><tt>text/xml</tt> = <tt>.xml</tt></li>
+  <li><tt>video/ogg</tt> = <tt>.ogv</tt></li>
+</ul>
+<p>When storing files that don't have a well-known media type, the use of any
+ file extension is acceptable. Generally, in this case implementors should use
+ the extension to type mapping provided by the operating system. In case this
+ association is not available, the file extension of the original file may be
+ used. [Conformance level: <a href="#level-basic">normal</a>]</p>
 
 <h2>Metadata</h2>
 <p>The format used for storing metadata about the archived files in the
