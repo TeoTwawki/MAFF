@@ -286,6 +286,16 @@ pre.code code {
   margin: 0px;
 }
 
+/* Download boxes reused on the feedback page */
+
+.maf-download-feedback-page .maf-download-box-contents {
+  width: 28em;
+}
+
+.maf-download-feedback-page .maf-download-tips {
+  max-width: 28em;
+}
+
 /* Footer */
 
 .maf-footer {
