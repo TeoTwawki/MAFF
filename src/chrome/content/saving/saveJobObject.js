@@ -81,10 +81,10 @@ SaveJob.prototype = {
 
       // Create a single archive with all the pages
       var maffArchiveJob = new SaveArchiveJob(this, aTargetFile, aTargetType);
-      for (var [curIndex, curBrowser] in Iterator(aBrowsers)) {
+      aBrowsers.forEach(function(curBrowser, curIndex) {
         maffArchiveJob.addContentFromDocumentAndBrowser(
          curBrowser.contentDocument, curBrowser, pageFolderNames[curIndex]);
-      }
+      });
       this._addJob(maffArchiveJob);
 
     } else {
