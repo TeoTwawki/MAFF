@@ -4,7 +4,7 @@
 <?php
 
 $maf_previous_fx = "0.16.4";
-$maf_latest_fx = "0.16.4";
-$maf_experimental_fx = "0.17.0";
+$maf_latest_fx = "0.17.2";
+$maf_experimental_fx = "";
 
 ?>
