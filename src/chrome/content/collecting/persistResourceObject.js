@@ -57,7 +57,19 @@ PersistResource.prototype = {
   file: null,
 
   /**
-   * nsIURI object representing the original location of the web resource.
+   * nsIURI object representing the original address from which the web resource
+   *  was retrieved. If the resource was modified after retrieval, this URI will
+   *  be different from the value of the originalUri property.
+   *
+   * Multiple resources in the same PersistBundle object may share the same
+   *  reference URI, if they are differently modified versions of the original.
+   */
+  referenceUri: null,
+
+  /**
+   * nsIURI object representing the original location of the web resource. This
+   *  property usually corresponds to the "Content-Location" header in web
+   *  archives, and uniquely identifies the resource in a PersistBundle object.
    */
   originalUri: null,
 

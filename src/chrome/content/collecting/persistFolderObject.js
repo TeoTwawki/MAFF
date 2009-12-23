@@ -65,13 +65,17 @@ PersistFolder.prototype = {
    * @param aResource   Web resource that will be saved in this folder.
    */
   addUnique: function(aResource) {
-    // Determine the full URI corresponding to the content location of the
-    //  provided resource. If a relative content location is specified, a dummy
-    //  local file URL is used as a base.
-    var ioService = Cc["@mozilla.org/network/io-service;1"].
-     getService(Ci.nsIIOService);
-    var baseUri = ioService.newURI("file:///", null, null);
-    var nameUri = ioService.newURI(aResource.contentLocation, null, baseUri);
+    // Obtain the URI the provided resource was originally retrieved from
+    var nameUri = aResource.referenceUri;
+    if (!nameUri) {
+      // Determine the full URI corresponding to the content location of the
+      //  provided resource. If a relative content location is specified, a
+      //  dummy local file URL is used as a base.
+      var ioService = Cc["@mozilla.org/network/io-service;1"].
+       getService(Ci.nsIIOService);
+      var baseUri = ioService.newURI("file:///", null, null);
+      nameUri = ioService.newURI(aResource.contentLocation, null, baseUri);
+    }
     // Determine the file name based on the original content location
     var fileName = this._suggestFileNameFromUri(nameUri);
     // Ensure that the file name is valid and can be used locally
