@@ -55,6 +55,51 @@ PersistBundle.prototype = {
   resources: [],
 
   /**
+   * Returns the first resource whose referenceUri matches the provided nsIURI
+   *  object, or null if no resource matches.
+   */
+  getResourceByReferenceUri: function(aReferenceUri) {
+    for (var [, resource] in Iterator(this.resources)) {
+      if (this.checkUriEquality(resource.referenceUri, aReferenceUri)) {
+        return resource;
+      }
+    }
+    return null;
+  },
+
+  /**
+   * Returns the resource whose originalUri matches the provided nsIURI object,
+   *  or null if no resource matches.
+   */
+  getResourceByOriginalUri: function(aOriginalUri) {
+    for (var [, resource] in Iterator(this.resources)) {
+      if (this.checkUriEquality(resource.originalUri, aOriginalUri)) {
+        return resource;
+      }
+    }
+    return null;
+  },
+
+  /**
+   * This support function returns true if the provided nsIURI objects point to
+   *  the same resource, or false otherwise.
+   */
+  checkUriEquality: function(aFirstUri, aSecondUri) {
+    // If one of the arguments is null, no match is found
+    if (!aFirstUri || !aSecondUri) {
+      return false;
+    }
+    // Compare the two URIs intelligently, based on their scheme
+    try {
+      return aFirstUri.equals(aSecondUri);
+    } catch(e) {
+      // If the URIs cannot be compared, for example if one of them is an
+      //  invalid "file://" URL, compare their string version
+      return (aFirstUri.spec == aSecondUri.spec);
+    }
+  },
+
+  /**
    * Scans the given folder for resources and adds them to the bundle.
    *
    * The first file found in the root folder is considered the root resource of
