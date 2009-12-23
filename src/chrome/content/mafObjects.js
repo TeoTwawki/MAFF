@@ -75,6 +75,7 @@ try {
    ["processing/cssSourceFragmentObject.js",      "CssSourceFragment"],
    ["processing/htmlSourceFragmentObject.js",     "HtmlSourceFragment"],
    ["processing/tagSourceFragmentObject.js",      "TagSourceFragment"],
+   ["processing/urlListSourceFragmentObject.js",  "UrlListSourceFragment"],
    ["processing/urlSourceFragmentObject.js",      "UrlSourceFragment"],
 
    // "Save Complete" extension integration
