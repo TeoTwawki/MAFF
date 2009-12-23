@@ -57,6 +57,14 @@ PersistResource.prototype = {
   file: null,
 
   /**
+   * nsIFileURL object for the file with the local copy of the web resource.
+   */
+  get fileUrl() {
+    return Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService).
+     newFileURI(this.file).QueryInterface(Ci.nsIFileURL);
+  },
+
+  /**
    * nsIURI object representing the original address from which the web resource
    *  was retrieved. If the resource was modified after retrieval, this URI will
    *  be different from the value of the originalUri property.
