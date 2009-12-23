@@ -66,6 +66,10 @@ MaffArchive.prototype = {
   },
 
   extractAll: function() {
+    // Initialize the converter required to call methods accepting entry names
+    var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
+     createInstance(Ci.nsIScriptableUnicodeConverter);
+    converter.charset = "UTF-8";
     // Determine if the data files should be extracted
     this._useDirectAccess = Prefs.openUseJarProtocol;
     // Prepare a list of all the page folders available in the archive
@@ -105,15 +109,20 @@ MaffArchive.prototype = {
         // If the current entry must be extracted
         if (shouldExtract) {
           // Find the file whose path corresponds to the ZIP entry
-          var destFile = Cc["@mozilla.org/file/local;1"].
-           createInstance(Ci.nsILocalFile);
-          destFile.setRelativeDescriptor(this._tempDir, zipEntry);
+          var destFile = this._getFileForZipEntry(zipEntry);
           // Ensure that the ancestors exist
           if (!destFile.parent.exists()) {
             destFile.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
           }
-          // Extract the file in the temporary directory
-          zipReader.extract(zipEntry, destFile);
+          // Extract the file in the temporary directory. The value of zipEntry,
+          //  that was converted from UTF-8 to Unicode automatically during the
+          //  enumeration of the "AUTF8String" type, must be converted to UTF-8
+          //  again when calling the "extract" method, that accepts a "string"
+          //  type. For more information on string data types and XPConnect, see
+          //  <https://developer.mozilla.org/en/xpcom_string_guide#IDL_String_types>
+          //  (retrieved 2009-12-23).
+          zipReader.extract(converter.ConvertFromUnicode(zipEntry) +
+           converter.Finish(), destFile);
         }
       }
     } finally {
@@ -144,6 +153,20 @@ MaffArchive.prototype = {
   },
 
   // --- Private methods and properties ---
+
+  /**
+   * Returns a new nsIFile pointing to the location indicated by the given ZIP
+   *  entry, relative to the temporary directory for this archive.
+   *
+   * @param aZipEntry   Unicode ZIP entry after which the file must be named.
+   */
+  _getFileForZipEntry: function(aZipEntry) {
+    var fileForEntry = this._tempDir.clone();
+    for (var [, pathSegment] in Iterator(aZipEntry.split("/"))) {
+      fileForEntry.append(pathSegment);
+    }
+    return fileForEntry;
+  },
 
   /**
    * Indicates that the archive file should be created from scratch. If false,
