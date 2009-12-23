@@ -192,9 +192,13 @@ PersistFolder.prototype = {
       }
     }
     // Use the host from the original URI, if available
-    if (aUri.host) {
-      // The host name is already unescaped
-      return aUri.host;
+    try {
+      if (aUri.host) {
+        // The host name is already unescaped
+        return aUri.host;
+      }
+    } catch (e) {
+      // Accessing the host property may raise an exception in some cases
     }
     // The name cannot be determined from the provided URI
     return "";
