@@ -112,7 +112,7 @@ PersistResource.prototype = {
       this.mimeType = "application/octet-stream";
     }
     // Read the binary contents from the local file
-    this._readBodyFromFile();
+    this.readFromFile();
   },
 
   /**
@@ -138,12 +138,10 @@ PersistResource.prototype = {
     }
   },
 
-  // --- Private methods and properties ---
-
   /**
    * Populates the body with the contents read from the local file.
    */
-  _readBodyFromFile: function() {
+  readFromFile: function() {
     // Create and initialize an input stream to read from the local file
     var inputStream = Cc["@mozilla.org/network/file-input-stream;1"].
      createInstance(Ci.nsIFileInputStream);

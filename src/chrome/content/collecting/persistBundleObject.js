@@ -138,6 +138,24 @@ PersistBundle.prototype = {
   },
 
   /**
+   * Scans the given PersistBundle object for resources that have been saved to
+   *  file, and adds them to the bundle.
+   *
+   * @param aOriginalBundle   PersistBundle object to be examined.
+   */
+  scanBundle: function(aOriginalBundle) {
+    // For each resource in the given bundle with an associated file
+    for (var [, originalResource] in Iterator(aOriginalBundle.resources)) {
+      if (originalResource.file) {
+        // Read the body of the resource in binary format from the file on disk
+        originalResource.readFromFile();
+        // Add the resource object to the bundle
+        this.resources.push(originalResource);
+      }
+    }
+  },
+
+  /**
    * Saves all the resources in the bundle to the associated local files.
    */
   writeAll: function() {
