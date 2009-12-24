@@ -88,6 +88,12 @@ try {
    // Saving infrastructure
    ["saving/jobObject.js",                        "Job"],
    ["saving/jobRunnerObject.js",                  "JobRunner"],
+   ["saving/exactPersistInitialJobObject.js",     "ExactPersistInitialJob"],
+   ["saving/exactPersistJobObject.js",            "ExactPersistJob"],
+   ["saving/exactPersistObject.js",               "ExactPersist"],
+   ["saving/exactPersistParsedJobObject.js",      "ExactPersistParsedJob"],
+   ["saving/exactPersistReferenceObject.js",      "ExactPersistReference"],
+   ["saving/exactPersistUnparsedJobObject.js",    "ExactPersistUnparsedJob"],
    ["saving/mafArchivePersistObject.js",          "MafArchivePersist"],
    ["saving/mafWebProgressListenerObject.js",     "MafWebProgressListener"],
    ["saving/saveArchiveJobObject.js",             "SaveArchiveJob"],
