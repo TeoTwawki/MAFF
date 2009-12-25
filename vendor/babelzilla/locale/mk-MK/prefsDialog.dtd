@@ -15,6 +15,11 @@
 <!ENTITY menu.tools.accesskey "н">
 <!ENTITY menuitem.saveinarchive.label "Зачувај во архивата">
 <!ENTITY menuitem.saveinarchive.accesskey "х">
+<!ENTITY pane.fileassociations.label "Асоцијации на датотеките">
+<!ENTITY associate.maff.label "Креирај асоцијација за .maff екстензија">
+<!ENTITY associate.maff.accesskey "е">
+<!ENTITY associate.mhtml.label "Креирај асоцијација за .mht и .mhtml екстензии">
+<!ENTITY associate.mhtml.accesskey "а">
 <!ENTITY pane.advanced.label "Напредно">
 <!ENTITY temp.caption "Привремени датотеки">
 <!ENTITY temp.folder.label "Привремена папка:">

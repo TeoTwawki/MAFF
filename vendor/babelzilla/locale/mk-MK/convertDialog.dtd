@@ -1,5 +1,9 @@
 <!ENTITY browsebutton.label "Прелистај...">
+<!ENTITY continue.label "За да продолжите, притиснете $1.">
+<!ENTITY introduction.continue.label "За да започните, притиснете $1.">
+<!ENTITY formats.pagelabel "Влезни и Излезни формати">
 <!ENTITY formats.source.grouplabel "Претвори од:">
+<!ENTITY formats.source.plain.accesskey "С">
 <!ENTITY formats.source.mhtml.label "MHTML архиви">
 <!ENTITY formats.source.mhtml.accesskey "M">
 <!ENTITY formats.source.maff.label "MAFF архиви">
@@ -9,6 +13,10 @@
 <!ENTITY formats.dest.maff.accesskey "р">
 <!ENTITY formats.dest.mhtml.label "MHTML архиви">
 <!ENTITY formats.dest.mhtml.accesskey "H">
+<!ENTITY folders.source.pagelabel "Изворна папка">
+<!ENTITY folders.dest.pagelabel "Одредишни папки">
+<!ENTITY folders.bin.grouplabel "После успешно претворање:">
+<!ENTITY candidates.pagelabel "Претворање">
 <!ENTITY candidates.all.label "Сите датотеки">
 <!ENTITY candidates.converting.label "Претворање на вашите датотеки...">
 <!ENTITY candidates.convertbutton.label "Претвори">

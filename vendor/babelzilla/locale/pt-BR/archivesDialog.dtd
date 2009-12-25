@@ -1,0 +1,42 @@
+<!ENTITY window.title "Arquivos">
+<!ENTITY archives.placestitle.header "Título da página">
+<!ENTITY archives.mafarchivename.header "Nome do arquivo">
+<!ENTITY archives.placesurl.header "Local do arquivo">
+<!ENTITY archives.maftitle.header "Título original da página">
+<!ENTITY archives.maforiginalurl.header "Endereço original da página">
+<!ENTITY archives.mafdatearchived.header "Arquivado">
+<!ENTITY archives.maftempuri.header "URL temporário da página">
+<!ENTITY archives.mafdirectarchiveuri.header "URL direta da página">
+<!ENTITY details.placestitle.label "Título da página:">
+<!ENTITY details.placestitle.accesskey "T">
+<!ENTITY details.mafarchivename.label "Nome do arquivo da web:">
+<!ENTITY details.mafarchivename.accesskey "r">
+<!ENTITY details.placesurl.label "Local do arquivo da web:">
+<!ENTITY details.placesurl.accesskey "h">
+<!ENTITY details.maftitle.label "Título original da página:">
+<!ENTITY details.maftitle.accesskey "i">
+<!ENTITY details.maforiginalurl.label "Endereço original da página:">
+<!ENTITY details.maforiginalurl.accesskey "g">
+<!ENTITY details.mafdatearchived.label "Arquivado em:">
+<!ENTITY details.mafdatearchived.accesskey "q">
+<!ENTITY details.maftempuri.label "Endereço temporário da página:">
+<!ENTITY details.maftempuri.accesskey "t">
+<!ENTITY details.mafdirectarchiveuri.label "Endereço direto da página:">
+<!ENTITY details.mafdirectarchiveuri.accesskey "d">
+<!ENTITY details.caption "Detalhes">
+<!ENTITY morebutton.label "Mais detalhes">
+<!ENTITY morebutton.accesskey "e">
+<!ENTITY lessbutton.label "Menos detalhes">
+<!ENTITY lessbutton.accesskey "e">
+<!ENTITY multipleitems.text "(vários itens selecionados)">
+<!ENTITY openintabsbutton.label "Abrir em abas">
+<!ENTITY openintabsbutton.accesskey.placesurl "a">
+<!ENTITY openintabsbutton.accesskey.originalurl "n">
+<!ENTITY openintabsbutton.accesskey.tempuri "b">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
+<!ENTITY addbutton.label "Adicionar...">
+<!ENTITY addbutton.accesskey "A">
+<!ENTITY addfilepicker.title "Adicionar mais arquivos da web">
+<!ENTITY deletebutton.label "Esquecer">
+<!ENTITY deletebutton.accesskey "E">
+<!ENTITY deletebutton.accesskey.placescontextmenu "F">

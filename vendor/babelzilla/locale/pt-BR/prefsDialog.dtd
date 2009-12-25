@@ -9,6 +9,11 @@
 <!ENTITY save.component.savecomplete.accesskey "S">
 <!ENTITY save.mhtml.compatible.label "Criar arquivos MHTML compatíveis com outros navegadores">
 <!ENTITY save.mhtml.compatible.accesskey "c">
+<!ENTITY save.namingstrategy.grouplabel "Para o nome de arquivo sugerido:">
+<!ENTITY save.namingstrategy.standard.label "usar o sugerido pelo navegador">
+<!ENTITY save.namingstrategy.standard.accesskey "n">
+<!ENTITY save.namingstrategy.pagetitle.label "usar o título da página sempre que possível">
+<!ENTITY save.namingstrategy.pagetitle.accesskey "t">
 <!ENTITY save.metadata.extended.label "Salvar metadados adicionais nos arquivos MAFF">
 <!ENTITY save.metadata.extended.accesskey "m">
 <!ENTITY pane.interface.label "Interface">
@@ -37,9 +42,26 @@
 <!ENTITY menuitem.saveinarchive.accesskey "w">
 <!ENTITY pane.fileassociations.label "Associação de arquivos">
 <!ENTITY associate.windowsonly.description "Esse recurso está disponível apenas para Windows.">
+<!ENTITY associate.buttons.description "Clique nos botões abaixo para associar o Firefox aos tipos de arquivo suportados pelo MAF.">
 <!ENTITY associate.adminprivs.description "Essa operação poderá requerer privilégios de administrador.">
 <!ENTITY associate.maff.label "Associar a arquivos .maff">
 <!ENTITY associate.maff.accesskey "f">
 <!ENTITY associate.mhtml.label "Associar a arquivos .mht e .mhtml">
 <!ENTITY associate.mhtml.accesskey "h">
 <!ENTITY associate.uninstall.description "Observação: as associações feitas aqui não são removidas automaticamente quando o MAF ou o Firefox é desinstalado. Você pode gerenciar as associações de arquivos através do Painel de Controle do Windows.">
+<!ENTITY pane.advanced.label "Avançado">
+<!ENTITY temp.caption "Arquivos temporários">
+<!ENTITY temp.folder.label "Pasta temporária:">
+<!ENTITY temp.folder.accesskey "t">
+<!ENTITY temp.clearonexit.label "Esvaziar pasta temporária ao fechar o navegador">
+<!ENTITY temp.clearonexit.accesskey "E">
+<!ENTITY open.caption "Ao abrir">
+<!ENTITY open.rewriteurls.label "Ajustar URLs absolutas em arquivos abertos">
+<!ENTITY open.rewriteurls.accesskey "A">
+<!ENTITY open.usejarprotocol.label "Usar o protocolo &quot;jar:&quot; para acessar o conteúdos dos arquivos MAFF">
+<!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY other.caption "Outros">
+<!ENTITY other.displaywelcome.label "Mostrar a tela de boas vindas na próxima vez">
+<!ENTITY other.displaywelcome.accesskey "b">
+<!ENTITY save.usemhtmlextension.label "Salvar usando a extensão .mhtml em vez de .mht por padrão">
+<!ENTITY save.usemhtmlextension.accesskey "m">

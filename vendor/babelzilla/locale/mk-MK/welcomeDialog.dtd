@@ -2,4 +2,10 @@
 <!ENTITY continuebutton.label "Продолжи">
 <!ENTITY okbutton.label "Во ред">
 <!ENTITY welcome.label "Добредојдовте во Mozilla Archive Format!">
+<!ENTITY options.associate.label "Отворај ги Веб архивите стандардно со Firefox">
+<!ENTITY options.associate.accesskey "О">
+<!ENTITY options.associate.description "Изберете ја оваа опција ако сакате да ги отворате датотеките на Веб архивите со кликање на нивните икони.">
+<!ENTITY options.savemaff.label "Зачувај користејќи го MAFF типот на Веб архиви како стандарден">
+<!ENTITY options.savemaff.accesskey "З">
 <!ENTITY changesapplied.label "Честитки!">
+<!ENTITY changesapplied.description "Вашиот систем беше конфигуриран како што баравте и е спремен за употреба.">
