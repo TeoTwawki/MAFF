@@ -7,8 +7,10 @@
 <!ENTITY save.component.grouplabel "Ved gem af komplet webside-indhold:">
 <!ENTITY save.component.standard.label "Brug browsers standard gem-system">
 <!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.savecomplete.label "Brug integreret &quot;Save Complete&quot;-udvidelse">
-<!ENTITY save.component.savecomplete.accesskey "u">
+<!ENTITY save.component.completesave.label "Preserve scripts and source using &quot;Save Complete&quot;">
+<!ENTITY save.component.completesave.accesskey "u">
+<!ENTITY save.component.exactpersist.label "Take a faithful snapshot of the page">
+<!ENTITY save.component.exactpersist.accesskey "k">
 <!ENTITY save.mhtml.compatible.label "Create MHTML files fully compatible with other browsers">
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "For the suggested file name:">

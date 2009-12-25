@@ -7,8 +7,10 @@
 <!ENTITY save.component.grouplabel "当保存完整网页档案内容时：">
 <!ENTITY save.component.standard.label "使用浏览器的标准保存系统 (b)">
 <!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.savecomplete.label "使用集成入 MAF 的原 Firefox “Save Complete” 扩展">
-<!ENTITY save.component.savecomplete.accesskey "U">
+<!ENTITY save.component.completesave.label "Preserve scripts and source using &quot;Save Complete&quot;">
+<!ENTITY save.component.completesave.accesskey "u">
+<!ENTITY save.component.exactpersist.label "Take a faithful snapshot of the page">
+<!ENTITY save.component.exactpersist.accesskey "k">
 <!ENTITY save.mhtml.compatible.label "创建与其它浏览器完全兼容的 MHTML 文件 (o)">
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "默认文件名：">

@@ -19,11 +19,10 @@
 <!ENTITY options.associate.label "Otwieraj archiwa za pomocą Firefoksa">
 <!ENTITY options.associate.accesskey "O">
 <!ENTITY options.associate.description "Zaznacz tę funkcję, jeśli chcesz, aby archiwa internetowe były otwierane po kliknięciu ich ikony.">
-<!-- Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages. -->
-<!ENTITY options.savecomplete.label "Integruj z rozszerzeniem Save Complete">
-<!ENTITY options.savecomplete.accesskey "I">
-<!ENTITY options.savecomplete.para1.description "Rozszerzenie Save Complete umożliwia zapisywanie stron internetowych w wierniejszy sposób niż standardowa funkcja Firefoksa.">
-<!ENTITY options.savecomplete.para2.description "Rozszerzenie Save Complete można w każdej chwili włączyć/wyłączyć z poziomu ustawień MAF.">
+<!ENTITY options.exactpersist.label "Take a faithful snapshot of the page when saving">
+<!ENTITY options.exactpersist.accesskey "T">
+<!ENTITY options.exactpersist.para1.description "This option enhances the standard browser's save system, allowing you to obtain an exact copy of the content displayed at the time the page is saved.">
+<!ENTITY options.exactpersist.para2.description "You can change the save mode at any time from the MAF preferences.">
 <!ENTITY options.savemaff.label "Zapisuj archiwa jako MAFF">
 <!ENTITY options.savemaff.accesskey "M">
 <!ENTITY options.savemaff.para1.description "MAFF jest działającym na wielu platformach formatem opartym na formacie ZIP. Pliki MAFF mogą być otwierane na każdej platformie systemowej obsługującej format ZIP, ale nie mogą być wymieniane z użytkownikami przeglądarki Internet Explorer.">

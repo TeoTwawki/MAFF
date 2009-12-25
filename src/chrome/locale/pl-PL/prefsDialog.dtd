@@ -7,8 +7,10 @@
 <!ENTITY save.component.grouplabel "Zapisuj zawartość strony internetowej używając:">
 <!ENTITY save.component.standard.label "standardowego systemu zapisu przeglądarki">
 <!ENTITY save.component.standard.accesskey "S">
-<!ENTITY save.component.savecomplete.label "zintegrowanego rozszerzenia „Save Complete”">
-<!ENTITY save.component.savecomplete.accesskey "N">
+<!ENTITY save.component.completesave.label "Preserve scripts and source using &quot;Save Complete&quot;">
+<!ENTITY save.component.completesave.accesskey "u">
+<!ENTITY save.component.exactpersist.label "Take a faithful snapshot of the page">
+<!ENTITY save.component.exactpersist.accesskey "k">
 <!ENTITY save.mhtml.compatible.label "twórz pliki MHTML w pełni kompatybilne z innymi przeglądarkami">
 <!ENTITY save.mhtml.compatible.accesskey "M">
 <!ENTITY save.namingstrategy.grouplabel "Dla sugerowanej nazwy pliku użyj:">
