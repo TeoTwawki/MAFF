@@ -135,17 +135,17 @@
           &options.associate.description;
         </xul:description>
 
-        <xul:checkbox id=        "cbSaveComplete"
+        <xul:checkbox id=        "cbExactPersist"
                       checked=   "true"
-                      label=     "&options.savecomplete.label;"
-                      accesskey= "&options.savecomplete.accesskey;"
+                      label=     "&options.exactpersist.label;"
+                      accesskey= "&options.exactpersist.accesskey;"
                       class=     "option"
                       />
         <xul:description class="optiondescription">
-          &options.savecomplete.para1.description;
+          &options.exactpersist.para1.description;
         </xul:description>
         <xul:description class="optiondescription">
-          &options.savecomplete.para2.description;
+          &options.exactpersist.para2.description;
         </xul:description>
 
         <xul:checkbox id=        "cbSaveMaff"

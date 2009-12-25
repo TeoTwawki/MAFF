@@ -123,7 +123,8 @@ var Prefs = {
 
   /** Enumeration for saveComponent */
   SAVECOMPONENT_STANDARD: "standard",
-  SAVECOMPONENT_SAVECOMPLETE: "savecomplete",
+  SAVECOMPONENT_SAVECOMPLETE: "completesave",
+  SAVECOMPONENT_EXACTPERSIST: "exactpersist",
 
   /**
    * Returns the component MAF will use when saving pages from the web to a
@@ -133,14 +134,18 @@ var Prefs = {
    *   SAVECOMPONENT_STANDARD     - (default) Use the browser's native "save
    *                                 complete web page" functionality.
    *   SAVECOMPONENT_SAVECOMPLETE - Use the integrated "Save Complete" code.
+   *   SAVECOMPONENT_EXACTPERSIST - Use the ExactPersist snapshot save mode.
    *   (other)                    - If the user has customized the preference.
    */
   get saveComponent() {
     var prefValue = this.prefBranchForMaf.getCharPref("save.component");
     // The "maf" value represented the internal save component, that is not
-    //  available anymore. If that value is specified in the preference, the
-    //  Save Complete component is used instead.
-    return (prefValue == "maf" ? this.SAVECOMPONENT_SAVECOMPLETE : prefValue);
+    //  available anymore, while "savecomplete" represented the Save Complete
+    //  component up to MAF version 0.17. If one of those values is specified in
+    //  the preference, the ExactPersist component is used instead.
+    return (prefValue == "maf" ? this.SAVECOMPONENT_EXACTPERSIST :
+            prefValue == "savecomplete" ? this.SAVECOMPONENT_EXACTPERSIST :
+            prefValue);
   },
 
   /**

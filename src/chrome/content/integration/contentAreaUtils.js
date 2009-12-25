@@ -311,14 +311,22 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   var persist;
   if (persistArgs.persistObject) {
     persist = persistArgs.persistObject;
-  } else if (MozillaArchiveFormat.Prefs.saveComponent ==
-      MozillaArchiveFormat.Prefs.SAVECOMPONENT_SAVECOMPLETE &&
+  } else if ((MozillaArchiveFormat.Prefs.saveComponent ==
+              MozillaArchiveFormat.Prefs.SAVECOMPONENT_SAVECOMPLETE ||
+              MozillaArchiveFormat.Prefs.saveComponent ==
+              MozillaArchiveFormat.Prefs.SAVECOMPONENT_EXACTPERSIST) &&
       persistArgs.sourceDocument && !persistArgs.targetContentType &&
       (persistArgs.sourceDocument.contentType == "text/html" ||
       persistArgs.sourceDocument.contentType == "application/xhtml+xml")) {
-    // This component can only save a complete HTML document without converting
-    //  its content type
-    persist = new MozillaArchiveFormat.SaveCompletePersist();
+    // Save Complete can only save a complete HTML document without converting
+    //  its content type, while the ExactPersist component could also save XML
+    //  and SVG, but not as accurately as the browser's standard save system.
+    if (MozillaArchiveFormat.Prefs.saveComponent ==
+        MozillaArchiveFormat.Prefs.SAVECOMPONENT_SAVECOMPLETE) {
+      persist = new MozillaArchiveFormat.SaveCompletePersist();
+    } else {
+      persist = new MozillaArchiveFormat.ExactPersist();
+    }
     // If the document saving was initiated by MAF
     if (typeof aSkipPrompt == "object" && aSkipPrompt.mafEventListener) {
       // Configure the persist object appropriately

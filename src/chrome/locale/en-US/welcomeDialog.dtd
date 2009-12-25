@@ -26,11 +26,10 @@
 <!ENTITY options.associate.accesskey "O">
 <!ENTITY options.associate.description "Select this option if you wish to open web archive files by clicking on their icon.">
 
-<!-- Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages. -->
-<!ENTITY options.savecomplete.label "Enable the integrated Save Complete component">
-<!ENTITY options.savecomplete.accesskey "E">
-<!ENTITY options.savecomplete.para1.description "Save Complete is a Firefox extension that allows you to save web pages in a way that is more faithful to the original, compared to the standard Firefox save system.">
-<!ENTITY options.savecomplete.para2.description "You can enable or disable Save Complete at any time from the MAF preferences.">
+<!ENTITY options.exactpersist.label "Take a faithful snapshot of the page when saving">
+<!ENTITY options.exactpersist.accesskey "T">
+<!ENTITY options.exactpersist.para1.description "This option enhances the standard browser's save system, allowing you to obtain an exact copy of the content displayed at the time the page is saved.">
+<!ENTITY options.exactpersist.para2.description "You can change the save mode at any time from the MAF preferences.">
 
 <!ENTITY options.savemaff.label "Save using the MAFF web archive type by default">
 <!ENTITY options.savemaff.accesskey "S">

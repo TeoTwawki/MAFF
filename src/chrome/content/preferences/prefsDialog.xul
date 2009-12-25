@@ -84,8 +84,11 @@
         <radio value="standard"       label=    "&save.component.standard.label;"
                                       accesskey="&save.component.standard.accesskey;"
                                       />
-        <radio value="savecomplete"   label=    "&save.component.savecomplete.label;"
-                                      accesskey="&save.component.savecomplete.accesskey;"
+        <radio value="completesave"   label=    "&save.component.completesave.label;"
+                                      accesskey="&save.component.completesave.accesskey;"
+                                      />
+        <radio value="exactpersist"   label=    "&save.component.exactpersist.label;"
+                                      accesskey="&save.component.exactpersist.accesskey;"
                                       />
         <checkbox id=        "cbSaveMhtmlCompatible"
                   preference="prefSaveMhtmlCompatible"

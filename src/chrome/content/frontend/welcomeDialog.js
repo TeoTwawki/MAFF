@@ -125,10 +125,10 @@ var WelcomeDialog = {
     }
 
     // Apply the Save Complete option as requested
-    var saveComplete = document.getElementById("cbSaveComplete").checked;
+    var exactPersist = document.getElementById("cbExactPersist").checked;
     Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService).
-     getBranch("extensions.maf.").setCharPref("save.component", saveComplete ?
-     Prefs.SAVECOMPONENT_SAVECOMPLETE : Prefs.SAVECOMPONENT_STANDARD)
+     getBranch("extensions.maf.").setCharPref("save.component", exactPersist ?
+     Prefs.SAVECOMPONENT_EXACTPERSIST : Prefs.SAVECOMPONENT_STANDARD)
 
     // Preselect the requested save filter
     var saveMaff = document.getElementById("cbSaveMaff").checked;

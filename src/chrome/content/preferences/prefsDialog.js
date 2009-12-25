@@ -54,6 +54,8 @@ var PrefsDialog = {
       document.getElementById("btnAssociateMHTML").disabled = true;
       document.getElementById("descAssociateWindowsOnly").hidden = false;
     }
+    // Ensure that the preference values are updated from older versions
+    document.getElementById("prefSaveComponent").value = Prefs.saveComponent;
     // Updates the status of the dialog controls
     this.onSaveComponentChange();
   },
@@ -64,8 +66,9 @@ var PrefsDialog = {
    * Enables other dialog controls depending on the selected save component.
    */
   onSaveComponentChange: function() {
-    document.getElementById("cbSaveMhtmlCompatible").disabled =
-     (document.getElementById("prefSaveComponent").value != "savecomplete");
+    var saveComponent = document.getElementById("prefSaveComponent").value;
+    document.getElementById("cbSaveMhtmlCompatible").disabled = ["savecomplete",
+     "completesave", "exactpersist"].indexOf(saveComponent) < 0;
   },
 
   /**
