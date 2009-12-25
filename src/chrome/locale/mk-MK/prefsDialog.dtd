@@ -44,14 +44,14 @@
 <!ENTITY menuitem.saveinarchive.label "Зачувај во архивата">
 <!ENTITY menuitem.saveinarchive.accesskey "х">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.fileassociations.label "File associations">
+<!ENTITY pane.fileassociations.label "Асоцијации на датотеките">
 <!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
 <!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
 <!ENTITY associate.adminprivs.description "This operation might require administrator privileges.">
-<!ENTITY associate.maff.label "Create association for .maff extension">
-<!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
-<!ENTITY associate.mhtml.accesskey "a">
+<!ENTITY associate.maff.label "Креирај асоцијација за .maff екстензија">
+<!ENTITY associate.maff.accesskey "е">
+<!ENTITY associate.mhtml.label "Креирај асоцијација за .mht и .mhtml екстензии">
+<!ENTITY associate.mhtml.accesskey "а">
 <!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
 <!-- Advanced pane -->
 <!ENTITY pane.advanced.label "Напредно">

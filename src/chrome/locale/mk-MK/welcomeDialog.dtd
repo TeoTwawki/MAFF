@@ -16,18 +16,18 @@
 <!ENTITY welcome.para3.description "You can find additional archive management commands in the [b]Tools[/b] menu.">
 <!-- *** Options page *** -->
 <!ENTITY options.description "Even though you can already open and save web archives, the following enhancements to your computer configuration are recommended:">
-<!ENTITY options.associate.label "Open web archives with Firefox by default">
-<!ENTITY options.associate.accesskey "O">
-<!ENTITY options.associate.description "Select this option if you wish to open web archive files by clicking on their icon.">
+<!ENTITY options.associate.label "Отворај ги Веб архивите стандардно со Firefox">
+<!ENTITY options.associate.accesskey "О">
+<!ENTITY options.associate.description "Изберете ја оваа опција ако сакате да ги отворате датотеките на Веб архивите со кликање на нивните икони.">
 <!-- Note: "Save Complete" is the proper name of a Firefox extension and is usually invariant in all languages. -->
 <!ENTITY options.savecomplete.label "Enable the integrated Save Complete component">
 <!ENTITY options.savecomplete.accesskey "E">
 <!ENTITY options.savecomplete.para1.description "Save Complete is a Firefox extension that allows you to save web pages in a way that is more faithful to the original, compared to the standard Firefox save system.">
 <!ENTITY options.savecomplete.para2.description "You can enable or disable Save Complete at any time from the MAF preferences.">
-<!ENTITY options.savemaff.label "Save using the MAFF web archive type by default">
-<!ENTITY options.savemaff.accesskey "S">
+<!ENTITY options.savemaff.label "Зачувај користејќи го MAFF типот на Веб архиви како стандарден">
+<!ENTITY options.savemaff.accesskey "З">
 <!ENTITY options.savemaff.para1.description "MAFF is a cross-platform, open file format based on ZIP. MAFF files can be opened on Linux or any other platform that supports ZIP files, but cannot be easily exchanged with Internet Explorer users.">
 <!ENTITY options.savemaff.para2.description "You can change the archive type at any time in the [b]Save As[/b] dialog box.">
 <!-- *** Changes confirmation message *** -->
 <!ENTITY changesapplied.label "Честитки!">
-<!ENTITY changesapplied.description "Your system has been configured as you requested, and is ready for use.">
+<!ENTITY changesapplied.description "Вашиот систем беше конфигуриран како што баравте и е спремен за употреба.">

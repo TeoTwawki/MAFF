@@ -3,20 +3,20 @@
 <!-- *** General window controls *** -->
 <!ENTITY window.title "Saved Pages Conversion Wizard">
 <!ENTITY browsebutton.label "Прелистај...">
-<!ENTITY continue.label "To continue, click $1.">
+<!ENTITY continue.label "За да продолжите, притиснете $1.">
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Welcome to the Saved Pages Conversion Wizard">
 <!ENTITY introduction.para1.description "This wizard will guide you through the conversion of your previously saved web pages to a different file format.">
 <!ENTITY introduction.para2.description "This procedure is suitable for converting many pages at a time. If you wish to convert single pages, just open them in the browser and save them in another format.">
 <!ENTITY introduction.para3.description "Depending on the selected file formats and save preferences, the converted files may not be completely faithful to the original in some cases. It is recommended that you keep a copy of your original files even after a successful conversion.">
-<!ENTITY introduction.continue.label "To begin, click $1.">
+<!ENTITY introduction.continue.label "За да започните, притиснете $1.">
 <!-- *** File format selection *** -->
-<!ENTITY formats.pagelabel "Input and Output Formats">
+<!ENTITY formats.pagelabel "Влезни и Излезни формати">
 <!ENTITY formats.source.grouplabel "Претвори од:">
 <!ENTITY formats.source.complete.label "Complete web pages (with support folders for data files)">
 <!ENTITY formats.source.complete.accesskey "o">
 <!ENTITY formats.source.plain.label "All web pages (with or without support folders for data files)">
-<!ENTITY formats.source.plain.accesskey "A">
+<!ENTITY formats.source.plain.accesskey "С">
 <!ENTITY formats.source.mhtml.label "MHTML архиви">
 <!ENTITY formats.source.mhtml.accesskey "M">
 <!ENTITY formats.source.maff.label "MAFF архиви">
@@ -30,27 +30,27 @@
 <!ENTITY formats.dest.complete.accesskey "p">
 <!ENTITY formats.invalid.label "Please select two different file formats.">
 <!-- *** Source folder selection *** -->
-<!ENTITY folders.source.pagelabel "Source Folder">
+<!ENTITY folders.source.pagelabel "Изворна папка">
 <!ENTITY folders.source.label "Search this folder for source files:">
 <!ENTITY folders.source.accesskey "e">
 <!ENTITY folders.source.subfolders.label "Include subfolders">
 <!ENTITY folders.source.subfolders.accesskey "s">
 <!ENTITY folders.source.invalid.label "Please select an existing source folder.">
 <!-- *** Destination folder selection *** -->
-<!ENTITY folders.dest.pagelabel "Destination Folders">
+<!ENTITY folders.dest.pagelabel "Одредишни папки">
 <!ENTITY folders.dest.grouplabel "Place converted files:">
 <!ENTITY folders.dest.original.label "In the same folder as the original files">
 <!ENTITY folders.dest.original.accesskey "s">
 <!ENTITY folders.dest.folder.label "In this folder (preserving relative paths):">
 <!ENTITY folders.dest.folder.accesskey "t">
-<!ENTITY folders.bin.grouplabel "After a successful conversion:">
+<!ENTITY folders.bin.grouplabel "После успешно претворање:">
 <!ENTITY folders.bin.original.label "Leave the originals in place">
 <!ENTITY folders.bin.original.accesskey "L">
 <!ENTITY folders.bin.folder.label "Move the originals to this folder (preserving relative paths):">
 <!ENTITY folders.bin.folder.accesskey "M">
 <!ENTITY folders.dest.invalid.label "Please specify the complete folder name.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY candidates.pagelabel "Conversion">
+<!ENTITY candidates.pagelabel "Претворање">
 <!ENTITY candidates.description "Please review the list below, and select the files you wish to convert.">
 <!ENTITY candidates.sourcename.header "Source file name">
 <!ENTITY candidates.sourcedatafoldername.header "Support folder name">
