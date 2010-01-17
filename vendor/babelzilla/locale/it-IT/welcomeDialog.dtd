@@ -11,8 +11,8 @@
 <!ENTITY options.associate.description "Selezionare questa opzione se si desidera aprire i file di archivio web facendo clic sull'icona.">
 <!ENTITY options.exactpersist.label "Effettua una copia fedele della pagina al momento del salvataggio">
 <!ENTITY options.exactpersist.accesskey "E">
-<!ENTITY options.exactpersist.para1.description "Questa opzione migliora il sistema di salvataggio standar del browser, consentendo di ottenere una copia esatta del contenuto visualizzato nel momento in cui la pagina è salvata.">
-<!ENTITY options.exactpersist.para2.description "È possibile cambiare la modalità di salvataggio in ogni momento dalle preferenze di MAF.">
+<!ENTITY options.exactpersist.para1.description "Questa opzione migliora il sistema di salvataggio standard del browser, consentendo di ottenere una copia esatta del contenuto visualizzato nel momento in cui la pagina è salvata.">
+<!ENTITY options.exactpersist.para2.description "È possibile cambiare la modalità di salvataggio nelle preferenze in ogni momento.">
 <!ENTITY options.savemaff.label "Salva usando il formato di archivio MAFF per impostazione predefinita">
 <!ENTITY options.savemaff.accesskey "S">
 <!ENTITY options.savemaff.para1.description "MAFF è un formato di file aperto e multi-piattaforma, basato su ZIP. I file MAFF possono essere aperti su Linux e su ogni altra piattaforma che supporta i file ZIP, ma non possono essere facilmente scambiati con gli utenti di Internet Explorer.">
