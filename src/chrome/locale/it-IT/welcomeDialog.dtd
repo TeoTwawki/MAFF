@@ -11,22 +11,22 @@
 <!ENTITY okbutton.label "OK">
 <!-- *** Welcome message *** -->
 <!ENTITY welcome.label "Benvenuti in Mozilla Archive Format!">
-<!ENTITY welcome.para1.description "Grazie per aver installato MAF! Il vostro Firefox è ora in grado di aprire e salvare pagine web complete all&apos;interno di [i]archivi web[/i] in unico file, con supporto per entrambi i tipi [tt]MAFF[/tt] e [tt]MHTML[/tt].">
+<!ENTITY welcome.para1.description "Grazie per aver installato MAF! Il vostro Firefox è ora in grado di aprire e salvare pagine web complete all'interno di [i]archivi web[/i] in unico file, con supporto per entrambi i tipi [tt]MAFF[/tt] e [tt]MHTML[/tt].">
 <!ENTITY welcome.para2.description "È possibile aprire gli archivi web usando il comando [b]Apri File[/b] dal menu File, e crearli selezionando il tipo di archivio desiderato dalla finestra di dialogo [b]Salva con nome[/b].">
 <!ENTITY welcome.para3.description "Nel menu [b]Strumenti[/b] sono disponibili comandi aggiuntivi per la gestione degli archivi.">
 <!-- *** Options page *** -->
 <!ENTITY options.description "Anche se è già possibile aprire e salvare gli archivi web, i seguenti miglioramenti alla configurazione del proprio computer sono consigliati:">
 <!ENTITY options.associate.label "Apri archivi web con Firefox per impostazione predefinita">
 <!ENTITY options.associate.accesskey "A">
-<!ENTITY options.associate.description "Selezionare questa opzione se si desidera aprire i file di archivio web facendo clic sull&apos;icona.">
-<!ENTITY options.exactpersist.label "Take a faithful snapshot of the page when saving">
-<!ENTITY options.exactpersist.accesskey "T">
-<!ENTITY options.exactpersist.para1.description "This option enhances the standard browser's save system, allowing you to obtain an exact copy of the content displayed at the time the page is saved.">
-<!ENTITY options.exactpersist.para2.description "You can change the save mode at any time from the MAF preferences.">
+<!ENTITY options.associate.description "Selezionare questa opzione se si desidera aprire i file di archivio web facendo clic sull'icona.">
+<!ENTITY options.exactpersist.label "Effettua una copia fedele della pagina al momento del salvataggio">
+<!ENTITY options.exactpersist.accesskey "E">
+<!ENTITY options.exactpersist.para1.description "Questa opzione migliora il sistema di salvataggio standar del browser, consentendo di ottenere una copia esatta del contenuto visualizzato nel momento in cui la pagina è salvata.">
+<!ENTITY options.exactpersist.para2.description "È possibile cambiare la modalità di salvataggio in ogni momento dalle preferenze di MAF.">
 <!ENTITY options.savemaff.label "Salva usando il formato di archivio MAFF per impostazione predefinita">
 <!ENTITY options.savemaff.accesskey "S">
 <!ENTITY options.savemaff.para1.description "MAFF è un formato di file aperto e multi-piattaforma, basato su ZIP. I file MAFF possono essere aperti su Linux e su ogni altra piattaforma che supporta i file ZIP, ma non possono essere facilmente scambiati con gli utenti di Internet Explorer.">
 <!ENTITY options.savemaff.para2.description "È possibile cambiare il tipo di archivio in ogni momento nella finestra di dialogo [b]Salva con nome[/b].">
 <!-- *** Changes confirmation message *** -->
 <!ENTITY changesapplied.label "Congratulazioni!">
-<!ENTITY changesapplied.description "Il sistema è stato configurato come richiesto, ed è pronto per l&apos;uso.">
+<!ENTITY changesapplied.description "Il sistema è stato configurato come richiesto, ed è pronto per l'uso.">

@@ -7,10 +7,10 @@
 <!ENTITY save.component.grouplabel "Al guardar el contenido completo de una página:">
 <!ENTITY save.component.standard.label "Usar el sistema general del navegador">
 <!ENTITY save.component.standard.accesskey "g">
-<!ENTITY save.component.completesave.label "Preserve scripts and source using &quot;Save Complete&quot;">
+<!ENTITY save.component.completesave.label "Preservar scripts y fuentes usando &quot;Save Complete&quot;">
 <!ENTITY save.component.completesave.accesskey "u">
-<!ENTITY save.component.exactpersist.label "Take a faithful snapshot of the page">
-<!ENTITY save.component.exactpersist.accesskey "k">
+<!ENTITY save.component.exactpersist.label "Tomar una instantánea fiel de la página">
+<!ENTITY save.component.exactpersist.accesskey "m">
 <!ENTITY save.mhtml.compatible.label "Crea archivos MHTML compatibles con otros navegadores">
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "Para el nombre de archivo sugerido:">
