@@ -263,8 +263,7 @@ ExactPersistParsedJob.prototype = {
     } catch (e) {
       // In case of errors, use the original URI
     }
-    if (this._eventListener.bundle.checkUriEquality(referenceUri,
-     this.resource.referenceUri)) {
+    if (this._checkUriEquality(referenceUri, this.resource.referenceUri)) {
       // Ensure that, if the target of the reference is the same document it's
       //  contained in, the reference won't point to another document. This
       //  could happen if differently modified versions of the same document are
@@ -277,6 +276,25 @@ ExactPersistParsedJob.prototype = {
     // Ensure that the reference gets associated with a PeristsResource object,
     //  and initialize a new save job for the target if required
     this._eventListener.createJobForReference(reference, referenceUri);
+  },
+
+  /**
+   * This support function returns true if the provided nsIURI objects point to
+   *  the same resource, or false otherwise.
+   */
+  _checkUriEquality: function(aFirstUri, aSecondUri) {
+    // If one of the arguments is null, no match is found
+    if (!aFirstUri || !aSecondUri) {
+      return false;
+    }
+    // Compare the two URIs intelligently, based on their scheme
+    try {
+      return aFirstUri.equals(aSecondUri);
+    } catch(e) {
+      // If the URIs cannot be compared, for example if one of them is an
+      //  invalid "file://" URL, compare their string version
+      return (aFirstUri.spec == aSecondUri.spec);
+    }
   },
 
   /**

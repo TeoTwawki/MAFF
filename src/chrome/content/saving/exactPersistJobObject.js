@@ -319,6 +319,7 @@ ExactPersistJob.prototype = {
     resource.originalUri = aUri;
     this.setResourceLocation(resource, aUri.spec);
     this.bundle.resources.push(resource);
+    this.bundle.addResourceToIndex(resource);
     return resource;
   },
 
@@ -339,8 +340,10 @@ ExactPersistJob.prototype = {
      getService(Ci.nsIIOService).newURI(uniquePrefix +
      aResource.referenceUri.spec, null, null);
     // Modify the properties of the provided resource object
+    this.bundle.removeResourceFromIndex(aResource);
     aResource.originalUri = uniqueUri;
     this.setResourceLocation(aResource, uniqueUri.spec);
+    this.bundle.addResourceToIndex(aResource);
   },
 
   /**

@@ -41,6 +41,8 @@
 function PersistBundle() {
   // Initialize member variables explicitly
   this.resources = [];
+  this._resourceListsByReferenceUri = {};
+  this._resourcesByOriginalUri = {};
 }
 
 PersistBundle.prototype = {
@@ -55,48 +57,54 @@ PersistBundle.prototype = {
   resources: [],
 
   /**
-   * Returns the first resource whose referenceUri matches the provided nsIURI
-   *  object, or null if no resource matches.
+   * Indexes the properties of the given resource, that must have been already
+   *  added to this bundle, so that the retrieval functions can be used with it.
    */
-  getResourceByReferenceUri: function(aReferenceUri) {
-    for (var [, resource] in Iterator(this.resources)) {
-      if (this.checkUriEquality(resource.referenceUri, aReferenceUri)) {
-        return resource;
+  addResourceToIndex: function(aResource) {
+    if (aResource.referenceUri) {
+      var referenceUriSpec = aResource.referenceUri.spec;
+      var resourceList = this._resourceListsByReferenceUri[referenceUriSpec];
+      if (!resourceList) {
+        this._resourceListsByReferenceUri[referenceUriSpec] = [aResource];
+      } else {
+        resourceList.push(aResource);
       }
     }
-    return null;
+    if (aResource.originalUri) {
+      this._resourcesByOriginalUri[aResource.originalUri.spec] = aResource;
+    }
+  },
+
+  /**
+   * Removes the properties of the given resource from the index, so that the
+   *  properties can be modified.
+   */
+  removeResourceFromIndex: function(aResource) {
+    if (aResource.referenceUri) {
+      var resourceList = this.
+       _resourceListsByReferenceUri[aResource.referenceUri.spec];
+      resourceList.splice(resourceList.indexOf(aResource), 1);
+    }
+    if (aResource.originalUri) {
+      delete this._resourcesByOriginalUri[aResource.originalUri.spec];
+    }
+  },
+
+  /**
+   * Returns the first resource whose referenceUri matches the provided nsIURI
+   *  object, or undefined if no resource matches.
+   */
+  getResourceByReferenceUri: function(aReferenceUri) {
+    var resourceList = this._resourceListsByReferenceUri[aReferenceUri.spec];
+    return resourceList && resourceList[0];
   },
 
   /**
    * Returns the resource whose originalUri matches the provided nsIURI object,
-   *  or null if no resource matches.
+   *  or undefined if no resource matches.
    */
   getResourceByOriginalUri: function(aOriginalUri) {
-    for (var [, resource] in Iterator(this.resources)) {
-      if (this.checkUriEquality(resource.originalUri, aOriginalUri)) {
-        return resource;
-      }
-    }
-    return null;
-  },
-
-  /**
-   * This support function returns true if the provided nsIURI objects point to
-   *  the same resource, or false otherwise.
-   */
-  checkUriEquality: function(aFirstUri, aSecondUri) {
-    // If one of the arguments is null, no match is found
-    if (!aFirstUri || !aSecondUri) {
-      return false;
-    }
-    // Compare the two URIs intelligently, based on their scheme
-    try {
-      return aFirstUri.equals(aSecondUri);
-    } catch(e) {
-      // If the URIs cannot be compared, for example if one of them is an
-      //  invalid "file://" URL, compare their string version
-      return (aFirstUri.spec == aSecondUri.spec);
-    }
+    return this._resourcesByOriginalUri[aOriginalUri.spec];
   },
 
   /**
@@ -165,6 +173,18 @@ PersistBundle.prototype = {
   },
 
   // --- Private methods and properties ---
+
+  /**
+   * Associates the values of the referenceUri property with arrays containing
+   *  the corresponding resource objects.
+   */
+  _resourceListsByReferenceUri: {},
+
+  /**
+   * Associates the values of the originalUri property with the corresponding
+   *  resource objects.
+   */
+  _resourcesByOriginalUri: {},
 
   /**
    * This generator function yields each file in the given folder and its
