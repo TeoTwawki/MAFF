@@ -9,10 +9,10 @@
 <!ENTITY options.associate.label "Abrir archivos web usando Firefox por defecto">
 <!ENTITY options.associate.accesskey "A">
 <!ENTITY options.associate.description "Seleccione esta opción si quiere abrir los archivos web pulsando en su icono.">
-<!ENTITY options.savecomplete.label "Habilitar el componente integrado de Save Complete">
-<!ENTITY options.savecomplete.accesskey "H">
-<!ENTITY options.savecomplete.para1.description "Save Complete es una extensión para Firefox que le permite guardar las páginas web de un modo más similar al original, comparado con el funcionamiento normal de Firefox.">
-<!ENTITY options.savecomplete.para2.description "Puede habilitar o deshabilitar Save Complete en cualquier momento desde las opciones de MAF.">
+<!ENTITY options.exactpersist.label "Tomar una instantánea fiel de la página al guardar">
+<!ENTITY options.exactpersist.accesskey "T">
+<!ENTITY options.exactpersist.para1.description "Esta opción mejora el sistema de guardar del navegador, permitiendo obtener una copia exacta del contenido mostrado cuando la página se guarda.">
+<!ENTITY options.exactpersist.para2.description "Puede cambiar el modo de guardar en cualquier momento en las opciones de MAF.">
 <!ENTITY options.savemaff.label "Guardar usando el tipo de archivo web por defecto">
 <!ENTITY options.savemaff.accesskey "G">
 <!ENTITY options.savemaff.para1.description "MAFF es un sistema de archivos multi plataforma basado en ZIP. Los archivos MAFF pueden abrirse en Linux y otras plataformas que soporten los archivos ZIP, pero no pueden ser intercambiados con los usuarios de Internet Explorer.">

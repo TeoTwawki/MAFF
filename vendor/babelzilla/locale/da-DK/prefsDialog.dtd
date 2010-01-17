@@ -5,8 +5,6 @@
 <!ENTITY save.component.grouplabel "Ved gem af komplet webside-indhold:">
 <!ENTITY save.component.standard.label "Brug browsers standard gem-system">
 <!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.savecomplete.label "Brug integreret &quot;Save Complete&quot;-udvidelse">
-<!ENTITY save.component.savecomplete.accesskey "u">
 <!ENTITY save.metadata.extended.label "Gem udvidede metadata i MAFF-arkiver">
 <!ENTITY save.metadata.extended.accesskey "u">
 <!ENTITY pane.interface.label "Brugerflade">

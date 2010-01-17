@@ -5,8 +5,6 @@
 <!ENTITY save.component.grouplabel "Tüm web sayfası içeriğini kaydederken:">
 <!ENTITY save.component.standard.label "Tarayıcının standart kayıt sistemini kullan">
 <!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.savecomplete.label "Tümleşik &quot;Tamamını Kaydet&quot; eklentisini kullan">
-<!ENTITY save.component.savecomplete.accesskey "U">
 <!ENTITY save.metadata.extended.label "Genişletilmiş metaveriyi MAFF arşivlerine kaydet">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!ENTITY pane.interface.label "Arayüz">

@@ -5,8 +5,6 @@
 <!ENTITY save.component.grouplabel "Ao salvar o conteúdo das páginas:">
 <!ENTITY save.component.standard.label "usar o método padrão do navegador">
 <!ENTITY save.component.standard.accesskey "p">
-<!ENTITY save.component.savecomplete.label "usar o &quot;Save Complete&quot; integrado">
-<!ENTITY save.component.savecomplete.accesskey "S">
 <!ENTITY save.mhtml.compatible.label "Criar arquivos MHTML compatíveis com outros navegadores">
 <!ENTITY save.mhtml.compatible.accesskey "c">
 <!ENTITY save.namingstrategy.grouplabel "Para o nome de arquivo sugerido:">
