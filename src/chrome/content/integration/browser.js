@@ -45,6 +45,10 @@
  *   Dão Gottwald <dao@mozilla.com>
  *   Thomas K. Dyas <tdyas@zecador.org>
  *   Edward Lee <edward.lee@engineering.uiuc.edu>
+ *   Paul O’Shannessy <paul@oshannessy.com>
+ *   Nils Maier <maierman@web.de>
+ *   Rob Arnold <robarnold@cmu.edu>
+ *   Dietrich Ayala <dietrich@mozilla.com>
  *   Paolo Amadini <http://www.amadzone.org/>
  *
  * Alternatively, the contents of this file may be used under the terms of
@@ -70,6 +74,8 @@ function BrowserOpenFileWindow()
     fp.init(window, gNavigatorBundle.getString("openFile"), nsIFilePicker.modeOpen);
     fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterImages |
                      nsIFilePicker.filterXML | nsIFilePicker.filterHTML);
+    if (gLastOpenDirectory)
+      fp.displayDirectory = gLastOpenDirectory.path;
 
     // Add filters from Mozilla Archive Format
     MozillaArchiveFormat.FileFilters.openFilters.forEach(function(curFilter) {
@@ -81,6 +87,8 @@ function BrowserOpenFileWindow()
     // Show the filepicker, and remember the selected file filter
     fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.openFilterIndex;
     if (fp.show() == nsIFilePicker.returnOK) {
+      if (gLastOpenDirectory && fp.file && fp.file.exists())
+        gLastOpenDirectory.path = fp.file.parent.QueryInterface(Ci.nsILocalFile);
       MozillaArchiveFormat.DynamicPrefs.openFilterIndex = fp.filterIndex;
       openTopWin(fp.fileURL.spec);
     }
