@@ -26,8 +26,9 @@ Every first-level subfolder maps to a different project:
     of the released product versions. These subfolders are:
       "fx-3_0"   - CVS tag: FIREFOX_3_0_RELEASE
       "fx-3_0_5" - CVS tag: FIREFOX_3_0_5_RELEASE
-      "fx-3_1b2" - Mercurial tag: FIREFOX_3_1b2_RELEASE
-      "fx-3_1b3" - Mercurial tag: FIREFOX_3_1b3_RELEASE
+      "fx-3_1b2" - Mercurial tag: FIREFOX_3_1b2_RELEASE in mozilla-1.9.1
+      "fx-3_1b3" - Mercurial tag: FIREFOX_3_1b3_RELEASE in mozilla-1.9.1
+      "fx-3_6"   - Mercurial tag: FIREFOX_3_6_RELEASE   in mozilla-1.9.2
 
     The subfolder named "current" contains the latest version used as a
     reference for the files in the "integration" folder. As files in this
