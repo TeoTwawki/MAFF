@@ -92,19 +92,19 @@ PersistBundle.prototype = {
 
   /**
    * Returns the first resource whose referenceUri matches the provided nsIURI
-   *  object, or undefined if no resource matches.
+   *  object, or null if no resource matches.
    */
   getResourceByReferenceUri: function(aReferenceUri) {
     var resourceList = this._resourceListsByReferenceUri[aReferenceUri.spec];
-    return resourceList && resourceList[0];
+    return (resourceList && resourceList[0]) || null;
   },
 
   /**
    * Returns the resource whose originalUri matches the provided nsIURI object,
-   *  or undefined if no resource matches.
+   *  or null if no resource matches.
    */
   getResourceByOriginalUri: function(aOriginalUri) {
-    return this._resourcesByOriginalUri[aOriginalUri.spec];
+    return this._resourcesByOriginalUri[aOriginalUri.spec] || null;
   },
 
   /**
