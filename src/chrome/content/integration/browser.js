@@ -67,6 +67,9 @@
 
 function BrowserOpenFileWindow()
 {
+  // Ensure that the variable gLastOpenDirectory is declared
+  var gLastOpenDirectory = gLastOpenDirectory;
+
   // Get filepicker component.
   try {
     const nsIFilePicker = Components.interfaces.nsIFilePicker;
