@@ -92,28 +92,28 @@
          />
   </keyset>
 
-  <!-- Browser's File menu -->
+  <!-- Navigator's or Browser's File menu -->
   <menupopup id="menu_FilePopup">
     <menuitem id=          "mafMenuSavePageInArchive_fileMenu"
-              insertbefore="menu_saveFrame"
+              insertafter= "savepage,menu_savePage"
               label=       "&menuitem.savepageinarchive.label;"
               accesskey=   "&menuitem.savepageinarchive.accesskey.filemenu;"
               command=     "mafCmdSavePageInArchive"
               />
     <menuitem id=          "mafMenuSaveFrameInArchive_fileMenu"
-              insertafter= "menu_saveFrame"
+              insertafter= "saveframe,menu_saveFrame"
               label=       "&menuitem.saveframeinarchive.label;"
               accesskey=   "&menuitem.saveframeinarchive.accesskey.filemenu;"
               command=     "mafCmdSaveFrameInArchiveFromWindow"
               />
     <menuitem id=          "mafMenuSaveTabsAs_fileMenu"
-              insertbefore="menu_sendLink"
+              insertbefore="saveMenuBlockEnd,menu_sendLink"
               label=       "&menuitem.savetabsas.label;"
               accesskey=   "&menuitem.savetabsas.accesskey.filemenu;"
               command=     "mafCmdSaveTabsAs"
               />
     <menuitem id=          "mafMenuSaveAllTabsAs_fileMenu"
-              insertbefore="menu_sendLink"
+              insertbefore="saveMenuBlockEnd,menu_sendLink"
               label=       "&menuitem.savealltabsas.label;"
               accesskey=   "&menuitem.savealltabsas.accesskey.filemenu;"
               command=     "mafCmdSaveAllTabsAs"
@@ -123,56 +123,53 @@
                    />
   </menupopup>
 
-  <!-- Browser's Tools menu -->
-  <menupopup id="menu_ToolsPopup">
-    <menu id=         "mafMenuMafSubMenu_toolsMenu"
-          insertafter="devToolsSeparator"
-          label=      "&menuitem.mafsubmenu.label;"
-          accesskey=  "&menuitem.mafsubmenu.accesskey.toolsmenu;"
-          >
-      <menupopup id="mafMenuPopupMafSubMenu_toolsMenu">
-        <menuitem id=         "mafMenuBrowseOpenArchives_toolsMenu"
-                  label=      "&menuitem.browseopenarchives.label;"
-                  accesskey=  "&menuitem.browseopenarchives.accesskey.toolsmenu;"
-                  key=        "mafKeyBrowseOpenArchives"
-                  command=    "mafCmdBrowseOpenArchives"
-                  />
-        <menuseparator />
-        <menuitem id=         "mafMenuSavePageInArchive_toolsMenu"
-                  label=      "&menuitem.savepageinarchive.label;"
-                  accesskey=  "&menuitem.savepageinarchive.accesskey.toolsmenu;"
-                  command=    "mafCmdSavePageInArchive"
-                  />
-        <menuitem id=         "mafMenuSaveFrameInArchive_toolsMenu"
-                  label=      "&menuitem.saveframeinarchive.label;"
-                  accesskey=  "&menuitem.saveframeinarchive.accesskey.toolsmenu;"
-                  command=    "mafCmdSaveFrameInArchiveFromWindow"
-                  />
-        <menuitem id=         "mafMenuSaveTabsAs_toolsMenu"
-                  label=      "&menuitem.savetabsas.label;"
-                  accesskey=  "&menuitem.savetabsas.accesskey.toolsmenu;"
-                  command=    "mafCmdSaveTabsAs"
-                  />
-        <menuitem id=         "mafMenuSaveAllTabsAs_toolsMenu"
-                  label=      "&menuitem.savealltabsas.label;"
-                  accesskey=  "&menuitem.savealltabsas.accesskey.toolsmenu;"
-                  command=    "mafCmdSaveAllTabsAs"
-                  />
-        <menuseparator />
-        <menuitem id=         "mafMenuConvertSavedPages_toolsMenu"
-                  label=      "&menuitem.convertsavedpages.label;"
-                  accesskey=  "&menuitem.convertsavedpages.accesskey.toolsmenu;"
-                  command=    "mafCmdConvertSavedPages"
-                  />
-        <menuseparator />
-        <menuitem id=         "mafMenuPreferences_toolsMenu"
-                  label=      "&menuitem.preferences.label;"
-                  accesskey=  "&menuitem.preferences.accesskey.toolsmenu;"
-                  command=    "mafCmdPreferences"
-                  />
-      </menupopup>
-    </menu>
-  </menupopup>
+  <!-- Browser's Tools menu, applied depending on the host application -->
+  <menu id="mafMenuMafSubMenu_toolsMenu"
+        label=      "&menuitem.mafsubmenu.label;"
+        accesskey=  "&menuitem.mafsubmenu.accesskey.toolsmenu;"
+        >
+    <menupopup id="mafMenuPopupMafSubMenu_toolsMenu">
+      <menuitem id=         "mafMenuBrowseOpenArchives_toolsMenu"
+                label=      "&menuitem.browseopenarchives.label;"
+                accesskey=  "&menuitem.browseopenarchives.accesskey.toolsmenu;"
+                key=        "mafKeyBrowseOpenArchives"
+                command=    "mafCmdBrowseOpenArchives"
+                />
+      <menuseparator />
+      <menuitem id=         "mafMenuSavePageInArchive_toolsMenu"
+                label=      "&menuitem.savepageinarchive.label;"
+                accesskey=  "&menuitem.savepageinarchive.accesskey.toolsmenu;"
+                command=    "mafCmdSavePageInArchive"
+                />
+      <menuitem id=         "mafMenuSaveFrameInArchive_toolsMenu"
+                label=      "&menuitem.saveframeinarchive.label;"
+                accesskey=  "&menuitem.saveframeinarchive.accesskey.toolsmenu;"
+                command=    "mafCmdSaveFrameInArchiveFromWindow"
+                />
+      <menuitem id=         "mafMenuSaveTabsAs_toolsMenu"
+                label=      "&menuitem.savetabsas.label;"
+                accesskey=  "&menuitem.savetabsas.accesskey.toolsmenu;"
+                command=    "mafCmdSaveTabsAs"
+                />
+      <menuitem id=         "mafMenuSaveAllTabsAs_toolsMenu"
+                label=      "&menuitem.savealltabsas.label;"
+                accesskey=  "&menuitem.savealltabsas.accesskey.toolsmenu;"
+                command=    "mafCmdSaveAllTabsAs"
+                />
+      <menuseparator />
+      <menuitem id=         "mafMenuConvertSavedPages_toolsMenu"
+                label=      "&menuitem.convertsavedpages.label;"
+                accesskey=  "&menuitem.convertsavedpages.accesskey.toolsmenu;"
+                command=    "mafCmdConvertSavedPages"
+                />
+      <menuseparator />
+      <menuitem id=         "mafMenuPreferences_toolsMenu"
+                label=      "&menuitem.preferences.label;"
+                accesskey=  "&menuitem.preferences.accesskey.toolsmenu;"
+                command=    "mafCmdPreferences"
+                />
+    </menupopup>
+  </menu>
 
   <!-- Browser's page context menu -->
   <popup id="contentAreaContextMenu">
@@ -205,7 +202,6 @@
   <popupset>
     <menupopup id="mafFrameContextSubmenu">
       <menuitem id=         "mafMenuSaveFrameInArchive_pageContextMenu"
-                insertafter="context-saveframe"
                 label=      "&menuitem.saveframeinarchive.label;"
                 accesskey=  "&menuitem.saveframeinarchive.accesskey.pagecontextmenu;"
                 command=    "mafCmdSaveFrameInArchiveFromContext"
@@ -222,20 +218,16 @@
   <popupset>
     <menupopup id="mafTabContextMenu">
       <menuitem id=          "mafMenuSaveTabsAs_tabsContextMenu"
-                insertbefore="context_reloadTab"
                 label=       "&menuitem.savetabsas.label;"
                 accesskey=   "&menuitem.savetabsas.accesskey.tabscontextmenu;"
                 command=     "mafCmdSaveTabsAs"
                 />
       <menuitem id=          "mafMenuSaveAllTabsAs_tabsContextMenu"
-                insertbefore="context_reloadTab"
                 label=       "&menuitem.savealltabsas.label;"
                 accesskey=   "&menuitem.savealltabsas.accesskey.tabscontextmenu;"
                 command=     "mafCmdSaveAllTabsAs"
                 />
-      <menuseparator id=          "mafMenuSaveSeparator_tabsContextMenu"
-                     insertbefore="context_reloadTab"
-                     />
+      <menuseparator id="mafMenuSaveSeparator_tabsContextMenu" />
     </menupopup>
   </popupset>
 </overlay>

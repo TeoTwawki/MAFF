@@ -62,32 +62,44 @@ var MafCommandsOverlay = {
     // Listen for when the browser window closes, to perform shutdown
     window.addEventListener("unload", MafCommandsOverlay.onUnload, false);
 
-    // Find references to the elements to be modified
+    // Manually add the "Save Frame In Archive" menu item to the "This Frame"
+    //  context menu. The menu item after which the new item is added has a
+    //  different name in "navigator.xul" and in "browser.xul".
     var frameContextSubmenu = document.getElementById("frame").firstChild;
+    var frameContextSubmenuAfterItem = document.getElementById("saveframeas") ||
+     document.getElementById("context-saveframe");
+    frameContextSubmenu.insertBefore(
+     document.getElementById("mafMenuSaveFrameInArchive_pageContextMenu"),
+     frameContextSubmenuAfterItem.nextSibling);
+
+    // Find the tab bar context menu in the XBL binding of the tabbed browser
     var tabBrowser = document.getElementById("content");
     var tabContextMenu = document.getAnonymousElementByAttribute(tabBrowser,
      "anonid", "tabContextMenu");
-
-    // Find references to the new elements to be inserted
-    var frameContextSubmenuNewNodes = document.
-     getElementById("mafFrameContextSubmenu").childNodes;
-    var tabContextMenuNewNodes = document.
-     getElementById("mafTabContextMenu").childNodes;
-
-    // Add the child elements at the appropriate positions
-    MafCommandsOverlay._addChildElementsWithPositions(
-     frameContextSubmenu,
-     frameContextSubmenuNewNodes);
-    MafCommandsOverlay._addChildElementsWithPositions(
-     tabContextMenu,
-     tabContextMenuNewNodes);
+    // Insert the items before the "Reload Tab" item defined in "browser.xul",
+    //  or if this element is not accessible because it does not have an ID
+    //  insert the items just after the second menu separator.
+    var tabContextMenuBeforeItem = document.getElementById("context_reloadTab");
+    if (!tabContextMenuBeforeItem) {
+      var elementList = tabContextMenu.
+       getElementsByTagNameNS(tabContextMenu.namespaceURI, "menuseparator");
+      tabContextMenuBeforeItem = elementList[1].nextSibling;
+    }
+    // Each element in the MAF tab bar context menu is moved to the appropriate
+    //  destination and removed from the original list.
+    var tabContextMenuNewNodes = document.getElementById("mafTabContextMenu").
+     childNodes;
+    while (tabContextMenuNewNodes.length > 0) {
+      var newChild = tabContextMenuNewNodes[0];
+      tabContextMenu.insertBefore(newChild, tabContextMenuBeforeItem);
+    }
 
     // Add event listeners to check for menu item visibility. See also
     // <https://developer.mozilla.org/en/XUL/PopupGuide/PopupEvents> (retrieved
     // 2009-03-01).
     [
      document.getElementById("menu_FilePopup"),
-     document.getElementById("menu_ToolsPopup"),
+     document.getElementById("mafMenuMafSubMenu_toolsMenu").parentNode,
      document.getElementById("contentAreaContextMenu"),
      tabContextMenu
     ].forEach(function(element) {
@@ -122,24 +134,24 @@ var MafCommandsOverlay = {
       return;
     }
 
-    // The visibility of the MAF submenu in the Tools menu depends only on the
-    //  related preference
-    if (aEvent.target.id == "menu_ToolsPopup") {
-      document.getElementById("mafMenuMafSubMenu_toolsMenu").hidden =
-       !MozillaArchiveFormat.Prefs.interfaceMenuTools;
-    }
-
     // For the other menus, a preference controls whether any MAF menu item is
     //  visible at all in that particular menu. Even if the preference is true
     //  for the menu, the single items must still be checked for visibility
     //  based on the context.
+    var isToolsMenu = false;
     var isVisibleInMenu;
     switch (aEvent.target.id) {
       case "menu_FilePopup":
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuFile;
         break;
       case "menu_ToolsPopup":
+      case "taskPopup":
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTools;
+        isToolsMenu = true;
+        // The visibility of the MAF submenu in the Tools menu depends only on
+        //  the related preference
+        document.getElementById("mafMenuMafSubMenu_toolsMenu").hidden =
+         !MozillaArchiveFormat.Prefs.interfaceMenuTools;
         break;
       case "contentAreaContextMenu":
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuPageContext;
@@ -176,7 +188,7 @@ var MafCommandsOverlay = {
         // Check for "Save In Archive" elements visibility. The items are
         //  always visible in the Tools menu, while in the other menus it
         //  depends on a specific user preference.
-        } else if (aEvent.target.id != "menu_ToolsPopup" && isSaveInArchive &&
+        } else if (!isToolsMenu && isSaveInArchive &&
          !MozillaArchiveFormat.Prefs.interfaceMenuItemSaveInArchive) {
           element.hidden = true;
 
@@ -355,33 +367,6 @@ var MafCommandsOverlay = {
     // Use the global saveDocument function with the special MAF parameters
     saveDocument(gContextMenu.target.ownerDocument,
      {mafAskSaveArchive: true});
-  },
-
-  // --- Overlay support functions ---
-
-  /**
-   * Adds children to the specified DOM element, respecting the positions
-   *  specified using a simplified version of the "insertbefore" and
-   *  "insertafter" attributes of the children. Elements are moved, not copied.
-   *
-   * @param aElement       Element whose children are being modified.
-   * @param aNewChildren   List of child elements to add.
-   */
-  _addChildElementsWithPositions: function(aElement, aNewChildren) {
-    // Each entry in the provided DOM element list is moved to the appropriate
-    //  destination and removed from the original list.
-    while (aNewChildren.length > 0) {
-      var newChild = aNewChildren[0];
-      // Insert the new element either before or after another element
-      if (newChild.hasAttribute("insertbefore")) {
-        var beforeId = newChild.getAttribute("insertbefore");
-        aElement.insertBefore(newChild, document.getElementById(beforeId));
-      } else {
-        var afterId = newChild.getAttribute("insertafter");
-        aElement.insertBefore(newChild,
-         document.getElementById(afterId).nextSibling);
-      }
-    }
   }
 }
 
