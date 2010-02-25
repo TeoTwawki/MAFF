@@ -168,8 +168,11 @@ FileAssociationsCreator.prototype = {
        .getService(Ci.nsIProperties).get("CurProcD", Ci.nsIFile);
     }
 
-    // Assume the executable name is "firefox.exe"
+    // Assume the executable name is either "firefox.exe" or "seamonkey.exe"
     installDir.append("firefox.exe");
+    if (!installDir.exists()) {
+      installDir.leafName = "seamonkey.exe";
+    }
 
     // Return the required path as a string
     return installDir.path;
