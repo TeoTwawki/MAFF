@@ -86,13 +86,36 @@ Archive.prototype = {
   },
 
   /**
-   * nsIURI representing the compressed or encoded archive.
+   * nsIURI representing the original location of the web archive.
    *
-   * The returned URI never contains query or hash parts.
+   * This URI does not refer to a specific page in the archive. If this property
+   *  is set to an URI containing a page reference, the reference is removed.
+   *
+   * By default, this property corresponds to the URI of the archive file.
    */
+  _uri: null,
   get uri() {
-    return Cc["@mozilla.org/network/io-service;1"].
-     getService(Ci.nsIIOService).newFileURI(this.file);
+    // If the original URI for the archive was not set explicitly, generate a
+    //  new URI pointing to the local archive file
+    if (!this._uri) {
+      this._uri = Cc["@mozilla.org/network/io-service;1"].
+       getService(Ci.nsIIOService).newFileURI(this.file);
+    }
+    return this._uri;
+  },
+  set uri(aValue) {
+    var archiveUri = aValue.clone();
+    if (archiveUri instanceof Ci.nsIFileURL) {
+      // Ensure that query, hash and parameter parts are removed for local files
+      archiveUri.query = "";
+      archiveUri.ref = "";
+      archiveUri.path = archiveUri.path.replace(/;\d+$/, "");
+    } else if (archiveUri instanceof Ci.nsIURL) {
+      // Ensure that the archive page number in the query part is removed
+      archiveUri.query =
+       archiveUri.query.replace(/&?web_archive_page=\d+$/, "");
+    }
+    this._uri = archiveUri;
   },
 
   /**

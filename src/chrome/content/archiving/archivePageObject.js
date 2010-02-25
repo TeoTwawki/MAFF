@@ -120,13 +120,33 @@ ArchivePage.prototype = {
    *  archive.
    */
   get archiveUri() {
+    // For a single-page archive, there is no difference with the archive URI
     var pageArchiveUri = this.archive.uri.clone();
-    if (this.archive.pages.length > 1) {
-      // If this page is part of a multi-page archive, add the index of the page
-      //  as the parameter part of the URI. The original archive URI does not
-      //  contain query or hash parts.
-      pageArchiveUri.QueryInterface(Ci.nsIURL).path += ";" + (this._index + 1);
+    if (this.archive.pages.length == 1) {
+      return pageArchiveUri;
     }
+
+    // Ensure that we can modify the URL to point to a specific page
+    if (!(pageArchiveUri instanceof Ci.nsIURL)) {
+      throw new Components.Exception("Multi-page archives can only be opened" +
+       " from a location that supports relative URLs.");
+    }
+
+    if (pageArchiveUri instanceof Ci.nsIFileURL) {
+      // If this page is part of a multi-page archive stored in a local file,
+      //  add the index of the page as the parameter part of the URI. The
+      //  original archive URL does not contain query or hash parts.
+      pageArchiveUri.path += ";" + (this._index + 1);
+    } else {
+      // For archives loaded from a remote location, the parameter part of the
+      //  URL is usually not handled, thus we use the query part to store the
+      //  information about the page number.
+      if (pageArchiveUri.query) {
+        pageArchiveUri.query += "&";
+      }
+      pageArchiveUri.query += "web_archive_page=" + (this._index + 1);
+    }
+
     return pageArchiveUri;
   },
 
