@@ -129,10 +129,8 @@ MafDocumentLoaderFactory.prototype = {
     var mafObjects = {};
     Cu.import("resource://maf/modules/mafObjects.jsm", mafObjects);
 
-    // Load the archive, and retrieve the URI of the content associated with the
-    //  page to be displayed. The called function may start a redirect and
-    //  return the URI of a page that will be displayed only temporarily.
-    var contentURI = mafObjects.ArchiveLoader.load(aChannel.URI, aContainer);
+    // Retrieve the URI of the content associated with the page to be displayed
+    var contentURI = mafObjects.ArchiveLoader.getContentUri(aChannel.URI);
 
     // Determine the probable MIME type associated with the content to display.
     //  This is normally based on the extension of the main file in the archive.

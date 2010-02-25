@@ -37,8 +37,7 @@
 
 /**
  * The FileFilters global object provides access to the information to be
- *  displayed in the "Open" and "Save As" dialogs, as well as providing means to
- *  match the file extensions to the internal type of an archive file.
+ *  displayed in the "Open" and "Save As" dialogs.
  */
 var FileFilters = {
   /*
@@ -86,16 +85,6 @@ var FileFilters = {
        extensionString: mhtmlExtensionString,
        mafArchiveType:  "TypeMHTML" }
     ];
-  },
-
-  /**
-   * Returns the "scriptPath" information for the archive whose local file
-   *  path or file URI is specified.
-   */
-  scriptPathFromFilePath: function(aArchivePathOrURI) {
-    // Assume MAFF unless filename ends with .MHTML or .MHT (case insensitive)
-    var hasMhtmlExtension = /\.(mhtml|mht)$/i.test(aArchivePathOrURI);
-    return (hasMhtmlExtension ? "TypeMHTML" : "TypeMAFF");
   },
 
   /*

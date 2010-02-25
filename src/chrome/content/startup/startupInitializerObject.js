@@ -45,29 +45,81 @@ var StartupInitializer = {
    * This function is called every time a new user profile is ready for use in
    *  the host application, usually before the first window is opened.
    *
-   * Dynamic MIME type and document loader factory registrations must be done
-   *  here, instead of when the first browser windows loads, to handle the case
-   *  where the path of an archive managed by MAF is specified on the
-   *  command-line.
-   *
-   * This function is hard-coded to enable handling of the MAFF file format
-   *  (.maff file extension) and MHTML file format (.mht and .mhtml file
-   *  extensions). Since MAF works with local files only, the file extension
-   *  is prioritized over the expected MIME type of the content.
+   * This function initializes the host environment to allow processing MAFF
+   *  and MHTML archives. This is done by registering various components that
+   *  are then used by the host application in the document loading process.
+   *  These initializations must be done before any browser window loads, but
+   *  after the user profile has loaded, since the actual MIME types of MHTML
+   *  and MAFF web archives in use in the system are not known in advance.
    *
    * All the initializations done here are temporary (not persisted) and survive
    *  until the application is closed. No explicit cleanup is done when a user
    *  profile is unloaded.
+   *
+   * In order to understand the role of the various components in the loading
+   *  process, these resources (retrieved 2010-02-19) are prerequisites:
+   *    <https://developer.mozilla.org/en/DocShell>
+   *    <https://developer.mozilla.org/en/Document_Loading_-_From_Load_Start_to_Finding_a_Handler>
+   *    <https://developer.mozilla.org/en/The_life_of_an_HTML_HTTP_request>
+   *    <https://developer.mozilla.org/en/How_Mozilla_determines_MIME_Types>
    */
   initFromCurrentProfile: function() {
-    // Register our Document Loader Factory for every handled file type. MAF is
-    //  the extension that will preferably handle the MAFF file format, while it
-    //  will handle MHTML only if no other extension does it.
-    new DlfRegisterer("@amadzone.org/maf/document-loader-factory;1")
-     .addFileExtension("mhtml", "application/x-mht",  false)
-     .addFileExtension("mht",   "application/x-mht",  false)
-     .addFileExtension("maff",  "application/x-maff", true)
-     .register();
+    // For each available archive type, define the file extensions and the MIME
+    //  media types that are recognized as being associated with the file type.
+    var archiveTypesToRegister = [
+     { mafArchiveType: "TypeMAFF",
+       fileExtensions: ["maff"],
+       mimeTypes:      ["application/x-maff"] },
+     { mafArchiveType: "TypeMHTML",
+       fileExtensions: ["mht", "mhtml"],
+       mimeTypes:      ["application/x-mht", "message/rfc822"] }
+    ];
+
+    // Build a list of MIME types and associated archive types. This list will
+    //  be used by the archive loader to determine how to handle web archives.
+    for (let [, archiveInfo] in Iterator(archiveTypesToRegister)) {
+      for (let [, mimeType] in Iterator(archiveInfo.mimeTypes)) {
+        ArchiveLoader.archiveTypeByContentType[mimeType] = archiveInfo.
+         mafArchiveType;
+      }
+      for (let [, fileExtension] in Iterator(archiveInfo.fileExtensions)) {
+        // Firstly, for web archives opened from local files or loaded from
+        //  remote locations where no MIME type is sent by the server, ensure
+        //  that a MIME type is assigned based on the file extension. If there
+        //  are no other means to determine the MIME type for a file extension,
+        //  the last resort is the "ext-to-type-mapping" category, so we set an
+        //  entry there if it's not already present. Note that this does not
+        //  ensure that the extension will be associated with the given type.
+        this._addCategoryEntryForSession("ext-to-type-mapping", fileExtension,
+         archiveInfo.mimeTypes[0]);
+        // At this point, find out the actual MIME type that will be used for
+        //  the file extension, and ensure that it will be one of the media
+        //  types associated with the archive type.
+        var realMimeType = this._getTypeFromExtensionSafely(fileExtension,
+         archiveInfo.mimeTypes[0]);
+        ArchiveLoader.archiveTypeByContentType[realMimeType] = archiveInfo.
+         mafArchiveType;
+      }
+    }
+
+    // For each of the MIME types that we need to handle, ensure that there is a
+    //  generic stream converter available. Stream converters must be registered
+    //  with a well-known contract ID based on the source MIME media type, and
+    //  must also be registered separately in the category manager.
+    for (let [mimeType] in Iterator(ArchiveLoader.archiveTypeByContentType)) {
+      this._registerStreamConverter("@mozilla.org/streamconv;1?from=" +
+       mimeType + "&to=*/*");
+      this._addCategoryEntryForSession("@mozilla.org/streamconv;1",
+       "?from=" + mimeType + "&to=*/*", "");
+    }
+
+    // Register this extension's document loader factory, which is used for
+    //  complex web content in order to display the original location of the
+    //  archive in the address bar, and still use the actual content location
+    //  for resolving relative references inside the archive.
+    this._addCategoryEntryForSession("Gecko-Content-Viewers",
+     "*/preprocessed-web-archive",
+     "@amadzone.org/maf/document-loader-factory;1");
   },
 
   /**
@@ -98,5 +150,76 @@ var StartupInitializer = {
         }
       }
     }
-  }
+  },
+
+  // --- Private methods and properties ---
+
+  /**
+   * Calls nsIMIMEService.getTypeFromExtension, and if the call fails
+   *  unexpectedly, returns the specified MIME type as a fallback.
+   */
+  _getTypeFromExtensionSafely: function(aExtension, aFallbackMimeType) {
+    try {
+      return this._mimeService.getTypeFromExtension(aExtension);
+    } catch (e if (e instanceof Ci.nsIException &&
+     e.result == Cr.NS_ERROR_NOT_INITIALIZED)) {
+      // The getTypeFromExtension call may throw NS_ERROR_NOT_INITIALIZED
+      //  because of Mozilla bug 484579. In this case, return an arbitrary
+      //  MIME type to mitigate the problem.
+      return aFallbackMimeType;
+    }
+  },
+
+  /**
+   * Calls nsICategoryManager.addCategoryEntry with aPersist and aReplace set to
+   *  false. If the category entry already has a value, no exception is thrown.
+   */
+  _addCategoryEntryForSession: function(aCategory, aEntry, aValue) {
+    try {
+      this._categoryManager.addCategoryEntry(aCategory, aEntry, aValue, false,
+       false);
+    } catch (e if (e instanceof Ci.nsIException && e.result ==
+     Cr.NS_ERROR_INVALID_ARG)) {
+      // Ignore the error in case the category entry already has a value
+    }
+  },
+
+  /**
+   * Registers this extension's stream converter for the given ContractID.
+   */
+  _registerStreamConverter: function(aContractID) {
+    // If a class factory for the given ContractID is already registered, ensure
+    //  that we obtain a reference to it and we pass it as the inner factory
+    var originalFactory = null;
+    if (this._componentRegistrar.isContractIDRegistered(aContractID)) {
+      originalFactory = Components.manager.getClassObjectByContractID(
+       aContractID, Ci.nsIFactory);
+    }
+
+    // Define a factory that creates a new stream converter
+    var streamConverterFactory = {
+      createInstance: function(aOuter, aIid) {
+        if (aOuter != null) {
+          throw Cr.NS_ERROR_NO_AGGREGATION;
+        }
+        return new ArchiveStreamConverter(originalFactory).QueryInterface(aIid);
+      },
+      lockFactory: function(aLock) { }
+    };
+
+    // Register the factory for the given ContractID. The arbitrary ClassID and
+    //  the class description is the same for all the registered ContractIDs.
+    this._componentRegistrar.registerFactory(
+     Components.ID("{500ec1c7-7873-4ad8-8145-f40199fe4ada}"),
+     "Mozilla Archive Format Stream Converter", aContractID,
+     streamConverterFactory);
+  },
+
+  _mimeService: Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService),
+
+  _categoryManager: Cc["@mozilla.org/categorymanager;1"].
+   getService(Ci.nsICategoryManager),
+
+  _componentRegistrar: Components.manager.
+   QueryInterface(Ci.nsIComponentRegistrar)
 }

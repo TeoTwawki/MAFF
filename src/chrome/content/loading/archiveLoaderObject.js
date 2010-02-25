@@ -44,40 +44,51 @@ var ArchiveLoader = {
   // --- Public methods and properties ---
 
   /**
+   * This object will be initialized on startup with properties whose names are
+   *  the MIME type we need to handle, and whose values are the internal archive
+   *  type, for example "TypeMAFF" or "TypeMHTML".
+   */
+  archiveTypeByContentType: {},
+
+  /**
    * Opens the specified archive or archive page synchronously, and returns an
-   *  nsIURI object pointing to the actual content to be displayed. This
+   *  nsIURI object pointing to the archive page to be displayed, or null if the
+   *  provided URI already points to the correct page in the archive. This
    *  function also performs all the operations related to opening multi-page
    *  archives, working on the provided container.
    *
    * @param aArchiveUri   nsIURI pointing to the archive to be opened.
+   * @param aLocalUri     nsIFileURL pointing to the local copy of the archive.
+   * @param aContentType  MIME media type of the archive.
    * @param aContainer    Reference to the browser DocShell where the archive
    *                       will be opened. For general information on DocShell,
    *                       see <https://developer.mozilla.org/en/DocShell>
    *                       (retrieved 2009-05-31).
    */
-  load: function(aArchiveUri, aContainer) {
+  load: function(aArchiveUri, aLocalUri, aContentType, aContainer) {
+    var betterUri = null;
+
     // Find the requested page in the archive cache
     var page = ArchiveCache.pageFromUriSpec(aArchiveUri.spec);
 
     // If the specified page has not been loaded yet
     if (!page) {
-      // Currently we can only open MAF archives from "file://" URLs.
-      var archiveFile = aArchiveUri.QueryInterface(Ci.nsIFileURL).file;
-
       // Extract the archive and register it in the archive cache
-      var archive = ArchiveLoader.extractAndRegister(archiveFile);
+      var archiveFile = aLocalUri.QueryInterface(Ci.nsIFileURL).file;
+      var archive = ArchiveLoader.extractAndRegister(archiveFile, aArchiveUri,
+       aContentType);
 
       // Find the exact requested page from the archive cache
       page = ArchiveCache.pageFromUriSpec(aArchiveUri.spec);
 
       // If the page is not found, probably the provided URL refers to a
-      //  multi-page archive, but not to a specific page inside it. In this
-      //  case, display a temporary page while waiting for the archive to be
-      //  opened in multiple tabs. The first page in the archive will be opened
-      //  in the same window where this load was attempted.
+      //  multi-page archive, but not to a specific page inside it
       if (!page) {
-        return ArchiveLoader._openMultipageArchive(archive, archive.pages[0],
-         aContainer);
+        // Display the first page in the archive, using its exact location
+        page = archive.pages[0];
+        betterUri = page.archiveUri;
+        // Open the other pages in the archive in tabs
+        ArchiveLoader._openMultipageArchive(archive, page, aContainer);
       }
     }
 
@@ -90,6 +101,28 @@ var ArchiveLoader = {
       //  (retrieved 2009-10-31).
       aContainer.QueryInterface(Ci.nsIDocCharset).charset =
        page.renderingCharacterSet;
+    }
+
+    // Return an URI that identifies the archived page better, if required
+    return betterUri;
+  },
+
+  /**
+   * Returns an nsIURI object pointing to the main document to be displayed for
+   *  the given archive page URI, which must have been previously loaded using
+   *  the "load" method.
+   *
+   * @param aArchiveUri   nsIURI pointing to the archive to be accessed.
+   */
+  getContentUri: function(aArchiveUri) {
+    // Find the requested page in the archive cache
+    var page = ArchiveCache.pageFromUriSpec(aArchiveUri.spec);
+
+    // Ensure that the page is available. Since the loading process always calls
+    //  "load" before this function, the only case where this can happen is when
+    //  the archive cache is cleared during a load operation.
+    if (!page) {
+      throw new Components.Exception("Web archive cache cleared during load");
     }
 
     // Display the content associated with the page. Depending on the current
@@ -109,19 +142,33 @@ var ArchiveLoader = {
    *  Returns the new Archive object associated with the specified archive.
    *
    * @param aArchiveFile   nsIFile pointing to the archive to be extracted.
+   * @param aOriginalUri   Optional nsIURI pointing to the original location of
+   *                        the archive.
+   * @param aContentType   Optional MIME media type of the archive.
    */
-  extractAndRegister: function(aArchiveFile) {
+  extractAndRegister: function(aArchiveFile, aOriginalUri, aContentType) {
     // Determine the name of the directory where the archive will be extracted
     var dir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
     dir.initWithPath(Prefs.tempFolder);
     dir.append(new Date().valueOf() + "_" + Math.floor(Math.random() * 1000));
 
-    // Determine the format to use from the file name and extract the archive
+    // Determine the MIME type of the archive, if not explicitly provided
+    var contentType = aContentType;
+    if (!contentType) {
+      var resource = new PersistResource();
+      resource.initFromFile(aArchiveFile);
+      contentType = resource.mimeType;
+    }
+
+    // Determine the format to use from the content type and extract the archive
     var archive;
-    if (FileFilters.scriptPathFromFilePath(aArchiveFile.path) == "TypeMHTML") {
+    if (ArchiveLoader.archiveTypeByContentType[contentType] == "TypeMHTML") {
       archive = new MhtmlArchive(aArchiveFile);
     } else {
       archive = new MaffArchive(aArchiveFile);
+    }
+    if (aOriginalUri) {
+      archive.uri = aOriginalUri;
     }
     archive._tempDir = dir;
     archive.extractAll();
@@ -135,7 +182,7 @@ var ArchiveLoader = {
 
   /**
    * Opens the pages in the specified archive in tabs, except for the specified
-   *  main page, that is queued as a refresh on the specified DocShell.
+   *  main page.
    */
   _openMultipageArchive: function(aArchive, aMainPage, aContainer) {
     // Find the browser window associated with the document being loaded
@@ -154,17 +201,5 @@ var ArchiveLoader = {
         }
       }
     }
-
-    // Redirect the document being loaded to the exact URI of the main page.
-    //  The new URI takes the place of the original one in the browser
-    //  history, and will be reloaded from the beginning. This operation
-    //  prevents subsequent refreshes from opening the other archived pages
-    //  again in new tabs. This method also works inside frames.
-    aContainer.QueryInterface(Ci.nsIRefreshURI).refreshURI(
-     aMainPage.archiveUri, 0, false, true);
-
-    // Display an empty page while waiting for the redirect
-    return Cc['@mozilla.org/network/io-service;1'].
-     getService(Ci.nsIIOService).newURI("about:blank", null, null);
   }
 }

@@ -64,6 +64,7 @@ try {
 
    // Loading infrastructure
    ["loading/archiveLoaderObject.js",             "ArchiveLoader"],
+   ["loading/archiveStreamConverterObject.js",    "ArchiveStreamConverter"],
 
    // Preferences objects
    ["preferences/dynamicPrefsObject.js",          "DynamicPrefs"],
@@ -101,7 +102,6 @@ try {
    ["saving/saveJobObject.js",                    "SaveJob"],
 
    // Extension initialization
-   ["startup/dlfRegistererObject.js",             "DlfRegisterer"],
    ["startup/startupEventsObject.js",             "StartupEvents"],
    ["startup/startupInitializerObject.js",        "StartupInitializer"]
 
