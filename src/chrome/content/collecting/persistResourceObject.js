@@ -111,8 +111,6 @@ PersistResource.prototype = {
       // In case the MIME type cannot be determined, use a binary file type
       this.mimeType = "application/octet-stream";
     }
-    // Read the binary contents from the local file
-    this.readFromFile();
   },
 
   /**

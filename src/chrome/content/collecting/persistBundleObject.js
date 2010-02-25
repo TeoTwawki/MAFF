@@ -128,6 +128,7 @@ PersistBundle.prototype = {
       // Create a new resource object from the file on disk
       var resource = new PersistResource();
       resource.initFromFile(file);
+      resource.readFromFile();
       // Determine if more information about the file is available
       var originalUri = aOriginalUriByPath && aOriginalUriByPath[file.path];
       if (originalUri) {
