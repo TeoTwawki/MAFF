@@ -43,6 +43,45 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
+ * This function is identical to saveDocument, but is required for compatibility
+ *  with SeaMonkey 2.0 as its saveDocument function does not propagate the
+ *  aSkipPrompt parameter.
+ */
+function mafSaveDocument(aDocument, aSkipPrompt)
+{
+  if (!aDocument)
+    throw "Must have a document when calling saveDocument";
+
+  // We want to use cached data because the document is currently visible.
+  var ifreq =
+    aDocument.defaultView
+             .QueryInterface(Components.interfaces.nsIInterfaceRequestor);
+
+  var contentDisposition = null;
+  try {
+    contentDisposition =
+      ifreq.getInterface(Components.interfaces.nsIDOMWindowUtils)
+           .getDocumentMetadata("content-disposition");
+  } catch (ex) {
+    // Failure to get a content-disposition is ok
+  }
+
+  var cacheKey = null;
+  try {
+    cacheKey =
+      ifreq.getInterface(Components.interfaces.nsIWebNavigation)
+           .QueryInterface(Components.interfaces.nsIWebPageDescriptor);
+  } catch (ex) {
+    // We might not find it in the cache.  Oh, well.
+  }
+
+  internalSave(aDocument.location.href, aDocument, null, contentDisposition,
+               aDocument.contentType, false, null, null,
+               aDocument.referrer ? makeURI(aDocument.referrer) : null,
+               aSkipPrompt, cacheKey);
+}
+
+/**
  * internalSave: Used when saving a document or URL.
  *
  * If aChosenData is null, this method:
@@ -825,6 +864,13 @@ function getPostData(aDocument)
   catch (e) {
   }
   return null;
+}
+
+function getStringBundle()
+{
+  return Components.classes["@mozilla.org/intl/stringbundle;1"]
+                   .getService(Components.interfaces.nsIStringBundleService)
+                   .createBundle("chrome://global/locale/contentAreaCommands.properties");
 }
 
 // Get the preferences branch ("browser.download." for normal 'save' mode)...

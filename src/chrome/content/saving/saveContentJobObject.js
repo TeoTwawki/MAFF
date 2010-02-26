@@ -68,7 +68,7 @@ SaveContentJob.prototype = {
      QueryInterface(Ci.nsIDocShellTreeItem).rootTreeItem.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
     // Save the document in the target folder
-    browserWindow.wrappedJSObject.saveDocument(this._document, {
+    browserWindow.wrappedJSObject.mafSaveDocument(this._document, {
       saveDir: this._targetDir,
       saveWithMedia: (this.targetType == "TypeMAFF"),
       saveWithContentLocation: (this.targetType == "TypeMHTML" &&
