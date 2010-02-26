@@ -75,6 +75,12 @@ var MafInterfaceOverlay = {
 
     // Listen for when the browser window closes, to perform shutdown
     window.addEventListener("unload", MafInterfaceOverlay.onUnload, false);
+
+    // The "Browse Open Archives" command is not available on host applications
+    //  that do not support the Places user interface API, like SeaMonkey 2.0
+    if (!window.BookmarksEventHandler) {
+      document.getElementById("mafBrowseOpenArchivesButton").hidden = true;
+    }
   },
 
   /**

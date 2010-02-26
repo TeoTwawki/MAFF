@@ -108,6 +108,19 @@ var MafCommandsOverlay = {
       // Remember that we added an event listener
       MafCommandsOverlay.menusWithEvents.push(element);
     });
+
+    // The "Browse Open Archives" command is not available on host applications
+    //  that do not support the Places user interface API, like SeaMonkey 2.0
+    if (!window.BookmarksEventHandler) {
+      // This ensures that the associated shortcut key is disabled too
+      document.getElementById("mafCmdBrowseOpenArchives").setAttribute(
+       "disabled", "true");
+      // Hide the related items in the Tools menu
+      document.getElementById("mafMenuBrowseOpenArchives_toolsMenu").
+       hidden = true;
+      document.getElementById("mafMenuBrowseOpenArchivesSeparator_toolsMenu").
+       hidden = true;
+    }
   },
 
   /**

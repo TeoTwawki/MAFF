@@ -110,7 +110,8 @@
         </grid>
         <hbox align="center">
           <spacer flex="1" />
-          <button label=    "&commands.browseopenarchives.label;"
+          <button id=       "mafBrowseOpenArchivesButton"
+                  label=    "&commands.browseopenarchives.label;"
                   accesskey="&commands.browseopenarchives.accesskey;"
                   oncommand="MafInterfaceOverlay.onBrowseOpenArchivesCommand(event);"
                   />

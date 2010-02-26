@@ -135,7 +135,7 @@
                 key=        "mafKeyBrowseOpenArchives"
                 command=    "mafCmdBrowseOpenArchives"
                 />
-      <menuseparator />
+      <menuseparator id="mafMenuBrowseOpenArchivesSeparator_toolsMenu" />
       <menuitem id=         "mafMenuSavePageInArchive_toolsMenu"
                 label=      "&menuitem.savepageinarchive.label;"
                 accesskey=  "&menuitem.savepageinarchive.accesskey.toolsmenu;"
