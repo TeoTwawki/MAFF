@@ -18,12 +18,21 @@
         <em:maxVersion>3.6.*</em:maxVersion>
       </Description>
     </em:targetApplication>
+     <!-- SeaMonkey -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
+        <em:minVersion>2.0</em:minVersion>
+        <em:maxVersion>2.0.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
 
     <!-- Front End MetaData -->
     <em:name>Mozilla Archive Format</em:name>
     <em:description>Open and save complete web pages in a single file. Supports MHTML (MHT) files from Internet Explorer, and MAFF multi-page archives (based on ZIP).</em:description>
     <em:creator>Christopher Ottley</em:creator>
     <em:developer>Paolo Amadini</em:developer>
+    <em:contributor>Ueli Lezzi</em:contributor>
     <!-- Translators using BabelZilla -->
     <em:translator>da-DK: Finn S. Sørensen</em:translator>
     <em:translator>de-DE: Lukas Diener</em:translator>
