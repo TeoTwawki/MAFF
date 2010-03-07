@@ -548,6 +548,16 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     if (extensionToCheck.toLowerCase() ==
      defaultString.slice(-extensionToCheck.length).toLowerCase()) {
       defaultString = defaultString.slice(0, -extensionToCheck.length);
+      // The file picker will not add the default extension if the file name
+      //  already ends with a recognized extension. Thus, we must ensure that
+      //  no recognized extension is present in the file name. We don't know if
+      //  the extension is recognized, so we assume that any suffix of four or
+      //  less characters can be a valid extension. We also make some exceptions
+      //  for executable file types. See also the "IsExecutable" method in
+      //  <http://mxr.mozilla.org/mozilla-central/source/xpcom/io/nsLocalFileWin.cpp>
+      //  (retrieved 2010-03-07).
+      defaultString = defaultString.replace(
+       /\.([^.]{1,4}|application|mshxml|vsmacros)$/i, "_$1");
     }
   }
 
