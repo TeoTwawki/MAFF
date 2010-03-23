@@ -249,21 +249,24 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
     // Get the base URL object for the document
     var baseUri = doc.baseURIObject;
 
+    // Support XHTML documents
+    var nsResolver = function() doc.contentType == "application/xhtml+xml" ? "http://www.w3.org/1999/xhtml" : "";
+
     // Process images
-    iter = doc.evaluate("//img[@src]", doc, null, scPageSaver.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+    iter = doc.evaluate("//ns:img[@src]", doc, nsResolver, scPageSaver.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     while((e = iter.iterateNext())) {
         this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
     }
 
     // Process script tags
-    iter = doc.evaluate("//script[@src]", doc, null, 0, null);
+    iter = doc.evaluate("//ns:script[@src]", doc, nsResolver, 0, null);
     while((e = iter.iterateNext())) {
         this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
     }
 
     if(this._options['saveIframes']) {
         // Save the html in the iframe and process the iframe document
-        iter = doc.evaluate("//iframe[@src]", doc, null, 0, null);
+        iter = doc.evaluate("//ns:iframe[@src]", doc, nsResolver, 0, null);
         while((e = iter.iterateNext())) {
             this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
             this._extractURIsFromDocument(e.contentDocument);
@@ -272,13 +275,13 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
 
     if(this._options['saveObjects']) {
         // Process embed tags
-        iter = doc.evaluate("//embed[@src]", doc, null, 0, null);
+        iter = doc.evaluate("//ns:embed[@src]", doc, nsResolver, 0, null);
         while((e = iter.iterateNext())) {
             this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
         }
 
         // Process video tags
-        iter = doc.evaluate("//video[@src]", doc, null, 0, null);
+        iter = doc.evaluate("//ns:video[@src]", doc, nsResolver, 0, null);
         while((e = iter.iterateNext())) {
             if(e.getAttribute('poster')) {
                 this._uris.push(new scPageSaver.scURI(e.getAttribute('poster'), baseUri, 'attribute', 'base'));
@@ -287,19 +290,19 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
         }
 
         // Process audio tags
-        iter = doc.evaluate("//audio[@src]", doc, null, 0, null);
+        iter = doc.evaluate("//ns:audio[@src]", doc, nsResolver, 0, null);
         while((e = iter.iterateNext())) {
             this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
         }
 
         // Process source tags
-        iter = doc.evaluate("//source[@src]", doc, null, 0, null);
+        iter = doc.evaluate("//ns:source[@src]", doc, nsResolver, 0, null);
         while((e = iter.iterateNext())) {
             this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
         }
 
         // Process object tags (or at least try to)
-        iter = doc.evaluate("//object", doc, null, 0, null);
+        iter = doc.evaluate("//ns:object", doc, nsResolver, 0, null);
         while((e = iter.iterateNext())) {
             if(e.getAttribute('data')) {
                 this._uris.push(new scPageSaver.scURI(e.getAttribute('data'), baseUri, 'attribute', 'base'));
@@ -307,7 +310,7 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
 
             // Find param that references the object's data
             var p = null;
-            var pIter = doc.evaluate('param', e, null, 0, null);
+            var pIter = doc.evaluate('ns:param', e, nsResolver, 0, null);
             while((p = pIter.iterateNext())) {
                 var param = p.getAttribute('name');
                 if(param == 'movie' || param == 'src') {
@@ -321,7 +324,7 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
     }
 
     // Process input elements with an image type
-    iter = doc.evaluate("//input[@type='image']", doc, null, scPageSaver.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+    iter = doc.evaluate("//ns:input[@type='image']", doc, nsResolver, scPageSaver.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     while((e = iter.iterateNext())) {
         if(e.getAttribute('src')) {
             this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
