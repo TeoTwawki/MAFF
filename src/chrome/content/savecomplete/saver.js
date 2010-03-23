@@ -380,6 +380,12 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
             } else {
                 this._extractURIsFromStyleSheet(styleSheets[i], doc.documentURI, true);
             }
+        } else if (styleSheets[i].ownerNode && styleSheets[i].ownerNode.target) {
+            // Extract references from stylesheet processing instructions
+            var xmlHrefRe = /href=(["'])([^"']*)\1/gm;
+            while((results = xmlHrefRe.exec(styleSheets[i].ownerNode.data)) != null) {
+                this._uris.push(new scPageSaver.scURI(results[2], baseUri, 'attribute', 'base'));
+            }
         }
     }
 };
