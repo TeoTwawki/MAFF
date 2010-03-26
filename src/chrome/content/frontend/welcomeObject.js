@@ -48,7 +48,7 @@ var Welcome = {
      null,
      "chrome://maf/content/frontend/welcomeDialog.xul",
      "maf-welcomeDialog",
-     "chrome,dialog,centerscreen,modal",
+     "chrome,dialog,centerscreen",
      null);
   }
 };

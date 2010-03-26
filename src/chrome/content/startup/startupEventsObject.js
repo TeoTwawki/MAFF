@@ -48,22 +48,26 @@ var StartupEvents = {
    *  handled by the "observe" function.
    */
   onAppStartup: function() {
-    this._observerService.addObserver(this, "profile-after-change", false);
-    this._observerService.addObserver(this, "quit-application", false);
-    this._observerService.addObserver(this, "xpcom-shutdown", false);
+    for (var [, topic] in Iterator(this._notificationTopics)) {
+      this._observerService.addObserver(this, topic, false);
+    }
   },
 
   /** Called when it is time to unregister all the observers. */
   onAppShutdown: function() {
-    this._observerService.removeObserver(this, "profile-after-change");
-    this._observerService.removeObserver(this, "quit-application");
-    this._observerService.removeObserver(this, "xpcom-shutdown");
+    for (var [, topic] in Iterator(this._notificationTopics)) {
+      this._observerService.removeObserver(this, topic);
+    }
   },
 
   /** Called when a user profile has fully loaded. */
   afterProfileChange: function() {
     // Initialize the extension behavior
     StartupInitializer.initFromCurrentProfile();
+  },
+
+  /** Called after all the browser windows have been shown. */
+  onWindowsRestored: function() {
     // Display the welcome window if required
     if (Prefs.otherDisplayWelcome) {
       Welcome.welcomeDialog();
@@ -85,12 +89,25 @@ var StartupEvents = {
    *  notifications.
    */
   observe: function(aSubject, aTopic, aData) {
-    if (aTopic == "profile-after-change") { this.afterProfileChange(); }
-    if (aTopic == "quit-application")     { this.onAppQuit();          }
-    if (aTopic == "xpcom-shutdown")       { this.onAppShutdown();      }
+    switch (aTopic) {
+      case "profile-after-change":          this.afterProfileChange(); break;
+      case "sessionstore-windows-restored": this.onWindowsRestored();  break;
+      case "quit-application":              this.onAppQuit();          break;
+      case "xpcom-shutdown":                this.onAppShutdown();      break;
+    }
   },
 
   // --- Private methods and properties ---
+
+  /**
+   * Array containing the observer notification topics handled by this object.
+   */
+  _notificationTopics: [
+   "profile-after-change",
+   "sessionstore-windows-restored",
+   "quit-application",
+   "xpcom-shutdown"
+  ],
 
   _observerService: Cc["@mozilla.org/observer-service;1"]
    .getService(Ci.nsIObserverService)
