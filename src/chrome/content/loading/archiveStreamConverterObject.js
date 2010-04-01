@@ -158,6 +158,15 @@ ArchiveStreamConverter.prototype = {
     if (aCtxt instanceof Ci.nsIChannel) {
       if (aCtxt.notificationCallbacks instanceof Ci.nsIDocShell) {
         if (aFromType != "message/rfc822" || this._isMhtmlChannel(aCtxt)) {
+          // Refuse to open remote archives if the browser is operating in
+          //  Private Browsing Mode
+          if (this._privateBrowsingService && this._privateBrowsingService.
+           privateBrowsingEnabled && !aCtxt.URI.schemeIs("file")) {
+            throw new Components.Exception(
+             "Remote web archives cannot be displayed in Private Browsing Mode",
+             Cr.NS_ERROR_NOT_AVAILABLE);
+          }
+          // Handle the archive loading and conversion
           this._targetListener = aListener;
           return;
         }
@@ -252,5 +261,8 @@ ArchiveStreamConverter.prototype = {
   /**
    * Binary input stream created to read the data being downloaded.
    */
-  _inputStream: null
+  _inputStream: null,
+
+  _privateBrowsingService: ("@mozilla.org/privatebrowsing;1" in Cc) &&
+   Cc["@mozilla.org/privatebrowsing;1"].getService(Ci.nsIPrivateBrowsingService)
 };
