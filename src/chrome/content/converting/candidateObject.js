@@ -473,6 +473,10 @@ Candidate.prototype = {
         throw this._listeningException;
       }
 
+      // Change the last modified time of the destination to match the source
+      this.location.dest.lastModifiedTime =
+       this.location.source.lastModifiedTime;
+
       // Conversion completed successfully, move the source to the bin folder
       this._moveToBin();
     } catch (e) {
