@@ -69,8 +69,10 @@ ArchiveStreamConverter.prototype = {
     // Find an existing archive object associated with the URI we are accessing
     var originalChannel = aRequest.QueryInterface(Ci.nsIChannel);
     if (ArchiveCache.pageFromUriSpec(originalChannel.URI.spec) ||
-     ArchiveCache.archiveFromUriSpec(originalChannel.URI.spec)) {
-      // If a cached archive is available, do not download the new archive
+     ArchiveCache.archiveFromUriSpec(originalChannel.URI.spec) ||
+     originalChannel.URI.schemeIs("file")) {
+      // If a cached archive is available, or we are accessing a local file, do
+      //  not save the new archive locally from the original location
       this._resource = null;
       return;
     }
@@ -100,14 +102,22 @@ ArchiveStreamConverter.prototype = {
     var originalChannel = aRequest.QueryInterface(Ci.nsIChannel);
     var requestContainer = originalChannel.notificationCallbacks;
 
+    // Determine the local URL of the archive, or null if the archive is cached
+    var localUri = null;
+    if (this._resource) {
+      // We downloaded the archive form its original location
+      this._resource.writeToFile();
+      localUri = this._resource.fileUrl;
+    } else if (originalChannel.URI.schemeIs("file")) {
+      // We will access the archive locally, if it is not in the cache
+      localUri = originalChannel.URI.QueryInterface(Ci.nsIFileURL);
+    }
+
     // Load the archive, and retrieve an indication of whether the URI of the
     //  request should be changed to refer to a specific page in a multi-page
     //  archive. The called function may also start loading other pages in tabs.
-    if (this._resource) {
-      this._resource.writeToFile();
-    }
-    var betterUri = ArchiveLoader.load(originalChannel.URI, this._resource &&
-     this._resource.fileUrl, originalChannel.contentType, requestContainer);
+    var betterUri = ArchiveLoader.load(originalChannel.URI, localUri,
+     originalChannel.contentType, requestContainer);
 
     if (betterUri) {
       // If there is a better URI for the specific page in the archive, redirect
