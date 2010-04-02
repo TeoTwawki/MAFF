@@ -66,8 +66,16 @@ ArchiveStreamConverter.prototype = {
   // --- nsIRequestObserver interface functions ---
 
   onStartRequest: function(aRequest, aContext) {
-    // Prepare a PersistResource object associated with the channel
+    // Find an existing archive object associated with the URI we are accessing
     var originalChannel = aRequest.QueryInterface(Ci.nsIChannel);
+    if (ArchiveCache.pageFromUriSpec(originalChannel.URI.spec) ||
+     ArchiveCache.archiveFromUriSpec(originalChannel.URI.spec)) {
+      // If a cached archive is available, do not download the new archive
+      this._resource = null;
+      return;
+    }
+
+    // Prepare a PersistResource object associated with the channel
     this._resource = new PersistResource();
     this._resource.referenceUri = originalChannel.URI;
     this._resource.originalUri = originalChannel.URI;
@@ -95,8 +103,10 @@ ArchiveStreamConverter.prototype = {
     // Load the archive, and retrieve an indication of whether the URI of the
     //  request should be changed to refer to a specific page in a multi-page
     //  archive. The called function may also start loading other pages in tabs.
-    this._resource.writeToFile();
-    var betterUri = ArchiveLoader.load(originalChannel.URI,
+    if (this._resource) {
+      this._resource.writeToFile();
+    }
+    var betterUri = ArchiveLoader.load(originalChannel.URI, this._resource &&
      this._resource.fileUrl, originalChannel.contentType, requestContainer);
 
     if (betterUri) {
@@ -144,8 +154,14 @@ ArchiveStreamConverter.prototype = {
        .createInstance(Ci.nsIBinaryInputStream);
       this._inputStream.setInputStream(aInputStream);
     }
-    // Add the binary data to the buffer in memory
-    this._resource.body += this._inputStream.readBytes(aCount);
+    // If the archive is already available locally, ignore the received data
+    if (!this._resource) {
+      // We have to read the data even if we don't use it
+      this._inputStream.readBytes(aCount);
+    } else {
+      // Add the binary data to the buffer in memory
+      this._resource.body += this._inputStream.readBytes(aCount);
+    }
   },
 
   // --- nsIStreamConverter interface functions ---
@@ -254,7 +270,8 @@ ArchiveStreamConverter.prototype = {
   _targetListener: null,
 
   /**
-   * PersistResource object associated with the file being downloaded.
+   * PersistResource object associated with the file being downloaded, or null
+   *  if the requested archive is already available locally.
    */
   _resource: null,
 

@@ -73,13 +73,19 @@ var ArchiveLoader = {
 
     // If the specified page has not been loaded yet
     if (!page) {
-      // Extract the archive and register it in the archive cache
-      var archiveFile = aLocalUri.QueryInterface(Ci.nsIFileURL).file;
-      var archive = ArchiveLoader.extractAndRegister(archiveFile, aArchiveUri,
-       aContentType);
+      // Find the requested archive in the archive cache
+      var archive = ArchiveCache.archiveFromUriSpec(aArchiveUri.spec);
 
-      // Find the exact requested page from the archive cache
-      page = ArchiveCache.pageFromUriSpec(aArchiveUri.spec);
+      // If the specified archive has not been loaded yet
+      if (!archive) {
+        // Extract the archive and register it in the archive cache
+        var archiveFile = aLocalUri.QueryInterface(Ci.nsIFileURL).file;
+        archive = ArchiveLoader.extractAndRegister(archiveFile, aArchiveUri,
+         aContentType);
+
+        // Find the exact requested page from the archive cache
+        page = ArchiveCache.pageFromUriSpec(aArchiveUri.spec);
+      }
 
       // If the page is not found, probably the provided URL refers to a
       //  multi-page archive, but not to a specific page inside it
