@@ -60,6 +60,19 @@ SaveContentJob.prototype = {
   // --- Overridden Job methods ---
 
   _executeStart: function() {
+    // Create a new MAFF or MHTML archive
+    if (this.targetType == "TypeMHTML") {
+      this._archive = new MhtmlArchive(this.targetFile);
+    } else {
+      this._archive = new MaffArchive(this.targetFile);
+    }
+    // Prepare a new page object for saving the current page in the archive.
+    //  This operation must be executed immediately since the metadata for the
+    //  page may not be available later, for example if the browser window where
+    //  the document is loaded is closed while the document is being saved.
+    var page = this._archive.addPage();
+    page.tempDir = this._targetDir;
+    page.setMetadataFromDocumentAndBrowser(this._document, this.targetBrowser);
     // Create the target folder
     this._targetDir.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
     // Find the browser window associated with the document being saved
@@ -95,7 +108,7 @@ SaveContentJob.prototype = {
 
   onSaveNameDetermined: function(aSaveName) {
     // Remember the name that the save component has chosen for the index file
-    this._targetLeafName = aSaveName;
+    this._archive.pages[0].indexLeafName = aSaveName;
   },
 
   onDownloadProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
@@ -121,23 +134,12 @@ SaveContentJob.prototype = {
 
   onDownloadComplete: function() {
     this._handleAsyncCallback(function() {
-      // Create a new MAFF archive
-      if (this.targetType == "TypeMHTML") {
-        this._archive = new MhtmlArchive(this.targetFile);
-      } else {
-        this._archive = new MaffArchive(this.targetFile);
-      }
       // Add to an existing MAFF archive if required
       if (this.addToArchive) {
         this._archive.load();
       }
-      // Add the current page to the archive and save it immediately
-      var page = this._archive.addPage();
-      page.tempDir = this._targetDir;
-      page.indexLeafName = this._targetLeafName;
-      page.setMetadataFromDocumentAndBrowser(this._document,
-       this.targetBrowser);
       // If the page can be saved asynchronously
+      var page = this._archive.pages[0];
       if (page.asyncSave) {
         // Save and wait for the callback from the worker object
         this._expectAsyncCallback(function() {
@@ -180,6 +182,5 @@ SaveContentJob.prototype = {
 
   _archive: null,
   _document: null,
-  _targetDir: null,
-  _targetLeafName: null
+  _targetDir: null
 }
