@@ -19,4 +19,18 @@
           insertafter="devToolsSeparator"
           />
   </menupopup>
+
+  <!-- Browser's address bar integration -->
+  <textbox id="urlbar">
+    <!-- This box is automatically placed before the text in the address bar -->
+    <box id=          "mafArchiveInfoUrlbarBox"
+          insertbefore="urlbar-icons"
+          hidden=      "true"
+          >
+      <image id=     "mafArchiveInfoUrlbarButton"
+             class=  "urlbar-icon"
+             onclick="MafInterfaceOverlay.onUrlbarButtonClick(event);"
+             />
+    </box>
+  </textbox>
 </overlay>
