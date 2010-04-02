@@ -122,18 +122,17 @@ SaveContentJob.prototype = {
   onDownloadComplete: function() {
     this._handleAsyncCallback(function() {
       // Create a new MAFF archive
-      var archive;
       if (this.targetType == "TypeMHTML") {
-        archive = new MhtmlArchive(this.targetFile);
+        this._archive = new MhtmlArchive(this.targetFile);
       } else {
-        archive = new MaffArchive(this.targetFile);
+        this._archive = new MaffArchive(this.targetFile);
       }
       // Add to an existing MAFF archive if required
       if (this.addToArchive) {
-        archive.load();
+        this._archive.load();
       }
       // Add the current page to the archive and save it immediately
-      var page = archive.addPage();
+      var page = this._archive.addPage();
       page.tempDir = this._targetDir;
       page.indexLeafName = this._targetLeafName;
       page.setMetadataFromDocumentAndBrowser(this._document,
@@ -147,6 +146,7 @@ SaveContentJob.prototype = {
       } else {
         // Save the page synchronously
         page.save();
+        this._invalidateCachedArchive();
         this._notifyCompletion();
       }
     }, this);
@@ -159,6 +159,7 @@ SaveContentJob.prototype = {
         this.cancel(Cr.NS_ERROR_FAILURE);
       } else {
         // Archiving completed
+        this._invalidateCachedArchive();
         this._notifyCompletion();
       }
     }, this);
@@ -166,6 +167,18 @@ SaveContentJob.prototype = {
 
   // --- Private methods and properties ---
 
+  /**
+   * At the end of the save operation of each page, this function is called to
+   *  ensure that accessing the archive's location won't open a cached version.
+   */
+  _invalidateCachedArchive: function() {
+    var archive = ArchiveCache.archiveFromUriSpec(this._archive.uri.spec);
+    if (archive) {
+      ArchiveCache.unregisterArchive(archive);
+    }
+  },
+
+  _archive: null,
   _document: null,
   _targetDir: null,
   _targetLeafName: null

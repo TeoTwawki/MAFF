@@ -55,6 +55,7 @@ var ArchiveCache = {
     }
     // Register the archive in the cache
     this._archivesByKey[aArchive.cacheKey] = aArchive;
+    this._archivesByUri[aArchive.uri.spec] = aArchive;
     // Add information about the individual pages
     for (var [, page] in Iterator(aArchive.pages)) {
       // The following URLs are normally unique for every extracted page
@@ -88,6 +89,7 @@ var ArchiveCache = {
     }
     // Remove the archive from the cache
     delete this._archivesByKey[aArchive.cacheKey];
+    delete this._archivesByUri[aArchive.uri.spec];
     // Remove information about the individual pages
     for (var [, page] in Iterator(aArchive.pages)) {
       // The following URLs are normally unique for every extracted page
@@ -107,6 +109,15 @@ var ArchiveCache = {
       // Clear the obsolete places annotations for the page
       ArchiveAnnotations.removeAnnotationsForPage(page);
     }
+  },
+
+  /**
+   * Returns the archive object associated with the given URL.
+   *
+   * @param aSpec   String representing the original URL of the archive.
+   */
+  archiveFromUriSpec: function(aSpec) {
+    return this._archivesByUri[aSpec] || null;
   },
 
   /**
@@ -213,6 +224,12 @@ var ArchiveCache = {
    * Associative array containing all the registered Archive objects.
    */
   _archivesByKey: {},
+
+  /**
+   * Associative array containing all the registered Archive objects, accessible
+   *  by their original URI.
+   */
+  _archivesByUri: {},
 
   /**
    * Associative array containing all the available archived pages, accessible
