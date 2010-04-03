@@ -11,6 +11,9 @@ The following files were copied from the Mozilla "comm-central" codebase:
   general/cbox-dis.gif
   general/cbox-dis-check.gif
 
+The following files were copied from the Mozilla "mozilla-central" codebase:
+  preferences/Options.png
+
 The files are assumed to be licensed under the tri-license (MPL/GPL/LGPL) used
 throughout the original codebase.
 
@@ -28,6 +31,10 @@ Retrieving the original Mozilla files
 The original checkbox image files can be viewed online at:
 
   <http://hg.mozilla.org/comm-central/file/THUNDERBIRD_3_0b2_RELEASE/suite/themes/modern/global/checkbox/>
+
+The original preferences image file can be viewed online at:
+
+  <http://hg.mozilla.org/mozilla-central/raw-file/FIREFOX_3_7a3_RELEASE/browser/themes/winstripe/browser/preferences/Options.png>
 
 
 
