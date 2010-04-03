@@ -196,7 +196,7 @@
     </description>
     <groupbox>
       <caption label="&open.caption;" />
-      <description>
+      <description id="descAssociateButtons">
         &associate.buttons.description;
       </description>
       <description>
@@ -212,7 +212,7 @@
               accesskey="&associate.mhtml.accesskey;"
               oncommand="PrefsDialog.createAssociationsForMHTML();"
               />
-      <description>
+      <description id="descAssociateUninstall">
         &associate.uninstall.description;
       </description>
     </groupbox>

@@ -48,6 +48,9 @@ var PrefsDialog = {
    * Initializes the controls when the dialog is displayed.
    */
   onLoadDialog: function() {
+    // Apply brand names to the dialog elements
+    Interface.applyBranding(document.getElementById("descAssociateButtons"));
+    Interface.applyBranding(document.getElementById("descAssociateUninstall"));
     // Checks to see if the "file associations" pane should be active
     if (!this._isOnWindows()) {
       document.getElementById("btnAssociateMAFF").disabled = true;
@@ -141,7 +144,8 @@ var PrefsDialog = {
    * Return the string whose key is specified from the dialog's stringbundle.
    */
   _str: function(aKey) {
-    return document.getElementById("bundleDialog").getString(aKey);
+    return Interface.replaceBrandShortName(document.
+     getElementById("bundleDialog").getString(aKey));
   },
 
   /**
