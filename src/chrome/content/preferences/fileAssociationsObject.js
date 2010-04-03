@@ -87,31 +87,27 @@ FileAssociationsCreator.prototype = {
    * Creates file associations for the MAFF file format.
    */
   createAssociationsForMAFF: function() {
+    // Determine the ProgID name based on the host application
+    var maffProgID = this._isOnSeaMonkey() ? "SeaMonkeyMAFF" : "FirefoxMAFF";
     // Create a new ProgID for the MAFF format
-    this._createWindowsFileTypeForBrowser(
-     "FirefoxMAFF",
+    this._createWindowsFileTypeForBrowser(maffProgID,
      this._str("associate.maff.sysfiletypedesc"));
     // Associate file extensions with the file type
-    this._createWindowsFileExtensionAssociation(
-     ".maff",
-     "FirefoxMAFF");
+    this._createWindowsFileExtensionAssociation(".maff", maffProgID);
   },
 
   /**
    * Creates file associations for the MHTML file format.
    */
   createAssociationsForMHTML: function() {
-    // Create a new ProgID for the MHTML format handled by Firefox
-    this._createWindowsFileTypeForBrowser(
-     "FirefoxMHTML",
+    // Determine the ProgID name based on the host application
+    var mhtmlProgID = this._isOnSeaMonkey() ? "SeaMonkeyMHTML" : "FirefoxMHTML";
+    // Create a new ProgID for the MHTML format handled by the host application
+    this._createWindowsFileTypeForBrowser(mhtmlProgID,
      this._str("associate.mhtml.sysfiletypedesc"));
     // Associate file extensions with the file type
-    this._createWindowsFileExtensionAssociation(
-     ".mht",
-     "FirefoxMHTML");
-    this._createWindowsFileExtensionAssociation(
-     ".mhtml",
-     "FirefoxMHTML");
+    this._createWindowsFileExtensionAssociation(".mht", mhtmlProgID);
+    this._createWindowsFileExtensionAssociation(".mhtml", mhtmlProgID);
   },
 
   // --- String support functions ---
@@ -120,7 +116,8 @@ FileAssociationsCreator.prototype = {
    * Returns the string whose key is specified from the object's string bundle.
    */
   _str: function(aKey) {
-    return this._prefsDialogStrBundle.GetStringFromName(aKey);
+    return Interface.replaceBrandShortName(this._prefsDialogStrBundle.
+     GetStringFromName(aKey));
   },
 
   // For convenience, we use the strings from the preferences dialog
@@ -129,6 +126,14 @@ FileAssociationsCreator.prototype = {
    "chrome://maf/locale/prefsDialog.properties"),
 
   // --- File association support functions ---
+
+  /**
+   * Returns true if the host application is SeaMonkey.
+   */
+  _isOnSeaMonkey: function() {
+    return Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).ID ==
+     "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
+  },
 
   /**
    * Returns the appropriate root key to use based on this object settings.
