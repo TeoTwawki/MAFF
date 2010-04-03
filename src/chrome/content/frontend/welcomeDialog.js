@@ -51,6 +51,9 @@ var WelcomeDialog = {
    * Initializes the dialog.
    */
   onLoadDialog: function() {
+    // Apply brand names to the dialog elements
+    Interface.applyBranding(document.getElementById("descWelcomePara1"));
+    Interface.applyBranding(document.getElementById("cbAssociate"));
     // Apply rich text formatting to the description elements
     this._formatDescriptionElements();
     // File associations are supported on Windows only

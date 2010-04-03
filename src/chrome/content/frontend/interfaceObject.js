@@ -90,6 +90,40 @@ var Interface = {
     return aValue;
   },
 
+  /**
+   * Returns the short name of the host application.
+   */
+  get brandShortName() {
+    return Cc["@mozilla.org/intl/stringbundle;1"].
+     getService(Ci.nsIStringBundleService).
+     createBundle("chrome://branding/locale/brand.properties").
+     GetStringFromName("brandShortName");
+  },
+
+  /**
+   * Replaces the appropriate placeholder in the given text with the short name
+   *  of the host application.
+   */
+  replaceBrandShortName: function(aText) {
+    return aText.replace("Firefox", this.brandShortName);
+  },
+
+  /**
+   * Replaces the appropriate placeholder in the main text of the given XUL
+   *  element with the short name of the host application.
+   */
+  applyBranding: function(aElement) {
+    if (aElement.hasAttribute("label")) {
+      // This is a control with a label attribute
+      aElement.setAttribute("label", this.replaceBrandShortName(aElement.
+       getAttribute("label")));
+    } else {
+      // Assume this is a XUL description control containing a single text node
+      var textNode = aElement.firstChild;
+      textNode.data = this.replaceBrandShortName(textNode.data);
+    }
+  },
+
   _textToSubURI: Cc["@mozilla.org/intl/texttosuburi;1"].
    getService(Ci.nsITextToSubURI)
 }
