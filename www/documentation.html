@@ -38,9 +38,10 @@
 </ul>
 
 <h2><a name="introduction"></a>Introduction</h2>
-<p>Mozilla Archive Format, or MAF, is a Firefox extension that enables your
- browser to save, load and manage <i>web archives</i>. For a quick overview,
- have a look at the <a href="screenshots.html">screenshots page</a>.</p>
+<p>Mozilla Archive Format, or MAF, is an extension for Firefox and SeaMonkey
+ that enables your browser to save, load and manage <i>web archives</i>. For a
+ quick overview, have a look at the <a href="screenshots.html">screenshots
+ page</a>.</p>
 <p>Web archives are a convenient means to save and preserve web pages locally,
  since they allow you to store entire pages, including the images, in a single
  file. You can move around or rename a web archive without the risk of breaking
@@ -88,16 +89,16 @@
   <li>The <b>title</b> of the page, if present.</li>
   <li>The <b>character set</b> in effect at the time the page was saved. If the
    character set was changed manually using the <b>View &raquo; Character
-   Encoding</b> menu item of Firefox, the custom choice is remembered. This
-   allows the document to be displayed correctly when it is reopened from the
-   archive, even if it contains internationalized characters.</li>
+   Encoding</b> menu item, the custom choice is remembered. This allows the
+   document to be displayed correctly when it is reopened from the archive, even
+   if it contains internationalized characters.</li>
 </ul>
 <p>If you resave an already archived page to a different file, the save time and
  location from the original archive are preserved.</p>
 <h3><a name="opening"></a>Opening web archives</h3>
 <p>By default, once MAF is installed, web archives can be opened using the
- ordinary <b>File &raquo; Open File</b> menu item of Firefox or using
- drag-and-drop, as you would open any other saved web page.</p>
+ ordinary <b>File &raquo; Open File</b> menu item or using drag-and-drop, as you
+ would open any other saved web page.</p>
 <p>Under Windows, MAF can also create for you the
  <a href="#fileassociations">file associations</a> that allow opening the web
  archives by double-clicking them from Windows Explorer.</p>
@@ -122,8 +123,8 @@
 
 <h2><a name="extensions"></a>Integration with other extensions</h2>
 <p>One of the key features of Mozilla Archive Format is that it integrates not
- only with Firefox, but with other extensions as well, to provide a smooth user
- experience.</p>
+ only with the core of the browser, but with other extensions as well, to
+ provide a smooth user experience.</p>
 <p>Some of these extensions, like UnMHT, must be installed separately; other
  extensions, like Save Complete, are embedded and updated together with MAF.</p>
 <dl>
@@ -207,8 +208,8 @@
     <p>If the page was saved using the standalone or the integrated Save
      Complete extension for Firefox, the original location is stored like
      <code>&lt;!-- Source is http://www.example.org/ --&gt;</code>.</p>
-    <p>If the page was saved using Firefox without the Save Complete extension,
-     the original location is not available.</p>
+    <p>If the page was saved using SeaMonkey or Firefox without the Save
+     Complete extension, the original location is not available.</p>
   </li>
 </ul>
 <p>When converting a web archive to another archive format, all the information
@@ -272,12 +273,12 @@
  and <tt>Page_files</tt>, but also <tt>Page</tt> (without extension) and
  <tt>Page_files</tt>. Web pages saved as single files, without support folders,
  are recognized by their extension only.</p>
-<p>If you are using Firefox in a language other than English, the recognition of
- additional support folder suffixes will be enabled. For example, if you are
- using Firefox in French, a support folder named <tt>Page_fichiers</tt> can be
- recognized, in addition to <tt>Page_files</tt>. If you previously saved pages
- using a browser in a different language than the one in which you are using
- Firefox, the support folder names may not be recognized correctly.</p>
+<p>If you are using your browser in a language other than English, the
+ recognition of additional support folder suffixes will be enabled. For example,
+ if you are using your browser in French, a support folder named
+ <tt>Page_fichiers</tt> can be recognized, in addition to <tt>Page_files</tt>.
+ If you previously saved pages using a browser in a different language than the
+ current one, the support folder names may not be recognized correctly.</p>
 <p>The selected destination format determines how the wizard will assign the
  output file names. The extension in the source file name, if present, is
  always replaced with the correct extension for the destination file format. For
@@ -299,10 +300,10 @@
  bin for the original files that have been successfully converted.</p>
 <p>If you are converting from the MAFF file format and the use of the "jar:"
  protocol is enabled in the <a href="#advanced">advanced preferences</a>, you
- will not be able to move the source files to another folder, since Firefox will
- lock the files in place until it is closed. If you want to use this feature
- when converting from MAFF to another format, you should disable the use of
- the "jar:" protocol for the duration of the conversion process.</p>
+ will not be able to move the source files to another folder, since the browser
+ will lock the files in place until it is closed. If you want to use this
+ feature when converting from MAFF to another format, you should disable the use
+ of the "jar:" protocol for the duration of the conversion process.</p>
 <p>The conversion wizard will never delete or overwrite the source files. Since
  the converted pages may not be entirely faithful to the original, you should
  always keep a backup of your source files available, even after a successful
@@ -377,7 +378,7 @@
     <ol>
       <li><b>Use browser's standard save system</b> (default) - With this
        setting, the web pages are saved by the browser. How much of the web page
-       is actually saved depends on the version of Firefox being used.</li>
+       is actually saved depends on the version of the browser being used.</li>
       <li><b>Preserve scripts and source using "Save Complete"</b> - Allows more
        content to be saved, thanks to the integrated Save Complete extension
        written by Stephen Augenstein. This save mode attempts to preserve the
@@ -398,7 +399,7 @@
     </ol>
     <p>Note that the selected component will be used not only when saving
      archives, but also when saving complete pages using the <b>Save Page
-     As</b>, <b>Web Page, complete</b> command of Firefox.</p>
+     As</b>, <b>Web Page, complete</b> command.</p>
   </dd>
   <dt>Create MHTML files fully compatible with other browsers</dt>
   <dd>
@@ -406,9 +407,10 @@
      files according to the original specification, allowing any browser to open
      the archives correctly, even in case of very complex pages. If this
      preference is disabled, MAF will generate a specific MHTML variant, that
-     will open much more quickly in Firefox, even for very large documents, but
-     that other browsers would not be able to display with proper formatting if
-     the saved page contains nested CSS stylesheets or inner frames.</p>
+     will open much more quickly in Firefox or SeaMonkey, even for very large
+     documents, but that other browsers would not be able to display with proper
+     formatting if the saved page contains nested CSS stylesheets or inner
+     frames.</p>
     <p>MAF is only able to create compatible MHTML files using the integrated
      Save Complete component. If the Save Complete component is disabled, only
      the MAF-specific MHTML variant is available.</p>
@@ -503,7 +505,7 @@
     <p>File associations are always created explicitly for the current user of
      the system. In addition, if the current user has administration privileges,
      default file associations for all users are also created.</p>
-    <p>File associations are not removed when uninstalling MAF of Firefox
+    <p>File associations are not removed when uninstalling MAF or the browser
      itself.</p>
   </dd>
 </dl>
@@ -522,7 +524,7 @@
     <p>If customized, the absolute path to the specified location is remembered.
      The contents of the selected folder will be lost if the <b>Clear temporary
      folder when browser exits</b> option is selected. There is usually no need
-     to customize the temporary folder unless you use different Firefox profiles
+     to customize the temporary folder unless you use different browser profiles
      on the same computer at the same time.</p>
   </dd>
   <dt>Clear temporary folder when browser exits</dt>
@@ -544,8 +546,8 @@
      will be accessed directly using the "jar:" protocol, without being
      extracted.</p>
     <p>However, if you enable this option, the archive files you open will be
-     locked, and you will be unable to move, rename or delete them until Firefox
-     is closed.</p>
+     locked, and you will be unable to move, rename or delete them until the
+     browser is closed.</p>
   </dd>
   <dt>Save using the .mhtml file extension instead of .mht by default</dt>
   <dd>
@@ -596,9 +598,9 @@ adversely impact functionality or performance.</p>
 </dl>
 
 <h2><a name="moredocumentation"></a>More documentation</h2>
-<p>This document provided the essential user documentation for the Firefox
- extension. Technical documentation about the internals of Mozilla Archive
- Format and the MAFF file format are available in separate documents, the
+<p>This document provided the essential user documentation for the extension.
+ Technical documentation about the internals of Mozilla Archive Format and the
+ MAFF file format are available in separate documents, the
  <a href="dev-documentation.html">API documentation</a> and the
  <a href="maff-specification.html">MAFF specification</a>.</p>
 
