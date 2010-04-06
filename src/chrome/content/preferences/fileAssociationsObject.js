@@ -156,7 +156,7 @@ FileAssociationsCreator.prototype = {
      aDisplayName,
      this._getFirefoxExecutablePath(),
      '-osint -url "%1"',
-     1 // Use the second icon in the executable file
+     this._isOnSeaMonkey() ? 0 : 1
      );
   },
 
