@@ -9,6 +9,10 @@
 <!ENTITY options.associate.label "Abrir arquivos simples da web no Firefox">
 <!ENTITY options.associate.accesskey "A">
 <!ENTITY options.associate.description "Selecione essa opção para fazer o computador abrir arquivos da web usando o Firefox quando você dá um duplo clique neles.">
+<!ENTITY options.exactpersist.label "Salvar conteúdo exato exibido no momento">
+<!ENTITY options.exactpersist.accesskey "c">
+<!ENTITY options.exactpersist.para1.description "Essa opção aprimora o modo de salvar páginas do navegador, permitindo que você salve uma cópia exata do conteúdo exibido na página no momento em que você a salvou.">
+<!ENTITY options.exactpersist.para2.description "Você pode mudar o modo de salvar páginas a qualquer momento nas opções do MAF.">
 <!ENTITY options.savemaff.label "Salvar no formato MAFF por padrão">
 <!ENTITY options.savemaff.accesskey "f">
 <!ENTITY options.savemaff.para1.description "MAFF é um formato de arquivo da web baseado em ZIP. Ele pode ser aberto no Linux e em qualquer outra plataforma que suporte arquivos ZIP, porém não são abertos diretamente pelo Internet Expolrer.">
