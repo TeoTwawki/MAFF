@@ -8,7 +8,7 @@
 <!ENTITY options.description "Obwohl Sie schon Web-Archive öffnen und speichern können, werden die folgenden Einstellungen an Ihrem Computer empfohlen:">
 <!ENTITY options.associate.label "Web-Archive mit Firefox öffnen">
 <!ENTITY options.associate.accesskey "ö">
-<!ENTITY options.associate.description "Wählen Sie diese Option, um Web-Archive mit Firefox zu öffnen, wenn Sie auf sie klicken.">
+<!ENTITY options.associate.description "Wählen Sie diese Option, um Web-Archive zu öffnen, wenn darauf geklickt wird.">
 <!ENTITY options.exactpersist.label "Beim Speichern einen zuverlässigen Schnapschuss aufnehmen">
 <!ENTITY options.exactpersist.accesskey "B">
 <!ENTITY options.exactpersist.para1.description "Diese Option verbessert das Standard-Speichersystem des Browsers, indem es den exakten Inhalt der zu speichernden Website archiviert.">
