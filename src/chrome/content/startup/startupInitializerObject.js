@@ -75,6 +75,19 @@ var StartupInitializer = {
        mimeTypes:      ["application/x-mht", "message/rfc822"] }
     ];
 
+    // Firstly, clean up the permanent file extension associations created by
+    //  MAF 0.7.1 and earlier, that collapsed the MIME types for MAFF and MHTML.
+    var helperApps = new HelperAppsWrapper.HelperApps();
+    if (helperApps.mimeHandlerExists("application/x-maf")) {
+      var handlerOverride = new HelperAppsWrapper.HandlerOverride(
+       HelperAppsWrapper.MIME_URI("application/x-maf"), helperApps._inner);
+      // Clear the list of extensions only if it is not already empty
+      if (handlerOverride.extensions) {
+        handlerOverride.clearExtensions();
+        helperApps.flush();
+      }
+    }
+
     // Build a list of MIME types and associated archive types. This list will
     //  be used by the archive loader to determine how to handle web archives.
     for (let [, archiveInfo] in Iterator(archiveTypesToRegister)) {

@@ -102,6 +102,7 @@ try {
    ["saving/saveJobObject.js",                    "SaveJob"],
 
    // Extension initialization
+   ["startup/helperAppsWrapper.js",               "HelperAppsWrapper"],
    ["startup/startupEventsObject.js",             "StartupEvents"],
    ["startup/startupInitializerObject.js",        "StartupInitializer"]
 
