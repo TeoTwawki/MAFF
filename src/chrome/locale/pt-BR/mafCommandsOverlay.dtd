@@ -4,8 +4,8 @@
 <!-- Menu items for general Mozilla Archive Format commands -->
 <!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
-<!ENTITY menuitem.browseopenarchives.label "Navegar nos arquivos da web abertos...">
-<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "N">
+<!ENTITY menuitem.browseopenarchives.label "Arquivos da web abertos...">
+<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "A">
 <!ENTITY menuitem.convertsavedpages.label "Converter páginas salvas...">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.preferences.label "Preferências...">
@@ -20,13 +20,13 @@
 <!ENTITY menuitem.savealltabsas.accesskey.filemenu "t">
 <!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "t">
 <!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "t">
-<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "t">
+<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "v">
 <!-- Additional menu items for the "Save In Archive" command -->
-<!ENTITY menuitem.savepageinarchive.label "Salvar como arquivo da web...">
-<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
-<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
-<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
-<!ENTITY menuitem.saveframeinarchive.label "Salvar quadro como arquivo da web...">
-<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "b">
-<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "b">
-<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "b">
+<!ENTITY menuitem.savepageinarchive.label "Salvar página como arquivo da web...">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "w">
+<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "w">
+<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "w">
+<!ENTITY menuitem.saveframeinarchive.label "Salvar frame como arquivo da web...">
+<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "q">
+<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "q">
+<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "q">

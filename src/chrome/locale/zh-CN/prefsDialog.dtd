@@ -7,7 +7,7 @@
 <!ENTITY save.component.grouplabel "当保存完整网页档案内容时：">
 <!ENTITY save.component.standard.label "使用浏览器的标准保存系统 (b)">
 <!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.completesave.label "使用“Save Complete”时保持页面脚本与源码（？）(u)">
+<!ENTITY save.component.completesave.label "使用“Save Complete”保存页面（保持脚本与源码）(u)">
 <!ENTITY save.component.completesave.accesskey "u">
 <!ENTITY save.component.exactpersist.label "使用可靠的页面快照(k)">
 <!ENTITY save.component.exactpersist.accesskey "k">

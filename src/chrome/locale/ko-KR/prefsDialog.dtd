@@ -1,0 +1,74 @@
+<!-- General window controls -->
+<!ENTITY window.title "설정">
+<!ENTITY browsebutton.label "찾아보기...">
+<!-- Main pane -->
+<!ENTITY pane.main.label "메인">
+<!ENTITY save.caption "저장">
+<!ENTITY save.component.grouplabel "전체 웹페이지의 내용을 저장할 때:">
+<!ENTITY save.component.standard.label "브라우저의 기본 저장을 사용">
+<!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.completesave.label "스크립트와 소스를 포함한 &quot;전체 저장&quot;">
+<!ENTITY save.component.completesave.accesskey "u">
+<!ENTITY save.component.exactpersist.label "페이지의 정확한 스냅샷 만들기">
+<!ENTITY save.component.exactpersist.accesskey "k">
+<!ENTITY save.mhtml.compatible.label "다른 브라우저와 완전히 호환 가능한 MHTML 형식으로 만들기">
+<!ENTITY save.mhtml.compatible.accesskey "o">
+<!ENTITY save.namingstrategy.grouplabel "파일 이름을 정하는 방식:">
+<!ENTITY save.namingstrategy.standard.label "브라우저 기본 방식으로">
+<!ENTITY save.namingstrategy.standard.accesskey "w">
+<!ENTITY save.namingstrategy.pagetitle.label "가능하면 페이지 제목으로">
+<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
+<!ENTITY save.metadata.extended.label "MAFF 아카이브 파일 안에 확장된 메타데이터 저장">
+<!ENTITY save.metadata.extended.accesskey "v">
+<!-- Interface pane -->
+<!ENTITY pane.interface.label "인터페이스">
+<!ENTITY icon.caption "아이콘">
+<!ENTITY iconlocation.grouplabel "Mozilla Archive Format의 아이콘을 표시할 곳:">
+<!ENTITY iconlocation.urlbar.label "주소창">
+<!ENTITY iconlocation.urlbar.accesskey "A">
+<!ENTITY iconlocation.urlbar-autohide.label "아카이브 페이지의 주소창">
+<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
+<!ENTITY iconlocation.status.label "상태 표시줄">
+<!ENTITY iconlocation.status.accesskey "S">
+<!ENTITY iconlocation.none.label "없음">
+<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY menu.caption "메뉴">
+<!ENTITY menu.grouplabel "Mozilla Archive Format의 메뉴 항목을 표시할 곳:">
+<!ENTITY menu.file.label "파일 메뉴">
+<!ENTITY menu.file.accesskey "F">
+<!ENTITY menu.tools.label "도구 메뉴">
+<!ENTITY menu.tools.accesskey "l">
+<!ENTITY menu.pagecontext.label "페이지 오른쪽 클릭 메뉴">
+<!ENTITY menu.pagecontext.accesskey "p">
+<!ENTITY menu.tabscontext.label "탭바 오른쪽 클릭 메뉴">
+<!ENTITY menu.tabscontext.accesskey "x">
+<!ENTITY menuitem.grouplabel "추가 메뉴 항목 보이기:">
+<!ENTITY menuitem.saveinarchive.label "아카이브 파일로 저장">
+<!ENTITY menuitem.saveinarchive.accesskey "h">
+<!-- File associations pane. This pane is visible only on Windows. -->
+<!ENTITY pane.fileassociations.label "파일 등록">
+<!ENTITY associate.windowsonly.description "윈도우에서만 사용이 가능한 기능입니다.">
+<!ENTITY associate.buttons.description "파이어폭스로 MAF 형식의 파일을 열려면 아래의 버튼을 클릭하세요.">
+<!ENTITY associate.adminprivs.description "관리자 권한이 아닐 경우 효과가 없을 수 있습니다.">
+<!ENTITY associate.maff.label "maff 확장자 등록하기">
+<!ENTITY associate.maff.accesskey "e">
+<!ENTITY associate.mhtml.label "mht, mhtml 확장자 등록하기">
+<!ENTITY associate.mhtml.accesskey "a">
+<!ENTITY associate.uninstall.description "주의: 여기서 등록시킨 파일 형식은 MAF 확장이나 파이어폭스를 제거해도 남아 있을 것입니다. 윈도우의 제어판을 통해 파일 형식을 관리할 수 있습니다.">
+<!-- Advanced pane -->
+<!ENTITY pane.advanced.label "고급">
+<!ENTITY temp.caption "임시 파일">
+<!ENTITY temp.folder.label "임시 폴더:">
+<!ENTITY temp.folder.accesskey "T">
+<!ENTITY temp.clearonexit.label "브라우저를 종료하면 임시 폴더를 지웁니다">
+<!ENTITY temp.clearonexit.accesskey "C">
+<!ENTITY open.caption "열기">
+<!ENTITY open.rewriteurls.label "열려진 아카이브 페이지 안의 절대 주소 다시 기록하기">
+<!ENTITY open.rewriteurls.accesskey "R">
+<!ENTITY open.usejarprotocol.label "MAFF 아카이브 파일 안의 &quot;jar:&quot; 프로토콜 사용하기">
+<!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY other.caption "기타">
+<!ENTITY other.displaywelcome.label "다음 시작할 때 안내 창 표시하기">
+<!ENTITY other.displaywelcome.accesskey "D">
+<!ENTITY save.usemhtmlextension.label "mht 확장자 대신 mhtml 확장자로 기본 저장하기">
+<!ENTITY save.usemhtmlextension.accesskey "m">

@@ -11,22 +11,22 @@
 <!ENTITY okbutton.label "OK">
 <!-- *** Welcome message *** -->
 <!ENTITY welcome.label "Bem-vindo ao Mozilla Archive Format!">
-<!ENTITY welcome.para1.description "Obrigado por instalar MAF! Seu Firefox agora é capaz de salvar e abrir páginas completas da web em [i]arquivos simples da web[/i], tanto no formato [tt]MAFF[/tt] quanto no [tt]MHTML[/tt].">
-<!ENTITY welcome.para2.description "Você pode abrir arquivos da web através do comando [b]Abrir arquivo...[/b] no menu Arquivo, e salvá-los escolhendo o tipo de arquivo correspondente na janela [b]Savar como[/b].">
-<!ENTITY welcome.para3.description "Você encontrará funções extras para lidar com os arquivos simples da web no menu [b]Ferramentas[/b].">
+<!ENTITY welcome.para1.description "Obrigado por instalar o complemento MAF! Seu Firefox agora é capaz de abrir e salvar páginas completas da web em [i]arquivos simples da web[/i], nos formatos [tt]MAFF[/tt] e [tt]MHTML[/tt].">
+<!ENTITY welcome.para2.description "Você pode abrir arquivos da web através do comando [b]Abrir arquivo...[/b] no menu Arquivo, e salvá-los escolhendo o tipo de arquivo da web desejado na janela [b]Savar como[/b].">
+<!ENTITY welcome.para3.description "Você encontrará mais funções para lidar com os arquivos da web no menu [b]Ferramentas[/b].">
 <!-- *** Options page *** -->
-<!ENTITY options.description "Você já pode abrir e salvar arquivos simples da web usando o Firefox. Entretanto, as seguintes configurações são sugeridas:">
-<!ENTITY options.associate.label "Abrir arquivos simples da web no Firefox">
+<!ENTITY options.description "Embora você agora já possa abrir e salvar arquivos da web com o Firefox, recomenda-se aceitar as seguintes configurações:">
+<!ENTITY options.associate.label "Abrir arquivos da web com o Firefox">
 <!ENTITY options.associate.accesskey "A">
-<!ENTITY options.associate.description "Selecione essa opção para fazer o computador abrir arquivos da web usando o Firefox quando você dá um duplo clique neles.">
+<!ENTITY options.associate.description "Selecione essa opção para que o computador use o Firefox para abrir arquivos simples da web quando você der um duplo clique neles.">
 <!ENTITY options.exactpersist.label "Salvar conteúdo exato exibido no momento">
 <!ENTITY options.exactpersist.accesskey "c">
-<!ENTITY options.exactpersist.para1.description "Essa opção aprimora o modo de salvar páginas do navegador, permitindo que você salve uma cópia exata do conteúdo exibido na página no momento em que você a salvou.">
-<!ENTITY options.exactpersist.para2.description "Você pode mudar o modo de salvar páginas a qualquer momento nas opções do MAF.">
+<!ENTITY options.exactpersist.para1.description "Essa opção aprimora o mecanismo do navegador, permitindo gravar uma cópia exata do conteúdo exibido na página no momento em que foi salva.">
+<!ENTITY options.exactpersist.para2.description "Você pode mudar a qualquer momento o mecanismo usado ao salvar páginas nas preferências do MAF.">
 <!ENTITY options.savemaff.label "Salvar no formato MAFF por padrão">
 <!ENTITY options.savemaff.accesskey "f">
-<!ENTITY options.savemaff.para1.description "MAFF é um formato de arquivo da web baseado em ZIP. Ele pode ser aberto no Linux e em qualquer outra plataforma que suporte arquivos ZIP, porém não são abertos diretamente pelo Internet Expolrer.">
-<!ENTITY options.savemaff.para2.description "Você pode mudar o tipo do arquivo a ser salvo na janela [b]Salvar como[/b] toda vez que for salvar uma página.">
+<!ENTITY options.savemaff.para1.description "MAFF é um formato de arquivo da web baseado em ZIP. É livre e pode ser aberto em várias plataformas, inclusive Linux. Todavia, o Internet Explorer não é capaz de abri-los diretamente.">
+<!ENTITY options.savemaff.para2.description "Você poderá escolher o formato de arquivo da web a ser salvo na janela [b]Salvar como[/b] toda vez que for salvar uma página.">
 <!-- *** Changes confirmation message *** -->
 <!ENTITY changesapplied.label "Parabéns!">
-<!ENTITY changesapplied.description "Seu sistema foi configurado como você requisitou e está pronto para ser usado.">
+<!ENTITY changesapplied.description "Seu sistema foi configurado conforme requisitado e está pronto para ser usado.">
