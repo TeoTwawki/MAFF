@@ -2,62 +2,62 @@
 <!ENTITY browsebutton.label "Procurar...">
 <!ENTITY continue.label "Para continuar, clique em $1.">
 <!ENTITY introduction.pagelabel "Bem-vindo(a) ao Assistente para conversão de páginas salvas">
-<!ENTITY introduction.para1.description "Esse assistente irá ajudá-lo a converter páginas da web já salvas em outros formatos.">
-<!ENTITY introduction.para2.description "Use-o quando precisar converter várias páginas de uma só vez. Caso deseje converter apenas uma ou poucas páginas você pode simplesmente abri-la(s) no navegador e salva-la(s) como outro formato de arquivo.">
-<!ENTITY introduction.para3.description "Dependendo dos formatos selecionados e das preferências do MAF as páginas salvas poderão não ser completamente fieis às originais. É recomendado que você mantenha uma cópia dos arquivos originais mesmo após uma conversão bem sucedida.">
+<!ENTITY introduction.para1.description "Esse assistente converte páginas já salvas para outros tipos de arquivo.">
+<!ENTITY introduction.para2.description "Use-o para converter várias páginas de uma só vez. Para converter apenas uma ou poucas páginas, simplesmente a(s) abra no navegador e salve como outro formato.">
+<!ENTITY introduction.para3.description "Dependendo dos formatos selecionados e das preferências do MAF, as páginas salvas poderão não ser completamente fieis às originais. Recomenda-se manter uma cópia dos arquivos originais mesmo após uma conversão bem sucedida.">
 <!ENTITY introduction.continue.label "Para começar, clique em $1.">
-<!ENTITY formats.pagelabel "Formatos dos originais e das páginas convertidas">
+<!ENTITY formats.pagelabel "Formatos das páginas">
 <!ENTITY formats.source.grouplabel "Converter de:">
-<!ENTITY formats.source.complete.label "Páginas da web completas (acompanhada de pastas _arquivos)">
+<!ENTITY formats.source.complete.label "páginas da web, completas (acompanhadas de pastas &quot;_arquivos&quot;)">
 <!ENTITY formats.source.complete.accesskey "c">
-<!ENTITY formats.source.plain.label "Todas as páginas da web (com ou sem pasta _arquivos associada)">
-<!ENTITY formats.source.plain.accesskey "T">
-<!ENTITY formats.source.mhtml.label "Arquivos MHTML">
+<!ENTITY formats.source.plain.label "páginas da web, todas (acompanhadas ou não de pastas &quot;_arquivos&quot;)">
+<!ENTITY formats.source.plain.accesskey "t">
+<!ENTITY formats.source.mhtml.label "arquivos MHTML">
 <!ENTITY formats.source.mhtml.accesskey "M">
-<!ENTITY formats.source.maff.label "Arquivos MAFF">
+<!ENTITY formats.source.maff.label "arquivos MAFF">
 <!ENTITY formats.source.maff.accesskey "F">
 <!ENTITY formats.dest.grouplabel "Converter para:">
-<!ENTITY formats.dest.maff.label "Arquivos MAFF">
+<!ENTITY formats.dest.maff.label "arquivos MAFF">
 <!ENTITY formats.dest.maff.accesskey "r">
-<!ENTITY formats.dest.mhtml.label "Arquivos MHTML">
-<!ENTITY formats.dest.mhtml.accesskey "H">
-<!ENTITY formats.dest.complete.label "Páginas da web, completas (com pasta _arquivos)">
+<!ENTITY formats.dest.mhtml.label "arquivos MHTML">
+<!ENTITY formats.dest.mhtml.accesskey "q">
+<!ENTITY formats.dest.complete.label "páginas da web, completas (com pasta &quot;_arquivos&quot;, quando necessária)">
 <!ENTITY formats.dest.complete.accesskey "p">
-<!ENTITY formats.invalid.label "Por favor selecione dois formatos diferentes de arquivos para a conversão.">
+<!ENTITY formats.invalid.label "Por favor, selecione dois formatos diferentes para a conversão.">
 <!ENTITY folders.source.pagelabel "Pasta de origem">
-<!ENTITY folders.source.label "Procurar arquivos fonte nesta pasta:">
-<!ENTITY folders.source.accesskey "e">
+<!ENTITY folders.source.label "Local dos arquivos a serem convertidos:">
+<!ENTITY folders.source.accesskey "L">
 <!ENTITY folders.source.subfolders.label "Incluir subpastas">
 <!ENTITY folders.source.subfolders.accesskey "s">
-<!ENTITY folders.source.invalid.label "Por favor selecione uma pasta existente.">
-<!ENTITY folders.dest.pagelabel "Pastas de destino">
+<!ENTITY folders.source.invalid.label "Por favor, selecione uma pasta existente.">
+<!ENTITY folders.dest.pagelabel "Pasta de destino">
 <!ENTITY folders.dest.grouplabel "Salvar os arquivos convertidos:">
-<!ENTITY folders.dest.original.label "Na mesma pasta dos arquivos originais">
-<!ENTITY folders.dest.original.accesskey "s">
-<!ENTITY folders.dest.folder.label "Nesta pasta (preservando caminhos relativos):">
-<!ENTITY folders.dest.folder.accesskey "t">
+<!ENTITY folders.dest.original.label "na mesma pasta dos originais">
+<!ENTITY folders.dest.original.accesskey "o">
+<!ENTITY folders.dest.folder.label "nesta pasta (preservando caminhos relativos):">
+<!ENTITY folders.dest.folder.accesskey "p">
 <!ENTITY folders.bin.grouplabel "Após uma conversão bem sucedida:">
-<!ENTITY folders.bin.original.label "Manter os arquivos originais no local atual">
-<!ENTITY folders.bin.original.accesskey "l">
-<!ENTITY folders.bin.folder.label "Mover os arquivos originais para esta pasta (preservando caminhos relativos):">
+<!ENTITY folders.bin.original.label "manter os originais onde estão">
+<!ENTITY folders.bin.original.accesskey "e">
+<!ENTITY folders.bin.folder.label "mover os originais para esta pasta (preservando caminhos relativos):">
 <!ENTITY folders.bin.folder.accesskey "m">
-<!ENTITY folders.dest.invalid.label "Por favor especifique o caminho completo da pasta.">
+<!ENTITY folders.dest.invalid.label "Por favor, especifique o caminho completo das pastas.">
 <!ENTITY candidates.pagelabel "Conversão">
-<!ENTITY candidates.description "Por favor verifique a lista abaixo e selecione os arquivos que deseja converter.">
-<!ENTITY candidates.sourcename.header "Arquivo original">
-<!ENTITY candidates.sourcedatafoldername.header "Pasta _arquivos">
+<!ENTITY candidates.description "Por favor, confira a lista abaixo e selecione os arquivos que deseja converter.">
+<!ENTITY candidates.sourcename.header "Arquivo">
+<!ENTITY candidates.sourcedatafoldername.header "_arquivos">
 <!ENTITY candidates.relativepath.header "Subpasta">
-<!ENTITY candidates.sourcepath.header "Pasta de origem">
-<!ENTITY candidates.destpath.header "Pasta de destino">
-<!ENTITY candidates.binpath.header "Mover para a pasta">
+<!ENTITY candidates.sourcepath.header "Origem">
+<!ENTITY candidates.destpath.header "Destino">
+<!ENTITY candidates.binpath.header "Novo local do original">
 <!ENTITY candidates.all.label "Todos os arquivos">
-<!ENTITY candidates.searchingcounts.label "$1 total, $2 já convertidos, $3 selecionados">
-<!ENTITY candidates.convertingcounts.label "$1 total, $2 já convertidos, $3 selecionados, $4 convertidos com sucesso, $5 falharam">
-<!ENTITY candidates.searching.label "Procurando por arquivos fonte...">
-<!ENTITY candidates.none.label "Nenhum arquivo passível de conversão foi encontrado. Para modificar os parâmetros de pesquisa, clique em $1.">
-<!ENTITY candidates.invalid.label "Por favor selecione pelo menos um arquivo para ser convertido.">
-<!ENTITY candidates.convert.label "Clique em Converter para inciar a conversão.">
+<!ENTITY candidates.searchingcounts.label "$1 total, $2 já convertidos, $3 selecionados.">
+<!ENTITY candidates.convertingcounts.label "$1 total, $2 já convertidos, $3 selecionados, $4 convertidos com sucesso, $5 falharam.">
+<!ENTITY candidates.searching.label "Procurando por arquivos a serem convertidos...">
+<!ENTITY candidates.none.label "Nenhum arquivo adequado encontrado. Para mudar sua pesquisa, clique em $1.">
+<!ENTITY candidates.invalid.label "Por favor, selecione pelo menos um arquivo para ser convertido.">
+<!ENTITY candidates.convert.label "Clique em Converter para iniciar a conversão.">
 <!ENTITY candidates.converting.label "Convertendo seus arquivos...">
-<!ENTITY candidates.finish.label "Por favor verifique os resultados da conversão, e então clique em $1 para fechar o assistente.">
+<!ENTITY candidates.finish.label "Por favor, verifique os resultados acima e clique em $1 para sair do assistente.">
 <!ENTITY candidates.convertbutton.label "Converter">
 <!ENTITY candidates.convertbutton.accesskey "C">

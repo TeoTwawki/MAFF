@@ -2,35 +2,35 @@
 <!ENTITY browsebutton.label "Procurar...">
 <!ENTITY pane.main.label "Principal">
 <!ENTITY save.caption "Salvar">
-<!ENTITY save.component.grouplabel "Ao salvar o conteúdo das páginas:">
+<!ENTITY save.component.grouplabel "Ao salvar páginas:">
 <!ENTITY save.component.standard.label "usar o método padrão do navegador">
-<!ENTITY save.component.standard.accesskey "p">
-<!ENTITY save.component.completesave.label "preservar scripts e código-fonte ao usar &quot;Save Complete&quot;">
+<!ENTITY save.component.standard.accesskey "n">
+<!ENTITY save.component.completesave.label "preservar scripts e código-fonte usando &quot;Save Complete&quot;">
 <!ENTITY save.component.completesave.accesskey "p">
 <!ENTITY save.component.exactpersist.label "salvar o conteúdo exato exibido no momento">
-<!ENTITY save.component.exactpersist.accesskey "c">
+<!ENTITY save.component.exactpersist.accesskey "e">
 <!ENTITY save.mhtml.compatible.label "Criar arquivos MHTML compatíveis com outros navegadores">
-<!ENTITY save.mhtml.compatible.accesskey "c">
-<!ENTITY save.namingstrategy.grouplabel "Para o nome de arquivo sugerido:">
-<!ENTITY save.namingstrategy.standard.label "usar o sugerido pelo navegador">
-<!ENTITY save.namingstrategy.standard.accesskey "n">
-<!ENTITY save.namingstrategy.pagetitle.label "usar o título da página sempre que possível">
+<!ENTITY save.mhtml.compatible.accesskey "M">
+<!ENTITY save.namingstrategy.grouplabel "Para o nome do arquivo, sugerir:">
+<!ENTITY save.namingstrategy.standard.label "o padrão do navegador">
+<!ENTITY save.namingstrategy.standard.accesskey "v">
+<!ENTITY save.namingstrategy.pagetitle.label "o título da página (quando possível)">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "t">
-<!ENTITY save.metadata.extended.label "Salvar metadados adicionais nos arquivos MAFF">
-<!ENTITY save.metadata.extended.accesskey "m">
+<!ENTITY save.metadata.extended.label "Incluir informações adicionais nos arquivos MAFF salvos">
+<!ENTITY save.metadata.extended.accesskey "I">
 <!ENTITY pane.interface.label "Interface">
 <!ENTITY icon.caption "Ícone">
 <!ENTITY iconlocation.grouplabel "Exibir o ícone do Mozilla Archive Format:">
 <!ENTITY iconlocation.urlbar.label "na barra de endereço">
 <!ENTITY iconlocation.urlbar.accesskey "e">
-<!ENTITY iconlocation.urlbar-autohide.label "na barra de endereço, apenas ao exibir uma página salva num arquivo da web">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "e">
+<!ENTITY iconlocation.urlbar-autohide.label "na barra de endereço, ao exibir uma página salva em arquivo da web">
+<!ENTITY iconlocation.urlbar-autohide.accesskey "q">
 <!ENTITY iconlocation.status.label "na barra de status">
 <!ENTITY iconlocation.status.accesskey "s">
 <!ENTITY iconlocation.none.label "em nenhum lugar">
 <!ENTITY iconlocation.none.accesskey "n">
 <!ENTITY menu.caption "Menu">
-<!ENTITY menu.grouplabel "Mostrar os comandos do Mozilla Archive Format:">
+<!ENTITY menu.grouplabel "Exibir os comandos do Mozilla Archive Format:">
 <!ENTITY menu.file.label "no menu Arquivo">
 <!ENTITY menu.file.accesskey "A">
 <!ENTITY menu.tools.label "no menu Ferramentas">
@@ -38,32 +38,32 @@
 <!ENTITY menu.pagecontext.label "no menu de contexto da página">
 <!ENTITY menu.pagecontext.accesskey "c">
 <!ENTITY menu.tabscontext.label "no menu de contexto das abas">
-<!ENTITY menu.tabscontext.accesskey "a">
+<!ENTITY menu.tabscontext.accesskey "b">
 <!ENTITY menuitem.grouplabel "Exibir também estes comandos:">
-<!ENTITY menuitem.saveinarchive.label "Salvar em arquivo da web">
+<!ENTITY menuitem.saveinarchive.label "Salvar como arquivo da web...">
 <!ENTITY menuitem.saveinarchive.accesskey "w">
-<!ENTITY pane.fileassociations.label "Associação de arquivos">
-<!ENTITY associate.windowsonly.description "Esse recurso está disponível apenas para Windows.">
+<!ENTITY pane.fileassociations.label "Associações">
+<!ENTITY associate.windowsonly.description "Esse recurso está disponível apenas em Windows.">
 <!ENTITY associate.buttons.description "Clique nos botões abaixo para associar o Firefox aos tipos de arquivo suportados pelo MAF.">
-<!ENTITY associate.adminprivs.description "Essa operação poderá requerer privilégios de administrador.">
-<!ENTITY associate.maff.label "Associar a arquivos .maff">
-<!ENTITY associate.maff.accesskey "f">
-<!ENTITY associate.mhtml.label "Associar a arquivos .mht e .mhtml">
-<!ENTITY associate.mhtml.accesskey "h">
-<!ENTITY associate.uninstall.description "Observação: as associações feitas aqui não são removidas automaticamente quando o MAF ou o Firefox é desinstalado. Você pode gerenciar as associações de arquivos através do Painel de Controle do Windows.">
+<!ENTITY associate.adminprivs.description "Essa operação poderá exigir privilégios de administrador.">
+<!ENTITY associate.maff.label "Associar a arquivos .MAFF">
+<!ENTITY associate.maff.accesskey "F">
+<!ENTITY associate.mhtml.label "Associar a arquivos .MHT e .MHTML">
+<!ENTITY associate.mhtml.accesskey "H">
+<!ENTITY associate.uninstall.description "Observação: estas associações não serão removidas automaticamente quando o MAF ou o Firefox forem desinstalados. Gerencie-as através do Painel de controle do Windows.">
 <!ENTITY pane.advanced.label "Avançado">
 <!ENTITY temp.caption "Arquivos temporários">
 <!ENTITY temp.folder.label "Pasta temporária:">
 <!ENTITY temp.folder.accesskey "t">
 <!ENTITY temp.clearonexit.label "Esvaziar pasta temporária ao fechar o navegador">
 <!ENTITY temp.clearonexit.accesskey "E">
-<!ENTITY open.caption "Ao abrir">
-<!ENTITY open.rewriteurls.label "Ajustar URLs absolutas em arquivos abertos">
-<!ENTITY open.rewriteurls.accesskey "A">
-<!ENTITY open.usejarprotocol.label "Usar o protocolo &quot;jar:&quot; para acessar o conteúdos dos arquivos MAFF">
+<!ENTITY open.caption "Abrir">
+<!ENTITY open.rewriteurls.label "Corrigir endereços absolutos">
+<!ENTITY open.rewriteurls.accesskey "a">
+<!ENTITY open.usejarprotocol.label "Usar o protocolo &quot;jar:&quot; para acessar o conteúdo dos arquivos MAFF">
 <!ENTITY open.usejarprotocol.accesskey "j">
 <!ENTITY other.caption "Outros">
 <!ENTITY other.displaywelcome.label "Mostrar a tela de boas vindas na próxima vez">
 <!ENTITY other.displaywelcome.accesskey "b">
-<!ENTITY save.usemhtmlextension.label "Salvar usando a extensão .mhtml em vez de .mht por padrão">
+<!ENTITY save.usemhtmlextension.label "Salvar com a extensão .mhtml por padrão em vez de .mht">
 <!ENTITY save.usemhtmlextension.accesskey "m">

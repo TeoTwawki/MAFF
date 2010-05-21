@@ -1,0 +1,10 @@
+<!ENTITY archiveinfo.status.normal.label "이 페이지는 아카이브 파일이 아닙니다.">
+<!ENTITY archiveinfo.status.archived.label "이 페이지는 아카이브 파일입니다.">
+<!ENTITY archiveinfo.maforiginalurl.label "원본 위치:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(유효하지 않음)">
+<!ENTITY archiveinfo.mafdatearchived.label "저장 시각:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(유효하지 않음)">
+<!ENTITY commands.browseopenarchives.label "열린 아카이브 검색">
+<!ENTITY commands.browseopenarchives.accesskey "r">
+<!ENTITY commands.preferences.label "설정">
+<!ENTITY commands.preferences.accesskey "P">
