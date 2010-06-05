@@ -745,6 +745,12 @@ ExactPersistParsedJob.prototype = {
         var encoder = Cc["@mozilla.org/layout/documentEncoder;1?type=" +
          mediaType].createInstance(Ci.nsIDocumentEncoder);
         encoder.init(this._document, mediaType, 0);
+        // Because Firefox 3.6 and SeaMonkey 2.1 incorrectly wrap the text
+        //  contained inside "<textarea>" elements, we have to disable text
+        //  content wrapping entirely. Differently from using the raw output
+        //  encoding flag, this solution preserves the newlines originally
+        //  present in the text content between tags.
+        encoder.setWrapColumn(0x7FFFFFFF);
         // Save the document using its original character set. Setting this
         //  property is required in order for the appropriate "<meta>"
         //  declaration to be saved in the document body.
