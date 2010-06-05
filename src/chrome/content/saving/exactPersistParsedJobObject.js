@@ -427,11 +427,27 @@ ExactPersistParsedJob.prototype = {
     // Process documents linked by "<frame>" and "<iframe>" elements
     for (let [, elementName] in Iterator(["frame", "iframe"])) {
       for (let node in this._htmlNodesGenerator(elementName, "src")) {
-        this._createReference({
-          sourceDomNode: node,
-          sourceAttribute: "src",
-          saveLinkedDomDocument: node.contentDocument
-        });
+        // Since frames may reference unparsed resources that the browser wraps
+        //  in a DOM document automatically, check if the media type has an
+        //  associated DOM-based encoder to decide if the resource should be
+        //  saved as parsed or unparsed.
+        var mediaType = node.contentDocument.contentType;
+        if (mediaType != "text/plain" &&
+         ("@mozilla.org/layout/documentEncoder;1?type=" + mediaType) in Cc) {
+          // This frame references a parsed DOM document
+          this._createReference({
+            sourceDomNode: node,
+            sourceAttribute: "src",
+            saveLinkedDomDocument: node.contentDocument
+          });
+        } else {
+          // This frame references an unparsed resource
+          this._createReference({
+            sourceDomNode: node,
+            sourceAttribute: "src",
+            saveLinkedResource: true
+          });
+        }
       }
     }
 
