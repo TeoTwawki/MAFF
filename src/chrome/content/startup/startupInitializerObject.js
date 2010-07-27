@@ -78,14 +78,34 @@ var StartupInitializer = {
     // Firstly, clean up the permanent file extension associations created by
     //  MAF 0.7.1 and earlier, that collapsed the MIME types for MAFF and MHTML.
     var helperApps = new HelperAppsWrapper.HelperApps();
+    var mimeTypesModified = false;
     if (helperApps.mimeHandlerExists("application/x-maf")) {
-      var handlerOverride = new HelperAppsWrapper.HandlerOverride(
+      let handlerOverride = new HelperAppsWrapper.HandlerOverride(
        HelperAppsWrapper.MIME_URI("application/x-maf"), helperApps._inner);
       // Clear the list of extensions only if it is not already empty
       if (handlerOverride.extensions) {
         handlerOverride.clearExtensions();
-        helperApps.flush();
+        mimeTypesModified = true;
       }
+    }
+    for (let [, mimeType] in Iterator(["application/x-mht", "message/rfc822"])) {
+      if (helperApps.mimeHandlerExists(mimeType)) {
+        let handlerOverride = new HelperAppsWrapper.HandlerOverride(
+         HelperAppsWrapper.MIME_URI(mimeType), helperApps._inner);
+        // Remove the extensions from the list only if one of them is present,
+        //  to avoid flushing the changes to disk if it is not necessary
+        if (/\b(maf|maff|maff.zip)\b/.test(handlerOverride.extensions)) {
+          handlerOverride.removeExtension("maf");
+          handlerOverride.removeExtension("maff");
+          handlerOverride.removeExtension("maff.zip");
+          mimeTypesModified = true;
+        }
+      }
+    }
+    // Flush the changes to disk if we had to modify some data. This typically
+    //  occurs only the first time that the legacy associations are inspected.
+    if (mimeTypesModified) {
+      helperApps.flush();
     }
 
     // Build a list of MIME types and associated archive types. This list will
