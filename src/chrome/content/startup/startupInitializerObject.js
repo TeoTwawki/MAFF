@@ -79,13 +79,15 @@ var StartupInitializer = {
     //  MAF 0.7.1 and earlier, that collapsed the MIME types for MAFF and MHTML.
     var helperApps = new HelperAppsWrapper.HelperApps();
     var mimeTypesModified = false;
-    if (helperApps.mimeHandlerExists("application/x-maf")) {
-      let handlerOverride = new HelperAppsWrapper.HandlerOverride(
-       HelperAppsWrapper.MIME_URI("application/x-maf"), helperApps._inner);
-      // Clear the list of extensions only if it is not already empty
-      if (handlerOverride.extensions) {
-        handlerOverride.clearExtensions();
-        mimeTypesModified = true;
+    for (let [, mimeType] in Iterator(["application/x-maf", "application/maf"])) {
+      if (helperApps.mimeHandlerExists(mimeType)) {
+        let handlerOverride = new HelperAppsWrapper.HandlerOverride(
+         HelperAppsWrapper.MIME_URI(mimeType), helperApps._inner);
+        // Clear the list of extensions only if it is not already empty
+        if (handlerOverride.extensions) {
+          handlerOverride.clearExtensions();
+          mimeTypesModified = true;
+        }
       }
     }
     for (let [, mimeType] in Iterator(["application/x-mht", "message/rfc822"])) {
