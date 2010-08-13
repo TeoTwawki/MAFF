@@ -87,6 +87,16 @@ MultipartMimePart.prototype = {
         }
       }
     }
+    // Locate the start part using the "type" parameter of the "Content-Type"
+    //  header, if present
+    var typeValue = this.contentTypeParameters.type;
+    if (typeValue) {
+      for (let [, contentPart] in Iterator(this.parts)) {
+        if (typeValue == contentPart.mediaType) {
+          return contentPart;
+        }
+      }
+    }
     // The first part is assumed to be the start part
     return this.parts[0];
   },
