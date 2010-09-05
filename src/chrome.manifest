@@ -2,10 +2,12 @@ content	maf	chrome/content/
 
 locale	maf	en-US	chrome/locale/en-US/
 
+locale	maf	cs	chrome/locale/cs/
 locale	maf	da-DK	chrome/locale/da-DK/
 locale	maf	de	chrome/locale/de/
 locale	maf	es-ES	chrome/locale/es-ES/
 locale	maf	fr	chrome/locale/fr/
+locale	maf	hu	chrome/locale/hu/
 locale	maf	it-IT	chrome/locale/it-IT/
 locale	maf	ko-KR	chrome/locale/ko-KR/
 locale	maf	mk-MK	chrome/locale/mk-MK/

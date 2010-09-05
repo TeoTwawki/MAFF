@@ -1,0 +1,16 @@
+<!-- *** Archive information popup *** -->
+<!-- Status of the current page -->
+<!ENTITY archiveinfo.status.normal.label "Tuto stránku archiv neobsahuje.">
+<!ENTITY archiveinfo.status.archived.label "Archivovaná stránka.">
+<!-- Original address the page was saved from -->
+<!ENTITY archiveinfo.maforiginalurl.label "Uloženo z:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(není k dispozici)">
+<!-- Date and time the page was archived -->
+<!ENTITY archiveinfo.mafdatearchived.label "Datum archivace:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(není k dispozici)">
+<!-- *** Commands in the archive information popup *** -->
+<!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
+<!ENTITY commands.browseopenarchives.label "Prohlížet otevřené archivy...">
+<!ENTITY commands.browseopenarchives.accesskey "r">
+<!ENTITY commands.preferences.label "Předvolby...">
+<!ENTITY commands.preferences.accesskey "p">

@@ -1,0 +1,16 @@
+<!-- *** Archive information popup *** -->
+<!-- Status of the current page -->
+<!ENTITY archiveinfo.status.normal.label "Ez nem archívált oldal.">
+<!ENTITY archiveinfo.status.archived.label "Ez egy archivált oldal.">
+<!-- Original address the page was saved from -->
+<!ENTITY archiveinfo.maforiginalurl.label "Mentve innen:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(nem elérhető)">
+<!-- Date and time the page was archived -->
+<!ENTITY archiveinfo.mafdatearchived.label "Mentve ekkor:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(nem elérhető)">
+<!-- *** Commands in the archive information popup *** -->
+<!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
+<!ENTITY commands.browseopenarchives.label "Megnyitott archívumok böngészése...">
+<!ENTITY commands.browseopenarchives.accesskey "r">
+<!ENTITY commands.preferences.label "Beállítások...">
+<!ENTITY commands.preferences.accesskey "B">
