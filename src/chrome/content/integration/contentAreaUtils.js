@@ -184,7 +184,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   var mainBrowser = window.getBrowser && window.getBrowser().selectedBrowser;
 
   // Note: aDocument == null when this code is used by save-link-as...
-  var saveMode = GetSaveModeForContentType(aContentType, aDocument);
+  var saveMode = mafGetSaveModeForContentType(aContentType, aDocument);
 
   var file, sourceURI, saveBehavior;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
@@ -577,8 +577,8 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
   fp.defaultString = defaultString;
 
   var saveBehaviors = [];
-  appendFiltersForContentType(fp, aFpP.contentType, aFpP.fileInfo.fileExt,
-                              aFpP.saveMode, saveBehaviors);
+  mafAppendFiltersForContentType(fp, aFpP.contentType, aFpP.fileInfo.fileExt,
+                                 aFpP.saveMode, saveBehaviors);
 
   // The index of the selected filter is only preserved and restored if there's
   // more than one filter in addition to "All Files".
@@ -713,8 +713,9 @@ function uniqueFile(aLocalFile)
  * save behaviors that have been actually added to the file picker, including
  * the standard behavior for "All Files".
  */
-function appendFiltersForContentType(aFilePicker, aContentType, aFileExtension,
-                                     aSaveMode, aReturnBehaviorArray)
+function mafAppendFiltersForContentType(aFilePicker, aContentType,
+                                        aFileExtension, aSaveMode,
+                                        aReturnBehaviorArray)
 {
   // For every behavior that is valid for the given save mode
   gInternalSaveBehaviors.forEach(function(saveBehavior) {
@@ -801,7 +802,7 @@ InternalSaveBehavior.prototype = {
     var filterString = null;
 
     // Try with known content types first
-    // Note: all the cases that are handled in GetSaveModeForContentType to
+    // Note: all the cases that are handled in mafGetSaveModeForContentType to
     // return SAVEMODE_COMPLETE_DOM should also be handled explicitly here,
     // otherwise the file picker dialog might not be able to offer the choice
     // of saving as complete DOM.
@@ -932,7 +933,7 @@ var gInternalSaveBehaviors = [
 const SAVEMODE_MAFARCHIVE = 0x100;
 const SAVEMODE_SAMEFORMAT = 0x200;
 
-function GetSaveModeForContentType(aContentType, aDocument)
+function mafGetSaveModeForContentType(aContentType, aDocument)
 {
   // We can only save a complete page if we have a loaded document
   if (!aDocument)
