@@ -1,0 +1,10 @@
+<!ENTITY archiveinfo.status.normal.label "Tuto stránku archiv neobsahuje.">
+<!ENTITY archiveinfo.status.archived.label "Archivovaná stránka.">
+<!ENTITY archiveinfo.maforiginalurl.label "Uloženo z:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(není k dispozici)">
+<!ENTITY archiveinfo.mafdatearchived.label "Datum archivace:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(není k dispozici)">
+<!ENTITY commands.browseopenarchives.label "Prohlížet otevřené archivy...">
+<!ENTITY commands.browseopenarchives.accesskey "r">
+<!ENTITY commands.preferences.label "Předvolby...">
+<!ENTITY commands.preferences.accesskey "p">

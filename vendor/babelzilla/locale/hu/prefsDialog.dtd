@@ -1,0 +1,74 @@
+<!-- General window controls -->
+<!ENTITY window.title "Beállítások">
+<!ENTITY browsebutton.label "Tallózás...">
+<!-- Main pane -->
+<!ENTITY pane.main.label "Főoldal">
+<!ENTITY save.caption "Mentés">
+<!ENTITY save.component.grouplabel "Teljes weboldal tartalom mentésekor:">
+<!ENTITY save.component.standard.label "Használja az általános mentési rendszert">
+<!ENTITY save.component.standard.accesskey "m">
+<!ENTITY save.component.completesave.label "Őrizze meg a scripteket és forrást a &quot;Teljes mentése&quot; használatakor">
+<!ENTITY save.component.completesave.accesskey "s">
+<!ENTITY save.component.exactpersist.label "Készítsen hiteles pillanatfelvételt az oldalról">
+<!ENTITY save.component.exactpersist.accesskey "p">
+<!ENTITY save.mhtml.compatible.label "Készítsen más böngészőkkel teljesen kompatibilis MHTML fájlokat">
+<!ENTITY save.mhtml.compatible.accesskey "b">
+<!ENTITY save.namingstrategy.grouplabel "Javaslatok a fájl nevére:">
+<!ENTITY save.namingstrategy.standard.label "Használja a böngésző névadási módszerét">
+<!ENTITY save.namingstrategy.standard.accesskey "n">
+<!ENTITY save.namingstrategy.pagetitle.label "Használja az oldal címét, amikor lehetséges">
+<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
+<!ENTITY save.metadata.extended.label "Kiterjesztett metaadatok mentése a MAFF archívumba">
+<!ENTITY save.metadata.extended.accesskey "a">
+<!-- Interface pane -->
+<!ENTITY pane.interface.label "Kezelőfelület">
+<!ENTITY icon.caption "Ikon">
+<!ENTITY iconlocation.grouplabel "A Mozilla Archív Formátum ikon megjelenjen:">
+<!ENTITY iconlocation.urlbar.label "Címsorban">
+<!ENTITY iconlocation.urlbar.accesskey "C">
+<!ENTITY iconlocation.urlbar-autohide.label "Címsorban, de csak archívált oldalaknál">
+<!ENTITY iconlocation.urlbar-autohide.accesskey "a">
+<!ENTITY iconlocation.status.label "Állapotsoron">
+<!ENTITY iconlocation.status.accesskey "Á">
+<!ENTITY iconlocation.none.label "Sehol">
+<!ENTITY iconlocation.none.accesskey "S">
+<!ENTITY menu.caption "Menü">
+<!ENTITY menu.grouplabel "A Mozilla Archív Formátum menüelemei megjelenjen:">
+<!ENTITY menu.file.label "Fájl menüben">
+<!ENTITY menu.file.accesskey "F">
+<!ENTITY menu.tools.label "Eszközök menüben">
+<!ENTITY menu.tools.accesskey "E">
+<!ENTITY menu.pagecontext.label "Oldal helyi menüjében">
+<!ENTITY menu.pagecontext.accesskey "O">
+<!ENTITY menu.tabscontext.label "Lap eszköztár helyi menüjében">
+<!ENTITY menu.tabscontext.accesskey "L">
+<!ENTITY menuitem.grouplabel "Megjelenjen a következő menüelem:">
+<!ENTITY menuitem.saveinarchive.label "Mentés archívumba">
+<!ENTITY menuitem.saveinarchive.accesskey "M">
+<!-- File associations pane. This pane is visible only on Windows. -->
+<!ENTITY pane.fileassociations.label "Fájltársítás">
+<!ENTITY associate.windowsonly.description "Ez a funkció csak Windows alatt érhető el.">
+<!ENTITY associate.buttons.description "Kattints a következő gombokra, hogy a Firefox elvégezze a fájlok társítását a MAF kiterjesztéseinek használatához.">
+<!ENTITY associate.adminprivs.description "Ez a művelet rendszergazdai jogosultságot igényelhet.">
+<!ENTITY associate.maff.label "A .maff kiterjesztés társítása">
+<!ENTITY associate.maff.accesskey "a">
+<!ENTITY associate.mhtml.label "Az .mht és .mhtml kiterjesztések társítása">
+<!ENTITY associate.mhtml.accesskey "h">
+<!ENTITY associate.uninstall.description "Figyelem: A fájltársítás a MAF, vagy a Firefox eltávolítása után is megmarad. A társítások a Windows Vezérlőpultjának használatával kezelhetők, módosíthatók.">
+<!-- Advanced pane -->
+<!ENTITY pane.advanced.label "Haladó">
+<!ENTITY temp.caption "Átmeneti fájlok">
+<!ENTITY temp.folder.label "Átmeneti mappa:">
+<!ENTITY temp.folder.accesskey "Á">
+<!ENTITY temp.clearonexit.label "Az átmeneti mappa ürítése a böngésző bezárásakor">
+<!ENTITY temp.clearonexit.accesskey "t">
+<!ENTITY open.caption "Megnyitás">
+<!ENTITY open.rewriteurls.label "Az abszolút URL-ek újraírása archívum megnyitásakor">
+<!ENTITY open.rewriteurls.accesskey "R">
+<!ENTITY open.usejarprotocol.label "&quot;A &quot;jar:&quot; protokol használata a MAFF archívum tartalmának hozzáféréséhez">
+<!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY other.caption "Más">
+<!ENTITY other.displaywelcome.label "Üdvözlő ablak mutatása következő indításkor">
+<!ENTITY other.displaywelcome.accesskey "Ü">
+<!ENTITY save.usemhtmlextension.label "Az .mhtml mentése alapértelmezetten .mht kiterjesztéssel">
+<!ENTITY save.usemhtmlextension.accesskey "m">

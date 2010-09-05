@@ -1,0 +1,42 @@
+<!ENTITY window.title "Archivy">
+<!ENTITY archives.placestitle.header "Název stránky">
+<!ENTITY archives.mafarchivename.header "Název archivu">
+<!ENTITY archives.placesurl.header "Umístění archivu">
+<!ENTITY archives.maftitle.header "Původní název stránky">
+<!ENTITY archives.maforiginalurl.header "Původní adresa">
+<!ENTITY archives.mafdatearchived.header "Datum archivace">
+<!ENTITY archives.maftempuri.header "Dočasná adresa URL">
+<!ENTITY archives.mafdirectarchiveuri.header "Přímá adresa URL">
+<!ENTITY details.placestitle.label "Název stránky">
+<!ENTITY details.placestitle.accesskey "N">
+<!ENTITY details.mafarchivename.label "Název archivu">
+<!ENTITY details.mafarchivename.accesskey "z">
+<!ENTITY details.placesurl.label "Umístění archivu">
+<!ENTITY details.placesurl.accesskey "u">
+<!ENTITY details.maftitle.label "Původní název stránky">
+<!ENTITY details.maftitle.accesskey "y">
+<!ENTITY details.maforiginalurl.label "Původní adresa">
+<!ENTITY details.maforiginalurl.accesskey "v">
+<!ENTITY details.mafdatearchived.label "Datum archivace">
+<!ENTITY details.mafdatearchived.accesskey "D">
+<!ENTITY details.maftempuri.label "Dočasná adresa URL">
+<!ENTITY details.maftempuri.accesskey "o">
+<!ENTITY details.mafdirectarchiveuri.label "Přímá adresa URL">
+<!ENTITY details.mafdirectarchiveuri.accesskey "m">
+<!ENTITY details.caption "Podrobnosti">
+<!ENTITY morebutton.label "Více podrobností">
+<!ENTITY morebutton.accesskey "s">
+<!ENTITY lessbutton.label "Méně podrobností">
+<!ENTITY lessbutton.accesskey "s">
+<!ENTITY multipleitems.text "(označeno více položek)">
+<!ENTITY openintabsbutton.label "Otevřít v panelech">
+<!ENTITY openintabsbutton.accesskey.placesurl "e">
+<!ENTITY openintabsbutton.accesskey.originalurl "a">
+<!ENTITY openintabsbutton.accesskey.tempuri "h">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "c">
+<!ENTITY addbutton.label "Přidat ...">
+<!ENTITY addbutton.accesskey "i">
+<!ENTITY addfilepicker.title "Přidat další webové archivy">
+<!ENTITY deletebutton.label "Odstranit">
+<!ENTITY deletebutton.accesskey "t">
+<!ENTITY deletebutton.accesskey.placescontextmenu "t">

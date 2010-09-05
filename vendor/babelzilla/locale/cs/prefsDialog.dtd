@@ -1,0 +1,20 @@
+<!ENTITY window.title "Předvolby">
+<!ENTITY browsebutton.label "Hledat ...">
+<!ENTITY pane.main.label "Hlavní">
+<!ENTITY save.caption "Uložit">
+<!ENTITY save.component.grouplabel "Obsah uložených stránek">
+<!ENTITY save.component.standard.label "Pro ukládání použít standartní systém prohlížeče">
+<!ENTITY save.component.standard.accesskey "P">
+<!ENTITY save.component.completesave.label "Použitím &quot;Kompletně uložit&quot; chránit skripty a zdroj">
+<!ENTITY save.component.completesave.accesskey "i">
+<!ENTITY save.component.exactpersist.label "Uložit skutečný obraz stránky">
+<!ENTITY save.component.exactpersist.accesskey "U">
+<!ENTITY save.mhtml.compatible.label "Vytvořit soubory MHTML plně kompatibilní s ostatními prohlížeči">
+<!ENTITY save.mhtml.compatible.accesskey "V">
+<!ENTITY save.namingstrategy.grouplabel "Navrhování názvů souborů:">
+<!ENTITY save.namingstrategy.standard.label "Použít standardní metodu prohlížeče">
+<!ENTITY save.namingstrategy.standard.accesskey "o">
+<!ENTITY save.namingstrategy.pagetitle.label "Všude, kde to je možné, použít název stránky">
+<!ENTITY save.namingstrategy.pagetitle.accesskey "K">
+<!ENTITY save.metadata.extended.label "Do archivů MAFF ukládat rozšířená metadata">
+<!ENTITY save.metadata.extended.accesskey "D">

@@ -1,0 +1,6 @@
+<!ENTITY window.title "Dobrý den!">
+<!ENTITY continuebutton.label "Pokračovat">
+<!ENTITY okbutton.label "OK">
+<!ENTITY welcome.label "Dobrý den u rozšíření Mozilla Archive Format!">
+<!ENTITY welcome.para1.description "Díky, že jste si nainstaloval/a MAF! Váš Firefox bude nyní schopen ukládat a otevírat úplné webové stránky jako [i]webové archivy[/i] v jediném souboru, bude podporovat soubory typu [tt]MAFF[/tt] a [tt]MHTML[/tt].">
+<!ENTITY welcome.para2.description "Webové archivy můžete otevřít pomocí menu [b]Soubor/Otevřít soubor[/b], vytvoříte je výběrem vhodného typu souboru v dialogovém okně [b]Uložit stránku jako[/b].">

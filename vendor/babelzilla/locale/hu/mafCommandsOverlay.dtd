@@ -1,0 +1,32 @@
+<!-- Shortcut keys -->
+<!ENTITY command.browseopenarchives.key "J">
+<!ENTITY command.browseopenarchives.modifiers "alt">
+<!-- Menu items for general Mozilla Archive Format commands -->
+<!ENTITY menuitem.mafsubmenu.label "Mozilla Archív Formátum">
+<!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
+<!ENTITY menuitem.browseopenarchives.label "Megnyitott archívumok böngészése...">
+<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "a">
+<!ENTITY menuitem.convertsavedpages.label "Mentett oldalak konvertálása...">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "k">
+<!ENTITY menuitem.preferences.label "Beállítások...">
+<!ENTITY menuitem.preferences.accesskey.toolsmenu "B">
+<!-- Additional menu items for the "Save As" command -->
+<!ENTITY menuitem.savetabsas.label "Lapok mentése...">
+<!ENTITY menuitem.savetabsas.accesskey.filemenu "L">
+<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "L">
+<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "L">
+<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "L">
+<!ENTITY menuitem.savealltabsas.label "Minden lap mentése...">
+<!ENTITY menuitem.savealltabsas.accesskey.filemenu "M">
+<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "M">
+<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "M">
+<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "M">
+<!-- Additional menu items for the "Save In Archive" command -->
+<!ENTITY menuitem.savepageinarchive.label "Oldal mentése archívumba...">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "O">
+<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "O">
+<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "O">
+<!ENTITY menuitem.saveframeinarchive.label "Keret mentése archívumba...">
+<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "K">
+<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "K">
+<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "K">
