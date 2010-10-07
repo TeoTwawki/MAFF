@@ -152,7 +152,7 @@ MaffArchivePage.prototype = {
     var indexMetadata = [
      ["originalurl", this.originalUrl],
      ["title", this.title],
-     ["archivetime", this.dateArchived],
+     ["archivetime", MimeSupport.getDateTimeSpecification(this.dateArchived)],
      ["indexfilename", this.indexLeafName],
      ["charset", this.renderingCharacterSet]
     ];
