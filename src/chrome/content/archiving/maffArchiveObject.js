@@ -74,6 +74,8 @@ MaffArchive.prototype = {
     this._useDirectAccess = Prefs.openUseJarProtocol;
     // Prepare a list of all the page folders available in the archive
     var pageFolderNames = [];
+    // Prepare a map of all the detected default documents for each page
+    var indexLeafNames = {};
     // Open the archive file for reading
     var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].
      createInstance(Ci.nsIZipReader);
@@ -92,6 +94,19 @@ MaffArchive.prototype = {
         //  archive will be detected.
         if (/^[^/]+\/$/.test(zipEntry)) {
           pageFolderNames.push(zipEntry.slice(0, -1));
+        } else {
+          // If the current entry is the name of a file directly contained in a
+          //  page folder, having a base name of "index" and a simple extension,
+          //  use the first of these files alphabetically as the suggested
+          //  default document name for the page.
+          zipEntry.replace(/^([^/]+)\/(index\.[^/.]+)$/i,
+            function(aAll, aPageFolderName, aIndexFileName) {
+              if (!(aPageFolderName in indexLeafNames) ||
+               indexLeafNames[aPageFolderName] > aIndexFileName) {
+                indexLeafNames[aPageFolderName] = aIndexFileName;
+              }
+            }
+          )
         }
 
         // If the archive should be opened using direct access to the files
@@ -139,7 +154,9 @@ MaffArchive.prototype = {
       var newPage = this.addPage();
       newPage.tempDir = this._tempDir.clone();
       newPage.tempDir.append(pageFolderName);
-      // Load the metadata for the page
+      newPage.indexLeafName = indexLeafNames[pageFolderName] || "";
+      // Load the metadata for the page. This overrides the autodetected value
+      //  of the indexLeafName property if necessary.
       try {
         newPage._loadMetadata();
       } catch (e) {

@@ -138,7 +138,8 @@ MaffArchivePage.prototype = {
     this.originalUrl = ds.getMafProperty(res.originalUrl);
     this.title = ds.getMafProperty(res.title);
     this.dateArchived = ds.getMafProperty(res.archiveTime);
-    this.indexLeafName = ds.getMafProperty(res.indexFileName) || "index.html";
+    this.indexLeafName = ds.getMafProperty(res.indexFileName) ||
+     this.indexLeafName || "index.html";
     this.renderingCharacterSet = ds.getMafProperty(res.charset);
   },
 
