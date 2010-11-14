@@ -72,10 +72,15 @@ var MafCommandsOverlay = {
      document.getElementById("mafMenuSaveFrameInArchive_pageContextMenu"),
      frameContextSubmenuAfterItem.nextSibling);
 
-    // Find the tab bar context menu in the XBL binding of the tabbed browser
-    var tabBrowser = document.getElementById("content");
-    var tabContextMenu = document.getAnonymousElementByAttribute(tabBrowser,
-     "anonid", "tabContextMenu");
+    // Get a reference to the tab bar context menu
+    var tabContextMenu = gBrowser.tabContextMenu;
+    if (!tabContextMenu) {
+      // On versions of Firefox prior to 4.0, find the tab bar context menu in
+      // the XBL binding of the tabbed browser.
+      var tabBrowser = document.getElementById("content");
+      tabContextMenu = document.getAnonymousElementByAttribute(tabBrowser,
+       "anonid", "tabContextMenu");
+    }
     // Insert the items before the "Reload Tab" item defined in "browser.xul",
     //  or if this element is not accessible because it does not have an ID
     //  insert the items just after the second menu separator.
