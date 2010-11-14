@@ -86,11 +86,21 @@ MafStartup.prototype = {
     var mafObjects = {};
     Cu.import("resource://maf/modules/mafObjects.jsm", mafObjects);
     mafObjects.StartupEvents.onAppStartup();
+
+    // On Firefox 4.0 and above, this observer is registered only for the
+    //  "profile-after-change" notification and will not receive the
+    //  "app-startup" notification, while for compatibility with Firefox 3.0
+    //  the same observer is registered for "app-startup".
+    if (aTopic == "profile-after-change") {
+      mafObjects.StartupEvents.afterProfileChange();
+    }
   }
 };
 
 // XPCOM component registration
 var components = [MafStartup];
-function NSGetModule(compMgr, fileSpec) {
-  return XPCOMUtils.generateModule(components);
+if (XPCOMUtils.generateNSGetFactory) {
+  var NSGetFactory = XPCOMUtils.generateNSGetFactory(components);
+} else {
+  var NSGetModule = XPCOMUtils.generateNSGetModule(components);
 }

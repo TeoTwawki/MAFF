@@ -242,10 +242,13 @@ var StartupInitializer = {
       lockFactory: function(aLock) { }
     };
 
-    // Register the factory for the given ContractID. The arbitrary ClassID and
-    //  the class description is the same for all the registered ContractIDs.
-    this._componentRegistrar.registerFactory(
-     Components.ID("{500ec1c7-7873-4ad8-8145-f40199fe4ada}"),
+    // Register the factory for the given ContractID. Starting from Firefox 4.0,
+    //  every factory registration must have a different ClassID even if the
+    //  component that implements the ContractID is the same. A random ClassID
+    //  is used at each startup, since the registration is temporary.
+    var classID = Cc["@mozilla.org/uuid-generator;1"].
+     getService(Ci.nsIUUIDGenerator).generateUUID();
+    this._componentRegistrar.registerFactory(classID,
      "Mozilla Archive Format Stream Converter", aContractID,
      streamConverterFactory);
   },

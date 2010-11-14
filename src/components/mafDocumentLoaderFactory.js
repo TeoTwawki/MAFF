@@ -213,6 +213,8 @@ MafDocumentLoaderFactory.prototype = {
 
 // XPCOM component registration
 var components = [MafDocumentLoaderFactory];
-function NSGetModule(compMgr, fileSpec) {
-  return XPCOMUtils.generateModule(components);
+if (XPCOMUtils.generateNSGetFactory) {
+  var NSGetFactory = XPCOMUtils.generateNSGetFactory(components);
+} else {
+  var NSGetModule = XPCOMUtils.generateNSGetModule(components);
 }
