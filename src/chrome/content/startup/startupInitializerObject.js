@@ -76,6 +76,14 @@ var StartupInitializer = {
     //  asynchronously starting from Firefox 4.0.
     this._setAddonVersion();
 
+    // Retrieve a reference to the history service that is now available
+    this._historyService = ("nsINavHistoryService" in Ci) &&
+     Cc["@mozilla.org/browser/nav-history-service;1"].
+     getService(Ci.nsINavHistoryService);
+
+    // Register the listener that handles page annotations asynchronously
+    this._historyService.addObserver(ArchiveHistoryObserver, false);
+
     // For each available archive type, define the file extensions and the MIME
     //  media types that are recognized as being associated with the file type.
     var archiveTypesToRegister = [
@@ -177,6 +185,9 @@ var StartupInitializer = {
    *  permissions, that would be lost.
    */
   terminate: function() {
+    // Unregister the page annotations history listener
+    this._historyService.removeObserver(ArchiveHistoryObserver);
+
     if (Prefs.tempClearOnExit) {
       // Find the temporary directory
       var dir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
@@ -289,6 +300,8 @@ var StartupInitializer = {
      "Mozilla Archive Format Stream Converter", aContractID,
      streamConverterFactory);
   },
+
+  _historyService: null,
 
   _mimeService: Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService),
 

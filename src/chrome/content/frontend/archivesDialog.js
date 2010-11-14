@@ -157,7 +157,16 @@ var ArchivesDialog = {
       var file = filesEnumerator.getNext().QueryInterface(Ci.nsILocalFile);
       // Attempt to load the archive and register it in the cache
       try {
-        ArchiveLoader.extractAndRegister(file);
+        var archive = ArchiveLoader.extractAndRegister(file);
+        for (var [, page] in Iterator(archive.pages)) {
+          // Ensure that a history visit is added for the page, otherwise the
+          //  page would not appear in the Places view. The visit is recorded as
+          //  a top level typed entry, so that history listeners are able to be
+          //  notified about the new entry.
+          Cc["@mozilla.org/browser/nav-history-service;1"].
+           getService(Ci.nsIGlobalHistory2).addURI(page.archiveUri, false, true,
+           null);
+        }
       } catch (e) {
         // If opening the archive failed, skip it and report the error
         Cu.reportError(e);

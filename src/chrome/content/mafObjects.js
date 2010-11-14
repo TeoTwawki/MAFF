@@ -43,6 +43,7 @@ try {
    // Web archive caching
    ["caching/archiveCacheObject.js",              "ArchiveCache"],
    ["caching/archiveAnnotationsObject.js",        "ArchiveAnnotations"],
+   ["caching/archiveHistoryObserverObject.js",    "ArchiveHistoryObserver"],
 
    // Objects for collecting and storing web resources locally
    ["collecting/persistBundleObject.js",          "PersistBundle"],
