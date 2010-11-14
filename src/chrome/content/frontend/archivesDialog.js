@@ -35,6 +35,12 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+// Starting from Firefox 4.0, the PlacesUIUtils object lives in a module.
+try {
+  Cu.import("resource://gre/modules/PlacesUIUtils.jsm");
+} catch (e if (e instanceof Ci.nsIException && e.result ==
+ Cr.NS_ERROR_FILE_NOT_FOUND)) { }
+
 /**
  * Handles the MAF dialog that displays information about the known archives.
  */
@@ -65,7 +71,9 @@ var ArchivesDialog = {
     // Rename the "delete" command in the Places context menu to reflect the
     //  actual operation it performs on the customized Places tree
     var btnDelete = document.getElementById("btnDelete");
-    var contextMenuItem = document.getElementById("placesContext_delete");
+    var contextMenuItem =
+     document.getElementById("placesContext_delete_history") ||
+     document.getElementById("placesContext_delete");
     contextMenuItem.setAttribute("label", btnDelete.getAttribute("label"));
     contextMenuItem.setAttribute("accesskey", btnDelete.getAttribute(
      "cxtaccesskey"));
@@ -227,8 +235,7 @@ var ArchivesDialog = {
     // Get a reference to the current query result object, created by the
     //  standard Places tree. Ensure that the required interface is available
     //  on the object, since this is not done by the standard Places tree.
-    var result = ArchivesDialog.archivesTree.getResult().
-     QueryInterface(Ci.nsINavHistoryResult);
+    var result = ArchivesDialog.getResult();
 
     // Before detaching the old view from the tree, ensure that its reference to
     //  the tree is removed. Failing to do this would cause the new view to
@@ -237,7 +244,11 @@ var ArchivesDialog = {
      setTree(null);
 
     // Apply the new view to the appropriate objects
-    result.viewer = view;
+    if (result.addObserver) {
+      result.addObserver(view, false);
+    } else {
+      result.viewer = view;
+    }
     ArchivesDialog.archivesTree.view = view;
   },
 
@@ -305,8 +316,7 @@ var ArchivesDialog = {
     var annotationName = ArchivesDialog.getColumnAnnotationName(aCol.element);
     if (annotationName) {
       // Get a reference to the current query result
-      var result = ArchivesDialog.archivesTree.getResult().
-       QueryInterface(Ci.nsINavHistoryResult);
+      var result = ArchivesDialog.getResult();
       // If the result was already sorted using the selected annotation, just
       //  reverse the sort order
       if (result.sortingMode == kAsc &&
@@ -343,7 +353,7 @@ var ArchivesDialog = {
    */
   copySelection: function() {
     // Find the selected nodes, and exit now if no node is selected
-    var selectedNodes = ArchivesDialog.archivesTree.getSelectionNodes();
+    var selectedNodes = ArchivesDialog.getSelectedNodes();
     if (!selectedNodes.length)
       return;
 
@@ -390,7 +400,7 @@ var ArchivesDialog = {
    */
   deleteSelection: function() {
     // Find the selected nodes, and exit now if no node is selected
-    var selectedNodes = ArchivesDialog.archivesTree.getSelectionNodes();
+    var selectedNodes = ArchivesDialog.getSelectedNodes();
     if (!selectedNodes.length)
       return;
 
@@ -413,7 +423,7 @@ var ArchivesDialog = {
    */
   openSelectionInTabs: function(aColumnId, aEvent) {
     // Find the selected nodes, and exit now if no node is selected
-    var selectedNodes = ArchivesDialog.archivesTree.getSelectionNodes();
+    var selectedNodes = ArchivesDialog.getSelectedNodes();
     if (!selectedNodes.length)
       return;
 
@@ -454,7 +464,7 @@ var ArchivesDialog = {
    * Updates the displayed information on the current selection in the tree.
    */
   checkPlaceInfo: function() {
-    var selectedNodes = ArchivesDialog.archivesTree.getSelectionNodes();
+    var selectedNodes = ArchivesDialog.getSelectedNodes();
 
     // Disable the buttons that require a selection
     document.getElementById("btnDelete").disabled = !selectedNodes.length;
@@ -498,6 +508,23 @@ var ArchivesDialog = {
   },
 
   // --- Dialog support functions ---
+
+  /**
+   * Returns the current query result of the Places view.
+   */
+  getResult: function() {
+    var result = ArchivesDialog.archivesTree.result ||
+     ArchivesDialog.archivesTree.getResult();
+    return result.QueryInterface(Ci.nsINavHistoryResult);
+  },
+
+  /**
+   * Returns the currently selected nodes in the Places view.
+   */
+  getSelectedNodes: function() {
+    return ArchivesDialog.archivesTree.selectedNodes ||
+     ArchivesDialog.archivesTree.getSelectionNodes();
+  },
 
   /**
    * Returns the name of the custom annotation associated with the given tree
