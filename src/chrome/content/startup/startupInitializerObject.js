@@ -35,6 +35,13 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+// Import the AddonManager module, available from Firefox 4.0 onwards.
+var AddonManager = null;
+try {
+  Cu.import("resource://gre/modules/AddonManager.jsm");
+} catch (e if (e instanceof Ci.nsIException && e.result ==
+ Cr.NS_ERROR_FILE_NOT_FOUND)) { }
+
 /**
  * This object handles all the tasks related to extension initialization and
  *  termination.
@@ -64,6 +71,11 @@ var StartupInitializer = {
    *    <https://developer.mozilla.org/en/How_Mozilla_determines_MIME_Types>
    */
   initFromCurrentProfile: function() {
+    // Firstly, start the operation that prepares the version information that
+    //  will be used when saving web archives. This operation might be completed
+    //  asynchronously starting from Firefox 4.0.
+    this._setAddonVersion();
+
     // For each available archive type, define the file extensions and the MIME
     //  media types that are recognized as being associated with the file type.
     var archiveTypesToRegister = [
@@ -187,7 +199,32 @@ var StartupInitializer = {
     }
   },
 
+  /**
+   * Version of the installed extension, obtained from the extension's metadata.
+   */
+  addonVersion: "",
+
   // --- Private methods and properties ---
+
+  /**
+   * Populates the addonVersion property with the version of the installed
+   *  extension. On Firefox 4.0 and above, this operation is always completed
+   *  asynchronously.
+   */
+  _setAddonVersion: function() {
+    // Get the object with the version information of Mozilla Archive Format
+    var addonId = "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}";
+    if (AddonManager) {
+      // On Firefox 4.0 and above, do the operation asynchronously.
+      AddonManager.getAddonByID(addonId, function(aAddon) {
+        StartupInitializer.addonVersion = aAddon.version;
+      });
+    } else {
+      // On versions of Firefox prior to 4.0, do the operation synchronously.
+      StartupInitializer.addonVersion = Cc["@mozilla.org/extensions/manager;1"].
+       getService(Ci.nsIExtensionManager).getItemForID(addonId).version;
+    }
+  },
 
   /**
    * Calls nsIMIMEService.getTypeFromExtension, and if the call fails

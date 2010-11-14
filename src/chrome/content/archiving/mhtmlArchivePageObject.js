@@ -221,12 +221,10 @@ MhtmlArchivePage.prototype = {
    * Returns the encoded string to be used in the version header of saved files.
    */
   _getRawVersionHeaderValue: function() {
-    // Get the object with the version information of Mozilla Archive Format
-    var extUpdateInfo = Cc["@mozilla.org/extensions/manager;1"]
-     .getService(Ci.nsIExtensionManager)
-     .getItemForID("{7f57cf46-4467-4c2d-adfa-0cba7c507e54}");
-    // Return the version information, which contains ASCII characters only
-    return "Produced By MAF V" + extUpdateInfo.version;
+    // Return the version information, which contains ASCII characters only.
+    //  Note that the version information might be empty if the save operation
+    //  was started shortly after application startup.
+    return "Produced By MAF V" + StartupInitializer.addonVersion;
   },
 
   /**
