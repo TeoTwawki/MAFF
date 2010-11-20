@@ -92,25 +92,11 @@
    $maf_latest_fx); ?> has the following user-visible improvements over
    MAF <?php echo $maf_previous_fx; ?>:</p>
   <ul>
-    <li>Compatibility with SeaMonkey 2.0.</li>
-    <li>MHTML and MAFF archives can now be viewed directly from remote
-     locations, unless Private Browsing Mode is active, in which case the
-     archive must be downloaded locally first.</li>
-    <li>MHTML files saved in a non-standard format by the Opera web browser are
-     now opened correctly.</li>
-    <li>The last directory selected for saving a web page in an archive is not
-     remembered while Private Browsing Mode is active.</li>
-    <li>Saving a single page in an archive now works correctly even if the
-     original page is closed before the save operation is completed.</li>
-    <li>The correct content is now displayed when a local archive is replaced
-     with another saved page.</li>
-    <li>Now the Saved Pages Conversion Wizard propagates the modification time
-     of the original files to the destination files.</li>
-    <li>The welcome dialog does not block startup anymore.</li>
-    <li>The integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     component is now able to save XHTML documents served with a content type
-     of <tt>application/xhtml+xml</tt>.</li>
+    <li>Compatibility with the latest beta versions of Firefox 4.0 and
+     SeaMonkey 2.1.</li>
+    <li>MAFF archives are now generated and read with stricter compliance to
+     the <a href="maff-specification.html">MAFF specification</a> draft,
+     improving compatibility with other applications.</li>
   </ul>
   <p>MAF <?php echo ($maf_experimental_fx ? $maf_experimental_fx :
    $maf_latest_fx); ?> has the following known issues:</p>
