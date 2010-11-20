@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://communicator/content/places/places.css" ?>
+<?xul-overlay href="chrome://communicator/content/history/placesOverlay.xul" ?>
+<!DOCTYPE overlay>
+<!--
+   - This overlay is required to link to the correct platform overlays and
+   -  provide the required compatibility code for the different Places
+   -  implementations in the Firefox and SeaMonkey applications.
+   -
+   - This file is in the public domain :-)
+   -->
+<overlay
+ id="archivesDialogNavigatorOverlay"
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ >
+  <script type="application/x-javascript"
+          src="chrome://communicator/content/utilityOverlay.js" />
+
+  <script type="application/x-javascript">
+    window.onNavigatorLoadDialog = function() {
+      gDeleteByHostname = document.getElementById("placesCmd_delete:hostname");
+      gDeleteByDomain = document.getElementById("placesCmd_delete:domain");
+
+      // Patch for Mozilla source file "suite/common/history/treeView.js"
+      PlacesTreeView.prototype.setTree = function PTV_setTree(aTree) {
+        var hasOldTree = this._tree != null;
+        this._tree = aTree;
+
+        if (this._result) {
+          if (hasOldTree) {
+            // detach from result when we are detaching from the tree.
+            // This breaks the reference cycle between us and the result.
+            if (!aTree)
+              this._result.removeObserver(this);
+          }
+          if (aTree)
+            this._finishInit();
+        }
+      };
+    };
+
+  </script>
+</overlay>

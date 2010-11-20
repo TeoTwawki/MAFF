@@ -61,6 +61,11 @@ var ArchivesDialog = {
    *  (retrieved 2009-05-23).
    */
   onLoadDialog: function() {
+    // Execute the initialization functions that are specific to SeaMonkey 2.1
+    if (window.onNavigatorLoadDialog) {
+      window.onNavigatorLoadDialog();
+    }
+
     // Get a reference to the tree that will display the main Places view
     ArchivesDialog.archivesTree = document.getElementById("treeArchives");
 

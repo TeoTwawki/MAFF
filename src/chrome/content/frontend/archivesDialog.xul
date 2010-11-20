@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin" type="text/css"?>
 <?xml-stylesheet href="chrome://maf/skin/general/general.css" type="text/css"?>
-
-<?xml-stylesheet href="chrome://browser/content/places/places.css" ?>
-<?xml-stylesheet href="chrome://browser/skin/places/places.css" ?>
-<?xul-overlay href="chrome://browser/content/places/placesOverlay.xul" ?>
-
 <!DOCTYPE window SYSTEM "chrome://maf/locale/archivesDialog.dtd">
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
