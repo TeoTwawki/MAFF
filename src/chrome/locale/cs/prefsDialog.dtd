@@ -21,54 +21,54 @@
 <!ENTITY save.metadata.extended.label "Do archivů MAFF ukládat rozšířená metadata">
 <!ENTITY save.metadata.extended.accesskey "D">
 <!-- Interface pane -->
-<!ENTITY pane.interface.label "Interface">
-<!ENTITY icon.caption "Icon">
-<!ENTITY iconlocation.grouplabel "Show Mozilla Archive Format icon in:">
-<!ENTITY iconlocation.urlbar.label "Address bar">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "Address bar, for archived pages only">
+<!ENTITY pane.interface.label "Rozhraní">
+<!ENTITY icon.caption "Ikona">
+<!ENTITY iconlocation.grouplabel "Zobrazit ikonu MAF v:">
+<!ENTITY iconlocation.urlbar.label "Lišta adresy">
+<!ENTITY iconlocation.urlbar.accesskey "a">
+<!ENTITY iconlocation.urlbar-autohide.label "Lišta adresy, jen u archivovaných stránek">
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Status bar">
+<!ENTITY iconlocation.status.label "Stavová lišta">
 <!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.none.label "None">
+<!ENTITY iconlocation.none.label "Nic">
 <!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.caption "Menu">
-<!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
-<!ENTITY menu.file.label "File menu">
-<!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tools.label "Tools menu">
-<!ENTITY menu.tools.accesskey "l">
-<!ENTITY menu.pagecontext.label "Page context menu">
-<!ENTITY menu.pagecontext.accesskey "p">
-<!ENTITY menu.tabscontext.label "Tab bar context menu">
+<!ENTITY menu.grouplabel "Zobrazit položky menu MAF v:">
+<!ENTITY menu.file.label "Soubor">
+<!ENTITY menu.file.accesskey "o">
+<!ENTITY menu.tools.label "Nástroje">
+<!ENTITY menu.tools.accesskey "r">
+<!ENTITY menu.pagecontext.label "Kontextovém menu stránky">
+<!ENTITY menu.pagecontext.accesskey "K">
+<!ENTITY menu.tabscontext.label "Kontextovém menu panelu">
 <!ENTITY menu.tabscontext.accesskey "x">
-<!ENTITY menuitem.grouplabel "Show these additional menu items:">
-<!ENTITY menuitem.saveinarchive.label "Save In Archive">
+<!ENTITY menuitem.grouplabel "Zobrazit tyto doplňkové položky:">
+<!ENTITY menuitem.saveinarchive.label "Uložit v archivu">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.fileassociations.label "File associations">
-<!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
-<!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
-<!ENTITY associate.adminprivs.description "This operation might require administrator privileges.">
-<!ENTITY associate.maff.label "Create association for .maff extension">
-<!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
-<!ENTITY associate.mhtml.accesskey "a">
-<!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
+<!ENTITY pane.fileassociations.label "Asociace souborů">
+<!ENTITY associate.windowsonly.description "Dostupné jen pro Windows.">
+<!ENTITY associate.buttons.description "Klepnutí na následující tlačítka provedete asociaci uvedených typů souborů k Firefoxu, se zpracováním pomocí MAF.">
+<!ENTITY associate.adminprivs.description "Provedení operace může vyžadovat práva administrátora.">
+<!ENTITY associate.maff.label "Vytvořit asociaci se soubory .maff">
+<!ENTITY associate.maff.accesskey "V">
+<!ENTITY associate.mhtml.label "Vytvořit asociaci pro soubory .mht a .mhtml">
+<!ENTITY associate.mhtml.accesskey "y">
+<!ENTITY associate.uninstall.description "Poznámka: zde provedené asociace nebudou odstraněny odinstalcí MAF nebo Firefoxu. Asociace můžete spravovat v Ovládacích panelech Windows.">
 <!-- Advanced pane -->
-<!ENTITY pane.advanced.label "Advanced">
-<!ENTITY temp.caption "Temporary files">
-<!ENTITY temp.folder.label "Temporary folder:">
-<!ENTITY temp.folder.accesskey "T">
-<!ENTITY temp.clearonexit.label "Clear temporary folder when browser exits">
-<!ENTITY temp.clearonexit.accesskey "C">
-<!ENTITY open.caption "Open">
-<!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
-<!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY open.usejarprotocol.label "Use the &quot;jar:&quot; protocol to access the contents of MAFF archives">
-<!ENTITY open.usejarprotocol.accesskey "j">
-<!ENTITY other.caption "Other">
-<!ENTITY other.displaywelcome.label "Display welcome window at next startup">
-<!ENTITY other.displaywelcome.accesskey "D">
-<!ENTITY save.usemhtmlextension.label "Save using the .mhtml file extension instead of .mht by default">
-<!ENTITY save.usemhtmlextension.accesskey "m">
+<!ENTITY pane.advanced.label "Rozšířené">
+<!ENTITY temp.caption "Dočasné soubory">
+<!ENTITY temp.folder.label "Složka dočasných souborů">
+<!ENTITY temp.folder.accesskey "o">
+<!ENTITY temp.clearonexit.label "Smazat dočasné soubory při vypnutí prohlížeče">
+<!ENTITY temp.clearonexit.accesskey "S">
+<!ENTITY open.caption "Hledat">
+<!ENTITY open.rewriteurls.label "Přepsat absolutní URL adresy v otevřených archivech">
+<!ENTITY open.rewriteurls.accesskey "P">
+<!ENTITY open.usejarprotocol.label "Použít protokol &quot;jar:&quot; pro přístup do MAFF archivů">
+<!ENTITY open.usejarprotocol.accesskey "r">
+<!ENTITY other.caption "Ostatní">
+<!ENTITY other.displaywelcome.label "Zobrazit uvítací okno příště při startu">
+<!ENTITY other.displaywelcome.accesskey "Z">
+<!ENTITY save.usemhtmlextension.label "Jako výchozí uložit s příponou .mhtml místo .mht">
+<!ENTITY save.usemhtmlextension.accesskey "a">

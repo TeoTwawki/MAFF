@@ -2,16 +2,16 @@
 <!ENTITY command.browseopenarchives.key "M">
 <!ENTITY command.browseopenarchives.modifiers "alt">
 <!-- Menu items for general Mozilla Archive Format commands -->
-<!ENTITY menuitem.mafsubmenu.label "Mozilla 档案格式 (MAF)">
+<!ENTITY menuitem.mafsubmenu.label "Mozilla 档案格式 (MAF)">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
-<!ENTITY menuitem.browseopenarchives.label "浏览已装载档案(r)…">
+<!ENTITY menuitem.browseopenarchives.label "浏览已装载档案 (r)…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
 <!ENTITY menuitem.convertsavedpages.label "转换已保存页面…">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.preferences.label "配置…">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
 <!-- Additional menu items for the "Save As" command -->
-<!ENTITY menuitem.savetabsas.label "选择标签页并存档(b)…">
+<!ENTITY menuitem.savetabsas.label "选择标签页并存档 (b)…">
 <!ENTITY menuitem.savetabsas.accesskey.filemenu "b">
 <!ENTITY menuitem.savetabsas.accesskey.toolsmenu "b">
 <!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "b">
@@ -22,11 +22,11 @@
 <!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
 <!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "S">
 <!-- Additional menu items for the "Save In Archive" command -->
-<!ENTITY menuitem.savepageinarchive.label "保存页面至档案(g)…">
+<!ENTITY menuitem.savepageinarchive.label "保存页面至档案 (g)…">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
-<!ENTITY menuitem.saveframeinarchive.label "保存帧（框架页）至档案(h)…">
+<!ENTITY menuitem.saveframeinarchive.label "保存帧（框架页）至档案 (h)…">
 <!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "h">
 <!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "h">
 <!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "h">

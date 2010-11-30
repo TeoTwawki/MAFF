@@ -1,0 +1,32 @@
+<!-- *** Note *** -->
+<!-- Some of the labels in this file use pseudo-tags for formatting. -->
+<!-- [b] and [/b] are for bold -->
+<!-- [i] and [/i] are for italics -->
+<!-- [tt] and [/tt] are for teletype -->
+<!-- The tags must be written exactly as they are, using lowercase letters. -->
+<!-- HTML tags and XML entity references are avoided for compatibility with the BabelZilla Web Translation System. -->
+<!-- *** General window controls *** -->
+<!ENTITY window.title "Добро пожаловать">
+<!ENTITY continuebutton.label "Продолжить">
+<!ENTITY okbutton.label "OK">
+<!-- *** Welcome message *** -->
+<!ENTITY welcome.label "Добро пожаловать в Mozilla Archive Format!">
+<!ENTITY welcome.para1.description "Спасибо за установку MAF! Ваш Firefox теперь умеет сохранять полные веб-страницы в [i]веб-архивы[/i], состоящие из единственного файла в формате [tt]MAFF[/tt] или [tt]MHTML[/tt].">
+<!ENTITY welcome.para2.description "Вы сможете открывать веб-архивы, используя пункт [b]Открыть файл…[/b] в меню Файл, и создавать их, выбирая нужный тип архива в диалоговом окне [b]Сохранить как[/b].">
+<!ENTITY welcome.para3.description "В меню [b]Инструменты[/b] доступны дополнительные команды управления архивами.">
+<!-- *** Options page *** -->
+<!ENTITY options.description "Хотя открывать и сохранять веб-архивы можно уже сейчас, рекомендуется выполнить следующие настройки:">
+<!ENTITY options.associate.label "Открывать веб-архивы в Firefox по умолчанию.">
+<!ENTITY options.associate.accesskey "F">
+<!ENTITY options.associate.description "Выберите, если хотите открывать веб-архивы по щелчку на их значке.">
+<!ENTITY options.exactpersist.label "Сохранять точную копию веб-страницы">
+<!ENTITY options.exactpersist.accesskey "С">
+<!ENTITY options.exactpersist.para1.description "Эта функция дополняет стандартную систему сохранения браузера, позволяя получить точный снимок содержимого веб-страницы на момент сохранения.">
+<!ENTITY options.exactpersist.para2.description "Режим сохранения можно будет изменить позже в настройках MAF.">
+<!ENTITY options.savemaff.label "Сохранять веб-архивы в формате MAFF по умолчанию">
+<!ENTITY options.savemaff.accesskey "M">
+<!ENTITY options.savemaff.para1.description "MAFF это кроссплатформенный открытый файловый формат на основе ZIP. Файлы MAFF можно открывать в Linux или в любой другой системе, поддерживающей ZIP файлы, но ими трудно обмениваться с пользователями Internet Explorer.">
+<!ENTITY options.savemaff.para2.description "Тип веб-архива можно выбрать позже в диалоговом окне [b]Сохранить как[/b].">
+<!-- *** Changes confirmation message *** -->
+<!ENTITY changesapplied.label "Поздравляем!">
+<!ENTITY changesapplied.description "Выбранные вами настройки успешно произведены.">
