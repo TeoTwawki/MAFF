@@ -1,0 +1,3 @@
+<!-- Additional menu items for "Multiple Tab Handler" integration -->
+<!ENTITY menuitem.saveselectedtabsas.label "Сохранить выделенные вкладки как…">
+<!ENTITY menuitem.saveselectedtabsas.accesskey.tabselectionmenu "ь">

@@ -4,3 +4,18 @@
 <!ENTITY welcome.label "Dobrý den u rozšíření Mozilla Archive Format!">
 <!ENTITY welcome.para1.description "Díky, že jste si nainstaloval/a MAF! Váš Firefox bude nyní schopen ukládat a otevírat úplné webové stránky jako [i]webové archivy[/i] v jediném souboru, bude podporovat soubory typu [tt]MAFF[/tt] a [tt]MHTML[/tt].">
 <!ENTITY welcome.para2.description "Webové archivy můžete otevřít pomocí menu [b]Soubor/Otevřít soubor[/b], vytvoříte je výběrem vhodného typu souboru v dialogovém okně [b]Uložit stránku jako[/b].">
+<!ENTITY welcome.para3.description "Doplňující příkazy ke správě archivů najdete v menu [b]Nástroje[/b].">
+<!ENTITY options.description "Přestože již můžete otevírat a ukládat webové archivy, pro Váš počítač doporučujeme následující lepší nastavení:">
+<!ENTITY options.associate.label "Otevírat webové archviy ve Firefoxu jako výchozím klientu">
+<!ENTITY options.associate.accesskey "O">
+<!ENTITY options.associate.description "Zvolte tuto možnost, jestliže chcete webové archivy otevírat prostým poklepáním na jejich ikonku.">
+<!ENTITY options.exactpersist.label "Získat věrný snímek při ukládání stránky">
+<!ENTITY options.exactpersist.accesskey "Z">
+<!ENTITY options.exactpersist.para1.description "Tato možnost zlepšuje standardní systém ukládání v prohlížeči, což vám umožní získat přesnou kopii zobrazeného obsahu v době, kdy stránku ukládáte.">
+<!ENTITY options.exactpersist.para2.description "Způsob ukládání můžete v předvolbách MAF kdykoliv změnit.">
+<!ENTITY options.savemaff.label "Ukládat webové archivy jako výchozí ve formátu MAFF">
+<!ENTITY options.savemaff.accesskey "U">
+<!ENTITY options.savemaff.para1.description "MAFF je cross-platformní, otevřený souborový formát založený na ZIP. MAFF soubory mohou být otevřeny na Linuxu nebo jakékoliv jiné platformě, která podporuje ZIP soubory, ale nelze je jednoduše vyměňovat s uživateli Internet Exploreru.">
+<!ENTITY options.savemaff.para2.description "Změnit typ webového archivu můžete kdykoliv v okně dialogu [b]Uložit jako[/b].">
+<!ENTITY changesapplied.label "Gratulujeme!">
+<!ENTITY changesapplied.description "Váš systém je nakonfigurován podle Vašich požadavků a je připraven k použití.">

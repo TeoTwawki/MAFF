@@ -18,3 +18,52 @@
 <!ENTITY save.namingstrategy.pagetitle.accesskey "K">
 <!ENTITY save.metadata.extended.label "Do archivů MAFF ukládat rozšířená metadata">
 <!ENTITY save.metadata.extended.accesskey "D">
+<!ENTITY pane.interface.label "Rozhraní">
+<!ENTITY icon.caption "Ikona">
+<!ENTITY iconlocation.grouplabel "Zobrazit ikonu MAF v:">
+<!ENTITY iconlocation.urlbar.label "Lišta adresy">
+<!ENTITY iconlocation.urlbar.accesskey "a">
+<!ENTITY iconlocation.urlbar-autohide.label "Lišta adresy, jen u archivovaných stránek">
+<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
+<!ENTITY iconlocation.status.label "Stavová lišta">
+<!ENTITY iconlocation.status.accesskey "S">
+<!ENTITY iconlocation.none.label "Nic">
+<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY menu.caption "Menu">
+<!ENTITY menu.grouplabel "Zobrazit položky menu MAF v:">
+<!ENTITY menu.file.label "Soubor">
+<!ENTITY menu.file.accesskey "o">
+<!ENTITY menu.tools.label "Nástroje">
+<!ENTITY menu.tools.accesskey "r">
+<!ENTITY menu.pagecontext.label "Kontextovém menu stránky">
+<!ENTITY menu.pagecontext.accesskey "K">
+<!ENTITY menu.tabscontext.label "Kontextovém menu panelu">
+<!ENTITY menu.tabscontext.accesskey "x">
+<!ENTITY menuitem.grouplabel "Zobrazit tyto doplňkové položky:">
+<!ENTITY menuitem.saveinarchive.label "Uložit v archivu">
+<!ENTITY menuitem.saveinarchive.accesskey "h">
+<!ENTITY pane.fileassociations.label "Asociace souborů">
+<!ENTITY associate.windowsonly.description "Dostupné jen pro Windows.">
+<!ENTITY associate.buttons.description "Klepnutí na následující tlačítka provedete asociaci uvedených typů souborů k Firefoxu, se zpracováním pomocí MAF.">
+<!ENTITY associate.adminprivs.description "Provedení operace může vyžadovat práva administrátora.">
+<!ENTITY associate.maff.label "Vytvořit asociaci se soubory .maff">
+<!ENTITY associate.maff.accesskey "V">
+<!ENTITY associate.mhtml.label "Vytvořit asociaci pro soubory .mht a .mhtml">
+<!ENTITY associate.mhtml.accesskey "y">
+<!ENTITY associate.uninstall.description "Poznámka: zde provedené asociace nebudou odstraněny odinstalcí MAF nebo Firefoxu. Asociace můžete spravovat v Ovládacích panelech Windows.">
+<!ENTITY pane.advanced.label "Rozšířené">
+<!ENTITY temp.caption "Dočasné soubory">
+<!ENTITY temp.folder.label "Složka dočasných souborů">
+<!ENTITY temp.folder.accesskey "o">
+<!ENTITY temp.clearonexit.label "Smazat dočasné soubory při vypnutí prohlížeče">
+<!ENTITY temp.clearonexit.accesskey "S">
+<!ENTITY open.caption "Hledat">
+<!ENTITY open.rewriteurls.label "Přepsat absolutní URL adresy v otevřených archivech">
+<!ENTITY open.rewriteurls.accesskey "P">
+<!ENTITY open.usejarprotocol.label "Použít protokol &quot;jar:&quot; pro přístup do MAFF archivů">
+<!ENTITY open.usejarprotocol.accesskey "r">
+<!ENTITY other.caption "Ostatní">
+<!ENTITY other.displaywelcome.label "Zobrazit uvítací okno příště při startu">
+<!ENTITY other.displaywelcome.accesskey "Z">
+<!ENTITY save.usemhtmlextension.label "Jako výchozí uložit s příponou .mhtml místo .mht">
+<!ENTITY save.usemhtmlextension.accesskey "a">

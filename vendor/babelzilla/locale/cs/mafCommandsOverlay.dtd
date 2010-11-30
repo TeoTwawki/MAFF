@@ -1,0 +1,28 @@
+<!ENTITY command.browseopenarchives.key "M">
+<!ENTITY command.browseopenarchives.modifiers "alt">
+<!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
+<!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "o">
+<!ENTITY menuitem.browseopenarchives.label "Prohlížet otevřené archivy...">
+<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
+<!ENTITY menuitem.convertsavedpages.label "Konvertovat uložené stránky...">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "K">
+<!ENTITY menuitem.preferences.label "Předvolby...">
+<!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
+<!ENTITY menuitem.savetabsas.label "Uložit panely jako...">
+<!ENTITY menuitem.savetabsas.accesskey.filemenu "U">
+<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "U">
+<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "U">
+<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "U">
+<!ENTITY menuitem.savealltabsas.label "Uložit všechny panely jako...">
+<!ENTITY menuitem.savealltabsas.accesskey.filemenu "e">
+<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "e">
+<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "e">
+<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "e">
+<!ENTITY menuitem.savepageinarchive.label "Uložit stránku do archivu...">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "a">
+<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "a">
+<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "a">
+<!ENTITY menuitem.saveframeinarchive.label "Uložit rám do archivu...">
+<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "r">
+<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "r">
+<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "r">

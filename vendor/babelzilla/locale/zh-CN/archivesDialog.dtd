@@ -2,31 +2,31 @@
 <!ENTITY archives.placestitle.header "页面标题">
 <!ENTITY archives.mafarchivename.header "档案名称">
 <!ENTITY archives.placesurl.header "档案位置">
-<!ENTITY archives.maftitle.header "页面标题（副本，页面 HTML 之外）">
+<!ENTITY archives.maftitle.header "页面标题（副本，页面 HTML 之外）">
 <!ENTITY archives.maforiginalurl.header "原始页面位置">
 <!ENTITY archives.mafdatearchived.header "存档时间">
 <!ENTITY archives.maftempuri.header "临时解包页地址">
 <!ENTITY archives.mafdirectarchiveuri.header "直接访问地址">
 <!ENTITY details.placestitle.label "页面标题:">
 <!ENTITY details.placestitle.accesskey "P">
-<!ENTITY details.mafarchivename.label "档案名称(r):">
+<!ENTITY details.mafarchivename.label "档案名称 (r):">
 <!ENTITY details.mafarchivename.accesskey "r">
-<!ENTITY details.placesurl.label "档案位置(h):">
+<!ENTITY details.placesurl.label "档案位置 (h):">
 <!ENTITY details.placesurl.accesskey "h">
 <!ENTITY details.maftitle.label "页面标题（副本，页面 HTML 之外）(g):">
 <!ENTITY details.maftitle.accesskey "i">
 <!ENTITY details.maforiginalurl.label "原始页面位置:">
 <!ENTITY details.maforiginalurl.accesskey "g">
-<!ENTITY details.mafdatearchived.label "存档时间(c):">
+<!ENTITY details.mafdatearchived.label "存档时间 (c):">
 <!ENTITY details.mafdatearchived.accesskey "c">
 <!ENTITY details.maftempuri.label "临时解包页地址:">
 <!ENTITY details.maftempuri.accesskey "T">
 <!ENTITY details.mafdirectarchiveuri.label "直接访问地址:">
 <!ENTITY details.mafdirectarchiveuri.accesskey "D">
 <!ENTITY details.caption "细节">
-<!ENTITY morebutton.label "更多细节(e)">
+<!ENTITY morebutton.label "更多细节 (e)">
 <!ENTITY morebutton.accesskey "e">
-<!ENTITY lessbutton.label "更少细节(e)">
+<!ENTITY lessbutton.label "更少细节 (e)">
 <!ENTITY lessbutton.accesskey "e">
 <!ENTITY multipleitems.text "（多个存档页被选择）">
 <!ENTITY openintabsbutton.label "在标签页（群）中打开">

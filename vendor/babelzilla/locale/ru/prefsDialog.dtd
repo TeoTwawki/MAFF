@@ -1,0 +1,74 @@
+<!-- General window controls -->
+<!ENTITY window.title "Настройки MAF">
+<!ENTITY browsebutton.label "Обзор...">
+<!-- Main pane -->
+<!ENTITY pane.main.label "Основные">
+<!ENTITY save.caption "Сохранение">
+<!ENTITY save.component.grouplabel "При сохранении веб-страницы полностью:">
+<!ENTITY save.component.standard.label "Использовать стандартную систему сохранения браузера">
+<!ENTITY save.component.standard.accesskey "И">
+<!ENTITY save.component.completesave.label "Сохранять сценарии и исходный код с помощью &quot;Save Complete&quot;">
+<!ENTITY save.component.completesave.accesskey "С">
+<!ENTITY save.component.exactpersist.label "Сохранять точную копию страницы">
+<!ENTITY save.component.exactpersist.accesskey "т">
+<!ENTITY save.mhtml.compatible.label "Создавать файлы MHTML, полностью совместимые с другими браузерами">
+<!ENTITY save.mhtml.compatible.accesskey "о">
+<!ENTITY save.namingstrategy.grouplabel "Предлагать имена файлов:">
+<!ENTITY save.namingstrategy.standard.label "Так же как в браузере">
+<!ENTITY save.namingstrategy.standard.accesskey "б">
+<!ENTITY save.namingstrategy.pagetitle.label "Использовать заголовок страницы, когда возможно">
+<!ENTITY save.namingstrategy.pagetitle.accesskey "з">
+<!ENTITY save.metadata.extended.label "Сохранять дополнительные метаданные в архивах MAFF">
+<!ENTITY save.metadata.extended.accesskey "м">
+<!-- Interface pane -->
+<!ENTITY pane.interface.label "Вид">
+<!ENTITY icon.caption "Значок">
+<!ENTITY iconlocation.grouplabel "Показывать значок Mozilla Archive Format:">
+<!ENTITY iconlocation.urlbar.label "в адресной строке">
+<!ENTITY iconlocation.urlbar.accesskey "а">
+<!ENTITY iconlocation.urlbar-autohide.label "в адресной строке только для архивных страниц">
+<!ENTITY iconlocation.urlbar-autohide.accesskey "т">
+<!ENTITY iconlocation.status.label "в строке состояния">
+<!ENTITY iconlocation.status.accesskey "с">
+<!ENTITY iconlocation.none.label "нигде">
+<!ENTITY iconlocation.none.accesskey "н">
+<!ENTITY menu.caption "Меню">
+<!ENTITY menu.grouplabel "Показывать пункты меню Mozilla Archive Format:">
+<!ENTITY menu.file.label "в меню Файл">
+<!ENTITY menu.file.accesskey "Ф">
+<!ENTITY menu.tools.label "в меню Инструменты">
+<!ENTITY menu.tools.accesskey "И">
+<!ENTITY menu.pagecontext.label "в контекстном меню страницы">
+<!ENTITY menu.pagecontext.accesskey "к">
+<!ENTITY menu.tabscontext.label "в контекстном меню вкладки">
+<!ENTITY menu.tabscontext.accesskey "в">
+<!ENTITY menuitem.grouplabel "Показывать эти дополнительные пункты:">
+<!ENTITY menuitem.saveinarchive.label "Сохранить в архив">
+<!ENTITY menuitem.saveinarchive.accesskey "х">
+<!-- File associations pane. This pane is visible only on Windows. -->
+<!ENTITY pane.fileassociations.label "Ассоциации">
+<!ENTITY associate.windowsonly.description "Эти функции доступны только в Windows.">
+<!ENTITY associate.buttons.description "Щелкните по следующим кнопкам, чтобы связать Firefox с поддерживаемыми в MAF типами файлов.">
+<!ENTITY associate.adminprivs.description "Эта операция может потребовать прав администратора.">
+<!ENTITY associate.maff.label "Создать ассоциацию для расширения .maff">
+<!ENTITY associate.maff.accesskey "С">
+<!ENTITY associate.mhtml.label "Создать ассоциацию для расширений .mht и .mhtml">
+<!ENTITY associate.mhtml.accesskey "о">
+<!ENTITY associate.uninstall.description "Обратите внимание, что созданные здесь ассоциации останутся после удаления MAF или Firefox. Вы можете изменить их в Панели управления Windows.">
+<!-- Advanced pane -->
+<!ENTITY pane.advanced.label "Дополнительные">
+<!ENTITY temp.caption "Временные файлы">
+<!ENTITY temp.folder.label "Временная папка:">
+<!ENTITY temp.folder.accesskey "В">
+<!ENTITY temp.clearonexit.label "Очищать временную папку при закрытии браузера">
+<!ENTITY temp.clearonexit.accesskey "О">
+<!ENTITY open.caption "Открытие">
+<!ENTITY open.rewriteurls.label "Переписывать абсолютные URL в открытых архивах">
+<!ENTITY open.rewriteurls.accesskey "а">
+<!ENTITY open.usejarprotocol.label "Использовать протокол &quot;jar:&quot; для доступа к архивам MAFF">
+<!ENTITY open.usejarprotocol.accesskey "j">
+<!ENTITY other.caption "Прочее">
+<!ENTITY other.displaywelcome.label "Показать окно приветствия при следующем запуске">
+<!ENTITY other.displaywelcome.accesskey "п">
+<!ENTITY save.usemhtmlextension.label "По умолчанию сохранять файлы с расширением .mhtml вместо .mht ">
+<!ENTITY save.usemhtmlextension.accesskey "m">

@@ -3,67 +3,67 @@
 <!ENTITY pane.main.label "主要">
 <!ENTITY save.caption "储存档案时的操作">
 <!ENTITY save.component.grouplabel "当保存完整网页档案内容时：">
-<!ENTITY save.component.standard.label "使用浏览器的标准保存系统 (b)">
+<!ENTITY save.component.standard.label "使用浏览器的标准保存系统 (b)">
 <!ENTITY save.component.standard.accesskey "b">
 <!ENTITY save.component.completesave.label "使用“Save Complete”保存页面（保持脚本与源码）(u)">
 <!ENTITY save.component.completesave.accesskey "u">
-<!ENTITY save.component.exactpersist.label "使用可靠的页面快照(k)">
+<!ENTITY save.component.exactpersist.label "使用可靠的页面快照 (k)">
 <!ENTITY save.component.exactpersist.accesskey "k">
-<!ENTITY save.mhtml.compatible.label "创建与其它浏览器完全兼容的 MHTML 文件(o)">
+<!ENTITY save.mhtml.compatible.label "创建与其它浏览器完全兼容的 MHTML 文件 (o)">
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "默认文件名：">
-<!ENTITY save.namingstrategy.standard.label "使用浏览器的标准命名策略(w)">
+<!ENTITY save.namingstrategy.standard.label "使用浏览器的标准命名策略 (w)">
 <!ENTITY save.namingstrategy.standard.accesskey "w">
-<!ENTITY save.namingstrategy.pagetitle.label "在可能时使用页面标题作为文件名(g)">
+<!ENTITY save.namingstrategy.pagetitle.label "在可能时使用页面标题作为文件名 (g)">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "g">
-<!ENTITY save.metadata.extended.label "在 MAFF 档中保存扩展元数据 (v)">
+<!ENTITY save.metadata.extended.label "在 MAFF 档中保存扩展元数据 (v)">
 <!ENTITY save.metadata.extended.accesskey "v">
 <!ENTITY pane.interface.label "界面">
 <!ENTITY icon.caption "图标">
-<!ENTITY iconlocation.grouplabel "在下列位置显示 Mozilla 档案格式的图标：">
+<!ENTITY iconlocation.grouplabel "在下列位置显示 Mozilla 档案格式的图标：">
 <!ENTITY iconlocation.urlbar.label "地址栏">
 <!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "地址栏，仅对档案中的页面(d)">
+<!ENTITY iconlocation.urlbar-autohide.label "地址栏，仅对档案中的页面 (d)">
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
 <!ENTITY iconlocation.status.label "状态栏">
 <!ENTITY iconlocation.status.accesskey "S">
 <!ENTITY iconlocation.none.label "无">
 <!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.caption "菜单">
-<!ENTITY menu.grouplabel "显示 MAF 菜单项于：">
+<!ENTITY menu.grouplabel "显示 MAF 菜单项于：">
 <!ENTITY menu.file.label "“文件(F)”菜单">
 <!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tools.label "“工具”菜单(l)">
+<!ENTITY menu.tools.label "“工具”菜单 (l)">
 <!ENTITY menu.tools.accesskey "l">
 <!ENTITY menu.pagecontext.label "页面内容菜单">
 <!ENTITY menu.pagecontext.accesskey "P">
-<!ENTITY menu.tabscontext.label "标签栏内容菜单(x)">
+<!ENTITY menu.tabscontext.label "标签栏内容菜单 (x)">
 <!ENTITY menu.tabscontext.accesskey "x">
 <!ENTITY menuitem.grouplabel "显示如下附加菜单项：">
-<!ENTITY menuitem.saveinarchive.label "保存╳╳至档案(h)">
+<!ENTITY menuitem.saveinarchive.label "保存╳╳至档案 (h)">
 <!ENTITY menuitem.saveinarchive.accesskey "h">
 <!ENTITY pane.fileassociations.label "文件关联">
-<!ENTITY associate.windowsonly.description "本功能仅用于 Windows。">
-<!ENTITY associate.buttons.description "单击下面的按钮可将相应文件类型关联至装备有 MAF 的 Firefox。">
+<!ENTITY associate.windowsonly.description "本功能仅用于 Windows。">
+<!ENTITY associate.buttons.description "单击下面的按钮可将相应文件类型关联至装备有 MAF 的 Firefox。">
 <!ENTITY associate.adminprivs.description "此操作需要管理员权限。">
-<!ENTITY associate.maff.label "建立与 .MAFF 文件的关联 (e)">
+<!ENTITY associate.maff.label "建立与 .MAFF 文件的关联 (e)">
 <!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "建立与 .MHT 和 .MHTML 文件的关联 (a)">
+<!ENTITY associate.mhtml.label "建立与 .MHT 和 .MHTML 文件的关联 (a)">
 <!ENTITY associate.mhtml.accesskey "a">
-<!ENTITY associate.uninstall.description "注意：在此处建立的文件关联在您移除 MAF 时并不会被删除，您需要到 Windows 控制面板的“文件夹选项”中手工修正。">
+<!ENTITY associate.uninstall.description "注意：在此处建立的文件关联在您移除 MAF 时并不会被删除，您需要到 Windows 控制面板的“文件夹选项”中手工修正。">
 <!ENTITY pane.advanced.label "高级">
 <!ENTITY temp.caption "临时文件">
-<!ENTITY temp.folder.label "临时文件夹 (T)：">
+<!ENTITY temp.folder.label "临时文件夹 (T)：">
 <!ENTITY temp.folder.accesskey "T">
-<!ENTITY temp.clearonexit.label "当浏览器关闭时清除 MAFF 临时文件夹">
+<!ENTITY temp.clearonexit.label "当浏览器关闭时清除 MAFF 临时文件夹">
 <!ENTITY temp.clearonexit.accesskey "C">
 <!ENTITY open.caption "打开档案时的操作">
 <!ENTITY open.rewriteurls.label "试图在开启档案时重写绝对地址">
 <!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY open.usejarprotocol.label "使用“JAr:”协议访问 MAFF 档的内容">
+<!ENTITY open.usejarprotocol.label "使用“JAr:”协议访问 MAFF 档的内容">
 <!ENTITY open.usejarprotocol.accesskey "J">
 <!ENTITY other.caption "杂项">
-<!ENTITY other.displaywelcome.label "在下次启动浏览器时显示 MAF 欢迎窗口">
+<!ENTITY other.displaywelcome.label "在下次启动浏览器时显示 MAF 欢迎窗口">
 <!ENTITY other.displaywelcome.accesskey "D">
-<!ENTITY save.usemhtmlextension.label "使用 .MHTML 代替 .MHT 成为 MIME 文件默认扩展名">
+<!ENTITY save.usemhtmlextension.label "使用 .MHTML 代替 .MHT 成为 MIME 文件默认扩展名">
 <!ENTITY save.usemhtmlextension.accesskey "M">
