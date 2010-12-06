@@ -1,0 +1,32 @@
+<!-- *** Note *** -->
+<!-- Some of the labels in this file use pseudo-tags for formatting. -->
+<!-- [b] and [/b] are for bold -->
+<!-- [i] and [/i] are for italics -->
+<!-- [tt] and [/tt] are for teletype -->
+<!-- The tags must be written exactly as they are, using lowercase letters. -->
+<!-- HTML tags and XML entity references are avoided for compatibility with the BabelZilla Web Translation System. -->
+<!-- *** General window controls *** -->
+<!ENTITY window.title "Välkommen">
+<!ENTITY continuebutton.label "Fortsätt">
+<!ENTITY okbutton.label "OK">
+<!-- *** Welcome message *** -->
+<!ENTITY welcome.label "Välkommen till Mozilla Archive Format!">
+<!ENTITY welcome.para1.description "Tack för att du installerar MAF! Din Firefox kan numera öppna och spara fullständiga webbsidor i enskilda [i]webbarkiv[/i]-filer, med stöd för formaten [tt]MAFF[/tt] och [tt]MHTML[/tt].">
+<!ENTITY welcome.para2.description "Du kan öppna webbarkiv via [i]Öppna fil[/i]-objektet i [b]Arkiv[/b]-menyn, och skapa dem genom att välja den önskade arkivtypen i [b]Spara som[/b]-dialogrutan.">
+<!ENTITY welcome.para3.description "Du hittar ytterligare arkivhanteringskommandon i [b]Verktyg[/b]-menyn.">
+<!-- *** Options page *** -->
+<!ENTITY options.description "Även om du redan kan öppna och spara webbarkiv, så rekommenderas följande förbättringar i din datorkonfiguration:">
+<!ENTITY options.associate.label "Öppna webbarkiv med Firefox, som standard">
+<!ENTITY options.associate.accesskey "Ö">
+<!ENTITY options.associate.description "Välj det här alternativet om du vill öppna webbarkivfiler genom att klicka på deras ikoner.">
+<!ENTITY options.exactpersist.label "Ta en trogen ögonblicksbild av sidan när den sparas">
+<!ENTITY options.exactpersist.accesskey "T">
+<!ENTITY options.exactpersist.para1.description "Det här alternativet förbättrar standardwebbläsarens sparsystem, och låter dig göra en exakt kopia av det innehåll som visas vid den tidpunkt då sidan sparas.">
+<!ENTITY options.exactpersist.para2.description "Du kan ändra sparläget när som helst från MAF:s inställningar.">
+<!ENTITY options.savemaff.label "Spara i webbarkivformatet MAFF, som standard">
+<!ENTITY options.savemaff.accesskey "S">
+<!ENTITY options.savemaff.para1.description "MAFF är ett plattformsoberoende, öppet filformat baserat på ZIP. MAFF-filer kan öppnas på Linux eller vilken annan plattform som helst med stöd för ZIP-filer, men är inte så lätta att dela med sig av till Internet Explorer-användare.">
+<!ENTITY options.savemaff.para2.description "Du kan ändra arkivtypen när som helst i [b]Spara som[/b]-dialogrutan.">
+<!-- *** Changes confirmation message *** -->
+<!ENTITY changesapplied.label "Gratulerar!">
+<!ENTITY changesapplied.description "Ditt system har konfigurerats enligt dina önskemål och är redo att användas.">
