@@ -60,20 +60,21 @@ var Interface = {
     //  "instanceof" operator cannot be used for this check since sometimes the
     //  type information is not propagated along with the Date object.
     if (aValue.getYear) {
-      // Format the Date object
-      if (aForColumn) {
-        // Use the date formatting service to display a short localized date
-        return Cc["@mozilla.org/intl/scriptabledateformat;1"].
-         getService(Ci.nsIScriptableDateFormat).FormatDateTime("",
-          Ci.nsIScriptableDateFormat.dateFormatShort,
-          Ci.nsIScriptableDateFormat.timeFormatNoSeconds,
-          aValue.getFullYear(), aValue.getMonth() + 1,
-          aValue.getDate(), aValue.getHours(),
-          aValue.getMinutes(), aValue.getSeconds());
-      } else {
-        // Display a long localized date
-        return aValue.toLocaleString();
-      }
+      // Display either a short or long localized date
+      var date = aForColumn ? Ci.nsIScriptableDateFormat.dateFormatShort :
+       Ci.nsIScriptableDateFormat.dateFormatLong;
+      var time = aForColumn ? Ci.nsIScriptableDateFormat.timeFormatNoSeconds :
+       Ci.nsIScriptableDateFormat.timeFormatSeconds;
+      // Use the date formatting service to display the localized date. Note
+      //  that on Firefox 3.5 and later we cannot use the native JavaScript date
+      //  formatting functions, like "toLocaleString", because this code may be
+      //  called at startup or in other situations where the service that
+      //  converts the operating-system-provided date string to Unicode is not
+      //  available in the JavaScript context.
+      return Cc["@mozilla.org/intl/scriptabledateformat;1"].
+       getService(Ci.nsIScriptableDateFormat).FormatDateTime("", date, time,
+        aValue.getFullYear(), aValue.getMonth() + 1, aValue.getDate(),
+        aValue.getHours(), aValue.getMinutes(), aValue.getSeconds());
     }
     // Check if the value has been tagged as an URI and handle it appropriately
     if (aValue.isEscapedAsUri) {
