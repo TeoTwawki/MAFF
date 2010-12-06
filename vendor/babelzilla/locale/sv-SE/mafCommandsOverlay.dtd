@@ -1,0 +1,32 @@
+<!-- Shortcut keys -->
+<!ENTITY command.browseopenarchives.key "M">
+<!ENTITY command.browseopenarchives.modifiers "alt">
+<!-- Menu items for general Mozilla Archive Format commands -->
+<!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format (MAFF)">
+<!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
+<!ENTITY menuitem.browseopenarchives.label "Bläddra öppna arkiv…">
+<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
+<!ENTITY menuitem.convertsavedpages.label "Konvertera sparade sidor…">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "K">
+<!ENTITY menuitem.preferences.label "Inställningar…">
+<!ENTITY menuitem.preferences.accesskey.toolsmenu "I">
+<!-- Additional menu items for the "Save As" command -->
+<!ENTITY menuitem.savetabsas.label "Spara flikar som…">
+<!ENTITY menuitem.savetabsas.accesskey.filemenu "f">
+<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "f">
+<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "f">
+<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "f">
+<!ENTITY menuitem.savealltabsas.label "Spara alla flikar som…">
+<!ENTITY menuitem.savealltabsas.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "S">
+<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "a">
+<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "S">
+<!-- Additional menu items for the "Save In Archive" command -->
+<!ENTITY menuitem.savepageinarchive.label "Spara sida i arkiv…">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "d">
+<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "d">
+<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "d">
+<!ENTITY menuitem.saveframeinarchive.label "Spara ram i arkiv…">
+<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "v">
+<!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "v">
+<!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "v">

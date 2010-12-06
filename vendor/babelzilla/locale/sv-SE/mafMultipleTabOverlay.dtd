@@ -1,0 +1,3 @@
+<!-- Additional menu items for "Multiple Tab Handler" integration -->
+<!ENTITY menuitem.saveselectedtabsas.label "Spara markerade flikar som…">
+<!ENTITY menuitem.saveselectedtabsas.accesskey.tabselectionmenu "f">
