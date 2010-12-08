@@ -44,7 +44,7 @@ var MafMultipleTabOverlay = {
   /**
    * Saves the selected tabs in an archive.
    */
-  saveSelectedTabsAs: function() {
+  saveSelectedTabsInArchive: function() {
     // Get the list of browser elements associated with the selected tabs
     var selectedTabs = MultipleTabService.getSelectedTabs().map(function(tab) {
       return tab.linkedBrowser;

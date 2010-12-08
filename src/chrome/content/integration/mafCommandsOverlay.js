@@ -192,8 +192,8 @@ var MafCommandsOverlay = {
        "mafCmdSaveFrameInArchiveFromContext"
        ].indexOf(command) >= 0);
       var isSaveTabs = ([
-       "mafCmdSaveTabsAs",
-       "mafCmdSaveAllTabsAs"
+       "mafCmdSaveTabsInArchive",
+       "mafCmdSaveAllTabsInArchive"
        ].indexOf(command) >= 0);
 
       // Do not handle unrelated menu items
@@ -330,7 +330,7 @@ var MafCommandsOverlay = {
   /**
    * Asks the user to select which of the open tabs will be saved in an archive.
    */
-  saveTabsAs: function() {
+  saveTabsInArchive: function() {
     // Open a dialog that lets the user select which tabs will be saved. See
     //  "multiSaveDialog.js" for a description of the dialog arguments.
     var returnValues = {};
@@ -351,7 +351,7 @@ var MafCommandsOverlay = {
   /**
    * Saves all of the open tabs in an archive.
    */
-  saveAllTabsAs: function() {
+  saveAllTabsInArchive: function() {
     // Use the global saveDocument function with the special MAF parameters
     mafSaveDocument(getBrowser().selectedBrowser.contentDocument,
      {mafAskSaveArchive: true, mafSaveTabs: getBrowser().browsers});

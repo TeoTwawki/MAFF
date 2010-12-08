@@ -53,8 +53,8 @@
 
   <!-- User interface commands -->
   <commandset>
-    <command id=       "mafCmdSaveSelectedTabsAs"
-             oncommand="MafMultipleTabOverlay.saveSelectedTabsAs();"
+    <command id=       "mafCmdSaveSelectedTabsInArchive"
+             oncommand="MafMultipleTabOverlay.saveSelectedTabsInArchive();"
              />
   </commandset>
 
@@ -62,9 +62,9 @@
   <menupopup id="multipletab-selection-menu">
     <menuitem id=          "mafMenuSaveSelectedTabsAs_tabSelectionMenu"
               insertbefore="multipletab-selection-saveTabs"
-              label=       "&menuitem.saveselectedtabsas.label;"
-              accesskey=   "&menuitem.saveselectedtabsas.accesskey.tabselectionmenu;"
-              command=     "mafCmdSaveSelectedTabsAs"
+              label=       "&menuitem.saveselectedtabsinarchiveas.label;"
+              accesskey=   "&menuitem.saveselectedtabsinarchive.accesskey.tabselectionmenu;"
+              command=     "mafCmdSaveSelectedTabsInArchive"
               />
   </menupopup>
 </overlay>
