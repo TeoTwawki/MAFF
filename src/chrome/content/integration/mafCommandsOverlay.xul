@@ -140,28 +140,28 @@
   <menupopup id="menu_FilePopup">
     <menuitem id=          "mafMenuSavePageInArchive_fileMenu"
               insertafter= "savepage,menu_savePage,menu_saveFrame"
-              label=       "&menuitem.savepageinarchiveas.label;"
+              labelsaveas= "&menuitem.savepageinarchiveas.label;"
               labelsave=   "&menuitem.savepageinarchive.label.v2;"
               accesskey=   "&menuitem.savepageinarchive.accesskey.filemenu;"
               command=     "mafCmdSavePageInArchive"
               />
     <menuitem id=          "mafMenuSaveFrameInArchive_fileMenu"
               insertafter= "saveframe,menu_saveFrame"
-              label=       "&menuitem.saveframeinarchiveas.label;"
+              labelsaveas= "&menuitem.saveframeinarchiveas.label;"
               labelsave=   "&menuitem.saveframeinarchive.label.v2;"
               accesskey=   "&menuitem.saveframeinarchive.accesskey.filemenu;"
               command=     "mafCmdSaveFrameInArchiveFromWindow"
               />
     <menuitem id=          "mafMenuSaveTabsInArchive_fileMenu"
               insertbefore="saveMenuBlockEnd,menu_sendLink"
-              label=       "&menuitem.savetabsinarchiveas.label;"
+              labelsaveas= "&menuitem.savetabsinarchiveas.label;"
               labelsave=   "&menuitem.savetabsinarchive.label;"
               accesskey=   "&menuitem.savetabsinarchive.accesskey.filemenu;"
               command=     "mafCmdSaveTabsInArchive"
               />
     <menuitem id=          "mafMenuSaveAllTabsInArchive_fileMenu"
               insertbefore="saveMenuBlockEnd,menu_sendLink"
-              label=       "&menuitem.savealltabsinarchiveas.label;"
+              labelsaveas= "&menuitem.savealltabsinarchiveas.label;"
               labelsave=   "&menuitem.savealltabsinarchive.label;"
               accesskey=   "&menuitem.savealltabsinarchive.accesskey.filemenu;"
               command=     "mafCmdSaveAllTabsInArchive"
@@ -194,25 +194,25 @@
                 />
       <menuseparator id="mafMenuBrowseOpenArchivesSeparator_toolsMenu" />
       <menuitem id=         "mafMenuSavePageInArchive_toolsMenu"
-                label=      "&menuitem.savepageinarchiveas.label;"
+                labelsaveas="&menuitem.savepageinarchiveas.label;"
                 labelsave=  "&menuitem.savepageinarchive.label.v2;"
                 accesskey=  "&menuitem.savepageinarchive.accesskey.toolsmenu;"
                 command=    "mafCmdSavePageInArchive"
                 />
       <menuitem id=         "mafMenuSaveFrameInArchive_toolsMenu"
-                label=      "&menuitem.saveframeinarchiveas.label;"
+                labelsaveas="&menuitem.saveframeinarchiveas.label;"
                 labelsave=  "&menuitem.saveframeinarchive.label.v2;"
                 accesskey=  "&menuitem.saveframeinarchive.accesskey.toolsmenu;"
                 command=    "mafCmdSaveFrameInArchiveFromWindow"
                 />
       <menuitem id=         "mafMenuSaveTabsInArchive_toolsMenu"
-                label=      "&menuitem.savetabsinarchiveas.label;"
+                labelsaveas="&menuitem.savetabsinarchiveas.label;"
                 labelsave=  "&menuitem.savetabsinarchive.label;"
                 accesskey=  "&menuitem.savetabsinarchive.accesskey.toolsmenu;"
                 command=    "mafCmdSaveTabsInArchive"
                 />
       <menuitem id=         "mafMenuSaveAllTabsInArchive_toolsMenu"
-                label=      "&menuitem.savealltabsinarchiveas.label;"
+                labelsaveas="&menuitem.savealltabsinarchiveas.label;"
                 labelsave=  "&menuitem.savealltabsinarchive.label;"
                 accesskey=  "&menuitem.savealltabsinarchive.accesskey.toolsmenu;"
                 command=    "mafCmdSaveAllTabsInArchive"
@@ -236,21 +236,21 @@
   <popup id="contentAreaContextMenu">
     <menuitem id=          "mafMenuSavePageInArchive_pageContextMenu"
               insertafter= "context-savepage"
-              label=       "&menuitem.savepageinarchiveas.label;"
+              labelsaveas= "&menuitem.savepageinarchiveas.label;"
               labelsave=   "&menuitem.savepageinarchive.label.v2;"
               accesskey=   "&menuitem.savepageinarchive.accesskey.pagecontextmenu;"
               command=     "mafCmdSavePageInArchive"
               />
     <menuitem id=          "mafMenuSaveTabsInArchive_pageContextMenu"
               insertbefore="context-sendpage"
-              label=       "&menuitem.savetabsinarchiveas.label;"
+              labelsaveas= "&menuitem.savetabsinarchiveas.label;"
               labelsave=   "&menuitem.savetabsinarchive.label;"
               accesskey=   "&menuitem.savetabsinarchive.accesskey.pagecontextmenu;"
               command=     "mafCmdSaveTabsInArchive"
               />
     <menuitem id=          "mafMenuSaveAllTabsInArchive_pageContextMenu"
               insertbefore="context-sendpage"
-              label=       "&menuitem.savealltabsinarchiveas.label;"
+              labelsaveas= "&menuitem.savealltabsinarchiveas.label;"
               labelsave=   "&menuitem.savealltabsinarchive.label;"
               accesskey=   "&menuitem.savealltabsinarchive.accesskey.pagecontextmenu;"
               command=     "mafCmdSaveAllTabsInArchive"
@@ -266,7 +266,7 @@
   <popupset>
     <menupopup id="mafFrameContextSubmenu">
       <menuitem id=         "mafMenuSaveFrameInArchive_pageContextMenu"
-                label=      "&menuitem.saveframeinarchiveas.label;"
+                labelsaveas="&menuitem.saveframeinarchiveas.label;"
                 labelsave=  "&menuitem.saveframeinarchive.label.v2;"
                 accesskey=  "&menuitem.saveframeinarchive.accesskey.pagecontextmenu;"
                 command=    "mafCmdSaveFrameInArchiveFromContext"
@@ -283,13 +283,13 @@
   <popupset>
     <menupopup id="mafTabContextMenu">
       <menuitem id=          "mafMenuSaveTabsInArchive_tabsContextMenu"
-                label=       "&menuitem.savetabsinarchiveas.label;"
+                labelsaveas= "&menuitem.savetabsinarchiveas.label;"
                 labelsave=   "&menuitem.savetabsinarchive.label;"
                 accesskey=   "&menuitem.savetabsinarchive.accesskey.tabscontextmenu;"
                 command=     "mafCmdSaveTabsInArchive"
                 />
       <menuitem id=          "mafMenuSaveAllTabsInArchive_tabsContextMenu"
-                label=       "&menuitem.savealltabsinarchiveas.label;"
+                labelsaveas= "&menuitem.savealltabsinarchiveas.label;"
                 labelsave=   "&menuitem.savealltabsinarchive.label;"
                 accesskey=   "&menuitem.savealltabsinarchive.accesskey.tabscontextmenu;"
                 command=     "mafCmdSaveAllTabsInArchive"

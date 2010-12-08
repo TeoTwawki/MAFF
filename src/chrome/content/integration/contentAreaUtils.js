@@ -177,7 +177,11 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   if (typeof aSkipPrompt == "object" && aSkipPrompt.mafAskSaveArchive) {
     mafAskSaveArchive = true;
     mafSaveTabs = aSkipPrompt.mafSaveTabs;
-    aSkipPrompt = false;
+    // Attempt to save to the default downloads folder automatically if the
+    //  host application is SeaMonkey and the associated preference is set
+    aSkipPrompt = Cc["@mozilla.org/xre/app-info;1"]
+                  .getService(Ci.nsIXULAppInfo).ID ==
+                  "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
   }
 
   // Get a reference to the main content browser, if available in the window
@@ -496,6 +500,20 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
   var dirExists = dir && dir.exists();
 
   if (useDownloadDir && dirExists) {
+    // If we are saving an archive automatically using Mozilla Archive Format,
+    //  use the archive type selected when asking to save in an archive, and
+    //  adjust the output file extension accordingly.
+    if (aFpP.saveMode == SAVEMODE_MAFARCHIVE) {
+      aFpP.saveBehavior =
+           MozillaArchiveFormat.DynamicPrefs.saveFilterIndex == 1 ?
+           gMafMhtmlSaveBehavior : gMafMaffSaveBehavior;
+      // Use a MAF specific call to retrieve the filter string
+      var filterString = aFpP.saveBehavior.getFileFilter().extensionstring;
+      // Get the first valid extension for the file type, excluding the initial
+      //  star and dot ("*.")
+      aFpP.fileInfo.fileExt = filterString.split(";")[0].slice(2);
+    }
+
     dir.append(getNormalizedLeafName(aFpP.fileInfo.fileName,
                                      aFpP.fileInfo.fileExt));
     aFpP.file = uniqueFile(dir);

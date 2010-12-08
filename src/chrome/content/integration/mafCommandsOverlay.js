@@ -179,6 +179,14 @@ var MafCommandsOverlay = {
       return;
     }
 
+    // On SeaMonkey, if the preference to save pages automatically is set, we
+    //  have to change the labels of the save commands appropriately.
+    var autoSave = Cc["@mozilla.org/preferences-service;1"].
+     getService(Ci.nsIPrefService).getBranch("").
+     getBoolPref("browser.download.useDownloadDir") &&
+     Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).ID ==
+     "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
+
     // For the other menus, a preference controls whether any MAF menu item is
     //  visible at all in that particular menu. Even if the preference is true
     //  for the menu, the single items must still be checked for visibility
@@ -219,6 +227,14 @@ var MafCommandsOverlay = {
       // Do not handle unrelated menu items
       if (command.slice(0, "mafCmd".length) == "mafCmd" &&
           command != "mafCmdBrowseOpenArchives") {
+
+        // If the element has a different label based on whether the page will
+        //  be saved automatically, change the label accordingly
+        var labelSave = element.getAttribute("labelsave");
+        if (labelSave) {
+          element.setAttribute("label", autoSave ? labelSave :
+           element.getAttribute("labelsaveas"));
+        }
 
         // Check for overall MAF element visibility in this menu
         if (!isVisibleInMenu) {
