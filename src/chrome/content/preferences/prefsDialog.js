@@ -49,8 +49,12 @@ var PrefsDialog = {
    */
   onLoadDialog: function() {
     // Apply brand names to the dialog elements
+    Interface.applyBranding(document.getElementById("cbInterfaceMenuApp"));
     Interface.applyBranding(document.getElementById("descAssociateButtons"));
     Interface.applyBranding(document.getElementById("descAssociateUninstall"));
+    // Check to see if the application menu is present
+    document.getElementById("cbInterfaceMenuApp").hidden =
+     !StartupInitializer.hasAppMenu;
     // Checks to see if the "file associations" pane should be active
     if (!this._isOnWindows()) {
       document.getElementById("btnAssociateMAFF").disabled = true;
@@ -61,6 +65,7 @@ var PrefsDialog = {
     document.getElementById("prefSaveComponent").value = Prefs.saveComponent;
     // Updates the status of the dialog controls
     this.onSaveComponentChange();
+    this.onInterfaceMenuPageContextChange();
   },
 
   /* --- Interactive dialog functions and events --- */
@@ -72,6 +77,14 @@ var PrefsDialog = {
     var saveComponent = document.getElementById("prefSaveComponent").value;
     document.getElementById("cbSaveMhtmlCompatible").disabled = ["savecomplete",
      "completesave", "exactpersist"].indexOf(saveComponent) < 0;
+  },
+
+  /**
+   * Enables other dialog controls depending on the page context menu option.
+   */
+  onInterfaceMenuPageContextChange: function() {
+    document.getElementById("cbInterfaceMenuPageContextForTabs").disabled =
+     !document.getElementById("prefInterfaceMenuPageContext").value;
   },
 
   /**

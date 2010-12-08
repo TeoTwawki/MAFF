@@ -215,6 +215,13 @@ var StartupInitializer = {
    */
   addonVersion: "",
 
+  /**
+   * Indicates whether the host has an application menu in the title bar of the
+   *  main window. This variable is only set after the first browser window is
+   *  shown, but is only used in the Preferences dialog.
+   */
+  hasAppMenu: false,
+
   // --- Private methods and properties ---
 
   /**

@@ -127,11 +127,16 @@
    >
     <preferences>
       <preference id="prefInterfaceIconLocation"            name="extensions.maf.interface.icon.location"             type="string"/>
+      <preference id="prefInterfaceMenuApp"                 name="extensions.maf.interface.menu.app"                  type="bool"/>
       <preference id="prefInterfaceMenuFile"                name="extensions.maf.interface.menu.file"                 type="bool"/>
       <preference id="prefInterfaceMenuTools"               name="extensions.maf.interface.menu.tools"                type="bool"/>
-      <preference id="prefInterfaceMenuPageContext"         name="extensions.maf.interface.menu.pagecontext"          type="bool"/>
+      <preference id=      "prefInterfaceMenuPageContext"
+                  name=    "extensions.maf.interface.menu.pagecontext"
+                  type=    "bool"
+                  onchange="PrefsDialog.onInterfaceMenuPageContextChange();"
+                  />
+      <preference id="prefInterfaceMenuPageContextForTabs"  name="extensions.maf.interface.menu.pagecontext.tabs"     type="bool"/>
       <preference id="prefInterfaceMenuTabsContext"         name="extensions.maf.interface.menu.tabscontext"          type="bool"/>
-      <preference id="prefInterfaceMenuItemSaveInArchive"   name="extensions.maf.interface.menuitem.saveinarchive"    type="bool"/>
     </preferences>
     <groupbox>
       <caption label="&icon.caption;" />
@@ -158,6 +163,11 @@
     <groupbox>
       <caption label="&menu.caption;" />
       <label value="&menu.grouplabel;" />
+      <checkbox id=        "cbInterfaceMenuApp"
+                preference="prefInterfaceMenuApp" 
+                label=     "&menu.app.label;"
+                accesskey= "&menu.app.accesskey;"
+                />
       <checkbox preference="prefInterfaceMenuFile" 
                 label=     "&menu.file.label;"
                 accesskey= "&menu.file.accesskey;"
@@ -170,15 +180,15 @@
                 label=     "&menu.pagecontext.label;"
                 accesskey= "&menu.pagecontext.accesskey;"
                 />
+      <checkbox id=        "cbInterfaceMenuPageContextForTabs"
+                preference="prefInterfaceMenuPageContextForTabs" 
+                label=     "&menu.pagecontext.tabs.label;"
+                accesskey= "&menu.pagecontext.tabs.accesskey;"
+                class=     "indent"
+                />
       <checkbox preference="prefInterfaceMenuTabsContext" 
                 label=     "&menu.tabscontext.label;"
                 accesskey= "&menu.tabscontext.accesskey;"
-                />
-      <separator />
-      <label value="&menuitem.grouplabel;" />
-      <checkbox preference="prefInterfaceMenuItemSaveInArchive" 
-                label=     "&menuitem.saveinarchive.label;"
-                accesskey= "&menuitem.saveinarchive.accesskey;"
                 />
     </groupbox>
   </prefpane>

@@ -13,6 +13,7 @@
 
 <!ENTITY menuitem.convertsavedpages.label "Convert Saved Pages…">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
 
 <!ENTITY menuitem.preferences.label "Preferences…">
 <!ENTITY menuitem.preferences.accesskey.toolsmenu "P">

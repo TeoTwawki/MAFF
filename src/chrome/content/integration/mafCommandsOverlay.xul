@@ -92,6 +92,50 @@
          />
   </keyset>
 
+  <!-- Application button -->
+  <vbox id="appmenuPrimaryPane">
+    <hbox id=         "mafMenuSavePage_appMenu_container"
+          insertafter="appmenu_savePage">
+      <menuitem id=     "mafMenuSavePage_appMenu"
+                class=  "menuitem-tooltip split-menuitem-item"
+                flex=   "1"
+                command="Browser:SavePage"
+                />
+      <menu class=    "split-menuitem-menu"
+            oncommand="event.stopPropagation();"
+            >
+        <menupopup>
+          <menuitem id=     "mafMenuSavePage_appMenu_popup"
+                    command="Browser:SavePage"
+                    key=    "key_savePage"
+                    />
+          <menuitem id=     "mafMenuSavePageInArchive_appMenu"
+                    label=  "&menuitem.savepageinarchiveas.label;"
+                    command="mafCmdSavePageInArchive"
+                    />
+          <menuitem id=     "mafMenuSaveTabsInArchive_appMenu"
+                    label=  "&menuitem.savetabsinarchiveas.label;"
+                    command="mafCmdSaveTabsInArchive"
+                    />
+          <menuitem id=     "mafMenuSaveAllTabsInArchive_appMenu"
+                    label=  "&menuitem.savealltabsinarchiveas.label;"
+                    command="mafCmdSaveAllTabsInArchive"
+                    />
+          <menuseparator />
+          <menuitem id=     "mafMenuConvertSavedPages_appMenu"
+                    label=  "&menuitem.convertsavedpages.label;"
+                    command="mafCmdConvertSavedPages"
+                    />
+          <menuseparator />
+          <menuitem id=     "mafMenuPreferences_appMenu"
+                    label=  "&menuitem.preferences.label;"
+                    command="mafCmdPreferences"
+                    />
+        </menupopup>
+      </menu>
+    </hbox>
+  </vbox>
+
   <!-- Navigator's or Browser's File menu -->
   <menupopup id="menu_FilePopup">
     <menuitem id=          "mafMenuSavePageInArchive_fileMenu"
@@ -123,6 +167,15 @@
               command=     "mafCmdSaveAllTabsInArchive"
               />
     <menuseparator id=          "mafMenuSaveSeparator_fileMenu"
+                   insertbefore="menu_sendLink"
+                   />
+    <menuitem id=          "mafMenuConvertSavedPages_fileMenu"
+              insertbefore="menu_sendLink"
+              label=       "&menuitem.convertsavedpages.label;"
+              accesskey=   "&menuitem.convertsavedpages.accesskey.filemenu;"
+              command=     "mafCmdConvertSavedPages"
+              />
+    <menuseparator id=          "mafMenuConvertSeparator_fileMenu"
                    insertbefore="menu_sendLink"
                    />
   </menupopup>

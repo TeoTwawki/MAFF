@@ -62,6 +62,20 @@ var MafCommandsOverlay = {
     // Listen for when the browser window closes, to perform shutdown
     window.addEventListener("unload", MafCommandsOverlay.onUnload, false);
 
+    // If the "Save Page As" command exists in the application menu, use its
+    //  label for the main item of the extended save menu.
+    var appMenuSavePageItem = document.getElementById("appmenu_savePage");
+    if (appMenuSavePageItem) {
+      var saveAsLabel = appMenuSavePageItem.getAttribute("label");
+      document.getElementById("mafMenuSavePage_appMenu").setAttribute("label",
+       saveAsLabel);
+      document.getElementById("mafMenuSavePage_appMenu_popup").setAttribute(
+       "label", saveAsLabel);
+      // Since we detected that an application button is present, store the
+      //  information in a variable that can be read by the Preferences dialog.
+      MozillaArchiveFormat.StartupInitializer.hasAppMenu = true;
+    }
+
     // Manually add the "Save Frame In Archive" menu item to the "This Frame"
     //  context menu. The menu item after which the new item is added has a
     //  different name in "navigator.xul" and in "browser.xul".
@@ -103,15 +117,18 @@ var MafCommandsOverlay = {
     // <https://developer.mozilla.org/en/XUL/PopupGuide/PopupEvents> (retrieved
     // 2009-03-01).
     [
+     document.getElementById("appmenu-popup"),
      document.getElementById("menu_FilePopup"),
      document.getElementById("mafMenuMafSubMenu_toolsMenu").parentNode,
      document.getElementById("contentAreaContextMenu"),
      tabContextMenu
     ].forEach(function(element) {
-      element.addEventListener("popupshowing",
-       MafCommandsOverlay.onMenuPopupShowing, false);
-      // Remember that we added an event listener
-      MafCommandsOverlay.menusWithEvents.push(element);
+      if (element) {
+        element.addEventListener("popupshowing",
+         MafCommandsOverlay.onMenuPopupShowing, false);
+        // Remember that we added an event listener
+        MafCommandsOverlay.menusWithEvents.push(element);
+      }
     });
 
     // The "Browse Open Archives" command is not available on host applications
@@ -152,11 +169,20 @@ var MafCommandsOverlay = {
       return;
     }
 
+    // For the application menu, when the related preference is set, an extended
+    //  submenu replaces the standard "Save Page As" menu item.
+    if (aEvent.target.id == "appmenu-popup") {
+      document.getElementById("mafMenuSavePage_appMenu_container").hidden =
+       !MozillaArchiveFormat.Prefs.interfaceMenuApp;
+      document.getElementById("appmenu_savePage").hidden =
+       MozillaArchiveFormat.Prefs.interfaceMenuApp;
+      return;
+    }
+
     // For the other menus, a preference controls whether any MAF menu item is
     //  visible at all in that particular menu. Even if the preference is true
     //  for the menu, the single items must still be checked for visibility
     //  based on the context.
-    var isToolsMenu = false;
     var isVisibleInMenu;
     switch (aEvent.target.id) {
       case "menu_FilePopup":
@@ -165,7 +191,6 @@ var MafCommandsOverlay = {
       case "menu_ToolsPopup":
       case "taskPopup":
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTools;
-        isToolsMenu = true;
         // The visibility of the MAF submenu in the Tools menu depends only on
         //  the related preference
         document.getElementById("mafMenuMafSubMenu_toolsMenu").hidden =
@@ -186,28 +211,17 @@ var MafCommandsOverlay = {
 
       // Determine which class of MAF menu item we are handling
       var command = element.getAttribute("command");
-      var isSaveInArchive = ([
-       "mafCmdSavePageInArchive",
-       "mafCmdSaveFrameInArchiveFromWindow",
-       "mafCmdSaveFrameInArchiveFromContext"
-       ].indexOf(command) >= 0);
       var isSaveTabs = ([
        "mafCmdSaveTabsInArchive",
        "mafCmdSaveAllTabsInArchive"
        ].indexOf(command) >= 0);
 
       // Do not handle unrelated menu items
-      if (isSaveInArchive || isSaveTabs) {
+      if (command.slice(0, "mafCmd".length) == "mafCmd" &&
+          command != "mafCmdBrowseOpenArchives") {
 
         // Check for overall MAF element visibility in this menu
         if (!isVisibleInMenu) {
-          element.hidden = true;
-
-        // Check for "Save In Archive" elements visibility. The items are
-        //  always visible in the Tools menu, while in the other menus it
-        //  depends on a specific user preference.
-        } else if (!isToolsMenu && isSaveInArchive &&
-         !MozillaArchiveFormat.Prefs.interfaceMenuItemSaveInArchive) {
           element.hidden = true;
 
         // The "Save Frame" commands appear only if there is a focused frame.
@@ -219,11 +233,11 @@ var MafCommandsOverlay = {
           element.hidden = !content || !content.frames.length ||
             !isContentFrame(document.commandDispatcher.focusedWindow);
 
-        // Tab-related menu items appear in the page context menu only if they
-        //  are not present in the tab bar context menu
-        } else if (aEvent.target.id == "contentAreaContextMenu" &&
-         isSaveTabs) {
-          element.hidden = MozillaArchiveFormat.Prefs.interfaceMenuTabsContext;
+        // Tab-related menu items appear in the page context menu only if a
+        //  specific preference is set
+        } else if (aEvent.target.id == "contentAreaContextMenu" && isSaveTabs &&
+         !MozillaArchiveFormat.Prefs.interfaceMenuPageContextForTabs) {
+          element.hidden = true;
 
         // The "Save Page In Archive" menu item appears in the context menu only
         //  if the "Save Page As" item also appears
@@ -246,6 +260,7 @@ var MafCommandsOverlay = {
 
       // Filter out unrelated separators
       if (["mafMenuSaveSeparator_fileMenu",
+       "mafMenuConvertSeparator_fileMenu",
        "mafMenuSaveSeparator_tabsContextMenu"].indexOf(element.id) >= 0) {
         // Set visibility assuming that at least one MAF item is visible in the
         //  menus that actually have a separator, if the user preference for

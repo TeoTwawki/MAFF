@@ -36,17 +36,18 @@
 <!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
+<!ENTITY menu.app.label "Firefox menu">
+<!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "File menu">
 <!ENTITY menu.file.accesskey "F">
 <!ENTITY menu.tools.label "Tools menu">
 <!ENTITY menu.tools.accesskey "l">
 <!ENTITY menu.pagecontext.label "Page context menu">
 <!ENTITY menu.pagecontext.accesskey "p">
+<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
+<!ENTITY menu.pagecontext.tabs.accesskey "h">
 <!ENTITY menu.tabscontext.label "Tab bar context menu">
 <!ENTITY menu.tabscontext.accesskey "x">
-<!ENTITY menuitem.grouplabel "Show these additional menu items:">
-<!ENTITY menuitem.saveinarchive.label "Save In Archive">
-<!ENTITY menuitem.saveinarchive.accesskey "h">
 
 <!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.fileassociations.label "File associations">
