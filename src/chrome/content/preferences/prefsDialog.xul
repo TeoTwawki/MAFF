@@ -236,7 +236,7 @@
       <preference id="prefOpenRewriteUrls"         name="extensions.maf.open.rewriteurls"         type="bool"/>
       <preference id="prefOpenUseJarProtocol"      name="extensions.maf.open.usejarprotocol"      type="bool"/>
       <preference id="prefSaveUseMhtmlExtension"   name="extensions.maf.save.usemhtmlextension"   type="bool"/>
-      <preference id="prefOtherDisplayWelcome"     name="extensions.maf.other.displaywelcome"     type="bool"/>
+      <preference id="prefOtherDisplayWelcome"     name="extensions.maf.other.displaywelcomepage" type="bool"/>
     </preferences>
     <groupbox>
       <caption label="&temp.caption;" />

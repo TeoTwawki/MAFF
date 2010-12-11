@@ -58,7 +58,6 @@ try {
    // Support objects for the front-end
    ["frontend/candidatesDataSourceObject.js",     "CandidatesDataSource"],
    ["frontend/interfaceObject.js",                "Interface"],
-   ["frontend/welcomeObject.js",                  "Welcome"],
 
    // Support objects for integration with the host application
    ["integration/fileFiltersObject.js",           "FileFilters"],

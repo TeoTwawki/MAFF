@@ -68,10 +68,29 @@ var StartupEvents = {
 
   /** Called after all the browser windows have been shown. */
   onWindowsRestored: function() {
-    // Display the welcome window if required
-    if (Prefs.otherDisplayWelcome) {
-      Welcome.welcomeDialog();
-      Prefs.otherDisplayWelcome = false;
+    // Display the welcome page if required
+    if (Prefs.otherDisplayWelcomePage) {
+      // Find the window where the welcome page should be displayed
+      var browserWindow = Cc["@mozilla.org/appshell/window-mediator;1"].
+       getService(Ci.nsIWindowMediator).
+       getMostRecentWindow("navigator:browser");
+      if (!browserWindow) {
+        // Very rarely, it might happen that at this time all browser windows
+        //  have already been closed. In this case, we will attempt to show the
+        //  welcome page again on the next startup.
+        return;
+      }
+      // Load the page in foreground
+      var welcomePageUrl = "chrome://maf/content/frontend/welcomePage.xhtml";
+      var browser = browserWindow.getBrowser();
+      if (browser.loadTabs) {
+        browser.loadTabs([welcomePageUrl], false, false);
+      } else {
+        browser.addTab(welcomePageUrl, null, null, true);
+        browserWindow.content.focus();
+      }
+      // The page was displayed successfully
+      Prefs.otherDisplayWelcomePage = false;
     }
   },
 

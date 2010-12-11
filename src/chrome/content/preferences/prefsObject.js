@@ -49,6 +49,26 @@ var Prefs = {
    * Public properties to read preferences
    */
 
+  /**
+   * True if MAFF files should be associated with the host application.
+   */
+  get associateMaff() {
+    return this.prefBranchForMaf.getBoolPref("associate.maff");
+  },
+  set associateMaff(value) {
+    this.prefBranchForMaf.setBoolPref("associate.maff", value);
+  },
+
+  /**
+   * True if MHTML files should be associated with the host application.
+   */
+  get associateMhtml() {
+    return this.prefBranchForMaf.getBoolPref("associate.mhtml");
+  },
+  set associateMhtml(value) {
+    this.prefBranchForMaf.setBoolPref("associate.mhtml", value);
+  },
+
   /** Enumeration for interfaceIconLocation */
   ICONLOCATION_URLBAR:          "urlbar",
   ICONLOCATION_URLBAR_AUTOHIDE: "urlbar-autohide",
@@ -116,11 +136,11 @@ var Prefs = {
   /**
    * Returns true if the welcome dialog should be displayed on startup.
    */
-  get otherDisplayWelcome() {
-    return this.prefBranchForMaf.getBoolPref("other.displaywelcome");
+  get otherDisplayWelcomePage() {
+    return this.prefBranchForMaf.getBoolPref("other.displaywelcomepage");
   },
-  set otherDisplayWelcome(aValue) {
-    this.prefBranchForMaf.setBoolPref("other.displaywelcome", aValue);
+  set otherDisplayWelcomePage(aValue) {
+    this.prefBranchForMaf.setBoolPref("other.displaywelcomepage", aValue);
   },
 
   /** Enumeration for saveComponent */

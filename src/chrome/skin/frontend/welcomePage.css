@@ -1,0 +1,30 @@
+html {
+  background-color: #FD6;
+}
+
+h1 {
+  color: blue;
+}
+
+#errorPageContainer {
+  background-image: url("chrome://maf/skin/integration/icon.png");
+  background-color: white;
+  color: black;
+}
+
+#errorShortDesc > p {
+  font-weight: bold;
+}
+
+#errorLongDesc {
+  padding-bottom: 0.5em;
+}
+
+#securityOverrideContent {
+  padding: 1px 10px;
+  border: 1px solid ThreeDLightShadow;
+}
+
+.question, .choice {
+  font-weight: bold;
+}
