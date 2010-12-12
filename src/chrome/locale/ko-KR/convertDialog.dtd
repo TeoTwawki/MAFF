@@ -8,7 +8,8 @@
 <!ENTITY introduction.pagelabel "저장된 페이지 변환 마법사에 오신 것을 환영합니다">
 <!ENTITY introduction.para1.description "이 마법사는 저장된 웹페이지들을 다른 파일 형식으로 변환하도록 안내할 것입니다.">
 <!ENTITY introduction.para2.description "이 절차는 한 번에 많은 페이지들을 변환하기에 적합합니다. 하나의 페이지만을 변환하려면 브라우저로 연 뒤 다른 파일 형식으로 저장하시면 됩니다.">
-<!ENTITY introduction.para3.description "선택된 파일 형식과 저장 상태에 따라 변환된 파일이 원본과 완전히 일치하지 않는 경우가 발생할 수 있습니다. 변환이 성공적으로 완료된 후에도 원본 파일의 복사본을 유지하는 것을 추천합니다.">
+<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
+<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
 <!ENTITY introduction.continue.label "시작하려면 '$1'을 클릭하세요">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "페이지 변환 형식">

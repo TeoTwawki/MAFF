@@ -1,9 +1,7 @@
 <!-- General window controls -->
-<!ENTITY window.title "Beállítások">
-<!ENTITY browsebutton.label "Tallózás...">
+<!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Főoldal">
-<!ENTITY save.caption "Mentés">
 <!ENTITY save.component.grouplabel "Teljes weboldal tartalom mentésekor:">
 <!ENTITY save.component.standard.label "Használja az általános mentési rendszert">
 <!ENTITY save.component.standard.accesskey "m">
@@ -18,11 +16,8 @@
 <!ENTITY save.namingstrategy.standard.accesskey "n">
 <!ENTITY save.namingstrategy.pagetitle.label "Használja az oldal címét, amikor lehetséges">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "g">
-<!ENTITY save.metadata.extended.label "Kiterjesztett metaadatok mentése a MAFF archívumba">
-<!ENTITY save.metadata.extended.accesskey "a">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Kezelőfelület">
-<!ENTITY icon.caption "Ikon">
 <!ENTITY iconlocation.grouplabel "A Mozilla Archív Formátum ikon megjelenjen:">
 <!ENTITY iconlocation.urlbar.label "Címsorban">
 <!ENTITY iconlocation.urlbar.accesskey "C">
@@ -30,45 +25,30 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "a">
 <!ENTITY iconlocation.status.label "Állapotsoron">
 <!ENTITY iconlocation.status.accesskey "Á">
+<!ENTITY iconlocation.addonbar.label "Add-on bar">
+<!ENTITY iconlocation.addonbar.accesskey "o">
 <!ENTITY iconlocation.none.label "Sehol">
 <!ENTITY iconlocation.none.accesskey "S">
-<!ENTITY menu.caption "Menü">
 <!ENTITY menu.grouplabel "A Mozilla Archív Formátum menüelemei megjelenjen:">
+<!ENTITY menu.app.label "$brandShortName menu">
+<!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "Fájl menüben">
 <!ENTITY menu.file.accesskey "F">
 <!ENTITY menu.tools.label "Eszközök menüben">
 <!ENTITY menu.tools.accesskey "E">
 <!ENTITY menu.pagecontext.label "Oldal helyi menüjében">
 <!ENTITY menu.pagecontext.accesskey "O">
+<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
+<!ENTITY menu.pagecontext.tabs.accesskey "h">
 <!ENTITY menu.tabscontext.label "Lap eszköztár helyi menüjében">
 <!ENTITY menu.tabscontext.accesskey "L">
-<!ENTITY menuitem.grouplabel "Megjelenjen a következő menüelem:">
-<!ENTITY menuitem.saveinarchive.label "Mentés archívumba">
-<!ENTITY menuitem.saveinarchive.accesskey "M">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.fileassociations.label "Fájltársítás">
-<!ENTITY associate.windowsonly.description "Ez a funkció csak Windows alatt érhető el.">
-<!ENTITY associate.buttons.description "Kattints a következő gombokra, hogy a Firefox elvégezze a fájlok társítását a MAF kiterjesztéseinek használatához.">
-<!ENTITY associate.adminprivs.description "Ez a művelet rendszergazdai jogosultságot igényelhet.">
-<!ENTITY associate.maff.label "A .maff kiterjesztés társítása">
-<!ENTITY associate.maff.accesskey "a">
-<!ENTITY associate.mhtml.label "Az .mht és .mhtml kiterjesztések társítása">
-<!ENTITY associate.mhtml.accesskey "h">
-<!ENTITY associate.uninstall.description "Figyelem: A fájltársítás a MAF, vagy a Firefox eltávolítása után is megmarad. A társítások a Windows Vezérlőpultjának használatával kezelhetők, módosíthatók.">
-<!-- Advanced pane -->
-<!ENTITY pane.advanced.label "Haladó">
-<!ENTITY temp.caption "Átmeneti fájlok">
-<!ENTITY temp.folder.label "Átmeneti mappa:">
-<!ENTITY temp.folder.accesskey "Á">
-<!ENTITY temp.clearonexit.label "Az átmeneti mappa ürítése a böngésző bezárásakor">
-<!ENTITY temp.clearonexit.accesskey "t">
-<!ENTITY open.caption "Megnyitás">
-<!ENTITY open.rewriteurls.label "Az abszolút URL-ek újraírása archívum megnyitásakor">
-<!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY open.usejarprotocol.label "&quot;A &quot;jar:&quot; protokol használata a MAFF archívum tartalmának hozzáféréséhez">
-<!ENTITY open.usejarprotocol.accesskey "j">
-<!ENTITY other.caption "Más">
-<!ENTITY other.displaywelcome.label "Üdvözlő ablak mutatása következő indításkor">
-<!ENTITY other.displaywelcome.accesskey "Ü">
-<!ENTITY save.usemhtmlextension.label "Az .mhtml mentése alapértelmezetten .mht kiterjesztéssel">
-<!ENTITY save.usemhtmlextension.accesskey "m">
+<!ENTITY pane.actions.label "Actions">
+<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
+<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
+<!ENTITY action.showwelcomepage.label "Show Welcome Page">
+<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
+<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
+<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
+<!ENTITY action.visitwebsite.label "Visit Website">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">

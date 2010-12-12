@@ -1,9 +1,7 @@
 <!-- General window controls -->
-<!ENTITY window.title "Indstillinger">
-<!ENTITY browsebutton.label "Gennemse...">
+<!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Hoved">
-<!ENTITY save.caption "Gem">
 <!ENTITY save.component.grouplabel "Ved gem af komplet webside-indhold:">
 <!ENTITY save.component.standard.label "Brug browsers standard gem-system">
 <!ENTITY save.component.standard.accesskey "b">
@@ -18,11 +16,8 @@
 <!ENTITY save.namingstrategy.standard.accesskey "w">
 <!ENTITY save.namingstrategy.pagetitle.label "Use the title of the page whenever possible">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "g">
-<!ENTITY save.metadata.extended.label "Gem udvidede metadata i MAFF-arkiver">
-<!ENTITY save.metadata.extended.accesskey "u">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Brugerflade">
-<!ENTITY icon.caption "Icon">
 <!ENTITY iconlocation.grouplabel "Show Mozilla Archive Format icon in:">
 <!ENTITY iconlocation.urlbar.label "Address bar">
 <!ENTITY iconlocation.urlbar.accesskey "A">
@@ -30,45 +25,30 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
 <!ENTITY iconlocation.status.label "Status bar">
 <!ENTITY iconlocation.status.accesskey "S">
+<!ENTITY iconlocation.addonbar.label "Add-on bar">
+<!ENTITY iconlocation.addonbar.accesskey "o">
 <!ENTITY iconlocation.none.label "None">
 <!ENTITY iconlocation.none.accesskey "N">
-<!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Vis Mozilla Archive Format menuelementer i:">
+<!ENTITY menu.app.label "$brandShortName menu">
+<!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "Filer-menu">
 <!ENTITY menu.file.accesskey "F">
 <!ENTITY menu.tools.label "Funktioner-menu">
 <!ENTITY menu.tools.accesskey "u">
 <!ENTITY menu.pagecontext.label "Side kontekstmenu">
 <!ENTITY menu.pagecontext.accesskey "S">
+<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
+<!ENTITY menu.pagecontext.tabs.accesskey "h">
 <!ENTITY menu.tabscontext.label "Fanebladslinje kontekstmenu">
 <!ENTITY menu.tabscontext.accesskey "o">
-<!ENTITY menuitem.grouplabel "Vis disse yderligere menuelementer:">
-<!ENTITY menuitem.saveinarchive.label "Gem i arkiv">
-<!ENTITY menuitem.saveinarchive.accesskey "r">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.fileassociations.label "Fil-associationer">
-<!ENTITY associate.windowsonly.description "Denne funktionalitet er kun tilgængelig under Windows.">
-<!ENTITY associate.buttons.description "Klik på følgende knapper for at associere Firefox med filtyperne der håndteres af MAF.">
-<!ENTITY associate.adminprivs.description "Denne handling kan kræve administratorrettigheder.">
-<!ENTITY associate.maff.label "Opret association for .maff filtypen">
-<!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "Opret association for .mht og .mhtml filtyperne">
-<!ENTITY associate.mhtml.accesskey "a">
-<!ENTITY associate.uninstall.description "Bemærk: Disse associationer vil ikke blive fjernet ved afinstallation af MAF eller Firefox. Du kan administrere dine filassociationer ved hjælp af Windows kontrolpanel.">
-<!-- Advanced pane -->
-<!ENTITY pane.advanced.label "Avanceret">
-<!ENTITY temp.caption "Midlertidige filer">
-<!ENTITY temp.folder.label "Midlertidig mappe:">
-<!ENTITY temp.folder.accesskey "t">
-<!ENTITY temp.clearonexit.label "Ryd midlertidig mappe når browseren lukkes">
-<!ENTITY temp.clearonexit.accesskey "y">
-<!ENTITY open.caption "Åbn">
-<!ENTITY open.rewriteurls.label "Omskriv absolutte URLer i åbne arkiver">
-<!ENTITY open.rewriteurls.accesskey "r">
-<!ENTITY open.usejarprotocol.label "Brug &quot;jar:&quot;-protokollen til at tilgå indholdet af MAFF-arkiver">
-<!ENTITY open.usejarprotocol.accesskey "j">
-<!ENTITY other.caption "Andet">
-<!ENTITY other.displaywelcome.label "Vis velkomstvindue ved næste opstart">
-<!ENTITY other.displaywelcome.accesskey "d">
-<!ENTITY save.usemhtmlextension.label "Gem ved hjælp af .mhtml filtypen i stedet for .mht som standard">
-<!ENTITY save.usemhtmlextension.accesskey "m">
+<!ENTITY pane.actions.label "Actions">
+<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
+<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
+<!ENTITY action.showwelcomepage.label "Show Welcome Page">
+<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
+<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
+<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
+<!ENTITY action.visitwebsite.label "Visit Website">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">

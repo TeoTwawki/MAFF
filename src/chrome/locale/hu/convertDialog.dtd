@@ -8,7 +8,8 @@
 <!ENTITY introduction.pagelabel "Üdvözlünk a Mentett Oldalakat Konvertáló Varázslóban">
 <!ENTITY introduction.para1.description "Ez a varázsló végigvezet a korábban elmentett weboldalak más formátumba konvertálásának lépésein.">
 <!ENTITY introduction.para2.description "Ez az eljárás több oldal egyidejű konvertálását teszi lehetővé. Ha egy oldalt kívánsz konvertálni, akkor nyisd meg azt a böngészőben és mentsd el más formátumban.">
-<!ENTITY introduction.para3.description "A kiválasztott állományformátumoktól és a mentési beállításoktól függően a konvertált fájlok az eredetiktől eltérhetnek néhány dologban. Ez ajánlott, hogy még egy sikeres átalakítás után is tartsd az eredeti fájljaid egy másolatát.">
+<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
+<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
 <!ENTITY introduction.continue.label "A folytatáshoz kattints a $1 gombra.">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Bemeneti és kimeneti formátumok kiválasztása">

@@ -8,7 +8,8 @@
 <!ENTITY introduction.pagelabel "Witamy w kreatorze konwersji zapisanych stron">
 <!ENTITY introduction.para1.description "Kreator poprowadzi Cię przez proces konwersji zapisanych stron internetowych na inny format.">
 <!ENTITY introduction.para2.description "Proces ten jest wskazany dla konwersji wielu stron w tym samym czasie. Jeśli chcesz dokonać konwersji jednego pliku, otwórz go w przeglądarce i zapisz w innym formacie.">
-<!ENTITY introduction.para3.description "W zależności od formatów wybranych plików i preferencji zapisu, w niektórych przypadkach skonwertowane pliki mogą być nie w pełni wierne oryginałowi. Zaleca się zatrzymać kopię oryginalnych plików, nawet gdy konwersja się w pełni powiodła.">
+<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
+<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
 <!ENTITY introduction.continue.label "Aby rozpocząć, naciśnij przycisk $1.">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Format wejściowy i wyjściowy">

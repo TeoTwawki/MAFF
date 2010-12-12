@@ -12,5 +12,5 @@
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "Parcourir les archives ouvertes…">
 <!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.preferences.label "Préférences…">
-<!ENTITY commands.preferences.accesskey "P">
+<!ENTITY commands.options.label "Options…">
+<!ENTITY commands.options.accesskey "O">

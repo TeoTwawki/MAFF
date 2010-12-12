@@ -12,5 +12,5 @@
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "Megnyitott archívumok böngészése...">
 <!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.preferences.label "Beállítások...">
-<!ENTITY commands.preferences.accesskey "B">
+<!ENTITY commands.options.label "Options…">
+<!ENTITY commands.options.accesskey "O">

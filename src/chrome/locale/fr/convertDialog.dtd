@@ -8,7 +8,8 @@
 <!ENTITY introduction.pagelabel "Bienvenue dans l'assistant de conversion de pages enregistrées">
 <!ENTITY introduction.para1.description "Cet assistant va vous guider à travers la conversion de vos pages web enregistrées dans un format différent.">
 <!ENTITY introduction.para2.description "Cette procédure permet de convertir plusieurs pages d'un seul coup. Si vous voulez convertir une page unique, ouvrez-la dans le navigateur et sauvez-la dans un autre format.">
-<!ENTITY introduction.para3.description "Selon les formats sélectionnés et les préférences d'enregistrement, les fichiers convertis pourraient dans certains cas ne pas être entièrement fidèles aux originaux. Il est recommandé de conserver une copie des originaux même après une conversion réussie.">
+<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
+<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
 <!ENTITY introduction.continue.label "Pour commencer, cliquez sur $1.">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Formats d'entrée et de sortie">

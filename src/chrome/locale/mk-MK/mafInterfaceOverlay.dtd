@@ -12,5 +12,5 @@
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "Прелистај ги отворените архиви...">
 <!ENTITY commands.browseopenarchives.accesskey "р">
-<!ENTITY commands.preferences.label "Параметри...">
-<!ENTITY commands.preferences.accesskey "П">
+<!ENTITY commands.options.label "Options…">
+<!ENTITY commands.options.accesskey "O">

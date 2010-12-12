@@ -8,7 +8,8 @@
 <!ENTITY introduction.pagelabel "Willkommen beim Gespeicherte-Seiten-Konvertierungsassistenten">
 <!ENTITY introduction.para1.description "Dieser Assistent führt Sie durch die Konvertierung gespeicherter Websites in ein anderes Dateiformat.">
 <!ENTITY introduction.para2.description "Dieser Vorgang ist für die Konvertierung mehrerer Seiten auf einmal gedacht. Wenn einzelne Seiten konvertiert werden sollen, öffnen Sie sie im Browser und speichern Sie sie in einem anderen Format.">
-<!ENTITY introduction.para3.description "Abhängig von den ausgewählten Dateiformaten können konvertierte Dateien nicht ganz dem Original entsprechen. Es wird empfohlen, auch bei einer erfolgreichen Konvertierung eine Kopie des Originals zu behakten.">
+<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
+<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
 <!ENTITY introduction.continue.label "$1 klicken um zu beginnen.">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Ein- und Ausgabeformat">

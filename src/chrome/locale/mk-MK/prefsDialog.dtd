@@ -1,9 +1,7 @@
 <!-- General window controls -->
-<!ENTITY window.title "Параметри">
-<!ENTITY browsebutton.label "Прелистај...">
+<!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Главно">
-<!ENTITY save.caption "Зачувај">
 <!ENTITY save.component.grouplabel "Кога зачувувате содржини на целосни веб страници:">
 <!ENTITY save.component.standard.label "Користете го стандардниот систем на зачувување на прелистувачот">
 <!ENTITY save.component.standard.accesskey "п">
@@ -18,11 +16,8 @@
 <!ENTITY save.namingstrategy.standard.accesskey "ч">
 <!ENTITY save.namingstrategy.pagetitle.label "Користете го насловот на страницата секогаш кога е возможно">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "ц">
-<!ENTITY save.metadata.extended.label "Зачувај ги проширените метаподатоци во MAFF архивите">
-<!ENTITY save.metadata.extended.accesskey "в">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Интерфејс">
-<!ENTITY icon.caption "Икона">
 <!ENTITY iconlocation.grouplabel "Покажи ја иконата на Mozilla форматот на архиви во:">
 <!ENTITY iconlocation.urlbar.label "Лента за адреса">
 <!ENTITY iconlocation.urlbar.accesskey "Л">
@@ -30,45 +25,30 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "х">
 <!ENTITY iconlocation.status.label "Статусна лента">
 <!ENTITY iconlocation.status.accesskey "С">
+<!ENTITY iconlocation.addonbar.label "Add-on bar">
+<!ENTITY iconlocation.addonbar.accesskey "o">
 <!ENTITY iconlocation.none.label "Ништо">
 <!ENTITY iconlocation.none.accesskey "Н">
-<!ENTITY menu.caption "Мени">
 <!ENTITY menu.grouplabel "Покажи ги елементите на менито на Mozilla форматот на архиви во:">
+<!ENTITY menu.app.label "$brandShortName menu">
+<!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "Мени на датотеката">
 <!ENTITY menu.file.accesskey "М">
 <!ENTITY menu.tools.label "Мени на алатките">
 <!ENTITY menu.tools.accesskey "н">
 <!ENTITY menu.pagecontext.label "Контекстуално мени на страницата">
 <!ENTITY menu.pagecontext.accesskey "с">
+<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
+<!ENTITY menu.pagecontext.tabs.accesskey "h">
 <!ENTITY menu.tabscontext.label "Контекстуално мени на лентата со јазичиња">
 <!ENTITY menu.tabscontext.accesskey "у">
-<!ENTITY menuitem.grouplabel "Покажи ги овие дополнителни елементи на менито:">
-<!ENTITY menuitem.saveinarchive.label "Зачувај во архивата">
-<!ENTITY menuitem.saveinarchive.accesskey "х">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.fileassociations.label "Асоцијации на датотеките">
-<!ENTITY associate.windowsonly.description "Оваа функционалност е достапна само во Windows.">
-<!ENTITY associate.buttons.description "Кликнете на следните копчиња за да го асоцирате Firefox  со типовите на датотеки управувани од MAF.">
-<!ENTITY associate.adminprivs.description "Оваа операција може да бара привилегии на администратор.">
-<!ENTITY associate.maff.label "Креирај асоцијација за .maff екстензија">
-<!ENTITY associate.maff.accesskey "е">
-<!ENTITY associate.mhtml.label "Креирај асоцијација за .mht и .mhtml екстензии">
-<!ENTITY associate.mhtml.accesskey "а">
-<!ENTITY associate.uninstall.description "Забелешка: Асоцијациите на датотеките креирани овде нема да бидат отстранети кога MAF или Firefox се одинсталираат. Вие можите да ги менаџирате вашите асоцијации на датотеките користејќи го контролниот панел на Windows.">
-<!-- Advanced pane -->
-<!ENTITY pane.advanced.label "Напредно">
-<!ENTITY temp.caption "Привремени датотеки">
-<!ENTITY temp.folder.label "Привремена папка:">
-<!ENTITY temp.folder.accesskey "П">
-<!ENTITY temp.clearonexit.label "Исчисти ја привремената папка кога прелистувачот се затвора">
-<!ENTITY temp.clearonexit.accesskey "И">
-<!ENTITY open.caption "Отвори">
-<!ENTITY open.rewriteurls.label "Презапиши ги апсолутните URL-а во отворените архиви">
-<!ENTITY open.rewriteurls.accesskey "П">
-<!ENTITY open.usejarprotocol.label "Користете го &quot;jar:&quot; протоколот за да пристапите до содржината на MAFF архивите">
-<!ENTITY open.usejarprotocol.accesskey "j">
-<!ENTITY other.caption "Други">
-<!ENTITY other.displaywelcome.label "Прикажи го прозорецот за добредојде при следното стартување">
-<!ENTITY other.displaywelcome.accesskey "П">
-<!ENTITY save.usemhtmlextension.label "Зачувај стандардно користејќи ја .mhtml екстензијата на датотеката наместо .mht">
-<!ENTITY save.usemhtmlextension.accesskey "m">
+<!ENTITY pane.actions.label "Actions">
+<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
+<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
+<!ENTITY action.showwelcomepage.label "Show Welcome Page">
+<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
+<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
+<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
+<!ENTITY action.visitwebsite.label "Visit Website">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">

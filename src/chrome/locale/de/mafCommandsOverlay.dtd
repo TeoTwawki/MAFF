@@ -8,25 +8,30 @@
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "O">
 <!ENTITY menuitem.convertsavedpages.label "Gerspeicherte Seiten konvertieren...">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "k">
-<!ENTITY menuitem.preferences.label "Einstellungen...">
-<!ENTITY menuitem.preferences.accesskey.toolsmenu "E">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
+<!ENTITY menuitem.options.label "Options…">
+<!ENTITY menuitem.options.accesskey.toolsmenu "O">
 <!-- Additional menu items for the "Save As" command -->
-<!ENTITY menuitem.savetabsas.label "Tab speichern unter...">
-<!ENTITY menuitem.savetabsas.accesskey.filemenu "u">
-<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "u">
-<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "u">
-<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "u">
-<!ENTITY menuitem.savealltabsas.label "Alle Tabs speichern unter...">
-<!ENTITY menuitem.savealltabsas.accesskey.filemenu "A">
-<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "A">
-<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
-<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "A">
+<!ENTITY menuitem.savetabsinarchiveas.label "Save Tabs In Archive As…">
+<!ENTITY menuitem.savetabsinarchive.label "Save Tabs In Archive…">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "b">
+<!ENTITY menuitem.savetabsinarchive.accesskey.toolsmenu "b">
+<!ENTITY menuitem.savetabsinarchive.accesskey.pagecontextmenu "b">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "b">
+<!ENTITY menuitem.savealltabsinarchiveas.label "Save All Tabs In Archive As…">
+<!ENTITY menuitem.savealltabsinarchive.label "Save All Tabs In Archive">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.toolsmenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.pagecontextmenu "A">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
 <!-- Additional menu items for the "Save In Archive" command -->
-<!ENTITY menuitem.savepageinarchive.label "Seite in Archiv speichern...">
+<!ENTITY menuitem.savepageinarchiveas.label "Save Page In Archive As…">
+<!ENTITY menuitem.savepageinarchive.label.v2 "Save Page In Archive">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "p">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "p">
 <!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "p">
-<!ENTITY menuitem.saveframeinarchive.label "Frame in Archiv speichern...">
+<!ENTITY menuitem.saveframeinarchiveas.label "Save Frame In Archive As…">
+<!ENTITY menuitem.saveframeinarchive.label.v2 "Save Frame In Archive">
 <!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "F">
 <!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "F">
 <!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "F">

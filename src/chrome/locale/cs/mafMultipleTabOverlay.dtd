@@ -1,3 +1,3 @@
 <!-- Additional menu items for "Multiple Tab Handler" integration -->
-<!ENTITY menuitem.saveselectedtabsas.label "Uložit vybrané panely jako ...">
-<!ENTITY menuitem.saveselectedtabsas.accesskey.tabselectionmenu "b">
+<!ENTITY menuitem.saveselectedtabsinarchiveas.label "Save Selected Tabs In Archive As…">
+<!ENTITY menuitem.saveselectedtabsinarchive.accesskey.tabselectionmenu "b">

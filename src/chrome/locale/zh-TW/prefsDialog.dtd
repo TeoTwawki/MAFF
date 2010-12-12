@@ -1,9 +1,7 @@
 <!-- General window controls -->
-<!ENTITY window.title "偏好設定">
-<!ENTITY browsebutton.label "瀏覽…">
+<!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "主要">
-<!ENTITY save.caption "儲存歸檔時的操作">
 <!ENTITY save.component.grouplabel "當保存完整網頁檔案內容時：">
 <!ENTITY save.component.standard.label "使用瀏覽器的標準保存系統 (b)">
 <!ENTITY save.component.standard.accesskey "b">
@@ -18,11 +16,8 @@
 <!ENTITY save.namingstrategy.standard.accesskey "w">
 <!ENTITY save.namingstrategy.pagetitle.label "Use the title of the page whenever possible">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "g">
-<!ENTITY save.metadata.extended.label "在 MAFF 檔中保存擴充套件中介資料 (v)">
-<!ENTITY save.metadata.extended.accesskey "v">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "介面">
-<!ENTITY icon.caption "圖示">
 <!ENTITY iconlocation.grouplabel "在下列位置顯示 Mozilla 歸檔格式的圖示：">
 <!ENTITY iconlocation.urlbar.label "位址列">
 <!ENTITY iconlocation.urlbar.accesskey "A">
@@ -30,45 +25,30 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
 <!ENTITY iconlocation.status.label "狀態列">
 <!ENTITY iconlocation.status.accesskey "S">
+<!ENTITY iconlocation.addonbar.label "Add-on bar">
+<!ENTITY iconlocation.addonbar.accesskey "o">
 <!ENTITY iconlocation.none.label "無">
 <!ENTITY iconlocation.none.accesskey "N">
-<!ENTITY menu.caption "清單">
 <!ENTITY menu.grouplabel "顯示 MAF 清單項於：">
+<!ENTITY menu.app.label "$brandShortName menu">
+<!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "「檔案 (F)」清單">
 <!ENTITY menu.file.accesskey "F">
 <!ENTITY menu.tools.label "「工具」清單 (l)">
 <!ENTITY menu.tools.accesskey "l">
 <!ENTITY menu.pagecontext.label "頁面內容清單">
 <!ENTITY menu.pagecontext.accesskey "P">
+<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
+<!ENTITY menu.pagecontext.tabs.accesskey "h">
 <!ENTITY menu.tabscontext.label "標籤欄內容清單 (x)">
 <!ENTITY menu.tabscontext.accesskey "x">
-<!ENTITY menuitem.grouplabel "顯示如下附加清單項：">
-<!ENTITY menuitem.saveinarchive.label "保存╳╳至歸檔 (h)">
-<!ENTITY menuitem.saveinarchive.accesskey "h">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.fileassociations.label "檔案關聯">
-<!ENTITY associate.windowsonly.description "本功能僅用於 Windows。">
-<!ENTITY associate.buttons.description "單擊下面的按鈕可將相應檔案型式關聯至裝備有 MAF 的 Firefox。">
-<!ENTITY associate.adminprivs.description "此操作需要管理員許可權。">
-<!ENTITY associate.maff.label "建立與 .MAFF 檔案的關聯 (e)">
-<!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "建立與 .MHT 和 .MHTML 檔案的關聯 (a)">
-<!ENTITY associate.mhtml.accesskey "a">
-<!ENTITY associate.uninstall.description "注意：在此處建立的檔案關聯在您移除 MAF 時並不會被刪除，您需要到 Windows 控制台的「資料夾選項」中手工修正。">
-<!-- Advanced pane -->
-<!ENTITY pane.advanced.label "高階">
-<!ENTITY temp.caption "臨時檔案">
-<!ENTITY temp.folder.label "臨時資料夾 (T)：">
-<!ENTITY temp.folder.accesskey "T">
-<!ENTITY temp.clearonexit.label "當瀏覽器關閉時清除 MAFF 臨時資料夾">
-<!ENTITY temp.clearonexit.accesskey "C">
-<!ENTITY open.caption "開啟歸檔時的操作">
-<!ENTITY open.rewriteurls.label "試圖在開啟歸檔時重寫絕對網址">
-<!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY open.usejarprotocol.label "使用「JAr:」協定存取 MAFF 檔的內容">
-<!ENTITY open.usejarprotocol.accesskey "J">
-<!ENTITY other.caption "雜項">
-<!ENTITY other.displaywelcome.label "在下次啟動瀏覽器時顯示 MAF 歡迎視窗">
-<!ENTITY other.displaywelcome.accesskey "D">
-<!ENTITY save.usemhtmlextension.label "使用 .MHTML 代替 .MHT 成為 MIME 檔案預設副檔名">
-<!ENTITY save.usemhtmlextension.accesskey "M">
+<!ENTITY pane.actions.label "Actions">
+<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
+<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
+<!ENTITY action.showwelcomepage.label "Show Welcome Page">
+<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
+<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
+<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
+<!ENTITY action.visitwebsite.label "Visit Website">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">
