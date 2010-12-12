@@ -29,7 +29,7 @@
 
     <!-- Front End MetaData -->
     <em:name>Mozilla Archive Format</em:name>
-    <em:description>Open and save complete web pages in a single file. Supports MHTML (MHT) files from Internet Explorer, and MAFF multi-page archives (based on ZIP).</em:description>
+    <em:description>Save exactly what you see, in a single file. MAFF (based on ZIP) is compact and exceptional for video and audio. MHT (Internet Explorer's format) allows easy exchange with IE users. Store many tabs, find original, and more!</em:description>
     <em:creator>Christopher Ottley</em:creator>
     <em:developer>Paolo Amadini</em:developer>
     <em:contributor>Ueli Lezzi</em:contributor>

@@ -1,4 +1,4 @@
-pref("extensions.{7f57cf46-4467-4c2d-adfa-0cba7c507e54}.description", "chrome://maf/locale/addonMetadata.properties");
+pref("extensions.{7f57cf46-4467-4c2d-adfa-0cba7c507e54}.description", "chrome://maf/locale/addonDescription.properties");
 pref("extensions.maf.alert.onsinglepagecomplete", false);
 pref("extensions.maf.associate.maff", true);
 pref("extensions.maf.associate.mhtml", true);
