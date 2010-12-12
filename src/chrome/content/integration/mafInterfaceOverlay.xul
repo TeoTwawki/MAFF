@@ -101,8 +101,8 @@
                   accesskey="&commands.browseopenarchives.accesskey;"
                   oncommand="MafInterfaceOverlay.onBrowseOpenArchivesCommand(event);"
                   />
-          <button label=    "&commands.preferences.label;"
-                  accesskey="&commands.preferences.accesskey;"
+          <button label=    "&commands.options.label;"
+                  accesskey="&commands.options.accesskey;"
                   oncommand="MafInterfaceOverlay.onPreferencesCommand(event);"
                   />
         </hbox>

@@ -128,7 +128,7 @@
                     />
           <menuseparator />
           <menuitem id=     "mafMenuPreferences_appMenu"
-                    label=  "&menuitem.preferences.label;"
+                    label=  "&menuitem.options.label;"
                     command="mafCmdPreferences"
                     />
         </menupopup>
@@ -225,8 +225,8 @@
                 />
       <menuseparator />
       <menuitem id=         "mafMenuPreferences_toolsMenu"
-                label=      "&menuitem.preferences.label;"
-                accesskey=  "&menuitem.preferences.accesskey.toolsmenu;"
+                label=      "&menuitem.options.label;"
+                accesskey=  "&menuitem.options.accesskey.toolsmenu;"
                 command=    "mafCmdPreferences"
                 />
     </menupopup>

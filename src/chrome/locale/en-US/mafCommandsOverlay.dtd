@@ -15,8 +15,8 @@
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
 
-<!ENTITY menuitem.preferences.label "Preferences…">
-<!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
+<!ENTITY menuitem.options.label "Options…">
+<!ENTITY menuitem.options.accesskey.toolsmenu "O">
 
 <!-- Additional menu items for the "Save Tabs In Archive" command -->
 

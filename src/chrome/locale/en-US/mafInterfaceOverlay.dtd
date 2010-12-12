@@ -19,5 +19,5 @@
 <!ENTITY commands.browseopenarchives.label "Browse Open Archives…">
 <!ENTITY commands.browseopenarchives.accesskey "r">
 
-<!ENTITY commands.preferences.label "Preferences…">
-<!ENTITY commands.preferences.accesskey "P">
+<!ENTITY commands.options.label "Options…">
+<!ENTITY commands.options.accesskey "O">

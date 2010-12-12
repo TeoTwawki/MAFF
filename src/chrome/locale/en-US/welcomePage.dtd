@@ -9,7 +9,7 @@
 <!ENTITY features.item2.label "You can save one or more tabs in a single file (web archive).">
 <!ENTITY features.item3.label "The title of the document is now the default file name.">
 <!ENTITY features.item4.label "You can save HTML 5 video and audio, and more!">
-<!ENTITY features.footer.label "You can control which features are enabled from the extension's preferences.">
+<!ENTITY features.footer.label "You can control which features are enabled from the extension's options.">
 <!ENTITY features.link.label "Visit the website to discover all the other features.">
 
 <!-- *** File associations *** -->
@@ -24,4 +24,4 @@
 
 <!ENTITY associate.error.title "Error While Creating File Associations">
 <!ENTITY associate.error.msg "An error occurred while configuring your file manager: $1.">
-<!ENTITY associate.errortip.msg "In order to open web archives with Firefox, you should create the required file associations manually from the control panel of your operating system, or retry the operation from the Mozilla Archive Format preferences window.">
+<!ENTITY associate.errortip.msg "In order to open web archives with Firefox, you should create the required file associations manually from the control panel of your operating system, or retry the operation from the Mozilla Archive Format options window.">

@@ -1,6 +1,5 @@
 <!-- General window controls -->
-<!ENTITY window.title "Preferences">
-<!ENTITY browsebutton.label "Browse...">
+<!ENTITY window.title.v2 "Mozilla Archive Format Options">
 
 <!-- Main pane -->
 <!ENTITY pane.main.label "Main">

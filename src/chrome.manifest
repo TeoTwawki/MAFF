@@ -42,7 +42,7 @@ overlay	chrome://multipletab/content/multipletab.xul	chrome://maf/content/integr
 overlay	chrome://maf/content/frontend/archivesDialog.xul	chrome://maf/content/frontend/archivesDialogBrowserOverlay.xul	application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
 overlay	chrome://maf/content/frontend/archivesDialog.xul	chrome://maf/content/frontend/archivesDialogNavigatorOverlay.xul	application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
 
-# The Preferences dialog has a different integration with Firefox and SeaMonkey
+# The preferences dialog has a different integration with Firefox and SeaMonkey
 overlay chrome://maf/content/preferences/prefsDialog.xul    chrome://maf/content/preferences/prefsDialogBrowserOverlay.xul  application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
 overlay chrome://maf/content/preferences/prefsDialog.xul    chrome://maf/content/preferences/prefsDialogNavigatorOverlay.xul    application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
 

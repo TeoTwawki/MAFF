@@ -72,7 +72,7 @@ var MafCommandsOverlay = {
       document.getElementById("mafMenuSavePage_appMenu_popup").setAttribute(
        "label", saveAsLabel);
       // Since we detected that an application button is present, store the
-      //  information in a variable that can be read by the Preferences dialog.
+      //  information in a variable that can be read by the preferences dialog.
       MozillaArchiveFormat.StartupInitializer.hasAppMenu = true;
     }
 
@@ -328,7 +328,7 @@ var MafCommandsOverlay = {
   },
 
   /**
-   * Displays the "Preferences" window.
+   * Displays the preferences window.
    */
   preferences: function() {
     // If the preferences window is already opened
