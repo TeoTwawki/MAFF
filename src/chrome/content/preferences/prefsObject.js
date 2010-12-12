@@ -134,6 +134,18 @@ var Prefs = {
   },
 
   /**
+   * Returns false only if a previous version of the extension was installed on
+   *  the same profile, indicating that the header of the welcome page should be
+   *  changed accordingly.
+   */
+  get otherDisplayWelcome() {
+    return this.prefBranchForMaf.getBoolPref("other.displaywelcome");
+  },
+  set otherDisplayWelcome(aValue) {
+    this.prefBranchForMaf.setBoolPref("other.displaywelcome", aValue);
+  },
+
+  /**
    * Returns true if the welcome dialog should be displayed on startup.
    */
   get otherDisplayWelcomePage() {

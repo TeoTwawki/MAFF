@@ -5,6 +5,7 @@
 <!ENTITY welcome.label "Thank you for installing Mozilla Archive Format!">
 
 <!ENTITY features.header.label "Many features of $brandShortName have been improved by this add-on.">
+<!ENTITY features.headerfromupdate.label "Your add-on has been updated to the latest major version.">
 <!ENTITY features.item1.label "Web pages are saved more accurately, what you see is what you get.">
 <!ENTITY features.item2.label "You can save one or more tabs in a single file (web archive).">
 <!ENTITY features.item3.label "The title of the document is now the default file name.">

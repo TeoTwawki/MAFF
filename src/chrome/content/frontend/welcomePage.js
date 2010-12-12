@@ -62,6 +62,12 @@ var WelcomePage = {
     // Apply brand names to the dialog elements
     Interface.applyBranding(document.getElementById("featuresHeader"));
     Interface.applyBranding(document.getElementById("associateQuestion"));
+    // Show the appropriate header if this is an update from a previous version
+    if (!Prefs.otherDisplayWelcome) {
+      document.getElementById("featuresHeader").style.display = "none";
+      document.getElementById("featuresHeaderFromUpdate").style.display = "";
+      Prefs.otherDisplayWelcome = true;
+    }
     // File associations are supported on Windows only
     if (this._isOnWindows()) {
       document.getElementById("securityOverrideContent").style.display = "";
