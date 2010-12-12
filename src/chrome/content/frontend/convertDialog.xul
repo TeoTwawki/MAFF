@@ -74,8 +74,12 @@
     </description>
     <spacer flex="1" />
     <description>
-      &introduction.para3.description;
+      &introduction.visitwebsite.description;
     </description>
+    <label value="&introduction.visitwebsite.label;"
+           href= "http://maf.mozdev.org/"
+           class="text-link header"
+           />
 
     <!-- Page footer -->
     <spacer flex="1" />

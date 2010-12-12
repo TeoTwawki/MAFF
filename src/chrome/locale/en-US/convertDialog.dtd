@@ -12,7 +12,9 @@
 
 <!ENTITY introduction.para1.description "This wizard will guide you through the conversion of your previously saved web pages to a different file format.">
 <!ENTITY introduction.para2.description "This procedure is suitable for converting many pages at a time. If you wish to convert single pages, just open them in the browser and save them in another format.">
-<!ENTITY introduction.para3.description "Depending on the selected file formats and save preferences, the converted files may not be completely faithful to the original in some cases. It is recommended that you keep a copy of your original files even after a successful conversion.">
+
+<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
+<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
 
 <!ENTITY introduction.continue.label "To begin, click $1.">
 
