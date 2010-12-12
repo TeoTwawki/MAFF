@@ -30,7 +30,7 @@
 <!ENTITY iconlocation.none.label "None">
 <!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
-<!ENTITY menu.app.label "Firefox menu">
+<!ENTITY menu.app.label "$brandShortName menu">
 <!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "File menu">
 <!ENTITY menu.file.accesskey "F">
@@ -50,6 +50,6 @@
 <!ENTITY action.showwelcomepage.label "Show Welcome Page">
 <!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
 <!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
-<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with Firefox, and refresh the file associations in case they were changed by another application.">
+<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
 <!ENTITY action.visitwebsite.label "Visit Website">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with Firefox and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">

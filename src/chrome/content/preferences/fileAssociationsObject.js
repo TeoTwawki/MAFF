@@ -116,14 +116,14 @@ FileAssociationsCreator.prototype = {
    * Returns the string whose key is specified from the object's string bundle.
    */
   _str: function(aKey) {
-    return Interface.replaceBrandShortName(this._prefsDialogStrBundle.
+    return Interface.replaceBrandShortName(this._fileAssociationsStrBundle.
      GetStringFromName(aKey));
   },
 
   // For convenience, we use the strings from the preferences dialog
-  _prefsDialogStrBundle: Cc["@mozilla.org/intl/stringbundle;1"]
+  _fileAssociationsStrBundle: Cc["@mozilla.org/intl/stringbundle;1"]
    .getService(Ci.nsIStringBundleService).createBundle(
-   "chrome://maf/locale/prefsDialog.properties"),
+   "chrome://maf/locale/fileAssociationsObject.properties"),
 
   // --- File association support functions ---
 
