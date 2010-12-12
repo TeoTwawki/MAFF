@@ -4,7 +4,6 @@
 
 <!-- Main pane -->
 <!ENTITY pane.main.label "Main">
-<!ENTITY save.caption "Save">
 <!ENTITY save.component.grouplabel "When saving complete web page contents:">
 <!ENTITY save.component.standard.label "Use browser's standard save system">
 <!ENTITY save.component.standard.accesskey "b">
@@ -19,12 +18,9 @@
 <!ENTITY save.namingstrategy.standard.accesskey "w">
 <!ENTITY save.namingstrategy.pagetitle.label "Use the title of the page whenever possible">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "g">
-<!ENTITY save.metadata.extended.label "Save extended metadata in MAFF archives">
-<!ENTITY save.metadata.extended.accesskey "v">
 
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Interface">
-<!ENTITY icon.caption "Icon">
 <!ENTITY iconlocation.grouplabel "Show Mozilla Archive Format icon in:">
 <!ENTITY iconlocation.urlbar.label "Address bar">
 <!ENTITY iconlocation.urlbar.accesskey "A">
@@ -34,7 +30,6 @@
 <!ENTITY iconlocation.status.accesskey "S">
 <!ENTITY iconlocation.none.label "None">
 <!ENTITY iconlocation.none.accesskey "N">
-<!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
 <!ENTITY menu.app.label "Firefox menu">
 <!ENTITY menu.app.accesskey "m">
@@ -49,31 +44,13 @@
 <!ENTITY menu.tabscontext.label "Tab bar context menu">
 <!ENTITY menu.tabscontext.accesskey "x">
 
-<!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.fileassociations.label "File associations">
-<!ENTITY associate.windowsonly.description "This functionality is available on Windows only.">
-<!ENTITY associate.buttons.description "Click the following buttons to associate Firefox with the file types handled by MAF.">
-<!ENTITY associate.adminprivs.description "This operation might require administrator privileges.">
-<!ENTITY associate.maff.label "Create association for .maff extension">
-<!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "Create association for .mht and .mhtml extensions">
-<!ENTITY associate.mhtml.accesskey "a">
-<!ENTITY associate.uninstall.description "Note: The file associations created here will not be removed when MAF or Firefox is uninstalled. You can manage your file associations using the Windows control panel.">
-
-<!-- Advanced pane -->
-<!ENTITY pane.advanced.label "Advanced">
-<!ENTITY temp.caption "Temporary files">
-<!ENTITY temp.folder.label "Temporary folder:">
-<!ENTITY temp.folder.accesskey "T">
-<!ENTITY temp.clearonexit.label "Clear temporary folder when browser exits">
-<!ENTITY temp.clearonexit.accesskey "C">
-<!ENTITY open.caption "Open">
-<!ENTITY open.rewriteurls.label "Rewrite absolute URLs in open archives">
-<!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY open.usejarprotocol.label "Use the &quot;jar:&quot; protocol to access the contents of MAFF archives">
-<!ENTITY open.usejarprotocol.accesskey "j">
-<!ENTITY other.caption "Other">
-<!ENTITY other.displaywelcome.label "Display welcome window at next startup">
-<!ENTITY other.displaywelcome.accesskey "D">
-<!ENTITY save.usemhtmlextension.label "Save using the .mhtml file extension instead of .mht by default">
-<!ENTITY save.usemhtmlextension.accesskey "m">
+<!-- Actions pane -->
+<!ENTITY pane.actions.label "Actions">
+<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
+<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
+<!ENTITY action.showwelcomepage.label "Show Welcome Page">
+<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
+<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
+<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with Firefox, and refresh the file associations in case they were changed by another application.">
+<!ENTITY action.visitwebsite.label "Visit Website">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with Firefox and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">

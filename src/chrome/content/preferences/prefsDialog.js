@@ -50,16 +50,14 @@ var PrefsDialog = {
   onLoadDialog: function() {
     // Apply brand names to the dialog elements
     Interface.applyBranding(document.getElementById("cbInterfaceMenuApp"));
-    Interface.applyBranding(document.getElementById("descAssociateButtons"));
-    Interface.applyBranding(document.getElementById("descAssociateUninstall"));
+    Interface.applyBranding(document.getElementById("descVisitWebsite"));
     // Check to see if the application menu is present
     document.getElementById("cbInterfaceMenuApp").hidden =
      !StartupInitializer.hasAppMenu;
-    // Checks to see if the "file associations" pane should be active
-    if (!this._isOnWindows()) {
-      document.getElementById("btnAssociateMAFF").disabled = true;
-      document.getElementById("btnAssociateMHTML").disabled = true;
-      document.getElementById("descAssociateWindowsOnly").hidden = false;
+    // Determines if the welcome page handles file associations
+    if (this._isOnWindows()) {
+      document.getElementById("boxShowWelcomePage").hidden = true;
+      document.getElementById("boxShowWelcomePageAssociate").hidden = false;
     }
     // Ensure that the preference values are updated from older versions
     document.getElementById("prefSaveComponent").value = Prefs.saveComponent;
@@ -88,89 +86,35 @@ var PrefsDialog = {
   },
 
   /**
-   * Show a file selector allowing the user to select the absolute path of
-   *  the temporary folder used by MAF.
+   * Displays the "Convert saved pages" window.
    */
-  browseForTempFolder: function() {
-    // Initialize the file picker component
-    var filePicker = Cc["@mozilla.org/filepicker;1"]
-      .createInstance(Ci.nsIFilePicker);
-    filePicker.init(window, document.title, Ci.nsIFilePicker.modeGetFolder);
-    // Find the directory currently displayed in the user interface
-    var txtTempFolder = document.getElementById("txtTempFolder");
-    // If there is already a directory selected, attempt to use it as the
-    //  default in the file picker dialog. If the path is invalid, do nothing.
-    if (txtTempFolder.value) {
-      try {
-        var tempFolderFile = Cc["@mozilla.org/file/local;1"]
-         .createInstance(Ci.nsILocalFile);
-        tempFolderFile.initWithPath(txtTempFolder.value);
-        filePicker.displayDirectory = tempFolderFile;
-      } catch (e) { /* Ignore errors */ }
-    }
-    // If the user made a selection, update the displayed value
-    if (filePicker.show() == Ci.nsIFilePicker.returnOK) {
-      txtTempFolder.value = filePicker.file.path;
+  onActionConvertSavedPagesClick: function() {
+    // If the convert window is already opened
+    var convertDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
+     getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Convert");
+    if (convertDialog) {
+      // Bring the window to the foreground
+      convertDialog.focus();
+    } else {
+      // Open a new window to allow the conversion
+      window.open(
+       "chrome://maf/content/frontend/convertDialog.xul",
+       "maf-convertDialog",
+       "chrome,titlebar,centerscreen,resizable=yes");
     }
   },
 
   /**
-   * Interactive function. Creates file associations for the MAFF file format.
+   * Opens the welcome page in a new browser window. This must be done from code
+   *  since labels with the "text-link" class cannot open chrome locations.
    */
-  createAssociationsForMAFF: function() {
-    try {
-      FileAssociations.createAssociationsForMAFF();
-      // Operation successful
-      this._prompts.alert(null, document.title,
-       this._str("associate.maff.done.msg"));
-    } catch(e) {
-      // Operation failed
-      Cu.reportError(e);
-      this._prompts.alert(null, document.title,
-       this._formattedStr("associate.failed.msg", [e.message]));    
-    }
-  },
-
-  /**
-   * Interactive function. Creates file associations for the MHTML file format.
-   */
-  createAssociationsForMHTML: function() {
-    try {
-      FileAssociations.createAssociationsForMHTML();
-      // Operation successful
-      this._prompts.alert(null, document.title,
-       this._str("associate.mhtml.done.msg"));
-    } catch(e) {
-      // Operation failed
-      Cu.reportError(e);
-      this._prompts.alert(null, document.title,
-       this._formattedStr("associate.failed.msg", [e.message]));    
-    }
+  onActionShowWelcomePageClick: function() {
+    // Use the helper function defined either in "utilityOverlay.js" or in
+    //  "contentAreaUtils.js" depending on the host application.
+    openNewWindowWith("chrome://maf/content/frontend/welcomePage.xhtml");
   },
 
   /* --- Dialog support functions --- */
-
-  _prompts: Cc["@mozilla.org/embedcomp/prompt-service;1"]
-   .getService(Ci.nsIPromptService),
-
-  /**
-   * Return the string whose key is specified from the dialog's stringbundle.
-   */
-  _str: function(aKey) {
-    return Interface.replaceBrandShortName(document.
-     getElementById("bundleDialog").getString(aKey));
-  },
-
-  /**
-   * Return the string whose key is specified from the dialog's stringbundle,
-   *  populating it with the arguments in the given array.
-   */
-  _formattedStr: function(aKey, aArgs) {
-    return document.getElementById("bundleDialog").getFormattedString(aKey,
-     aArgs);
-  },
-
-  /* --- File association support functions --- */
 
   /**
    * Returns true if the application is executing on Windows.

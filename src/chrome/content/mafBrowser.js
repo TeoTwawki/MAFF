@@ -31,9 +31,6 @@ try {
    "integration/defaultFileNameOverlay.js",
    "integration/fileFiltersOverlay.js",
 
-   // Original MAF JavaScript infrastructure
-   "maf.js"
-
   ].forEach(function(contentRelativePath) {
     Cc["@mozilla.org/moz/jssubscript-loader;1"]
      .getService(Ci.mozIJSSubScriptLoader)

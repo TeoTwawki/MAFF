@@ -10,7 +10,6 @@ pref("extensions.maf.interface.menu.pagecontext", false);
 pref("extensions.maf.interface.menu.pagecontext.tabs", false);
 pref("extensions.maf.interface.menu.tabscontext", true);
 pref("extensions.maf.open.maff.ignorecharacterset", false);
-pref("extensions.maf.open.rewriteurls", true);
 pref("extensions.maf.open.usejarprotocol", false);
 pref("extensions.maf.other.displaywelcomepage", true);
 pref("extensions.maf.save.component", "exactpersist");

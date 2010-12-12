@@ -58,242 +58,207 @@
  >
 
   <!-- Main pane -->
-  <prefpane
-   id="paneMain"
-   label="&pane.main.label;"
-   >
+  <prefpane id=   "paneMain"
+            label="&pane.main.label;"
+            >
     <preferences>
-      <preference id="prefSaveMetadataExtended"        name="extensions.maf.save.metadata.extended"       type="bool"/>
-      <preference id="prefSaveMhtmlCompatible"         name="extensions.maf.save.mhtml.compatible"        type="bool"/>
-      <preference id="prefSaveNamingStrategy"          name="extensions.maf.save.namingstrategy"          type="string"/>
       <preference id=      "prefSaveComponent"
                   name=    "extensions.maf.save.component"
                   type=    "string"
                   onchange="PrefsDialog.onSaveComponentChange();"
                   />
-    </preferences>
-    <groupbox>
-      <caption label="&save.caption;" />
-      <label control="rgrSaveComponents"
-             value=  "&save.component.grouplabel;"
-             />
-      <radiogroup id=        "rgrSaveComponents"
-                  preference="prefSaveComponent"
-                  class=     "indent"
-                  >
-        <radio value="standard"       label=    "&save.component.standard.label;"
-                                      accesskey="&save.component.standard.accesskey;"
-                                      />
-        <radio value="completesave"   label=    "&save.component.completesave.label;"
-                                      accesskey="&save.component.completesave.accesskey;"
-                                      />
-        <radio value="exactpersist"   label=    "&save.component.exactpersist.label;"
-                                      accesskey="&save.component.exactpersist.accesskey;"
-                                      />
-        <checkbox id=        "cbSaveMhtmlCompatible"
-                  preference="prefSaveMhtmlCompatible"
-                  label=     "&save.mhtml.compatible.label;"
-                  accesskey= "&save.mhtml.compatible.accesskey;"
-                  class=     "indent"
+      <preference id=      "prefSaveMhtmlCompatible"
+                  name=    "extensions.maf.save.mhtml.compatible"
+                  type=    "bool"
                   />
-      </radiogroup>
-      <spacer height="10" />
-      <label control="rgrSaveNamingStrategy"
-             value=  "&save.namingstrategy.grouplabel;"
+      <preference id=      "prefSaveNamingStrategy"
+                  name=    "extensions.maf.save.namingstrategy"
+                  type=    "string"
+                  />
+    </preferences>
+    <label control="rgrSaveComponents"
+           value=  "&save.component.grouplabel;"
+           class=  "header"
+           />
+    <radiogroup id=        "rgrSaveComponents"
+                preference="prefSaveComponent"
+                >
+      <radio value=    "standard"
+             label=    "&save.component.standard.label;"
+             accesskey="&save.component.standard.accesskey;"
              />
-      <radiogroup id=        "rgrSaveNamingStrategy"
-                  preference="prefSaveNamingStrategy"
-                  class=     "indent"
-                  >
-        <radio value="standard"    label=    "&save.namingstrategy.standard.label;"
-                                   accesskey="&save.namingstrategy.standard.accesskey;"
-                                   />
-        <radio value="pagetitle"   label=    "&save.namingstrategy.pagetitle.label;"
-                                   accesskey="&save.namingstrategy.pagetitle.accesskey;"
-                                   />
-      </radiogroup>
-      <spacer height="10" />
-      <checkbox preference="prefSaveMetadataExtended" 
-                label=     "&save.metadata.extended.label;"
-                accesskey= "&save.metadata.extended.accesskey;"
+      <radio value=    "completesave"
+             label=    "&save.component.completesave.label;"
+             accesskey="&save.component.completesave.accesskey;"
+             />
+      <radio value=    "exactpersist"
+             label=    "&save.component.exactpersist.label;"
+             accesskey="&save.component.exactpersist.accesskey;"
+             />
+      <checkbox id=        "cbSaveMhtmlCompatible"
+                preference="prefSaveMhtmlCompatible"
+                label=     "&save.mhtml.compatible.label;"
+                accesskey= "&save.mhtml.compatible.accesskey;"
+                class=     "indent"
                 />
-    </groupbox>
+    </radiogroup>
+    <spacer height="10" />
+    <label control="rgrSaveNamingStrategy"
+           value=  "&save.namingstrategy.grouplabel;"
+           class=  "header"
+           />
+    <radiogroup id=        "rgrSaveNamingStrategy"
+                preference="prefSaveNamingStrategy"
+                >
+      <radio value=    "standard"
+             label=    "&save.namingstrategy.standard.label;"
+             accesskey="&save.namingstrategy.standard.accesskey;"
+             />
+      <radio value=    "pagetitle"
+             label=    "&save.namingstrategy.pagetitle.label;"
+             accesskey="&save.namingstrategy.pagetitle.accesskey;"
+             />
+    </radiogroup>
   </prefpane>
 
   <!-- Interface pane -->
-  <prefpane
-   id="paneInterface"
-   label="&pane.interface.label;"
-   >
+  <prefpane id=   "paneInterface"
+            label="&pane.interface.label;"
+            >
     <preferences>
-      <preference id="prefInterfaceIconLocation"            name="extensions.maf.interface.icon.location"             type="string"/>
-      <preference id="prefInterfaceMenuApp"                 name="extensions.maf.interface.menu.app"                  type="bool"/>
-      <preference id="prefInterfaceMenuFile"                name="extensions.maf.interface.menu.file"                 type="bool"/>
-      <preference id="prefInterfaceMenuTools"               name="extensions.maf.interface.menu.tools"                type="bool"/>
+      <preference id=      "prefInterfaceIconLocation"
+                  name=    "extensions.maf.interface.icon.location"
+                  type=    "string"
+                  />
+      <preference id=      "prefInterfaceMenuApp"
+                  name=    "extensions.maf.interface.menu.app"
+                  type=    "bool"
+                  />
+      <preference id=      "prefInterfaceMenuFile"
+                  name=    "extensions.maf.interface.menu.file"
+                  type=    "bool"
+                  />
+      <preference id=      "prefInterfaceMenuTools"
+                  name=    "extensions.maf.interface.menu.tools"
+                  type=    "bool"
+                  />
       <preference id=      "prefInterfaceMenuPageContext"
                   name=    "extensions.maf.interface.menu.pagecontext"
                   type=    "bool"
                   onchange="PrefsDialog.onInterfaceMenuPageContextChange();"
                   />
-      <preference id="prefInterfaceMenuPageContextForTabs"  name="extensions.maf.interface.menu.pagecontext.tabs"     type="bool"/>
-      <preference id="prefInterfaceMenuTabsContext"         name="extensions.maf.interface.menu.tabscontext"          type="bool"/>
+      <preference id=      "prefInterfaceMenuPageContextForTabs"
+                  name=    "extensions.maf.interface.menu.pagecontext.tabs"
+                  type=    "bool"
+                  />
+      <preference id=      "prefInterfaceMenuTabsContext"
+                  name=    "extensions.maf.interface.menu.tabscontext"
+                  type=    "bool"
+                  />
     </preferences>
-    <groupbox>
-      <caption label="&icon.caption;" />
-      <label control="rgrInterfaceIconLocations"
-             value=  "&iconlocation.grouplabel;"
+    <label control="rgrInterfaceIconLocations"
+           value=  "&iconlocation.grouplabel;"
+           class=  "header"
+           />
+    <radiogroup id=        "rgrInterfaceIconLocations"
+                preference="prefInterfaceIconLocation"
+                >
+      <radio value=    "urlbar"
+             label=    "&iconlocation.urlbar.label;"
+             accesskey="&iconlocation.urlbar.accesskey;"
              />
-      <radiogroup id=        "rgrInterfaceIconLocations"
-                  preference="prefInterfaceIconLocation"
-                  >
-        <radio value="urlbar"            label=    "&iconlocation.urlbar.label;"
-                                         accesskey="&iconlocation.urlbar.accesskey;"
-                                         />
-        <radio value="urlbar-autohide"   label=    "&iconlocation.urlbar-autohide.label;"
-                                         accesskey="&iconlocation.urlbar-autohide.accesskey;"
-                                         />
-        <radio value="status"            label=    "&iconlocation.status.label;"
-                                         accesskey="&iconlocation.status.accesskey;"
-                                         />
-        <radio value="none"              label=    "&iconlocation.none.label;"
-                                         accesskey="&iconlocation.none.accesskey;"
-                                         />
-      </radiogroup>
-    </groupbox>
-    <groupbox>
-      <caption label="&menu.caption;" />
-      <label value="&menu.grouplabel;" />
-      <checkbox id=        "cbInterfaceMenuApp"
-                preference="prefInterfaceMenuApp" 
-                label=     "&menu.app.label;"
-                accesskey= "&menu.app.accesskey;"
-                />
-      <checkbox preference="prefInterfaceMenuFile" 
-                label=     "&menu.file.label;"
-                accesskey= "&menu.file.accesskey;"
-                />
-      <checkbox preference="prefInterfaceMenuTools" 
-                label=     "&menu.tools.label;"
-                accesskey= "&menu.tools.accesskey;"
-                />
-      <checkbox preference="prefInterfaceMenuPageContext" 
-                label=     "&menu.pagecontext.label;"
-                accesskey= "&menu.pagecontext.accesskey;"
-                />
-      <checkbox id=        "cbInterfaceMenuPageContextForTabs"
-                preference="prefInterfaceMenuPageContextForTabs" 
-                label=     "&menu.pagecontext.tabs.label;"
-                accesskey= "&menu.pagecontext.tabs.accesskey;"
-                class=     "indent"
-                />
-      <checkbox preference="prefInterfaceMenuTabsContext" 
-                label=     "&menu.tabscontext.label;"
-                accesskey= "&menu.tabscontext.accesskey;"
-                />
-    </groupbox>
+      <radio value=    "urlbar-autohide"
+             label=    "&iconlocation.urlbar-autohide.label;"
+             accesskey="&iconlocation.urlbar-autohide.accesskey;"
+             />
+      <radio value=    "status"
+             label=    "&iconlocation.status.label;"
+             accesskey="&iconlocation.status.accesskey;"
+             />
+      <radio value=    "none"
+             label=    "&iconlocation.none.label;"
+             accesskey="&iconlocation.none.accesskey;"
+             />
+    </radiogroup>
+    <spacer height="10" />
+    <label value="&menu.grouplabel;"
+           class="header"
+           />
+    <checkbox id=        "cbInterfaceMenuApp"
+              preference="prefInterfaceMenuApp" 
+              label=     "&menu.app.label;"
+              accesskey= "&menu.app.accesskey;"
+              />
+    <checkbox preference="prefInterfaceMenuFile" 
+              label=     "&menu.file.label;"
+              accesskey= "&menu.file.accesskey;"
+              />
+    <checkbox preference="prefInterfaceMenuTools" 
+              label=     "&menu.tools.label;"
+              accesskey= "&menu.tools.accesskey;"
+              />
+    <checkbox preference="prefInterfaceMenuPageContext" 
+              label=     "&menu.pagecontext.label;"
+              accesskey= "&menu.pagecontext.accesskey;"
+              />
+    <checkbox id=        "cbInterfaceMenuPageContextForTabs"
+              preference="prefInterfaceMenuPageContextForTabs" 
+              label=     "&menu.pagecontext.tabs.label;"
+              accesskey= "&menu.pagecontext.tabs.accesskey;"
+              class=     "indent"
+              />
+    <checkbox preference="prefInterfaceMenuTabsContext" 
+              label=     "&menu.tabscontext.label;"
+              accesskey= "&menu.tabscontext.accesskey;"
+              />
   </prefpane>
 
-  <!-- File associations pane. This pane is enabled only on Windows. -->
-  <prefpane
-   id="paneFileAssociations"
-   label="&pane.fileassociations.label;"
-   >
-    <description id=    "descAssociateWindowsOnly"
-                 class= "header"
-                 hidden="true"
-                 >
-      &associate.windowsonly.description;
+  <!-- Actions pane -->
+  <prefpane id=   "paneActions"
+            label="&pane.actions.label;"
+            >
+    <label value=    "&action.convertsavedpages.label;"
+           onclick=  "PrefsDialog.onActionConvertSavedPagesClick();"
+           class=    "text-link header"
+           />
+    <description class="indent">
+      &action.convertsavedpages.description;
     </description>
-    <groupbox>
-      <caption label="&open.caption;" />
-      <description id="descAssociateButtons">
-        &associate.buttons.description;
+    <spacer height="10" />
+    <vbox id="boxShowWelcomePage">
+      <label value=  "&action.showwelcomepage.label;"
+             onclick="PrefsDialog.onActionShowWelcomePageClick();"
+             class=  "text-link header"
+             />
+      <description class="indent">
+        &action.showwelcomepage.description;
       </description>
-      <description>
-        &associate.adminprivs.description;
+    </vbox>
+    <vbox id="boxShowWelcomePageAssociate" hidden="true">
+      <label value=  "&action.showwelcomepageassociate.label;"
+             onclick="PrefsDialog.onActionShowWelcomePageClick();"
+             class=  "text-link header"
+             />
+      <description class="indent">
+        &action.showwelcomepageassociate.description;
       </description>
-      <button id=       "btnAssociateMAFF"
-              label=    "&associate.maff.label;"
-              accesskey="&associate.maff.accesskey;"
-              oncommand="PrefsDialog.createAssociationsForMAFF();"
-              />
-      <button id=       "btnAssociateMHTML"
-              label=    "&associate.mhtml.label;"
-              accesskey="&associate.mhtml.accesskey;"
-              oncommand="PrefsDialog.createAssociationsForMHTML();"
-              />
-      <description id="descAssociateUninstall">
-        &associate.uninstall.description;
-      </description>
-    </groupbox>
-  </prefpane>
-
-  <!-- Advanced pane -->
-  <prefpane id="paneAdvanced" label="&pane.advanced.label;">
-    <preferences>
-      <preference id="prefTempFolder"              name="extensions.maf.temp.folder"              type="unichar"/>
-      <preference id="prefTempClearOnExit"         name="extensions.maf.temp.clearonexit"         type="bool"/>
-      <preference id="prefOpenRewriteUrls"         name="extensions.maf.open.rewriteurls"         type="bool"/>
-      <preference id="prefOpenUseJarProtocol"      name="extensions.maf.open.usejarprotocol"      type="bool"/>
-      <preference id="prefSaveUseMhtmlExtension"   name="extensions.maf.save.usemhtmlextension"   type="bool"/>
-      <preference id="prefOtherDisplayWelcome"     name="extensions.maf.other.displaywelcomepage" type="bool"/>
-    </preferences>
-    <groupbox>
-      <caption label="&temp.caption;" />
-      <hbox align="center">
-        <label control=  "txtTempFolder"
-               value=    "&temp.folder.label;"
-               accesskey="&temp.folder.accesskey;"
-               />
-        <textbox id=        "txtTempFolder"
-                 preference="prefTempFolder"
-                 flex=      "1"
-                 />
-        <button label=    "&browsebutton.label;"
-                oncommand="PrefsDialog.browseForTempFolder();"
-                />
-      </hbox>
-      <checkbox preference="prefTempClearOnExit"
-                label=     "&temp.clearonexit.label;"
-                accesskey= "&temp.clearonexit.accesskey;"
-                />
-    </groupbox>
-    <groupbox>
-      <caption label="&open.caption;" />
-      <checkbox preference="prefOpenRewriteUrls"
-                label=     "&open.rewriteurls.label;"
-                accesskey= "&open.rewriteurls.accesskey;"
-                />
-      <checkbox preference="prefOpenUseJarProtocol"
-                label=     "&open.usejarprotocol.label;"
-                accesskey= "&open.usejarprotocol.accesskey;"
-                />
-    </groupbox>
-    <groupbox>
-      <caption label="&save.caption;" />
-      <checkbox preference="prefSaveUseMhtmlExtension"
-                label=     "&save.usemhtmlextension.label;"
-                accesskey= "&save.usemhtmlextension.accesskey;"
-                />
-    </groupbox>
-    <groupbox>
-      <caption label="&other.caption;" />
-      <checkbox preference="prefOtherDisplayWelcome"
-                label=     "&other.displaywelcome.label;"
-                accesskey= "&other.displaywelcome.accesskey;"
-                />
-    </groupbox>
+    </vbox>
+    <spacer height="10" />
+    <label value="&action.visitwebsite.label;"
+           href= "http://maf.mozdev.org/"
+           class="text-link header"
+           />
+    <description id=   "descVisitWebsite"
+                 class="indent"
+                 >
+      &action.visitwebsite.description;
+    </description>
   </prefpane>
 
   <!--
      - Preferences window machinery. These elements must be placed after the
      -  prefpanes for the prefwindow to work correctly.
      -->
-  <stringbundleset>
-    <stringbundle id= "bundleDialog"
-                  src="chrome://maf/locale/prefsDialog.properties"
-                  />
-  </stringbundleset>
   <script type="application/x-javascript"
           src="../mafChrome.js"
           />

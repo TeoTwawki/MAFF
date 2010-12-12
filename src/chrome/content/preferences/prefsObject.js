@@ -255,14 +255,6 @@ var Prefs = {
   },
 
   /**
-   * Returns true if MAF should rewrite absolute URLs in open documents if
-   *  they refer to a page that was saved in any of the open archives.
-   */
-  get openRewriteUrls() {
-    return this.prefBranchForMaf.getBoolPref("open.rewriteurls");
-  },
-
-  /**
    * Returns the absolute path of the temporary folder.
    */
   get tempFolder() {

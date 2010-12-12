@@ -67,11 +67,6 @@ var ArchiveCache = {
       if (page.directArchiveUri) {
         this._pagesByDirectArchiveUri[page.directArchiveUri.spec] = page;
       }
-      // The original URL the page was saved from may be the same for more than
-      //  one archived page. Use an array to store all the possible pages.
-      var essentialUriSpec = this._getEssentialUriSpec(page.originalUrl);
-      var pageArray = this._getPageArrayFromOriginalUri(essentialUriSpec);
-      pageArray.push(page);
       // Add places annotations for the cached page
       ArchiveAnnotations.setAnnotationsForPage(page);
     }
@@ -101,11 +96,6 @@ var ArchiveCache = {
       if (page.directArchiveUri) {
         delete this._pagesByDirectArchiveUri[page.directArchiveUri.spec];
       }
-      // The original URL the page was saved from may be the same for more than
-      //  one archived page. Use an array to store all the possible pages.
-      var essentialUriSpec = this._getEssentialUriSpec(page.originalUrl);
-      var pageArray = this._getPageArrayFromOriginalUri(essentialUriSpec);
-      pageArray.splice(pageArray.indexOf(page), 1);
       // Clear the obsolete places annotations for the page
       ArchiveAnnotations.removeAnnotationsForPage(page);
     }
@@ -172,53 +162,7 @@ var ArchiveCache = {
            null;
   },
 
-  /**
-   * Returns one of the page objects associated with the given original URL.
-   *
-   * @param aSpec   String representing the URI to check.
-   */
-  pageFromOriginalUriSpec: function(aSpec) {
-    // Ignore the hash and other unneeded data when comparing
-    var essentialReferenceSpec = this._getEssentialUriSpec(aSpec);
-    // Retrieve the first page in the list, if available
-    var pageArray = this._pageArraysByOriginalUri[essentialReferenceSpec];
-    return pageArray && pageArray[0];
-  },
-
   // --- Private methods and properties ---
-
-  /**
-   * Returns a string representing the basic normalized version of the specified
-   *  URL string. If present, the hash is removed.
-   */
-  _getEssentialUriSpec: function(aSpec) {
-    // Get the URL object associated with the specified string
-    var url;
-    try {
-      url = Cc["@mozilla.org/network/io-service;1"].
-       getService(Ci.nsIIOService).newURI(aSpec, null, null).
-       QueryInterface(Ci.nsIURL);
-    } catch (e if (e instanceof Ci.nsIException && (e.result ==
-     Cr.NS_NOINTERFACE || e.result == Cr.NS_ERROR_MALFORMED_URI))) {
-      // The original URL is invalid or not hierarchical
-      return aSpec;
-    }
-    // Return the URL string without the unneeded data
-    url.ref = "";
-    return url.spec;
-  },
-
-  /**
-   * Returns the array of pages associated with the given original URI.
-   */
-  _getPageArrayFromOriginalUri: function(aSpec) {
-    // Create an empty array if the entry for the specified URI does not exist
-    if (!this._pageArraysByOriginalUri[aSpec]) {
-      this._pageArraysByOriginalUri[aSpec] = [];
-    }
-    // Return the array
-    return this._pageArraysByOriginalUri[aSpec];
-  },
 
   /**
    * Associative array containing all the registered Archive objects.
@@ -253,11 +197,5 @@ var ArchiveCache = {
    * Associative array containing some of the available archived pages,
    *  accessible by their direct archive access URI (for example, a "jar:" URI).
    */
-  _pagesByDirectArchiveUri: {},
-
-  /**
-   * Associative array containing, for every normalized original URI, an array
-   *  of local pages that refer to that original resource.
-   */
-  _pageArraysByOriginalUri: {}
+  _pagesByDirectArchiveUri: {}
 };
