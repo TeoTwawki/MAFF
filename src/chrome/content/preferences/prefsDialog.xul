@@ -171,9 +171,12 @@
              label=    "&iconlocation.urlbar-autohide.label;"
              accesskey="&iconlocation.urlbar-autohide.accesskey;"
              />
-      <radio value=    "status"
-             label=    "&iconlocation.status.label;"
-             accesskey="&iconlocation.status.accesskey;"
+      <radio id=               "radioInterfaceIconLocationStatus"
+             value=            "status"
+             label=            "&iconlocation.status.label;"
+             accesskey=        "&iconlocation.status.accesskey;"
+             labeladdonbar=    "&iconlocation.addonbar.label;"
+             accesskeyaddonbar="&iconlocation.addonbar.accesskey;"
              />
       <radio value=    "none"
              label=    "&iconlocation.none.label;"
