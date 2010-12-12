@@ -272,10 +272,7 @@ var Prefs = {
     // If the string is empty, use the default path, that is a subdirectory
     //  of the system temporary directory
     if (!tempFolderPath) {
-      var tempDir = Cc["@mozilla.org/file/directory_service;1"]
-       .getService(Ci.nsIProperties).get("TmpD", Ci.nsIFile);
-      tempDir.append(this._DEFAULT_TEMPFOLDER_NAME);
-      tempFolderPath = tempDir.path;
+      tempFolderPath = this._defaultTempFolderPath;
     }
     // Return the absolute file path
     return tempFolderPath;
@@ -306,5 +303,47 @@ var Prefs = {
    * Private methods and properties
    */
 
-  _DEFAULT_TEMPFOLDER_NAME: "maftemp"
+  /**
+   * Returns the default temporary folder path, located in the system temporary
+   *  directory and different for each user profile.
+   */
+  get _defaultTempFolderPath() {
+    // Since the temporary folder is cleared when the browser exits, we need to
+    //  return a path that is different for each concurrent user. We also want
+    //  the temporary path to be the same for every browsing session of the same
+    //  user, but located in the default temporary directory, thus different if
+    //  the same user profile is accessed from different computers. To ensure
+    //  this, we calculate a path based on the temporary folder, but that
+    //  includes the hash of the user profile path. This is required because on
+    //  some platforms the temporary folder is the same for all users.
+    var profilePath = this._dirService.get("ProfD", Ci.nsIFile).path;
+    var tempDir = this._dirService.get("TmpD", Ci.nsIFile);
+    tempDir.append("maftemp-" + this._getHexHashMD5(profilePath).slice(0, 8));
+    // Do not recalculate the value the second time this property is read
+    delete this._defaultTempFolderPath;
+    return (this._defaultTempFolderPath = tempDir.path);
+  },
+
+  /**
+   * Returns a string with the MD5 hash of the specified Unicode string.
+   */
+  _getHexHashMD5: function(aString) {
+    // Convert the characters to UTF-8 octets
+    var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
+     createInstance(Ci.nsIScriptableUnicodeConverter);
+    converter.charset = "UTF-8";
+    var octets = converter.convertToByteArray(aString, {});
+    // Calculate the hash of the octets
+    var cryptoHash = Cc["@mozilla.org/security/hash;1"].
+     createInstance(Ci.nsICryptoHash);
+    cryptoHash.init(Ci.nsICryptoHash.MD5);
+    cryptoHash.update(octets, octets.length);
+    var hashOctets = cryptoHash.finish(false);
+    // Return the hash as a hexadecimal string
+    return [("0" + hashOctets.charCodeAt(i).toString(16)).slice(-2) for
+     (i in hashOctets)].join("");
+  },
+
+  _dirService: Cc["@mozilla.org/file/directory_service;1"]
+   .getService(Ci.nsIProperties)
 }
