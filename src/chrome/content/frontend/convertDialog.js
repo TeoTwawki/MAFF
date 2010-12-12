@@ -181,11 +181,12 @@ var ConvertDialog = {
   },
 
   /**
-   * On wizard pages that don't require validation, the button to advance to
-   *  the next page is always enabled.
+   * On the introduction page, the button to advance to the next page is always
+   *  enabled, and is selected instead of the website link.
    */
-  enableAdvance: function() {
+  checkIntroductionControls: function() {
     document.getElementById("convertDialog").canAdvance = true;
+    this._wizard.getButton("next").focus();
   },
 
   /**

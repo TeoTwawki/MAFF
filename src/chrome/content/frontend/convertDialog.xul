@@ -64,7 +64,7 @@
 
   <!-- Introduction -->
   <wizardpage label=     "&introduction.pagelabel;"
-              onpageshow="ConvertDialog.enableAdvance();"
+              onpageshow="ConvertDialog.checkIntroductionControls();"
               >
     <description>
       &introduction.para1.description;
