@@ -97,6 +97,33 @@
     <li>MAFF archives are now generated and read with stricter compliance to
      the <a href="maff-specification.html">MAFF specification</a> draft,
      improving compatibility with other applications.</li>
+    <li>Modified user interface elements:
+      <ul>
+        <li>The welcome dialog has been replaced by a welcome page that is
+         opened in a browser tab. On Windows, file associations can be
+         controlled directly from the welcome page.</li>
+        <li>The MAF menu commands are now accessible from the application menu
+         that replaces the menu bar in Firefox 4 on Windows Vista and
+         later.</li>
+        <li>The MAF save commands do not prompt for the file name anymore when
+         the related global preference is set in SeaMonkey.</li>
+        <li>The default visibility and layout of the MAF menu items has changed,
+         and the <b>Save Page In Archive</b> menu item is visible by default.
+         The previous layout can be restored from the preferences dialog.</li>
+        <li>The preferences dialog has been simplified, the default
+         configuration now covers all the common use cases, and advanced
+         settings can be changed only from the <tt>about:config</tt> page.</li>
+      </ul>
+    </li>
+    <li>Bugfixes:
+      <ul>
+        <li>On some operating systems, the default configuration didn't allow
+         more than one logged on user at a time to open web archives in a
+         reliable way.</li>
+        <li>Sometimes the archive information popup displayed the date
+         incorrectly for some languages other than English.</li>
+      </ul>
+    </li>
   </ul>
   <p>MAF <?php echo ($maf_experimental_fx ? $maf_experimental_fx :
    $maf_latest_fx); ?> has the following known issues:</p>
