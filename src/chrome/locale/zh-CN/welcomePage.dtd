@@ -6,7 +6,7 @@
 <!ENTITY features.item1.label "网页将被更加完整、精确、所见即所得地保存。">
 <!ENTITY features.item2.label "可将单个或多个标签页存至单个文件（Web 档案）。">
 <!ENTITY features.item3.label "文档标题将成为默认的保存文件名。">
-<!ENTITY features.item4.label "HTML 5 视频与音频等将被存入！">
+<!ENTITY features.item4.label "HTML5 视频与音频等将被存入！">
 <!ENTITY features.footer.label "You can control which features are enabled from the extension's options.">
 <!ENTITY features.link.label "Visit the website to discover all the other features.">
 <!-- *** File associations *** -->
