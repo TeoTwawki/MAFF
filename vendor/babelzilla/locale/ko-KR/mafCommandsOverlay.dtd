@@ -1,28 +1,29 @@
+<!-- Shortcut keys -->
 <!ENTITY command.browseopenarchives.key "M">
 <!ENTITY command.browseopenarchives.modifiers "alt">
+<!-- Menu items for general Mozilla Archive Format commands -->
 <!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "열린 아카이브 페이지 검색">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
 <!ENTITY menuitem.convertsavedpages.label "저장된 페이지 변환">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
-<!ENTITY menuitem.preferences.label "설정">
-<!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
-<!ENTITY menuitem.savetabsas.label "다른 이름으로 탭 저장">
-<!ENTITY menuitem.savetabsas.accesskey.filemenu "b">
-<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "b">
-<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "b">
-<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "b">
-<!ENTITY menuitem.savealltabsas.label "다른 이름으로 모든 탭 저장">
-<!ENTITY menuitem.savealltabsas.accesskey.filemenu "S">
-<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "S">
-<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
-<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "S">
-<!ENTITY menuitem.savepageinarchive.label "아카이브 파일로 저장">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
+<!ENTITY menuitem.options.label "설정">
+<!ENTITY menuitem.options.accesskey.toolsmenu "O">
+<!-- Additional menu items for the "Save As" command -->
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "b">
+<!ENTITY menuitem.savetabsinarchive.accesskey.toolsmenu "b">
+<!ENTITY menuitem.savetabsinarchive.accesskey.pagecontextmenu "b">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "b">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.toolsmenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.pagecontextmenu "A">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!-- Additional menu items for the "Save In Archive" command -->
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
-<!ENTITY menuitem.saveframeinarchive.label "아카이브 파일로 프레임 저장">
 <!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "h">
 <!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "h">
 <!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "h">

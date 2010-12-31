@@ -1,10 +1,16 @@
+<!-- *** Archive information popup *** -->
+<!-- Status of the current page -->
 <!ENTITY archiveinfo.status.normal.label "이 페이지는 아카이브 파일이 아닙니다.">
 <!ENTITY archiveinfo.status.archived.label "이 페이지는 아카이브 파일입니다.">
+<!-- Original address the page was saved from -->
 <!ENTITY archiveinfo.maforiginalurl.label "원본 위치:">
 <!ENTITY archiveinfo.maforiginalurl.missing.label "(유효하지 않음)">
+<!-- Date and time the page was archived -->
 <!ENTITY archiveinfo.mafdatearchived.label "저장 시각:">
 <!ENTITY archiveinfo.mafdatearchived.missing.label "(유효하지 않음)">
+<!-- *** Commands in the archive information popup *** -->
+<!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "열린 아카이브 검색">
 <!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.preferences.label "설정">
-<!ENTITY commands.preferences.accesskey "P">
+<!ENTITY commands.options.label "설정">
+<!ENTITY commands.options.accesskey "O">

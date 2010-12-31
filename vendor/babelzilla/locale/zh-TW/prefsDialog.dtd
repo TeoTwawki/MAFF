@@ -1,16 +1,22 @@
-<!ENTITY window.title "偏好設定">
-<!ENTITY browsebutton.label "瀏覽…">
+<!-- General window controls -->
+<!-- Main pane -->
 <!ENTITY pane.main.label "主要">
-<!ENTITY save.caption "儲存歸檔時的操作">
 <!ENTITY save.component.grouplabel "當保存完整網頁檔案內容時：">
 <!ENTITY save.component.standard.label "使用瀏覽器的標準保存系統 (b)">
 <!ENTITY save.component.standard.accesskey "b">
+<!ENTITY save.component.completesave.label "Preserve scripts and source using &quot;Save Complete&quot;">
+<!ENTITY save.component.completesave.accesskey "u">
+<!ENTITY save.component.exactpersist.label "Take a faithful snapshot of the page">
+<!ENTITY save.component.exactpersist.accesskey "k">
 <!ENTITY save.mhtml.compatible.label "建立與其它瀏覽器完全相容的 MHTML 檔案 (o)">
 <!ENTITY save.mhtml.compatible.accesskey "o">
-<!ENTITY save.metadata.extended.label "在 MAFF 檔中保存擴充套件中介資料 (v)">
-<!ENTITY save.metadata.extended.accesskey "v">
+<!ENTITY save.namingstrategy.grouplabel "For the suggested file name:">
+<!ENTITY save.namingstrategy.standard.label "Use browser's standard naming strategy">
+<!ENTITY save.namingstrategy.standard.accesskey "w">
+<!ENTITY save.namingstrategy.pagetitle.label "Use the title of the page whenever possible">
+<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
+<!-- Interface pane -->
 <!ENTITY pane.interface.label "介面">
-<!ENTITY icon.caption "圖示">
 <!ENTITY iconlocation.grouplabel "在下列位置顯示 Mozilla 歸檔格式的圖示：">
 <!ENTITY iconlocation.urlbar.label "位址列">
 <!ENTITY iconlocation.urlbar.accesskey "A">
@@ -20,7 +26,6 @@
 <!ENTITY iconlocation.status.accesskey "S">
 <!ENTITY iconlocation.none.label "無">
 <!ENTITY iconlocation.none.accesskey "N">
-<!ENTITY menu.caption "清單">
 <!ENTITY menu.grouplabel "顯示 MAF 清單項於：">
 <!ENTITY menu.file.label "「檔案 (F)」清單">
 <!ENTITY menu.file.accesskey "F">
@@ -30,31 +35,4 @@
 <!ENTITY menu.pagecontext.accesskey "P">
 <!ENTITY menu.tabscontext.label "標籤欄內容清單 (x)">
 <!ENTITY menu.tabscontext.accesskey "x">
-<!ENTITY menuitem.grouplabel "顯示如下附加清單項：">
-<!ENTITY menuitem.saveinarchive.label "保存╳╳至歸檔 (h)">
-<!ENTITY menuitem.saveinarchive.accesskey "h">
-<!ENTITY pane.fileassociations.label "檔案關聯">
-<!ENTITY associate.windowsonly.description "本功能僅用於 Windows。">
-<!ENTITY associate.buttons.description "單擊下面的按鈕可將相應檔案型式關聯至裝備有 MAF 的 Firefox。">
-<!ENTITY associate.adminprivs.description "此操作需要管理員許可權。">
-<!ENTITY associate.maff.label "建立與 .MAFF 檔案的關聯 (e)">
-<!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "建立與 .MHT 和 .MHTML 檔案的關聯 (a)">
-<!ENTITY associate.mhtml.accesskey "a">
-<!ENTITY associate.uninstall.description "注意：在此處建立的檔案關聯在您移除 MAF 時並不會被刪除，您需要到 Windows 控制台的「資料夾選項」中手工修正。">
-<!ENTITY pane.advanced.label "高階">
-<!ENTITY temp.caption "臨時檔案">
-<!ENTITY temp.folder.label "臨時資料夾 (T)：">
-<!ENTITY temp.folder.accesskey "T">
-<!ENTITY temp.clearonexit.label "當瀏覽器關閉時清除 MAFF 臨時資料夾">
-<!ENTITY temp.clearonexit.accesskey "C">
-<!ENTITY open.caption "開啟歸檔時的操作">
-<!ENTITY open.rewriteurls.label "試圖在開啟歸檔時重寫絕對網址">
-<!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY open.usejarprotocol.label "使用「JAr:」協定存取 MAFF 檔的內容">
-<!ENTITY open.usejarprotocol.accesskey "J">
-<!ENTITY other.caption "雜項">
-<!ENTITY other.displaywelcome.label "在下次啟動瀏覽器時顯示 MAF 歡迎視窗">
-<!ENTITY other.displaywelcome.accesskey "D">
-<!ENTITY save.usemhtmlextension.label "使用 .MHTML 代替 .MHT 成為 MIME 檔案預設副檔名">
-<!ENTITY save.usemhtmlextension.accesskey "M">
+<!-- File associations pane. This pane is visible only on Windows. -->

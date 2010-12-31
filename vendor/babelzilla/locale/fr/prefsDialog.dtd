@@ -1,7 +1,7 @@
-<!ENTITY window.title "Préférences">
-<!ENTITY browsebutton.label "Parcourir…">
+<!-- General window controls -->
+<!ENTITY window.title.v2 "Options de Mozilla Archive Format">
+<!-- Main pane -->
 <!ENTITY pane.main.label "Général">
-<!ENTITY save.caption "Enregistrer">
 <!ENTITY save.component.grouplabel "Lors de la sauvegarde du contenu complet des pages web :">
 <!ENTITY save.component.standard.label "Utiliser le système de sauvegarde standard du système">
 <!ENTITY save.component.standard.accesskey "s">
@@ -13,13 +13,11 @@
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "Pour le nom de fichier suggéré :">
 <!ENTITY save.namingstrategy.standard.label "Utiliser la stratégie de nommage standard du navigateur">
-<!ENTITY save.namingstrategy.standard.accesskey "w">
+<!ENTITY save.namingstrategy.standard.accesskey "d">
 <!ENTITY save.namingstrategy.pagetitle.label "Utiliser le titre de la page lorsque possible">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "g">
-<!ENTITY save.metadata.extended.label "Enregistrer les métadonnées étendues dans les archives MAFF">
-<!ENTITY save.metadata.extended.accesskey "v">
+<!-- Interface pane -->
 <!ENTITY pane.interface.label "Interface">
-<!ENTITY icon.caption "Icône">
 <!ENTITY iconlocation.grouplabel "Afficher l'icône de Mozilla Archive Format dans :">
 <!ENTITY iconlocation.urlbar.label "Barre d'adresse">
 <!ENTITY iconlocation.urlbar.accesskey "A">
@@ -27,43 +25,30 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
 <!ENTITY iconlocation.status.label "Barre d'état">
 <!ENTITY iconlocation.status.accesskey "t">
+<!ENTITY iconlocation.addonbar.label "Barre des modules">
+<!ENTITY iconlocation.addonbar.accesskey "o">
 <!ENTITY iconlocation.none.label "Rien">
 <!ENTITY iconlocation.none.accesskey "R">
-<!ENTITY menu.caption "Menu">
 <!ENTITY menu.grouplabel "Afficher les menus MAF dans :">
+<!ENTITY menu.app.label "menu $brandShortName">
+<!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "Menu Fichier">
 <!ENTITY menu.file.accesskey "F">
 <!ENTITY menu.tools.label "Menu Outils">
 <!ENTITY menu.tools.accesskey "O">
 <!ENTITY menu.pagecontext.label "Menu contextuel des pages">
 <!ENTITY menu.pagecontext.accesskey "p">
+<!ENTITY menu.pagecontext.tabs.label "Afficher les éléments pour enregistrer les onglets">
+<!ENTITY menu.pagecontext.tabs.accesskey "f">
 <!ENTITY menu.tabscontext.label "Menu contextuel de la barre d'onglets">
 <!ENTITY menu.tabscontext.accesskey "x">
-<!ENTITY menuitem.grouplabel "Afficher ces éléments supplémentaires :">
-<!ENTITY menuitem.saveinarchive.label "Enregistrer dans l'archive">
-<!ENTITY menuitem.saveinarchive.accesskey "h">
-<!ENTITY pane.fileassociations.label "Association des fichiers">
-<!ENTITY associate.windowsonly.description "Cette fonctionnalité est disponible uniquement pour les systèmes Windows.">
-<!ENTITY associate.buttons.description "Cliquer sur le bouton suivant pour associer les fichiers supportés par MAF avec Firefox.">
-<!ENTITY associate.adminprivs.description "Cette opération pourrait nécessiter les privilèges administrateur.">
-<!ENTITY associate.maff.label "Créer une association pour l'extension .maff">
-<!ENTITY associate.maff.accesskey "e">
-<!ENTITY associate.mhtml.label "Créer une association pour les extensions .mht et .mhtml">
-<!ENTITY associate.mhtml.accesskey "a">
-<!ENTITY associate.uninstall.description "Note : les associations de fichier créées ici ne seront pas supprimées à la désinstallation de MAF ou de Firefox. Vous pouvez gérer vos associations de fichiers en utilisant le panneau de configuration de Windows">
-<!ENTITY pane.advanced.label "Avancé">
-<!ENTITY temp.caption "Fichiers temporaires">
-<!ENTITY temp.folder.label "Dossier temporaire :">
-<!ENTITY temp.folder.accesskey "T">
-<!ENTITY temp.clearonexit.label "Vider le dossier temporaire à la fermeture du navigateur">
-<!ENTITY temp.clearonexit.accesskey "V">
-<!ENTITY open.caption "Ouvrir">
-<!ENTITY open.rewriteurls.label "Réécrire les URLs absolues dans les archives ouvertes">
-<!ENTITY open.rewriteurls.accesskey "R">
-<!ENTITY open.usejarprotocol.label "Utiliser le protocole &quot;jar:&quot; pour accéder au contenu des archives MAFF">
-<!ENTITY open.usejarprotocol.accesskey "j">
-<!ENTITY other.caption "Autres">
-<!ENTITY other.displaywelcome.label "Afficher le message de bienvenue au prochain démarrage.">
-<!ENTITY other.displaywelcome.accesskey "D">
-<!ENTITY save.usemhtmlextension.label "Enregistrer en utilisant l&apos;extension .mhtml plutôt que .mht par défaut">
-<!ENTITY save.usemhtmlextension.accesskey "m">
+<!-- File associations pane. This pane is visible only on Windows. -->
+<!ENTITY pane.actions.label "Actions">
+<!ENTITY action.convertsavedpages.label "Convertir les pages enregistrées">
+<!ENTITY action.convertsavedpages.description "L'assistant de conversion de pages enregistrées vous guidera à travers le processus de conversion de pages web enregistrées précédemment dans un autre format.">
+<!ENTITY action.showwelcomepage.label "Afficher la page d'accueil">
+<!ENTITY action.showwelcomepage.description "La page d'accueil est affichée la première fois que cette extension est installée, et fourni un survol de ses fonctionnalités. L'afficher à nouveau est utile aux traducteurs qui souhaitent vérifier la qualité de leur travail.">
+<!ENTITY action.showwelcomepageassociate.label "Rafraîchir les associations de fichier">
+<!ENTITY action.showwelcomepageassociate.description "De la page d'accueil, vous pouvez choisir quels formats d'archive web vous souhaitez ouvrir avec $brandShortName, et rafraîchir les associations de fichiers au cas où elles auraient été modifiées par une autre application.">
+<!ENTITY action.visitwebsite.label "Visiter le site web">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format s'intègre à $brandShortName et propose de nombreuses améliorations en plus des fonctionnalités les plus visibles. Pour une description complète de ces fonctionnalités, des informations sur le format MAFF et une documentation avancée des options de configuration, vous pouvez visiter le site officiel.">

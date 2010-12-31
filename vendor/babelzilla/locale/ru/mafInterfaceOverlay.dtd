@@ -4,13 +4,13 @@
 <!ENTITY archiveinfo.status.archived.label "Это страница из архива.">
 <!-- Original address the page was saved from -->
 <!ENTITY archiveinfo.maforiginalurl.label "Адрес оригинала:">
-<!ENTITY archiveinfo.maforiginalurl.missing.label "(не известен)">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(неизвестен)">
 <!-- Date and time the page was archived -->
 <!ENTITY archiveinfo.mafdatearchived.label "Время сохранения:">
-<!ENTITY archiveinfo.mafdatearchived.missing.label "(не известно)">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(неизвестно)">
 <!-- *** Commands in the archive information popup *** -->
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "Список открытых архивов…">
 <!ENTITY commands.browseopenarchives.accesskey "С">
-<!ENTITY commands.preferences.label "Настройки…">
-<!ENTITY commands.preferences.accesskey "Н">
+<!ENTITY commands.options.label "Настройки…">
+<!ENTITY commands.options.accesskey "Н">

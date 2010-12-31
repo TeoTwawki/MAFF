@@ -1,10 +1,14 @@
+<!-- *** Archive information popup *** -->
+<!-- Status of the current page -->
 <!ENTITY archiveinfo.status.normal.label "Diese Seite ist in keinem Archiv enthalten.">
 <!ENTITY archiveinfo.status.archived.label "Diese Seite ist archiviert.">
+<!-- Original address the page was saved from -->
 <!ENTITY archiveinfo.maforiginalurl.label "Gespeichert von:">
 <!ENTITY archiveinfo.maforiginalurl.missing.label "(nicht erhältlich)">
+<!-- Date and time the page was archived -->
 <!ENTITY archiveinfo.mafdatearchived.label "Gespeichert am:">
 <!ENTITY archiveinfo.mafdatearchived.missing.label "(nicht erhältlich)">
+<!-- *** Commands in the archive information popup *** -->
+<!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "Geöffnete Archive durchsuchen">
 <!ENTITY commands.browseopenarchives.accesskey "G">
-<!ENTITY commands.preferences.label "Einstellungen...">
-<!ENTITY commands.preferences.accesskey "E">

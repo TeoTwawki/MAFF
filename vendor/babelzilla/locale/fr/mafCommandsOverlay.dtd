@@ -1,28 +1,37 @@
+<!-- Shortcut keys -->
 <!ENTITY command.browseopenarchives.key "M">
 <!ENTITY command.browseopenarchives.modifiers "alt">
+<!-- Menu items for general Mozilla Archive Format commands -->
 <!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Parcourir les archives ouvertes…">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
 <!ENTITY menuitem.convertsavedpages.label "Convertir les pages enregistrées…">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
-<!ENTITY menuitem.preferences.label "Préférences">
-<!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
-<!ENTITY menuitem.savetabsas.label "Enregistrer les onglets sous…">
-<!ENTITY menuitem.savetabsas.accesskey.filemenu "n">
-<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "n">
-<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "n">
-<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "n">
-<!ENTITY menuitem.savealltabsas.label "Enregistrer tous les onglets sous…">
-<!ENTITY menuitem.savealltabsas.accesskey.filemenu "E">
-<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "E">
-<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "A">
-<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "E">
-<!ENTITY menuitem.savepageinarchive.label "Enregistrer la page dans l'archive…">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
+<!ENTITY menuitem.options.label "Options…">
+<!ENTITY menuitem.options.accesskey.toolsmenu "O">
+<!-- Additional menu items for the "Save As" command -->
+<!ENTITY menuitem.savetabsinarchiveas.label "Enregistrer les onglets dans l'archive sous…">
+<!ENTITY menuitem.savetabsinarchive.label "Enregistrer les onglets dans l'archive…">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "g">
+<!ENTITY menuitem.savetabsinarchive.accesskey.toolsmenu "g">
+<!ENTITY menuitem.savetabsinarchive.accesskey.pagecontextmenu "g">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "g">
+<!ENTITY menuitem.savealltabsinarchiveas.label "Enregistrer tous les onglets dans l'archive sous…">
+<!ENTITY menuitem.savealltabsinarchive.label "Enregistrer tous les onglets dans l'archive">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.toolsmenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.pagecontextmenu "A">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!-- Additional menu items for the "Save In Archive" command -->
+<!ENTITY menuitem.savepageinarchiveas.label "Enregistrer la page dans l'archive sous…">
+<!ENTITY menuitem.savepageinarchive.label.v2 "Enregistrer la page dans l'archive">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
-<!ENTITY menuitem.saveframeinarchive.label "Enregistrer le cadre dans l'archive…">
+<!ENTITY menuitem.saveframeinarchiveas.label "Enregistrer le cadre dans l'archive sous…">
+<!ENTITY menuitem.saveframeinarchive.label.v2 "Enregistrer le cadre dans l'archive">
 <!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "c">
 <!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "c">
 <!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "c">

@@ -1,5 +1,7 @@
+<!-- General window controls -->
 <!ENTITY window.title "請選擇需要保存的標籤頁">
 <!ENTITY savebutton.label "保存">
+<!-- Tab selection -->
 <!ENTITY tabs.title.header "標籤頁標題">
 <!ENTITY tabs.location.header "位置">
 <!ENTITY tabs.all.label "當前視窗中的全部標籤頁">

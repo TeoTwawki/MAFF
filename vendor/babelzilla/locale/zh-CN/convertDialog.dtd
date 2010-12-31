@@ -1,11 +1,15 @@
+<!-- *** Note *** -->
+<!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
+<!-- *** General window controls *** -->
 <!ENTITY window.title "已保存页面转换向导">
 <!ENTITY browsebutton.label "浏览…">
 <!ENTITY continue.label "要继续，请单击“$1”。">
+<!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "欢迎使用已保存页面转换向导">
 <!ENTITY introduction.para1.description "本向导将引导您完成自已保存的旧页面到新文件格式的转换过程。">
 <!ENTITY introduction.para2.description "本操作适合于一次性转换多个页面。如果您希望一次性转换一个页面，建议将其打开并直接在浏览器中将其另存为新文件格式。">
-<!ENTITY introduction.para3.description "受所选的文件格式和保存首选项的影响，转换后的文件不一定与原始的已保存页面完全一致。因此，即使转换过程被成功完成，仍然建议您保留原始档案。">
 <!ENTITY introduction.continue.label "单击 $1 以开始向导。">
+<!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "输入与输出的格式">
 <!ENTITY formats.source.grouplabel "转换自：">
 <!ENTITY formats.source.complete.label "完整网页（HTML，包含“files”文件夹）(o)">
@@ -24,12 +28,14 @@
 <!ENTITY formats.dest.complete.label "完整网页（HTML，需要时包含“files”文件夹）(p)">
 <!ENTITY formats.dest.complete.accesskey "p">
 <!ENTITY formats.invalid.label "请选择两不同的文件格式。">
+<!-- *** Source folder selection *** -->
 <!ENTITY folders.source.pagelabel "来源文件夹">
 <!ENTITY folders.source.label "自此文件夹搜寻原始文件 (e)：">
 <!ENTITY folders.source.accesskey "e">
 <!ENTITY folders.source.subfolders.label "包含子文件夹 (s)">
 <!ENTITY folders.source.subfolders.accesskey "s">
 <!ENTITY folders.source.invalid.label "请选择包含原始文件的文件夹。">
+<!-- *** Destination folder selection *** -->
 <!ENTITY folders.dest.pagelabel "目标文件夹">
 <!ENTITY folders.dest.grouplabel "放置转换后的文件：">
 <!ENTITY folders.dest.original.label "与原始文件所在文件夹相同 (s)">
@@ -42,6 +48,7 @@
 <!ENTITY folders.bin.folder.label "将原始文件移动至（保留相对路径）：">
 <!ENTITY folders.bin.folder.accesskey "M">
 <!ENTITY folders.dest.invalid.label "请指定完整文件夹地址。">
+<!-- *** Candidates selection and conversion *** -->
 <!ENTITY candidates.pagelabel "转换">
 <!ENTITY candidates.description "请查看下面的列表，并选择您想要转换的文件：">
 <!ENTITY candidates.sourcename.header "原始文件名称">

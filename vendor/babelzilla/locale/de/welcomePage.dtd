@@ -1,0 +1,12 @@
+<!ENTITY page.title "Herzlich Willkommen">
+<!ENTITY welcome.label "Gratulation zur Installation des Mozilla Archive Formats!">
+<!ENTITY features.header.label "Durch diese Add-On wurden ihrem $brandShortName viele neue Funktionen hinzugefügt.">
+<!ENTITY features.headerfromupdate.label "Diese Add-on wurde auf die neueste Version geupdated.">
+<!ENTITY features.item1.label "Webseiten werden nun originalgetreuer gespeichert - what you see is what you get.">
+<!ENTITY features.item2.label "Mehrere Tabs können in einer Datei gespeichert werden (WebArchive).">
+<!ENTITY features.item3.label "Der Standardname des WebArchives ist der Titel der Web-Seite.">
+<!ENTITY features.item4.label "Es kann HMTL5 inklusive Video und Audio gespeichert werden und noch viel mehr!">
+<!ENTITY associate.maff.label "MAFF">
+<!ENTITY associate.mhtml.label "MHTML">
+<!ENTITY associate.error.title "Fehler beim Erstellen der Datei-Assoziationen">
+<!ENTITY associate.error.msg "Ein Fehler ist aufgetreten beim Konfigurieren des Dateimanagers: $1">

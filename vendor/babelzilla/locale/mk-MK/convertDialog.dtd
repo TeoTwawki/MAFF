@@ -1,11 +1,15 @@
+<!-- *** Note *** -->
+<!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
+<!-- *** General window controls *** -->
 <!ENTITY window.title "Волшебник за конвертирање на зачуваните страници">
 <!ENTITY browsebutton.label "Прелистај...">
 <!ENTITY continue.label "За да продолжите, притиснете $1.">
+<!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Добредојдовте во Волшебникот за конвертирање на зачуваните страници">
 <!ENTITY introduction.para1.description "Овај волшебник ќе ве води низ конвертирањето на вашите предходно зачувани веб-страници во различен формат на датотеки.">
 <!ENTITY introduction.para2.description "Оваа процедура е погодна за конвертирање на многу страници одеднаш. Ако сакате да конвертирате поединечни страници, само отворете ги во прелистувачот и зачувајте ги во друг формат.">
-<!ENTITY introduction.para3.description "Во зависност од избраните формати на датотеките и параметрите за зачувување, конвертираните датотеки може да не бидат целосно точни со оригиналот во некои случаеви. Препорачливо е да зачувате копија на вашите оригинални датотеки дури и после успешна конверзија.">
 <!ENTITY introduction.continue.label "За да започните, притиснете $1.">
+<!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Влезни и Излезни формати">
 <!ENTITY formats.source.grouplabel "Претвори од:">
 <!ENTITY formats.source.complete.label "Целосни веб страници ( со папки за поддршка за датотеки за податоци)">
@@ -24,12 +28,14 @@
 <!ENTITY formats.dest.complete.label "Целосни веб страници ( со папки за поддршка ако е потребно">
 <!ENTITY formats.dest.complete.accesskey "с">
 <!ENTITY formats.invalid.label "Ве молиме изберете два различни формати на датотеки.">
+<!-- *** Source folder selection *** -->
 <!ENTITY folders.source.pagelabel "Изворна папка">
 <!ENTITY folders.source.label "Пребарај ја оваа папка за изворни датотеки:">
 <!ENTITY folders.source.accesskey "е">
 <!ENTITY folders.source.subfolders.label "Вклучи ги потпапките">
 <!ENTITY folders.source.subfolders.accesskey "п">
 <!ENTITY folders.source.invalid.label "Ве молиме изберете постоечка изворна папка.">
+<!-- *** Destination folder selection *** -->
 <!ENTITY folders.dest.pagelabel "Одредишни папки">
 <!ENTITY folders.dest.grouplabel "Стави ги претворените датотеки:">
 <!ENTITY folders.dest.original.label "Во истата папка како и оригиналните датотеки">
@@ -42,6 +48,7 @@
 <!ENTITY folders.bin.folder.label "Премести ги оригиналите во оваа папка (зачувувајќи ги релативните патеки):">
 <!ENTITY folders.bin.folder.accesskey "П">
 <!ENTITY folders.dest.invalid.label "Ве молиме наведете го целосното име на папката.">
+<!-- *** Candidates selection and conversion *** -->
 <!ENTITY candidates.pagelabel "Конверзија">
 <!ENTITY candidates.description "Ве молиме прегледајте ја листата подолу и изберете ги датотеките кои сакате да ги конвентирате">
 <!ENTITY candidates.sourcename.header "Име на изворната датотека">

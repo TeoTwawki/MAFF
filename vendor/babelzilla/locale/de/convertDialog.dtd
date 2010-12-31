@@ -1,11 +1,17 @@
+<!-- *** Note *** -->
+<!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
+<!-- *** General window controls *** -->
 <!ENTITY window.title "Gespeicherte Seiten Konvertierungs-Assistent">
 <!ENTITY browsebutton.label "Durchsuchen...">
 <!ENTITY continue.label "$1 klicken um fortzufahren.">
+<!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Willkommen beim Gespeicherte-Seiten-Konvertierungsassistenten">
 <!ENTITY introduction.para1.description "Dieser Assistent führt Sie durch die Konvertierung gespeicherter Websites in ein anderes Dateiformat.">
 <!ENTITY introduction.para2.description "Dieser Vorgang ist für die Konvertierung mehrerer Seiten auf einmal gedacht. Wenn einzelne Seiten konvertiert werden sollen, öffnen Sie sie im Browser und speichern Sie sie in einem anderen Format.">
-<!ENTITY introduction.para3.description "Abhängig von den ausgewählten Dateiformaten können konvertierte Dateien nicht ganz dem Original entsprechen. Es wird empfohlen, auch bei einer erfolgreichen Konvertierung eine Kopie des Originals zu behakten.">
+<!ENTITY introduction.visitwebsite.description "Obwohl der Konvertierungsprozess meistens anstandslos funktioniert kann das Ergebnis manchmal, abhängig vom gewähltem Dateiformat und den Sicherungsoptionen, etwas vom Original abweichen. Bei der Konvertierung eines Archives mit mehreren Webseiten in ein Archiv mit einer Webseite bleibt nur die erste Seite erhalten. Daher sollte immer ein Backup der Originaldateien angelegt werden, auch wenn die Konversion scheinbar problemlos erfolgte.">
+<!ENTITY introduction.visitwebsite.label "Bitte konsultieren Sie die Online-Dokumentation für ausführlichere Beschreibungen.">
 <!ENTITY introduction.continue.label "$1 klicken um zu beginnen.">
+<!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Ein- und Ausgabeformat">
 <!ENTITY formats.source.grouplabel "Konvertieren von:">
 <!ENTITY formats.source.complete.label "Gesamte Website (mit Ordnern für Dateien)">
@@ -24,12 +30,14 @@
 <!ENTITY formats.dest.complete.label "Komplette Website (wenn nötig mit Ordnern)">
 <!ENTITY formats.dest.complete.accesskey "p">
 <!ENTITY formats.invalid.label "Bitte zwei unterschiedliche Formate auswählen.">
+<!-- *** Source folder selection *** -->
 <!ENTITY folders.source.pagelabel "Quellordner">
 <!ENTITY folders.source.label "Diesen Ordner nach Quelldateien durchsuchen:">
 <!ENTITY folders.source.accesskey "i">
 <!ENTITY folders.source.subfolders.label "Unterordner einbeziehen">
 <!ENTITY folders.source.subfolders.accesskey "U">
 <!ENTITY folders.source.invalid.label "Bitte einen existierenden Quellordner angeben.">
+<!-- *** Destination folder selection *** -->
 <!ENTITY folders.dest.pagelabel "Zielordner">
 <!ENTITY folders.dest.grouplabel "Konvertierte Dateien:">
 <!ENTITY folders.dest.original.label "im gleichen Ordner wie die Originaldateien belassen">
@@ -42,8 +50,9 @@
 <!ENTITY folders.bin.folder.label "Originale in diesen Ordner verschieben:">
 <!ENTITY folders.bin.folder.accesskey "v">
 <!ENTITY folders.dest.invalid.label "Bitte den gesamten Ordnernamen angeben.">
-<!ENTITY candidates.pagelabel "Konbertierung">
-<!ENTITY candidates.description "Bitte wählen Sie aus der untenstehenden Liste die Dateien aus, die konvertiert werden sollen.">
+<!-- *** Candidates selection and conversion *** -->
+<!ENTITY candidates.pagelabel "Konvertierung">
+<!ENTITY candidates.description "Bitte wählen Sie aus der unten stehenden Liste die Dateien aus, die konvertiert werden sollen.">
 <!ENTITY candidates.sourcename.header "Quelldateiname">
 <!ENTITY candidates.sourcedatafoldername.header "Unterstützungsordnername">
 <!ENTITY candidates.relativepath.header "Unterordner">
@@ -58,6 +67,6 @@
 <!ENTITY candidates.invalid.label "Bitte mindestens eine Datei zum Konvertieren auswählen.">
 <!ENTITY candidates.convert.label "Konvertieren klicken, um die Konvertierung zu starten.">
 <!ENTITY candidates.converting.label "Dateien werden konvertiert...">
-<!ENTITY candidates.finish.label "Bitte die Konversions-Resultate durchsehen und dann $1 klicken, um das Fenster zu schliessen.">
+<!ENTITY candidates.finish.label "Bitte die Konversions-Resultate durchsehen und dann $1 klicken, um das Fenster zu schließen.">
 <!ENTITY candidates.convertbutton.label "Konvertieren">
 <!ENTITY candidates.convertbutton.accesskey "K">

@@ -1,2 +1,2 @@
-<!ENTITY menuitem.saveselectedtabsas.label "Ausgewählten Tab speichern unter...">
-<!ENTITY menuitem.saveselectedtabsas.accesskey.tabselectionmenu "b">
+<!-- Additional menu items for "Multiple Tab Handler" integration -->
+<!ENTITY menuitem.saveselectedtabsinarchiveas.label "Speichere ausgewählte Tabs im Archiv als...">

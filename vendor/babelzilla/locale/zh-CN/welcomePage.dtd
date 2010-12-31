@@ -1,0 +1,11 @@
+<!ENTITY page.title "欢迎">
+<!ENTITY welcome.label "感谢您安装 Mozilla 档案格式（Mozilla Archive Format）！">
+<!ENTITY features.header.label "本附加组件将改善 $brandShortName 的的诸多功能。">
+<!ENTITY features.item1.label "网页将被更加完整、精确、所见即所得地保存。">
+<!ENTITY features.item2.label "可将单个或多个标签页存至单个文件（Web 档案）。">
+<!ENTITY features.item3.label "文档标题将成为默认的保存文件名。">
+<!ENTITY features.item4.label "HTML5 视频与音频等将被存入！">
+<!ENTITY associate.maff.label "MAFF">
+<!ENTITY associate.maff.accesskey "M">
+<!ENTITY associate.mhtml.label "MHTML">
+<!ENTITY associate.mhtml.accesskey "H">

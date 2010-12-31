@@ -1,11 +1,17 @@
+<!-- *** Note *** -->
+<!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
+<!-- *** General window controls *** -->
 <!ENTITY window.title "Assistant de conversion de pages enregistrées">
 <!ENTITY browsebutton.label "Parcourir">
 <!ENTITY continue.label "Pour continuer, cliquez sur $1.">
+<!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Bienvenue dans l'assistant de conversion de pages enregistrées">
 <!ENTITY introduction.para1.description "Cet assistant va vous guider à travers la conversion de vos pages web enregistrées dans un format différent.">
 <!ENTITY introduction.para2.description "Cette procédure permet de convertir plusieurs pages d'un seul coup. Si vous voulez convertir une page unique, ouvrez-la dans le navigateur et sauvez-la dans un autre format.">
-<!ENTITY introduction.para3.description "Selon les formats sélectionnés et les préférences d'enregistrement, les fichiers convertis pourraient dans certains cas ne pas être entièrement fidèles aux originaux. Il est recommandé de conserver une copie des originaux même après une conversion réussie.">
+<!ENTITY introduction.visitwebsite.description "Bien que le processus de conversion fonctionne correctement dans la majorité des cas, selon le format de fichier sélectionné et les options le résultat peut parfois ne pas être parfaitement fidèle à l'original. De plus, lors de la conversion d'une archive multi-pages vers un format en page unique, seule la première page est conservée. Il est recommandé de conserver une copie des fichiers originaux même après une conversion réussie.">
+<!ENTITY introduction.visitwebsite.label "Pour plus d'informations, lisez la documentation en ligne.">
 <!ENTITY introduction.continue.label "Pour commencer, cliquez sur $1.">
+<!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Formats d'entrée et de sortie">
 <!ENTITY formats.source.grouplabel "Convertir de :">
 <!ENTITY formats.source.complete.label "Pages web complètes (avec dossiers pour les données)">
@@ -24,12 +30,14 @@
 <!ENTITY formats.dest.complete.label "Pages web complètes (avec dossiers pour les données si nécessaire)">
 <!ENTITY formats.dest.complete.accesskey "p">
 <!ENTITY formats.invalid.label "Sélectionnez deux formats de fichiers différents.">
+<!-- *** Source folder selection *** -->
 <!ENTITY folders.source.pagelabel "Dossier source">
 <!ENTITY folders.source.label "Rechercher des fichiers source dans ce dossier">
 <!ENTITY folders.source.accesskey "e">
 <!ENTITY folders.source.subfolders.label "Inclure les sous-dossiers">
 <!ENTITY folders.source.subfolders.accesskey "s">
 <!ENTITY folders.source.invalid.label "Merci de sélectionner un dossier source existant">
+<!-- *** Destination folder selection *** -->
 <!ENTITY folders.dest.pagelabel "Dossier de destination">
 <!ENTITY folders.dest.grouplabel "Placer les fichiers convertis :">
 <!ENTITY folders.dest.original.label "Dans le même dossier que les fichiers originaux">
@@ -42,6 +50,7 @@
 <!ENTITY folders.bin.folder.label "Déplacer les originaux dans ce dossier (en préservant les chemins relatifs)">
 <!ENTITY folders.bin.folder.accesskey "M">
 <!ENTITY folders.dest.invalid.label "Merci de spécifier le nom complet de dossier.">
+<!-- *** Candidates selection and conversion *** -->
 <!ENTITY candidates.pagelabel "Conversion">
 <!ENTITY candidates.description "Sélectionnez les fichiers que vous souhaitez convertir dans la liste ci-dessous.">
 <!ENTITY candidates.sourcename.header "Nom du fichier source">

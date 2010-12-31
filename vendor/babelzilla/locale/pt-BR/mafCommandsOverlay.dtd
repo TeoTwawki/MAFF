@@ -1,28 +1,18 @@
+<!-- Shortcut keys -->
 <!ENTITY command.browseopenarchives.key "M">
 <!ENTITY command.browseopenarchives.modifiers "alt">
+<!-- Menu items for general Mozilla Archive Format commands -->
 <!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
 <!ENTITY menuitem.browseopenarchives.label "Arquivos da web abertos...">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "A">
 <!ENTITY menuitem.convertsavedpages.label "Converter páginas salvas...">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
-<!ENTITY menuitem.preferences.label "Preferências...">
-<!ENTITY menuitem.preferences.accesskey.toolsmenu "P">
-<!ENTITY menuitem.savetabsas.label "Salvar abas como...">
-<!ENTITY menuitem.savetabsas.accesskey.filemenu "b">
-<!ENTITY menuitem.savetabsas.accesskey.toolsmenu "b">
-<!ENTITY menuitem.savetabsas.accesskey.pagecontextmenu "b">
-<!ENTITY menuitem.savetabsas.accesskey.tabscontextmenu "b">
-<!ENTITY menuitem.savealltabsas.label "Salvar todas as abas como...">
-<!ENTITY menuitem.savealltabsas.accesskey.filemenu "t">
-<!ENTITY menuitem.savealltabsas.accesskey.toolsmenu "t">
-<!ENTITY menuitem.savealltabsas.accesskey.pagecontextmenu "t">
-<!ENTITY menuitem.savealltabsas.accesskey.tabscontextmenu "v">
-<!ENTITY menuitem.savepageinarchive.label "Salvar página como arquivo da web...">
+<!-- Additional menu items for the "Save As" command -->
+<!-- Additional menu items for the "Save In Archive" command -->
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "w">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "w">
 <!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "w">
-<!ENTITY menuitem.saveframeinarchive.label "Salvar frame como arquivo da web...">
 <!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "q">
 <!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "q">
 <!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "q">
