@@ -242,7 +242,9 @@
              onclick="PrefsDialog.onActionShowWelcomePageClick();"
              class=  "text-link header"
              />
-      <description class="indent">
+      <description id=   "descShowWelcomePageAssociate"
+                   class="indent"
+                   >
         &action.showwelcomepageassociate.description;
       </description>
     </vbox>

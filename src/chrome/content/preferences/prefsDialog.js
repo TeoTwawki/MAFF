@@ -49,8 +49,10 @@ var PrefsDialog = {
    */
   onLoadDialog: function() {
     // Apply brand names to the dialog elements
-    Interface.applyBranding(document.getElementById("cbInterfaceMenuApp"));
-    Interface.applyBranding(document.getElementById("descVisitWebsite"));
+    for (var [, elementName] in Iterator(["cbInterfaceMenuApp",
+     "descVisitWebsite", "descShowWelcomePageAssociate"])) {
+      Interface.applyBranding(document.getElementById(elementName));
+    }
     // Check to see if the application menu is present
     document.getElementById("cbInterfaceMenuApp").hidden =
      !StartupInitializer.hasAppMenu;
