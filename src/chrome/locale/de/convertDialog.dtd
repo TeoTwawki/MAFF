@@ -8,8 +8,8 @@
 <!ENTITY introduction.pagelabel "Willkommen beim Gespeicherte-Seiten-Konvertierungsassistenten">
 <!ENTITY introduction.para1.description "Dieser Assistent führt Sie durch die Konvertierung gespeicherter Websites in ein anderes Dateiformat.">
 <!ENTITY introduction.para2.description "Dieser Vorgang ist für die Konvertierung mehrerer Seiten auf einmal gedacht. Wenn einzelne Seiten konvertiert werden sollen, öffnen Sie sie im Browser und speichern Sie sie in einem anderen Format.">
-<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
-<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
+<!ENTITY introduction.visitwebsite.description "Obwohl der Konvertierungsprozess meistens anstandslos funktioniert kann das Ergebnis manchmal, abhängig vom gewähltem Dateiformat und den Sicherungsoptionen, etwas vom Original abweichen. Bei der Konvertierung eines Archives mit mehreren Webseiten in ein Archiv mit einer Webseite bleibt nur die erste Seite erhalten. Daher sollte immer ein Backup der Originaldateien angelegt werden, auch wenn die Konversion scheinbar problemlos erfolgte.">
+<!ENTITY introduction.visitwebsite.label "Bitte konsultieren Sie die Online-Dokumentation für ausführlichere Beschreibungen.">
 <!ENTITY introduction.continue.label "$1 klicken um zu beginnen.">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Ein- und Ausgabeformat">
@@ -51,8 +51,8 @@
 <!ENTITY folders.bin.folder.accesskey "v">
 <!ENTITY folders.dest.invalid.label "Bitte den gesamten Ordnernamen angeben.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY candidates.pagelabel "Konbertierung">
-<!ENTITY candidates.description "Bitte wählen Sie aus der untenstehenden Liste die Dateien aus, die konvertiert werden sollen.">
+<!ENTITY candidates.pagelabel "Konvertierung">
+<!ENTITY candidates.description "Bitte wählen Sie aus der unten stehenden Liste die Dateien aus, die konvertiert werden sollen.">
 <!ENTITY candidates.sourcename.header "Quelldateiname">
 <!ENTITY candidates.sourcedatafoldername.header "Unterstützungsordnername">
 <!ENTITY candidates.relativepath.header "Unterordner">
@@ -67,6 +67,6 @@
 <!ENTITY candidates.invalid.label "Bitte mindestens eine Datei zum Konvertieren auswählen.">
 <!ENTITY candidates.convert.label "Konvertieren klicken, um die Konvertierung zu starten.">
 <!ENTITY candidates.converting.label "Dateien werden konvertiert...">
-<!ENTITY candidates.finish.label "Bitte die Konversions-Resultate durchsehen und dann $1 klicken, um das Fenster zu schliessen.">
+<!ENTITY candidates.finish.label "Bitte die Konversions-Resultate durchsehen und dann $1 klicken, um das Fenster zu schließen.">
 <!ENTITY candidates.convertbutton.label "Konvertieren">
 <!ENTITY candidates.convertbutton.accesskey "K">

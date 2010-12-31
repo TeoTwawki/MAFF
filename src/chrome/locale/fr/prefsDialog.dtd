@@ -1,5 +1,5 @@
 <!-- General window controls -->
-<!ENTITY window.title.v2 "Mozilla Archive Format Options">
+<!ENTITY window.title.v2 "Options de Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Général">
 <!ENTITY save.component.grouplabel "Lors de la sauvegarde du contenu complet des pages web :">
@@ -13,7 +13,7 @@
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "Pour le nom de fichier suggéré :">
 <!ENTITY save.namingstrategy.standard.label "Utiliser la stratégie de nommage standard du navigateur">
-<!ENTITY save.namingstrategy.standard.accesskey "w">
+<!ENTITY save.namingstrategy.standard.accesskey "d">
 <!ENTITY save.namingstrategy.pagetitle.label "Utiliser le titre de la page lorsque possible">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!-- Interface pane -->
@@ -25,12 +25,12 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
 <!ENTITY iconlocation.status.label "Barre d'état">
 <!ENTITY iconlocation.status.accesskey "t">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
+<!ENTITY iconlocation.addonbar.label "Barre des modules">
 <!ENTITY iconlocation.addonbar.accesskey "o">
 <!ENTITY iconlocation.none.label "Rien">
 <!ENTITY iconlocation.none.accesskey "R">
 <!ENTITY menu.grouplabel "Afficher les menus MAF dans :">
-<!ENTITY menu.app.label "$brandShortName menu">
+<!ENTITY menu.app.label "menu $brandShortName">
 <!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "Menu Fichier">
 <!ENTITY menu.file.accesskey "F">
@@ -38,17 +38,17 @@
 <!ENTITY menu.tools.accesskey "O">
 <!ENTITY menu.pagecontext.label "Menu contextuel des pages">
 <!ENTITY menu.pagecontext.accesskey "p">
-<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
-<!ENTITY menu.pagecontext.tabs.accesskey "h">
+<!ENTITY menu.pagecontext.tabs.label "Afficher les éléments pour enregistrer les onglets">
+<!ENTITY menu.pagecontext.tabs.accesskey "f">
 <!ENTITY menu.tabscontext.label "Menu contextuel de la barre d'onglets">
 <!ENTITY menu.tabscontext.accesskey "x">
 <!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.actions.label "Actions">
-<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
-<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
-<!ENTITY action.showwelcomepage.label "Show Welcome Page">
-<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
-<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
-<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
-<!ENTITY action.visitwebsite.label "Visit Website">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">
+<!ENTITY action.convertsavedpages.label "Convertir les pages enregistrées">
+<!ENTITY action.convertsavedpages.description "L'assistant de conversion de pages enregistrées vous guidera à travers le processus de conversion de pages web enregistrées précédemment dans un autre format.">
+<!ENTITY action.showwelcomepage.label "Afficher la page d'accueil">
+<!ENTITY action.showwelcomepage.description "La page d'accueil est affichée la première fois que cette extension est installée, et fourni un survol de ses fonctionnalités. L'afficher à nouveau est utile aux traducteurs qui souhaitent vérifier la qualité de leur travail.">
+<!ENTITY action.showwelcomepageassociate.label "Rafraîchir les associations de fichier">
+<!ENTITY action.showwelcomepageassociate.description "De la page d'accueil, vous pouvez choisir quels formats d'archive web vous souhaitez ouvrir avec $brandShortName, et rafraîchir les associations de fichiers au cas où elles auraient été modifiées par une autre application.">
+<!ENTITY action.visitwebsite.label "Visiter le site web">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format s'intègre à $brandShortName et propose de nombreuses améliorations en plus des fonctionnalités les plus visibles. Pour une description complète de ces fonctionnalités, des informations sur le format MAFF et une documentation avancée des options de configuration, vous pouvez visiter le site officiel.">

@@ -1,15 +1,15 @@
 <!-- *** Note *** -->
 <!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Konverteringsguide för sparade sidor">
+<!ENTITY window.title "Konverteringsguiden för sparade sidor">
 <!ENTITY browsebutton.label "Bläddra...">
 <!ENTITY continue.label "För att fortsätta, klicka på $1.">
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Välkommen till konverteringsguiden för sparade sidor">
 <!ENTITY introduction.para1.description "Den här guiden kommer att leda dig igenom konverteringen av dina tidigare sparade webbsidor till ett annat filformat.">
 <!ENTITY introduction.para2.description "Den här metoden är lämplig vid konvertering av flera sidor på samma gång. Om du vill konvertera enstaka sidor, så öppnar du dem helt enkelt i webbläsaren och sparar dem i ett annat format.">
-<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
-<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
+<!ENTITY introduction.visitwebsite.description "Även om konverteringsprocessen i de flesta fall fungerar smidigt kan ibland resultatet skilja sig en del från originalet, beroende på de filformat och sparalternativ som valts. Dessutom bevaras endast den första sidan vid konvertering av ett flersidesarkiv till ett ensidesformat. Det rekommenderas att du behåller en kopia av dina originalfiler även efter en lyckad konvertering.">
+<!ENTITY introduction.visitwebsite.label "Läs onlinedokumentationen för närmare detaljer.">
 <!ENTITY introduction.continue.label "För att sätta igång, klicka på $1.">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Indata- och utdataformat">

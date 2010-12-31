@@ -1,5 +1,5 @@
 <!-- General window controls -->
-<!ENTITY window.title.v2 "Mozilla Archive Format Options">
+<!ENTITY window.title.v2 "Opzioni di Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Principale">
 <!ENTITY save.component.grouplabel "Quando si salva il contenuto completo di una pagina:">
@@ -25,30 +25,30 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
 <!ENTITY iconlocation.status.label "Barra di stato">
 <!ENTITY iconlocation.status.accesskey "s">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
-<!ENTITY iconlocation.addonbar.accesskey "o">
+<!ENTITY iconlocation.addonbar.label "Barra delle aggiunte">
+<!ENTITY iconlocation.addonbar.accesskey "B">
 <!ENTITY iconlocation.none.label "Nessuna">
 <!ENTITY iconlocation.none.accesskey "e">
 <!ENTITY menu.grouplabel "Mostra voci di menu di Mozilla Archive Format in:">
-<!ENTITY menu.app.label "$brandShortName menu">
-<!ENTITY menu.app.accesskey "m">
+<!ENTITY menu.app.label "Menu $brandShortName">
+<!ENTITY menu.app.accesskey "M">
 <!ENTITY menu.file.label "Menu File">
 <!ENTITY menu.file.accesskey "F">
 <!ENTITY menu.tools.label "Menu Strumenti">
-<!ENTITY menu.tools.accesskey "e">
+<!ENTITY menu.tools.accesskey "n">
 <!ENTITY menu.pagecontext.label "Menu contestuale della pagina">
 <!ENTITY menu.pagecontext.accesskey "o">
-<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
-<!ENTITY menu.pagecontext.tabs.accesskey "h">
+<!ENTITY menu.pagecontext.tabs.label "Mostra voci per salvare le schede">
+<!ENTITY menu.pagecontext.tabs.accesskey "t">
 <!ENTITY menu.tabscontext.label "Menu contestuale della barra delle schede">
 <!ENTITY menu.tabscontext.accesskey "b">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.actions.label "Actions">
-<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
-<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
-<!ENTITY action.showwelcomepage.label "Show Welcome Page">
-<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
-<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
-<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
-<!ENTITY action.visitwebsite.label "Visit Website">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">
+<!ENTITY pane.actions.label "Azioni">
+<!ENTITY action.convertsavedpages.label "Converti pagine salvate">
+<!ENTITY action.convertsavedpages.description "La conversione guidata pagine salvate permette di convertire le pagine web salvate in precedenza in un formato di file differente.">
+<!ENTITY action.showwelcomepage.label "Mostra pagina di benvenuto">
+<!ENTITY action.showwelcomepage.description "La pagina di benvenuto è visualizzata durante la prima installazione di questa aggiunta, e fornisce una panoramica delle sue caratteristiche. Mostrarla di nuovo è utile in particolare ai traduttori che volessero controllare la qualità del proprio lavoro.">
+<!ENTITY action.showwelcomepageassociate.label "Aggiorna associazioni dei file">
+<!ENTITY action.showwelcomepageassociate.description "Dalla pagina di benvenuto, è possibile scegliere quali tipi di file di archivio web si desidera aprire con $brandShortName, nonché aggiornare le associazioni dei file nel caso in cui siano state cambiate da un'altra applicazione.">
+<!ENTITY action.visitwebsite.label "Visita il sito web">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format si integra appieno con $brandShortName e fornisce numerosi miglioramenti in aggiunta alle caratteristiche più evidenti. Per una descrizione esauriente delle caratteristiche, informazioni sul formato di file MAFF e documentazione delle opzioni avanzate di configurazione, è possibile visitare il sito web ufficiale.">

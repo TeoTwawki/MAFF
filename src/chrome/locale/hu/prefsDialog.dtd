@@ -1,12 +1,12 @@
 <!-- General window controls -->
-<!ENTITY window.title.v2 "Mozilla Archive Format Options">
+<!ENTITY window.title.v2 "Mozilla Archív Formátum beállítások">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Főoldal">
 <!ENTITY save.component.grouplabel "Teljes weboldal tartalom mentésekor:">
 <!ENTITY save.component.standard.label "Használja az általános mentési rendszert">
-<!ENTITY save.component.standard.accesskey "m">
-<!ENTITY save.component.completesave.label "Őrizze meg a scripteket és forrást a &quot;Teljes mentése&quot; használatakor">
-<!ENTITY save.component.completesave.accesskey "s">
+<!ENTITY save.component.standard.accesskey "á">
+<!ENTITY save.component.completesave.label "Őrizze meg a scripteket és forrást a &quot;Teljes mentés&quot; használatakor">
+<!ENTITY save.component.completesave.accesskey "T">
 <!ENTITY save.component.exactpersist.label "Készítsen hiteles pillanatfelvételt az oldalról">
 <!ENTITY save.component.exactpersist.accesskey "p">
 <!ENTITY save.mhtml.compatible.label "Készítsen más böngészőkkel teljesen kompatibilis MHTML fájlokat">
@@ -21,16 +21,16 @@
 <!ENTITY iconlocation.grouplabel "A Mozilla Archív Formátum ikon megjelenjen:">
 <!ENTITY iconlocation.urlbar.label "Címsorban">
 <!ENTITY iconlocation.urlbar.accesskey "C">
-<!ENTITY iconlocation.urlbar-autohide.label "Címsorban, de csak archívált oldalaknál">
+<!ENTITY iconlocation.urlbar-autohide.label "Címsorban, de csak archivált oldalaknál">
 <!ENTITY iconlocation.urlbar-autohide.accesskey "a">
 <!ENTITY iconlocation.status.label "Állapotsoron">
 <!ENTITY iconlocation.status.accesskey "Á">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
+<!ENTITY iconlocation.addonbar.label "Kiegészítő eszköztár">
 <!ENTITY iconlocation.addonbar.accesskey "o">
 <!ENTITY iconlocation.none.label "Sehol">
 <!ENTITY iconlocation.none.accesskey "S">
 <!ENTITY menu.grouplabel "A Mozilla Archív Formátum menüelemei megjelenjen:">
-<!ENTITY menu.app.label "$brandShortName menu">
+<!ENTITY menu.app.label "$brandShortName menü">
 <!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "Fájl menüben">
 <!ENTITY menu.file.accesskey "F">
@@ -38,17 +38,17 @@
 <!ENTITY menu.tools.accesskey "E">
 <!ENTITY menu.pagecontext.label "Oldal helyi menüjében">
 <!ENTITY menu.pagecontext.accesskey "O">
-<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
+<!ENTITY menu.pagecontext.tabs.label "Mentett fülek elemeinek mutatása">
 <!ENTITY menu.pagecontext.tabs.accesskey "h">
 <!ENTITY menu.tabscontext.label "Lap eszköztár helyi menüjében">
 <!ENTITY menu.tabscontext.accesskey "L">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.actions.label "Actions">
-<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
-<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
-<!ENTITY action.showwelcomepage.label "Show Welcome Page">
-<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
-<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
-<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
-<!ENTITY action.visitwebsite.label "Visit Website">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">
+<!ENTITY pane.actions.label "Akciók">
+<!ENTITY action.convertsavedpages.label "Mentett oldalak konvertálása">
+<!ENTITY action.convertsavedpages.description "A Mentett Oldalak Konvertáló Varázslója végigvezet a korábban elmentett weboldalak különböző fájlformátumokká konvertálásán.">
+<!ENTITY action.showwelcomepage.label "Üdvözlő oldal mutatása">
+<!ENTITY action.showwelcomepage.description "Az üdvözlő oldal a kiegészítő telepítése után jelenik meg először és egy áttekintést nyújt a jellemzőkről. Későbbi megjelenítése a fordítóknak a leghasznosabb, akik ellenőrizni akarják munkájuk minőségét.">
+<!ENTITY action.showwelcomepageassociate.label "Fájltársítások frissítése">
+<!ENTITY action.showwelcomepageassociate.description "Az üdvözlő oldalon ki tudod választani, hogy melyik webarchívum fájltípust akarod a $brandShortName böngészővel megnyitni, és itt tudod frissíteni a fájltársításokat is, ha egy másik alkalmazás megváltoztatta.">
+<!ENTITY action.visitwebsite.label "Weboldal meglátogatása">
+<!ENTITY action.visitwebsite.description "Mozilla Archív Formátum zökkenőmentesen integrálható a $brandShortName böngészőbe és a hozzáadás több jellemző kiterjesztését eredményezi. A jellemzők átfogó leírásáért, a MAFF fájlformátummal kapcsolatos információért és a haladó beállítási lehetőségek dokumentációjáért látogasd meg a hivatalos weboldalt.">

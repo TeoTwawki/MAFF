@@ -1,12 +1,12 @@
 <!-- *** Welcome message and feature presentation *** -->
-<!ENTITY page.title "Welcome">
-<!ENTITY welcome.label "Thank you for installing Mozilla Archive Format!">
-<!ENTITY features.header.label "Many features of $brandShortName have been improved by this add-on.">
-<!ENTITY features.headerfromupdate.label "Your add-on has been updated to the latest major version.">
-<!ENTITY features.item1.label "Web pages are saved more accurately, what you see is what you get.">
-<!ENTITY features.item2.label "You can save one or more tabs in a single file (web archive).">
-<!ENTITY features.item3.label "The title of the document is now the default file name.">
-<!ENTITY features.item4.label "You can save HTML 5 video and audio, and more!">
+<!ENTITY page.title "Herzlich Willkommen">
+<!ENTITY welcome.label "Gratulation zur Installation des Mozilla Archive Formats!">
+<!ENTITY features.header.label "Durch diese Add-On wurden ihrem $brandShortName viele neue Funktionen hinzugefügt.">
+<!ENTITY features.headerfromupdate.label "Diese Add-on wurde auf die neueste Version geupdated.">
+<!ENTITY features.item1.label "Webseiten werden nun originalgetreuer gespeichert - what you see is what you get.">
+<!ENTITY features.item2.label "Mehrere Tabs können in einer Datei gespeichert werden (WebArchive).">
+<!ENTITY features.item3.label "Der Standardname des WebArchives ist der Titel der Web-Seite.">
+<!ENTITY features.item4.label "Es kann HMTL5 inklusive Video und Audio gespeichert werden und noch viel mehr!">
 <!ENTITY features.footer.label "You can control which features are enabled from the extension's options.">
 <!ENTITY features.link.label "Visit the website to discover all the other features.">
 <!-- *** File associations *** -->
@@ -17,6 +17,6 @@
 <!ENTITY associate.mhtml.accesskey "H">
 <!ENTITY associate.explanation1.label "If unsure, leave both options selected. They will become effective when this page is closed.">
 <!ENTITY associate.explanation2.label "You can change your preference at any time from the control panel of your operating system.">
-<!ENTITY associate.error.title "Error While Creating File Associations">
-<!ENTITY associate.error.msg "An error occurred while configuring your file manager: $1.">
+<!ENTITY associate.error.title "Fehler beim Erstellen der Datei-Assoziationen">
+<!ENTITY associate.error.msg "Ein Fehler ist aufgetreten beim Konfigurieren des Dateimanagers: $1">
 <!ENTITY associate.errortip.msg "In order to open web archives with $brandShortName, you should create the required file associations manually from the control panel of your operating system, or retry the operation from the Mozilla Archive Format options window.">

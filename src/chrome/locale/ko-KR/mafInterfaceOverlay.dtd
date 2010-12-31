@@ -12,5 +12,5 @@
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "열린 아카이브 검색">
 <!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.options.label "Options…">
+<!ENTITY commands.options.label "설정">
 <!ENTITY commands.options.accesskey "O">

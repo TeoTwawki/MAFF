@@ -7,31 +7,31 @@
 <!ENTITY menuitem.browseopenarchives.label "Megnyitott archívumok böngészése...">
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "a">
 <!ENTITY menuitem.convertsavedpages.label "Mentett oldalak konvertálása...">
-<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "k">
-<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
-<!ENTITY menuitem.options.label "Options…">
-<!ENTITY menuitem.options.accesskey.toolsmenu "O">
+<!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "M">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "M">
+<!ENTITY menuitem.options.label "Beállítások...">
+<!ENTITY menuitem.options.accesskey.toolsmenu "B">
 <!-- Additional menu items for the "Save As" command -->
-<!ENTITY menuitem.savetabsinarchiveas.label "Save Tabs In Archive As…">
-<!ENTITY menuitem.savetabsinarchive.label "Save Tabs In Archive…">
-<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "b">
-<!ENTITY menuitem.savetabsinarchive.accesskey.toolsmenu "b">
-<!ENTITY menuitem.savetabsinarchive.accesskey.pagecontextmenu "b">
-<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "b">
-<!ENTITY menuitem.savealltabsinarchiveas.label "Save All Tabs In Archive As…">
-<!ENTITY menuitem.savealltabsinarchive.label "Save All Tabs In Archive">
-<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
-<!ENTITY menuitem.savealltabsinarchive.accesskey.toolsmenu "S">
+<!ENTITY menuitem.savetabsinarchiveas.label "Kiválasztott lapok mentése...">
+<!ENTITY menuitem.savetabsinarchive.label "Kiválasztott lapok mentése archívumba">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "K">
+<!ENTITY menuitem.savetabsinarchive.accesskey.toolsmenu "K">
+<!ENTITY menuitem.savetabsinarchive.accesskey.pagecontextmenu "K">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "K">
+<!ENTITY menuitem.savealltabsinarchiveas.label "Minden lap mentése...">
+<!ENTITY menuitem.savealltabsinarchive.label "Minden lap mentése archívumba">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "M">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.toolsmenu "M">
 <!ENTITY menuitem.savealltabsinarchive.accesskey.pagecontextmenu "A">
-<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "M">
 <!-- Additional menu items for the "Save In Archive" command -->
-<!ENTITY menuitem.savepageinarchiveas.label "Save Page In Archive As…">
-<!ENTITY menuitem.savepageinarchive.label.v2 "Save Page In Archive">
-<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "O">
-<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "O">
-<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "O">
-<!ENTITY menuitem.saveframeinarchiveas.label "Save Frame In Archive As…">
-<!ENTITY menuitem.saveframeinarchive.label.v2 "Save Frame In Archive">
+<!ENTITY menuitem.savepageinarchiveas.label "Lap mentése...">
+<!ENTITY menuitem.savepageinarchive.label.v2 "Lap mentése archívumba">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "L">
+<!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "L">
+<!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "L">
+<!ENTITY menuitem.saveframeinarchiveas.label "Keret mentése...">
+<!ENTITY menuitem.saveframeinarchive.label.v2 "Keret mentése archívumba">
 <!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "K">
 <!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "K">
 <!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "K">

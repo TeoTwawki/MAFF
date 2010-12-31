@@ -1,5 +1,5 @@
 <!-- General window controls -->
-<!ENTITY window.title.v2 "Mozilla Archive Format Options">
+<!ENTITY window.title.v2 "Mozilla Archive Format 설정">
 <!-- Main pane -->
 <!ENTITY pane.main.label "메인">
 <!ENTITY save.component.grouplabel "전체 웹페이지의 내용을 저장할 때:">
@@ -25,7 +25,7 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
 <!ENTITY iconlocation.status.label "상태 표시줄">
 <!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
+<!ENTITY iconlocation.addonbar.label "부가 기능 모음">
 <!ENTITY iconlocation.addonbar.accesskey "o">
 <!ENTITY iconlocation.none.label "없음">
 <!ENTITY iconlocation.none.accesskey "N">

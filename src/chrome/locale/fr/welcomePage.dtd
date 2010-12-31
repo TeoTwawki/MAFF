@@ -1,22 +1,22 @@
 <!-- *** Welcome message and feature presentation *** -->
-<!ENTITY page.title "Welcome">
-<!ENTITY welcome.label "Thank you for installing Mozilla Archive Format!">
-<!ENTITY features.header.label "Many features of $brandShortName have been improved by this add-on.">
-<!ENTITY features.headerfromupdate.label "Your add-on has been updated to the latest major version.">
-<!ENTITY features.item1.label "Web pages are saved more accurately, what you see is what you get.">
-<!ENTITY features.item2.label "You can save one or more tabs in a single file (web archive).">
-<!ENTITY features.item3.label "The title of the document is now the default file name.">
-<!ENTITY features.item4.label "You can save HTML 5 video and audio, and more!">
-<!ENTITY features.footer.label "You can control which features are enabled from the extension's options.">
-<!ENTITY features.link.label "Visit the website to discover all the other features.">
+<!ENTITY page.title "Bienvenue">
+<!ENTITY welcome.label "Merci d'avoir installé Mozilla Archive Format !">
+<!ENTITY features.header.label "De nombreuses fonctionnalités de $brandShortName ont été améliorées par cette extension.">
+<!ENTITY features.headerfromupdate.label "Votre extension a été mise à jour à la dernière version majeure.">
+<!ENTITY features.item1.label "Les pages web sont enregistrées plus correctement, ce que vous voyez est ce que vous obtenez.">
+<!ENTITY features.item2.label "Vous pouvez enregistrer plus qu'un onglet dans un seul fichier (archive web)">
+<!ENTITY features.item3.label "Le titre du document est maintenant le nom du fichier par défaut.">
+<!ENTITY features.item4.label "Vous pouvez enregistrer les sons et vidéos HTML 5, et bien plus encore !">
+<!ENTITY features.footer.label "Vous pouvez contrôler quelles fonctionnalités sont activées depuis les options de l'extension.">
+<!ENTITY features.link.label "Visitez le site web pour découvrir toutes les autres fonctionnalités.">
 <!-- *** File associations *** -->
-<!ENTITY associate.question.label "Do you want to open these web archive file types with $brandShortName?">
+<!ENTITY associate.question.label "Souhaitez-vous ouvrir ces types d'archives web avec $brandShortName ?">
 <!ENTITY associate.maff.label "MAFF">
 <!ENTITY associate.maff.accesskey "M">
 <!ENTITY associate.mhtml.label "MHTML">
 <!ENTITY associate.mhtml.accesskey "H">
-<!ENTITY associate.explanation1.label "If unsure, leave both options selected. They will become effective when this page is closed.">
-<!ENTITY associate.explanation2.label "You can change your preference at any time from the control panel of your operating system.">
-<!ENTITY associate.error.title "Error While Creating File Associations">
-<!ENTITY associate.error.msg "An error occurred while configuring your file manager: $1.">
-<!ENTITY associate.errortip.msg "In order to open web archives with $brandShortName, you should create the required file associations manually from the control panel of your operating system, or retry the operation from the Mozilla Archive Format options window.">
+<!ENTITY associate.explanation1.label "Si vous ne savez pas, laissez les deux options sélectionnées. Elles seront appliquées lorsque cette page sera fermée.">
+<!ENTITY associate.explanation2.label "Vous pouvez changer vos préférences à tout moment depuis le panneau de configuration de votre système d'exploitation.">
+<!ENTITY associate.error.title "Erreur lors de la création des associations de fichier">
+<!ENTITY associate.error.msg "Une erreur est survenue lors de la configuration de votre gestionnaire de fichiers: $1.">
+<!ENTITY associate.errortip.msg "Pour ouvrir les archives web avec $brandShortName, vous devriez créer les associations de fichiers manuellement depuis le panneau de configuration de votre système d'exploitation, ou réessayer d'effectuer cette opération depuis la fenêtre d'options de Mozilla Archive Format.">

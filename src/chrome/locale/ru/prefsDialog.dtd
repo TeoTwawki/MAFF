@@ -1,5 +1,5 @@
 <!-- General window controls -->
-<!ENTITY window.title.v2 "Mozilla Archive Format Options">
+<!ENTITY window.title.v2 "Настройки Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Основные">
 <!ENTITY save.component.grouplabel "При сохранении веб-страницы полностью:">
@@ -25,30 +25,30 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "т">
 <!ENTITY iconlocation.status.label "в строке состояния">
 <!ENTITY iconlocation.status.accesskey "с">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
-<!ENTITY iconlocation.addonbar.accesskey "o">
+<!ENTITY iconlocation.addonbar.label "на панели дополнений">
+<!ENTITY iconlocation.addonbar.accesskey "д">
 <!ENTITY iconlocation.none.label "нигде">
 <!ENTITY iconlocation.none.accesskey "н">
 <!ENTITY menu.grouplabel "Показывать пункты меню Mozilla Archive Format:">
-<!ENTITY menu.app.label "$brandShortName menu">
-<!ENTITY menu.app.accesskey "m">
+<!ENTITY menu.app.label "в меню $brandShortName">
+<!ENTITY menu.app.accesskey "м">
 <!ENTITY menu.file.label "в меню Файл">
 <!ENTITY menu.file.accesskey "Ф">
 <!ENTITY menu.tools.label "в меню Инструменты">
 <!ENTITY menu.tools.accesskey "И">
 <!ENTITY menu.pagecontext.label "в контекстном меню страницы">
 <!ENTITY menu.pagecontext.accesskey "к">
-<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
-<!ENTITY menu.pagecontext.tabs.accesskey "h">
+<!ENTITY menu.pagecontext.tabs.label "Показывать пункты сохранения вкладок">
+<!ENTITY menu.pagecontext.tabs.accesskey "л">
 <!ENTITY menu.tabscontext.label "в контекстном меню вкладки">
 <!ENTITY menu.tabscontext.accesskey "в">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.actions.label "Actions">
-<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
-<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
-<!ENTITY action.showwelcomepage.label "Show Welcome Page">
-<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
-<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
-<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
-<!ENTITY action.visitwebsite.label "Visit Website">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">
+<!ENTITY pane.actions.label "Действия">
+<!ENTITY action.convertsavedpages.label "Преобразовать сохраненные страницы">
+<!ENTITY action.convertsavedpages.description "Мастер преобразования сохраненных страниц поможет вам пересохранить имеющиеся архивы в другом файловом формате.">
+<!ENTITY action.showwelcomepage.label "Показать страницу приветствия">
+<!ENTITY action.showwelcomepage.description "Страница приветствия показывается после первой установки дополнения и содержит обзор его функций. Повторный показ может пригодиться переводчикам для проверки качества перевода.">
+<!ENTITY action.showwelcomepageassociate.label "Обновить файловые ассоциации">
+<!ENTITY action.showwelcomepageassociate.description "На странице приветствия можно выбрать, какие типы веб-архивов будут открываться с помощью вашего браузера, и восстановить файловые ассоциации, если они были изменены другим приложением.">
+<!ENTITY action.visitwebsite.label "Посетить домашнюю страницу MAF">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format тесно взаимодействует с $brandShortName и вносит много других улучшений. Полный список функций, а также документацию по файловому формату MAFF и дополнительным настройкам вы можете найти на официальном веб-сайте (на английском).">

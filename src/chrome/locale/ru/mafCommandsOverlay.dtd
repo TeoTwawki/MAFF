@@ -8,30 +8,30 @@
 <!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "С">
 <!ENTITY menuitem.convertsavedpages.label "Преобразовать сохраненные страницы…">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "П">
-<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
-<!ENTITY menuitem.options.label "Options…">
-<!ENTITY menuitem.options.accesskey.toolsmenu "O">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "П">
+<!ENTITY menuitem.options.label "Настройки MAF…">
+<!ENTITY menuitem.options.accesskey.toolsmenu "Н">
 <!-- Additional menu items for the "Save As" command -->
-<!ENTITY menuitem.savetabsinarchiveas.label "Save Tabs In Archive As…">
-<!ENTITY menuitem.savetabsinarchive.label "Save Tabs In Archive…">
-<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "b">
-<!ENTITY menuitem.savetabsinarchive.accesskey.toolsmenu "b">
-<!ENTITY menuitem.savetabsinarchive.accesskey.pagecontextmenu "b">
-<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "b">
-<!ENTITY menuitem.savealltabsinarchiveas.label "Save All Tabs In Archive As…">
-<!ENTITY menuitem.savealltabsinarchive.label "Save All Tabs In Archive">
-<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
-<!ENTITY menuitem.savealltabsinarchive.accesskey.toolsmenu "S">
-<!ENTITY menuitem.savealltabsinarchive.accesskey.pagecontextmenu "A">
-<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!ENTITY menuitem.savetabsinarchiveas.label "Сохранить вкладки в архив как…">
+<!ENTITY menuitem.savetabsinarchive.label "Сохранить вкладки в архив…">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "ь">
+<!ENTITY menuitem.savetabsinarchive.accesskey.toolsmenu "ь">
+<!ENTITY menuitem.savetabsinarchive.accesskey.pagecontextmenu "ь">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "ь">
+<!ENTITY menuitem.savealltabsinarchiveas.label "Сохранить все вкладки в архив как…">
+<!ENTITY menuitem.savealltabsinarchive.label "Сохранить все вкладки в архив">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "и">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.toolsmenu "и">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.pagecontextmenu "и">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "и">
 <!-- Additional menu items for the "Save In Archive" command -->
-<!ENTITY menuitem.savepageinarchiveas.label "Save Page In Archive As…">
-<!ENTITY menuitem.savepageinarchive.label.v2 "Save Page In Archive">
+<!ENTITY menuitem.savepageinarchiveas.label "Сохранить страницу в архив как…">
+<!ENTITY menuitem.savepageinarchive.label.v2 "Сохранить страницу в архив">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "ц">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "ц">
 <!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "ц">
-<!ENTITY menuitem.saveframeinarchiveas.label "Save Frame In Archive As…">
-<!ENTITY menuitem.saveframeinarchive.label.v2 "Save Frame In Archive">
+<!ENTITY menuitem.saveframeinarchiveas.label "Сохранить фрейм в архив как…">
+<!ENTITY menuitem.saveframeinarchive.label.v2 "Сохранить фрейм в архив">
 <!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "ф">
 <!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "ф">
 <!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "ф">

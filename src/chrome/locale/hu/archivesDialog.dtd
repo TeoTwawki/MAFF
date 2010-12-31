@@ -52,7 +52,7 @@
 <!ENTITY openintabsbutton.accesskey.directarchiveuri "M">
 <!-- *** Other controls *** -->
 <!-- Allows the user to add archives to the list, without opening them -->
-<!ENTITY addbutton.label "Hozzáadás…">
+<!ENTITY addbutton.label "Hozzáadás...">
 <!ENTITY addbutton.accesskey "H">
 <!-- Title of the add archives dialog -->
 <!ENTITY addfilepicker.title "Több webarchívum hozzáadása">

@@ -8,8 +8,8 @@
 <!ENTITY introduction.pagelabel "Вас приветствует Мастер преобразования сохраненных страниц">
 <!ENTITY introduction.para1.description "Этот мастер поможет вам изменить формат файлов ранее сохраненных веб-страниц.">
 <!ENTITY introduction.para2.description "Мастер предназначен для обработки нескольких страниц, чтобы преобразовать единственную страницу, просто откройте ее в браузере и сохраните в другом формате.">
-<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
-<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
+<!ENTITY introduction.visitwebsite.description "Хотя преобразование в большинстве случаев проходит гладко, иногда, в зависимости от выбранного формата и настроек сохранения, результат не полностью соответствует оригиналу. Кроме того, при преобразовании многостраничного архива в одностраничный формат сохраняется только первая страница. Поэтому не рекомендуется удалять оригинальные файлы даже после успешного преобразования.">
+<!ENTITY introduction.visitwebsite.label "Подробная информация на веб-сайте MAF">
 <!ENTITY introduction.continue.label "Щелкните $1, чтобы начать.">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Входные и выходные форматы">

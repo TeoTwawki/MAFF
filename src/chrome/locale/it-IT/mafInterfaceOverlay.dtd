@@ -12,5 +12,5 @@
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "Sfoglia archivi aperti…">
 <!ENTITY commands.browseopenarchives.accesskey "S">
-<!ENTITY commands.options.label "Options…">
+<!ENTITY commands.options.label "Opzioni…">
 <!ENTITY commands.options.accesskey "O">

@@ -1,5 +1,5 @@
 <!-- General window controls -->
-<!ENTITY window.title.v2 "Mozilla Archive Format Options">
+<!ENTITY window.title.v2 "Možnosti rozšíření Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Hlavní">
 <!ENTITY save.component.grouplabel "Obsah uložených stránek">
@@ -25,8 +25,8 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "d">
 <!ENTITY iconlocation.status.label "Stavová lišta">
 <!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
-<!ENTITY iconlocation.addonbar.accesskey "o">
+<!ENTITY iconlocation.addonbar.label "Lišta rozšíření">
+<!ENTITY iconlocation.addonbar.accesskey "L">
 <!ENTITY iconlocation.none.label "Nic">
 <!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.grouplabel "Zobrazit položky menu MAF v:">
@@ -36,19 +36,19 @@
 <!ENTITY menu.file.accesskey "o">
 <!ENTITY menu.tools.label "Nástroje">
 <!ENTITY menu.tools.accesskey "r">
-<!ENTITY menu.pagecontext.label "Kontextovém menu stránky">
+<!ENTITY menu.pagecontext.label "Kontextové menu stránky">
 <!ENTITY menu.pagecontext.accesskey "K">
-<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
-<!ENTITY menu.pagecontext.tabs.accesskey "h">
-<!ENTITY menu.tabscontext.label "Kontextovém menu panelu">
+<!ENTITY menu.pagecontext.tabs.label "Zobrazit položky pro ukládání karet">
+<!ENTITY menu.pagecontext.tabs.accesskey "Z">
+<!ENTITY menu.tabscontext.label "Kontextové menu panelu">
 <!ENTITY menu.tabscontext.accesskey "x">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.actions.label "Actions">
-<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
-<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
-<!ENTITY action.showwelcomepage.label "Show Welcome Page">
-<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
-<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
-<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
-<!ENTITY action.visitwebsite.label "Visit Website">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">
+<!ENTITY pane.actions.label "Akce">
+<!ENTITY action.convertsavedpages.label "Konverze uložených stránek">
+<!ENTITY action.convertsavedpages.description "Pomocník konverze uložených stránek Vám pomůže dříve uložené stránky převést do jiného formátu">
+<!ENTITY action.showwelcomepage.label "Zobrazit uvítací stránku">
+<!ENTITY action.showwelcomepage.description "Úvodní stránka se zobrazí poprvé po instalaci doplňku a poskytne přehled o jeho funkcích. Další zobrazování stránky použijí překladatelé, když chtějí zkontrolovat kvalitu své práce.">
+<!ENTITY action.showwelcomepageassociate.label "Obnovit asociace souborů">
+<!ENTITY action.showwelcomepageassociate.description "Na úvodní stránce si můžete vybrat, které webové archivy chcete otevírat pomocí prohlížeče $brandShortName a můžete obnovit asociace souborů v případě, že byly změněny jinou aplikací.">
+<!ENTITY action.visitwebsite.label "Navštívit domácí webovou stránku rozšíření">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format se hladce integruje s prohlížečem $brandShortName a poskytuje kromě nejviditelnějších vlastností spoustu dalších vylepšení. Komplexní popis funkcí, informace o formátu MAFF a dokumentaci pokročilých možností nastavení najdete na oficiální webové stránce.">

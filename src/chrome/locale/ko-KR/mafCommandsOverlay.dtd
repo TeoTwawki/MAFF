@@ -9,7 +9,7 @@
 <!ENTITY menuitem.convertsavedpages.label "저장된 페이지 변환">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
-<!ENTITY menuitem.options.label "Options…">
+<!ENTITY menuitem.options.label "설정">
 <!ENTITY menuitem.options.accesskey.toolsmenu "O">
 <!-- Additional menu items for the "Save As" command -->
 <!ENTITY menuitem.savetabsinarchiveas.label "Save Tabs In Archive As…">

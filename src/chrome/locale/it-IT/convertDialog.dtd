@@ -8,8 +8,8 @@
 <!ENTITY introduction.pagelabel "Benvenuti nella conversione guidata pagine salvate">
 <!ENTITY introduction.para1.description "Questa procedura guidata permette di convertire le pagine salvate in precedenza in un formato di file differente.">
 <!ENTITY introduction.para2.description "Questa procedura è adatta per convertire diverse pagine in una volta sola. Se si desidera convertire singole pagine, è possibile aprirle normalmente nel browser e salvarle in un altro formato.">
-<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
-<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
+<!ENTITY introduction.visitwebsite.description "Anche se il processo di conversione funziona senza problemi in molti casi, a volte il risultato potrebbe non essere completamente fedele all'originale, in base ai formati di file selezionati e alle opzioni di salvataggio. Inoltre, quando si converte un archivio con più pagine in un formato a pagina singola, solo la prima pagina è conservata. Si consiglia di mantenere una copia dei file originali anche dopo una conversione riuscita.">
+<!ENTITY introduction.visitwebsite.label "Leggere la documentazione in linea per i dettagli.">
 <!ENTITY introduction.continue.label "Per iniziare, fare clic su $1.">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Formati di ingresso e uscita">

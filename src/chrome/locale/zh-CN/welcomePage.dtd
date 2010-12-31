@@ -1,12 +1,12 @@
 <!-- *** Welcome message and feature presentation *** -->
-<!ENTITY page.title "Welcome">
-<!ENTITY welcome.label "Thank you for installing Mozilla Archive Format!">
-<!ENTITY features.header.label "Many features of $brandShortName have been improved by this add-on.">
+<!ENTITY page.title "欢迎">
+<!ENTITY welcome.label "感谢您安装 Mozilla 档案格式（Mozilla Archive Format）！">
+<!ENTITY features.header.label "本附加组件将改善 $brandShortName 的的诸多功能。">
 <!ENTITY features.headerfromupdate.label "Your add-on has been updated to the latest major version.">
-<!ENTITY features.item1.label "Web pages are saved more accurately, what you see is what you get.">
-<!ENTITY features.item2.label "You can save one or more tabs in a single file (web archive).">
-<!ENTITY features.item3.label "The title of the document is now the default file name.">
-<!ENTITY features.item4.label "You can save HTML 5 video and audio, and more!">
+<!ENTITY features.item1.label "网页将被更加完整、精确、所见即所得地保存。">
+<!ENTITY features.item2.label "可将单个或多个标签页存至单个文件（Web 档案）。">
+<!ENTITY features.item3.label "文档标题将成为默认的保存文件名。">
+<!ENTITY features.item4.label "HTML 5 视频与音频等将被存入！">
 <!ENTITY features.footer.label "You can control which features are enabled from the extension's options.">
 <!ENTITY features.link.label "Visit the website to discover all the other features.">
 <!-- *** File associations *** -->

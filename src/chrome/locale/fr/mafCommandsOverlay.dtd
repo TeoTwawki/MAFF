@@ -12,26 +12,26 @@
 <!ENTITY menuitem.options.label "Options…">
 <!ENTITY menuitem.options.accesskey.toolsmenu "O">
 <!-- Additional menu items for the "Save As" command -->
-<!ENTITY menuitem.savetabsinarchiveas.label "Save Tabs In Archive As…">
-<!ENTITY menuitem.savetabsinarchive.label "Save Tabs In Archive…">
-<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "b">
-<!ENTITY menuitem.savetabsinarchive.accesskey.toolsmenu "b">
-<!ENTITY menuitem.savetabsinarchive.accesskey.pagecontextmenu "b">
-<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "b">
-<!ENTITY menuitem.savealltabsinarchiveas.label "Save All Tabs In Archive As…">
-<!ENTITY menuitem.savealltabsinarchive.label "Save All Tabs In Archive">
+<!ENTITY menuitem.savetabsinarchiveas.label "Enregistrer les onglets dans l'archive sous…">
+<!ENTITY menuitem.savetabsinarchive.label "Enregistrer les onglets dans l'archive…">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "g">
+<!ENTITY menuitem.savetabsinarchive.accesskey.toolsmenu "g">
+<!ENTITY menuitem.savetabsinarchive.accesskey.pagecontextmenu "g">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "g">
+<!ENTITY menuitem.savealltabsinarchiveas.label "Enregistrer tous les onglets dans l'archive sous…">
+<!ENTITY menuitem.savealltabsinarchive.label "Enregistrer tous les onglets dans l'archive">
 <!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
 <!ENTITY menuitem.savealltabsinarchive.accesskey.toolsmenu "S">
 <!ENTITY menuitem.savealltabsinarchive.accesskey.pagecontextmenu "A">
 <!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
 <!-- Additional menu items for the "Save In Archive" command -->
-<!ENTITY menuitem.savepageinarchiveas.label "Save Page In Archive As…">
-<!ENTITY menuitem.savepageinarchive.label.v2 "Save Page In Archive">
+<!ENTITY menuitem.savepageinarchiveas.label "Enregistrer la page dans l'archive sous…">
+<!ENTITY menuitem.savepageinarchive.label.v2 "Enregistrer la page dans l'archive">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.toolsmenu "g">
 <!ENTITY menuitem.savepageinarchive.accesskey.pagecontextmenu "g">
-<!ENTITY menuitem.saveframeinarchiveas.label "Save Frame In Archive As…">
-<!ENTITY menuitem.saveframeinarchive.label.v2 "Save Frame In Archive">
+<!ENTITY menuitem.saveframeinarchiveas.label "Enregistrer le cadre dans l'archive sous…">
+<!ENTITY menuitem.saveframeinarchive.label.v2 "Enregistrer le cadre dans l'archive">
 <!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "c">
 <!ENTITY menuitem.saveframeinarchive.accesskey.toolsmenu "c">
 <!ENTITY menuitem.saveframeinarchive.accesskey.pagecontextmenu "c">
