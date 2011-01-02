@@ -1,116 +1,101 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-outer">
+  <div class="maf-column-left">
+    <div class="maf-column-contents">
 
-<div class="maf-column-left">
-  <div class="maf-column-contents">
-
-    <h2 class="page-header">Mozilla Archive Format</h2>
-    <p><b>Save complete web pages in a single file</b>, using one of the
-     following formats:</p>
-    <dl>
-      <dt style="margin-top: 1.5em;"><b>MAFF (Mozilla Archive Format
-       File)</b></dt>
-      <dd>
-        <p>MAFF files are <b>standard ZIP files</b> containing <b>one or
-         more</b> web pages, images, or other downloadable content, like
-         <b>video and audio</b>. Additional information, like the original page
-         address, is saved along with the content; this <b>metadata</b> allows
-         the browser to open these files intelligently.</p>
-        <p><i>For example, you can save to disk all the open tabs at once in a
-         single MAFF file.</i></p>
-        <p>MAFF files are <b>not proprietary</b>, and once saved they can be
-         opened on any modern computer system, using your favorite ZIP
-         extraction utility. Moreover, since you can batch-convert MAFF files to
-         other formats at any time, should you ever need it, there is really
-         <b>no risk of vendor lock-in</b>.
-         <a href="maff-file-format.html">Learn more...</a></p>
-      </dd>
-      <dt style="margin-top: 1.5em;"><b>MHTML (Internet Explorer's MHT)</b></dt>
-      <dd>
-        <p>MHTML, or MIME HTML, is the file format used by Internet Explorer
-         when saving web archives. The Mozilla Archive Format extension allows
-         Firefox and SeaMonkey to open and save these files seamlessly,
-         providing full interoperability with Internet Explorer.</p>
-        <p>MHTML can only contain a single web page and its subpages.
-         <a href="http://en.wikipedia.org/wiki/MHTML">Learn more...</a></p>
-      </dd>
-    </dl>
-
-  </div>
-</div>
-<div class="maf-column-right">
-  <div class="maf-column-contents">
-
-    <h2>Download and install</h2>
-    <div class="maf-download-box">
-      <?php if ($maf_experimental_fx) { ?>
-      <div class="maf-download-box-contents experimental">
-        <p class="maf-download-name"><a
-         href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_experimental_fx; ?>.0-fx.xpi">Install
-         MAF <?php echo $maf_experimental_fx; ?></a></p>
-        <p class="maf-download-info">For Firefox and SeaMonkey.<br>
-         Experimental.</p>
-      </div>
-      <?php } else { ?>
-      <div class="maf-download-box-contents">
-        <p class="maf-download-name"><a
-         href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>.0-fx.xpi">Install
-         MAF <?php echo $maf_latest_fx; ?></a></p>
-        <p class="maf-download-info">For Firefox and SeaMonkey.<br>
-         Fast updates.</p>
-      </div>
-      <?php } ?>
-    </div>
-    <div class="maf-download-tips">
-      <div class="maf-download-tips-contents">
-        <p><b>After installing:</b></p>
-        <ul>
-          <li>Check out the
-           <a href="documentation.html#extensions">compatible
-           extensions</a></li>
-          <li><a href="feedback.html">Feedback</a> is welcome!</li>
-        </ul>
-      </div>
-    </div>
-    <?php if ($maf_experimental_fx) { ?>
-    <div class="maf-download-afterbox">
-      <div class="maf-download-box">
-        <div class="maf-download-box-contents">
-          <p class="maf-download-name"><a
-           href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>.0-fx.xpi">Install
-           MAF <?php echo $maf_latest_fx; ?></a></p>
-          <p class="maf-download-info">For Firefox and SeaMonkey.<br>
-           Fast updates.</p>
-        </div>
-      </div>
-      <div class="maf-download-tips">
-        <div class="maf-download-tips-contents limitwidth">
-          <p>This version has been tested more extensively, but lacks the
-           <a href="installation.html#whatsnew">new features</a> of the
-           experimental version.</p>
-        </div>
-      </div>
-    </div>
-    <?php } ?>
-    <p class="maf-download-more maf-download-afterbox">Licensed under the
-     <a href="license.html">GNU General Public License</a>.</p>
-    <p class="maf-download-more"><a href="installation.html">More downloads and
-     history...</a></p>
-
-    <h2>Current features</h2>
+<h2>Mozilla Archive Format</h2>
+<p class="maf-tagline">MAFF and MHT support for your browser, and more.</p>
+<p class="maf-feature-line"><b>If you saved web pages using Internet Explorer
+ and can't open them with Firefox</b> <span>the Mozilla Archive Format add-on
+ is for you.</span></p>
+<p class="maf-feature-line"><b>If you want to save pages reliably, using a
+ durable and universal file format</b> <span>the Mozilla Archive Format add-on
+ is for you.</span></p>
+<ul id="maf-feature-overview">
+  <li>
+    <b><span>MAFF</span></b> is a single-file format that contains one or more
+     web pages.
     <ul>
-      <li>Save and load complete web pages using either MAFF or MHTML</li>
-      <li>Convert previously saved pages without losing the original
-       information</li>
-      <li>Save pages accurately using the <b>Save Complete</b> extension</li>
-      <li>Save more than one page in a MAFF archive</li>
-      <li>Open the contents of MAFF archives in multiple tabs at once</li>
-      <li>Reopen saved pages from their original web address</li>
-      <li>Navigate off-line across all the pages in your open archives</li>
-      <li>On Windows, associate MAFF and MHTML file types with the browser</li>
+      <li><b>Save disk space</b>, since MAFF is based on ZIP</li>
+      <li><b>Include video and audio</b>, WebM, Vorbis, Theora and more</li>
+      <li><b>Be universal</b>, compatible with Linux and other platforms</li>
+      <li><b>Use an open format</b>, with no risk of vendor lock-in</li>
     </ul>
+    <a href="maff-file-format.html">Learn more...</a>
+  </li>
+  <li><b><span>MHT</span></b> <span>is usually created by <b>Internet
+   Explorer</b> or other browsers. The Mozilla Archive Format add-on can read
+   and create MHT files, with excellent compatibility.</span><br>
+   <a href="http://en.wikipedia.org/wiki/MHTML">Learn more...</a></li>
+  <li><b><span>Faithful Save</span></b> allows all saved pages to appear exactly
+   like the original, regardless of the file format or save command you
+   choose.</li>
+  <li><b><span>Title Save</span></b> is an optional feature that changes the
+   default behavior of the browser, suggesting the document's title in place of
+   the remote file name when saving.</li>
+</ul>
 
+    </div>
+  </div>
+  <div class="maf-column-right">
+    <div class="maf-column-contents">
+
+<h2>Download and install</h2>
+<div class="maf-box">
+  <div class="maf-box-icon">
+    <p class="maf-box-title"><a
+     href="https://addons.mozilla.org/downloads/latest/212/addon-212-latest.xpi?src=external-mozdev-index">Install
+     Mozilla Archive Format</a></p>
+    <p class="maf-box-text">For Firefox and SeaMonkey.</p>
   </div>
 </div>
+<?php if ($maf_experimental_fx) { ?>
+<div class="maf-box maf-preview">
+  <p class="maf-box-title"><a
+   href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_experimental_fx; ?>.0-fx.xpi">Try
+   Mozilla Archive Format <?php echo $maf_experimental_fx; ?></a></p>
+  <p class="maf-box-text">This preview has more
+   <a href="installation.html#whatsnew">features</a> than the previous
+   version.</p>
+</div>
+<?php } ?>
+<p class="maf-box-after"><a href="installation.html">More downloads and
+ history...</a></p>
 
+<h2>Features</h2>
+<div class="maf-box maf-features">
+  <p class="maf-box-title"><a href="screenshots.html">Discover All the
+   Features</a></p>
+  <div id="maf-feature-summary">
+    <ul>
+      <li>Save in Single File</li>
+      <li>Create Faithful Snapshot</li>
+      <li>Store Video and Audio</li>
+    </ul>
+    <ul>
+      <li>Link to the Original</li>
+      <li>Convert Saved Pages</li>
+      <li>Open by Clicking Icon</li>
+    </ul>
+    <ul>
+      <li>Simple</li>
+      <li>Performant</li>
+      <li>Compact</li>
+    </ul>
+    <ul>
+      <li>Compatible</li>
+      <li>Open Source</li>
+      <li>Popular</li>
+    </ul>
+    <div></div>
+  </div>
+</div>
+<div class="maf-box maf-features">
+  <p class="maf-box-title"><a href="documentation.html">Read the Online
+   Documentation</a></p>
+  <p class="maf-box-text">Basic usage, how to convert saved pages, and more.</p>
+</div>
+
+    </div>
+  </div>
 </div>

@@ -1,39 +1,149 @@
 <!-- MAIN CONTENT -->
-<div class="maf-column-contents">
-  <h2 class="page-header">Screenshots</h2>
+<div class="maf-column-outer maf-even">
+  <h2>Features of Mozilla Archive Format</h2>
+  <div class="maf-column-left">
+    <div class="maf-column-contents maf-feature-list">
 
-  <h3>Saving archives</h3>
-  <img src="images/saveExample.png" alt="">
-  <p>Saving multiple pages in a single file is fast and easy, using MAF with
-   Multiple Tab Handler.<p>
-  <hr>
-  <img src="images/saveAsDialog.png" alt="">
-  <p>You can save both MAFF and MHTML archives.<p>
-  <hr>
-  <img src="images/multiSaveDialog.png" alt="">
-  <p>Even without Multiple Tab Handler you can select which tabs to save from
-   a handy selection window.<p>
-  <hr>
+<img src="images/screenshot-appMenu.png" alt="" class="maf-left">
+<div class="maf-feature-text">
+  <h3>Save in web archives</h3>
+  <p>Web archives are better than the normal way of saving pages. When you save
+   a complete page as HTML, a folder full of small files is also created. The
+   result may easily become unreadable when moved to other computers or burned
+   onto a CD-ROM. Saving each page in a single file, instead, makes sure that
+   they will remain readable in the future, and allows for faster backups and
+   easier file management.</p>
+</div>
+<div class="maf-feature-box">
+  <h3>Include video and audio</h3>
+  <p>Using the MAFF web archive format, you can save multimedia files together
+   with the page, for example a blog post that includes some videos. Combined
+   with the built-in browser support for <b>Vorbis</b>, <b>Theora</b>, and
+   <b>WebM</b> multimedia files in HTML5, MAFF becomes ideal for packaging
+   video, audio, and related resources in a portable file.</p>
+</div>
+<img src="images/screenshot-exactPersist.png" alt="" class="maf-right">
+<div class="maf-feature-text">
+  <h3>Faithful save system</h3>
+  <p>This feature allows your browser to save every page with greater accuracy,
+   including all styles and images. When you open a page that you saved with the
+   Mozilla Archive Format add-on installed, you see an exact snapshot of what
+   was displayed when you initiated the save command. This is also true for
+   complete pages saved outside of a web archive.</p>
+</div>
+<div class="maf-feature-box">
+  <h3>Save many pages in a single file</h3>
+  <p>You can save multiple tabs in a single MAFF archive. Moreover, if you use
+   the Multiple Tab Handler add-on, you can easily select which tabs to
+   save.</p>
+  <img src="images/screenshot-multipleTab.png" alt="" class="maf-center">
+</div>
+<img src="images/screenshot-archiveInfoPopup.png" alt="" class="maf-left">
+<div class="maf-feature-text">
+  <h3>Link to the original</h3>
+  <p>Every web archive contains the original address from which the page was
+   saved, as well as the date of the save operation. With Mozilla Archive
+   Format, you can find again and reopen the original website, not only for new
+   archives but even for pages previously saved using Internet Explorer.</p>
+</div>
+<div class="maf-feature-box">
+  <h3>Convert the file format of saved pages</h3>
+  <p>The Saved Pages Conversion Wizard can guide you through the conversion of
+   your previously saved web pages to a different file format. You can convert
+   old pages to MAFF, if you want to save disk space or prevent problems when
+   burning a CD-ROM. You can also convert MAFF back to other formats, in case
+   you need to interoperate with other applications. Thanks to this feature and
+   the fact that MAFF is an open format, you will never find yourself in the
+   situation of being unable to read the web archives you created.</p>
+  <img src="images/screenshot-convertDialog.png" alt="" class="maf-center">
+</div>
 
-  <h3>Viewing archives</h3>
-  <img src="images/viewArchive.png" alt="">
-  <p>You can open archives like any other type of saved page. The name of the
-   archive appears in the location bar. All the images in the page are saved
-   correctly, thanks to the integrated Save Complete extension.</p>
-  <hr>
+    </div>
+  </div>
+  <div class="maf-column-right">
+    <div class="maf-column-contents maf-feature-list">
 
-  <h3>Viewing information about archive contents</h3>
-  <img src="images/archivesDialog.png" alt="">
-  <p>The <i>Archives</i> dialog lets you view information about the archives
-   that you opened in this session.</p>
-  <hr>
+<div class="maf-feature-box">
+  <h3>Simple yet powerful</h3>
+  <p>You can recommend Mozilla Archive Format to your friends because it is easy
+   to use for everyone. The underlying functionality is still very powerful, and
+   the add-on will generally do the right thing automatically, like preserving
+   the original date and time of previously saved pages. And for the advanced
+   user, many behavioral details can be tweaked from the <tt>about:config</tt>
+   page as explained in the <a href="documentation.html">documentation</a>.</p>
+</div>
+<div class="maf-feature-box">
+  <h3>Customizable</h3>
+  <p>Depending on your habits, you can use the dedicated <b>Save Page In Archive
+   As</b> menu item, or select a web archive file type from the standard <b>Save
+   Page As</b> dialog box. If you don't use some menu items or prefer to have
+   more commands readily available from the context menu, you can optimize the
+   user interface to suit your needs.</p>
+  <img src="images/screenshot-saveAsDialog.png" alt="" class="maf-center">
+</div>
+<img src="images/screenshot-archive.png" alt="" class="maf-left">
+<div class="maf-feature-text">
+  <h3>Minimal disk usage</h3>
+  <p>Saving pages as MAFF lets you minimize disk usage and access time on slow
+   media, since MAFF is based on the universal, compressed ZIP file format. A
+   page saved as MAFF is smaller than the same page saved as individual files,
+   and much smaller than MHTML, because the latter is encoded in a way that
+   makes it usually larger than the original page.</p>
+</div>
+<div class="maf-feature-box">
+  <h3>Fast</h3>
+  <p>Opening MAFF files is nearly instantaneous thanks to the native support
+   for ZIP files of Firefox and SeaMonkey. For creating and opening MHTML
+   files, Mozilla Archive Format uses the fastest JavaScript routines
+   available for MIME encoding and decoding, that have been developed
+   specifically for the add-on.</p>
+</div>
+<div class="maf-feature-box">
+  <h3>100% compatible</h3>
+  <p>Web archives created with Firefox or SeaMonkey in the MHTML format are 100%
+   compatible with Internet Explorer and other browsers. MAFF archives are also
+   created in such a way that they are fully compatible with any modern ZIP
+   extraction utility.</p>
+  <p>Mozilla Archive Format is designed to integrate not only with the browser,
+   but with many <a href="documentation.html#extensions">compatible
+   extensions</a> as well. For example, you can use UnMHT if you want advanced
+   options when saving MHTML files, or a download organizer to select your
+   download folders and file names automatically.</p>
+</div>
+<img src="images/screenshot-fileAssociations.png" alt="" class="maf-right">
+<div class="maf-feature-text">
+  <h3>Open archives by clicking icon</h3>
+  <p>On Windows, Mozilla Archive Format can configure your operating system so
+   that web archives are opened in Firefox or SeaMonkey when you click their
+   icon. For Linux, the same file type association can be created with manual
+   steps.</p>
+</div>
+<div class="maf-feature-box">
+  <h3>Free and Open Source</h3>
+  <p>Mozilla Archive Format is and will always be free for everyone to use,
+   modify, and adapt to their needs. MAFF is an open file format whose technical
+   specification is maintained by the MAF project. The latest version of the
+   add-on is distributed under a choice of several Open Source and Free Software
+   licenses: the Mozilla Public License 1.1, the GNU General Public License 2.0,
+   the GNU Lesser General Public License 2.1, or any later version of these
+   licenses.</p>
+</div>
+<div class="maf-feature-box">
+  <h3>Popular and widely used</h3>
+  <p>Mozilla Archive Format is used daily by over 50,000 people. In case
+   something doesn't work as you expected, you can ask for support in the
+   <a href="feedback.html">MAF mailing list or newsgroup</a>, where the
+   developers and the most experienced users may reply to your questions.</p>
+</div>
 
-  <h3>Customizing the look and feel</h3>
-  <img src="images/toolsMenu.png" alt="">
-  <p>By default MAF is integrated with the standard <i>Save As</i> dialog, and
-   additional commands are available from the Tools menu.</p>
-  <hr>
-  <img src="images/prefsDialog-paneInterface.png" alt="">
-  <p>You can place the MAF menu items where you feel comfortable, and hide
-   them if you don't need them.</p>
+    </div>
+  </div>
+</div>
+<div class="maf-column-contents" style="clear: both;">
+
+<h2>More information</h2>
+<p>For a detailed explanation of how you can leverage all the features of the
+ Mozilla Archive Format add-on, see the <a href="documentation.html">user
+ manual</a>.</p>
+
 </div>

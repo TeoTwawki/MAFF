@@ -123,20 +123,33 @@ ul.maf-navigation > li span {
 .maf-column-outer {
   float: left;
   width: 100%;
-  padding: 0px;
-  margin: 0px;
 }
 
 .maf-column-left {
-  max-width: 40em;
-}
-
-.maf-column-left,
-.maf-column-right {
   float: left;
   min-width: 50%;
-  padding: 0px;
-  margin: 0px;
+  max-width: 50em;
+}
+
+.maf-column-outer.maf-even .maf-column-left {
+  width: 50%;
+  min-width: 30em;
+  max-width: none;
+}
+
+.maf-column-outer.maf-auto .maf-column-left {
+  width: auto;
+  min-width: 0px;
+  max-width: none;
+}
+
+.maf-column-right {
+  display: table-cell;
+  min-width: 30em;
+}
+
+.maf-column-outer.maf-even .maf-column-right {
+  width: 50%;
 }
 
 .maf-column-contents {
@@ -148,6 +161,11 @@ ul.maf-navigation > li span {
 h2 {
   color: #00C;
   border-bottom: 2px solid #00C;
+}
+
+.maf-tagline {
+  font-size: large;
+  font-weight: bold;
 }
 
 /* Lists */
@@ -198,68 +216,193 @@ pre.code code {
   font-size: small;
 }
 
-/* Download boxes */
+/* Feature lines */
 
-.maf-download-box {
+.maf-feature-line > b,
+#maf-feature-overview > li > b > span {
+  display: block;
+  margin: 2px;
+  border: 1px solid lightgrey;
+  -moz-border-radius: 3px;
+  padding: 2px;
+  background-color: #DEF;
+  background: -moz-linear-gradient(#EFF, #DEF);
+}
+
+.maf-feature-line > span {
+  display: block;
+  margin-left: 8px;
+  margin-top: 0.5em;
+}
+
+ul#maf-feature-overview {
+  display: table;
+  margin: 0px;
+  padding: 0px;
+  margin-top: 1em;
+  border-top: 2px solid #00C;
+  padding-top: 2em;
+}
+
+#maf-feature-overview > li {
+  display: table-row;
+}
+
+#maf-feature-overview > li > b {
+  display: table-cell;
+  white-space: nowrap;
+}
+
+#maf-feature-overview > li > a {
+  font-weight: normal;
+}
+
+#maf-feature-summary {
+  width: 100%;
+  font-size: x-small;
+}
+
+#maf-feature-summary > ul {
   float: left;
   padding: 0px;
-  margin: 0px;
 }
 
-.maf-download-box-contents {
-  margin: 20px 10px;
-  padding: 10px 30px;
+#maf-feature-summary > ul > li {
+  display: block;
+  margin: 2px;
+  border: 1px solid #DDD;
+  -moz-border-radius: 3px;
+  padding: 2px;
+}
+
+#maf-feature-summary > div {
+  clear: left;
+}
+
+/* Boxes */
+
+.maf-box {
+  width: 35em;
+  margin: 1em 10px;
   border: 1px solid grey;
+  -moz-border-radius: 8px;
+  padding: 10px 20px;
   background-color: lightgreen;
+  background: -moz-linear-gradient(lightgreen, #3D3);
 }
 
-.maf-download-installation-page .maf-download-box-contents {
-  width: 31em;
-}
-
-.maf-download-box-contents.experimental {
+.maf-box.maf-preview {
   background-color: #FC0;
+  background: -moz-linear-gradient(#FE9, #FC0);
 }
 
-.maf-download-box-contents.redirect {
+.maf-box.maf-features,
+.maf-box.maf-alternative {
   background-color: #CFF;
+  background: -moz-linear-gradient(#EFF, #DEF);
 }
 
-.maf-download-afterbox {
-  clear: both;
+.maf-box.maf-features {
+  width: 40em;
 }
 
-.maf-download-name {
+.maf-box a {
+  color: #900;
+}
+
+.maf-box-icon {
+  min-height: 32px;
+  padding-left: 52px;
+  background-image: url("images/icon-32x32.png");
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+
+.maf-box-title {
   margin: 0px;
   font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
   font-size: x-large;
   white-space: nowrap;
 }
 
-.maf-download-installation-page .maf-download-name {
-  white-space: normal;
+.maf-box-text {
+  margin: 0px;
 }
 
-.maf-download-redirect {
+.maf-box-after {
+  width: 35em;
+  margin: 1em 31px 3em;
+}
+
+/* Features page */
+
+.maf-feature-box {
+  clear: both;
+  position: relative;
+  z-index: 1;
+  margin: 1em 0px;
+  padding: 1em;
+  border: 1px solid lightgrey;
+  -moz-border-radius: 8px;
+  background-color: #DEF;
+  background: -moz-linear-gradient(#EFF, #DEF);
+}
+
+.maf-feature-text {
+  display: table-cell;
+  min-width: 15em;
+}
+
+.maf-feature-list h3 {
   margin: 0px;
-  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
+  font-style: italic;
   font-size: x-large;
   text-align: left;
 }
 
-.maf-download-info {
+.maf-feature-list p {
   margin: 0px;
-  font-family: Verdana, sans-serif;
+  margin-top: 1em;
 }
 
-.maf-download-more {
-  margin: 10px 10px;
-  font-family: Verdana, sans-serif;
+.maf-feature-list img{
+  clear: both;
 }
 
-/* Download tips after the download box */
+.maf-feature-list img.maf-left {
+  float: left;
+  margin: 0px 2em 1em 0px;
+}
 
-.maf-download-tips {
+.maf-feature-list img.maf-right {
+  float: right;
+  margin: 0px 0px 1em 2em;
+}
+
+.maf-feature-list img.maf-center {
+  display: block;
+  margin: 1em auto 0px auto;
+}
+
+/* Feedback page */
+
+.maf-feedback-intro {
+  max-width: 60em;
+}
+
+.maf-feedback-box {
+  clear: left;
+  float: left;
+  padding: 0px;
+  margin: 10px 0px;
+}
+
+.maf-feedback-box .maf-box {
+  width: 28em;
+}
+
+.maf-feedback-tips {
   float: left;
   padding: 0px;
   /*
@@ -268,32 +411,22 @@ pre.code code {
    *  scrollbar to appear when the page is viewed using Internet Explorer 6.
    */
   margin: 0px -10px;
-  max-width: 30em;
+  max-width: 28em;
 }
 
-.maf-download-tips-contents {
+.maf-feedback-tips-contents {
   color: #666;
   padding: 0px;
   margin: 20px 20px;
   text-align: left;
 }
 
-.maf-download-tips-contents.limitwidth {
+.maf-feedback-tips-contents.limitwidth {
   max-width: 21em;
 }
 
-.maf-download-tips p {
+.maf-feedback-tips p {
   margin: 0px;
-}
-
-/* Download boxes reused on the feedback page */
-
-.maf-download-feedback-page .maf-download-box-contents {
-  width: 28em;
-}
-
-.maf-download-feedback-page .maf-download-tips {
-  max-width: 28em;
 }
 
 /* Footer */
