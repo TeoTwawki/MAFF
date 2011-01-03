@@ -110,13 +110,14 @@ var StartupInitializer = {
         }
       }
     }
-    for (let [, mimeType] in Iterator(["application/x-mht", "message/rfc822"])) {
+    for (let [, mimeType] in Iterator(["application/octet-stream",
+     "application/x-octet-stream", "application/x-mht", "message/rfc822"])) {
       if (helperApps.mimeHandlerExists(mimeType)) {
         let handlerOverride = new HelperAppsWrapper.HandlerOverride(
          HelperAppsWrapper.MIME_URI(mimeType), helperApps._inner);
         // Remove the extensions from the list only if one of them is present,
         //  to avoid flushing the changes to disk if it is not necessary
-        if (/\b(maf|maff|maff.zip)\b/.test(handlerOverride.extensions)) {
+        if (/\b(maf|maff|maff\.zip)\b/.test(handlerOverride.extensions)) {
           handlerOverride.removeExtension("maf");
           handlerOverride.removeExtension("maff");
           handlerOverride.removeExtension("maff.zip");
