@@ -2,6 +2,7 @@ pref("extensions.{7f57cf46-4467-4c2d-adfa-0cba7c507e54}.description", "chrome://
 pref("extensions.maf.alert.onsinglepagecomplete", false);
 pref("extensions.maf.associate.maff", true);
 pref("extensions.maf.associate.mhtml", true);
+pref("extensions.maf.convert.datafoldersuffixes", "_files;.files");
 pref("extensions.maf.interface.icon.location", "urlbar-autohide");
 pref("extensions.maf.interface.menu.app", true);
 pref("extensions.maf.interface.menu.file", true);

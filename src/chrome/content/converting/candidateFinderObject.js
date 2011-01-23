@@ -43,8 +43,8 @@ function CandidateFinder() {
   // Initialize the contained objects
   this.location = new CandidateLocation();
   // Initialize the list of valid suffixes for the support folders
-  this.sourceDataFolderSuffixes = ["_files"];
-  // Add the files folder suffix for the current locale, if different
+  this.sourceDataFolderSuffixes = Prefs.convertDataFolderSuffixesArray;
+  // Add the files folder suffix for the current locale, if not the default
   var localizedFolderSuffix = Cc["@mozilla.org/intl/stringbundle;1"].
    getService(Ci.nsIStringBundleService).
    createBundle("chrome://global/locale/contentAreaCommands.properties").

@@ -69,6 +69,24 @@ var Prefs = {
     this.prefBranchForMaf.setBoolPref("associate.mhtml", value);
   },
 
+  /**
+   * Semicolon-separated list of possible suffixes for the folder containing
+   *  support data files associated with a complete page saved as HTML.
+   */
+  get convertDataFolderSuffixes() {
+    return this.prefBranchForMaf.getCharPref("convert.datafoldersuffixes");
+  },
+
+  /**
+   * Array containing one element for each valid data folder suffix.
+   */
+  get convertDataFolderSuffixesArray() {
+    // Remove spaces near separators and filter out empty elements. Spaces are
+    //  not removed if this extension is executed in Firefox 3.0.
+    return this.convertDataFolderSuffixes.split(";").map(String.trim ||
+     function(e) e).filter(function(e) e);
+  },
+
   /** Enumeration for interfaceIconLocation */
   ICONLOCATION_URLBAR:          "urlbar",
   ICONLOCATION_URLBAR_AUTOHIDE: "urlbar-autohide",
