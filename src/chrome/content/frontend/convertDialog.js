@@ -186,7 +186,7 @@ var ConvertDialog = {
    */
   checkIntroductionControls: function() {
     document.getElementById("convertDialog").canAdvance = true;
-    this._wizard.getButton("next").focus();
+    document.getElementById("convertDialog").getButton("next").focus();
   },
 
   /**
