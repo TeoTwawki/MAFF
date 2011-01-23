@@ -83,6 +83,19 @@ var ArchivesDialog = {
     contextMenuItem.setAttribute("accesskey", btnDelete.getAttribute(
      "cxtaccesskey"));
 
+    // Remove the original history handling commands in the Places context menu
+    //  because their presence in the Archives view is confusing
+    for (var [, commandName] in Iterator([
+     "placesContext_deleteHost",
+     "placesContext_deleteByHostname",
+     "placesContext_deleteByDomain"
+    ])) {
+      var element = document.getElementById(commandName);
+      if (element) {
+        document.getElementById("placesContext").removeChild(element);
+      }
+    }
+
     // Execute the initial update of the controls
     ArchivesDialog.checkShowMore();
     ArchivesDialog.checkPlaceInfo();
@@ -259,7 +272,9 @@ var ArchivesDialog = {
 
   /**
    * Adds a custom controller on the archives tree for overriding the clipboard
-   *  commands. For more information on Places controllers, see
+   *  commands and disabling history management commands that are available
+   *  starting from Firefox 3.5 and SeaMonkey 2.1. For more information on
+   *  Places controllers, see
    *  <https://developer.mozilla.org/en/Places/View_Controller> (retrieved
    *  2009-05-24).
    */
@@ -291,6 +306,20 @@ var ArchivesDialog = {
             break;
         }
       },
+      onEvent: function(aEventName) { }
+    });
+    ArchivesDialog.archivesTree.controllers.insertControllerAt(0, {
+      supportsCommand: function(aCommand) {
+        // Disable all the history handling commands
+        return [
+         "placesCmd_deleteDataHost", "placesCmd_delete:hostname",
+         "placesCmd_delete:domain"
+        ].indexOf(aCommand) >= 0;
+      },
+      isCommandEnabled: function(aCommand) {
+        return false;
+      },
+      doCommand: function(aCommand) { },
       onEvent: function(aEventName) { }
     });
   },
