@@ -12,3 +12,5 @@
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "Arquivos da web abertos...">
 <!ENTITY commands.browseopenarchives.accesskey "A">
+<!ENTITY commands.options.label "Options…">
+<!ENTITY commands.options.accesskey "O">

@@ -6,12 +6,14 @@
 <!ENTITY continue.label "Aby kontynuować naciśnij przycisk $1.">
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Witamy w kreatorze konwersji zapisanych stron">
-<!ENTITY introduction.para1.description "Kreator poprowadzi Cię przez proces konwersji zapisanych stron internetowych na inny format.">
+<!ENTITY introduction.para1.description "Kreator poprowadzi cię przez proces konwersji zapisanych stron internetowych na inny format.">
 <!ENTITY introduction.para2.description "Proces ten jest wskazany dla konwersji wielu stron w tym samym czasie. Jeśli chcesz dokonać konwersji jednego pliku, otwórz go w przeglądarce i zapisz w innym formacie.">
+<!ENTITY introduction.visitwebsite.description "Pomimo, że w większości przypadków proces konwersji przebiega bez zakłóceń, w niektórych przypadkach (w zależności od wybranych formatów i opcji zapisu) skonwertowane pliki mogą być nie w pełni wierne oryginałowi. Ponadto, gdy do formatu jednej strony konwertowane są archiwa składające się z wielu stron, tylko pierwsza storna jest zachowana prawidłowo. Zaleca się zatrzymać kopię oryginalnych plików, nawet gdy konwersja się w pełni powiodła.">
+<!ENTITY introduction.visitwebsite.label "Przeczytaj dokumentację online, by dowiedzieć się więcej szczegółów.">
 <!ENTITY introduction.continue.label "Aby rozpocząć, naciśnij przycisk $1.">
 <!-- *** File format selection *** -->
 <!ENTITY formats.pagelabel "Format wejściowy i wyjściowy">
-<!ENTITY formats.source.grouplabel "Konwertuj:">
+<!ENTITY formats.source.grouplabel "Konwertuj z:">
 <!ENTITY formats.source.complete.label "Kompletne strony internetowe (z folderami i plikami danych)">
 <!ENTITY formats.source.complete.accesskey "K">
 <!ENTITY formats.source.plain.label "Wszystkie strony internetowe (z lub bez folderów i plików danych)">
@@ -25,7 +27,7 @@
 <!ENTITY formats.dest.maff.accesskey "R">
 <!ENTITY formats.dest.mhtml.label "Archiwa MHTML">
 <!ENTITY formats.dest.mhtml.accesskey "H">
-<!ENTITY formats.dest.complete.label "Kompletne strony internetowe (z folderami jeśli potrzeba)">
+<!ENTITY formats.dest.complete.label "Kompletne strony internetowe (z folderami, jeśli potrzeba)">
 <!ENTITY formats.dest.complete.accesskey "N">
 <!ENTITY formats.invalid.label "Zaznacz dwa różne formaty plików.">
 <!-- *** Source folder selection *** -->

@@ -12,3 +12,5 @@
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
 <!ENTITY commands.browseopenarchives.label "浏览已装载档案 (r)…">
 <!ENTITY commands.browseopenarchives.accesskey "r">
+<!ENTITY commands.options.label "Options…">
+<!ENTITY commands.options.accesskey "O">

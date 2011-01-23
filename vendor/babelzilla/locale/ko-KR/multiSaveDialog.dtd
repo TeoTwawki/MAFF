@@ -1,5 +1,5 @@
 <!-- General window controls -->
-<!ENTITY window.title "선택된 탭들 저장">
+<!ENTITY window.title "선택된 탭 저장">
 <!ENTITY savebutton.label "저장">
 <!-- Tab selection -->
 <!ENTITY tabs.title.header "제목">
