@@ -73,6 +73,14 @@ var PrefsDialog = {
     // Updates the status of the dialog controls
     this.onSaveComponentChange();
     this.onInterfaceMenuPageContextChange();
+    // Ensure that there is enough space to display the elements that are now
+    //  visible, and work around a behavior for which an additional one-pixel
+    //  border is added when calculating the window's width.
+    window.sizeToContent();
+    var documentWidth = document.documentElement.boxObject.width;
+    if (window.innerWidth == documentWidth + 1) {
+      window.innerWidth = documentWidth;
+    }
   },
 
   /* --- Interactive dialog functions and events --- */
