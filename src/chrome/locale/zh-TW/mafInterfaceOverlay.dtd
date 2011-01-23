@@ -1,16 +1,16 @@
 <!-- *** Archive information popup *** -->
 <!-- Status of the current page -->
-<!ENTITY archiveinfo.status.normal.label "This page is not contained in an archive.">
-<!ENTITY archiveinfo.status.archived.label "This is an archived page.">
+<!ENTITY archiveinfo.status.normal.label "這頁不是在檔案集之內。">
+<!ENTITY archiveinfo.status.archived.label "這頁是在檔案集之內。">
 <!-- Original address the page was saved from -->
-<!ENTITY archiveinfo.maforiginalurl.label "Saved from:">
-<!ENTITY archiveinfo.maforiginalurl.missing.label "(not available)">
+<!ENTITY archiveinfo.maforiginalurl.label "源自：">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "（不適用）">
 <!-- Date and time the page was archived -->
-<!ENTITY archiveinfo.mafdatearchived.label "Saved on:">
-<!ENTITY archiveinfo.mafdatearchived.missing.label "(not available)">
+<!ENTITY archiveinfo.mafdatearchived.label "檔案集建立時間：">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "（不適用）">
 <!-- *** Commands in the archive information popup *** -->
 <!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
-<!ENTITY commands.browseopenarchives.label "Browse Open Archives…">
+<!ENTITY commands.browseopenarchives.label "開啟檔案集…">
 <!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.options.label "Options…">
+<!ENTITY commands.options.label "選項…">
 <!ENTITY commands.options.accesskey "O">

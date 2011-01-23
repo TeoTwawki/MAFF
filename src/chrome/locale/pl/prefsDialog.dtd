@@ -1,11 +1,11 @@
 <!--    General window controls    -->
-<!ENTITY window.title.v2 "Mozilla Archive Format Options">
+<!ENTITY window.title.v2 "Mozilla Archive Format – Ustawienia">
 <!--    Main pane    -->
 <!ENTITY pane.main.label "Główne">
 <!ENTITY save.component.grouplabel "Zapisuj zawartość strony internetowej używając:">
 <!ENTITY save.component.standard.label "standardowego systemu zapisu przeglądarki">
 <!ENTITY save.component.standard.accesskey "S">
-<!ENTITY save.component.completesave.label "zachowaj skrypty i źródła używając rozszerzenia „Save Complete”">
+<!ENTITY save.component.completesave.label "zachowaj skrypty i źródła, używając rozszerzenie „Save Complete”">
 <!ENTITY save.component.completesave.accesskey "K">
 <!ENTITY save.component.exactpersist.label "wykonaj wierny zrzut strony">
 <!ENTITY save.component.exactpersist.accesskey "W">
@@ -25,12 +25,12 @@
 <!ENTITY iconlocation.urlbar-autohide.accesskey "Z">
 <!ENTITY iconlocation.status.label "na pasku stanu">
 <!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
-<!ENTITY iconlocation.addonbar.accesskey "o">
+<!ENTITY iconlocation.addonbar.label "na pasku dodatków">
+<!ENTITY iconlocation.addonbar.accesskey "d">
 <!ENTITY iconlocation.none.label "nie wyświetlaj">
 <!ENTITY iconlocation.none.accesskey "W">
 <!ENTITY menu.grouplabel "Wyświetlaj element Mozilla Archive Format w:">
-<!ENTITY menu.app.label "$brandShortName menu">
+<!ENTITY menu.app.label "menu programu $brandShortName">
 <!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "menu Plik">
 <!ENTITY menu.file.accesskey "P">
@@ -38,17 +38,17 @@
 <!ENTITY menu.tools.accesskey "N">
 <!ENTITY menu.pagecontext.label "menu kontekstowym strony">
 <!ENTITY menu.pagecontext.accesskey "K">
-<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
-<!ENTITY menu.pagecontext.tabs.accesskey "h">
+<!ENTITY menu.pagecontext.tabs.label "wyświetlaj elementy służące do zapisywania kart">
+<!ENTITY menu.pagecontext.tabs.accesskey "k">
 <!ENTITY menu.tabscontext.label "menu kontekstowym paska kart">
 <!ENTITY menu.tabscontext.accesskey "M">
-<!--    File associations pane. This pane is visible only on Windows.    -->
-<!ENTITY pane.actions.label "Actions">
-<!ENTITY action.convertsavedpages.label "Convert Saved Pages">
-<!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
-<!ENTITY action.showwelcomepage.label "Show Welcome Page">
-<!ENTITY action.showwelcomepage.description "The welcome page is displayed the first time this add-on is installed, and provides an overview of its features. Showing it again is most useful to translators that want to check the quality of their work.">
-<!ENTITY action.showwelcomepageassociate.label "Refresh File Associations">
-<!ENTITY action.showwelcomepageassociate.description "From the welcome page, you can choose which web archive file types you want to open with $brandShortName, and refresh the file associations in case they were changed by another application.">
-<!ENTITY action.visitwebsite.label "Visit Website">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format integrates seamlessly with $brandShortName and provides a lot of improvements in addition to the most visible features. For a comprehensive description of the features, information on the MAFF file format, and documentation of advanced configuration options, you can visit the official web site.">
+<!-- Actions pane -->
+<!ENTITY pane.actions.label "Czynności">
+<!ENTITY action.convertsavedpages.label "Konwertuj zapisane strony">
+<!ENTITY action.convertsavedpages.description "Asystent konwersji zapisanych stron poprowadzi cię przez proces konwersji poprzednio zapisanych stron na inny format.">
+<!ENTITY action.showwelcomepage.label "Wyświetlaj stronę powitalną">
+<!ENTITY action.showwelcomepage.description "Strona powitalna jest wyświetlana podczas pierwszego uruchomienia po zainstalowaniu dodatku i zawiera krótki opis jego funkcji. Jego ponowne wyświetlanie ułatwia tłumaczom sprawdzenie ich pracy.">
+<!ENTITY action.showwelcomepageassociate.label "Odśwież skojarzenia plików">
+<!ENTITY action.showwelcomepageassociate.description "Z poziomu strony powitalnej można wybrać typu archiwów sieciowych, które będą otwierane z programem $brandShortName i odświeżyć skojarzenia plików, jeśli zostaną zmienione przez inny program.">
+<!ENTITY action.visitwebsite.label "Odwiedź witrynę dodatku">
+<!ENTITY action.visitwebsite.description "Dodatek Mozilla Archive Format bezbłędnie integruje się z programem $brandShortName i oferuje wiele usprawnień najbardziej widocznych funkcji. Obszerne opisy funkcji, informacje na temat formatu MAFF i dokumentacja dotycząca konfiguracji zaawansowanych funkcji znajduje się na oficjalnej witrynie dodatku.">
