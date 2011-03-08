@@ -1,15 +1,17 @@
-html {
-  background-color: #FD6;
-}
-
 h1 {
+  margin-top: -0.2em;
   color: blue;
 }
 
 #errorPageContainer {
-  background-image: url("chrome://maf/skin/integration/icon.png");
+  max-width: 55em;
+  background-image: url("chrome://maf-icons/skin/icon64.png");
   background-color: white;
   color: black;
+}
+
+#errorTitle, #errorLongContent {
+  -moz-margin-start: 94px;
 }
 
 #errorShortDesc > p {

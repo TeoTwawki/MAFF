@@ -20,6 +20,7 @@ locale	maf	zh-CN	chrome/locale/zh-CN/
 locale	maf	zh-TW	chrome/locale/zh-TW/
 
 skin	maf	classic/1.0	chrome/skin/
+skin	maf-icons	classic/1.0	./
 
 resource	maf	resource/
 
@@ -48,3 +49,7 @@ overlay chrome://maf/content/preferences/prefsDialog.xul    chrome://maf/content
 
 # In Firefox, use the preferences image file from the current theme
 override	chrome://maf/skin/preferences/Options.png	chrome://browser/skin/preferences/Options.png	application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
+
+# In Firefox 4.0 and above, as well as SeaMonkey 2.1 and above, use the 48x48 pixels application icon instead of the 32x32 pixels one
+override	chrome://maf-icons/skin/icon.png	chrome://maf-icons/skin/icon48.png	application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}	appversion>=4.0
+override	chrome://maf-icons/skin/icon.png	chrome://maf-icons/skin/icon48.png	application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}	appversion>=2.1

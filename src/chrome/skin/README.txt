@@ -41,16 +41,12 @@ The original preferences image file can be viewed online at:
 Other files
 -----------
 
-The other binary and text files in the "skin" folder are the original work of
-Paolo Amadini <http://www.amadzone.org/> and are licensed under the
-MPL 1.1+/GPL 2.0+/LGPL 2.1+ disjunctive tri-license. For more information, see
-<http://www.mozilla.org/MPL/> (retrieved 2009-08-13).
-
-The main application icon ("skin/integration/icon.png") includes public domain
-artwork from the Tango icon library version 0.8.90. For more information, see
-<http://tango.freedesktop.org/Tango_Icon_Library> (retrieved 2009-08-13). Other
-portions of the icon are original work as described above, and were drawn using
-the Inkscape vector graphics editor (<http://www.inkscape.org/>).
+The main application icons and the other binary and text files in the "skin"
+folder are the original work of Paolo Amadini <http://www.amadzone.org/> and are
+licensed under the MPL 1.1+/GPL 2.0+/LGPL 2.1+ disjunctive tri-license. For more
+information, see <http://www.mozilla.org/MPL/> (retrieved 2009-08-13). The main
+application icons were drawn using the Inkscape vector graphics editor
+(<http://www.inkscape.org/>).
 
 
 
