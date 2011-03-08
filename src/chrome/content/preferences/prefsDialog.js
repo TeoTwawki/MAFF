@@ -77,10 +77,7 @@ var PrefsDialog = {
     //  visible, and work around a behavior for which an additional one-pixel
     //  border is added when calculating the window's width.
     window.sizeToContent();
-    var documentWidth = document.documentElement.boxObject.width;
-    if (window.innerWidth == documentWidth + 1) {
-      window.innerWidth = documentWidth;
-    }
+    window.innerWidth = document.documentElement.boxObject.width;
   },
 
   /* --- Interactive dialog functions and events --- */
