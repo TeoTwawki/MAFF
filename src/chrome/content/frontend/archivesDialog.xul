@@ -83,7 +83,7 @@
   <!-- These elements are overlaid with the standard Places user interface -->
   <commandset id="placesCommands" />
   <popupset>
-    <popup id="placesContext" />
+    <menupopup id="placesContext" />
   </popupset>
 
   <spacer height="5" />
