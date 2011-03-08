@@ -172,7 +172,7 @@ var MafCommandsOverlay = {
     // For the application menu, when the related preference is set, an extended
     //  submenu replaces the standard "Save Page As" menu item.
     if (aEvent.target.id == "appmenu-popup") {
-      document.getElementById("mafMenuSavePage_appMenu_container").hidden =
+      document.getElementById("mafMenuSavePage_appMenu").hidden =
        !MozillaArchiveFormat.Prefs.interfaceMenuApp;
       document.getElementById("appmenu_savePage").hidden =
        MozillaArchiveFormat.Prefs.interfaceMenuApp;
