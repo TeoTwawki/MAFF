@@ -176,6 +176,11 @@ var StartupInitializer = {
     this._addCategoryEntryForSession("Gecko-Content-Viewers",
      "*/preprocessed-web-archive",
      "@amadzone.org/maf/document-loader-factory;1");
+
+    // In SeaMonkey 2.1 and above, we have to disable the mail document loader
+    //  factory in order to allow our loading process to occur.
+    this._categoryManager.deleteCategoryEntry("Gecko-Content-Viewers",
+     "message/rfc822", false);
   },
 
   /**
