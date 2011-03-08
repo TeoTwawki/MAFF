@@ -1,0 +1,42 @@
+<!ENTITY window.title "Արխիվներ">
+<!ENTITY archives.placestitle.header "Էջի գլխագիրը">
+<!ENTITY archives.mafarchivename.header "Արխիվի անունը">
+<!ENTITY archives.placesurl.header "Արխիվի տեղը">
+<!ENTITY archives.maftitle.header "Էջի իրական անունը">
+<!ENTITY archives.maforiginalurl.header "Իրական տեղը">
+<!ENTITY archives.mafdatearchived.header "Արխիվացված">
+<!ENTITY archives.maftempuri.header "Ժամանակավոր էջի հղումը">
+<!ENTITY archives.mafdirectarchiveuri.header "Հղման էջը">
+<!ENTITY details.placestitle.label "Էջի գլխագիրը.">
+<!ENTITY details.placestitle.accesskey "P">
+<!ENTITY details.mafarchivename.label "Արխիվի անունը.">
+<!ENTITY details.mafarchivename.accesskey "r">
+<!ENTITY details.placesurl.label "Արխիվի տեղը.">
+<!ENTITY details.placesurl.accesskey "h">
+<!ENTITY details.maftitle.label "Էջի իսկական անունը.">
+<!ENTITY details.maftitle.accesskey "i">
+<!ENTITY details.maforiginalurl.label "Տեղադրությունը.">
+<!ENTITY details.maforiginalurl.accesskey "g">
+<!ENTITY details.mafdatearchived.label "Արխիվացված.">
+<!ENTITY details.mafdatearchived.accesskey "c">
+<!ENTITY details.maftempuri.label "Ժամանակավոր էջի հղումը.">
+<!ENTITY details.maftempuri.accesskey "T">
+<!ENTITY details.mafdirectarchiveuri.label "Էջի հղումը.">
+<!ENTITY details.mafdirectarchiveuri.accesskey "D">
+<!ENTITY details.caption "Մանրամասն">
+<!ENTITY morebutton.label "Մանրամասն">
+<!ENTITY morebutton.accesskey "e">
+<!ENTITY lessbutton.label "Առանց մանր.-երի">
+<!ENTITY lessbutton.accesskey "e">
+<!ENTITY multipleitems.text "(ընտրված են մի քանիսը)">
+<!ENTITY openintabsbutton.label "Բացել էջերում">
+<!ENTITY openintabsbutton.accesskey.placesurl "O">
+<!ENTITY openintabsbutton.accesskey.originalurl "n">
+<!ENTITY openintabsbutton.accesskey.tempuri "b">
+<!ENTITY openintabsbutton.accesskey.directarchiveuri "s">
+<!ENTITY addbutton.label "Ավելացնել…">
+<!ENTITY addbutton.accesskey "A">
+<!ENTITY addfilepicker.title "Ավելացնել լրացուցիչ վեբ արխիվներ">
+<!ENTITY deletebutton.label "Մոռանալ">
+<!ENTITY deletebutton.accesskey "F">
+<!ENTITY deletebutton.accesskey.placescontextmenu "F">
