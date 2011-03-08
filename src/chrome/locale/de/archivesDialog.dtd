@@ -45,7 +45,7 @@
 <!-- Displayed in the details textboxes when multiple items are selected -->
 <!ENTITY multipleitems.text "(mehrere Objekte ausgewählt)">
 <!-- The following button is repeated for every URL field -->
-<!ENTITY openintabsbutton.label "In Tab(s) öffnen">
+<!ENTITY openintabsbutton.label "In Tabs öffnen">
 <!ENTITY openintabsbutton.accesskey.placesurl "T">
 <!ENTITY openintabsbutton.accesskey.originalurl "I">
 <!ENTITY openintabsbutton.accesskey.tempuri "n">

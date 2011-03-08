@@ -3,9 +3,9 @@
 <!-- Main pane -->
 <!ENTITY pane.main.label "Allgemein">
 <!ENTITY save.component.grouplabel "Wenn komplette Webseiteninhalte gespeichert werden:">
-<!ENTITY save.component.standard.label "Standard-Speichersystematik des Browsers verwenden">
+<!ENTITY save.component.standard.label "Standard-Speichervorgehen des Browsers verwenden">
 <!ENTITY save.component.standard.accesskey "B">
-<!ENTITY save.component.completesave.label "Skripte und Quelltext mithilfe von „Save Complete“ erhalten">
+<!ENTITY save.component.completesave.label "Skripte und Quelltext mithilfe von &quot;Save Complete&quot; erhalten">
 <!ENTITY save.component.completesave.accesskey "S">
 <!ENTITY save.component.exactpersist.label "Originalgetreuen Schnappschuss der Seite aufnehmen">
 <!ENTITY save.component.exactpersist.accesskey "O">

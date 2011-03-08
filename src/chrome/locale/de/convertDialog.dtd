@@ -3,7 +3,7 @@
 <!-- *** General window controls *** -->
 <!ENTITY window.title "Archivkonverter-Assistent">
 <!ENTITY browsebutton.label "Durchsuchen…">
-<!ENTITY continue.label "„$1“ klicken, um fortzufahren.">
+<!ENTITY continue.label "„$1“ klicken um fortzufahren.">
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Willkommen beim Archivkonverter-Assistenten">
 <!ENTITY introduction.para1.description "Dieser Assistent führt Sie durch die Konvertierung gespeicherter Webseiten in ein anderes Dateiformat.">
@@ -45,12 +45,12 @@ Bei der Konvertierung eines mehrseitigen Archivs in ein einseitiges Archiv bleib
 <!ENTITY folders.dest.grouplabel "Konvertierte Dateien speichern:">
 <!ENTITY folders.dest.original.label "im gleichen Ordner wie die Originaldateien">
 <!ENTITY folders.dest.original.accesskey "g">
-<!ENTITY folders.dest.folder.label "in diesem Ordner (unter Beibehaltung relativer Pfade):">
+<!ENTITY folders.dest.folder.label "in diesem Ordner (relative Pfade beibehalten):">
 <!ENTITY folders.dest.folder.accesskey "d">
 <!ENTITY folders.bin.grouplabel "Nach erfolgreicher Konvertierung:">
 <!ENTITY folders.bin.original.label "Originale am Ursprungsort belassen">
 <!ENTITY folders.bin.original.accesskey "b">
-<!ENTITY folders.bin.folder.label "Originale in diesen Ordner verschieben (unter Beibehaltung relativer Pfade):">
+<!ENTITY folders.bin.folder.label "Originale in diesen Ordner verschieben (relative Pfade beibehalten):">
 <!ENTITY folders.bin.folder.accesskey "v">
 <!ENTITY folders.dest.invalid.label "Bitte den gesamten Ordnernamen angeben.">
 <!-- *** Candidates selection and conversion *** -->
