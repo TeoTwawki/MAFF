@@ -4,8 +4,8 @@
 
 <!ENTITY welcome.label "Thank you for installing Mozilla Archive Format!">
 
-<!ENTITY features.header.label "Many features of $brandShortName have been improved by this add-on.">
-<!ENTITY features.headerfromupdate.label "Your add-on has been updated to the latest major version.">
+<!ENTITY features.header.label "This add-on improves many features of $brandShortName.">
+<!ENTITY features.headerfromupdate.label "Your add-on is updated to the latest major version.">
 <!ENTITY features.item1.label "Web pages are saved more accurately, what you see is what you get.">
 <!ENTITY features.item2.label "You can save one or more tabs in a single file (web archive).">
 <!ENTITY features.item3.label "The title of the document is now the default file name.">
@@ -21,7 +21,7 @@
 <!ENTITY associate.mhtml.label "MHTML">
 <!ENTITY associate.mhtml.accesskey "H">
 <!ENTITY associate.explanation1.label "If unsure, leave both options selected. They will become effective when this page is closed.">
-<!ENTITY associate.explanation2.label "You can change your preference at any time from the control panel of your operating system.">
+<!ENTITY associate.explanation2.label "You can change your preferences at any time from the control panel of your operating system.">
 
 <!ENTITY associate.error.title "Error While Creating File Associations">
 <!ENTITY associate.error.msg "An error occurred while configuring your file manager: $1.">
