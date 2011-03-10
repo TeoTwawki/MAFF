@@ -311,9 +311,9 @@ ul#maf-feature-overview {
 }
 
 .maf-box-icon {
-  min-height: 32px;
-  padding-left: 52px;
-  background-image: url("images/icon-32x32.png");
+  min-height: 48px;
+  padding-left: 68px;
+  background-image: url("images/icon48.png");
   background-position: left center;
   background-repeat: no-repeat;
 }
