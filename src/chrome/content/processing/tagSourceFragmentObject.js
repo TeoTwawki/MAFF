@@ -112,6 +112,15 @@ TagSourceFragment.prototype = {
       /([\w\W]*?)(?:(\b\w+)(\s*=\s*)(?:(['"])([\w\W]*?)(?=\4)|(.*?)(?=\s))|$)/g,
       function(aAll, aBefore, aAttrName, aSeparator, aAttrQuote, aAttrValue,
        aAttrValueWithoutQuotes) {
+        // The "style" attribute should be parsed as CSS, while making sure that
+        //  URLs found in the attribute are decoded from HTML.
+        if (aAttrName == "style") {
+          // Add the appropriate fragment as an URL
+          aAddFn(SourceFragment, aBefore + aAttrName + aSeparator + aAttrQuote);
+          aAddFn(CssSourceFragment, aAttrValue + aAttrValueWithoutQuotes,
+           {isEncodedAsHtml: true});
+          return;
+        }
         // If an attribute is found, determine if it has an URL type. For the
         //  list of the HTML 4 attributes and their types, see
         //  <http://www.w3.org/TR/REC-html40/index/attributes.html> (retrieved

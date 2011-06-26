@@ -78,14 +78,17 @@ CssSourceFragment.prototype = {
        * Recognizes the text that can introduce an URL in the sylesheet. It can
        *  be divided in the following parts:
        *
-       *   aUrlBefore   ( \burl\(\s*(['"])? )
+       *   aUrlBefore   ( \burl\(\s*(['"]|&quot;)? )
        *
        *   Captures all the text before the beginning of the actual URL.
        *
-       *   aUrlQuote    ( ['"] )
+       *   aUrlQuote    ( ['"]|&quot; )
        *
        *   This optional group is used in a backreference, and is already
-       *    captured inside the outer group.
+       *    captured inside the outer group. We include "&quot;" in case we are
+       *    processing a style declaration inside an attribute. We do that
+       *    unconditionally because, even if the input is not encoded as HTML,
+       *    optionally recognizing "&quot;" has no effect in practice.
        *
        *   aUrlText     ( [^\r\n]*? )
        *
@@ -102,14 +105,17 @@ CssSourceFragment.prototype = {
        * Recognizes the text that can introduce an URL in the sylesheet. It can
        *  be divided in the following parts:
        *
-       *   aImportUrlBefore   ( @import\s+(['"]) )
+       *   aImportUrlBefore   ( @import\s+(['"]|&quot;) )
        *
        *   Captures all the text before the beginning of the actual URL.
        *
-       *   aImportUrlQuote    ( ['"] )
+       *   aImportUrlQuote    ( ['"]|&quot; )
        *
        *   This mandatory group is used in a backreference, and is already
-       *    captured inside the outer group.
+       *    captured inside the outer group. We include "&quot;" in case we are
+       *    processing a style declaration inside an attribute. We do that
+       *    unconditionally because, even if the input is not encoded as HTML,
+       *    optionally recognizing "&quot;" has no effect in practice.
        *
        *   aImportUrlText     ( [^\r\n]*? )
        *
@@ -122,7 +128,7 @@ CssSourceFragment.prototype = {
        *    next iteration.
        *
        */
-      /([\w\W]*?)(?:(\burl\(\s*(['"])?)([^\r\n]*?)(?=\s*\3\))|(@import\s+(['"]))([^\r\n]*?)(?=\s*\6)|$)/gi,
+      /([\w\W]*?)(?:(\burl\(\s*(['"]|&quot;)?)([^\r\n]*?)(?=\s*\3\))|(@import\s+(['"]|&quot;))([^\r\n]*?)(?=\s*\6)|$)/gi,
       function(aAll, aBefore, aUrlBefore, aUrlQuote, aUrlText, aImportUrlBefore,
        aImportUrlQuote, aImportUrlText) {
         aAddFn(SourceFragment,    aBefore + aUrlBefore);
