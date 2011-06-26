@@ -273,6 +273,13 @@ scPageSaver.prototype._extractURIsFromDocument = function(doc) {
         }
     }
 
+    // Save the html in the frame and process the frame document
+    iter = doc.evaluate("//ns:frame[@src]", doc, nsResolver, 0, null);
+    while((e = iter.iterateNext())) {
+        this._uris.push(new scPageSaver.scURI(e.getAttribute('src'), baseUri, 'attribute', 'base'));
+        this._extractURIsFromDocument(e.contentDocument);
+    }
+
     if(this._options['saveObjects']) {
         // Process embed tags
         iter = doc.evaluate("//ns:embed[@src]", doc, nsResolver, 0, null);
