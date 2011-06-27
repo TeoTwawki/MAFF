@@ -480,8 +480,15 @@ press the Enter key. Type <tt>maf</tt> into the filter field; that will show
 only the settings that apply to Mozilla Archive Format. Normally don't change
 the settings unless the reason is clearly understood. Non-default settings may
 adversely impact functionality or performance.</p>
+<p><b>Note:</b> In previous versions of the add-on, the same internal settings
+were available with slightly different names. If you customized the settings
+using the old names, they will still appear in <tt>about:config</tt>, but they
+will have no effect on newer versions. You have to customize the settings again,
+using their new names, for them to take effect. However, this is rarely required
+because new versions are designed to work optimally without the need to
+customize the settings.</p>
 <dl>
-  <dt><tt>extensions.maf.convert.datafoldersuffixes</tt></dt>
+  <dt><tt>extensions.maf.advanced.datafoldersuffixes</tt></dt>
   <dd>
   <p>This option influences the Saved Pages Conversion Wizard when <a
     href="#selectfiles">selecting which files to convert</a>.</p>
@@ -492,23 +499,7 @@ adversely impact functionality or performance.</p>
   An additional suffix that depends on the current browser language may also be
   recognized without it being explicitly listed in this option.</p>
   </dd>
-  <dt><tt>extensions.maf.open.maff.ignorecharacterset</tt></dt>
-  <dd>
-  <p>When this setting is enabled, the character set specified for pages
-  saved inside MAFF archives is ignored. Enabling this option may be useful for
-  troubleshooting problems with internationalization. <b>This option will
-  cause saved pages to be displayed incorrectly in most cases.</b></p>
-  </dd>
-  <dt><tt>extensions.maf.open.usejarprotocol</tt></dt>
-  <dd>
-  <p>If this preference is enabled, when you open a MAFF archive its
-  contents will be accessed directly using the "jar:" protocol, without being
-  extracted.</p>
-  <p>However, if you enable this option, the archive files you open will be
-  locked, and you will be unable to move, rename or delete them until the
-  browser is closed.</p>
-  </dd>
-  <dt><tt>extensions.maf.save.maff.compression</tt></dt>
+  <dt><tt>extensions.maf.advanced.maff.compression</tt></dt>
   <dd>
   <p>Controls the compression level used when saving files in a MAFF
   archive.</p>
@@ -519,13 +510,29 @@ adversely impact functionality or performance.</p>
     <li><b><tt>none</tt></b> &nbsp; Store all the files uncompressed.</li>
   </ol>
   </dd>
-  <dt><tt>extensions.maf.save.metadata.extended</tt></dt>
+  <dt><tt>extensions.maf.advanced.maff.extendedmetadata</tt></dt>
   <dd>
   <p>With this preference enabled, history, text zoom, and scroll position
   is saved for each page. At present this additional information is ignored when
   the archive is opened.</p>
   </dd>
-  <dt><tt>extensions.maf.save.usemhtmlextension</tt></dt>
+  <dt><tt>extensions.maf.advanced.maff.ignorecharacterset</tt></dt>
+  <dd>
+  <p>When this setting is enabled, the character set specified for pages
+  saved inside MAFF archives is ignored. Enabling this option may be useful for
+  troubleshooting problems with internationalization. <b>This option will
+  cause saved pages to be displayed incorrectly in most cases.</b></p>
+  </dd>
+  <dt><tt>extensions.maf.advanced.maff.usejarprotocol</tt></dt>
+  <dd>
+  <p>If this preference is enabled, when you open a MAFF archive its
+  contents will be accessed directly using the "jar:" protocol, without being
+  extracted.</p>
+  <p>However, if you enable this option, the archive files you open will be
+  locked, and you will be unable to move, rename or delete them until the
+  browser is closed.</p>
+  </dd>
+  <dt><tt>extensions.maf.advanced.mhtml.usemhtmlextension</tt></dt>
   <dd>
   <p>If this option is selected, and you do not type a file extension in the
   <i>Save As</i> dialog box, or file extensions are hidden, the complete <code
@@ -533,17 +540,18 @@ adversely impact functionality or performance.</p>
   name of MHTML archives, instead of the more common <code class="maf-file-ext">.mht</code>
   extension.</p>
   </dd>
-  <dt><tt>extensions.maf.temp.clearonexit</tt></dt>
+  <dt><tt>extensions.maf.advanced.temp.clearonexit</tt></dt>
   <dd>
   <p>This option is enabled by default. If disabled, the contents of the
   temporary directory are preserved after the browser exits, and must be emptied
   manually.</p>
   </dd>
-  <dt><tt>extensions.maf.temp.folder</tt></dt>
+  <dt><tt>extensions.maf.advanced.temp.folder</tt></dt>
   <dd>
   <p>Use this preference to choose the location of the temporary files
   required to open and save the web archives. <b>The contents of this folder
-  will be lost if <tt>extensions.maf.temp.clearonexit</tt> is <tt>true</tt></b>.</p>
+  will be lost if <tt>extensions.maf.advanced.temp.clearonexit</tt> is
+  <tt>true</tt></b>.</p>
   <p>If not specified, this location defaults to a sub-folder of the system
   temporary folder, which is different for every browser profile.</p>
   <p>If customized, the absolute path to the specified location is

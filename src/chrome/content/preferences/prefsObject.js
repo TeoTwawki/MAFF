@@ -74,7 +74,7 @@ var Prefs = {
    *  support data files associated with a complete page saved as HTML.
    */
   get convertDataFolderSuffixes() {
-    return this.prefBranchForMaf.getCharPref("convert.datafoldersuffixes");
+    return this.prefBranchForMaf.getCharPref("advanced.datafoldersuffixes");
   },
 
   /**
@@ -205,7 +205,7 @@ var Prefs = {
    *  and scroll position, must be saved in new archives.
    */
   get saveMetadataExtended() {
-    return this.prefBranchForMaf.getBoolPref("save.metadata.extended");
+    return this.prefBranchForMaf.getBoolPref("advanced.maff.extendedmetadata");
   },
 
   /**
@@ -237,7 +237,7 @@ var Prefs = {
    * This preference is not displayed in the preferences dialog.
    */
   get saveMaffCompression() {
-    return this.prefBranchForMaf.getCharPref("save.maff.compression");
+    return this.prefBranchForMaf.getCharPref("advanced.maff.compression");
   },
 
   /** Enumeration for saveNamingStrategy */
@@ -262,7 +262,8 @@ var Prefs = {
    *  ".mht" in the file filters for the "Save As" dialogs.
    */
   get saveUseMhtmlExtension() {
-    return this.prefBranchForMaf.getBoolPref("save.usemhtmlextension");
+    return this.prefBranchForMaf.getBoolPref(
+     "advanced.mhtml.usemhtmlextension");
   },
 
   /**
@@ -270,7 +271,8 @@ var Prefs = {
    *  instead of being enforced when the page is displayed.
    */
   get openMaffIgnoreCharacterSet() {
-    return this.prefBranchForMaf.getBoolPref("open.maff.ignorecharacterset");
+    return this.prefBranchForMaf.getBoolPref(
+     "advanced.maff.ignorecharacterset");
   },
 
   /**
@@ -281,7 +283,7 @@ var Prefs = {
    * The "jar:" protocol may be faster but using it may lock the archive file.
    */
   get openUseJarProtocol() {
-    return this.prefBranchForMaf.getBoolPref("open.usejarprotocol");
+    return this.prefBranchForMaf.getBoolPref("advanced.maff.usejarprotocol");
   },
 
   /**
@@ -290,7 +292,7 @@ var Prefs = {
   get tempFolder() {
     // Get the value as an Unicode string
     var tempFolderPath = this.prefBranchForMaf.getComplexValue(
-     "temp.folder", Ci.nsISupportsString).data;
+     "advanced.temp.folder", Ci.nsISupportsString).data;
     // If the string is empty, use the default path, that is a subdirectory
     //  of the system temporary directory
     if (!tempFolderPath) {
@@ -304,7 +306,7 @@ var Prefs = {
    * Returns true if the temporary folder must be cleaned up on exit.
    */
   get tempClearOnExit() {
-    return this.prefBranchForMaf.getBoolPref("temp.clearonexit");
+    return this.prefBranchForMaf.getBoolPref("advanced.temp.clearonexit");
   },
 
   /*
