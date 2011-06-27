@@ -186,8 +186,8 @@ var MafInterfaceOverlay = {
    */
   _refreshCurrentPage: function() {
     // Get a direct reference to the ArchivePage object
-    this._currentPageInfo = MozillaArchiveFormat.ArchiveCache.pageFromUriSpec(
-     gBrowser.currentURI.spec);
+    this._currentPageInfo = MozillaArchiveFormat.ArchiveCache.pageFromUri(
+     gBrowser.currentURI);
   },
 
   /**

@@ -104,10 +104,10 @@ var ArchiveCache = {
   /**
    * Returns the archive object associated with the given URL.
    *
-   * @param aSpec   String representing the original URL of the archive.
+   * @param aUri   nsIURI representing the original URL of the archive.
    */
-  archiveFromUriSpec: function(aSpec) {
-    return this._archivesByUri[aSpec] || null;
+  archiveFromUri: function(aUri) {
+    return this._archivesByUri[aUri.spec] || null;
   },
 
   /**
@@ -115,31 +115,20 @@ var ArchiveCache = {
    *  URL, if the URL represents a file in the temporary directory that is
    *  related to an available extracted page.
    *
-   * @param aSpec   String representing the URI to check.
+   * @param aUri   nsIURI to check.
    */
-  pageFromAnyTempUriSpec: function(aSpec) {
-    // As an optimization, if this is the main page in an archive, return now
-    if (this._pagesByTempUri[aSpec]) {
-      return this._pagesByTempUri[aSpec];
-    }
-    // Build a local file URL object from the provided string
-    var fileUrl;
-    try {
-      fileUrl = Cc["@mozilla.org/network/io-service;1"].
-       getService(Ci.nsIIOService).newURI(aSpec, null, null).
-       QueryInterface(Ci.nsIFileURL);
-    } catch (e if (e instanceof Ci.nsIException && (e.result ==
-     Cr.NS_NOINTERFACE || e.result == Cr.NS_ERROR_MALFORMED_URI))) {
-      // The provided URL is invalid or is not a file URL. It cannot refer to
-      //  a file in the temporary directory related to an extracted page.
+  pageFromAnyTempUri: function(aUri) {
+    // Return now if the provided URL is not a file URL, thus it cannot refer to
+    //  a file in the temporary directory related to an extracted page.
+    if (!(aUri instanceof Ci.nsIFileURL)) {
       return null;
     }
     // Check if this file is located under any archive's temporary folder
     for (var [, page] in Iterator(this._pagesByTempUri)) {
       var folderUri = page.tempFolderUri.QueryInterface(Ci.nsIFileURL);
-      // The following function checks whether fileUrl is located under the
+      // The following function checks whether aUri is located under the
       //  folder represented by folderUri
-      if (folderUri.getCommonBaseSpec(fileUrl) === folderUri.spec) {
+      if (folderUri.getCommonBaseSpec(aUri) === folderUri.spec) {
         return page;
       }
     }
@@ -150,15 +139,16 @@ var ArchiveCache = {
   /**
    * Returns the page object associated with the given URL.
    *
-   * @param aSpec   String representing one of the URLs of the main file
-   *                 associated with the page. It can be the archive URL,
-   *                 the URL in the temporary folder, or the direct archive
-   *                 access URL (for example, a "jar" URL).
+   * @param aUri   nsIURI representing one of the URLs of the main file
+   *                associated with the page. It can be the archive URL,
+   *                the URL in the temporary folder, or the direct archive
+   *                access URL (for example, a "jar" URL).
    */
-  pageFromUriSpec: function(aSpec) {
-    return this._pagesByArchiveUri[aSpec] ||
-           this._pagesByDirectArchiveUri[aSpec] ||
-           this._pagesByTempUri[aSpec] ||
+  pageFromUri: function(aUri) {
+    var uriSpec = aUri.spec;
+    return this._pagesByArchiveUri[uriSpec] ||
+           this._pagesByDirectArchiveUri[uriSpec] ||
+           this._pagesByTempUri[uriSpec] ||
            null;
   },
 

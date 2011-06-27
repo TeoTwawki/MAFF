@@ -174,7 +174,7 @@ SaveContentJob.prototype = {
    *  ensure that accessing the archive's location won't open a cached version.
    */
   _invalidateCachedArchive: function() {
-    var archive = ArchiveCache.archiveFromUriSpec(this._archive.uri.spec);
+    var archive = ArchiveCache.archiveFromUri(this._archive.uri);
     if (archive) {
       ArchiveCache.unregisterArchive(archive);
     }

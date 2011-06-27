@@ -53,7 +53,7 @@ var ArchiveHistoryObserver = {
   onVisit: function(aURI, aVisitID, aTime, aSessionID, aReferringID,
    aTransitionType, aAdded) {
     // If the page that was just visited is waiting for adding annotations
-    var page = ArchiveCache.pageFromUriSpec(aURI.spec);
+    var page = ArchiveCache.pageFromUri(aURI);
     if (page && page.annotationsPending) {
       delete page.annotationsPending;
       ArchiveAnnotations.setAnnotationsForPage(page);

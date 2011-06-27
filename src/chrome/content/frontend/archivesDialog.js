@@ -441,7 +441,7 @@ var ArchivesDialog = {
     // For every node in the selection
     for (var [, node] in Iterator(selectedNodes)) {
       // Find a reference to the page from the archives cache
-      var page = ArchiveCache.pageFromUriSpec(node.uri);
+      var page = this.getNodePage(node);
       // If the page is still cached, remove its archive from the cache
       if (page) {
         ArchiveCache.unregisterArchive(page.archive);
@@ -587,7 +587,7 @@ var ArchivesDialog = {
     }
     // Get a reference to the page object associated with the node. If the page
     //  is not available anymore, exit now.
-    var page = ArchiveCache.pageFromUriSpec(aNode.uri);
+    var page = this.getNodePage(aNode);
     if (!page) {
       return null;
     }
@@ -595,5 +595,22 @@ var ArchivesDialog = {
     var element = document.getElementById(aColumnId);
     var annotationName = ArchivesDialog.getColumnAnnotationName(element);
     return ArchiveAnnotations.getAnnotationForPage(page, annotationName);
+  },
+
+  /**
+   * Returns the ArchivePage object associated with the given Places result
+   *  node, or null if the page is not cached or the URI of the Places item is
+   *  not valid anymore.
+   */
+  getNodePage: function(aNode) {
+    var nodeUri;
+    try {
+      nodeUri = Cc["@mozilla.org/network/io-service;1"].
+       getService(Ci.nsIIOService).newURI(aNode.uri, null, null);
+    } catch (e) {
+      // Return null if the URI is invalid
+      return null;
+    }
+    return ArchiveCache.pageFromUri(nodeUri);
   }
 }

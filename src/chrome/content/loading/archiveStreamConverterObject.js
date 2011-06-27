@@ -68,8 +68,8 @@ ArchiveStreamConverter.prototype = {
   onStartRequest: function(aRequest, aContext) {
     // Find an existing archive object associated with the URI we are accessing
     var originalChannel = aRequest.QueryInterface(Ci.nsIChannel);
-    if (ArchiveCache.pageFromUriSpec(originalChannel.URI.spec) ||
-     ArchiveCache.archiveFromUriSpec(originalChannel.URI.spec) ||
+    if (ArchiveCache.pageFromUri(originalChannel.URI) ||
+     ArchiveCache.archiveFromUri(originalChannel.URI) ||
      originalChannel.URI.schemeIs("file")) {
       // If a cached archive is available, or we are accessing a local file, do
       //  not save the new archive locally from the original location

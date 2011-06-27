@@ -100,7 +100,7 @@ SaveCompletePersist.prototype = {
       var fileObject = aFile.QueryInterface(Ci.nsIFileURL).file;
 
       // Store the URL of the document being saved for reference
-      this._saveUrlSpec = aDocument.location.href;
+      this._saveUrl = aDocument.documentURIObject.clone();
 
       // Save the selected page to disk
       var thisObject = this;
@@ -135,7 +135,7 @@ SaveCompletePersist.prototype = {
 
       // When saving a page that was extracted from an archive, use the
       //  information from the original archive to save the page correctly
-      var originalPage = ArchiveCache.pageFromUriSpec(this._saveUrlSpec);
+      var originalPage = ArchiveCache.pageFromUri(this._saveUrl);
       if (originalPage) {
         // Preserve the original URL the page was saved from, if present
         if (originalPage.originalUrl) {
@@ -259,7 +259,7 @@ SaveCompletePersist.prototype = {
      aResultObject.result != Cr.NS_BINDING_ABORTED) {
       // Report the error condition to the progress listener
       var messageText = this._formattedStr("savecomplete.status.errors.msg",
-       [this._saveUrlSpec]) + "\n\n" +
+       [this._saveUrl.spec]) + "\n\n" +
        this._str("savecomplete.status.savesystemtip.msg");
       this.progressListener.onStatusChange(null, null, aResultObject.result,
        messageText);
@@ -285,7 +285,7 @@ SaveCompletePersist.prototype = {
     var allMessages = Array.join(aMessageArray, "\n");
     var stringId = (aIsError ? "savecomplete.console.errors.text" :
      "savecomplete.console.warnings.text");
-    var text = this._formattedStr(stringId, [this._saveUrlSpec, allMessages]);
+    var text = this._formattedStr(stringId, [this._saveUrl.spec, allMessages]);
 
     // Determine the error severity
     var flags = (aIsError ? Ci.nsIScriptError.errorFlag :
@@ -326,5 +326,5 @@ SaveCompletePersist.prototype = {
     "chrome://maf/locale/saveCompletePersistObject.properties"),
 
   _saver: null,
-  _saveUrlSpec: ""
+  _saveUrl: null
 }

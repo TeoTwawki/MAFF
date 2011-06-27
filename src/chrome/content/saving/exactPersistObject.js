@@ -104,7 +104,7 @@ ExactPersist.prototype = {
 
       // When saving a page that was extracted from an archive, use the
       //  information from the original archive to save the page correctly
-      var originalPage = ArchiveCache.pageFromUriSpec(aDocument.documentURI);
+      var originalPage = ArchiveCache.pageFromUri(aDocument.documentURIObject);
 
       // Before the job is started, change the content location of the main
       //  document to reflect the desired location. This ensures that references

@@ -69,12 +69,12 @@ var ArchiveLoader = {
     var betterUri = null;
 
     // Find the requested page in the archive cache
-    var page = ArchiveCache.pageFromUriSpec(aArchiveUri.spec);
+    var page = ArchiveCache.pageFromUri(aArchiveUri);
 
     // If the specified page has not been loaded yet
     if (!page) {
       // Find the requested archive in the archive cache
-      var archive = ArchiveCache.archiveFromUriSpec(aArchiveUri.spec);
+      var archive = ArchiveCache.archiveFromUri(aArchiveUri);
 
       // If the specified archive has not been loaded yet
       if (!archive) {
@@ -84,7 +84,7 @@ var ArchiveLoader = {
          aContentType);
 
         // Find the exact requested page from the archive cache
-        page = ArchiveCache.pageFromUriSpec(aArchiveUri.spec);
+        page = ArchiveCache.pageFromUri(aArchiveUri);
       }
 
       // If the page is not found, probably the provided URL refers to a
@@ -122,7 +122,7 @@ var ArchiveLoader = {
    */
   getContentUri: function(aArchiveUri) {
     // Find the requested page in the archive cache
-    var page = ArchiveCache.pageFromUriSpec(aArchiveUri.spec);
+    var page = ArchiveCache.pageFromUri(aArchiveUri);
 
     // Ensure that the page is available. Since the loading process always calls
     //  "load" before this function, the only case where this can happen is when
