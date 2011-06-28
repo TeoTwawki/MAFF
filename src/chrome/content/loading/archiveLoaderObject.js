@@ -136,11 +136,21 @@ var ArchiveLoader = {
     //  directly from the archive. If either the version in the temporary
     //  directory or the one in archive is not available for this particular
     //  page, the other access method is used.
+    var contentUri;
     if (!page.tempUri || (page.directArchiveUri && Prefs.openUseJarProtocol)) {
-      return page.directArchiveUri;
+      contentUri = page.directArchiveUri.clone();
     } else {
-      return page.tempUri;
+      contentUri = page.tempUri.clone();
     }
+
+    // Try and propagate the hash part, if supported by the URL implementation
+    if (aArchiveUri instanceof Ci.nsIURL) {
+      try {
+        contentUri.QueryInterface(Ci.nsIURL).ref = aArchiveUri.ref;
+      } catch (e) { }
+    }
+
+    return contentUri;
   },
 
   /**

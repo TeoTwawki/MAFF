@@ -114,6 +114,10 @@ Archive.prototype = {
       // Ensure that the archive page number in the query part is removed
       archiveUri.query =
        archiveUri.query.replace(/&?web_archive_page=\d+$/, "");
+      // Try and remove the hash part, if supported by the URL implementation
+      try {
+        archiveUri.ref = "";
+      } catch (e) { }
     }
     this._uri = archiveUri;
   },

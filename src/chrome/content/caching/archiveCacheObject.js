@@ -107,7 +107,7 @@ var ArchiveCache = {
    * @param aUri   nsIURI representing the original URL of the archive.
    */
   archiveFromUri: function(aUri) {
-    return this._archivesByUri[aUri.spec] || null;
+    return this._archivesByUri[this._getLookupSpec(aUri)] || null;
   },
 
   /**
@@ -145,7 +145,7 @@ var ArchiveCache = {
    *                access URL (for example, a "jar" URL).
    */
   pageFromUri: function(aUri) {
-    var uriSpec = aUri.spec;
+    var uriSpec = this._getLookupSpec(aUri);
     return this._pagesByArchiveUri[uriSpec] ||
            this._pagesByDirectArchiveUri[uriSpec] ||
            this._pagesByTempUri[uriSpec] ||
@@ -187,5 +187,26 @@ var ArchiveCache = {
    * Associative array containing some of the available archived pages,
    *  accessible by their direct archive access URI (for example, a "jar:" URI).
    */
-  _pagesByDirectArchiveUri: {}
+  _pagesByDirectArchiveUri: {},
+
+  /**
+   * Removes unnecessary elements from archive or page URIs, in order to look
+   *  them up in the archive cache correctly.
+   *
+   * @param aUri   nsIURI to process.
+   */
+  _getLookupSpec: function(aUri) {
+    var lookupUri = aUri.clone();
+    if (lookupUri instanceof Ci.nsIFileURL) {
+      // Ensure that query and hash parts are removed for local files
+      lookupUri.query = "";
+      lookupUri.ref = "";
+    } else if (lookupUri instanceof Ci.nsIURL) {
+      // Try and remove the hash part, if supported by the URL implementation
+      try {
+        lookupUri.ref = "";
+      } catch (e) { }
+    }
+    return lookupUri.spec;
+  }
 };
