@@ -77,6 +77,10 @@ ExactPersistUnparsedJob.prototype = {
          this.resource.originalUri);
         // Load the content from the cache if possible
         channel.loadFlags |= Ci.nsIRequest.LOAD_FROM_CACHE;
+        // Do not save unparsed resources that are not in the cache, because
+        //  this usually means that the resource was not originally downloaded
+        //  because it wasn't needed to display the current state of the page.
+        channel.loadFlags |= Ci.nsICachingChannel.LOAD_ONLY_FROM_CACHE;
         // Receive progress notifications through the nsIProgressEventSink
         //  interface. For more information on this interface, see
         //  <http://mxr.mozilla.org/mozilla-central/source/netwerk/base/public/nsIProgressEventSink.idl>
@@ -160,9 +164,14 @@ ExactPersistUnparsedJob.prototype = {
     this._handleAsyncCallback(function() {
       // If the download failed before completion
       if (!Components.isSuccessCode(aStatusCode)) {
-        // Report the error and indicate that the file was not saved
-        this._reportDownloadFailure();
+        // Report the error, unless this is a resource that was not included in
+        //  the saved page because it was not originally downloaded.
+        if (aStatusCode != Cr.NS_ERROR_DOCUMENT_NOT_CACHED) {
+          this._reportDownloadFailure();
+        }
+        // Indicate that the file was not saved, and store the status code
         this.resource.file = null;
+        this.resource.statusCode = aStatusCode;
       } else {
         // Write the binary data to the local file
         this.resource.writeToFile();
