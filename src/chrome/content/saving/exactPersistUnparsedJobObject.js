@@ -119,6 +119,12 @@ ExactPersistUnparsedJob.prototype = {
       aRequest.cancel(Cr.NS_BINDING_ABORTED);
       return;
     }
+    // If an HTTP request did not succeed, and an error page was generated
+    if (aRequest instanceof Ci.nsIHttpChannel && !aRequest.requestSucceeded) {
+      // Ensure that the request is canceled and exit
+      aRequest.cancel(Cr.NS_ERROR_FILE_NOT_FOUND);
+      return;
+    }
     // Store a reference to the request to allow its cancellation
     this._request = aRequest.QueryInterface(Ci.nsIChannel);
     // At this point, we can obtain the MIME media type for the resource and use
