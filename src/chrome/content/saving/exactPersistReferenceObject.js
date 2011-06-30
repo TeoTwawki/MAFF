@@ -185,11 +185,26 @@ ExactPersistReference.prototype = {
     }
     // If the reference target is not associated with a PersistResource, or the
     //  PersistResource does not have an associated local file, this object
-    //  represents a reference to an external resource that wasn't saved. In
-    //  this case, the resolved absolute URI of the resource is substituted in
-    //  place of the original reference.
+    //  represents a reference to an external resource that wasn't saved.
     if (!this.resource || !this.resource.file) {
-      return this.targetUri.spec;
+      // If the resource didn't need to be saved, for example because it is
+      //  referenced by a hyperlink, the resolved absolute URI of the resource
+      //  is substituted in place of the original reference.
+      if (!this.saveLinkedResource) {
+        return this.targetUri.spec;
+      }
+      // Otherwise, the resource wasn't saved because of an error or because it
+      //  was not needed to display the page correctly. In this case, a special
+      //  URI that includes the original resolved URI is substituted in place of
+      //  the original reference.
+      if (this.resource && this.resource.statusCode ==
+       Cr.NS_ERROR_DOCUMENT_NOT_CACHED) {
+        // Use a different URI for the case where the resource was not included
+        //  in the saved page because it was not needed to display it.
+        return "urn:not-available:" + this.targetUri.spec;
+      } else {
+        return "urn:download-error:" + this.targetUri.spec;
+      }
     }
     // If we are saving to MHTML, the saved files should always contain absolute
     //  references to the original location of the other saved resources. These
