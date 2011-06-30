@@ -93,6 +93,12 @@ PersistResource.prototype = {
   mimeType: "",
 
   /**
+   * String representing the charset declaration of the web resource, or empty
+   *  if the information is not available.
+   */
+  charset: "",
+
+  /**
    * Initializes the relevant metadata about the current resource starting from
    *  the given local file.
    *

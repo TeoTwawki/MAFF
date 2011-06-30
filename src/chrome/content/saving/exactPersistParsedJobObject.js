@@ -1,5 +1,5 @@
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
- * ***** BEGIN LICENSE BLOCK *****
+k * ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * The contents of this file are subject to the Mozilla Public License Version
@@ -117,6 +117,7 @@ ExactPersistParsedJob.prototype = {
 
     // Set the properties required to save the resource properly
     this.resource.mimeType = aDocument.contentType;
+    this.resource.charset = aDocument.characterSet;
 
     // Scan the document for web references and store the content to be saved
     this._document = aDocument;

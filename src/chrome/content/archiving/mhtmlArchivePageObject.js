@@ -248,7 +248,8 @@ MhtmlArchivePage.prototype = {
    */
   _setMimePartContent: function(aMimePart, aResource) {
     // Add the content type header first
-    aMimePart.addRawHeader("Content-Type", aResource.mimeType);
+    aMimePart.addRawHeader("Content-Type", aResource.mimeType +
+     (aResource.charset ? (';\r\n\tcharset="' + aResource.charset + '"') : ""));
     // Select the appropriate encoding for the body based on the MIME type
     var encoding = ["text/html", "application/xhtml+xml", "image/svg+xml",
      "text/xml", "application/xml", "text/css", "text/javascript",

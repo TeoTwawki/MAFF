@@ -141,6 +141,12 @@ ExactPersistUnparsedJob.prototype = {
     // Set the media type on the resource and determine the local file name. In
     //  case the MIME type couldn't be determined, use a binary file type.
     this.resource.mimeType = mediaType || "application/octet-stream";
+    // Store the charset information for the content, only if applicable
+    try {
+      this.resource.charset = this._request.contentCharset;
+    } catch (e) {
+      // Accessing the contentCharset property may raise exceptions
+    }
     this._eventListener.folder.addUnique(this.resource);
   },
 
