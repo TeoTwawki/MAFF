@@ -1,5 +1,5 @@
 <!-- General window controls -->
-<!ENTITY window.title "Tabs auswählen, die gespeichert werden sollen">
+<!ENTITY window.title "Zu archivierende Tabs markieren">
 <!ENTITY savebutton.label "Speichern">
 <!-- Tab selection -->
 <!ENTITY tabs.title.header "Titel">

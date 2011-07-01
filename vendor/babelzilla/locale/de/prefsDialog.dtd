@@ -2,19 +2,19 @@
 <!ENTITY window.title.v2 "Mozilla Archiv Format - Einstellungen">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Allgemein">
-<!ENTITY save.component.grouplabel "Wenn komplette Webseiteninhalte gespeichert werden:">
-<!ENTITY save.component.standard.label "Standard-Speichervorgehen des Browsers verwenden">
+<!ENTITY save.component.grouplabel "Vorgaben zum Archivieren:">
+<!ENTITY save.component.standard.label "Standard Browserspeichersystem verwenden">
 <!ENTITY save.component.standard.accesskey "B">
 <!ENTITY save.component.completesave.label "Skripte und Quelltext mithilfe von &quot;Save Complete&quot; erhalten">
 <!ENTITY save.component.completesave.accesskey "S">
 <!ENTITY save.component.exactpersist.label "Originalgetreuen Schnappschuss der Seite aufnehmen">
 <!ENTITY save.component.exactpersist.accesskey "O">
-<!ENTITY save.mhtml.compatible.label "Zu anderen Browsern vollkompatible MHTML-Datei erstellen">
+<!ENTITY save.mhtml.compatible.label "Zu anderen Browsern voll kompatible MHTML-Datei erstellen">
 <!ENTITY save.mhtml.compatible.accesskey "V">
 <!ENTITY save.namingstrategy.grouplabel "Für den vorgeschlagenen Dateinamen:">
 <!ENTITY save.namingstrategy.standard.label "Die Standardbenennung des Browsers verwenden">
 <!ENTITY save.namingstrategy.standard.accesskey "d">
-<!ENTITY save.namingstrategy.pagetitle.label "Den Titel der Seite verwenden wann immer möglich">
+<!ENTITY save.namingstrategy.pagetitle.label "Den Titel der Seite verwenden, wann immer möglich">
 <!ENTITY save.namingstrategy.pagetitle.accesskey "T">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Benutzeroberfläche">

@@ -23,7 +23,7 @@
 <!ENTITY details.mafarchivename.label "Archivname:">
 <!ENTITY details.mafarchivename.accesskey "r">
 <!ENTITY details.placesurl.label "Archivspeicherort:">
-<!ENTITY details.placesurl.accesskey "o">
+<!ENTITY details.placesurl.accesskey "h">
 <!ENTITY details.maftitle.label "Originalseitentitel:">
 <!ENTITY details.maftitle.accesskey "O">
 <!ENTITY details.maforiginalurl.label "Quellenadressse:">

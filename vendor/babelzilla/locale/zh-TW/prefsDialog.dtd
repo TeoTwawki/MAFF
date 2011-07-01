@@ -9,7 +9,7 @@
 <!ENTITY save.component.completesave.accesskey "u">
 <!ENTITY save.component.exactpersist.label "使用可靠的網頁快照">
 <!ENTITY save.component.exactpersist.accesskey "k">
-<!ENTITY save.mhtml.compatible.label "建立與其它瀏覽器完全相容的 MHTML 檔案">
+<!ENTITY save.mhtml.compatible.label "建立與其他瀏覽器完全相容的 MHTML 檔案">
 <!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "建議檔案名稱：">
 <!ENTITY save.namingstrategy.standard.label "使用瀏覽器的標準命名方法">
