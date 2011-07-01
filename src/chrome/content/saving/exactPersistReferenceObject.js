@@ -187,6 +187,12 @@ ExactPersistReference.prototype = {
     //  PersistResource does not have an associated local file, this object
     //  represents a reference to an external resource that wasn't saved.
     if (!this.resource || !this.resource.file) {
+      // JavaScript URIs are never saved, even if requested by the reference
+      //  type, and they need to be replaced with an expression that does not
+      //  cause side effects when the URI is evaluated.
+      if (this.targetUri.schemeIs("javascript")) {
+        return "javascript:void(0);";
+      }
       // If the resource didn't need to be saved, for example because it is
       //  referenced by a hyperlink, the resolved absolute URI of the resource
       //  is substituted in place of the original reference.
