@@ -917,7 +917,97 @@ ExactPersistParsedJob.prototype = {
       }
     }
 
+    // Blank all event handlers
+    if (newNode.hasAttributes()) {
+      var attributeNames = Array.map(newNode.attributes, function(a) a.name);
+      for (var [, attributeName] in Iterator(attributeNames)) {
+        if (this._eventNames.indexOf(attributeName.toLowerCase()) >= 0) {
+          newNode.setAttribute(attributeName, "");
+        }
+      }
+    }
+
     // Replace the original node with the modified version
     return newNode;
-  }
+  },
+
+  // --- Reference tables ---
+
+  _eventNames: [
+    "onabort",
+    "onafterscriptexecute",
+    "onafterprint",
+    "onbeforeunload",
+    "onbeforescriptexecute",
+    "onblur",
+    "onbeforeprint",
+    "onchange",
+    "onclick",
+    "oncontextmenu",
+    "oncopy",
+    "oncut",
+    "oncanplay",
+    "oncanplaythrough",
+    "ondblclick",
+    "ondrag",
+    "ondragend",
+    "ondragenter",
+    "ondragleave",
+    "ondragover",
+    "ondragstart",
+    "ondrop",
+    "ondurationchange",
+    "ondeviceorientation",
+    "ondevicemotion",
+    "onerror",
+    "onemptied",
+    "onended",
+    "onfocus",
+    "onhashchange",
+    "oninput",
+    "oninvalid",
+    "onkeydown",
+    "onkeypress",
+    "onkeyup",
+    "onload",
+    "onloadeddata",
+    "onloadedmetadata",
+    "onloadstart",
+    "onmousemove",
+    "onmouseout",
+    "onmouseover",
+    "onmouseup",
+    "onmousedown",
+    "onmessage",
+    "onpaint",
+    "onpageshow",
+    "onpagehide",
+    "onpaste",
+    "onpopstate",
+    "onpause",
+    "onplay",
+    "onplaying",
+    "onprogress",
+    "onreadystatechange",
+    "onreset",
+    "onresize",
+    "onratechange",
+    "onscroll",
+    "onselect",
+    "onsubmit",
+    "onseeked",
+    "onseeking",
+    "onstalled",
+    "onsuspend",
+    "ontimeupdate",
+    "ontouchstart",
+    "ontouchend",
+    "ontouchmove",
+    "ontouchenter",
+    "ontouchleave",
+    "ontouchcancel",
+    "onunload",
+    "onvolumechange",
+    "onwaiting",
+  ]
 }
