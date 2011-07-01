@@ -1,7 +1,7 @@
-﻿<!-- *** Welcome message and feature presentation *** -->
+<!-- *** Welcome message and feature presentation *** -->
 <!ENTITY page.title "Benvenuti">
 <!ENTITY welcome.label "Grazie per aver installato Mozilla Archive Format!">
-<!ENTITY features.header.label "Questa aggiunta migliora molte caratteristiche di $brandShortName.">
+<!ENTITY features.header.label "Molte caratteristiche di $brandShortName sono state migliorate da questa aggiunta.">
 <!ENTITY features.headerfromupdate.label "L'aggiunta è stata aggiornata all'ultima versione principale.">
 <!ENTITY features.item1.label "Le pagine web sono salvate più accuratamente, ciò che vedi è ciò che ottieni.">
 <!ENTITY features.item2.label "È possibile salvare una o più schede in un file unico (archivio web).">

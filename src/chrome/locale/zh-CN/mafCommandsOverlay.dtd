@@ -9,7 +9,7 @@
 <!ENTITY menuitem.convertsavedpages.label "转换已保存页面…">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">
 <!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
-<!ENTITY menuitem.options.label "Options…">
+<!ENTITY menuitem.options.label "选项…">
 <!ENTITY menuitem.options.accesskey.toolsmenu "O">
 <!-- Additional menu items for the "Save As" command -->
 <!ENTITY menuitem.savetabsinarchiveas.label "Save Tabs In Archive As…">
