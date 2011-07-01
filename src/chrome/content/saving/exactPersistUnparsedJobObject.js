@@ -123,8 +123,16 @@ ExactPersistUnparsedJob.prototype = {
       aRequest.cancel(Cr.NS_BINDING_ABORTED);
       return;
     }
-    // If an HTTP request did not succeed, and an error page was generated
-    if (aRequest instanceof Ci.nsIHttpChannel && !aRequest.requestSucceeded) {
+    // Check if an HTTP request did not succeed, and an error page was generated
+    var requestSucceeded = true;
+    if (aRequest instanceof Ci.nsIHttpChannel) {
+      try {
+        requestSucceeded = aRequest.requestSucceeded;
+      } catch (e) {
+        // Accessing the requestSucceeded property may raise exceptions
+      }
+    }
+    if (!requestSucceeded) {
       // Ensure that the request is canceled and exit
       aRequest.cancel(Cr.NS_ERROR_FILE_NOT_FOUND);
       return;
