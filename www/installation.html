@@ -86,36 +86,46 @@
  $maf_latest_fx); ?> has the following user-visible improvements over MAF
  <?php echo $maf_previous_fx; ?>:</p>
 <ul>
-  <li>Compatibility with the latest beta versions of Firefox 4.0 and
-   SeaMonkey 2.1.</li>
-  <li>MAFF archives are now generated and read with stricter compliance to
-   the <a href="maff-specification.html">MAFF specification</a> draft,
-   improving compatibility with other applications.</li>
-  <li>Modified user interface elements:
+  <li>Greatly improved performance, accuracy and compactness when the option to
+   take a faithful snapshot of the page is selected:
     <ul>
-      <li>The welcome dialog has been replaced by a welcome page that is
-       opened in a browser tab. On Windows, file associations can be
-       controlled directly from the welcome page.</li>
-      <li>The MAF menu commands are now accessible from the application menu
-       that replaces the menu bar in Firefox 4 on Windows Vista and
+      <li>Pages are saved instantly, because hidden content that is not needed
+       to display the current state of the page is not downloaded anymore.</li>
+      <li>Saved pages can be much smaller, since they do not include unneeded
+       content.</li>
+      <li>Saved pages can be displayed more accurately, because now scripts
+       specified using event attributes or "javascript:" URIs are also removed,
+       making sure that they cannot modify the page structure when it is opened
        later.</li>
-      <li>The MAF save commands do not prompt for the file name anymore when
-       the related global preference is set in SeaMonkey.</li>
-      <li>The default visibility and layout of the MAF menu items has changed,
-       and the <b>Save Page In Archive</b> menu item is visible by default.
-       The previous layout can be restored from the preferences dialog.</li>
-      <li>The preferences dialog has been simplified, the default
-       configuration now covers all the common use cases, and advanced
-       settings can be changed only from the <tt>about:config</tt> page.</li>
+      <li>If an image or other support resource is not found, the error page is
+       not saved in place of the missing resource anymore.</li>
+      <li>Images and other content that could not be saved are not connected to
+       their original location anymore, leading to truly offline archives and
+       making it possible to verify that all content has been saved.</li>
+      <li>Saved MHTML archives can now be previewed correctly in Windows, even
+       if they contain text in a language other than English.</li>
     </ul>
   </li>
+  <li>Updating to the new version makes sure that all the customized
+   <a href="documentation.html#internalsettings">internal configuration
+   settings</a> are reset to their default value, resolving problems caused by
+   old settings that, starting with version 1.0, could be changed only from the
+   <tt>about:config</tt> page. There is usually no need to customize those
+   settings anymore.</li>
+  <li>Now it is possible to link to a specific section inside an archived page,
+   appending a fragment or hash part to the URI of the archived page.</li>
+  <li>The integrated
+   <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
+   component is now able to save framesets.</li>
+  <li>The Saved Pages Conversion Wizard is now able to recognize complete web
+   pages saved using Firefox or SeaMonkey in several languages other than
+   English and the current browser language.</li>
+  <li>The add-on is no longer tested with Firefox 3.0, Firefox 3.5, and
+   SeaMonkey 2.0.</li>
   <li>Bugfixes:
     <ul>
-      <li>On some operating systems, the default configuration didn't allow
-       more than one logged on user at a time to open web archives in a
-       reliable way.</li>
-      <li>Sometimes the archive information popup displayed the date
-       incorrectly for some languages other than English.</li>
+      <li>Some images in MHTML pages didn't appear, if they were referenced
+       using the "style" attribute.</li>
     </ul>
   </li>
 </ul>
