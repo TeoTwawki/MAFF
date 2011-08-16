@@ -176,18 +176,35 @@ var MafInterfaceOverlay = {
   // --- Interface state check functions ---
 
   /**
-   * Object with the metadata about the current page, or null if no metadata is
-   *  available.
+   * Object with the metadata about the current page.
    */
-  _currentPageInfo: null,
+  _currentPageInfo: {},
 
   /**
    * Updates the information about the current page.
    */
   _refreshCurrentPage: function() {
-    // Get a direct reference to the ArchivePage object
-    this._currentPageInfo = MozillaArchiveFormat.ArchiveCache.pageFromUri(
-     gBrowser.currentURI);
+    // Get a direct reference to the ArchivePage object, or use an empty object
+    let pageInfo = MozillaArchiveFormat.ArchiveCache.pageFromUri(
+     gBrowser.currentURI) || {};
+    this._currentPageInfo = pageInfo;
+
+    // Format the original address for display, if present
+    if (pageInfo.originalUrl && !pageInfo.originalUrlForDisplay) {
+      // Ensure the address is unescaped
+      var originalUrl = new String(pageInfo.originalUrl);
+      originalUrl.isEscapedAsUri = true;
+      pageInfo.originalUrlForDisplay = MozillaArchiveFormat.Interface.
+       formatValueForDisplay(originalUrl);
+      pageInfo.hasValues = true;
+    }
+
+    // Format the save date for display, if present
+    if (pageInfo.dateArchived && !pageInfo.dateArchivedForDisplay) {
+      pageInfo.dateArchivedForDisplay = MozillaArchiveFormat.Interface.
+       formatValueForDisplay(pageInfo.dateArchived);
+      pageInfo.hasValues = true;
+    }
   },
 
   /**
@@ -196,13 +213,13 @@ var MafInterfaceOverlay = {
    */
   _checkArchiveInfoIcons: function() {
     // Determine the status of the page
-    var pageStatus = this._currentPageInfo ? "archived" : "normal";
+    var pageStatus = this._currentPageInfo.hasValues ? "archived" : "normal";
     // Determine where the icons should be displayed
     var iconLocation = MozillaArchiveFormat.Prefs.interfaceIconLocation;
     var showInUrlbar =
      (iconLocation == MozillaArchiveFormat.Prefs.ICONLOCATION_URLBAR) ||
      (iconLocation == MozillaArchiveFormat.Prefs.ICONLOCATION_URLBAR_AUTOHIDE &&
-     this._currentPageInfo);
+     this._currentPageInfo.hasValues);
     var showInStatus =
      (iconLocation == MozillaArchiveFormat.Prefs.ICONLOCATION_STATUS);
     // Hide or display the icons based on the preferences
@@ -219,45 +236,99 @@ var MafInterfaceOverlay = {
    */
   _checkArchiveInfoPopup: function() {
     // Update the value of the page status label
-    var pageStatusAttributeName = this._currentPageInfo ? "archivedvalue" :
-     "normalvalue";
+    var pageStatusAttributeName = this._currentPageInfo.hasValues ?
+     "archivedvalue" : "normalvalue";
     document.getElementById("mafPageStatusLabel").setAttribute("value",
      document.getElementById("mafPageStatusLabel").getAttribute(
      pageStatusAttributeName));
     // Show or hide the page details grid
     document.getElementById("mafArchiveInfoDetails").hidden =
-     !this._currentPageInfo;
+     !this._currentPageInfo.hasValues;
     // Update the contents of the page details grid if required
-    if (this._currentPageInfo) {
+    if (this._currentPageInfo.hasValues) {
       // Get the original address the page was saved from
       var originalUrlLabel = document.getElementById("mafOriginalUrlLabel");
-      var originalUrl = this._currentPageInfo.originalUrl;
+      var originalUrl = this._currentPageInfo.originalUrlForDisplay;
       // If the original address is present
       if (originalUrl) {
-        // Ensure the address is unescaped
-        originalUrl = new String(originalUrl);
-        originalUrl.isEscapedAsUri = true;
         // Display the label as a link
         originalUrlLabel.setAttribute("class", "text-link");
+        originalUrlLabel.setAttribute("value", originalUrl);
       } else {
         // Display the placeholder for missing values
-        originalUrl = document.getElementById("mafOriginalUrlLabel").
-         getAttribute("missingvalue");
-        // Do not display the label as a link
         originalUrlLabel.setAttribute("class", "");
+        originalUrlLabel.setAttribute("value", document.
+         getElementById("mafOriginalUrlLabel").getAttribute("missingvalue"));
       }
-      originalUrlLabel.setAttribute("value",
-       MozillaArchiveFormat.Interface.formatValueForDisplay(originalUrl));
-      // Get the save date and display it appropriately
-      var dateArchived = this._currentPageInfo.dateArchived;
-      if (!dateArchived) {
-        // Display the placeholder for missing values
-        dateArchived = document.getElementById("mafDateArchivedLabel").
-         getAttribute("missingvalue");
-      }
+      // Get the save date and display it, or a placeholder for missing values
+      var dateArchived = this._currentPageInfo.dateArchivedForDisplay;
       document.getElementById("mafDateArchivedLabel").setAttribute("value",
-       MozillaArchiveFormat.Interface.formatValueForDisplay(dateArchived));
+       dateArchived || document.getElementById("mafDateArchivedLabel").
+       getAttribute("missingvalue"));
     }
+  },
+
+  /**
+   * Updates the archive information notification for the current page.
+   */
+  _checkArchiveInfoNotification: function() {
+    // Show a notification for the page only if required
+    if (!this._currentPageInfo.hasValues) {
+      return;
+    }
+
+    // Don't display the notification again if it was closed previously
+    if (gBrowser.contentDocument.mafOriginalInfoClosed) {
+      return;
+    }
+
+    // Exit if the notification is already displayed.
+    var notificationBox = gBrowser.getNotificationBox();
+    if (notificationBox.getNotificationWithValue("maf-original-info")) {
+      return;
+    }
+
+    // Create a new notification.
+    var notification = notificationBox.appendNotification("",
+     "maf-original-info", "chrome://maf/skin/integration/page-archived.png",
+     notificationBox.PRIORITY_WARNING_LOW, null);
+
+    // Show the save date only if present
+    var dateArchived = this._currentPageInfo.dateArchivedForDisplay;
+    if (dateArchived) {
+      this._prependNotificationLabel(notification, { value: dateArchived });
+      this._prependNotificationLabel(notification, {
+       value: this._dateArchivedDescriptionValue
+      });
+    }
+
+    // Show the original address only if present
+    var originalUrl = this._currentPageInfo.originalUrlForDisplay;
+    if (originalUrl) {
+      // Display the label as a link
+      this._prependNotificationLabel(notification, {
+       value: originalUrl,
+       class: "text-link",
+       crop: "center",
+       flex: "10000",
+       onclick: "MafInterfaceOverlay.onOriginalUrlClick(event);"
+      });
+      this._prependNotificationLabel(notification, {
+       value: this._originalUrlDescriptionValue
+      });
+    }
+
+    // Hide the unused message description element
+    notification.ownerDocument.getAnonymousElementByAttribute(notification,
+     "anonid", "messageText").hidden = true;
+
+    // Ensure that we record the fact that the notification is closed
+    var affectedDoc = gBrowser.contentDocument;
+    var button = notification.ownerDocument.getAnonymousElementByAttribute(
+     notification, "anonid", "details").nextSibling;
+    button.addEventListener("command", function() {
+      affectedDoc.mafOriginalInfoClosed = true;
+    }, true);
   },
 
   /**
@@ -271,6 +342,8 @@ var MafInterfaceOverlay = {
     this._checkArchiveInfoIcons();
     // Update the contents of the popup
     this._checkArchiveInfoPopup();
+    // Update the contents of the notification
+    this._checkArchiveInfoNotification();
   },
 
   // --- Overlay support functions ---
@@ -279,6 +352,8 @@ var MafInterfaceOverlay = {
   _archiveInfoUrlbarBox: null,
   _archiveInfoUrlbarButton: null,
   _archiveInfoStatusButton: null,
+  _originalUrlDescriptionValue: null,
+  _dateArchivedDescriptionValue: null,
 
   /**
    * Gets references to some of the XUL elements of the MAF user interface.
@@ -292,6 +367,10 @@ var MafInterfaceOverlay = {
      document.getElementById("mafArchiveInfoUrlbarButton");
     this._archiveInfoStatusButton =
      document.getElementById("mafArchiveInfoStatusButton");
+    this._originalUrlDescriptionValue = document.getElementById(
+     "mafOriginalUrlDescription").getAttribute("value");
+    this._dateArchivedDescriptionValue = document.getElementById(
+     "mafDateArchivedDescription").getAttribute("value");
   },
 
   /**
@@ -299,6 +378,19 @@ var MafInterfaceOverlay = {
    */
   _hideArchiveInfoPopup: function() {
     this._archiveInfoPopup.hidePopup();
+  },
+
+  /**
+   * Prepends a label with the given attributes to the provided notification.
+   */
+  _prependNotificationLabel: function(aNotification, aAttributes) {
+    const XULNS =
+     "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+    var label = aNotification.ownerDocument.createElementNS(XULNS, "label");
+    for ([name, value] in Iterator(aAttributes)) {
+      label.setAttribute(name, value);
+    }
+    aNotification.insertBefore(label, aNotification.firstChild);
   },
 
   // --- Progress listener ---

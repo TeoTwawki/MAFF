@@ -78,7 +78,8 @@
           </columns>
           <rows>
             <row>
-              <label value="&archiveinfo.maforiginalurl.label;" />
+              <label id=   "mafOriginalUrlDescription"
+                     value="&archiveinfo.maforiginalurl.label;" />
               <label id=          "mafOriginalUrlLabel"
                      class=       "text-link"
                      crop=        "center"
@@ -87,7 +88,8 @@
                      />
             </row>
             <row>
-              <label value="&archiveinfo.mafdatearchived.label;" />
+              <label id=   "mafDateArchivedDescription"
+                     value="&archiveinfo.mafdatearchived.label;" />
               <label id=          "mafDateArchivedLabel"
                      missingvalue="&archiveinfo.mafdatearchived.missing.label;"
                      />
