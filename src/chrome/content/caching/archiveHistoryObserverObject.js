@@ -51,7 +51,7 @@ var ArchiveHistoryObserver = {
   onBeginUpdateBatch: function() { },
   onEndUpdateBatch: function() { },
   onVisit: function(aURI, aVisitID, aTime, aSessionID, aReferringID,
-   aTransitionType, aAdded) {
+   aTransitionType, aGUID, aAdded) {
     // If the page that was just visited is waiting for adding annotations
     var page = ArchiveCache.pageFromUri(aURI);
     if (page && page.annotationsPending) {
@@ -60,9 +60,9 @@ var ArchiveHistoryObserver = {
     }
   },
   onTitleChanged: function(aURI, aPageTitle) { },
-  onBeforeDeleteURI: function(aURI) { },
-  onDeleteURI: function(aURI) { },
+  onBeforeDeleteURI: function(aURI, aGUID) { },
+  onDeleteURI: function(aURI, aGUID) { },
   onClearHistory: function() { },
   onPageChanged: function(aURI, aWhat, aValue) { },
-  onDeleteVisits: function(aURI, aVisitTime) { }
+  onDeleteVisits: function(aURI, aVisitTime, aGUID) { }
 };

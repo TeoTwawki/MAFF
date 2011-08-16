@@ -845,7 +845,12 @@ ExactPersistParsedJob.prototype = {
       //  this feature to serialize a new node having the current value of the
       //  text area as its only text child.
       if (aNode instanceof Ci.nsIDOMHTMLTextAreaElement) {
-        newNode.QueryInterface(Ci.nsIDOM3Node).textContent = aNode.value;
+        // On versions prior to Firefox 7, we must query the nsIDOM3Node
+        // interface to access the textContent property.
+        if (Ci.nsIDOM3Node) {
+          newNode = newNode.QueryInterface(Ci.nsIDOM3Node);
+        }
+        newNode.textContent = aNode.value;
         aSerializeCloneKids.value = true;
         return newNode;
       }
