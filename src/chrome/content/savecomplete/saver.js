@@ -1195,9 +1195,12 @@ scPageSaver.scDownload.UnicharObserver.prototype.onStreamComplete = function (lo
         case Components.results.NS_OK:
             var str = "";
             try {
-                if (unicharData) {
+                if (unicharData && unicharData.readString) {
                     var str_ = {};
                     while (unicharData.readString(-1, str_)) str += str_.value;
+                } else if (unicharData) {
+                    // Firefox 6 and above
+                    str = unicharData;
                 }
             } catch (e) {
                 this._download._done(true);
