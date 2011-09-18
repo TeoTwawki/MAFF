@@ -207,10 +207,12 @@ ExactPersistJob.prototype = {
       if (aReference.saveLinkedDomDocument) {
         job.initFromDomDocument(aReference.saveLinkedDomDocument);
       } else if (aReference.saveLinkedCssStyleSheet) {
-        job.initFromCssStyleSheet(aReference.saveLinkedCssStyleSheet,
-         aReference.targetUri, aReference.saveLinkedFileCharacterSetHint);
+        job.initFromCssStyleSheet(aReference.sourceDomDocument,
+         aReference.saveLinkedCssStyleSheet, aReference.targetUri,
+         aReference.saveLinkedFileCharacterSetHint);
       } else if (aReference.saveEmptyScriptType) {
-        job.initFromEmptyScript(aReference.saveEmptyScriptType);
+        job.initFromEmptyScript(aReference.sourceDomDocument,
+         aReference.saveEmptyScriptType);
       }
     } else if (aReference.saveLinkedResource) {
       // Do not create unparsed save jobs for locations that have side-effects
@@ -218,9 +220,17 @@ ExactPersistJob.prototype = {
       if (!Cc["@mozilla.org/network/util;1"].getService(Ci.nsINetUtil).
        URIChainHasFlags(aReferenceUri,
        Ci.nsIProtocolHandler.URI_NON_PERSISTABLE)) {
-        // The resource will be saved by an unparsed job, unless a parsed job
-        //  gets associated with the resource meanwhile
-        aReference.resource.needsUnparsedJob = true;
+        // Do not create unparsed save jobs for resources that have not been
+        //  actually loaded to display the document
+        var loadedUriSpecs = aReference.sourceDomDocument.loadedUriSpecs;
+        if (loadedUriSpecs && loadedUriSpecs[aReferenceUri.spec]) {
+          // The resource will be saved by an unparsed job, unless a parsed job
+          //  gets associated with the resource meanwhile
+          aReference.resource.needsUnparsedJob = true;
+        } else {
+          // Store a special resource location instead of the original URI
+          aReference.originalResourceNotLoaded = true;
+        }
       }
     }
   },

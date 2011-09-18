@@ -111,6 +111,8 @@ ExactPersistParsedJob.prototype = {
    *  saved when the job is started.
    */
   initFromDomDocument: function(aDocument) {
+    this._sourceDomDocument = aDocument;
+
     // Set the properties required to parse the document properly
     this.characterSet = aDocument.characterSet;
     this.baseUri = aDocument.baseURIObject;
@@ -128,7 +130,10 @@ ExactPersistParsedJob.prototype = {
    * Finds web references in the given CSS stylesheet. The stylesheet will then
    *  be saved when the job is started.
    */
-  initFromCssStyleSheet: function(aStyleSheet, aStyleSheetUri, aCharacterSet) {
+  initFromCssStyleSheet: function(aDocument, aStyleSheet, aStyleSheetUri,
+   aCharacterSet) {
+    this._sourceDomDocument = aDocument;
+
     // Set the properties required to parse the stylesheet properly
     this.characterSet = aCharacterSet || null;
     this.baseUri = aStyleSheetUri;
@@ -159,7 +164,9 @@ ExactPersistParsedJob.prototype = {
   /**
    * Saves an empty script when the job is started.
    */
-  initFromEmptyScript: function(aScriptType) {
+  initFromEmptyScript: function(aDocument, aScriptType) {
+    this._sourceDomDocument = aDocument;
+
     // Set the properties required to save the resource properly
     this.resource.mimeType = aScriptType;
 
@@ -211,6 +218,7 @@ ExactPersistParsedJob.prototype = {
     }
 
     // Create and initialize the reference object
+    aProperties.sourceDomDocument = this._sourceDomDocument;
     var reference = new ExactPersistReference(this, aProperties);
     // If the resource is supposed to have a target URI, but the corresponding
     //  absolute URI couldn't be resolved, ignore the reference and leave the

@@ -71,6 +71,12 @@ ExactPersistReference.prototype = {
   // --- Properties that identify the place that originated the reference ---
 
   /**
+   * DOM document to which the reference applies. This property is set even if
+   * the reference applies to a source fragment and not directly to a DOM node.
+   */
+  sourceDomDocument: null,
+
+  /**
    * DOM node to which the reference applies.
    */
   sourceDomNode: null,
@@ -163,6 +169,12 @@ ExactPersistReference.prototype = {
   resource: "",
 
   /**
+   * True if the referenced resource should not be saved locally because it is
+   *  not needed to display the saved page.
+   */
+  originalResourceNotLoaded: false,
+
+  /**
    * String containing the the URI to be substituted in the place indicated by
    *  the source properties of this reference object. This property is relevant
    *  only when the targetFragment property is not set.
@@ -199,18 +211,17 @@ ExactPersistReference.prototype = {
       if (!this.saveLinkedResource) {
         return this.targetUri.spec;
       }
-      // Otherwise, the resource wasn't saved because of an error or because it
-      //  was not needed to display the page correctly. In this case, a special
-      //  URI that includes the original resolved URI is substituted in place of
-      //  the original reference.
-      if (this.resource && this.resource.statusCode ==
-       Cr.NS_ERROR_DOCUMENT_NOT_CACHED) {
-        // Use a different URI for the case where the resource was not included
-        //  in the saved page because it was not needed to display it.
-        return "urn:not-available:" + this.targetUri.spec;
-      } else {
+      // Use a different URI for the case where the resource was not included
+      //  in the saved page because it was not needed to display it.
+      if (this.originalResourceNotLoaded) {
+        return "urn:not-loaded:" + this.targetUri.spec;
+      }
+      // Use a different URI for the case where a download error occurred.
+      if (this.resource && this.resource.statusCode) {
         return "urn:download-error:" + this.targetUri.spec;
       }
+      // The resource was not downloaded because it wasn't required.
+      return this.targetUri.spec;
     }
     // If we are saving to MHTML, the saved files should always contain absolute
     //  references to the original location of the other saved resources. These

@@ -77,10 +77,6 @@ ExactPersistUnparsedJob.prototype = {
          this.resource.originalUri);
         // Load the content from the cache if possible
         channel.loadFlags |= Ci.nsIRequest.LOAD_FROM_CACHE;
-        // Do not save unparsed resources that are not in the cache, because
-        //  this usually means that the resource was not originally downloaded
-        //  because it wasn't needed to display the current state of the page.
-        channel.loadFlags |= Ci.nsICachingChannel.LOAD_ONLY_FROM_CACHE;
         // Receive progress notifications through the nsIProgressEventSink
         //  interface. For more information on this interface, see
         //  <http://mxr.mozilla.org/mozilla-central/source/netwerk/base/public/nsIProgressEventSink.idl>
@@ -90,10 +86,12 @@ ExactPersistUnparsedJob.prototype = {
         //  exception if the channel for the specified URI cannot be opened.
         channel.asyncOpen(this, null);
       } catch (e) {
+        var result = (e instanceof Ci.nsIException) ? e.result :
+         Cr.NS_ERROR_FAILURE;
         // Report unexpected errors, excluding expected error codes
-        if (!(e instanceof Ci.nsIException) || e.result !=
-         Cr.NS_ERROR_NO_CONTENT) {
+        if (result != Cr.NS_ERROR_NO_CONTENT) {
           this._reportDownloadFailure();
+          this.resource.statusCode = result;
         }
         // Indicate that the file was not saved and the job is completed
         this.resource.file = null;
@@ -172,11 +170,7 @@ ExactPersistUnparsedJob.prototype = {
     this._handleAsyncCallback(function() {
       // If the download failed before completion
       if (!Components.isSuccessCode(aStatusCode)) {
-        // Report the error, unless this is a resource that was not included in
-        //  the saved page because it was not originally downloaded.
-        if (aStatusCode != Cr.NS_ERROR_DOCUMENT_NOT_CACHED) {
-          this._reportDownloadFailure();
-        }
+        this._reportDownloadFailure();
         // Indicate that the file was not saved, and store the status code
         this.resource.file = null;
         this.resource.statusCode = aStatusCode;
