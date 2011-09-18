@@ -198,9 +198,15 @@ ExactPersistParsedJob.prototype = {
       // Read the target URI string from the attribute
       aProperties.targetUriSpec = aProperties.sourceDomNode.getAttribute(
        aProperties.sourceAttribute);
-      // If the attribute is empty or missing, no reference should be created
+      // If the attribute is empty or missing, no reference should be created,
+      //  unless we are saving a linked document.
       if (!aProperties.targetUriSpec) {
-        return;
+        if (!aProperties.saveLinkedDomDocument) {
+          return;
+        }
+        // If we are saving a linked document and the containing element has no
+        //  source attribute, use an URI that results in a relevant file name.
+        aProperties.targetUriSpec = "http://generated.test/generated-content";
       }
     }
 
@@ -427,7 +433,7 @@ ExactPersistParsedJob.prototype = {
 
     // Process documents linked by "<frame>" and "<iframe>" elements
     for (let [, elementName] in Iterator(["frame", "iframe"])) {
-      for (let node in this._htmlNodesGenerator(elementName, "src")) {
+      for (let node in this._htmlNodesGenerator(elementName)) {
         // Since frames may reference unparsed resources that the browser wraps
         //  in a DOM document automatically, check if the media type has an
         //  associated DOM-based encoder to decide if the resource should be
