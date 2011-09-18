@@ -1,6 +1,18 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
   <h2>Changelog for version 2.0</h2>
+  <h3>Changes from 2.0.1 to 2.0.2</h3>
+  <ul>
+    <li><b>Fix:</b> Content encoded using the "data:" URI scheme was not saved
+     correctly when the option to take a faithful snapshot of the page was
+     selected.</li>
+    <li><b>Fix:</b> Content generated dynamically inside frames was not saved if
+     the <tt>src</tt> attribute was missing from the frame element.</li>
+    <li><b>Fix:</b> Sometimes content could be missing from pages saved under a
+     low memory condition.</li>
+    <li><b>Fix:</b> When saving pages on Firefox 6 and later versions, sometimes
+     an error message was displayed despite the page was saved correctly.</li>
+  </ul>
   <h3>Changes from 2.0.0 to 2.0.1</h3>
   <ul>
     <li><b>Fix:</b> The integrated
