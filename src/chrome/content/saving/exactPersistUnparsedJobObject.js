@@ -234,6 +234,7 @@ ExactPersistUnparsedJob.prototype = {
        Ci.nsITransport.STATUS_READING,
        Ci.nsITransport.STATUS_WRITING,
        Ci.nsISocketTransport.STATUS_RESOLVING,
+       Ci.nsISocketTransport.STATUS_RESOLVED, // Defined starting from Firefox 6
        Ci.nsISocketTransport.STATUS_CONNECTED_TO,
        Ci.nsISocketTransport.STATUS_SENDING_TO,
        Ci.nsISocketTransport.STATUS_RECEIVING_FROM,
