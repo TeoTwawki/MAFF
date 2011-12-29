@@ -105,12 +105,7 @@ Archive.prototype = {
   },
   set uri(aValue) {
     var archiveUri = aValue.clone();
-    if (archiveUri instanceof Ci.nsIFileURL) {
-      // Ensure that query, hash and parameter parts are removed for local files
-      archiveUri.query = "";
-      archiveUri.ref = "";
-      archiveUri.path = archiveUri.path.replace(/;\d+$/, "");
-    } else if (archiveUri instanceof Ci.nsIURL) {
+    if (archiveUri instanceof Ci.nsIURL) {
       // Ensure that the archive page number in the query part is removed
       archiveUri.query =
        archiveUri.query.replace(/&?web_archive_page=\d+$/, "");

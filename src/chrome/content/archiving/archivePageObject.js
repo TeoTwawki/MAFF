@@ -132,20 +132,11 @@ ArchivePage.prototype = {
        " from a location that supports relative URLs.");
     }
 
-    if (pageArchiveUri instanceof Ci.nsIFileURL) {
-      // If this page is part of a multi-page archive stored in a local file,
-      //  add the index of the page as the parameter part of the URI. The
-      //  original archive URL does not contain query or hash parts.
-      pageArchiveUri.path += ";" + (this._index + 1);
-    } else {
-      // For archives loaded from a remote location, the parameter part of the
-      //  URL is usually not handled, thus we use the query part to store the
-      //  information about the page number.
-      if (pageArchiveUri.query) {
-        pageArchiveUri.query += "&";
-      }
-      pageArchiveUri.query += "web_archive_page=" + (this._index + 1);
+    // Use the query part to store the information about the page number.
+    if (pageArchiveUri.query) {
+      pageArchiveUri.query += "&";
     }
+    pageArchiveUri.query += "web_archive_page=" + (this._index + 1);
 
     return pageArchiveUri;
   },

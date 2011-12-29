@@ -197,11 +197,7 @@ var ArchiveCache = {
    */
   _getLookupSpec: function(aUri) {
     var lookupUri = aUri.clone();
-    if (lookupUri instanceof Ci.nsIFileURL) {
-      // Ensure that query and hash parts are removed for local files
-      lookupUri.query = "";
-      lookupUri.ref = "";
-    } else if (lookupUri instanceof Ci.nsIURL) {
+    if (lookupUri instanceof Ci.nsIURL) {
       // Try and remove the hash part, if supported by the URL implementation
       try {
         lookupUri.ref = "";
