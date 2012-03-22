@@ -196,6 +196,10 @@ var MafCommandsOverlay = {
       case "menu_FilePopup":
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuFile;
         break;
+      case "more-tools-menupopup":
+        // This identifier is used by the More Tools Menu add-on. See
+        // <https://addons.mozilla.org/firefox/addon/more-tools-menu/>
+        // (retrieved 2012-03-22).
       case "menu_ToolsPopup":
       case "taskPopup":
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTools;
