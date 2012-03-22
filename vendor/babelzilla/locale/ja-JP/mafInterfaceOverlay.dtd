@@ -1,0 +1,16 @@
+<!-- *** Archive information popup *** -->
+<!-- Status of the current page -->
+<!ENTITY archiveinfo.status.normal.label "このページはアーカイブに含まれていません。">
+<!ENTITY archiveinfo.status.archived.label "アーカイブされたページです。">
+<!-- Original address the page was saved from -->
+<!ENTITY archiveinfo.maforiginalurl.label "保存元:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(不明)">
+<!-- Date and time the page was archived -->
+<!ENTITY archiveinfo.mafdatearchived.label "保存日:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(不明)">
+<!-- *** Commands in the archive information popup *** -->
+<!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
+<!ENTITY commands.browseopenarchives.label "アーカイブをブラウズ...">
+<!ENTITY commands.browseopenarchives.accesskey "r">
+<!ENTITY commands.options.label "オプション...">
+<!ENTITY commands.options.accesskey "O">
