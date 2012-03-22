@@ -838,9 +838,9 @@ ExactPersistParsedJob.prototype = {
     //  aSerializeCloneKids, which is supported starting from Firefox 3.5 only.
     try {
       // Wrap all the generated scripts and stylesheets with a comment tag
-      return this._document.createComment("\r\n" +
+      return this._document.createComment("\r\n" + this._escapeCssComment(
        aNode.parentNode.exactPersistData[this._uniqueId].replaceChildReference.
-       targetFragment.sourceData);
+       targetFragment.sourceData));
     } catch (e) {
       // If any one of the properties in the above reference chain is null,
       //  there is no need to replace this element with other content
@@ -948,6 +948,19 @@ ExactPersistParsedJob.prototype = {
 
     // Replace the original node with the modified version
     return newNode;
+  },
+
+  /**
+   * Escapes non-ASCII characters in the comments used for inlining generated
+   * stylesheets, to avoid HTML-encoding some characters incorrectly.
+   */
+  _escapeCssComment: function(aText) {
+    return aText.replace(
+      /[^\x00-\x7E]/g,
+      function (aMatch) {
+        return "\\" + aMatch.charCodeAt(0).toString(16).toUpperCase() + " ";
+      }
+    ).replace(/--/, "\\2D\\2D ");
   },
 
   // --- Reference tables ---
