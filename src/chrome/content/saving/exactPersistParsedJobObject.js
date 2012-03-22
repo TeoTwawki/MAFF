@@ -886,9 +886,11 @@ ExactPersistParsedJob.prototype = {
     }
     // Handle the values of form elements of different types
     if (aNode instanceof Ci.nsIDOMHTMLInputElement) {
-      // Check the type of the input element
+      // Check the type of the input element. Note that the mozIsTextField
+      // function is only available in Firefox 4.0 and later.
       var inputType = aNode.getAttribute("type");
-      if (/^\s*text\s*$/i.test(inputType)) {
+      if ((aNode.mozIsTextField && aNode.mozIsTextField(true)) ||
+       /^\s*text\s*$/i.test(inputType)) {
         // Store the current value of text fields, excluding password fields
         if (!aNode.value) {
           newNode.removeAttribute("value");
