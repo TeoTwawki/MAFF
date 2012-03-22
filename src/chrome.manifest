@@ -9,14 +9,15 @@ locale	maf	es-ES	chrome/locale/es-ES/
 locale	maf	fr	chrome/locale/fr/
 locale	maf	hu	chrome/locale/hu/
 locale	maf	hy-AM	chrome/locale/hy-AM/
-locale	maf	it-IT	chrome/locale/it-IT/
+locale	maf	it	chrome/locale/it/
+locale	maf	ja-JP	chrome/locale/ja-JP/
 locale	maf	ko-KR	chrome/locale/ko-KR/
 locale	maf	mk-MK	chrome/locale/mk-MK/
 locale	maf	pl	chrome/locale/pl/
 locale	maf	pt-BR	chrome/locale/pt-BR/
 locale	maf	ru	chrome/locale/ru/
 locale	maf	sv-SE	chrome/locale/sv-SE/
-locale	maf	tr-TR	chrome/locale/tr-TR/
+locale	maf	tr	chrome/locale/tr/
 locale	maf	zh-CN	chrome/locale/zh-CN/
 locale	maf	zh-TW	chrome/locale/zh-TW/
 
