@@ -105,8 +105,8 @@ var ArchiveLoader = {
       // For more information, see the "SetCharset" function in
       //  <http://mxr.mozilla.org/mozilla-central/source/docshell/base/nsDocShell.cpp>
       //  (retrieved 2009-10-31).
-      aContainer.QueryInterface(Ci.nsIDocCharset).charset =
-       page.renderingCharacterSet;
+      aContainer.QueryInterface(Ci.nsIDocShell).
+       QueryInterface(Ci.nsIDocCharset).charset = page.renderingCharacterSet;
     }
 
     // Return an URI that identifies the archived page better, if required
