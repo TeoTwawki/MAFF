@@ -148,39 +148,19 @@ FileAssociationsCreator.prototype = {
    *  the given ProgID with the browser's executable file.
    */
   _createWindowsFileTypeForBrowser: function(aProgID, aDisplayName) {
+    var currentProcessFile = Cc["@mozilla.org/file/directory_service;1"]
+     .getService(Ci.nsIProperties).get("XREExeF", Ci.nsIFile);
+
     // Create an association with the browser. For more information, see
     //  <https://developer.mozilla.org/En/Command_Line_Options> (retrieved
     //  2008-11-19).
     this._createWindowsFileType(
      aProgID,
      aDisplayName,
-     this._getFirefoxExecutablePath(),
+     currentProcessFile.path,
      '-osint -url "%1"',
      this._isOnSeaMonkey() ? 0 : 1
      );
-  },
-
-  /** Returns the probable path of "firefox.exe" on Windows. */
-  _getFirefoxExecutablePath: function() {
-    // To find the installation directory, try "XCurProcD" first, then
-    //  "CurProcD". See "nsAppFileLocationProvider::CloneMozBinDirectory" in
-    //  the Mozilla source code.
-    try {
-      var installDir = Cc["@mozilla.org/file/directory_service;1"]
-       .getService(Ci.nsIProperties).get("XCurProcD", Ci.nsIFile);
-    } catch (e) {
-      installDir = Cc["@mozilla.org/file/directory_service;1"]
-       .getService(Ci.nsIProperties).get("CurProcD", Ci.nsIFile);
-    }
-
-    // Assume the executable name is either "firefox.exe" or "seamonkey.exe"
-    installDir.append("firefox.exe");
-    if (!installDir.exists()) {
-      installDir.leafName = "seamonkey.exe";
-    }
-
-    // Return the required path as a string
-    return installDir.path;
   },
 
   /**
