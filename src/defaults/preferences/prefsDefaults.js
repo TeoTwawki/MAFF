@@ -10,6 +10,7 @@ pref("extensions.maf.advanced.temp.folder", "");
 pref("extensions.maf.associate.maff", true);
 pref("extensions.maf.associate.mhtml", true);
 pref("extensions.maf.interface.info.icon", true);
+pref("extensions.maf.interface.info.bar", true);
 pref("extensions.maf.interface.menu.app", true);
 pref("extensions.maf.interface.menu.file", true);
 pref("extensions.maf.interface.menu.tools", true);

@@ -139,6 +139,10 @@
                   name=    "extensions.maf.interface.info.icon"
                   type=    "bool"
                   />
+      <preference id=      "prefInterfaceInfoBar"
+                  name=    "extensions.maf.interface.info.bar"
+                  type=    "bool"
+                  />
       <preference id=      "prefInterfaceMenuApp"
                   name=    "extensions.maf.interface.menu.app"
                   type=    "bool"
@@ -172,6 +176,10 @@
     <checkbox preference="prefInterfaceInfoIcon" 
               label=     "&info.icon.label;"
               accesskey= "&info.icon.accesskey;"
+              />
+    <checkbox preference="prefInterfaceInfoBar" 
+              label=     "&info.bar.label;"
+              accesskey= "&info.bar.accesskey;"
               />
     <spacer height="10" />
     <label value="&menu.grouplabel;"

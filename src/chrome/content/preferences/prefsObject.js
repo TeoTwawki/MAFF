@@ -88,6 +88,14 @@ var Prefs = {
   },
 
   /**
+   * Returns true if a notification bar with page details should be displayed
+   *  when an archived page is displayed.
+   */
+  get interfaceInfoBar() {
+    return this.prefBranchForMaf.getBoolPref("interface.info.bar");
+  },
+
+  /**
    * Returns true if an icon should be displayed in the location bar to access
    *  page details when an archived page is displayed.
    */

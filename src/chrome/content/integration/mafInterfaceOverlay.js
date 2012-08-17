@@ -245,7 +245,8 @@ var MafInterfaceOverlay = {
    */
   _checkArchiveInfoNotification: function() {
     // Show a notification for the page only if required
-    if (!this._currentPageInfo.hasValues) {
+    if (!this._currentPageInfo.hasValues ||
+     !MozillaArchiveFormat.Prefs.interfaceInfoBar) {
       return;
     }
 

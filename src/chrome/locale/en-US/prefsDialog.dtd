@@ -24,7 +24,9 @@
 <!ENTITY pane.interface.label "Interface">
 <!ENTITY info.grouplabel "When an archived page is opened:">
 <!ENTITY info.icon.label "Show icon in the location bar">
-<!ENTITY info.icon.accesskey "i">
+<!ENTITY info.icon.accesskey "S">
+<!ENTITY info.bar.label "Display an information bar">
+<!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
 <!ENTITY menu.app.label "$brandShortName menu">
 <!ENTITY menu.app.accesskey "m">
