@@ -688,10 +688,15 @@ ExactPersistParsedJob.prototype = {
   _scanCssRule: function(aCssRule, aIndentText) {
     // Filter out rules that don't apply to any element in the document, while
     // removing pseudo-classes because they can't be used with querySelector.
-    if (aCssRule.type == Ci.nsIDOMCSSRule.STYLE_RULE &&
-     !this._sourceDomDocument.querySelector(
-     aCssRule.selectorText.replace(/:[\w-]+/g, ""))) {
-      return "";
+    try {
+      if (aCssRule.type == Ci.nsIDOMCSSRule.STYLE_RULE &&
+       !this._sourceDomDocument.querySelector(
+       aCssRule.selectorText.replace(/:[\w-]+/g, ""))) {
+        return "";
+      }
+    } catch (ex) {
+      // Removing the pseudo-classes might have rendered the selector list
+      //  invalid, if they are the only component of one of the selectors.
     }
     // If this is not a conditional group rule, just write the text
     if (!aCssRule.cssRules) {
