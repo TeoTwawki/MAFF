@@ -626,7 +626,7 @@ ExactPersistParsedJob.prototype = {
       //  of the output file, and parsed together to find external references.
       //  This includes the entire text contents of "@media" rules.
       if (rule.type != Ci.nsIDOMCSSRule.IMPORT_RULE) {
-        otherRules += rule.cssText + "\r\n";
+        otherRules += this._scanCssRule(rule, "");
         continue;
       }
       // Ensure that the "@import" rule references a valid loaded stylesheet
@@ -678,6 +678,40 @@ ExactPersistParsedJob.prototype = {
         return outputText + otherRulesFragment.sourceData;
       }
     };
+  },
+
+  /**
+   * Processes the given CSS rule, that can also be a conditional group rule,
+   *  and returns the text corresponding to the regenerated rule contents,
+   *  excluding all rules whose selectors don't match any document element.
+   */
+  _scanCssRule: function(aCssRule, aIndentText) {
+    // Filter out rules that don't apply to any element in the document, while
+    // removing pseudo-classes because they can't be used with querySelector.
+    if (aCssRule.type == Ci.nsIDOMCSSRule.STYLE_RULE &&
+     !this._sourceDomDocument.querySelector(
+     aCssRule.selectorText.replace(/:[\w-]+/g, ""))) {
+      return "";
+    }
+    // If this is not a conditional group rule, just write the text
+    if (!aCssRule.cssRules) {
+      return aIndentText + aCssRule.cssText + "\r\n";
+    }
+    // Write all the contained rules after processing them
+    var cssText = "";
+    for (var curIndex = 0; curIndex < aCssRule.cssRules.length; curIndex++)
+    {
+      var rule = aCssRule.cssRules[curIndex];
+      cssText += this._scanCssRule(rule, aIndentText + "  ");
+    }
+    // Do not write the outer block if it does not contain any relevant rule
+    if (!cssText)
+    {
+      return "";
+    }
+    // Write the first line of the conditional group rule separately
+    return aIndentText + aCssRule.cssText.replace(/\n[\w\W]*/, "") + "\r\n" +
+           cssText + aIndentText + "}\r\n";
   },
 
   /**
