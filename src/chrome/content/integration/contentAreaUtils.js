@@ -342,22 +342,18 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  */
 function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
 {
-  // Check if the Mozilla Archive Format internal save component should be used
   var persist;
   if (persistArgs.persistObject) {
     persist = persistArgs.persistObject;
-  } else if ((MozillaArchiveFormat.Prefs.saveComponent ==
-              MozillaArchiveFormat.Prefs.SAVECOMPONENT_SAVECOMPLETE ||
-              MozillaArchiveFormat.Prefs.saveComponent ==
-              MozillaArchiveFormat.Prefs.SAVECOMPONENT_EXACTPERSIST) &&
+  } else if (MozillaArchiveFormat.Prefs.saveMethod ==
+             MozillaArchiveFormat.Prefs.SAVEMETHOD_SNAPSHOT &&
       persistArgs.sourceDocument && !persistArgs.targetContentType &&
       (persistArgs.sourceDocument.contentType == "text/html" ||
       persistArgs.sourceDocument.contentType == "application/xhtml+xml")) {
     // Save Complete can only save a complete HTML document without converting
     //  its content type, while the ExactPersist component could also save XML
     //  and SVG, but not as accurately as the browser's standard save system.
-    if (MozillaArchiveFormat.Prefs.saveComponent ==
-        MozillaArchiveFormat.Prefs.SAVECOMPONENT_SAVECOMPLETE) {
+    if (MozillaArchiveFormat.Prefs.saveKeepScripts) {
       persist = new MozillaArchiveFormat.SaveCompletePersist();
     } else {
       persist = new MozillaArchiveFormat.ExactPersist();

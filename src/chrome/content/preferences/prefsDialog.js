@@ -68,10 +68,8 @@ var PrefsDialog = {
       document.getElementById("boxShowWelcomePage").hidden = true;
       document.getElementById("boxShowWelcomePageAssociate").hidden = false;
     }
-    // Ensure that the preference values are updated from older versions
-    document.getElementById("prefSaveComponent").value = Prefs.saveComponent;
     // Updates the status of the dialog controls
-    this.onSaveComponentChange();
+    this.onSaveMethodChange();
     this.onInterfaceMenuPageContextChange();
     // Ensure that there is enough space to display the elements that are now
     //  visible, and work around a behavior for which an additional one-pixel
@@ -83,12 +81,14 @@ var PrefsDialog = {
   /* --- Interactive dialog functions and events --- */
 
   /**
-   * Enables other dialog controls depending on the selected save component.
+   * Enables other dialog controls depending on the selected save method.
    */
-  onSaveComponentChange: function() {
-    var saveComponent = document.getElementById("prefSaveComponent").value;
-    document.getElementById("cbSaveMhtmlCompatible").disabled = ["savecomplete",
-     "completesave", "exactpersist"].indexOf(saveComponent) < 0;
+  onSaveMethodChange: function() {
+    var saveMethod = document.getElementById("prefSaveMethod").value;
+    let (r = document.getElementById("radioSaveFormatMhtml")) {
+      let attribute = (saveMethod == "snapshot") ? "labelfull" : "labelpartial";
+      r.setAttribute("label", r.getAttribute(attribute));
+    }
   },
 
   /**

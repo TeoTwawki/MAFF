@@ -78,7 +78,7 @@ var FileFilters = {
      "*.mhtml;*.mht" : "*.mht;*.mhtml";
     // Return the array representing MAFF and MHTML filters
     return [
-     { title:           this._str("savedialog.filters.maff"),
+     { title:           this._str("savedialog.filters.maffonly"),
        extensionString: "*.maff",
        mafArchiveType:  "TypeMAFF" },
      { title:           this._str("savedialog.filters.mhtmlonly"),

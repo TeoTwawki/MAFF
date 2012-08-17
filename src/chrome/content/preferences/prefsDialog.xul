@@ -62,45 +62,54 @@
             label="&pane.main.label;"
             >
     <preferences>
-      <preference id=      "prefSaveComponent"
-                  name=    "extensions.maf.save.component"
-                  type=    "string"
-                  onchange="PrefsDialog.onSaveComponentChange();"
+      <preference id=      "prefSaveFormat"
+                  name=    "extensions.maf.current.save.filterindex"
+                  type=    "int"
                   />
-      <preference id=      "prefSaveMhtmlCompatible"
-                  name=    "extensions.maf.save.mhtml.compatible"
-                  type=    "bool"
+      <preference id=      "prefSaveMethod"
+                  name=    "extensions.maf.save.method"
+                  type=    "string"
+                  onchange="PrefsDialog.onSaveMethodChange();"
                   />
       <preference id=      "prefSaveNamingStrategy"
                   name=    "extensions.maf.save.namingstrategy"
                   type=    "string"
                   />
     </preferences>
-    <label control="rgrSaveComponents"
-           value=  "&save.component.grouplabel;"
+    <label control="rgrSaveFormats"
+           value=  "&save.format.grouplabel;"
            class=  "header"
            />
-    <radiogroup id=        "rgrSaveComponents"
-                preference="prefSaveComponent"
+    <radiogroup id=        "rgrSaveFormats"
+                preference="prefSaveFormat"
                 >
+      <radio value=    "0"
+             label=    "&save.format.maff.label;"
+             accesskey="&save.format.maff.accesskey;"
+             />
+      <radio id=          "radioSaveFormatMhtml"
+             value=       "1"
+             labelfull=   "&save.format.mhtml.full.label;"
+             labelpartial="&save.format.mhtml.partial.label;"
+             accesskey=   "&save.format.mhtml.accesskey;"
+             />
+    </radiogroup>
+    <spacer height="10" />
+    <label control="rgrSaveMethods"
+           value=  "&save.method.grouplabel;"
+           class=  "header"
+           />
+    <radiogroup id=        "rgrSaveMethods"
+                preference="prefSaveMethod"
+                >
+      <radio value=    "snapshot"
+             label=    "&save.method.snapshot.label;"
+             accesskey="&save.method.snapshot.accesskey;"
+             />
       <radio value=    "standard"
-             label=    "&save.component.standard.label;"
-             accesskey="&save.component.standard.accesskey;"
+             label=    "&save.method.standard.label;"
+             accesskey="&save.method.standard.accesskey;"
              />
-      <radio value=    "completesave"
-             label=    "&save.component.completesave.label;"
-             accesskey="&save.component.completesave.accesskey;"
-             />
-      <radio value=    "exactpersist"
-             label=    "&save.component.exactpersist.label;"
-             accesskey="&save.component.exactpersist.accesskey;"
-             />
-      <checkbox id=        "cbSaveMhtmlCompatible"
-                preference="prefSaveMhtmlCompatible"
-                label=     "&save.mhtml.compatible.label;"
-                accesskey= "&save.mhtml.compatible.accesskey;"
-                class=     "indent"
-                />
     </radiogroup>
     <spacer height="10" />
     <label control="rgrSaveNamingStrategy"
@@ -110,13 +119,13 @@
     <radiogroup id=        "rgrSaveNamingStrategy"
                 preference="prefSaveNamingStrategy"
                 >
+      <radio value=    "pagetitle"
+             label=    "&save.namingstrategy.title.label;"
+             accesskey="&save.namingstrategy.title.accesskey;"
+             />
       <radio value=    "standard"
              label=    "&save.namingstrategy.standard.label;"
              accesskey="&save.namingstrategy.standard.accesskey;"
-             />
-      <radio value=    "pagetitle"
-             label=    "&save.namingstrategy.pagetitle.label;"
-             accesskey="&save.namingstrategy.pagetitle.accesskey;"
              />
     </radiogroup>
   </prefpane>

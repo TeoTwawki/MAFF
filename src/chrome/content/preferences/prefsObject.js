@@ -173,31 +173,12 @@ var Prefs = {
     this.prefBranchForMaf.setBoolPref("other.displaywelcomepage", aValue);
   },
 
-  /** Enumeration for saveComponent */
-  SAVECOMPONENT_STANDARD: "standard",
-  SAVECOMPONENT_SAVECOMPLETE: "completesave",
-  SAVECOMPONENT_EXACTPERSIST: "exactpersist",
-
   /**
-   * Returns the component MAF will use when saving pages from the web to a
-   *  local folder, before archiving the saved elements.
-   *
-   * Possible values:
-   *   SAVECOMPONENT_STANDARD     - (default) Use the browser's native "save
-   *                                 complete web page" functionality.
-   *   SAVECOMPONENT_SAVECOMPLETE - Use the integrated "Save Complete" code.
-   *   SAVECOMPONENT_EXACTPERSIST - Use the ExactPersist snapshot save mode.
-   *   (other)                    - If the user has customized the preference.
+   * Returns true if the integrated "Save Complete" code should be used to
+   *  preserve scripts and source when saving complete web page contents.
    */
-  get saveComponent() {
-    var prefValue = this.prefBranchForMaf.getCharPref("save.component");
-    // The "maf" value represented the internal save component, that is not
-    //  available anymore, while "savecomplete" represented the Save Complete
-    //  component up to MAF version 0.17. If one of those values is specified in
-    //  the preference, the ExactPersist component is used instead.
-    return (prefValue == "maf" ? this.SAVECOMPONENT_EXACTPERSIST :
-            prefValue == "savecomplete" ? this.SAVECOMPONENT_EXACTPERSIST :
-            prefValue);
+  get saveKeepScripts() {
+    return this.prefBranchForMaf.getBoolPref("save.keepscripts");
   },
 
   /**
@@ -208,15 +189,24 @@ var Prefs = {
     return this.prefBranchForMaf.getBoolPref("advanced.maff.extendedmetadata");
   },
 
+  /** Enumeration for saveMethod */
+  SAVEMETHOD_SNAPSHOT: "snapshot",
+  SAVEMETHOD_STANDARD: "standard",
+
   /**
-   * Returns true if MHTML files should be created to be compatible with other
-   *  browsers. If false, a special kind of MHTML file with the "X-MAF" header
-   *  will be created.
+   * Returns the method to use when saving pages from the web to a local folder,
+   *  before archiving the saved elements.
    *
-   * This preference is effective only if Save Complete is enabled.
+   * Possible values:
+   *   SAVEMETHOD_SNAPSHOT - (default) Take a snapshot of the page, using either
+   *                          the ExactPersist component or the integrated "Save
+   *                          Complete" code.
+   *   SAVEMETHOD_STANDARD - Use the browser's native "save complete web page"
+   *                          functionality.
+   *   (other)             - If the user has customized the preference.
    */
-  get saveMhtmlCompatible() {
-    return this.prefBranchForMaf.getBoolPref("save.mhtml.compatible");
+  get saveMethod() {
+    return this.prefBranchForMaf.getCharPref("save.method");
   },
 
   /** Enumeration for saveMaffCompression */
@@ -241,16 +231,16 @@ var Prefs = {
   },
 
   /** Enumeration for saveNamingStrategy */
-  NAMINGSTRATEGY_STANDARD:  "standard",
   NAMINGSTRATEGY_PAGETITLE: "pagetitle",
+  NAMINGSTRATEGY_STANDARD:  "standard",
 
   /**
    * Determines how the default file name in the "Save As" dialogs is chosen.
    *
    * Possible values:
-   *   NAMINGSTRATEGY_STANDARD  - (default) Use the browser's default behavior.
-   *   NAMINGSTRATEGY_PAGETITLE - Use the title of the document instead of the
-   *                               source file name when possible.
+   *   NAMINGSTRATEGY_PAGETITLE - (default) Use the title of the document
+   *                               instead of the source file name if possible.
+   *   NAMINGSTRATEGY_STANDARD  - Use the browser's default behavior.
    *   (other)                  - If the user has customized the preference.
    */
   get saveNamingStrategy() {

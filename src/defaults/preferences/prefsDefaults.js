@@ -18,6 +18,6 @@ pref("extensions.maf.interface.menu.pagecontext.tabs", false);
 pref("extensions.maf.interface.menu.tabscontext", true);
 pref("extensions.maf.other.displaywelcome", true);
 pref("extensions.maf.other.displaywelcomepage", true);
-pref("extensions.maf.save.component", "exactpersist");
-pref("extensions.maf.save.mhtml.compatible", true);
+pref("extensions.maf.save.keepscripts", false);
+pref("extensions.maf.save.method", "snapshot");
 pref("extensions.maf.save.namingstrategy", "pagetitle");
