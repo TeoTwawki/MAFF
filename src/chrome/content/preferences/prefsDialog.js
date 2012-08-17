@@ -56,13 +56,6 @@ var PrefsDialog = {
     // Check to see if the application menu is present
     document.getElementById("cbInterfaceMenuApp").hidden =
      !StartupInitializer.hasAppMenu;
-    // If the application menu is present, assume that the status bar is missing
-    if (StartupInitializer.hasAppMenu) {
-      let (r = document.getElementById("radioInterfaceIconLocationStatus")) {
-        r.setAttribute("label", r.getAttribute("labeladdonbar"));
-        r.setAttribute("accesskey", r.getAttribute("accesskeyaddonbar"));
-      }
-    }
     // Determines if the welcome page handles file associations
     if (this._isOnWindows()) {
       document.getElementById("boxShowWelcomePage").hidden = true;

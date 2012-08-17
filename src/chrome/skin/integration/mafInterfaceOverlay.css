@@ -11,23 +11,12 @@
   padding: 0 2px;
 }
 
-#mafArchiveInfoUrlbarButton,
-#mafArchiveInfoStatusButton {
+#mafArchiveInfoUrlbarButton {
   list-style-image: url("page-archived.png");
 }
 
-#mafArchiveInfoUrlbarButton:hover,
-#mafArchiveInfoStatusButton:hover {
+#mafArchiveInfoUrlbarButton:hover {
   list-style-image: url("page-archived-hover.png");
-}
-
-#mafArchiveInfoUrlbarButton[status="normal"] {
-  list-style-image: url("page-normal.png");
-}
-
-#mafArchiveInfoStatusButton[status="normal"] {
-  /* The following image provides better contrast on a grey background. */
-  list-style-image: url("page-normal-statusbar.png");
 }
 
 /* Archive information popup */

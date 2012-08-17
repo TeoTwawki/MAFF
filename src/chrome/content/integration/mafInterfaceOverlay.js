@@ -71,7 +71,7 @@ var MafInterfaceOverlay = {
 
     // Register a preference observer to update the visibility of the icons
     MozillaArchiveFormat.Prefs.prefBranchForMaf.addObserver(
-     "interface.icon.location", MafInterfaceOverlay.prefObserver, false);
+     "interface.info.icon", MafInterfaceOverlay.prefObserver, false);
 
     // Listen for when the browser window closes, to perform shutdown
     window.addEventListener("unload", MafInterfaceOverlay.onUnload, false);
@@ -92,7 +92,7 @@ var MafInterfaceOverlay = {
 
     // Remove the preference observer defined in this object
     MozillaArchiveFormat.Prefs.prefBranchForMaf.removeObserver(
-     "interface.icon.location", MafInterfaceOverlay.prefObserver);
+     "interface.info.icon", MafInterfaceOverlay.prefObserver);
 
     // Remove the web progress listener defined in this object
     gBrowser.removeProgressListener(MafInterfaceOverlay.webProgressListener);
@@ -118,20 +118,6 @@ var MafInterfaceOverlay = {
     var position = (getComputedStyle(gNavToolbox, "").direction == "rtl") ?
      "after_end" : "after_start";
     this._archiveInfoPopup.openPopup(this._archiveInfoUrlbarBox, position);
-  },
-
-  /**
-   * Displays the archive information popup, anchored to the status bar icon,
-   *  when the user clicks it.
-   */
-  onStatusButtonClick: function(aEvent) {
-    // Make sure that clicking outside the popup cannot reopen it accidentally
-    this._archiveInfoPopup.popupBoxObject.
-     setConsumeRollupEvent(Ci.nsIPopupBoxObject.ROLLUP_CONSUME);
-
-    // Open the popup near the status bar icon
-    this._archiveInfoPopup.openPopup(this._archiveInfoStatusButton,
-     "before_end");
   },
 
   /**
@@ -212,22 +198,8 @@ var MafInterfaceOverlay = {
    *  window, based on the current page state and the current preferences.
    */
   _checkArchiveInfoIcons: function() {
-    // Determine the status of the page
-    var pageStatus = this._currentPageInfo.hasValues ? "archived" : "normal";
-    // Determine where the icons should be displayed
-    var iconLocation = MozillaArchiveFormat.Prefs.interfaceIconLocation;
-    var showInUrlbar =
-     (iconLocation == MozillaArchiveFormat.Prefs.ICONLOCATION_URLBAR) ||
-     (iconLocation == MozillaArchiveFormat.Prefs.ICONLOCATION_URLBAR_AUTOHIDE &&
-     this._currentPageInfo.hasValues);
-    var showInStatus =
-     (iconLocation == MozillaArchiveFormat.Prefs.ICONLOCATION_STATUS);
-    // Hide or display the icons based on the preferences
-    this._archiveInfoUrlbarBox.hidden = !showInUrlbar;
-    this._archiveInfoStatusButton.hidden = !showInStatus;
-    // Set the attributes used for styling the icons
-    this._archiveInfoUrlbarButton.setAttribute("status", pageStatus);
-    this._archiveInfoStatusButton.setAttribute("status", pageStatus);
+    this._archiveInfoUrlbarBox.hidden = !this._currentPageInfo.hasValues ||
+     !MozillaArchiveFormat.Prefs.interfaceInfoIcon;
   },
 
   /**
@@ -351,7 +323,6 @@ var MafInterfaceOverlay = {
   _archiveInfoPopup: null,
   _archiveInfoUrlbarBox: null,
   _archiveInfoUrlbarButton: null,
-  _archiveInfoStatusButton: null,
   _originalUrlDescriptionValue: null,
   _dateArchivedDescriptionValue: null,
 
@@ -365,8 +336,6 @@ var MafInterfaceOverlay = {
      document.getElementById("mafArchiveInfoUrlbarBox");
     this._archiveInfoUrlbarButton =
      document.getElementById("mafArchiveInfoUrlbarButton");
-    this._archiveInfoStatusButton =
-     document.getElementById("mafArchiveInfoStatusButton");
     this._originalUrlDescriptionValue = document.getElementById(
      "mafOriginalUrlDescription").getAttribute("value");
     this._dateArchivedDescriptionValue = document.getElementById(

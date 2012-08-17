@@ -87,25 +87,12 @@ var Prefs = {
      function(e) e).filter(function(e) e);
   },
 
-  /** Enumeration for interfaceIconLocation */
-  ICONLOCATION_URLBAR:          "urlbar",
-  ICONLOCATION_URLBAR_AUTOHIDE: "urlbar-autohide",
-  ICONLOCATION_STATUS:          "status",
-  ICONLOCATION_NONE:            "none",
-
   /**
-   * Determines where the archive information icon should be displayed.
-   *
-   * Possible values:
-   *   ICONLOCATION_URLBAR          - Display in the address bar.
-   *   ICONLOCATION_URLBAR_AUTOHIDE - (default) Display in the address bar, but
-   *                                   only when the current page is archived.
-   *   ICONLOCATION_STATUS          - Display in the status bar.
-   *   ICONLOCATION_NONE            - Do not display.
-   *   (other)                      - If the user has customized the preference.
+   * Returns true if an icon should be displayed in the location bar to access
+   *  page details when an archived page is displayed.
    */
-  get interfaceIconLocation() {
-    return this.prefBranchForMaf.getCharPref("interface.icon.location");
+  get interfaceInfoIcon() {
+    return this.prefBranchForMaf.getBoolPref("interface.info.icon");
   },
 
   /**

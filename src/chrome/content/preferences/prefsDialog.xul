@@ -135,9 +135,9 @@
             label="&pane.interface.label;"
             >
     <preferences>
-      <preference id=      "prefInterfaceIconLocation"
-                  name=    "extensions.maf.interface.icon.location"
-                  type=    "string"
+      <preference id=      "prefInterfaceInfoIcon"
+                  name=    "extensions.maf.interface.info.icon"
+                  type=    "bool"
                   />
       <preference id=      "prefInterfaceMenuApp"
                   name=    "extensions.maf.interface.menu.app"
@@ -165,33 +165,14 @@
                   type=    "bool"
                   />
     </preferences>
-    <label control="rgrInterfaceIconLocations"
-           value=  "&iconlocation.grouplabel;"
+    <label control="rgrInterfaceInfo"
+           value=  "&info.grouplabel;"
            class=  "header"
            />
-    <radiogroup id=        "rgrInterfaceIconLocations"
-                preference="prefInterfaceIconLocation"
-                >
-      <radio value=    "urlbar"
-             label=    "&iconlocation.urlbar.label;"
-             accesskey="&iconlocation.urlbar.accesskey;"
-             />
-      <radio value=    "urlbar-autohide"
-             label=    "&iconlocation.urlbar-autohide.label;"
-             accesskey="&iconlocation.urlbar-autohide.accesskey;"
-             />
-      <radio id=               "radioInterfaceIconLocationStatus"
-             value=            "status"
-             label=            "&iconlocation.status.label;"
-             accesskey=        "&iconlocation.status.accesskey;"
-             labeladdonbar=    "&iconlocation.addonbar.label;"
-             accesskeyaddonbar="&iconlocation.addonbar.accesskey;"
-             />
-      <radio value=    "none"
-             label=    "&iconlocation.none.label;"
-             accesskey="&iconlocation.none.accesskey;"
-             />
-    </radiogroup>
+    <checkbox preference="prefInterfaceInfoIcon" 
+              label=     "&info.icon.label;"
+              accesskey= "&info.icon.accesskey;"
+              />
     <spacer height="10" />
     <label value="&menu.grouplabel;"
            class="header"

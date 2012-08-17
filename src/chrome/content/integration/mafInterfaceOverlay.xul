@@ -52,15 +52,6 @@
           src="chrome://maf/content/integration/mafInterfaceOverlay.js"
           />
 
-  <!-- Status bar integration -->
-  <statusbar id="status-bar">
-    <statusbarpanel id=     "mafArchiveInfoStatusButton"
-                    class=  "statusbarpanel-iconic"
-                    hidden= "true"
-                    onclick="MafInterfaceOverlay.onStatusButtonClick(event);"
-                    />
-  </statusbar>
-
   <popupset id="mainPopupSet">
     <!-- Archive information popup -->
     <panel id="mafArchiveInfoPopup">
