@@ -64,11 +64,18 @@ var PrefsDialog = {
     // Updates the status of the dialog controls
     this.onSaveMethodChange();
     this.onInterfaceMenuPageContextChange();
-    // Ensure that there is enough space to display the elements that are now
-    //  visible, and work around a behavior for which an additional one-pixel
-    //  border is added when calculating the window's width.
+    // At this point, we must ensure that the height of the visible description
+    //  elements is taken into account when calculating the window height.
+    for (let [, d] in Iterator(document.getElementsByTagName("description"))) {
+      d.style.height = window.getComputedStyle(d).height;
+    }
+    // We must also override the explicit height that was set by the preferences
+    //  window machinery, then recalculate the window height automatically.
+    for (let [, p] in Iterator(document.getElementsByTagName("prefpane"))) {
+      p = document.getAnonymousElementByAttribute(p, "class", "content-box");
+      p.style.height = "auto";
+    }
     window.sizeToContent();
-    window.innerWidth = document.documentElement.boxObject.width;
   },
 
   /* --- Interactive dialog functions and events --- */
