@@ -2,33 +2,29 @@
 <!ENTITY window.title.v2 "Настройки Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Основные">
-<!ENTITY save.component.grouplabel "При сохранении веб-страницы полностью:">
-<!ENTITY save.component.standard.label "Использовать стандартную систему сохранения браузера">
-<!ENTITY save.component.standard.accesskey "И">
-<!ENTITY save.component.completesave.label "Сохранять сценарии и исходный код с помощью &quot;Save Complete&quot;">
-<!ENTITY save.component.completesave.accesskey "С">
-<!ENTITY save.component.exactpersist.label "Сохранять точную копию страницы">
-<!ENTITY save.component.exactpersist.accesskey "т">
-<!ENTITY save.mhtml.compatible.label "Создавать файлы MHTML, полностью совместимые с другими браузерами">
-<!ENTITY save.mhtml.compatible.accesskey "о">
+<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
+<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "When saving a complete page:">
+<!ENTITY save.method.snapshot.label "Take an exact snapshot">
+<!ENTITY save.method.snapshot.accesskey "k">
+<!ENTITY save.method.standard.label "Use browser's standard save system">
+<!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "Предлагать имена файлов:">
+<!ENTITY save.namingstrategy.title.label "Use the title of the page">
+<!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "Так же как в браузере">
 <!ENTITY save.namingstrategy.standard.accesskey "б">
-<!ENTITY save.namingstrategy.pagetitle.label "Использовать заголовок страницы, когда возможно">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "з">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Вид">
-<!ENTITY iconlocation.grouplabel "Показывать значок Mozilla Archive Format:">
-<!ENTITY iconlocation.urlbar.label "в адресной строке">
-<!ENTITY iconlocation.urlbar.accesskey "а">
-<!ENTITY iconlocation.urlbar-autohide.label "в адресной строке только для архивных страниц">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "т">
-<!ENTITY iconlocation.status.label "в строке состояния">
-<!ENTITY iconlocation.status.accesskey "с">
-<!ENTITY iconlocation.addonbar.label "на панели дополнений">
-<!ENTITY iconlocation.addonbar.accesskey "д">
-<!ENTITY iconlocation.none.label "нигде">
-<!ENTITY iconlocation.none.accesskey "н">
+<!ENTITY info.grouplabel "When an archived page is opened:">
+<!ENTITY info.icon.label "Show icon in the location bar">
+<!ENTITY info.icon.accesskey "S">
+<!ENTITY info.bar.label "Display an information bar">
+<!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "Показывать пункты меню Mozilla Archive Format:">
 <!ENTITY menu.app.label "в меню $brandShortName">
 <!ENTITY menu.app.accesskey "м">

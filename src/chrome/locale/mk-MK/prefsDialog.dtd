@@ -2,33 +2,29 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Главно">
-<!ENTITY save.component.grouplabel "Кога зачувувате содржини на целосни веб страници:">
-<!ENTITY save.component.standard.label "Користете го стандардниот систем на зачувување на прелистувачот">
-<!ENTITY save.component.standard.accesskey "п">
-<!ENTITY save.component.completesave.label "Зачувај ги скриптите и изворот користејќи &quot;Save Complete&quot;">
-<!ENTITY save.component.completesave.accesskey "р">
-<!ENTITY save.component.exactpersist.label "Направете точна слика на состојбата на страницата">
-<!ENTITY save.component.exactpersist.accesskey "в">
-<!ENTITY save.mhtml.compatible.label "Креирај MHTML датотеки целосно компатибилни со другите прелистувачи">
-<!ENTITY save.mhtml.compatible.accesskey "о">
+<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
+<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "When saving a complete page:">
+<!ENTITY save.method.snapshot.label "Take an exact snapshot">
+<!ENTITY save.method.snapshot.accesskey "k">
+<!ENTITY save.method.standard.label "Use browser's standard save system">
+<!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "За предложеното име на датотеката:">
+<!ENTITY save.namingstrategy.title.label "Use the title of the page">
+<!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "Користи ја стандардната стратегија за именување на прелистувачот">
 <!ENTITY save.namingstrategy.standard.accesskey "ч">
-<!ENTITY save.namingstrategy.pagetitle.label "Користете го насловот на страницата секогаш кога е возможно">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "ц">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Интерфејс">
-<!ENTITY iconlocation.grouplabel "Покажи ја иконата на Mozilla форматот на архиви во:">
-<!ENTITY iconlocation.urlbar.label "Лента за адреса">
-<!ENTITY iconlocation.urlbar.accesskey "Л">
-<!ENTITY iconlocation.urlbar-autohide.label "Лента за адреса, само за архивирани страници">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "х">
-<!ENTITY iconlocation.status.label "Статусна лента">
-<!ENTITY iconlocation.status.accesskey "С">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "Ништо">
-<!ENTITY iconlocation.none.accesskey "Н">
+<!ENTITY info.grouplabel "When an archived page is opened:">
+<!ENTITY info.icon.label "Show icon in the location bar">
+<!ENTITY info.icon.accesskey "S">
+<!ENTITY info.bar.label "Display an information bar">
+<!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "Покажи ги елементите на менито на Mozilla форматот на архиви во:">
 <!ENTITY menu.app.label "$brandShortName menu">
 <!ENTITY menu.app.accesskey "m">

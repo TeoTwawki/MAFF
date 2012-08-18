@@ -2,33 +2,29 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "主要">
-<!ENTITY save.component.grouplabel "当保存完整网页档案内容时：">
-<!ENTITY save.component.standard.label "使用浏览器的标准保存系统 (b)">
-<!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.completesave.label "使用“Save Complete”保存页面（保持脚本与源码）(u)">
-<!ENTITY save.component.completesave.accesskey "u">
-<!ENTITY save.component.exactpersist.label "使用可靠的页面快照 (k)">
-<!ENTITY save.component.exactpersist.accesskey "k">
-<!ENTITY save.mhtml.compatible.label "创建与其它浏览器完全兼容的 MHTML 文件 (o)">
-<!ENTITY save.mhtml.compatible.accesskey "o">
+<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
+<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "When saving a complete page:">
+<!ENTITY save.method.snapshot.label "Take an exact snapshot">
+<!ENTITY save.method.snapshot.accesskey "k">
+<!ENTITY save.method.standard.label "Use browser's standard save system">
+<!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "默认文件名：">
+<!ENTITY save.namingstrategy.title.label "Use the title of the page">
+<!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "使用浏览器的标准命名策略 (w)">
 <!ENTITY save.namingstrategy.standard.accesskey "w">
-<!ENTITY save.namingstrategy.pagetitle.label "在可能时使用页面标题作为文件名 (g)">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "界面">
-<!ENTITY iconlocation.grouplabel "在下列位置显示 Mozilla 档案格式的图标：">
-<!ENTITY iconlocation.urlbar.label "地址栏">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "地址栏，仅对档案中的页面 (d)">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "状态栏">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "无">
-<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY info.grouplabel "When an archived page is opened:">
+<!ENTITY info.icon.label "Show icon in the location bar">
+<!ENTITY info.icon.accesskey "S">
+<!ENTITY info.bar.label "Display an information bar">
+<!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "显示 MAF 菜单项于：">
 <!ENTITY menu.app.label "$brandShortName menu">
 <!ENTITY menu.app.accesskey "m">

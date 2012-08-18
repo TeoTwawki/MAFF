@@ -2,33 +2,29 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format – Ustawienia">
 <!--    Main pane    -->
 <!ENTITY pane.main.label "Główne">
-<!ENTITY save.component.grouplabel "Zapisuj zawartość strony internetowej używając:">
-<!ENTITY save.component.standard.label "standardowego systemu zapisu przeglądarki">
-<!ENTITY save.component.standard.accesskey "S">
-<!ENTITY save.component.completesave.label "zachowaj skrypty i źródła, używając rozszerzenie „Save Complete”">
-<!ENTITY save.component.completesave.accesskey "K">
-<!ENTITY save.component.exactpersist.label "wykonaj wierny zrzut strony">
-<!ENTITY save.component.exactpersist.accesskey "W">
-<!ENTITY save.mhtml.compatible.label "twórz pliki MHTML w pełni kompatybilne z innymi przeglądarkami">
-<!ENTITY save.mhtml.compatible.accesskey "M">
+<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
+<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "When saving a complete page:">
+<!ENTITY save.method.snapshot.label "Take an exact snapshot">
+<!ENTITY save.method.snapshot.accesskey "k">
+<!ENTITY save.method.standard.label "Use browser's standard save system">
+<!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "Dla sugerowanej nazwy pliku użyj:">
+<!ENTITY save.namingstrategy.title.label "Use the title of the page">
+<!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "systemu nazw przeglądarki">
 <!ENTITY save.namingstrategy.standard.accesskey "N">
-<!ENTITY save.namingstrategy.pagetitle.label "tytułu strony, jeśli możliwe">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "U">
 <!--    Interface pane    -->
 <!ENTITY pane.interface.label "Interfejs">
-<!ENTITY iconlocation.grouplabel "Wyświetlaj ikonę rozszerzenia:">
-<!ENTITY iconlocation.urlbar.label "w pasku adresu">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "w pasku adresu – tylko dla zarchiwizowanych stron">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "Z">
-<!ENTITY iconlocation.status.label "na pasku stanu">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "na pasku dodatków">
-<!ENTITY iconlocation.addonbar.accesskey "d">
-<!ENTITY iconlocation.none.label "nie wyświetlaj">
-<!ENTITY iconlocation.none.accesskey "W">
+<!ENTITY info.grouplabel "When an archived page is opened:">
+<!ENTITY info.icon.label "Show icon in the location bar">
+<!ENTITY info.icon.accesskey "S">
+<!ENTITY info.bar.label "Display an information bar">
+<!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "Wyświetlaj element Mozilla Archive Format w:">
 <!ENTITY menu.app.label "menu programu $brandShortName">
 <!ENTITY menu.app.accesskey "m">

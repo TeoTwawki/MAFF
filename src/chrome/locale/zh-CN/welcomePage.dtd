@@ -2,7 +2,7 @@
 <!ENTITY page.title "欢迎">
 <!ENTITY welcome.label "感谢您安装 Mozilla 档案格式（Mozilla Archive Format）！">
 <!ENTITY features.header.label "本附加组件将改善 $brandShortName 的的诸多功能。">
-<!ENTITY features.headerfromupdate.label "Your add-on has been updated to the latest major version.">
+<!ENTITY features.headerfromupdate.label "Your add-on is updated to the latest major version.">
 <!ENTITY features.item1.label "网页将被更加完整、精确、所见即所得地保存。">
 <!ENTITY features.item2.label "可将单个或多个标签页存至单个文件（Web 档案）。">
 <!ENTITY features.item3.label "文档标题将成为默认的保存文件名。">
@@ -16,7 +16,7 @@
 <!ENTITY associate.mhtml.label "MHTML">
 <!ENTITY associate.mhtml.accesskey "H">
 <!ENTITY associate.explanation1.label "If unsure, leave both options selected. They will become effective when this page is closed.">
-<!ENTITY associate.explanation2.label "You can change your preference at any time from the control panel of your operating system.">
+<!ENTITY associate.explanation2.label "You can change your preferences at any time from the control panel of your operating system.">
 <!ENTITY associate.error.title "Error While Creating File Associations">
 <!ENTITY associate.error.msg "An error occurred while configuring your file manager: $1.">
 <!ENTITY associate.errortip.msg "In order to open web archives with $brandShortName, you should create the required file associations manually from the control panel of your operating system, or retry the operation from the Mozilla Archive Format options window.">
