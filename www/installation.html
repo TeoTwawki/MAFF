@@ -92,48 +92,34 @@
  $maf_latest_fx); ?> has the following user-visible improvements over MAF
  <?php echo $maf_previous_fx; ?>:</p>
 <ul>
-  <li>Greatly improved performance, accuracy and compactness when the option to
-   take a faithful snapshot of the page is selected:
+  <li>Improved compactness when saving complete web pages:
     <ul>
-      <li>Pages are saved instantly, because hidden content that is not needed
-       to display the current state of the page is not downloaded anymore.</li>
-      <li>Saved pages can be much smaller, since they do not include unneeded
-       content.</li>
-      <li>Saved pages can be displayed more accurately, because now scripts
-       specified using event attributes or "javascript:" URIs are also removed,
-       making sure that they cannot modify the page structure when it is opened
-       later.</li>
-      <li>If an image or other support resource is not found, the error page is
-       not saved in place of the missing resource anymore.</li>
-      <li>Images and other content that could not be saved are not connected to
-       their original location anymore, leading to truly offline archives and
-       making it possible to verify that all content has been saved.</li>
-      <li>Saved MHTML archives can now be previewed correctly in Windows, even
-       if they contain text in a language other than English.</li>
+      <li>Stylesheet rules that don't apply to any element in the current page
+       are now removed from the saved file. This can greatly increase
+       compactness when content is modified by scripts or other extensions
+       before saving.</li>
+      <li>The option to take an exact snapshot of the page is now selected by
+       default, to take advantage of various improvements in the save method,
+       even if it was deselected in a previous version of the add-on. The
+       browser's standard save system and the integrated Save Complete component
+       can still be selected from the options dialog and the internal
+       configuration settings respectively.</li>
     </ul>
   </li>
-  <li>A notification bar with information about the original save date and
-   location is now displayed for all archived pages.</li>
-  <li>Updating to the new version makes sure that all the customized
-   <a href="documentation.html#internalsettings">internal configuration
-   settings</a> are reset to their default value, resolving problems caused by
-   old settings that, starting with version 1.0, could be changed only from the
-   <tt>about:config</tt> page. There is usually no need to customize those
-   settings anymore.</li>
-  <li>Now it is possible to link to a specific section inside an archived page,
-   appending a fragment or hash part to the URI of the archived page.</li>
-  <li>The integrated
-   <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-   component is now able to save framesets.</li>
-  <li>The Saved Pages Conversion Wizard is now able to recognize complete web
-   pages saved using Firefox or SeaMonkey in several languages other than
-   English and the current browser language.</li>
-  <li>The add-on is no longer tested with Firefox 3.0, Firefox 3.5, and
-   SeaMonkey 2.0.</li>
-  <li>Bugfixes:
+  <li>The notification bar with information about the original save date and
+   location can now be disabled from the options.</li>
+  <li>Now file associations on Windows are created correctly when using the
+   add-on in third-party browsers based on Firefox or SeaMonkey.</li>
+  <li>Removed elements:
     <ul>
-      <li>Some images in MHTML pages didn't appear, if they were referenced
-       using the "style" attribute.</li>
+      <li>The options to display an archive information icon in the status bar
+       is not available anymore, together with the option to display the icon in
+       the location bar at all times. The icon can only be displayed in the
+       location bar when an archived page is opened.</li>
+      <li>The creation of MHTML files that are fully compatible with other
+       browsers cannot be explicitly disabled anymore. All the generated MHTML
+       files are now fully compatible, as long as the option to take an exact
+       snapshot of the page is selected.</li>
     </ul>
   </li>
 </ul>
