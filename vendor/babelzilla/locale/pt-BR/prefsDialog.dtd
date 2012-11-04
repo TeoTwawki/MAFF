@@ -2,33 +2,11 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Principal">
-<!ENTITY save.component.grouplabel "Ao salvar páginas:">
-<!ENTITY save.component.standard.label "usar o método padrão do navegador">
-<!ENTITY save.component.standard.accesskey "n">
-<!ENTITY save.component.completesave.label "preservar scripts e código-fonte usando &quot;Save Complete&quot;">
-<!ENTITY save.component.completesave.accesskey "p">
-<!ENTITY save.component.exactpersist.label "salvar o conteúdo exato exibido no momento">
-<!ENTITY save.component.exactpersist.accesskey "e">
-<!ENTITY save.mhtml.compatible.label "Criar arquivos MHTML compatíveis com outros navegadores">
-<!ENTITY save.mhtml.compatible.accesskey "M">
 <!ENTITY save.namingstrategy.grouplabel "Para o nome do arquivo, sugerir:">
 <!ENTITY save.namingstrategy.standard.label "o padrão do navegador">
 <!ENTITY save.namingstrategy.standard.accesskey "v">
-<!ENTITY save.namingstrategy.pagetitle.label "o título da página (quando possível)">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "t">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Interface">
-<!ENTITY iconlocation.grouplabel "Exibir o ícone do Mozilla Archive Format:">
-<!ENTITY iconlocation.urlbar.label "na barra de endereço">
-<!ENTITY iconlocation.urlbar.accesskey "e">
-<!ENTITY iconlocation.urlbar-autohide.label "na barra de endereço, ao exibir uma página salva em arquivo da web">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "q">
-<!ENTITY iconlocation.status.label "na barra de status">
-<!ENTITY iconlocation.status.accesskey "s">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "em nenhum lugar">
-<!ENTITY iconlocation.none.accesskey "n">
 <!ENTITY menu.grouplabel "Exibir os comandos do Mozilla Archive Format:">
 <!ENTITY menu.app.label "$brandShortName menu">
 <!ENTITY menu.app.accesskey "m">

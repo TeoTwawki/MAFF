@@ -2,35 +2,31 @@
 <!ENTITY window.title.v2 "Možnosti rozšíření Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Hlavní">
-<!ENTITY save.component.grouplabel "Obsah uložených stránek">
-<!ENTITY save.component.standard.label "Pro ukládání použít standartní systém prohlížeče">
-<!ENTITY save.component.standard.accesskey "P">
-<!ENTITY save.component.completesave.label "Použitím &quot;Kompletně uložit&quot; chránit skripty a zdroj">
-<!ENTITY save.component.completesave.accesskey "i">
-<!ENTITY save.component.exactpersist.label "Uložit skutečný obraz stránky">
-<!ENTITY save.component.exactpersist.accesskey "U">
-<!ENTITY save.mhtml.compatible.label "Vytvořit soubory MHTML plně kompatibilní s ostatními prohlížeči">
-<!ENTITY save.mhtml.compatible.accesskey "V">
+<!ENTITY save.format.grouplabel "Výchozí formát při ukládání do jednoho souboru:">
+<!ENTITY save.format.maff.label "MAFF (založen na ZIP, podporuje audio a video)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (lze přímo otevřít v některých jiných prohlížečích)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (varianta s omezenou kompatibilitou)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "Při ukládání celé stránky:">
+<!ENTITY save.method.snapshot.label "Získat přesný snímek">
+<!ENTITY save.method.snapshot.accesskey "Z">
+<!ENTITY save.method.standard.label "Použít standardní způsob uložení v prohlížeči">
+<!ENTITY save.method.standard.accesskey "P">
 <!ENTITY save.namingstrategy.grouplabel "Navrhování názvů souborů:">
+<!ENTITY save.namingstrategy.title.label "Použít titulek stránky">
+<!ENTITY save.namingstrategy.title.accesskey "t">
 <!ENTITY save.namingstrategy.standard.label "Použít standardní metodu prohlížeče">
 <!ENTITY save.namingstrategy.standard.accesskey "o">
-<!ENTITY save.namingstrategy.pagetitle.label "Všude, kde to je možné, použít název stránky">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "K">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Rozhraní">
-<!ENTITY iconlocation.grouplabel "Zobrazit ikonu MAF v:">
-<!ENTITY iconlocation.urlbar.label "Lišta adresy">
-<!ENTITY iconlocation.urlbar.accesskey "a">
-<!ENTITY iconlocation.urlbar-autohide.label "Lišta adresy, jen u archivovaných stránek">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Stavová lišta">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "Lišta rozšíření">
-<!ENTITY iconlocation.addonbar.accesskey "L">
-<!ENTITY iconlocation.none.label "Nic">
-<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY info.grouplabel "Když je otevřena archivovaná stránka:">
+<!ENTITY info.icon.label "Zobrazit ikonku v řádku adresy">
+<!ENTITY info.icon.accesskey "i">
+<!ENTITY info.bar.label "Zobrazit informační řádek">
+<!ENTITY info.bar.accesskey "f">
 <!ENTITY menu.grouplabel "Zobrazit položky menu MAF v:">
-<!ENTITY menu.app.label "$brandShortName menu">
+<!ENTITY menu.app.label "Menu $brandShortName">
 <!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "Soubor">
 <!ENTITY menu.file.accesskey "o">

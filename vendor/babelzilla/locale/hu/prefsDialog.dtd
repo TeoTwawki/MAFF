@@ -2,33 +2,29 @@
 <!ENTITY window.title.v2 "Mozilla Archív Formátum beállítások">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Főoldal">
-<!ENTITY save.component.grouplabel "Teljes weboldal tartalom mentésekor:">
-<!ENTITY save.component.standard.label "Használja az általános mentési rendszert">
-<!ENTITY save.component.standard.accesskey "á">
-<!ENTITY save.component.completesave.label "Őrizze meg a szkripteket és forrást a &quot;Teljes mentés&quot; használatakor">
-<!ENTITY save.component.completesave.accesskey "T">
-<!ENTITY save.component.exactpersist.label "Készítsen hiteles pillanatfelvételt az oldalról">
-<!ENTITY save.component.exactpersist.accesskey "p">
-<!ENTITY save.mhtml.compatible.label "Készítsen más böngészőkkel teljesen kompatibilis MHTML fájlokat">
-<!ENTITY save.mhtml.compatible.accesskey "b">
+<!ENTITY save.format.grouplabel "Alapértelmezett formátum egyetlen fájlba mentéskor:">
+<!ENTITY save.format.maff.label "MAFF (ZIP alapú, videót és hangot is ment)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (néhány másik böngészőben közvetlen megnyitható)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (csökkentett kompatibilitású variáns)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "Egy teljes oldal mentésekor:">
+<!ENTITY save.method.snapshot.label "Készítsen pontos felvételt">
+<!ENTITY save.method.snapshot.accesskey "p">
+<!ENTITY save.method.standard.label "Használja a böngésző alap mentési módszerét">
+<!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "Javaslatok a fájl nevére:">
+<!ENTITY save.namingstrategy.title.label "Használja az oldal címét">
+<!ENTITY save.namingstrategy.title.accesskey "o">
 <!ENTITY save.namingstrategy.standard.label "Használja a böngésző névadási módszerét">
 <!ENTITY save.namingstrategy.standard.accesskey "n">
-<!ENTITY save.namingstrategy.pagetitle.label "Használja az oldal címét, amikor lehetséges">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Kezelőfelület">
-<!ENTITY iconlocation.grouplabel "A Mozilla Archív Formátum ikon megjelenjen:">
-<!ENTITY iconlocation.urlbar.label "Címsorban">
-<!ENTITY iconlocation.urlbar.accesskey "C">
-<!ENTITY iconlocation.urlbar-autohide.label "Címsorban, de csak archivált oldalaknál">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "a">
-<!ENTITY iconlocation.status.label "Állapotsoron">
-<!ENTITY iconlocation.status.accesskey "Á">
-<!ENTITY iconlocation.addonbar.label "Kiegészítő eszköztár">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "Sehol">
-<!ENTITY iconlocation.none.accesskey "S">
+<!ENTITY info.grouplabel "Egy teljes oldal mentésekor:">
+<!ENTITY info.icon.label "Ikon mutatása a címsorban">
+<!ENTITY info.icon.accesskey "c">
+<!ENTITY info.bar.label "Információs eszközsáv megjelenítése">
+<!ENTITY info.bar.accesskey "I">
 <!ENTITY menu.grouplabel "A Mozilla Archív Formátum menüelemei megjelenjen:">
 <!ENTITY menu.app.label "$brandShortName menü">
 <!ENTITY menu.app.accesskey "m">

@@ -2,33 +2,29 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format 설정">
 <!-- Main pane -->
 <!ENTITY pane.main.label "메인">
-<!ENTITY save.component.grouplabel "전체 웹페이지의 내용을 저장할 때:">
-<!ENTITY save.component.standard.label "브라우저의 기본 저장을 사용">
-<!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.completesave.label "스크립트와 소스를 포함한 &quot;전체 저장&quot;">
-<!ENTITY save.component.completesave.accesskey "u">
-<!ENTITY save.component.exactpersist.label "페이지의 정확한 스냅샷 만들기">
-<!ENTITY save.component.exactpersist.accesskey "k">
-<!ENTITY save.mhtml.compatible.label "다른 브라우저와 완전히 호환 가능한 MHTML 형식으로 만들기">
-<!ENTITY save.mhtml.compatible.accesskey "o">
+<!ENTITY save.format.grouplabel "단일 파일로 저장할 때의 기본 형식:">
+<!ENTITY save.format.maff.label "MAFF (ZIP 기반, 비디오와 오디오 지원)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (다른 브라우저에서 바로 열 수 있음)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "전체 페이지를 저장할 때:">
+<!ENTITY save.method.snapshot.label "정확한 스냅샷을 취하기">
+<!ENTITY save.method.snapshot.accesskey "k">
+<!ENTITY save.method.standard.label "브라우저의 기본 저장 사용하기">
+<!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "파일 이름을 정하는 방식:">
+<!ENTITY save.namingstrategy.title.label "페이지의 제목 사용">
+<!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "브라우저 기본 방식으로">
 <!ENTITY save.namingstrategy.standard.accesskey "w">
-<!ENTITY save.namingstrategy.pagetitle.label "가능하면 페이지 제목으로">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "인터페이스">
-<!ENTITY iconlocation.grouplabel "Mozilla Archive Format의 아이콘을 표시할 곳:">
-<!ENTITY iconlocation.urlbar.label "주소창">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "아카이브 페이지의 주소창">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "상태 표시줄">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "부가 기능 모음">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "없음">
-<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY info.grouplabel "아카이브 페이지가 열려 있을 때:">
+<!ENTITY info.icon.label "주소창에 아이콘 보이기">
+<!ENTITY info.icon.accesskey "S">
+<!ENTITY info.bar.label "정보 막대를 보이기">
+<!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "Mozilla Archive Format의 메뉴 항목을 표시할 곳:">
 <!ENTITY menu.app.label "$brandShortName menu">
 <!ENTITY menu.app.accesskey "m">

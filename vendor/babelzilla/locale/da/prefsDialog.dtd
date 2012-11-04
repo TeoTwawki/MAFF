@@ -2,33 +2,11 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Hoved">
-<!ENTITY save.component.grouplabel "Ved gem af komplet webside-indhold:">
-<!ENTITY save.component.standard.label "Brug browsers standard gem-system">
-<!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.completesave.label "Preserve scripts and source using &quot;Save Complete&quot;">
-<!ENTITY save.component.completesave.accesskey "u">
-<!ENTITY save.component.exactpersist.label "Take a faithful snapshot of the page">
-<!ENTITY save.component.exactpersist.accesskey "k">
-<!ENTITY save.mhtml.compatible.label "Create MHTML files fully compatible with other browsers">
-<!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "For the suggested file name:">
 <!ENTITY save.namingstrategy.standard.label "Use browser's standard naming strategy">
 <!ENTITY save.namingstrategy.standard.accesskey "w">
-<!ENTITY save.namingstrategy.pagetitle.label "Use the title of the page whenever possible">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Brugerflade">
-<!ENTITY iconlocation.grouplabel "Show Mozilla Archive Format icon in:">
-<!ENTITY iconlocation.urlbar.label "Address bar">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "Address bar, for archived pages only">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Status bar">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "None">
-<!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.grouplabel "Vis Mozilla Archive Format menuelementer i:">
 <!ENTITY menu.app.label "$brandShortName menu">
 <!ENTITY menu.app.accesskey "m">

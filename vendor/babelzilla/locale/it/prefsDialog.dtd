@@ -2,33 +2,11 @@
 <!ENTITY window.title.v2 "Opzioni di Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Principale">
-<!ENTITY save.component.grouplabel "Quando si salva il contenuto completo di una pagina:">
-<!ENTITY save.component.standard.label "Usa il sistema di salvataggio standard del browser">
-<!ENTITY save.component.standard.accesskey "U">
-<!ENTITY save.component.completesave.label "Conserva script e codice di origine usando &quot;Save Complete&quot;">
-<!ENTITY save.component.completesave.accesskey "C">
-<!ENTITY save.component.exactpersist.label "Effettua una copia fedele della pagina">
-<!ENTITY save.component.exactpersist.accesskey "E">
-<!ENTITY save.mhtml.compatible.label "Crea file MHTML pienamente compatibili con altri browser">
-<!ENTITY save.mhtml.compatible.accesskey "a">
 <!ENTITY save.namingstrategy.grouplabel "Per il nome di file suggerito:">
 <!ENTITY save.namingstrategy.standard.label "Usa la strategia di denominazione standard del browser">
 <!ENTITY save.namingstrategy.standard.accesskey "s">
-<!ENTITY save.namingstrategy.pagetitle.label "Usa il titolo della pagina quando possibile">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "t">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Interfaccia">
-<!ENTITY iconlocation.grouplabel "Mostra icona di Mozilla Archive Format in:">
-<!ENTITY iconlocation.urlbar.label "Barra degli indirizzi">
-<!ENTITY iconlocation.urlbar.accesskey "a">
-<!ENTITY iconlocation.urlbar-autohide.label "Barra degli indirizzi, solo per le pagine in archivio">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Barra di stato">
-<!ENTITY iconlocation.status.accesskey "s">
-<!ENTITY iconlocation.addonbar.label "Barra delle aggiunte">
-<!ENTITY iconlocation.addonbar.accesskey "B">
-<!ENTITY iconlocation.none.label "Nessuna">
-<!ENTITY iconlocation.none.accesskey "e">
 <!ENTITY menu.grouplabel "Mostra voci di menu di Mozilla Archive Format in:">
 <!ENTITY menu.app.label "Menu $brandShortName">
 <!ENTITY menu.app.accesskey "M">

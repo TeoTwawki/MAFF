@@ -2,33 +2,29 @@
 <!ENTITY window.title.v2 "Настройки Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Основные">
-<!ENTITY save.component.grouplabel "При сохранении веб-страницы полностью:">
-<!ENTITY save.component.standard.label "Использовать стандартную систему сохранения браузера">
-<!ENTITY save.component.standard.accesskey "И">
-<!ENTITY save.component.completesave.label "Сохранять сценарии и исходный код с помощью &quot;Save Complete&quot;">
-<!ENTITY save.component.completesave.accesskey "С">
-<!ENTITY save.component.exactpersist.label "Сохранять точную копию страницы">
-<!ENTITY save.component.exactpersist.accesskey "т">
-<!ENTITY save.mhtml.compatible.label "Создавать файлы MHTML, полностью совместимые с другими браузерами">
-<!ENTITY save.mhtml.compatible.accesskey "о">
-<!ENTITY save.namingstrategy.grouplabel "Предлагать имена файлов:">
-<!ENTITY save.namingstrategy.standard.label "Так же как в браузере">
+<!ENTITY save.format.grouplabel "Формат по умолчанию для сохранения в единственном файле:">
+<!ENTITY save.format.maff.label "MAFF (основан на ZIP, поддерживает видео и аудио)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (можно открыть в некоторых других браузерах)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (вариант с ограниченной совместимостью)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "При сохранении веб-страницы полностью:">
+<!ENTITY save.method.snapshot.label "Создать точное отображение страницы">
+<!ENTITY save.method.snapshot.accesskey "т">
+<!ENTITY save.method.standard.label "Использовать стандартную систему сохранения браузера">
+<!ENTITY save.method.standard.accesskey "с">
+<!ENTITY save.namingstrategy.grouplabel "Как имя файла по умолчанию использовать:">
+<!ENTITY save.namingstrategy.title.label "Заголовок страницы">
+<!ENTITY save.namingstrategy.title.accesskey "З">
+<!ENTITY save.namingstrategy.standard.label "Имя, предлагаемое браузером">
 <!ENTITY save.namingstrategy.standard.accesskey "б">
-<!ENTITY save.namingstrategy.pagetitle.label "Использовать заголовок страницы, когда возможно">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "з">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Вид">
-<!ENTITY iconlocation.grouplabel "Показывать значок Mozilla Archive Format:">
-<!ENTITY iconlocation.urlbar.label "в адресной строке">
-<!ENTITY iconlocation.urlbar.accesskey "а">
-<!ENTITY iconlocation.urlbar-autohide.label "в адресной строке только для архивных страниц">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "т">
-<!ENTITY iconlocation.status.label "в строке состояния">
-<!ENTITY iconlocation.status.accesskey "с">
-<!ENTITY iconlocation.addonbar.label "на панели дополнений">
-<!ENTITY iconlocation.addonbar.accesskey "д">
-<!ENTITY iconlocation.none.label "нигде">
-<!ENTITY iconlocation.none.accesskey "н">
+<!ENTITY info.grouplabel "Когда открыта архивная страница:">
+<!ENTITY info.icon.label "Показать значок в адресной строке">
+<!ENTITY info.icon.accesskey "а">
+<!ENTITY info.bar.label "Показать информационную панель">
+<!ENTITY info.bar.accesskey "п">
 <!ENTITY menu.grouplabel "Показывать пункты меню Mozilla Archive Format:">
 <!ENTITY menu.app.label "в меню $brandShortName">
 <!ENTITY menu.app.accesskey "м">
@@ -42,13 +38,13 @@
 <!ENTITY menu.pagecontext.tabs.accesskey "л">
 <!ENTITY menu.tabscontext.label "в контекстном меню вкладки">
 <!ENTITY menu.tabscontext.accesskey "в">
-<!-- File associations pane. This pane is visible only on Windows. -->
+<!-- Actions pane -->
 <!ENTITY pane.actions.label "Действия">
 <!ENTITY action.convertsavedpages.label "Преобразовать сохраненные страницы">
 <!ENTITY action.convertsavedpages.description "Мастер преобразования сохраненных страниц поможет вам пересохранить имеющиеся архивы в другом файловом формате.">
 <!ENTITY action.showwelcomepage.label "Показать страницу приветствия">
-<!ENTITY action.showwelcomepage.description "Страница приветствия показывается после первой установки дополнения и содержит обзор его функций. Повторный показ может пригодиться переводчикам для проверки качества перевода.">
+<!ENTITY action.showwelcomepage.description "Страница приветствия показывается после первой установки дополнения и содержит обзор его функций.">
 <!ENTITY action.showwelcomepageassociate.label "Обновить файловые ассоциации">
-<!ENTITY action.showwelcomepageassociate.description "На странице приветствия можно выбрать, какие типы веб-архивов будут открываться с помощью вашего браузера, и восстановить файловые ассоциации, если они были изменены другим приложением.">
+<!ENTITY action.showwelcomepageassociate.description "На странице приветствия можно выбрать, какие типы веб-архивов будут открываться с помощью $brandShortName, и восстановить файловые ассоциации, если они были изменены другим приложением.">
 <!ENTITY action.visitwebsite.label "Посетить домашнюю страницу MAF">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format тесно взаимодействует с $brandShortName и вносит много других улучшений. Полный список функций, а также документацию по файловому формату MAFF и дополнительным настройкам вы можете найти на официальном веб-сайте (на английском).">
+<!ENTITY action.visitwebsite.description "Mozilla Archive Format тесно взаимодействует с $brandShortName и вносит, помимо наиболее заметных, целый ряд других улучшений. Полный список функций, а также документацию по файловому формату MAFF и дополнительным настройкам вы можете найти на официальном веб-сайте (на английском).">

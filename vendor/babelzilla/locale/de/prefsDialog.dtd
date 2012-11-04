@@ -2,33 +2,29 @@
 <!ENTITY window.title.v2 "Mozilla Archiv Format - Einstellungen">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Allgemein">
-<!ENTITY save.component.grouplabel "Vorgaben zum Archivieren:">
-<!ENTITY save.component.standard.label "Standard Browserspeichersystem verwenden">
-<!ENTITY save.component.standard.accesskey "B">
-<!ENTITY save.component.completesave.label "Skripte und Quelltext mithilfe von &quot;Save Complete&quot; erhalten">
-<!ENTITY save.component.completesave.accesskey "S">
-<!ENTITY save.component.exactpersist.label "Originalgetreuen Schnappschuss der Seite aufnehmen">
-<!ENTITY save.component.exactpersist.accesskey "O">
-<!ENTITY save.mhtml.compatible.label "Zu anderen Browsern voll kompatible MHTML-Datei erstellen">
-<!ENTITY save.mhtml.compatible.accesskey "V">
+<!ENTITY save.format.grouplabel "Standardvorgabe (für Speichern als Archiv):">
+<!ENTITY save.format.maff.label "MAFF (komprimiert, unterstützt Audio &amp; Video)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MTHML (kompatibel mit anderen Browsern z.B. IE)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (Variante mit geringerer Kompatibilität)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "Beim Speichern einer kompletten Webseite:">
+<!ENTITY save.method.snapshot.label "Originalgetreuen Schnappschuß der Webseite anlegen">
+<!ENTITY save.method.snapshot.accesskey "p">
+<!ENTITY save.method.standard.label "Standard Browserspeichersystem verwenden">
+<!ENTITY save.method.standard.accesskey "B">
 <!ENTITY save.namingstrategy.grouplabel "Für den vorgeschlagenen Dateinamen:">
+<!ENTITY save.namingstrategy.title.label "Seitentitel verwenden">
+<!ENTITY save.namingstrategy.title.accesskey "t">
 <!ENTITY save.namingstrategy.standard.label "Die Standardbenennung des Browsers verwenden">
 <!ENTITY save.namingstrategy.standard.accesskey "d">
-<!ENTITY save.namingstrategy.pagetitle.label "Den Titel der Seite verwenden, wann immer möglich">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "T">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Benutzeroberfläche">
-<!ENTITY iconlocation.grouplabel "Das Symbol von Mozilla Archiv Format anzeigen:">
-<!ENTITY iconlocation.urlbar.label "dauerhaft in der Adressleiste">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "in der Adressleiste nur bei bereits archivierten Seiten">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "l">
-<!ENTITY iconlocation.status.label "in der Statusleiste">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "in der Add-on-Leiste">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "nie">
-<!ENTITY iconlocation.none.accesskey "n">
+<!ENTITY info.grouplabel "Beim Öffnen eines Webarchives:">
+<!ENTITY info.icon.label "Zeige Icon in">
+<!ENTITY info.icon.accesskey "i">
+<!ENTITY info.bar.label "Zeige Hinweisleiste">
+<!ENTITY info.bar.accesskey "Z">
 <!ENTITY menu.grouplabel "Menüeinträge für Mozilla Archiv Format anzeigen:">
 <!ENTITY menu.app.label "im $brandShortName-Menü">
 <!ENTITY menu.app.accesskey "M">

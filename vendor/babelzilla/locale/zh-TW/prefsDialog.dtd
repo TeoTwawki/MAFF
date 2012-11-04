@@ -2,33 +2,20 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format 選項">
 <!-- Main pane -->
 <!ENTITY pane.main.label "主要">
-<!ENTITY save.component.grouplabel "當儲存完整網頁檔案內容時：">
-<!ENTITY save.component.standard.label "使用瀏覽器的標準儲存系統">
-<!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.completesave.label "使用「Save Complete」來保留腳本和原始碼">
-<!ENTITY save.component.completesave.accesskey "u">
-<!ENTITY save.component.exactpersist.label "使用可靠的網頁快照">
-<!ENTITY save.component.exactpersist.accesskey "k">
-<!ENTITY save.mhtml.compatible.label "建立與其他瀏覽器完全相容的 MHTML 檔案">
-<!ENTITY save.mhtml.compatible.accesskey "o">
+<!ENTITY save.format.grouplabel "當儲存單一檔案時的默認格式：">
+<!ENTITY save.format.maff.label "MAFF 網絡檔案集 (基於 ZIP 格式；支援影片和音訊)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.snapshot.accesskey "k">
+<!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "建議檔案名稱：">
+<!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "使用瀏覽器的標準命名方法">
 <!ENTITY save.namingstrategy.standard.accesskey "w">
-<!ENTITY save.namingstrategy.pagetitle.label "在可能時使用網頁的標題">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "介面">
-<!ENTITY iconlocation.grouplabel "在下列位置顯示 Mozilla Archive Format 的圖示：">
-<!ENTITY iconlocation.urlbar.label "位址列">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "位址列，僅對檔案集中的頁面">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "狀態列">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "附加元件列">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "無">
-<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY info.icon.accesskey "S">
+<!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "顯示 Mozilla Archive Format 選單項於：">
 <!ENTITY menu.app.label "$brandShortName 選單">
 <!ENTITY menu.app.accesskey "m">

@@ -2,33 +2,11 @@
 <!ENTITY window.title.v2 "Inställningar för Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Allmänt">
-<!ENTITY save.component.grouplabel "När innehållet för en fullständig webbsida sparas:">
-<!ENTITY save.component.standard.label "Använd webbläsarens standardsystem för att spara">
-<!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.completesave.label "Bevara skript och källkod genom att använda &quot;Spara fullständig&quot;">
-<!ENTITY save.component.completesave.accesskey "u">
-<!ENTITY save.component.exactpersist.label "Ta en trogen ögonblicksbild av sidan">
-<!ENTITY save.component.exactpersist.accesskey "k">
-<!ENTITY save.mhtml.compatible.label "Skapa MHTML-filer som är fullständigt kompatibla med andra webbläsare">
-<!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "För det föreslagna filnamnet:">
 <!ENTITY save.namingstrategy.standard.label "Använd webbläsarens standardstrategi för namngivning">
 <!ENTITY save.namingstrategy.standard.accesskey "w">
-<!ENTITY save.namingstrategy.pagetitle.label "Använd sidans rubrik när det är möjligt">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Gränssnitt">
-<!ENTITY iconlocation.grouplabel "Visa Mozilla Archive Format-ikonen i:">
-<!ENTITY iconlocation.urlbar.label "Adressfältet">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "Adressfältet, endast för arkiverade sidor">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "e">
-<!ENTITY iconlocation.status.label "Statusfältet">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "Tilläggsfältet">
-<!ENTITY iconlocation.addonbar.accesskey "T">
-<!ENTITY iconlocation.none.label "(Visa ingen ikon)">
-<!ENTITY iconlocation.none.accesskey "n">
 <!ENTITY menu.grouplabel "Visa Mozilla Archive Format-menyobjekt i:">
 <!ENTITY menu.app.label "$brandShortName-menyn">
 <!ENTITY menu.app.accesskey "m">

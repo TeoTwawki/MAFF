@@ -2,33 +2,11 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format - Opciones">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Principal">
-<!ENTITY save.component.grouplabel "Al guardar el contenido completo de una página:">
-<!ENTITY save.component.standard.label "Usar el sistema general del navegador">
-<!ENTITY save.component.standard.accesskey "g">
-<!ENTITY save.component.completesave.label "Preservar scripts y fuentes usando &quot;Save Complete&quot;">
-<!ENTITY save.component.completesave.accesskey "u">
-<!ENTITY save.component.exactpersist.label "Tomar una instantánea fiel de la página">
-<!ENTITY save.component.exactpersist.accesskey "m">
-<!ENTITY save.mhtml.compatible.label "Crea archivos MHTML compatibles con otros navegadores">
-<!ENTITY save.mhtml.compatible.accesskey "o">
 <!ENTITY save.namingstrategy.grouplabel "Para el nombre de archivo sugerido:">
 <!ENTITY save.namingstrategy.standard.label "Usar la estrategia de nombrado estándar del navegador">
 <!ENTITY save.namingstrategy.standard.accesskey "t">
-<!ENTITY save.namingstrategy.pagetitle.label "Usar el título de la página cuando sea posible">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Interfaz">
-<!ENTITY iconlocation.grouplabel "Mostrar el icono de Mozilla Archive Format en:">
-<!ENTITY iconlocation.urlbar.label "Barra de direcciones">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "Barra de direcciones, sólo para las páginas archivadas">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Barra de estado">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "Añadir en la barra">
-<!ENTITY iconlocation.addonbar.accesskey "e">
-<!ENTITY iconlocation.none.label "Ninguna">
-<!ENTITY iconlocation.none.accesskey "N">
 <!ENTITY menu.grouplabel "Mostrar los elementos de menú de Mozilla Archive Format en:">
 <!ENTITY menu.app.label "Menú de $brandShortName">
 <!ENTITY menu.app.accesskey "m">

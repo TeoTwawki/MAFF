@@ -2,33 +2,11 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Главно">
-<!ENTITY save.component.grouplabel "Кога зачувувате содржини на целосни веб страници:">
-<!ENTITY save.component.standard.label "Користете го стандардниот систем на зачувување на прелистувачот">
-<!ENTITY save.component.standard.accesskey "п">
-<!ENTITY save.component.completesave.label "Зачувај ги скриптите и изворот користејќи &quot;Save Complete&quot;">
-<!ENTITY save.component.completesave.accesskey "р">
-<!ENTITY save.component.exactpersist.label "Направете точна слика на состојбата на страницата">
-<!ENTITY save.component.exactpersist.accesskey "в">
-<!ENTITY save.mhtml.compatible.label "Креирај MHTML датотеки целосно компатибилни со другите прелистувачи">
-<!ENTITY save.mhtml.compatible.accesskey "о">
 <!ENTITY save.namingstrategy.grouplabel "За предложеното име на датотеката:">
 <!ENTITY save.namingstrategy.standard.label "Користи ја стандардната стратегија за именување на прелистувачот">
 <!ENTITY save.namingstrategy.standard.accesskey "ч">
-<!ENTITY save.namingstrategy.pagetitle.label "Користете го насловот на страницата секогаш кога е возможно">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "ц">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Интерфејс">
-<!ENTITY iconlocation.grouplabel "Покажи ја иконата на Mozilla форматот на архиви во:">
-<!ENTITY iconlocation.urlbar.label "Лента за адреса">
-<!ENTITY iconlocation.urlbar.accesskey "Л">
-<!ENTITY iconlocation.urlbar-autohide.label "Лента за адреса, само за архивирани страници">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "х">
-<!ENTITY iconlocation.status.label "Статусна лента">
-<!ENTITY iconlocation.status.accesskey "С">
-<!ENTITY iconlocation.addonbar.label "Add-on bar">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "Ништо">
-<!ENTITY iconlocation.none.accesskey "Н">
 <!ENTITY menu.grouplabel "Покажи ги елементите на менито на Mozilla форматот на архиви во:">
 <!ENTITY menu.app.label "$brandShortName menu">
 <!ENTITY menu.app.accesskey "m">

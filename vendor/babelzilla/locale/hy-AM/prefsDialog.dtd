@@ -1,31 +1,27 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format-ի կարգավորումները">
 <!ENTITY pane.main.label "Հիմնականը">
-<!ENTITY save.component.grouplabel "Երբ պահպանվում են վեբ էջերը.">
-<!ENTITY save.component.standard.label "Օգտագործել դիտարկիչի հիմնական ընտրանքները">
-<!ENTITY save.component.standard.accesskey "b">
-<!ENTITY save.component.completesave.label "Պահպանել սցենարները և աղբյուրը օգտագործելով &quot;Save Complete&quot;">
-<!ENTITY save.component.completesave.accesskey "u">
-<!ENTITY save.component.exactpersist.label "Վերցնել էջի իրական պատկերումը">
-<!ENTITY save.component.exactpersist.accesskey "k">
-<!ENTITY save.mhtml.compatible.label "Ստեղծել այլ դիտարկիչներում համատեղելի MHTML ֆայլ">
-<!ENTITY save.mhtml.compatible.accesskey "r">
+<!ENTITY save.format.grouplabel "Ծրագրային տեսակի, երբ պահպանվում է մեկ ֆայլում.">
+<!ENTITY save.format.maff.label "MAFF (հիմնված ZIP-ի վրա, աջակցում է տեսանյութ և ձայն)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (կարող է բացվել ուղղակիորեն այլ դիտարկիչներով)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (սահմանափակ համատեղելիությամբ տարբերակ)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "Էջը ամբողջությամբ պահպանելիս.">
+<!ENTITY save.method.snapshot.label "Ստեղծել պատկերումը">
+<!ENTITY save.method.snapshot.accesskey "k">
+<!ENTITY save.method.standard.label "Օգտագործել դիտարկիչի ստանդարտ համակարգը">
+<!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "Ֆայլի առաջարկվող անունը.">
+<!ENTITY save.namingstrategy.title.label "Օգտագործել էջի անունը">
+<!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "Օգտագործել դիտարկիչի ընտրածը">
 <!ENTITY save.namingstrategy.standard.accesskey "w">
-<!ENTITY save.namingstrategy.pagetitle.label "Երբ հնարավոր է գտագործել էջի գլխագիրը">
-<!ENTITY save.namingstrategy.pagetitle.accesskey "g">
 <!ENTITY pane.interface.label "Տեսքը">
-<!ENTITY iconlocation.grouplabel "Ցուցադրել Mozilla Archive Format-ի պատկերը.">
-<!ENTITY iconlocation.urlbar.label "Հասցեի վահանակ">
-<!ENTITY iconlocation.urlbar.accesskey "A">
-<!ENTITY iconlocation.urlbar-autohide.label "Հասցեի վահանակում, միայն արխիվացված էջերի համար">
-<!ENTITY iconlocation.urlbar-autohide.accesskey "d">
-<!ENTITY iconlocation.status.label "Դրության տողում">
-<!ENTITY iconlocation.status.accesskey "S">
-<!ENTITY iconlocation.addonbar.label "Հավելումներում">
-<!ENTITY iconlocation.addonbar.accesskey "o">
-<!ENTITY iconlocation.none.label "Չցուցադրել">
-<!ENTITY iconlocation.none.accesskey "N">
+<!ENTITY info.grouplabel "Երբ արխիվի էջը բացված է.">
+<!ENTITY info.icon.label "Ցուցադրել պատկերը տեղադրության վահանակում">
+<!ENTITY info.icon.accesskey "S">
+<!ENTITY info.bar.label "Ցուցադրել տեղեկացման վահանակը">
+<!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "Ցուցադրել Mozilla Archive Format-ը.">
 <!ENTITY menu.app.label "$brandShortName ընտրացանկում">
 <!ENTITY menu.app.accesskey "m">
