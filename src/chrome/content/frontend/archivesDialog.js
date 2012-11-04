@@ -394,6 +394,9 @@ var ArchivesDialog = {
     // Create a new object to hold the data to be copied
     var transferable = Cc["@mozilla.org/widget/transferable;1"].
      createInstance(Ci.nsITransferable);
+    if (transferable.init) {
+      transferable.init(null);
+    }
 
     // Add the data flavors to the object in the appropriate order
     [

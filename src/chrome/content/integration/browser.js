@@ -67,18 +67,30 @@
 
 function BrowserOpenFileWindow()
 {
-  // Ensure that the variable gLastOpenDirectory is declared
-  var gLastOpenDirectory = gLastOpenDirectory;
-
   // Get filepicker component.
   try {
-    const nsIFilePicker = Components.interfaces.nsIFilePicker;
-    var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, gNavigatorBundle.getString("openFile"), nsIFilePicker.modeOpen);
-    fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterImages |
-                     nsIFilePicker.filterXML | nsIFilePicker.filterHTML);
-    if (gLastOpenDirectory)
-      fp.displayDirectory = gLastOpenDirectory.path;
+    const nsIFilePicker = Ci.nsIFilePicker;
+    let fp = Cc["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    let fpCallback = function fpCallback_done(aResult) {
+      if (aResult == nsIFilePicker.returnOK) {
+        try {
+          if (fp.file) {
+            gLastOpenDirectory.path =
+              fp.file.parent.QueryInterface(Ci.nsILocalFile);
+          }
+        } catch (ex) {
+        }
+        MozillaArchiveFormat.DynamicPrefs.openFilterIndex = fp.filterIndex;
+        openUILinkIn(fp.fileURL.spec, "current");
+      }
+    };
+
+    fp.init(window, gNavigatorBundle.getString("openFile"),
+            nsIFilePicker.modeOpen);
+    fp.appendFilters(nsIFilePicker.filterText |
+                     nsIFilePicker.filterImages | nsIFilePicker.filterXML |
+                     nsIFilePicker.filterHTML);
+    fp.displayDirectory = gLastOpenDirectory.path;
 
     // Add filters from Mozilla Archive Format
     MozillaArchiveFormat.FileFilters.openFilters.forEach(function(curFilter) {
@@ -89,11 +101,10 @@ function BrowserOpenFileWindow()
 
     // Show the filepicker, and remember the selected file filter
     fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.openFilterIndex;
-    if (fp.show() == nsIFilePicker.returnOK) {
-      if (gLastOpenDirectory && fp.file && fp.file.exists())
-        gLastOpenDirectory.path = fp.file.parent.QueryInterface(Ci.nsILocalFile);
-      MozillaArchiveFormat.DynamicPrefs.openFilterIndex = fp.filterIndex;
-      openTopWin(fp.fileURL.spec);
+    if (fp.open) {
+      fp.open(fpCallback);
+    } else {
+      fpCallback(fp.show());
     }
   } catch (ex) {
   }

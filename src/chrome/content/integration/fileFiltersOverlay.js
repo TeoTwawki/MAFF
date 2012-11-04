@@ -50,7 +50,7 @@ MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
   newSaveBehavior.isComplete = true;
   newSaveBehavior.mandatoryExtension = true;
   newSaveBehavior.isValidForSaveMode = function(aSaveMode) {
-    return aSaveMode & SAVEMODE_MAFARCHIVE;
+    return aSaveMode & MozillaArchiveFormat.SAVEMODE_MAFARCHIVE;
   }
   newSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
     // Access the current values in the MAF save filter objects array

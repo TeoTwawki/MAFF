@@ -378,7 +378,7 @@ var MafCommandsOverlay = {
     // If the dialog was not canceled by the user
     if (returnValues.selectedTabs) {
       // Use the global saveDocument function with the special MAF parameters
-      mafSaveDocument(getBrowser().selectedBrowser.contentDocument,
+      saveDocument(getBrowser().selectedBrowser.contentDocument,
        {mafAskSaveArchive: true, mafSaveTabs: returnValues.selectedTabs});
     }
   },
@@ -388,7 +388,7 @@ var MafCommandsOverlay = {
    */
   saveAllTabsInArchive: function() {
     // Use the global saveDocument function with the special MAF parameters
-    mafSaveDocument(getBrowser().selectedBrowser.contentDocument,
+    saveDocument(getBrowser().selectedBrowser.contentDocument,
      {mafAskSaveArchive: true, mafSaveTabs: getBrowser().browsers});
   },
 
@@ -397,7 +397,7 @@ var MafCommandsOverlay = {
    */
   savePageInArchive: function() {
     // Use the global saveDocument function with the special MAF parameters
-    mafSaveDocument(getBrowser().selectedBrowser.contentDocument,
+    saveDocument(getBrowser().selectedBrowser.contentDocument,
      {mafAskSaveArchive: true});
   },
 
@@ -408,7 +408,7 @@ var MafCommandsOverlay = {
     var focusedWindow = document.commandDispatcher.focusedWindow;
     if (isContentFrame(focusedWindow)) {
       // Use the global saveDocument function with the special MAF parameters
-      mafSaveDocument(focusedWindow.document,
+      saveDocument(focusedWindow.document,
        {mafAskSaveArchive: true});
     }
   },
@@ -418,7 +418,7 @@ var MafCommandsOverlay = {
    */
   saveFrameInArchiveFromContext: function() {
     // Use the global saveDocument function with the special MAF parameters
-    mafSaveDocument(gContextMenu.target.ownerDocument,
+    saveDocument(gContextMenu.target.ownerDocument,
      {mafAskSaveArchive: true});
   }
 }

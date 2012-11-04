@@ -66,8 +66,7 @@ var MafInterfaceOverlay = {
 
     // Register the web progress listener defined in this object, and receive
     //  only the onLocationChange notifications
-    gBrowser.addProgressListener(MafInterfaceOverlay.webProgressListener,
-     Ci.nsIWebProgress.NOTIFY_LOCATION);
+    gBrowser.addProgressListener(MafInterfaceOverlay.webProgressListener);
 
     // Register a preference observer to update the visibility of the icons
     MozillaArchiveFormat.Prefs.prefBranchForMaf.addObserver(

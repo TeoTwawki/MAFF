@@ -43,45 +43,6 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
- * This function is identical to saveDocument, but is required for compatibility
- *  with SeaMonkey 2.0 as its saveDocument function does not propagate the
- *  aSkipPrompt parameter.
- */
-function mafSaveDocument(aDocument, aSkipPrompt)
-{
-  if (!aDocument)
-    throw "Must have a document when calling saveDocument";
-
-  // We want to use cached data because the document is currently visible.
-  var ifreq =
-    aDocument.defaultView
-             .QueryInterface(Components.interfaces.nsIInterfaceRequestor);
-
-  var contentDisposition = null;
-  try {
-    contentDisposition =
-      ifreq.getInterface(Components.interfaces.nsIDOMWindowUtils)
-           .getDocumentMetadata("content-disposition");
-  } catch (ex) {
-    // Failure to get a content-disposition is ok
-  }
-
-  var cacheKey = null;
-  try {
-    cacheKey =
-      ifreq.getInterface(Components.interfaces.nsIWebNavigation)
-           .QueryInterface(Components.interfaces.nsIWebPageDescriptor);
-  } catch (ex) {
-    // We might not find it in the cache.  Oh, well.
-  }
-
-  internalSave(aDocument.location.href, aDocument, null, contentDisposition,
-               aDocument.contentType, false, null, null,
-               aDocument.referrer ? makeURI(aDocument.referrer) : null,
-               aSkipPrompt, cacheKey);
-}
-
-/**
  * internalSave: Used when saving a document or URL.
  *
  * If aChosenData is null, this method:
@@ -128,6 +89,8 @@ function mafSaveDocument(aDocument, aSkipPrompt)
  * @param aReferrer
  *        the referrer URI object (not URL string) to use, or null
  *        if no referrer should be sent.
+ * @param aInitiatingDocument
+ *        The document from which the save was initiated.
  * @param aSkipPrompt [optional]
  *        If set to true, we will attempt to save the file to the
  *        default downloads folder without prompting.
@@ -163,8 +126,19 @@ function mafSaveDocument(aDocument, aSkipPrompt)
  */
 function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                       aContentType, aShouldBypassCache, aFilePickerTitleKey,
-                      aChosenData, aReferrer, aSkipPrompt, aCacheKey)
+                      aChosenData, aReferrer, aInitiatingDocument, aSkipPrompt,
+                      aCacheKey)
 {
+  // Checks if the host application runs a platform version prior to Gecko 18.
+  var platformVersion = Cc["@mozilla.org/xre/app-info;1"]
+   .getService(Ci.nsIXULAppInfo).platformVersion;
+  if (Cc["@mozilla.org/xpcom/version-comparator;1"]
+   .getService(Ci.nsIVersionComparator).compare(platformVersion, "17.*") <= 0) {
+    aCacheKey = aSkipPrompt;
+    aSkipPrompt = aInitiatingDocument;
+    aInitiatingDocument = {};
+  }
+
   if (aSkipPrompt == undefined)
     aSkipPrompt = false;
 
@@ -196,7 +170,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   if (aChosenData) {
     file = aChosenData.file;
     sourceURI = aChosenData.uri;
-    saveBehavior = gCompleteSaveBehavior;
+    saveBehavior = MozillaArchiveFormat.CompleteSaveBehavior;
   } else {
     var charset = null;
     if (aDocument)
@@ -213,10 +187,13 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       fileInfo: fileInfo,
       contentType: aContentType,
       // When saving all tabs, only offer the choice of creating an archive
-      saveMode: mafAskSaveArchive ? SAVEMODE_MAFARCHIVE : saveMode,
-      saveBehavior: gCompleteSaveBehavior,
+      saveMode: mafAskSaveArchive ? MozillaArchiveFormat.SAVEMODE_MAFARCHIVE : saveMode,
+      saveBehavior: MozillaArchiveFormat.CompleteSaveBehavior,
       file: file
     };
+
+    // Find a URI to use for determining last-downloaded-to directory
+    let relatedURI = aReferrer || sourceURI;
 
     // When aSkipPrompt is an object provided by Mozilla Archive Format, no user
     //  prompt is shown and the file is saved in the specified directory using
@@ -259,7 +236,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
         fpParams.file.append(saveFileName);
       }
     } else {
-      if (!getTargetFile(fpParams, aSkipPrompt))
+      if (!getTargetFile(fpParams, aSkipPrompt, relatedURI))
         // If the method returned false this is because the user cancelled from
         // the save file picker dialog.
         return;
@@ -272,7 +249,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // The save behavior may not be valid for the save mode if it was determined
   // automatically instead of through the file picker.
   if (!saveBehavior.isValidForSaveMode(saveMode)) {
-    saveBehavior = gNormalSaveBehavior;
+    saveBehavior = MozillaArchiveFormat.NormalSaveBehavior;
   }
 
   // Create a custom web browser persist object if required
@@ -303,6 +280,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     sourceCacheKey    : aCacheKey,
     sourcePostData    : aDocument ? getPostData(aDocument) : null,
     bypassCache       : aShouldBypassCache,
+    initiatingWindow  : aInitiatingDocument.defaultView,
     persistObject     : mafPersistObject
   };
 
@@ -330,8 +308,6 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  *        must be null if no POST data should be sent.
  * @param persistArgs.targetFile
  *        The nsIFile of the file to create
- * @param persistArgs.targetFileURL
- *        The nsIURI associated with persistArgs.targetFile
  * @param persistArgs.targetContentType
  *        Required and used only when persistArgs.sourceDocument is present,
  *        determines the final content type of the saved file, or null to use
@@ -339,6 +315,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  *        "text/plain" is meaningful.
  * @param persistArgs.bypassCache
  *        If true, the document will always be refetched from the server
+ * @param persistArgs.initiatingWindow
+ *        The window from which the save operation was initiated.
  */
 function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
 {
@@ -385,6 +363,11 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   // Find the URI associated with the target file
   var targetFileURL = makeFileURI(persistArgs.targetFile);
 
+  // Ensure the variable is declared.
+  var PrivateBrowsingUtils = PrivateBrowsingUtils;
+  var isPrivate = PrivateBrowsingUtils &&
+                  PrivateBrowsingUtils.isWindowPrivate(persistArgs.initiatingWindow);
+
   // Mozilla Archive Format indirectly uses this function to save an already
   //  loaded document to a temporary file on disk, before generating the final
   //  archive. If the document saving was initiated by MAF, we use the
@@ -399,7 +382,7 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
     // Create download and initiate it (below)
     tr = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
     tr.init(persistArgs.sourceURI,
-            targetFileURL, "", null, null, null, persist);
+            targetFileURL, "", null, null, null, persist, isPrivate);
   }
 
   persist.progressListener = new DownloadListener(window, tr);
@@ -417,10 +400,10 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
         filesFolder.leafName = "index_files";
       } else {
         var nameWithoutExtension = getFileBaseName(filesFolder.leafName);
-        var filesFolderLeafName = getStringBundle().formatStringFromName("filesFolder",
-                                                                         [nameWithoutExtension],
-                                                                         1);
-  
+        var filesFolderLeafName =
+          ContentAreaUtils.stringBundle
+                          .formatStringFromName("filesFolder", [nameWithoutExtension], 1);
+
         filesFolder.leafName = filesFolderLeafName;
       }
     }
@@ -439,9 +422,14 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
     persist.saveDocument(persistArgs.sourceDocument, targetFileURL, filesFolder,
                          persistArgs.targetContentType, encodingFlags, kWrapColumn);
   } else {
+    let privacyContext = persistArgs.initiatingWindow &&
+                         persistArgs.initiatingWindow
+                                    .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                                    .getInterface(Components.interfaces.nsIWebNavigation)
+                                    .QueryInterface(Components.interfaces.nsILoadContext);
     persist.saveURI(persistArgs.sourceURI,
                     persistArgs.sourceCacheKey, persistArgs.sourceReferrer, persistArgs.sourcePostData, null,
-                    targetFileURL);
+                    targetFileURL, privacyContext);
   }
 }
 
@@ -458,21 +446,19 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
  *        If false, don't save the file automatically to the user's
  *        default download directory, even if the associated preference
  *        is set, but ask for the target explicitly.
+ * @param aRelatedURI
+ *        An nsIURI associated with the download. The last used
+ *        directory of the picker is retrieved from/stored in the 
+ *        Content Pref Service using this URI.
  * @return true if the user confirmed a filename in the picker or the picker
  *         was not displayed; false if they dismissed the picker.
  */
-function getTargetFile(aFpP, /* optional */ aSkipPrompt)
+function getTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ aRelatedURI)
 {
-  if (typeof gDownloadLastDir != "object") {
-    try {
-      Components.utils.import("resource://gre/modules/DownloadLastDir.jsm");
-    }
-    catch (e) {
-    }
-  }
-
-  // Wrap gDownloadLastDir into a local variable, if it exists
-  var gDownloadLastDir = gDownloadLastDir || {};
+  if (!getTargetFile.DownloadLastDir)
+    Components.utils.import("resource://gre/modules/DownloadLastDir.jsm", getTargetFile);
+  var gDownloadLastDir = getTargetFile.gDownloadLastDir ||
+                         new getTargetFile.DownloadLastDir(window);
 
   var prefs = getPrefsBrowserDownload("browser.download.");
   var useDownloadDir = prefs.getBoolPref("useDownloadDir");
@@ -499,7 +485,7 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     // If we are saving an archive automatically using Mozilla Archive Format,
     //  use the archive type selected when asking to save in an archive, and
     //  adjust the output file extension accordingly.
-    if (aFpP.saveMode == SAVEMODE_MAFARCHIVE) {
+    if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE) {
       aFpP.saveBehavior =
            MozillaArchiveFormat.DynamicPrefs.saveFilterIndex == 1 ?
            gMafMhtmlSaveBehavior : gMafMaffSaveBehavior;
@@ -524,10 +510,14 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     // user's default downloads directory. If it doesn't exist, it will be
     // changed to the user's desktop later.
     var lastDir;
-    if (inPrivateBrowsing && gDownloadLastDir.file)
-      lastDir = gDownloadLastDir.file;
-    else
-      lastDir = prefs.getComplexValue("lastDir", nsILocalFile);
+    if (gDownloadLastDir.getFile) {
+      lastDir = gDownloadLastDir.getFile(aRelatedURI);
+    } else {
+      if (inPrivateBrowsing && gDownloadLastDir.file)
+        lastDir = gDownloadLastDir.file;
+      else
+        lastDir = prefs.getComplexValue("lastDir", nsILocalFile);
+    }
     if (lastDir.exists()) {
       dir = lastDir;
       dirExists = true;
@@ -543,8 +533,7 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
 
   var fp = makeFilePicker();
   var titleKey = aFpP.fpTitleKey || "SaveLinkTitle";
-  var bundle = getStringBundle();
-  fp.init(window, bundle.GetStringFromName(titleKey),
+  fp.init(window, ContentAreaUtils.stringBundle.GetStringFromName(titleKey),
           Components.interfaces.nsIFilePicker.modeSave);
 
   fp.displayDirectory = dir;
@@ -578,7 +567,8 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
   // In Mozilla Archive Format on Windows, when asking to save in an archive,
   //  the default extension is replaced with the one of the default archive
   //  file type
-  if (isOnWindows && aFpP.saveMode == SAVEMODE_MAFARCHIVE) {
+  if (isOnWindows &&
+   aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE) {
     // Use a MAF specific call to retrieve the filter string
     var filterStringForDefaultType =
      gMafDefaultSaveBehavior.getFileFilter().extensionstring;
@@ -596,11 +586,11 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
 
   // The index of the selected filter is only preserved and restored if there's
   // more than one filter in addition to "All Files".
-  if (aFpP.saveMode != SAVEMODE_SAMEFORMAT) {
+  if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
     try {
         // In Mozilla Archive Format, use a special preference to store the
         //  selected filter if only the archive save filters are shown
-        if (aFpP.saveMode == SAVEMODE_MAFARCHIVE)
+        if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE)
           fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
         else
           fp.filterIndex = prefs.getIntPref("save_converter_index");
@@ -622,7 +612,7 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
     // Check that the file picker filter index is not out of bounds. The
     //  nsIFilePicker interface does not guarantee this.
     aFpP.saveBehavior = saveBehaviors[fp.filterIndex] ?
-     saveBehaviors[fp.filterIndex] : gNormalSaveBehavior;
+     saveBehaviors[fp.filterIndex] : MozillaArchiveFormat.NormalSaveBehavior;
     // Save the selected file object and URL
     aFpP.file = fp.file;
     aFpP.fileURL = fp.fileURL;
@@ -676,49 +666,25 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt)
 
   // Do not store the last save directory as a pref inside the private browsing mode
   var directory = fp.file.parent.QueryInterface(nsILocalFile);
-  if (inPrivateBrowsing)
-    gDownloadLastDir.file = directory;
-  else
-    prefs.setComplexValue("lastDir", nsILocalFile, directory);
+  if (gDownloadLastDir.getFile) {
+    gDownloadLastDir.setFile(aRelatedURI, directory);
+  } else {
+    if (inPrivateBrowsing)
+      gDownloadLastDir.file = directory;
+    else
+      prefs.setComplexValue("lastDir", nsILocalFile, directory);
+  }
 
-  if (aFpP.saveMode != SAVEMODE_SAMEFORMAT) {
+  if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
     // In Mozilla Archive Format, use a special preference to store the
     //  selected filter if only the archive save filters are shown
-    if (aFpP.saveMode == SAVEMODE_MAFARCHIVE)
+    if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE)
       MozillaArchiveFormat.DynamicPrefs.saveFilterIndex = fp.filterIndex;
     else
       prefs.setIntPref("save_converter_index", fp.filterIndex);
   }
 
   return true;
-}
-
-// Since we're automatically downloading, we don't get the file picker's
-// logic to check for existing files, so we need to do that here.
-//
-// Note - this code is identical to that in
-//   mozilla/toolkit/mozapps/downloads/src/nsHelperAppDlg.js.in
-// If you are updating this code, update that code too! We can't share code
-// here since that code is called in a js component.
-function uniqueFile(aLocalFile)
-{
-  var collisionCount = 0;
-  while (aLocalFile.exists()) {
-    collisionCount++;
-    if (collisionCount == 1) {
-      // Append "(2)" before the last dot in (or at the end of) the filename
-      // special case .ext.gz etc files so we don't wind up with .tar(2).gz
-      if (aLocalFile.leafName.match(/\.[^\.]{1,3}\.(gz|bz2|Z)$/i))
-        aLocalFile.leafName = aLocalFile.leafName.replace(/\.[^\.]{1,3}\.(gz|bz2|Z)$/i, "(2)$&");
-      else
-        aLocalFile.leafName = aLocalFile.leafName.replace(/(\.[^\.]*)?$/, "(2)$&");
-    }
-    else {
-      // replace the last (n) in the filename with (n+1)
-      aLocalFile.leafName = aLocalFile.leafName.replace(/^(.*\()\d+\)/, "$1" + (collisionCount + 1) + ")");
-    }
-  }
-  return aLocalFile;
 }
 
 /**
@@ -748,12 +714,12 @@ function mafAppendFiltersForContentType(aFilePicker, aContentType,
 
   // Always append the all files (*) filter
   aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
-  if (aSaveMode == SAVEMODE_MAFARCHIVE) {
+  if (aSaveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE) {
     // When asking to save in an archive, if All Files is selected we will save
     //  the file using the default archive format
     aReturnBehaviorArray.push(gMafDefaultSaveBehavior);
   } else {
-    aReturnBehaviorArray.push(gNormalSaveBehavior);
+    aReturnBehaviorArray.push(MozillaArchiveFormat.NormalSaveBehavior);
   }
 }
 
@@ -761,6 +727,9 @@ function mafAppendFiltersForContentType(aFilePicker, aContentType,
  * The stateless objects that extend this one represent the possible methods
  *  to save a web page or other file locally. Every object based on
  *  InternalSaveBehavior maps to a save filter in the save file picker dialog.
+ *
+ * This object is also used by other extensions to integrate with the save
+ *  system offered by Mozilla Archive Format.
  */
 function InternalSaveBehavior() { }
 
@@ -807,7 +776,6 @@ InternalSaveBehavior.prototype = {
     //  content types, otherwise try to get the list of valid extensions from
     //  the system.
 
-    var bundle = getStringBundle();
     // The bundle name for saving only a specific content type.
     var bundleName;
     // The actual filter name for a specific content type.
@@ -845,7 +813,7 @@ InternalSaveBehavior.prototype = {
 
     if (filterString) {
       // Get the filter description for the well-known content type
-      filterName = bundle.GetStringFromName(bundleName);
+      filterName = ContentAreaUtils.stringBundle.GetStringFromName(bundleName);
     } else {
       // This is not one of the known content types,
       // get the filter info from the system if possible
@@ -891,13 +859,6 @@ function getPostData(aDocument)
   return null;
 }
 
-function getStringBundle()
-{
-  return Components.classes["@mozilla.org/intl/stringbundle;1"]
-                   .getService(Components.interfaces.nsIStringBundleService)
-                   .createBundle("chrome://global/locale/contentAreaCommands.properties");
-}
-
 // Get the preferences branch ("browser.download." for normal 'save' mode)...
 function getPrefsBrowserDownload(branch)
 {
@@ -907,54 +868,60 @@ function getPrefsBrowserDownload(branch)
 }
 
 /** The normal save behavior (also used when All Files is selected) */
-var gNormalSaveBehavior = new InternalSaveBehavior();
-gNormalSaveBehavior.isValidForSaveMode = function(aSaveMode) {
-  return aSaveMode & SAVEMODE_SAMEFORMAT;
+MozillaArchiveFormat.NormalSaveBehavior = new InternalSaveBehavior();
+MozillaArchiveFormat.NormalSaveBehavior.isValidForSaveMode = function(aSaveMode) {
+  return aSaveMode & MozillaArchiveFormat.SAVEMODE_SAMEFORMAT;
 };
 
 /** The "save as complete web page" behavior. */
-var gCompleteSaveBehavior = new InternalSaveBehavior();
-gCompleteSaveBehavior.isComplete = true;
-gCompleteSaveBehavior.isValidForSaveMode = function(aSaveMode) {
+MozillaArchiveFormat.CompleteSaveBehavior = new InternalSaveBehavior();
+MozillaArchiveFormat.CompleteSaveBehavior.isComplete = true;
+MozillaArchiveFormat.CompleteSaveBehavior.isValidForSaveMode = function(aSaveMode) {
   return aSaveMode & SAVEMODE_COMPLETE_DOM;
 };
-gCompleteSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
+MozillaArchiveFormat.CompleteSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
   // Keep the same extensions as the normal behavior, override the description
   var filter = this.__proto__.getFileFilter(aContentType, aFileExtension);
-  filter.title = getStringBundle().GetStringFromName("WebPageCompleteFilter");
+  filter.title = ContentAreaUtils.stringBundle.GetStringFromName("WebPageCompleteFilter");
   return filter;
 };
 
 /** The "save as text only" behavior. */
-var gTextOnlySaveBehavior = new InternalSaveBehavior();
-gTextOnlySaveBehavior.isComplete = true;
-gTextOnlySaveBehavior.targetContentType = "text/plain";
-gTextOnlySaveBehavior.isValidForSaveMode = function(aSaveMode) {
+MozillaArchiveFormat.TextOnlySaveBehavior = new InternalSaveBehavior();
+MozillaArchiveFormat.TextOnlySaveBehavior.isComplete = true;
+MozillaArchiveFormat.TextOnlySaveBehavior.targetContentType = "text/plain";
+MozillaArchiveFormat.TextOnlySaveBehavior.isValidForSaveMode = function(aSaveMode) {
   return aSaveMode & SAVEMODE_COMPLETE_TEXT;
 };
-gTextOnlySaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
+MozillaArchiveFormat.TextOnlySaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
   return {mask: Components.interfaces.nsIFilePicker.filterText};
 };
 
-/** The list of registered save behaviors. */
+/**
+ * The list of registered save behaviors.
+ *
+ * This array is also used by other extensions to integrate with the save system
+ *  offered by Mozilla Archive Format.
+ */
 var gInternalSaveBehaviors = [
-  gCompleteSaveBehavior,
-  gNormalSaveBehavior,
-  gTextOnlySaveBehavior
+  MozillaArchiveFormat.CompleteSaveBehavior,
+  MozillaArchiveFormat.NormalSaveBehavior,
+  MozillaArchiveFormat.TextOnlySaveBehavior
 ];
 
 // Special save modes for Mozilla Archive Format
-const SAVEMODE_MAFARCHIVE = 0x100;
-const SAVEMODE_SAMEFORMAT = 0x200;
+MozillaArchiveFormat.SAVEMODE_MAFARCHIVE = 0x100;
+MozillaArchiveFormat.SAVEMODE_SAMEFORMAT = 0x200;
 
 function mafGetSaveModeForContentType(aContentType, aDocument)
 {
   // We can only save a complete page if we have a loaded document
   if (!aDocument)
-    return SAVEMODE_SAMEFORMAT;
+    return MozillaArchiveFormat.SAVEMODE_SAMEFORMAT;
 
   // Find the possible save modes using the provided content type
-  var saveMode = SAVEMODE_SAMEFORMAT | SAVEMODE_MAFARCHIVE;
+  var saveMode = MozillaArchiveFormat.SAVEMODE_SAMEFORMAT |
+                 MozillaArchiveFormat.SAVEMODE_MAFARCHIVE;
   switch (aContentType) {
   case "text/html":
   case "application/xhtml+xml":

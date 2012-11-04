@@ -486,7 +486,7 @@ Candidate.prototype = {
     this._isListeningForSave = true;
     try {
       // Use the global saveDocument function with the special MAF parameters
-      this.conversionWindow.mafSaveDocument(
+      this.conversionWindow.saveDocument(
        this.conversionFrame.contentDocument, {
         targetFile: this.location.dest,
         saveBehavior: saveBehavior,
