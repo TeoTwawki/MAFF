@@ -2,29 +2,29 @@
 <!ENTITY window.title.v2 "Mozilla Archív Formátum beállítások">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Főoldal">
-<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
-<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
+<!ENTITY save.format.grouplabel "Alapértelmezett formátum egyetlen fájlba mentéskor:">
+<!ENTITY save.format.maff.label "MAFF (ZIP alapú, videót és hangot is ment)">
 <!ENTITY save.format.maff.accesskey "M">
-<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
-<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
+<!ENTITY save.format.mhtml.full.label "MHTML (néhány másik böngészőben közvetlen megnyitható)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (csökkentett kompatibilitású variáns)">
 <!ENTITY save.format.mhtml.accesskey "H">
-<!ENTITY save.method.grouplabel "When saving a complete page:">
-<!ENTITY save.method.snapshot.label "Take an exact snapshot">
-<!ENTITY save.method.snapshot.accesskey "k">
-<!ENTITY save.method.standard.label "Use browser's standard save system">
+<!ENTITY save.method.grouplabel "Egy teljes oldal mentésekor:">
+<!ENTITY save.method.snapshot.label "Készítsen pontos felvételt">
+<!ENTITY save.method.snapshot.accesskey "p">
+<!ENTITY save.method.standard.label "Használja a böngésző alap mentési módszerét">
 <!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "Javaslatok a fájl nevére:">
-<!ENTITY save.namingstrategy.title.label "Use the title of the page">
-<!ENTITY save.namingstrategy.title.accesskey "g">
+<!ENTITY save.namingstrategy.title.label "Használja az oldal címét">
+<!ENTITY save.namingstrategy.title.accesskey "o">
 <!ENTITY save.namingstrategy.standard.label "Használja a böngésző névadási módszerét">
 <!ENTITY save.namingstrategy.standard.accesskey "n">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Kezelőfelület">
-<!ENTITY info.grouplabel "When an archived page is opened:">
-<!ENTITY info.icon.label "Show icon in the location bar">
-<!ENTITY info.icon.accesskey "S">
-<!ENTITY info.bar.label "Display an information bar">
-<!ENTITY info.bar.accesskey "D">
+<!ENTITY info.grouplabel "Egy teljes oldal mentésekor:">
+<!ENTITY info.icon.label "Ikon mutatása a címsorban">
+<!ENTITY info.icon.accesskey "c">
+<!ENTITY info.bar.label "Információs eszközsáv megjelenítése">
+<!ENTITY info.bar.accesskey "I">
 <!ENTITY menu.grouplabel "A Mozilla Archív Formátum menüelemei megjelenjen:">
 <!ENTITY menu.app.label "$brandShortName menü">
 <!ENTITY menu.app.accesskey "m">

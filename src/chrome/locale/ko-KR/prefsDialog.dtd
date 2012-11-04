@@ -2,28 +2,28 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format 설정">
 <!-- Main pane -->
 <!ENTITY pane.main.label "메인">
-<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
-<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
+<!ENTITY save.format.grouplabel "단일 파일로 저장할 때의 기본 형식:">
+<!ENTITY save.format.maff.label "MAFF (ZIP 기반, 비디오와 오디오 지원)">
 <!ENTITY save.format.maff.accesskey "M">
-<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
+<!ENTITY save.format.mhtml.full.label "MHTML (다른 브라우저에서 바로 열 수 있음)">
 <!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
 <!ENTITY save.format.mhtml.accesskey "H">
-<!ENTITY save.method.grouplabel "When saving a complete page:">
-<!ENTITY save.method.snapshot.label "Take an exact snapshot">
+<!ENTITY save.method.grouplabel "전체 페이지를 저장할 때:">
+<!ENTITY save.method.snapshot.label "정확한 스냅샷을 취하기">
 <!ENTITY save.method.snapshot.accesskey "k">
-<!ENTITY save.method.standard.label "Use browser's standard save system">
+<!ENTITY save.method.standard.label "브라우저의 기본 저장 사용하기">
 <!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "파일 이름을 정하는 방식:">
-<!ENTITY save.namingstrategy.title.label "Use the title of the page">
+<!ENTITY save.namingstrategy.title.label "페이지의 제목 사용">
 <!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "브라우저 기본 방식으로">
 <!ENTITY save.namingstrategy.standard.accesskey "w">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "인터페이스">
-<!ENTITY info.grouplabel "When an archived page is opened:">
-<!ENTITY info.icon.label "Show icon in the location bar">
+<!ENTITY info.grouplabel "아카이브 페이지가 열려 있을 때:">
+<!ENTITY info.icon.label "주소창에 아이콘 보이기">
 <!ENTITY info.icon.accesskey "S">
-<!ENTITY info.bar.label "Display an information bar">
+<!ENTITY info.bar.label "정보 막대를 보이기">
 <!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "Mozilla Archive Format의 메뉴 항목을 표시할 곳:">
 <!ENTITY menu.app.label "$brandShortName menu">

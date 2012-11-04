@@ -1,12 +1,12 @@
 <!-- *** Note *** -->
 <!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Kreator konwersji zapisanych stron">
+<!ENTITY window.title "Asystent konwersji zapisanych stron">
 <!ENTITY browsebutton.label "Przeglądaj…">
 <!ENTITY continue.label "Aby kontynuować naciśnij przycisk $1.">
 <!-- *** Introduction *** -->
-<!ENTITY introduction.pagelabel "Witamy w kreatorze konwersji zapisanych stron">
-<!ENTITY introduction.para1.description "Kreator poprowadzi cię przez proces konwersji zapisanych stron internetowych na inny format.">
+<!ENTITY introduction.pagelabel "Witamy w asystencie konwersji zapisanych stron">
+<!ENTITY introduction.para1.description "Asystent poprowadzi cię przez proces konwersji zapisanych stron internetowych na inny format.">
 <!ENTITY introduction.para2.description "Proces ten jest wskazany dla konwersji wielu stron w tym samym czasie. Jeśli chcesz dokonać konwersji jednego pliku, otwórz go w przeglądarce i zapisz w innym formacie.">
 <!ENTITY introduction.visitwebsite.description "Pomimo, że w większości przypadków proces konwersji przebiega bez zakłóceń, w niektórych przypadkach (w zależności od wybranych formatów i opcji zapisu) skonwertowane pliki mogą być nie w pełni wierne oryginałowi. Ponadto, gdy do formatu jednej strony konwertowane są archiwa składające się z wielu stron, tylko pierwsza storna jest zachowana prawidłowo. Zaleca się zatrzymać kopię oryginalnych plików, nawet gdy konwersja się w pełni powiodła.">
 <!ENTITY introduction.visitwebsite.label "Przeczytaj dokumentację online, by dowiedzieć się więcej szczegółów.">

@@ -1,20 +1,20 @@
 <!-- General window controls -->
-<!ENTITY window.title.v2 "Mozilla Archive Format Options">
+<!ENTITY window.title.v2 "Mozilla 档案格式（Mozilla Archive Format）选项">
 <!-- Main pane -->
-<!ENTITY pane.main.label "主要">
-<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
-<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
+<!ENTITY pane.main.label "一般">
+<!ENTITY save.format.grouplabel "默认格式（页面存档时）：">
+<!ENTITY save.format.maff.label "MAFF（基于 Zip，支持音视频）">
 <!ENTITY save.format.maff.accesskey "M">
-<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
-<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
+<!ENTITY save.format.mhtml.full.label "MHTML（与类 IE 浏览器兼容）">
+<!ENTITY save.format.mhtml.partial.label "MHTML（MAF 变更版本，兼容性有限）">
 <!ENTITY save.format.mhtml.accesskey "H">
-<!ENTITY save.method.grouplabel "When saving a complete page:">
-<!ENTITY save.method.snapshot.label "Take an exact snapshot">
+<!ENTITY save.method.grouplabel "完整保存页面时：">
+<!ENTITY save.method.snapshot.label "制作可信快照 (k)">
 <!ENTITY save.method.snapshot.accesskey "k">
-<!ENTITY save.method.standard.label "Use browser's standard save system">
+<!ENTITY save.method.standard.label "使用浏览器标准保存系统">
 <!ENTITY save.method.standard.accesskey "b">
 <!ENTITY save.namingstrategy.grouplabel "默认文件名：">
-<!ENTITY save.namingstrategy.title.label "Use the title of the page">
+<!ENTITY save.namingstrategy.title.label "页面标题 (g)">
 <!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "使用浏览器的标准命名策略 (w)">
 <!ENTITY save.namingstrategy.standard.accesskey "w">
@@ -26,7 +26,7 @@
 <!ENTITY info.bar.label "Display an information bar">
 <!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "显示 MAF 菜单项于：">
-<!ENTITY menu.app.label "$brandShortName menu">
+<!ENTITY menu.app.label "$brandShortName 菜单">
 <!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "“文件(F)”菜单">
 <!ENTITY menu.file.accesskey "F">
@@ -39,7 +39,7 @@
 <!ENTITY menu.tabscontext.label "标签栏内容菜单 (x)">
 <!ENTITY menu.tabscontext.accesskey "x">
 <!-- File associations pane. This pane is visible only on Windows. -->
-<!ENTITY pane.actions.label "Actions">
+<!ENTITY pane.actions.label "操作">
 <!ENTITY action.convertsavedpages.label "Convert Saved Pages">
 <!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">
 <!ENTITY action.showwelcomepage.label "Show Welcome Page">

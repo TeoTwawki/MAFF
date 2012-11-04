@@ -2,29 +2,29 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format – Ustawienia">
 <!--    Main pane    -->
 <!ENTITY pane.main.label "Główne">
-<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
-<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
+<!ENTITY save.format.grouplabel "Domyślny format zapisu pojedynczego pliku:">
+<!ENTITY save.format.maff.label "MAFF (bazuje na ZIP, obsługuje wideo i audio)">
 <!ENTITY save.format.maff.accesskey "M">
-<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
-<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
+<!ENTITY save.format.mhtml.full.label "MHTML (może być otwierany bezpośrednio przez inne przeglądarki)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (wariant z ograniczoną kompatybilnością)">
 <!ENTITY save.format.mhtml.accesskey "H">
-<!ENTITY save.method.grouplabel "When saving a complete page:">
-<!ENTITY save.method.snapshot.label "Take an exact snapshot">
-<!ENTITY save.method.snapshot.accesskey "k">
-<!ENTITY save.method.standard.label "Use browser's standard save system">
-<!ENTITY save.method.standard.accesskey "b">
+<!ENTITY save.method.grouplabel "Podczas zapisu całej strony:">
+<!ENTITY save.method.snapshot.label "wykonaj dokładny zrzut">
+<!ENTITY save.method.snapshot.accesskey "K">
+<!ENTITY save.method.standard.label "zastosuj standardowy system zapisu przeglądarki">
+<!ENTITY save.method.standard.accesskey "N">
 <!ENTITY save.namingstrategy.grouplabel "Dla sugerowanej nazwy pliku użyj:">
-<!ENTITY save.namingstrategy.title.label "Use the title of the page">
-<!ENTITY save.namingstrategy.title.accesskey "g">
+<!ENTITY save.namingstrategy.title.label "tytułu strony">
+<!ENTITY save.namingstrategy.title.accesskey "T">
 <!ENTITY save.namingstrategy.standard.label "systemu nazw przeglądarki">
 <!ENTITY save.namingstrategy.standard.accesskey "N">
 <!--    Interface pane    -->
 <!ENTITY pane.interface.label "Interfejs">
-<!ENTITY info.grouplabel "When an archived page is opened:">
-<!ENTITY info.icon.label "Show icon in the location bar">
-<!ENTITY info.icon.accesskey "S">
-<!ENTITY info.bar.label "Display an information bar">
-<!ENTITY info.bar.accesskey "D">
+<!ENTITY info.grouplabel "Gdy zarchiwizowana strona jest wyświetlana:">
+<!ENTITY info.icon.label "wyświetlaj ikonę w pasku adresu">
+<!ENTITY info.icon.accesskey "k">
+<!ENTITY info.bar.label "wyświetlaj pasek informacyjny">
+<!ENTITY info.bar.accesskey "S">
 <!ENTITY menu.grouplabel "Wyświetlaj element Mozilla Archive Format w:">
 <!ENTITY menu.app.label "menu programu $brandShortName">
 <!ENTITY menu.app.accesskey "m">
@@ -45,6 +45,6 @@
 <!ENTITY action.showwelcomepage.label "Wyświetlaj stronę powitalną">
 <!ENTITY action.showwelcomepage.description "Strona powitalna jest wyświetlana podczas pierwszego uruchomienia po zainstalowaniu dodatku i zawiera krótki opis jego funkcji. Jego ponowne wyświetlanie ułatwia tłumaczom sprawdzenie ich pracy.">
 <!ENTITY action.showwelcomepageassociate.label "Odśwież skojarzenia plików">
-<!ENTITY action.showwelcomepageassociate.description "Z poziomu strony powitalnej można wybrać typu archiwów sieciowych, które będą otwierane z programem $brandShortName i odświeżyć skojarzenia plików, jeśli zostaną zmienione przez inny program.">
+<!ENTITY action.showwelcomepageassociate.description "Z poziomu strony powitalnej można wybrać typu archiwów sieciowych, które będą otwierane z programem $brandShortName i odświeżyć, jeśli zostaną zmienione przez inny program, skojarzenia plików.">
 <!ENTITY action.visitwebsite.label "Odwiedź witrynę dodatku">
 <!ENTITY action.visitwebsite.description "Dodatek Mozilla Archive Format bezbłędnie integruje się z programem $brandShortName i oferuje wiele usprawnień najbardziej widocznych funkcji. Obszerne opisy funkcji, informacje na temat formatu MAFF i dokumentacja dotycząca konfiguracji zaawansowanych funkcji znajduje się na oficjalnej witrynie dodatku.">

@@ -2,29 +2,29 @@
 <!ENTITY window.title.v2 "Options de Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Général">
-<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
-<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
+<!ENTITY save.format.grouplabel "Format par défaut lors de la sauvegarde d'un fichier unique :">
+<!ENTITY save.format.maff.label "MAFF (basé sur ZIP, supporte l'audio et la vidéo)">
 <!ENTITY save.format.maff.accesskey "M">
-<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
-<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
+<!ENTITY save.format.mhtml.full.label "MHTML (peut être ouvert directement par certains autres navigateurs)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (variante à compatibilité limitée)">
 <!ENTITY save.format.mhtml.accesskey "H">
-<!ENTITY save.method.grouplabel "When saving a complete page:">
-<!ENTITY save.method.snapshot.label "Take an exact snapshot">
-<!ENTITY save.method.snapshot.accesskey "k">
-<!ENTITY save.method.standard.label "Use browser's standard save system">
-<!ENTITY save.method.standard.accesskey "b">
+<!ENTITY save.method.grouplabel "Lors de la sauvegarde d'une page complète :">
+<!ENTITY save.method.snapshot.label "Prendre une capture exacte">
+<!ENTITY save.method.snapshot.accesskey "c">
+<!ENTITY save.method.standard.label "Utiliser le système de sauvegarde par défaut du navigateur">
+<!ENTITY save.method.standard.accesskey "d">
 <!ENTITY save.namingstrategy.grouplabel "Pour le nom de fichier suggéré :">
-<!ENTITY save.namingstrategy.title.label "Use the title of the page">
+<!ENTITY save.namingstrategy.title.label "Utiliser le titre de la page">
 <!ENTITY save.namingstrategy.title.accesskey "g">
 <!ENTITY save.namingstrategy.standard.label "Utiliser la stratégie de nommage standard du navigateur">
 <!ENTITY save.namingstrategy.standard.accesskey "d">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Interface">
-<!ENTITY info.grouplabel "When an archived page is opened:">
-<!ENTITY info.icon.label "Show icon in the location bar">
-<!ENTITY info.icon.accesskey "S">
-<!ENTITY info.bar.label "Display an information bar">
-<!ENTITY info.bar.accesskey "D">
+<!ENTITY info.grouplabel "Lorsqu'une page archivée est ouverte :">
+<!ENTITY info.icon.label "Afficher une icône dans la barre d'adresse">
+<!ENTITY info.icon.accesskey "s">
+<!ENTITY info.bar.label "Afficher une barre d'information">
+<!ENTITY info.bar.accesskey "d">
 <!ENTITY menu.grouplabel "Afficher les menus MAF dans :">
 <!ENTITY menu.app.label "menu $brandShortName">
 <!ENTITY menu.app.accesskey "m">
