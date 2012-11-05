@@ -224,6 +224,7 @@ pre.code code {
   margin: 2px;
   border: 1px solid lightgrey;
   -moz-border-radius: 3px;
+  border-radius: 3px;
   padding: 2px;
   background-color: #DEF;
   background: -moz-linear-gradient(#EFF, #DEF);
@@ -272,6 +273,7 @@ ul#maf-feature-overview {
   margin: 2px;
   border: 1px solid #DDD;
   -moz-border-radius: 3px;
+  border-radius: 3px;
   padding: 2px;
 }
 
@@ -286,6 +288,7 @@ ul#maf-feature-overview {
   margin: 1em 10px;
   border: 1px solid grey;
   -moz-border-radius: 8px;
+  border-radius: 8px;
   padding: 10px 20px;
   background-color: lightgreen;
   background: -moz-linear-gradient(lightgreen, #3D3);
@@ -344,6 +347,7 @@ ul#maf-feature-overview {
   padding: 1em;
   border: 1px solid lightgrey;
   -moz-border-radius: 8px;
+  border-radius: 8px;
   background-color: #DEF;
   background: -moz-linear-gradient(#EFF, #DEF);
 }
