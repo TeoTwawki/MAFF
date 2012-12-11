@@ -75,8 +75,14 @@ function BrowserOpenFileWindow()
       if (aResult == nsIFilePicker.returnOK) {
         try {
           if (fp.file) {
-            gLastOpenDirectory.path =
-              fp.file.parent.QueryInterface(Ci.nsILocalFile);
+            if ("gLastOpenDirectory" in window) {
+              gLastOpenDirectory.path =
+               fp.file.parent.QueryInterface(Ci.nsILocalFile);
+            } else {
+              // Use the preference for SeaMonkey compatibility
+              Services.prefs.setComplexValue("browser.open.dir",
+               Ci.nsILocalFile, fp.file.parent.QueryInterface(Ci.nsILocalFile));
+            }
           }
         } catch (ex) {
         }
@@ -90,7 +96,13 @@ function BrowserOpenFileWindow()
     fp.appendFilters(nsIFilePicker.filterText |
                      nsIFilePicker.filterImages | nsIFilePicker.filterXML |
                      nsIFilePicker.filterHTML);
-    fp.displayDirectory = gLastOpenDirectory.path;
+    if ("gLastOpenDirectory" in window) {
+      fp.displayDirectory = gLastOpenDirectory.path;
+    } else {
+      // Use the preference for SeaMonkey compatibility
+      fp.displayDirectory = Services.prefs.getComplexValue("browser.open.dir",
+       Ci.nsILocalFile);
+    }
 
     // Add filters from Mozilla Archive Format
     MozillaArchiveFormat.FileFilters.openFilters.forEach(function(curFilter) {
@@ -102,7 +114,8 @@ function BrowserOpenFileWindow()
     // Show the filepicker, and remember the selected file filter
     fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.openFilterIndex;
     if (fp.open) {
-      fp.open(fpCallback);
+      // In Firefox 17 only, we must use an object wrapping the function
+      fp.open({ done: fpCallback });
     } else {
       fpCallback(fp.show());
     }
