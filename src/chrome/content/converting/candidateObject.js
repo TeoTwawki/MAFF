@@ -479,7 +479,8 @@ Candidate.prototype = {
         saveBehavior = this.conversionWindow.gMafMaffSaveBehavior;
         break;
       default:
-        saveBehavior = this.conversionWindow.gCompleteSaveBehavior
+        saveBehavior =
+         this.conversionWindow.MozillaArchiveFormat.CompleteSaveBehavior;
     }
     // Set the state variables appropriately before starting the save operation
     this._listeningException = null;
