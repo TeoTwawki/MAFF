@@ -8,9 +8,3 @@
 <!-- Date and time the page was archived -->
 <!ENTITY archiveinfo.mafdatearchived.label "Zapisana w:">
 <!ENTITY archiveinfo.mafdatearchived.missing.label "(niedostępna)">
-<!-- *** Commands in the archive information popup *** -->
-<!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
-<!ENTITY commands.browseopenarchives.label "Przeglądaj archiwa…">
-<!ENTITY commands.browseopenarchives.accesskey "P">
-<!ENTITY commands.options.label "Ustawienia…">
-<!ENTITY commands.options.accesskey "U">

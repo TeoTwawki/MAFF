@@ -7,16 +7,8 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Willkommen beim Archivkonverter-Assistenten">
 <!ENTITY introduction.para1.description "Dieser Assistent führt Sie durch die Konvertierung gespeicherter Webseiten in ein anderes Dateiformat.">
-<!ENTITY introduction.para2.description "Dieser Vorgang ist für die Konvertierung mehrerer Seiten auf einmal gedacht. 
-
-
-Wenn nur eine einzelne Seiten konvertiert werden soll, öffnen Sie diese einfach im Browser und speichern Sie sie in einem anderen Format ab.">
-<!ENTITY introduction.visitwebsite.description "Der Konvertierungsprozess arbeitet zuverlässig, kann aber, abhängig vom gewählten Archivformat und den Sicherungsoptionen, vom Original abweichen.
-
-
-
-
-Bei der Konvertierung eines mehrseitigen Archivs in ein einseitiges Archiv bleibt nur die erste Seite erhalten! Daher sollte immer ein Backup der Originaldateien angelegt werden, auch wenn die Umwandlung scheinbar problemlos erfolgte.">
+<!ENTITY introduction.para2.description "Dieser Vorgang ist für die Konvertierung mehrerer Seiten auf einmal gedacht. Wenn nur eine einzelne Seiten konvertiert werden soll, öffnen Sie diese einfach im Browser und speichern Sie sie in einem anderen Format ab.">
+<!ENTITY introduction.visitwebsite.description "Der Konvertierungsprozess arbeitet zuverlässig, kann aber, abhängig vom gewählten Archivformat und den Sicherungsoptionen, vom Original abweichen. Bei der Konvertierung eines mehrseitigen Archivs in ein einseitiges Archiv bleibt nur die erste Seite erhalten! Daher sollte immer ein Backup der Originaldateien angelegt werden, auch wenn die Umwandlung scheinbar problemlos erfolgte.">
 <!ENTITY introduction.visitwebsite.label "Bitte lesen Sie die Online-Dokumentation für ausführlichere Informationen.">
 <!ENTITY introduction.continue.label "„$1“ klicken um zu beginnen.">
 <!-- *** File format selection *** -->

@@ -8,9 +8,3 @@
 <!-- Date and time the page was archived -->
 <!ENTITY archiveinfo.mafdatearchived.label "Mentve ekkor:">
 <!ENTITY archiveinfo.mafdatearchived.missing.label "(nem elérhető)">
-<!-- *** Commands in the archive information popup *** -->
-<!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
-<!ENTITY commands.browseopenarchives.label "Megnyitott archívumok böngészése...">
-<!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.options.label "Beállítások...">
-<!ENTITY commands.options.accesskey "B">
