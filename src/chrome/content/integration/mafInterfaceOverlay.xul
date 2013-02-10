@@ -52,10 +52,23 @@
           src="chrome://maf/content/integration/mafInterfaceOverlay.js"
           />
 
+  <!-- Address bar integration -->
+  <hbox id="urlbar-icons">
+    <image id=     "mafArchiveInfoUrlbarButton"
+           class=  "urlbar-icon"
+           hidden= "true"
+           onclick="MafInterfaceOverlay.onUrlbarButtonClick(event);"
+           />
+  </hbox>
+
   <popupset id="mainPopupSet">
     <!-- Archive information popup -->
-    <panel id="mafArchiveInfoPopup">
-      <vbox>
+    <panel id=   "mafArchiveInfoPopup"
+           type= "arrow"
+           align="center"
+           >
+      <image id="mafArchiveInfoPopupIcon" />
+      <vbox flex="1">
         <label id=           "mafPageStatusLabel"
                normalvalue=  "&archiveinfo.status.normal.label;"
                archivedvalue="&archiveinfo.status.archived.label;"
@@ -87,18 +100,6 @@
             </row>
           </rows>
         </grid>
-        <hbox align="center">
-          <spacer flex="1" />
-          <button id=       "mafBrowseOpenArchivesButton"
-                  label=    "&commands.browseopenarchives.label;"
-                  accesskey="&commands.browseopenarchives.accesskey;"
-                  oncommand="MafInterfaceOverlay.onBrowseOpenArchivesCommand(event);"
-                  />
-          <button label=    "&commands.options.label;"
-                  accesskey="&commands.options.accesskey;"
-                  oncommand="MafInterfaceOverlay.onPreferencesCommand(event);"
-                  />
-        </hbox>
       </vbox>
     </panel>
   </popupset>

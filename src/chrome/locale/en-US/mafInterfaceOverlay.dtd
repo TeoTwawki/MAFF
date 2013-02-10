@@ -11,13 +11,3 @@
 <!-- Date and time the page was archived -->
 <!ENTITY archiveinfo.mafdatearchived.label "Saved on:">
 <!ENTITY archiveinfo.mafdatearchived.missing.label "(not available)">
-
-<!-- *** Commands in the archive information popup *** -->
-
-<!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
-
-<!ENTITY commands.browseopenarchives.label "Browse Open Archives…">
-<!ENTITY commands.browseopenarchives.accesskey "r">
-
-<!ENTITY commands.options.label "Options…">
-<!ENTITY commands.options.accesskey "O">

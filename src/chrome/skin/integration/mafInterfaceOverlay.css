@@ -1,15 +1,6 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-/* Address bar and status bar integration */
-
-#mafArchiveInfoUrlbarBox {
-  -moz-box-align: center;
-  padding-left: 4px;
-}
-
-#mafArchiveInfoUrlbarButton {
-  padding: 0 2px;
-}
+/* Address bar integration */
 
 #mafArchiveInfoUrlbarButton {
   list-style-image: url("page-archived.png");
@@ -21,11 +12,23 @@
 
 /* Archive information popup */
 
-#mafArchiveInfoPopup > vbox {
-  padding: 10px;
+#mafArchiveInfoPopupIcon {
+  margin: 3px 0;
+  -moz-margin-end: 15px;
+  width: 64px;
+  height: 64px;
+  list-style-image: url("page-info.png");
 }
 
-#mafArchiveInfoPopup > vbox > label,
-#mafArchiveInfoPopup > vbox > grid {
+#mafPageStatusLabel {
   margin-bottom: 8px;
+  font-size: 130%;
+}
+
+#mafOriginalUrlDescription {
+  padding-top: 1px;
+}
+
+#mafArchiveInfoDetails {
+  margin-bottom: 2px;
 }

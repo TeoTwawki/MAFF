@@ -74,12 +74,6 @@ var MafInterfaceOverlay = {
 
     // Listen for when the browser window closes, to perform shutdown
     window.addEventListener("unload", MafInterfaceOverlay.onUnload, false);
-
-    // The "Browse Open Archives" command is not available on host applications
-    //  that do not support the Places user interface API, like SeaMonkey 2.0
-    if (!window.BookmarksEventHandler) {
-      document.getElementById("mafBrowseOpenArchivesButton").hidden = true;
-    }
   },
 
   /**
@@ -113,10 +107,9 @@ var MafInterfaceOverlay = {
     this._archiveInfoPopup.popupBoxObject.
      setConsumeRollupEvent(Ci.nsIPopupBoxObject.ROLLUP_CONSUME);
 
-    // Open the popup near the address bar icon, in the proper direction
-    var position = (getComputedStyle(gNavToolbox, "").direction == "rtl") ?
-     "after_end" : "after_start";
-    this._archiveInfoPopup.openPopup(this._archiveInfoUrlbarBox, position);
+    // Open the popup near the address bar icon
+    this._archiveInfoPopup.openPopup(this._archiveInfoUrlbarButton,
+                                     "bottomcenter topright");
   },
 
   /**
@@ -128,34 +121,10 @@ var MafInterfaceOverlay = {
     var href = this._currentPageInfo && this._currentPageInfo.originalUrl;
     if (href) {
       // Hide the popup before opening the new address
-      this._hideArchiveInfoPopup();
+      this._archiveInfoPopup.hidePopup();
       // Open the link appropriately, depending on the applied modifiers
       openUILink(href, aEvent);
     }
-  },
-
-  /**
-   * Opens the "Browse open archives" window from the archive information popup.
-   */
-  onBrowseOpenArchivesCommand: function(aEvent) {
-    this._hideArchiveInfoPopup();
-
-    // Show the window and ensure that it remains focused when the popup closes
-    setTimeout(function() {
-      MafCommandsOverlay.browseOpenArchives();
-    }, 0);
-  },
-
-  /**
-   * Opens the preferences dialog from the archive information popup.
-   */
-  onPreferencesCommand: function(aEvent) {
-    this._hideArchiveInfoPopup();
-
-    // Show the window and ensure that it remains focused when the popup closes
-    setTimeout(function() {
-      MafCommandsOverlay.preferences();
-    }, 0);
   },
 
   // --- Interface state check functions ---
@@ -197,7 +166,7 @@ var MafInterfaceOverlay = {
    *  window, based on the current page state and the current preferences.
    */
   _checkArchiveInfoIcons: function() {
-    this._archiveInfoUrlbarBox.hidden = !this._currentPageInfo.hasValues ||
+    this._archiveInfoUrlbarButton.hidden = !this._currentPageInfo.hasValues ||
      !MozillaArchiveFormat.Prefs.interfaceInfoIcon;
   },
 
@@ -321,7 +290,6 @@ var MafInterfaceOverlay = {
   // --- Overlay support functions ---
 
   _archiveInfoPopup: null,
-  _archiveInfoUrlbarBox: null,
   _archiveInfoUrlbarButton: null,
   _originalUrlDescriptionValue: null,
   _dateArchivedDescriptionValue: null,
@@ -332,21 +300,12 @@ var MafInterfaceOverlay = {
   _initElementReferences: function() {
     this._archiveInfoPopup =
      document.getElementById("mafArchiveInfoPopup");
-    this._archiveInfoUrlbarBox =
-     document.getElementById("mafArchiveInfoUrlbarBox");
     this._archiveInfoUrlbarButton =
      document.getElementById("mafArchiveInfoUrlbarButton");
     this._originalUrlDescriptionValue = document.getElementById(
      "mafOriginalUrlDescription").getAttribute("value");
     this._dateArchivedDescriptionValue = document.getElementById(
      "mafDateArchivedDescription").getAttribute("value");
-  },
-
-  /**
-   * Hides the archive information popup.
-   */
-  _hideArchiveInfoPopup: function() {
-    this._archiveInfoPopup.hidePopup();
   },
 
   /**

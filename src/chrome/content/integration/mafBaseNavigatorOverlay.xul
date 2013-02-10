@@ -19,18 +19,4 @@
           insertbefore="navBeginGlobalItems"
           />
   </menupopup>
-
-  <!-- Navigator's address bar integration -->
-  <textbox id="urlbar">
-    <!-- This box is automatically placed before the text in the address bar -->
-    <hbox id=          "mafArchiveInfoUrlbarBox"
-          insertbefore="urlbar-icons"
-          hidden=      "true"
-          >
-      <image id=     "mafArchiveInfoUrlbarButton"
-             class=  "urlbar-icon"
-             onclick="MafInterfaceOverlay.onUrlbarButtonClick(event);"
-             />
-    </hbox>
-  </textbox>
 </overlay>

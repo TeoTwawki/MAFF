@@ -179,13 +179,12 @@
         accesskey=  "&menuitem.mafsubmenu.accesskey.toolsmenu;"
         >
     <menupopup id="mafMenuPopupMafSubMenu_toolsMenu">
-      <menuitem id=         "mafMenuBrowseOpenArchives_toolsMenu"
-                label=      "&menuitem.browseopenarchives.label;"
+      <menuitem label=      "&menuitem.browseopenarchives.label;"
                 accesskey=  "&menuitem.browseopenarchives.accesskey.toolsmenu;"
                 key=        "mafKeyBrowseOpenArchives"
                 command=    "mafCmdBrowseOpenArchives"
                 />
-      <menuseparator id="mafMenuBrowseOpenArchivesSeparator_toolsMenu" />
+      <menuseparator />
       <menuitem id=         "mafMenuSavePageInArchive_toolsMenu"
                 labelsaveas="&menuitem.savepageinarchiveas.label;"
                 labelsave=  "&menuitem.savepageinarchive.label.v2;"
