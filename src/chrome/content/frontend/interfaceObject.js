@@ -106,7 +106,7 @@ var Interface = {
    *  of the host application.
    */
   replaceBrandShortName: function(aText) {
-    return aText.replace("$brandShortName", this.brandShortName);
+    return aText.replace("$brandShortName", this.brandShortName, "g");
   },
 
   /**
