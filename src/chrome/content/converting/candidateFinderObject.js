@@ -140,12 +140,18 @@ CandidateFinder.prototype = {
     var filesList = "::";
     while (dirEntries.hasMoreElements()) {
       var dirEntry = dirEntries.getNext().QueryInterface(Ci.nsIFile);
-      // Add the entry to the appropriate lists
-      if (dirEntry.isDirectory()) {
-        subdirs[dirEntry.leafName] = true;
-      } else {
-        files[dirEntry.leafName] = true;
-        filesList += dirEntry.leafName + "::";
+      try {
+        // Add the entry to the appropriate lists
+        if (dirEntry.isDirectory()) {
+          subdirs[dirEntry.leafName] = true;
+        } else {
+          files[dirEntry.leafName] = true;
+          filesList += dirEntry.leafName + "::";
+        }
+      } catch (e if (e instanceof Ci.nsIException && e.result ==
+       Cr.NS_ERROR_FILE_NOT_FOUND)) {
+        // In rare cases, invalid file names may generate this exception when
+        //  checking isDirectory, even if they were returned by the iterator.
       }
       // Avoid blocking the user interface while scanning crowded folders
       yield null;
