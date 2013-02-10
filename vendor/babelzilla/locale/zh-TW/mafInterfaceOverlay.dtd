@@ -8,9 +8,3 @@
 <!-- Date and time the page was archived -->
 <!ENTITY archiveinfo.mafdatearchived.label "檔案集建立時間：">
 <!ENTITY archiveinfo.mafdatearchived.missing.label "（不適用）">
-<!-- *** Commands in the archive information popup *** -->
-<!-- Note: The following labels and access keys are similar to the ones in the Tools menu. -->
-<!ENTITY commands.browseopenarchives.label "開啟檔案集…">
-<!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.options.label "選項…">
-<!ENTITY commands.options.accesskey "O">

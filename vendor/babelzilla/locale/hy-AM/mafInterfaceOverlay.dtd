@@ -4,7 +4,3 @@
 <!ENTITY archiveinfo.maforiginalurl.missing.label "(հասանելի չէ)">
 <!ENTITY archiveinfo.mafdatearchived.label "Պահպանել՝">
 <!ENTITY archiveinfo.mafdatearchived.missing.label "(հասանելի չէ)">
-<!ENTITY commands.browseopenarchives.label "Դիտել բացված արխիվները...">
-<!ENTITY commands.browseopenarchives.accesskey "r">
-<!ENTITY commands.options.label "Կարգավորումներ…">
-<!ENTITY commands.options.accesskey "O">

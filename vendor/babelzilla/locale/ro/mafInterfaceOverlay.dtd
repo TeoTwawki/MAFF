@@ -4,7 +4,3 @@
 <!ENTITY archiveinfo.maforiginalurl.missing.label "(indisponibilă)">
 <!ENTITY archiveinfo.mafdatearchived.label "Moment arhivare:">
 <!ENTITY archiveinfo.mafdatearchived.missing.label "(indisponibil)">
-<!ENTITY commands.browseopenarchives.label "Examinează arhivele deschise…">
-<!ENTITY commands.browseopenarchives.accesskey "E">
-<!ENTITY commands.options.label "Opțiuni…">
-<!ENTITY commands.options.accesskey "O">
