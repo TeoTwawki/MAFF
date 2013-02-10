@@ -2,11 +2,29 @@
 <!ENTITY window.title.v2 "Opzioni di Mozilla Archive Format">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Principale">
+<!ENTITY save.format.grouplabel "Formato predefinito quando si salva in un file unico:">
+<!ENTITY save.format.maff.label "MAFF (basato su ZIP, supporta video e audio)">
+<!ENTITY save.format.maff.accesskey "M">
+<!ENTITY save.format.mhtml.full.label "MHTML (può essere aperto direttamente da alcuni altri browser)">
+<!ENTITY save.format.mhtml.partial.label "MHTML (variante con compatibilità limitata)">
+<!ENTITY save.format.mhtml.accesskey "H">
+<!ENTITY save.method.grouplabel "Quando si salva una pagina completa:">
+<!ENTITY save.method.snapshot.label "Effettua una copia esatta">
+<!ENTITY save.method.snapshot.accesskey "E">
+<!ENTITY save.method.standard.label "Usa il sistema di salvataggio standard del browser">
+<!ENTITY save.method.standard.accesskey "U">
 <!ENTITY save.namingstrategy.grouplabel "Per il nome di file suggerito:">
+<!ENTITY save.namingstrategy.title.label "Usa il titolo della pagina">
+<!ENTITY save.namingstrategy.title.accesskey "t">
 <!ENTITY save.namingstrategy.standard.label "Usa la strategia di denominazione standard del browser">
 <!ENTITY save.namingstrategy.standard.accesskey "s">
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Interfaccia">
+<!ENTITY info.grouplabel "Quando si apre una pagina archiviata:">
+<!ENTITY info.icon.label "Mostra una icona nella barra degli indirizzi">
+<!ENTITY info.icon.accesskey "a">
+<!ENTITY info.bar.label "Visualizza una barra delle informazioni">
+<!ENTITY info.bar.accesskey "V">
 <!ENTITY menu.grouplabel "Mostra voci di menu di Mozilla Archive Format in:">
 <!ENTITY menu.app.label "Menu $brandShortName">
 <!ENTITY menu.app.accesskey "M">
