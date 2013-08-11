@@ -72,7 +72,7 @@ ExactPersist.prototype = {
   progressListener: null,
 
   saveURI: function(aURI, aCacheKey, aReferrer, aPostData, aExtraHeaders,
-   aFile) {
+   aFile, aPrivacyContext) {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 

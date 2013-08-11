@@ -60,7 +60,9 @@ var ArchiveHistoryObserver = {
     }
   },
   onTitleChanged: function(aURI, aPageTitle) { },
-  onBeforeDeleteURI: function(aURI, aGUID) { },
+  onBeforeDeleteURI: function(aURI, aGUID) {
+    // This function is not required on Firefox 21 and above.
+  },
   onDeleteURI: function(aURI, aGUID) { },
   onClearHistory: function() { },
   onPageChanged: function(aURI, aWhat, aValue) { },

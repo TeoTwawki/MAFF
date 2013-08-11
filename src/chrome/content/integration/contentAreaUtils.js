@@ -171,6 +171,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     file = aChosenData.file;
     sourceURI = aChosenData.uri;
     saveBehavior = MozillaArchiveFormat.CompleteSaveBehavior;
+
+    continueSave();
   } else {
     var charset = null;
     if (aDocument)
@@ -235,57 +237,66 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
         fpParams.file = aSkipPrompt.saveDir.clone();
         fpParams.file.append(saveFileName);
       }
+
+      saveBehavior = fpParams.saveBehavior;
+      file = fpParams.file;
+
+      continueSave();
     } else {
-      if (!getTargetFile(fpParams, aSkipPrompt, relatedURI))
-        // If the method returned false this is because the user cancelled from
-        // the save file picker dialog.
-        return;
+      getTargetFile(fpParams, function(aDialogCancelled) {
+        if (aDialogCancelled)
+          return;
+
+        saveBehavior = fpParams.saveBehavior;
+        file = fpParams.file;
+
+        continueSave();
+      }, aSkipPrompt, relatedURI);
+    }
+  }
+
+  function continueSave() {
+    // The save behavior may not be valid for the save mode if it was determined
+    // automatically instead of through the file picker.
+    if (!saveBehavior.isValidForSaveMode(saveMode)) {
+      saveBehavior = MozillaArchiveFormat.NormalSaveBehavior;
     }
 
-    saveBehavior = fpParams.saveBehavior;
-    file = fpParams.file;
-  }
-
-  // The save behavior may not be valid for the save mode if it was determined
-  // automatically instead of through the file picker.
-  if (!saveBehavior.isValidForSaveMode(saveMode)) {
-    saveBehavior = MozillaArchiveFormat.NormalSaveBehavior;
-  }
-
-  // Create a custom web browser persist object if required
-  var mafPersistObject = null;
-  if (saveBehavior.getPersistObject) {
-    // If the save wasn't initiated from a list of tabs, but the document to be
-    //  saved is the main document in the browser window, ensure the browser
-    //  object is passed to the archive persist object, to enable saving the
-    //  additional metadata.
-    if (!mafSaveTabs && mainBrowser &&
-        (aDocument == mainBrowser.contentDocument)) {
-      mafSaveTabs = [mainBrowser];
+    // Create a custom web browser persist object if required
+    var mafPersistObject = null;
+    if (saveBehavior.getPersistObject) {
+      // If the save wasn't initiated from a list of tabs, but the document to be
+      //  saved is the main document in the browser window, ensure the browser
+      //  object is passed to the archive persist object, to enable saving the
+      //  additional metadata.
+      if (!mafSaveTabs && mainBrowser &&
+          (aDocument == mainBrowser.contentDocument)) {
+        mafSaveTabs = [mainBrowser];
+      }
+      // Create the actual persist object
+      mafPersistObject = saveBehavior.getPersistObject(mafSaveTabs);
     }
-    // Create the actual persist object
-    mafPersistObject = saveBehavior.getPersistObject(mafSaveTabs);
+
+    var useSaveDocument = (aDocument != null) && saveBehavior.isComplete;
+    // If we're saving a document, and are saving either in complete mode or
+    // as converted text, pass the document to the web browser persist component.
+    // If we're just saving the HTML (second option in the list), send only the URI.
+    var persistArgs = {
+      sourceURI         : sourceURI,
+      sourceReferrer    : aReferrer,
+      sourceDocument    : useSaveDocument ? aDocument : null,
+      targetContentType : saveBehavior.targetContentType,
+      targetFile        : file,
+      sourceCacheKey    : aCacheKey,
+      sourcePostData    : aDocument ? getPostData(aDocument) : null,
+      bypassCache       : aShouldBypassCache,
+      initiatingWindow  : aInitiatingDocument.defaultView,
+      persistObject     : mafPersistObject
+    };
+
+    // Start the actual save process
+    internalPersist(persistArgs, aSkipPrompt);
   }
-
-  var useSaveDocument = (aDocument != null) && saveBehavior.isComplete;
-  // If we're saving a document, and are saving either in complete mode or
-  // as converted text, pass the document to the web browser persist component.
-  // If we're just saving the HTML (second option in the list), send only the URI.
-  var persistArgs = {
-    sourceURI         : sourceURI,
-    sourceReferrer    : aReferrer,
-    sourceDocument    : useSaveDocument ? aDocument : null,
-    targetContentType : saveBehavior.targetContentType,
-    targetFile        : file,
-    sourceCacheKey    : aCacheKey,
-    sourcePostData    : aDocument ? getPostData(aDocument) : null,
-    bypassCache       : aShouldBypassCache,
-    initiatingWindow  : aInitiatingDocument.defaultView,
-    persistObject     : mafPersistObject
-  };
-
-  // Start the actual save process
-  internalPersist(persistArgs, aSkipPrompt);
 }
 
 /**
@@ -363,10 +374,8 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   // Find the URI associated with the target file
   var targetFileURL = makeFileURI(persistArgs.targetFile);
 
-  // Ensure the variable is declared.
-  var PrivateBrowsingUtils = PrivateBrowsingUtils;
-  var isPrivate = PrivateBrowsingUtils &&
-                  PrivateBrowsingUtils.isWindowPrivate(persistArgs.initiatingWindow);
+  var isPrivate = persistArgs.initiatingWindow &&
+   PrivateBrowsingUtils.isWindowPrivate(persistArgs.initiatingWindow);
 
   // Mozilla Archive Format indirectly uses this function to save an already
   //  loaded document to a temporary file on disk, before generating the final
@@ -439,6 +448,10 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
  * @param aFpP
  *        A structure (see definition in internalSave(...) method)
  *        containing all the data used within this method.
+ * @param aCallback
+ *        A callback function that will be called once the function finishes.
+ *        The first argument passed to the function will be a boolean that,
+ *        when true, indicated that the user dismissed the file picker.
  * @param aSkipPrompt
  *        If true, attempt to save the file automatically to the user's default
  *        download directory, thus skipping the explicit prompt for a file name,
@@ -450,17 +463,15 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
  *        An nsIURI associated with the download. The last used
  *        directory of the picker is retrieved from/stored in the 
  *        Content Pref Service using this URI.
- * @return true if the user confirmed a filename in the picker or the picker
- *         was not displayed; false if they dismissed the picker.
  */
-function getTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ aRelatedURI)
+function getTargetFile(aFpP, aCallback, /* optional */ aSkipPrompt, /* optional */ aRelatedURI)
 {
   if (!getTargetFile.DownloadLastDir)
     Components.utils.import("resource://gre/modules/DownloadLastDir.jsm", getTargetFile);
   var gDownloadLastDir = getTargetFile.gDownloadLastDir ||
                          new getTargetFile.DownloadLastDir(window);
 
-  var prefs = getPrefsBrowserDownload("browser.download.");
+  var prefs = Services.prefs.getBranch("browser.download.");
   var useDownloadDir = prefs.getBoolPref("useDownloadDir");
   const nsILocalFile = Components.interfaces.nsILocalFile;
 
@@ -499,18 +510,29 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ aRelated
     dir.append(getNormalizedLeafName(aFpP.fileInfo.fileName,
                                      aFpP.fileInfo.fileExt));
     aFpP.file = uniqueFile(dir);
-    return true;
+    aCallback(false);
+    return;
   }
 
   // We must prompt for the file name explicitly.
   // If we must prompt because we were asked to...
-  if (!useDownloadDir) try {
-    // ...find the directory that was last used for saving, and use it in the
-    // file picker if it is still valid. Otherwise, keep the default of the
-    // user's default downloads directory. If it doesn't exist, it will be
-    // changed to the user's desktop later.
+  if (useDownloadDir) {
+    // Keep async behavior in both branches
+    Services.tm.mainThread.dispatch(function() {
+      displayPicker();
+    }, Components.interfaces.nsIThread.DISPATCH_NORMAL);
+  } else {
     var lastDir;
-    if (gDownloadLastDir.getFile) {
+    if (gDownloadLastDir.getFileAsync) {
+      gDownloadLastDir.getFileAsync(aRelatedURI, function getFileAsyncCB(aFile) {
+        if (aFile && aFile.exists()) {
+          dir = aFile;
+          dirExists = true;
+        }
+        displayPicker();
+      });
+      return;
+    } else if (gDownloadLastDir.getFile) {
       lastDir = gDownloadLastDir.getFile(aRelatedURI);
     } else {
       if (inPrivateBrowsing && gDownloadLastDir.file)
@@ -522,169 +544,174 @@ function getTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ aRelated
       dir = lastDir;
       dirExists = true;
     }
-  } catch(e) {}
-
-  if (!dirExists) {
-    // Default to desktop.
-    var fileLocator = Components.classes["@mozilla.org/file/directory_service;1"]
-                                .getService(Components.interfaces.nsIProperties);
-    dir = fileLocator.get("Desk", nsILocalFile);
+    displayPicker();
   }
 
-  var fp = makeFilePicker();
-  var titleKey = aFpP.fpTitleKey || "SaveLinkTitle";
-  fp.init(window, ContentAreaUtils.stringBundle.GetStringFromName(titleKey),
-          Components.interfaces.nsIFilePicker.modeSave);
-
-  fp.displayDirectory = dir;
-  var defaultExtension = aFpP.fileInfo.fileExt;
-  var defaultString = getNormalizedLeafName(aFpP.fileInfo.fileName,
-                                            aFpP.fileInfo.fileExt);
-
-  // With Mozilla Archive Format on Windows, ensure the default file extension
-  //  is not included as a part of the file name, since the file picker will
-  //  add the extension automatically based on the selected filter.
-  var isOnWindows = Components.classes["@mozilla.org/xre/app-info;1"].
-   getService(Components.interfaces.nsIXULRuntime).OS == "WINNT";
-  if (isOnWindows && defaultExtension) {
-    var extensionToCheck = "." + defaultExtension;
-    if (extensionToCheck.toLowerCase() ==
-     defaultString.slice(-extensionToCheck.length).toLowerCase()) {
-      defaultString = defaultString.slice(0, -extensionToCheck.length);
-      // The file picker will not add the default extension if the file name
-      //  already ends with a recognized extension. Thus, we must ensure that
-      //  no recognized extension is present in the file name. We don't know if
-      //  the extension is recognized, so we assume that any suffix of four or
-      //  less characters can be a valid extension. We also make some exceptions
-      //  for executable file types. See also the "IsExecutable" method in
-      //  <http://mxr.mozilla.org/mozilla-central/source/xpcom/io/nsLocalFileWin.cpp>
-      //  (retrieved 2010-03-07).
-      defaultString = defaultString.replace(
-       /\.([^.]{1,4}|application|mshxml|vsmacros)$/i, "_$1");
+  function displayPicker() {
+    if (!dirExists) {
+      // Default to desktop.
+      var fileLocator = Components.classes["@mozilla.org/file/directory_service;1"]
+                                  .getService(Components.interfaces.nsIProperties);
+      dir = fileLocator.get("Desk", nsILocalFile);
     }
-  }
 
-  // In Mozilla Archive Format on Windows, when asking to save in an archive,
-  //  the default extension is replaced with the one of the default archive
-  //  file type
-  if (isOnWindows &&
-   aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE) {
-    // Use a MAF specific call to retrieve the filter string
-    var filterStringForDefaultType =
-     gMafDefaultSaveBehavior.getFileFilter().extensionstring;
-    // Get the first valid extension for the file type, excluding the initial
-    //  star and dot ("*.")
-    defaultExtension = filterStringForDefaultType.split(";")[0].slice(2);
-  }
+    var fp = makeFilePicker();
+    var titleKey = aFpP.fpTitleKey || "SaveLinkTitle";
+    fp.init(window, ContentAreaUtils.stringBundle.GetStringFromName(titleKey),
+            Components.interfaces.nsIFilePicker.modeSave);
 
-  fp.defaultExtension = defaultExtension;
-  fp.defaultString = defaultString;
+    fp.displayDirectory = dir;
+    var defaultExtension = aFpP.fileInfo.fileExt;
+    var defaultString = getNormalizedLeafName(aFpP.fileInfo.fileName,
+                                              aFpP.fileInfo.fileExt);
 
-  var saveBehaviors = [];
-  mafAppendFiltersForContentType(fp, aFpP.contentType, aFpP.fileInfo.fileExt,
-                                 aFpP.saveMode, saveBehaviors);
-
-  // The index of the selected filter is only preserved and restored if there's
-  // more than one filter in addition to "All Files".
-  if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
-    try {
-        // In Mozilla Archive Format, use a special preference to store the
-        //  selected filter if only the archive save filters are shown
-        if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE)
-          fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
-        else
-          fp.filterIndex = prefs.getIntPref("save_converter_index");
+    // With Mozilla Archive Format on Windows, ensure the default file extension
+    //  is not included as a part of the file name, since the file picker will
+    //  add the extension automatically based on the selected filter.
+    var isOnWindows = Components.classes["@mozilla.org/xre/app-info;1"].
+     getService(Components.interfaces.nsIXULRuntime).OS == "WINNT";
+    if (isOnWindows && defaultExtension) {
+      var extensionToCheck = "." + defaultExtension;
+      if (extensionToCheck.toLowerCase() ==
+       defaultString.slice(-extensionToCheck.length).toLowerCase()) {
+        defaultString = defaultString.slice(0, -extensionToCheck.length);
+        // The file picker will not add the default extension if the file name
+        //  already ends with a recognized extension. Thus, we must ensure that
+        //  no recognized extension is present in the file name. We don't know if
+        //  the extension is recognized, so we assume that any suffix of four or
+        //  less characters can be a valid extension. We also make some exceptions
+        //  for executable file types. See also the "IsExecutable" method in
+        //  <http://mxr.mozilla.org/mozilla-central/source/xpcom/io/nsLocalFileWin.cpp>
+        //  (retrieved 2010-03-07).
+        defaultString = defaultString.replace(
+         /\.([^.]{1,4}|application|mshxml|vsmacros)$/i, "_$1");
+      }
     }
-    catch (e) {
+
+    // In Mozilla Archive Format on Windows, when asking to save in an archive,
+    //  the default extension is replaced with the one of the default archive
+    //  file type
+    if (isOnWindows &&
+     aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE) {
+      // Use a MAF specific call to retrieve the filter string
+      var filterStringForDefaultType =
+       gMafDefaultSaveBehavior.getFileFilter().extensionstring;
+      // Get the first valid extension for the file type, excluding the initial
+      //  star and dot ("*.")
+      defaultExtension = filterStringForDefaultType.split(";")[0].slice(2);
     }
-  }
 
-  var saveBehavior;
-  do {
-    var shouldShowFilePickerAgain = false;
+    fp.defaultExtension = defaultExtension;
+    fp.defaultString = defaultString;
 
-    if (fp.show() == Components.interfaces.nsIFilePicker.returnCancel || !fp.file)
-      return false;
+    var saveBehaviors = [];
+    mafAppendFiltersForContentType(fp, aFpP.contentType, aFpP.fileInfo.fileExt,
+                                   aFpP.saveMode, saveBehaviors);
 
-    fp.file.leafName = validateFileName(fp.file.leafName);
-    // Set the file name to be shown if the dialog is displayed again
-    fp.defaultString = fp.file.leafName;
-    // Check that the file picker filter index is not out of bounds. The
-    //  nsIFilePicker interface does not guarantee this.
-    aFpP.saveBehavior = saveBehaviors[fp.filterIndex] ?
-     saveBehaviors[fp.filterIndex] : MozillaArchiveFormat.NormalSaveBehavior;
-    // Save the selected file object and URL
-    aFpP.file = fp.file;
-    aFpP.fileURL = fp.fileURL;
+    // The index of the selected filter is only preserved and restored if there's
+    // more than one filter in addition to "All Files".
+    if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
+      try {
+          // In Mozilla Archive Format, use a special preference to store the
+          //  selected filter if only the archive save filters are shown
+          if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE)
+            fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
+          else
+            fp.filterIndex = prefs.getIntPref("save_converter_index");
+      }
+      catch (e) {
+      }
+    }
 
-    // Archives saved by Mozilla Archive Format cannot be opened unless the
-    //  correct extension is present. If we are saving an archive, force the
-    //  extension and check again if the file exists.
-    if (aFpP.saveBehavior.mandatoryExtension) {
-      // Use a MAF specific call to retrieve the filter string again
-      var filterString = aFpP.saveBehavior.getFileFilter().extensionstring;
-      // Get an array of valid extensions for the file type
-      var possibleExtensions = filterString.split(";").
-       map(function(extWithStar) {
-        // Remove the star ("*"), but leave the dot in the extension
-        return extWithStar.slice(1);
-      });
-      // If none of the possible extensions matches
-      if (!possibleExtensions.some(function(possibleExtension) {
-        return possibleExtension.toLowerCase() ==
-         aFpP.file.leafName.slice(-possibleExtension.length).toLowerCase();
-      })) {
-        // Change the name and invalidate the associated file URL
-        aFpP.file.leafName += possibleExtensions[0];
-        aFpP.fileURL = null;
-        // If an extension is added later, check if a file with the new name
-        //  already exists
-        if (aFpP.file.exists()) {
-          // For more information, see the "confirm_overwrite_file" function
-          //  in <http://mxr.mozilla.org/mozilla-central/source/widget/src/gtk2/nsFilePicker.cpp>
-          //  (retrieved 2009-01-06)
-          var bundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
-           .getService(Components.interfaces.nsIStringBundleService)
-           .createBundle("chrome://global/locale/filepicker.properties");
-          var title = bundle.GetStringFromName("confirmTitle");
-          var message = bundle.formatStringFromName("confirmFileReplacing",
-           [aFpP.file.leafName], 1);
-          // If the user chooses not to overwrite, show the file picker again
-          var prompts =
-           Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-           .getService(Components.interfaces.nsIPromptService);
-          if(prompts.confirmEx(window, title, message,
-           prompts.BUTTON_POS_0 * prompts.BUTTON_TITLE_YES +
-           prompts.BUTTON_POS_1 * prompts.BUTTON_TITLE_NO +
-           prompts.BUTTON_POS_1_DEFAULT, "", "", "", null, {}) == 1) {
-            shouldShowFilePickerAgain = true;
+    var saveBehavior;
+    do {
+      var shouldShowFilePickerAgain = false;
+
+      if (fp.show() == Components.interfaces.nsIFilePicker.returnCancel || !fp.file) {
+        aCallback(true);
+        return;
+      }
+
+      fp.file.leafName = validateFileName(fp.file.leafName);
+      // Set the file name to be shown if the dialog is displayed again
+      fp.defaultString = fp.file.leafName;
+      // Check that the file picker filter index is not out of bounds. The
+      //  nsIFilePicker interface does not guarantee this.
+      aFpP.saveBehavior = saveBehaviors[fp.filterIndex] ?
+       saveBehaviors[fp.filterIndex] : MozillaArchiveFormat.NormalSaveBehavior;
+      // Save the selected file object and URL
+      aFpP.file = fp.file;
+      aFpP.fileURL = fp.fileURL;
+
+      // Archives saved by Mozilla Archive Format cannot be opened unless the
+      //  correct extension is present. If we are saving an archive, force the
+      //  extension and check again if the file exists.
+      if (aFpP.saveBehavior.mandatoryExtension) {
+        // Use a MAF specific call to retrieve the filter string again
+        var filterString = aFpP.saveBehavior.getFileFilter().extensionstring;
+        // Get an array of valid extensions for the file type
+        var possibleExtensions = filterString.split(";").
+         map(function(extWithStar) {
+          // Remove the star ("*"), but leave the dot in the extension
+          return extWithStar.slice(1);
+        });
+        // If none of the possible extensions matches
+        if (!possibleExtensions.some(function(possibleExtension) {
+          return possibleExtension.toLowerCase() ==
+           aFpP.file.leafName.slice(-possibleExtension.length).toLowerCase();
+        })) {
+          // Change the name and invalidate the associated file URL
+          aFpP.file.leafName += possibleExtensions[0];
+          aFpP.fileURL = null;
+          // If an extension is added later, check if a file with the new name
+          //  already exists
+          if (aFpP.file.exists()) {
+            // For more information, see the "confirm_overwrite_file" function
+            //  in <http://mxr.mozilla.org/mozilla-central/source/widget/src/gtk2/nsFilePicker.cpp>
+            //  (retrieved 2009-01-06)
+            var bundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+             .getService(Components.interfaces.nsIStringBundleService)
+             .createBundle("chrome://global/locale/filepicker.properties");
+            var title = bundle.GetStringFromName("confirmTitle");
+            var message = bundle.formatStringFromName("confirmFileReplacing",
+             [aFpP.file.leafName], 1);
+            // If the user chooses not to overwrite, show the file picker again
+            var prompts =
+             Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+             .getService(Components.interfaces.nsIPromptService);
+            if(prompts.confirmEx(window, title, message,
+             prompts.BUTTON_POS_0 * prompts.BUTTON_TITLE_YES +
+             prompts.BUTTON_POS_1 * prompts.BUTTON_TITLE_NO +
+             prompts.BUTTON_POS_1_DEFAULT, "", "", "", null, {}) == 1) {
+              shouldShowFilePickerAgain = true;
+            }
           }
         }
       }
+    } while(shouldShowFilePickerAgain);
+
+    // Do not store the last save directory as a pref inside the private browsing mode
+    var directory = fp.file.parent.QueryInterface(nsILocalFile);
+    if (gDownloadLastDir.getFile) {
+      gDownloadLastDir.setFile(aRelatedURI, directory);
+    } else {
+      if (inPrivateBrowsing)
+        gDownloadLastDir.file = directory;
+      else
+        prefs.setComplexValue("lastDir", nsILocalFile, directory);
     }
-  } while(shouldShowFilePickerAgain);
 
-  // Do not store the last save directory as a pref inside the private browsing mode
-  var directory = fp.file.parent.QueryInterface(nsILocalFile);
-  if (gDownloadLastDir.getFile) {
-    gDownloadLastDir.setFile(aRelatedURI, directory);
-  } else {
-    if (inPrivateBrowsing)
-      gDownloadLastDir.file = directory;
-    else
-      prefs.setComplexValue("lastDir", nsILocalFile, directory);
+    if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
+      // In Mozilla Archive Format, use a special preference to store the
+      //  selected filter if only the archive save filters are shown
+      if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE)
+        MozillaArchiveFormat.DynamicPrefs.saveFilterIndex = fp.filterIndex;
+      else
+        prefs.setIntPref("save_converter_index", fp.filterIndex);
+    }
+
+    aCallback(false);
   }
-
-  if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
-    // In Mozilla Archive Format, use a special preference to store the
-    //  selected filter if only the archive save filters are shown
-    if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE)
-      MozillaArchiveFormat.DynamicPrefs.saveFilterIndex = fp.filterIndex;
-    else
-      prefs.setIntPref("save_converter_index", fp.filterIndex);
-  }
-
-  return true;
 }
 
 /**
@@ -841,30 +868,6 @@ InternalSaveBehavior.prototype = {
     // Note: filterName and filterString might be null
     return {title: filterName, extensionstring: filterString};
   }
-}
-
-function getPostData(aDocument)
-{
-  try {
-    var sessionHistory = aDocument.defaultView
-                                  .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                                  .getInterface(Components.interfaces.nsIWebNavigation)
-                                  .sessionHistory;
-    return sessionHistory.getEntryAtIndex(sessionHistory.index, false)
-                         .QueryInterface(Components.interfaces.nsISHEntry)
-                         .postData;
-  }
-  catch (e) {
-  }
-  return null;
-}
-
-// Get the preferences branch ("browser.download." for normal 'save' mode)...
-function getPrefsBrowserDownload(branch)
-{
-  const prefSvcContractID = "@mozilla.org/preferences-service;1";
-  const prefSvcIID = Components.interfaces.nsIPrefService;                              
-  return Components.classes[prefSvcContractID].getService(prefSvcIID).getBranch(branch);
 }
 
 /** The normal save behavior (also used when All Files is selected) */

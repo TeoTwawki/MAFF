@@ -283,8 +283,11 @@ var MafInterfaceOverlay = {
     this._checkArchiveInfoIcons();
     // Update the contents of the popup
     this._checkArchiveInfoPopup();
-    // Update the contents of the notification
-    this._checkArchiveInfoNotification();
+    // Update the contents of the notification. We must delay this operation to
+    //  support the case where tab contents have not been loaded yet.
+    Services.tm.mainThread.dispatch(
+     this._checkArchiveInfoNotification.bind(this),
+     Ci.nsIThread.DISPATCH_NORMAL);
   },
 
   // --- Overlay support functions ---

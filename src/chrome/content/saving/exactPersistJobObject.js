@@ -35,6 +35,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+Cu.import("resource://gre/modules/PrivateBrowsingUtils.jsm");
+
 /**
  * Manages the saving process of all the resources required to render a
  *  document, providing a single progress indication.
@@ -93,6 +95,9 @@ function ExactPersistJob(aEventListener, aDocument, aTargetFile,
   // Initialize other member variables explicitly
   this._parsedJobs = [];
 
+  // Determine if the window from which the document is being saved is private
+  var isPrivate = PrivateBrowsingUtils.isWindowPrivate(aDocument.defaultView);
+
   // If the collection phase succeeds and this job is started, the first thing
   //  to do is to delete any existing support folder for data files
   this._addJob(new ExactPersistInitialJob(this, aTargetDataFolder));
@@ -116,7 +121,7 @@ function ExactPersistJob(aEventListener, aDocument, aTargetFile,
   for (var [, resource] in Iterator(this.bundle.resources)) {
     if (resource.needsUnparsedJob && !resource.hasParsedJob) {
       // Create a new object for saving the contents of the resource
-      var job = new ExactPersistUnparsedJob(this, resource);
+      var job = new ExactPersistUnparsedJob(this, resource, isPrivate);
       // Add the job to the list of the ones to be started
       this._addJob(job);
     }

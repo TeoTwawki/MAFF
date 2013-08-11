@@ -978,7 +978,7 @@ ExactPersistParsedJob.prototype = {
     }
 
     // Blank all event handlers
-    if (newNode.hasAttributes()) {
+    if (newNode.hasAttributes() && newNode instanceof Ci.nsIDOMElement) {
       var attributeNames = Array.map(newNode.attributes, function(a) a.name);
       for (var [, attributeName] in Iterator(attributeNames)) {
         if (this._eventNames.indexOf(attributeName.toLowerCase()) >= 0) {

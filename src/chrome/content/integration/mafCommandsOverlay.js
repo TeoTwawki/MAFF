@@ -353,6 +353,12 @@ var MafCommandsOverlay = {
    * Asks the user to select which of the open tabs will be saved in an archive.
    */
   saveTabsInArchive: function() {
+    // Ensure all the background tabs are loaded while the selection is made.
+    for (var [, browser] in Iterator(getBrowser().browsers)) {
+      if (browser.hasAttribute("pending")) {
+        browser.reload();
+      }
+    }
     // Open a dialog that lets the user select which tabs will be saved. See
     //  "multiSaveDialog.js" for a description of the dialog arguments.
     var returnValues = {};
@@ -374,6 +380,12 @@ var MafCommandsOverlay = {
    * Saves all of the open tabs in an archive.
    */
   saveAllTabsInArchive: function() {
+    // Ensure all the background tabs are loaded while the selection is made.
+    for (var [, browser] in Iterator(getBrowser().browsers)) {
+      if (browser.hasAttribute("pending")) {
+        browser.reload();
+      }
+    }
     // Use the global saveDocument function with the special MAF parameters
     saveDocument(getBrowser().selectedBrowser.contentDocument,
      {mafAskSaveArchive: true, mafSaveTabs: getBrowser().browsers});

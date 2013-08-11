@@ -46,9 +46,10 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  * @param aResource    PersistResource object associated with the document or
  *                      other resource type to be saved.
  */
-function ExactPersistUnparsedJob(aEventListener, aResource) {
+function ExactPersistUnparsedJob(aEventListener, aResource, aIsPrivate) {
   Job.call(this, aEventListener);
   this.resource = aResource;
+  this.isPrivate = aIsPrivate;
 }
 
 ExactPersistUnparsedJob.prototype = {
@@ -64,6 +65,11 @@ ExactPersistUnparsedJob.prototype = {
    */
   resource: null,
 
+  /**
+   * Indicates whether a private browsing channel should be used when saving.
+   */
+  isPrivate: false,
+
   // --- Overridden Job methods ---
 
   _executeStart: function() {
@@ -75,6 +81,10 @@ ExactPersistUnparsedJob.prototype = {
         var channel = Cc["@mozilla.org/network/io-service;1"].
          getService(Ci.nsIIOService).newChannelFromURI(
          this.resource.originalUri);
+        if ("nsIPrivateBrowsingChannel" in Ci &&
+         channel instanceof Ci.nsIPrivateBrowsingChannel) {
+          channel.setPrivate(this.isPrivate);
+        }
         // Load the content from the cache if possible
         channel.loadFlags |= Ci.nsIRequest.LOAD_FROM_CACHE;
         // Receive progress notifications through the nsIProgressEventSink

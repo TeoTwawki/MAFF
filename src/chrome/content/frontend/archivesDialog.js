@@ -189,9 +189,13 @@ var ArchivesDialog = {
           //  page would not appear in the Places view. The visit is recorded as
           //  a top level typed entry, so that history listeners are able to be
           //  notified about the new entry.
-          Cc["@mozilla.org/browser/nav-history-service;1"].
-           getService(Ci.nsIGlobalHistory2).addURI(page.archiveUri, false, true,
-           null);
+          PlacesUtils.asyncHistory.updatePlaces({
+            uri: page.archiveUri,
+            visits: [{
+              transitionType: Ci.nsINavHistoryService.TRANSITION_TYPED,
+              visitDate: Date.now() * 1000,
+            }],
+          });
         }
       } catch (e) {
         // If opening the archive failed, skip it and report the error
@@ -243,7 +247,9 @@ var ArchivesDialog = {
   customizePlacesView: function() {
     // Create a new default Places view and override some of its functions. The
     //  functions are copied, not referenced, from the ArchivesDialog object.
-    var view = new PlacesTreeView();
+    var view = new PlacesTreeView(false, null,
+     ArchivesDialog.archivesTree.view._controller);
+
     view._originalGetCellText = view.getCellText;
     view._originalCycleHeader = view.cycleHeader;
     view.getCellText = ArchivesDialog.viewGetCellText;
