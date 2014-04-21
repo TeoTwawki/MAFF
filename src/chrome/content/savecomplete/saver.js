@@ -111,7 +111,7 @@ var scPageSaver = function(doc, fileSaver, fileProvider, options) {
         delete options['progressListener'];
     } else {
         this._listener = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
-        this._listener.init(this._displayUri, this._fileSaver.targetURI, "", null, null, null, this);
+        this._listener.init(this._displayUri, this._fileSaver.targetURI, "", null, null, null, this, false);
     }
 
     if(options.hasOwnProperty('originalUrl')) {

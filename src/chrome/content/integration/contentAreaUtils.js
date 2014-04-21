@@ -540,7 +540,7 @@ function getTargetFile(aFpP, aCallback, /* optional */ aSkipPrompt, /* optional 
       else
         lastDir = prefs.getComplexValue("lastDir", nsILocalFile);
     }
-    if (lastDir.exists()) {
+    if (lastDir && lastDir.exists()) {
       dir = lastDir;
       dirExists = true;
     }
