@@ -238,19 +238,23 @@ Job.prototype = {
     //  completed. A completion notification is never sent more than once.
     if (!this.isCompleted) {
       this.isCompleted = true;
-      try {
-        this._eventListener.onJobComplete(this, this.result);
-      } catch(e) {
-        Cu.reportError(e);
-        // Handling the notification failed; dispose of the object and exit
-        this.dispose();
-        return;
-      }
-      // If handling the notification succeeded, the job completed successfully
-      //  and deferred disposal is required, do not dispose of the object now
-      if(this.result != Cr.NS_OK || !this._deferDisposal) {
-        this.dispose();
-      }
+      // Avoid recursion by scheduling an event
+      this._mainThread.dispatch(function() {
+        try {
+          this._eventListener.onJobComplete(this, this.result);
+        } catch(e) {
+          Cu.reportError(e);
+          // Handling the notification failed; dispose of the object and exit
+          this.dispose();
+          return;
+        }
+        // If handling the notification succeeded, the job completed
+        //  successfully, and deferred disposal is required, do not dispose of
+        //  the object now
+        if(this.result != Cr.NS_OK || !this._deferDisposal) {
+          this.dispose();
+        }
+      }.bind(this), Ci.nsIThread.DISPATCH_NORMAL);
     }
   },
 
@@ -370,7 +374,7 @@ Job.prototype = {
 
   /**
    * Execute the provided function. If the function raises an exception, cancel
-   *  the operation before forwarding it.
+   *  the operation and report it.
    */
   _executeAndCancelOnException: function(innerFunction, thisObject) {
     try {
@@ -382,8 +386,11 @@ Job.prototype = {
       } else {
         this.cancel(Cr.NS_ERROR_FAILURE);
       }
-      // Forward the exception to the caller
-      throw e;
+      // Report the exception
+      Cu.reportError(e);
     }
-  }
+  },
+
+  _mainThread: Cc["@mozilla.org/thread-manager;1"].
+   getService(Ci.nsIThreadManager).mainThread
 }
