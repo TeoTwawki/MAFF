@@ -38,6 +38,10 @@
 // Import XPCOMUtils to generate the QueryInterface functions
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
+// The CustomizableUI module is available starting from Firefox 29
+XPCOMUtils.defineLazyModuleGetter(this, "CustomizableUI",
+                                  "resource:///modules/CustomizableUI.jsm");
+
 /**
  * Handles the integration with the address bar and the status bar.
  */
@@ -209,6 +213,32 @@ var MafInterfaceOverlay = {
   },
 
   /**
+   * Turns the "Save Page" button into "Save Page In Archive" for documents.
+   */
+  _updateSavePageButtonLabel: function() {
+    var savePageWidget;
+    try {
+      savePageWidget = CustomizableUI.getWidget("save-page-button");      
+    } catch (ex) {
+      // Nothing to do if the CutomizableUI module cannot be loaded
+      return;
+    }
+
+    // Change the label of the widget based on the document type
+    var labelText;
+    var contentDocument = getBrowser().selectedBrowser.contentDocument;
+    if (contentDocument.contentType == "text/html" ||
+     contentDocument.contentType == "application/xhtml+xml") {
+      labelText = document.
+       getElementById("mafMenuSavePageInArchive_pageContextMenu").
+       getAttribute("labelsave");
+    } else {
+      labelText = CustomizableUI.getLocalizedProperty(savePageWidget, "label");
+    }
+    savePageWidget.forWindow(window).node.setAttribute("label", labelText);
+  },
+
+  /**
    * Updates the archive information notification for the current page.
    */
   _checkArchiveInfoNotification: function() {
@@ -283,6 +313,8 @@ var MafInterfaceOverlay = {
     this._checkArchiveInfoIcons();
     // Update the contents of the popup
     this._checkArchiveInfoPopup();
+    // Update the save page button label
+    this._updateSavePageButtonLabel();
     // Update the contents of the notification. We must delay this operation to
     //  support the case where tab contents have not been loaded yet.
     Services.tm.mainThread.dispatch(
