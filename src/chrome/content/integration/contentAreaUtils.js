@@ -132,6 +132,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // Checks if the host application runs a platform version prior to Gecko 18.
   var platformVersion = Cc["@mozilla.org/xre/app-info;1"]
    .getService(Ci.nsIXULAppInfo).platformVersion;
+  var isSeaMonkey = Cc["@mozilla.org/xre/app-info;1"]
+   .getService(Ci.nsIXULAppInfo).ID == "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
   if (Cc["@mozilla.org/xpcom/version-comparator;1"]
    .getService(Ci.nsIVersionComparator).compare(platformVersion, "17.*") <= 0) {
     aCacheKey = aSkipPrompt;
@@ -160,8 +162,10 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                     "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
     }
   } else {
-    // Normal saveDocument calls will save HTML and XHTML documents in archive.
-    mafPreferSaveArchive = aDocument && (aDocument.contentType == "text/html" ||
+    // Normal saveDocument calls will save HTML and XHTML documents in archive,
+    // unless we are on SeaMonkey where the save dialog may not be displayed.
+    mafPreferSaveArchive = !isSeaMonkey && aDocument &&
+     (aDocument.contentType == "text/html" ||
      aDocument.contentType == "application/xhtml+xml");
   }
 
