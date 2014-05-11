@@ -38,10 +38,6 @@
 // Import XPCOMUtils to generate the QueryInterface functions
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
-// The CustomizableUI module is available starting from Firefox 29
-XPCOMUtils.defineLazyModuleGetter(this, "CustomizableUI",
-                                  "resource:///modules/CustomizableUI.jsm");
-
 /**
  * Handles the integration with the address bar and the status bar.
  */
@@ -216,13 +212,12 @@ var MafInterfaceOverlay = {
    * Turns the "Save Page" button into "Save Page In Archive" for documents.
    */
   updateSavePageButtonLabel: function() {
-    var savePageWidget;
-    try {
-      savePageWidget = CustomizableUI.getWidget("save-page-button");      
-    } catch (ex) {
-      // Nothing to do if the CutomizableUI module cannot be loaded
+    // This operation is only needed starting from Firefox 29
+    if (!("CustomizableUI" in window)) {
       return;
     }
+
+    var savePageWidget = CustomizableUI.getWidget("save-page-button");
 
     // Change the label of the widget based on the document type
     var labelText;
