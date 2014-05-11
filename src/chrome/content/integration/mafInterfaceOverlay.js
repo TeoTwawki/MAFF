@@ -215,7 +215,7 @@ var MafInterfaceOverlay = {
   /**
    * Turns the "Save Page" button into "Save Page In Archive" for documents.
    */
-  _updateSavePageButtonLabel: function() {
+  updateSavePageButtonLabel: function() {
     var savePageWidget;
     try {
       savePageWidget = CustomizableUI.getWidget("save-page-button");      
@@ -227,8 +227,9 @@ var MafInterfaceOverlay = {
     // Change the label of the widget based on the document type
     var labelText;
     var contentDocument = getBrowser().selectedBrowser.contentDocument;
-    if (contentDocument.contentType == "text/html" ||
-     contentDocument.contentType == "application/xhtml+xml") {
+    if (MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml < 2 && (
+     contentDocument.contentType == "text/html" ||
+     contentDocument.contentType == "application/xhtml+xml")) {
       labelText = document.
        getElementById("mafMenuSavePageInArchive_pageContextMenu").
        getAttribute("labelsave");
@@ -314,7 +315,7 @@ var MafInterfaceOverlay = {
     // Update the contents of the popup
     this._checkArchiveInfoPopup();
     // Update the save page button label
-    this._updateSavePageButtonLabel();
+    this.updateSavePageButtonLabel();
     // Update the contents of the notification. We must delay this operation to
     //  support the case where tab contents have not been loaded yet.
     Services.tm.mainThread.dispatch(

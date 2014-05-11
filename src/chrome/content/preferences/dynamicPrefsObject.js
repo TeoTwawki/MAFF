@@ -78,6 +78,24 @@ var DynamicPrefs = {
     this._prefBranchForMafCurrent.setIntPref("save.filterindex", value);
   },
 
+  /**
+   * Index of the selected filter in the "Save Page" dialog box when saving HTML
+   *  or XHTML documents either as complete pages or archives. This is zero if
+   *  the index was never set before, and is only used when it is greater or
+   *  equal than 2, meaning that the user chose to not save HTML or XHTML
+   *  documents in archives by default.
+   */
+  get saveFilterIndexHtml() {
+    try {
+      return this._prefBranchForMafCurrent.getIntPref("save.filterindexhtml");
+    } catch (e) {
+      return 0;
+    }
+  },
+  set saveFilterIndexHtml(value) {
+    this._prefBranchForMafCurrent.setIntPref("save.filterindexhtml", value);
+  },
+
   /*
    * Private methods and properties
    */

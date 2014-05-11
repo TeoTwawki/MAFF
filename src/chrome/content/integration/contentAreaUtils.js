@@ -624,12 +624,17 @@ function getTargetFile(aFpP, aCallback, /* optional */ aSkipPrompt, /* optional 
     // more than one filter in addition to "All Files".
     if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
       try {
-          // In Mozilla Archive Format, use a special preference to store the
-          //  selected filter if only the archive save filters are shown
-          if (aFpP.saveInArchiveFirst)
-            fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
-          else
-            fp.filterIndex = prefs.getIntPref("save_converter_index");
+        // In Mozilla Archive Format, use a special preference to store the
+        //  selected filter if only the archive save filters are shown
+        if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE) {
+          fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
+        } else if (aFpP.saveInArchiveFirst) {
+          let indexHtml = MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml;
+          fp.filterIndex = indexHtml >= 2 ? indexHtml :
+           MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
+        } else {
+          fp.filterIndex = prefs.getIntPref("save_converter_index");
+        }
       }
       catch (e) {
       }
@@ -716,10 +721,14 @@ function getTargetFile(aFpP, aCallback, /* optional */ aSkipPrompt, /* optional 
     if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
       // In Mozilla Archive Format, use a special preference to store the
       //  selected filter if only the archive save filters are shown
-      if (aFpP.saveInArchiveFirst) {
+      if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE) {
+        MozillaArchiveFormat.DynamicPrefs.saveFilterIndex = fp.filterIndex;
+      } else if (aFpP.saveInArchiveFirst) {
+        MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml = fp.filterIndex;
         if (fp.filterIndex < 2) {
           MozillaArchiveFormat.DynamicPrefs.saveFilterIndex = fp.filterIndex;
         }
+        MafInterfaceOverlay.updateSavePageButtonLabel();
       } else {
         prefs.setIntPref("save_converter_index", fp.filterIndex);
       }
