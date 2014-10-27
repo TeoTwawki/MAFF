@@ -131,7 +131,7 @@ CssSourceFragment.prototype = {
       /([\w\W]*?)(?:(\burl\(\s*(['"]|&quot;)?)([^\r\n]*?)(?=\s*\3\))|(@import\s+(['"]|&quot;))([^\r\n]*?)(?=\s*\6)|$)/gi,
       function(aAll, aBefore, aUrlBefore, aUrlQuote, aUrlText, aImportUrlBefore,
        aImportUrlQuote, aImportUrlText) {
-        aAddFn(SourceFragment,    aBefore + aUrlBefore);
+        aAddFn(SourceFragment,    aBefore + (aUrlBefore || ""));
         aAddFn(UrlSourceFragment, aUrlText);
         aAddFn(SourceFragment,    aImportUrlBefore);
         aAddFn(UrlSourceFragment, aImportUrlText);

@@ -106,7 +106,7 @@ var MimeSupport = {
       function (aAll, aMain, aLastThree, aLastThreeEOL, aLastTwo, aLastTwoEOL,
        aOffset) {
         // Compose the main text of the line
-        var line = aMain + aLastThree + aLastTwo;
+        var line = aMain + (aLastThree || "") + (aLastTwo || "");
         // If a line break was found in the original string
         if (aLastThreeEOL || aLastTwoEOL) {
           // If the last character in the line is a tab or a space and no soft

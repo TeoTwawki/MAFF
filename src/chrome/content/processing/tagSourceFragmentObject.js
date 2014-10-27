@@ -116,8 +116,9 @@ TagSourceFragment.prototype = {
         //  URLs found in the attribute are decoded from HTML.
         if (aAttrName == "style") {
           // Add the appropriate fragment as an URL
-          aAddFn(SourceFragment, aBefore + aAttrName + aSeparator + aAttrQuote);
-          aAddFn(CssSourceFragment, aAttrValue + aAttrValueWithoutQuotes,
+          aAddFn(SourceFragment, aBefore + aAttrName + aSeparator +
+           (aAttrQuote || ""));
+          aAddFn(CssSourceFragment, aAttrValue || aAttrValueWithoutQuotes || "",
            {isEncodedAsHtml: true});
           return;
         }
@@ -133,8 +134,9 @@ TagSourceFragment.prototype = {
           aAddFn(SourceFragment, aAll);
         } else {
           // Add the appropriate fragment as an URL
-          aAddFn(SourceFragment, aBefore + aAttrName + aSeparator + aAttrQuote);
-          aAddFn(UrlSourceFragment, aAttrValue + aAttrValueWithoutQuotes,
+          aAddFn(SourceFragment, aBefore + (aAttrName || "") +
+           (aSeparator || "") + (aAttrQuote || ""));
+          aAddFn(UrlSourceFragment, aAttrValue || aAttrValueWithoutQuotes || "",
            {isEncodedAsHtml: true});
         }
       }
