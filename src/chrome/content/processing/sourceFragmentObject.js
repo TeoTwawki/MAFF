@@ -166,5 +166,5 @@ SourceFragment.prototype = {
       this._children.push(
        new aTypeCtor(aSourceData, aOptions || this._options));
     }
-  }
+  },
 }

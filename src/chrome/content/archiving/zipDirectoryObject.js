@@ -129,5 +129,5 @@ ZipDirectory.prototype = {
   _zipCreator: null,
   _directory: null,
   _zipEntry: "",
-  _parent: null
+  _parent: null,
 }

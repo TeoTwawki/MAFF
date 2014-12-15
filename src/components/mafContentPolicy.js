@@ -113,7 +113,7 @@ MafContentPolicy.prototype = {
   shouldProcess: function(aContentType, aContentLocation, aRequestOrigin,
    aContext, aMimeType, aExtra) {
     return Ci.nsIContentPolicy.ACCEPT;
-  }
+  },
 };
 
 // XPCOM component registration

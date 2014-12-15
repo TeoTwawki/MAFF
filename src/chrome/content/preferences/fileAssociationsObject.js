@@ -260,5 +260,5 @@ FileAssociationsCreator.prototype = {
     } finally {
       keyExtension.close();
     }
-  }
+  },
 }

@@ -204,5 +204,5 @@ var ArchiveCache = {
       } catch (e) { }
     }
     return lookupUri.spec;
-  }
+  },
 };

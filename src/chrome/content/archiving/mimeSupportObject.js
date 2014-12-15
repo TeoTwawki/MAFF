@@ -950,5 +950,5 @@ var MimeSupport = {
     return aDate.toString().replace(
      /^(...) (...) (..) (.... ..:..:..) ...(.....).*$/,
      "$1, $3 $2 $4 $5");
-  }
+  },
 }

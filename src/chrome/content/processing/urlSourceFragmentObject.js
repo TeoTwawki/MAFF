@@ -84,5 +84,5 @@ UrlSourceFragment.prototype = {
       // No encoding is necessary
       this._sourceData = aValue;
     }
-  }
+  },
 }

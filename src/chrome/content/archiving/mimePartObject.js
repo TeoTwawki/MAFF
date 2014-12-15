@@ -199,5 +199,5 @@ MimePart.prototype = {
     // Set the body and parse it using the provided metadata
     newPart.bodySection = this.bodySection;
     return newPart;
-  }
+  },
 }

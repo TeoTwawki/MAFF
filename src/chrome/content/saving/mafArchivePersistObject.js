@@ -171,5 +171,5 @@ MafArchivePersist.prototype = {
 
   _saveBrowsers: null,
   _archiveType: null,
-  _saveJob: null
+  _saveJob: null,
 }

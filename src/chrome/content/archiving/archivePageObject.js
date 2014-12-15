@@ -301,5 +301,5 @@ ArchivePage.prototype = {
     var match = /^\s*Source is (\S+)\s*$/g.exec(aSaveCompleteString);
     // Return the URL part, if found, or null if the format does not match
     return match && match[1];
-  }
+  },
 }

@@ -289,5 +289,5 @@ PersistFolder.prototype = {
       //  NS_ERROR_NOT_AVAILABLE if no extension is known for the content type
       return "";
     }
-  }
+  },
 }

@@ -193,5 +193,5 @@ ExactPersist.prototype = {
     }
   },
 
-  _persistJob: null
+  _persistJob: null,
 }

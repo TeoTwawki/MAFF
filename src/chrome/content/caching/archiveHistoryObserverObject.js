@@ -66,5 +66,5 @@ var ArchiveHistoryObserver = {
   onDeleteURI: function(aURI, aGUID) { },
   onClearHistory: function() { },
   onPageChanged: function(aURI, aWhat, aValue) { },
-  onDeleteVisits: function(aURI, aVisitTime, aGUID) { }
+  onDeleteVisits: function(aURI, aVisitTime, aGUID) { },
 };

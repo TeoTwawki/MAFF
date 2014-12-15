@@ -53,7 +53,7 @@ var FileFilters = {
   get openFilters() {
     return [
      { title:           this._str("opendialog.filters.webarchives"),
-       extensionString: "*.maff;*.mhtml;*.mht" }
+       extensionString: "*.maff;*.mhtml;*.mht" },
     ];
   },
 
@@ -83,7 +83,7 @@ var FileFilters = {
        mafArchiveType:  "TypeMAFF" },
      { title:           this._str("savedialog.filters.mhtmlonly"),
        extensionString: mhtmlExtensionString,
-       mafArchiveType:  "TypeMHTML" }
+       mafArchiveType:  "TypeMHTML" },
     ];
   },
 
@@ -100,5 +100,5 @@ var FileFilters = {
 
   _fileFiltersStrBundle: Cc["@mozilla.org/intl/stringbundle;1"]
     .getService(Ci.nsIStringBundleService).createBundle(
-    "chrome://maf/locale/fileFiltersObject.properties")
+    "chrome://maf/locale/fileFiltersObject.properties"),
 }

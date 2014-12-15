@@ -137,5 +137,5 @@ var WelcomePage = {
   },
 
   _prompts: Cc["@mozilla.org/embedcomp/prompt-service;1"]
-   .getService(Ci.nsIPromptService)
+   .getService(Ci.nsIPromptService),
 }

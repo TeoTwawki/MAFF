@@ -73,7 +73,7 @@ MaffDataSource.prototype = {
     originalUrl:     "http://maf.mozdev.org/metadata/rdf#originalurl",
     archiveTime:     "http://maf.mozdev.org/metadata/rdf#archivetime",
     indexFileName:   "http://maf.mozdev.org/metadata/rdf#indexfilename",
-    charset:         "http://maf.mozdev.org/metadata/rdf#charset"
+    charset:         "http://maf.mozdev.org/metadata/rdf#charset",
   },
 
   // --- Public methods and properties ---
@@ -237,5 +237,5 @@ MaffDataSource.prototype = {
     });
     // Return the generated string
     return mafNamespaceXml;
-  }
+  },
 }

@@ -158,5 +158,5 @@ var MultiSaveDialog = {
     var selectedTabs = this._tabsDataSource.getSelectedTabs();
     document.getElementById("multiSaveDialog").getButton("accept").disabled =
      !selectedTabs.length;
-  }
+  },
 }

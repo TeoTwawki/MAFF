@@ -59,7 +59,7 @@ function CandidatesDataSource(aBrowserWindow) {
     checked: 0,
     obstructed: 0,
     converted: 0,
-    failed: 0
+    failed: 0,
   };
   this._initDataSource();
 }
@@ -99,7 +99,7 @@ CandidatesDataSource.prototype = {
     enqueued:               "urn:maf:vocabulary#enqueued",
     converting:             "urn:maf:vocabulary#converting",
     converted:              "urn:maf:vocabulary#converted",
-    failed:                 "urn:maf:vocabulary#failed"
+    failed:                 "urn:maf:vocabulary#failed",
   },
 
   // --- Public methods and properties ---
@@ -274,5 +274,5 @@ CandidatesDataSource.prototype = {
     // Save the internal index of the candidate and add the item to the array
     aCandidate.internalIndex = candidateIndex;
     this.candidates.push(aCandidate);
-  }
+  },
 }

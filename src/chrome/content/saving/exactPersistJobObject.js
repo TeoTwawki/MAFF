@@ -368,5 +368,5 @@ ExactPersistJob.prototype = {
   _parsedJobs: [],
 
   _textToSubURI: Cc["@mozilla.org/intl/texttosuburi;1"].
-   getService(Ci.nsITextToSubURI)
+   getService(Ci.nsITextToSubURI),
 }

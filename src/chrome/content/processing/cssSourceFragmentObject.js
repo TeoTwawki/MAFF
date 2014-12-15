@@ -137,5 +137,5 @@ CssSourceFragment.prototype = {
         aAddFn(UrlSourceFragment, aImportUrlText);
       }
     );
-  }
+  },
 }

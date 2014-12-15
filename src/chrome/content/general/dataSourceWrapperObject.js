@@ -181,5 +181,5 @@ DataSourceWrapper.prototype = {
   /**
    * Reference to the global RDF service, provided for convenience.
    */
-  _rdf: Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService)
+  _rdf: Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService),
 }

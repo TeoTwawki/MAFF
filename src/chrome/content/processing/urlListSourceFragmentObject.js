@@ -71,5 +71,5 @@ UrlListSourceFragment.prototype = {
         aAddFn(SourceFragment, aSeparator);
       }
     );
-  }
+  },
 }

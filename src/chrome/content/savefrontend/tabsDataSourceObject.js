@@ -85,7 +85,7 @@ TabsDataSource.prototype = {
     internalIndex:   "urn:maf:vocabulary#internalIndex",
     title:           "urn:maf:vocabulary#title",
     originalUrl:     "urn:maf:vocabulary#originalUrl",
-    checked:         "urn:maf:vocabulary#checked"
+    checked:         "urn:maf:vocabulary#checked",
   },
 
   // --- Public methods and properties ---
@@ -310,5 +310,5 @@ TabsDataSource.prototype = {
   /**
    * Actual browser objects associated with this data source.
    */
-  _browsers: []
+  _browsers: [],
 }

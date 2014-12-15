@@ -52,5 +52,5 @@ var MafMultipleTabOverlay = {
     // Use the global saveDocument function with the special MAF parameters
     saveDocument(getBrowser().selectedBrowser.contentDocument,
      {mafAskSaveArchive: true, mafSaveTabs: selectedTabs});
-  }
+  },
 }

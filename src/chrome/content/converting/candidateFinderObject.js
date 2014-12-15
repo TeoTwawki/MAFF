@@ -281,5 +281,5 @@ CandidateFinder.prototype = {
     }
     // The given name is not one of a support folder
     return false;
-  }
+  },
 }

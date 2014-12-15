@@ -101,5 +101,5 @@ var DynamicPrefs = {
    */
 
   _prefBranchForMafCurrent: Cc["@mozilla.org/preferences-service;1"]
-    .getService(Ci.nsIPrefService).getBranch("extensions.maf.current.")
+    .getService(Ci.nsIPrefService).getBranch("extensions.maf.current."),
 }

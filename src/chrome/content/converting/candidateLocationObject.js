@@ -85,5 +85,5 @@ CandidateLocation.prototype = {
       newLocation.bin.append(aLeafName);
     }
     return newLocation;
-  }
+  },
 }

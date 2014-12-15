@@ -354,5 +354,5 @@ var Prefs = {
   },
 
   _dirService: Cc["@mozilla.org/file/directory_service;1"]
-   .getService(Ci.nsIProperties)
+   .getService(Ci.nsIProperties),
 }

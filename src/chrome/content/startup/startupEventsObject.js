@@ -125,9 +125,9 @@ var StartupEvents = {
    "profile-after-change",
    "sessionstore-windows-restored",
    "quit-application",
-   "xpcom-shutdown"
+   "xpcom-shutdown",
   ],
 
   _observerService: Cc["@mozilla.org/observer-service;1"]
-   .getService(Ci.nsIObserverService)
+   .getService(Ci.nsIObserverService),
 };

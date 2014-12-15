@@ -110,5 +110,5 @@ ZipCreator.prototype = {
 
   _file: null,
   _createNew: false,
-  _zipWriter: null
+  _zipWriter: null,
 }

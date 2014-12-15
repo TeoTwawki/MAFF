@@ -104,7 +104,7 @@ try {
    // Extension initialization
    ["startup/helperAppsWrapper.js",               "HelperAppsWrapper"],
    ["startup/startupEventsObject.js",             "StartupEvents"],
-   ["startup/startupInitializerObject.js",        "StartupInitializer"]
+   ["startup/startupInitializerObject.js",        "StartupInitializer"],
 
   ].forEach(function([contentRelativePath, objectName]) {
     // Load the source code file where the object is defined

@@ -168,5 +168,5 @@ PersistResource.prototype = {
       //  binary stream has been already closed successfully.
       inputStream.close();
     }
-  }
+  },
 }

@@ -79,7 +79,7 @@ var EmptyStreamListener = {
     scrInputStream.init(aInputStream);
     scrInputStream.read(aCount);
     scrInputStream.close();
-  }
+  },
 };
 
 /**
@@ -208,7 +208,7 @@ MafDocumentLoaderFactory.prototype = {
 
     // Return the now running content viewer
     return originalContentViewer;
-  }
+  },
 };
 
 // XPCOM component registration

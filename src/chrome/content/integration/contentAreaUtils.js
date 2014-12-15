@@ -940,7 +940,7 @@ MozillaArchiveFormat.TextOnlySaveBehavior.getFileFilter = function(aContentType,
 var gInternalSaveBehaviors = [
   MozillaArchiveFormat.CompleteSaveBehavior,
   MozillaArchiveFormat.NormalSaveBehavior,
-  MozillaArchiveFormat.TextOnlySaveBehavior
+  MozillaArchiveFormat.TextOnlySaveBehavior,
 ];
 
 // Special save modes for Mozilla Archive Format

@@ -212,7 +212,7 @@ var MafCommandsOverlay = {
       var command = element.getAttribute("command");
       var isSaveTabs = ([
        "mafCmdSaveTabsInArchive",
-       "mafCmdSaveAllTabsInArchive"
+       "mafCmdSaveAllTabsInArchive",
        ].indexOf(command) >= 0);
 
       // Do not handle unrelated menu items
@@ -419,7 +419,7 @@ var MafCommandsOverlay = {
     // Use the global saveDocument function with the special MAF parameters
     saveDocument(gContextMenu.target.ownerDocument,
      {mafAskSaveArchive: true});
-  }
+  },
 }
 
 // Now that the MafCommandsOverlay object is defined, add the event listener

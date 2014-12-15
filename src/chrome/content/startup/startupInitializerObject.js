@@ -92,7 +92,7 @@ var StartupInitializer = {
        mimeTypes:      ["application/x-maff"] },
      { mafArchiveType: "TypeMHTML",
        fileExtensions: ["mht", "mhtml"],
-       mimeTypes:      ["application/x-mht", "message/rfc822"] }
+       mimeTypes:      ["application/x-mht", "message/rfc822"] },
     ];
 
     // Firstly, clean up the permanent file extension associations created by
@@ -322,5 +322,5 @@ var StartupInitializer = {
    getService(Ci.nsICategoryManager),
 
   _componentRegistrar: Components.manager.
-   QueryInterface(Ci.nsIComponentRegistrar)
+   QueryInterface(Ci.nsIComponentRegistrar),
 }

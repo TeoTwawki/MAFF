@@ -154,7 +154,7 @@ MaffArchivePage.prototype = {
      ["title", this.title],
      ["archivetime", MimeSupport.getDateTimeSpecification(this.dateArchived)],
      ["indexfilename", this.indexLeafName],
-     ["charset", this.renderingCharacterSet]
+     ["charset", this.renderingCharacterSet],
     ];
 
     var historyMetadata = null;
@@ -202,5 +202,5 @@ MaffArchivePage.prototype = {
     var destFile = this.tempDir.clone();
     destFile.append(aFileName);
     ds.saveToFile(destFile);
-  }
+  },
 }

@@ -94,5 +94,5 @@ HtmlSourceFragment.prototype = {
         aAddFn(TagSourceFragment, aTag);
       }
     );
-  }
+  },
 }

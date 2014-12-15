@@ -130,7 +130,7 @@ SaveCompletePersist.prototype = {
             Cu.reportError(e);
           }
         },
-        progressListener: this.progressListener
+        progressListener: this.progressListener,
       };
 
       // When saving a page that was extracted from an archive, use the
@@ -326,5 +326,5 @@ SaveCompletePersist.prototype = {
     "chrome://maf/locale/saveCompletePersistObject.properties"),
 
   _saver: null,
-  _saveUrl: null
+  _saveUrl: null,
 }

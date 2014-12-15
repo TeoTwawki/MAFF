@@ -279,5 +279,5 @@ MhtmlArchivePage.prototype = {
       // Close the underlying stream
       outputStream.close();
     }
-  }
+  },
 }

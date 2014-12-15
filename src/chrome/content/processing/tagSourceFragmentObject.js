@@ -141,5 +141,5 @@ TagSourceFragment.prototype = {
         }
       }
     );
-  }
+  },
 }

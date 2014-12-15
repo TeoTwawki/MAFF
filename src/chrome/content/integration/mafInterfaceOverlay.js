@@ -377,7 +377,7 @@ var MafInterfaceOverlay = {
       MafInterfaceOverlay._updateArchiveInfo();
     },
     onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) { },
-    onSecurityChange: function(aWebProgress, aRequest, aState) { }
+    onSecurityChange: function(aWebProgress, aRequest, aState) { },
   },
 
   /**
@@ -395,8 +395,8 @@ var MafInterfaceOverlay = {
     observe: function(aSubject, aTopic, aData) {
       // Refresh the visibility of the icons
       MafInterfaceOverlay._checkArchiveInfoIcons();
-    }
-  }
+    },
+  },
 };
 
 // Now that the MafInterfaceOverlay object is defined, add the event listener

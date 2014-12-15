@@ -140,5 +140,5 @@ var PrefsDialog = {
     var xulRuntimeOs = Cc["@mozilla.org/xre/app-info;1"]
      .getService(Ci.nsIXULRuntime).OS;
     return (xulRuntimeOs == "WINNT");
-  }
+  },
 }

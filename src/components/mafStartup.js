@@ -94,7 +94,7 @@ MafStartup.prototype = {
     if (aTopic == "profile-after-change") {
       mafObjects.StartupEvents.afterProfileChange();
     }
-  }
+  },
 };
 
 // XPCOM component registration

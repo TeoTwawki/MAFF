@@ -250,7 +250,7 @@ ExactPersistParsedJob.prototype = {
       if (!jobPersistData) {
         jobPersistData = {
           attributeReferences: [],
-          replaceChildReference: null
+          replaceChildReference: null,
         };
         exactPersistData[this._uniqueId] = jobPersistData;
       }
@@ -371,7 +371,7 @@ ExactPersistParsedJob.prototype = {
         this._createReference({
           sourceDomNode: node,
           sourceAttribute: attributeName,
-          saveLinkedResource: true
+          saveLinkedResource: true,
         });
       }
     }
@@ -390,7 +390,7 @@ ExactPersistParsedJob.prototype = {
         this._createReference({
           sourceDomNode: node,
           sourceAttribute: attributeName,
-          saveLinkedResource: this._eventListener.saveWithMedia
+          saveLinkedResource: this._eventListener.saveWithMedia,
         });
       }
     }
@@ -412,7 +412,7 @@ ExactPersistParsedJob.prototype = {
       for (let node in this._htmlNodesGenerator(elementName, attributeName)) {
         this._createReference({
           sourceDomNode: node,
-          sourceAttribute: attributeName
+          sourceAttribute: attributeName,
         });
       }
     }
@@ -435,7 +435,7 @@ ExactPersistParsedJob.prototype = {
         sourceAttribute: "href",
         saveLinkedResource: saveFavIcon,
         saveLinkedCssStyleSheet: node.sheet,
-        saveLinkedFileCharacterSetHint: node.getAttribute("charset")
+        saveLinkedFileCharacterSetHint: node.getAttribute("charset"),
       });
     }
 
@@ -453,14 +453,14 @@ ExactPersistParsedJob.prototype = {
           this._createReference({
             sourceDomNode: node,
             sourceAttribute: "src",
-            saveLinkedDomDocument: node.contentDocument
+            saveLinkedDomDocument: node.contentDocument,
           });
         } else {
           // This frame references an unparsed resource
           this._createReference({
             sourceDomNode: node,
             sourceAttribute: "src",
-            saveLinkedResource: true
+            saveLinkedResource: true,
           });
         }
       }
@@ -497,13 +497,13 @@ ExactPersistParsedJob.prototype = {
         if (archiveAttribute) {
           // Get the object required to process the inline attribute
           let fragment = new UrlListSourceFragment(archiveAttribute, {
-            commaSeparated: isApplet
+            commaSeparated: isApplet,
           });
           // Create the reference object
           this._createReference({
             sourceDomNode: node,
             sourceAttribute: "archive",
-            targetFragment: fragment
+            targetFragment: fragment,
           });
           // Scan the URI list for references to other resources, using the
           //  appropriate base URI, but save the references only if required
@@ -521,7 +521,7 @@ ExactPersistParsedJob.prototype = {
             sourceDomNode: node,
             sourceAttribute: "code",
             targetBaseUri: baseUri,
-            saveLinkedResource: this._eventListener.saveWithMedia
+            saveLinkedResource: this._eventListener.saveWithMedia,
           });
         }
         // Always save the resource referenced by "data" or "object"
@@ -530,7 +530,7 @@ ExactPersistParsedJob.prototype = {
           sourceDomNode: node,
           sourceAttribute: htmlAttribute,
           targetBaseUri: baseUri,
-          saveLinkedResource: this._eventListener.saveWithMedia
+          saveLinkedResource: this._eventListener.saveWithMedia,
         });
         // Even though object and applet parameter names are specific of the
         //  implementation, some names are commonly used for parameters that
@@ -542,7 +542,7 @@ ExactPersistParsedJob.prototype = {
               sourceDomNode: paramNode,
               sourceAttribute: "value",
               targetBaseUri: baseUri,
-              saveLinkedResource: this._eventListener.saveWithMedia
+              saveLinkedResource: this._eventListener.saveWithMedia,
             });
           }
         }
@@ -557,7 +557,7 @@ ExactPersistParsedJob.prototype = {
       this._createReference({
         sourceDomNode: node,
         sourceAttribute: "style",
-        targetFragment: fragment
+        targetFragment: fragment,
       });
       // Scan the style definition for references to other resources
       this._scanFragment(fragment, true);
@@ -568,7 +568,7 @@ ExactPersistParsedJob.prototype = {
       if (node.sheet) {
         this._createReference({
           sourceDomNode: node,
-          targetFragment: this._scanCssStyleSheet(node.sheet)
+          targetFragment: this._scanCssStyleSheet(node.sheet),
         });
       }
     }
@@ -588,13 +588,13 @@ ExactPersistParsedJob.prototype = {
         this._createReference({
           sourceDomNode: node,
           sourceAttribute: "src",
-          saveEmptyScriptType: scriptType
+          saveEmptyScriptType: scriptType,
         });
       } else {
         // Replace the inline script with an empty script
         this._createReference({
           sourceDomNode: node,
-          targetFragment: this._getEmptyScript(scriptType)
+          targetFragment: this._getEmptyScript(scriptType),
         });
       }
     }
@@ -735,7 +735,7 @@ ExactPersistParsedJob.prototype = {
           sourceFragment: curFragment,
           targetUriSpec: curFragment.urlSpec,
           targetBaseUri: aBaseUri,
-          saveLinkedResource: aSaveLocally
+          saveLinkedResource: aSaveLocally,
         });
       }
     }
@@ -752,12 +752,12 @@ ExactPersistParsedJob.prototype = {
      "application/ecmascript",
      "application/javascript",
      "text/ecmascript",
-     "text/javascript"
+     "text/javascript",
     ].indexOf(aScriptType) >= 0;
     var isVbScript = [
      "text/vbscript",
      "application/x-vbs",
-     "text/vbs"
+     "text/vbs",
     ].indexOf(aScriptType) >= 0;
 
     // Replaces the script with a comment, or with an empty string if the
@@ -1082,5 +1082,5 @@ ExactPersistParsedJob.prototype = {
     "onunload",
     "onvolumechange",
     "onwaiting",
-  ]
+  ],
 }

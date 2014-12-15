@@ -157,5 +157,5 @@ Archive.prototype = {
    * nsIFile representing a temporary directory whose subdirectories will
    *  contain the expanded contents of the archived pages.
    */
-  _tempDir: null
+  _tempDir: null,
 }

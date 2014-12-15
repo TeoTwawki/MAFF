@@ -623,5 +623,5 @@ Candidate.prototype = {
   },
 
   _mainThread: Cc["@mozilla.org/thread-manager;1"].
-   getService(Ci.nsIThreadManager).mainThread
+   getService(Ci.nsIThreadManager).mainThread,
 }

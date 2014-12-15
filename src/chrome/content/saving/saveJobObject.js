@@ -133,5 +133,5 @@ SaveJob.prototype = {
       parts = /(-\d+)?(\.[^.]+)?$/.test(aLocalFile.leafName);
       aLocalFile.leafName = RegExp.leftContext + (RegExp.$1 - 1) + RegExp.$2;
     } while (aLocalFile.exists());
-  }
+  },
 }

@@ -70,5 +70,5 @@ ExactPersistInitialJob.prototype = {
 
   // --- Private methods and properties ---
 
-  _targetDataFolder: null
+  _targetDataFolder: null,
 }

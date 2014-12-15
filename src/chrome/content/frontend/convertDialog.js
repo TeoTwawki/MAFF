@@ -629,5 +629,5 @@ var ConvertDialog = {
     }
     // Return the new object
     return targetFile;
-  }
+  },
 }

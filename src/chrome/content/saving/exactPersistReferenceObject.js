@@ -247,5 +247,5 @@ ExactPersistReference.prototype = {
   // --- Private methods and properties ---
 
   _parsedJob: null,
-  _saveJob: null
+  _saveJob: null,
 }

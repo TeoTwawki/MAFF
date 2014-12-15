@@ -217,5 +217,5 @@ var ArchiveLoader = {
         }
       }
     }
-  }
+  },
 }

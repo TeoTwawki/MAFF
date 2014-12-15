@@ -211,5 +211,5 @@ PersistBundle.prototype = {
         yield file;
       }
     }
-  }
+  },
 }

@@ -214,5 +214,5 @@ MaffArchive.prototype = {
    *  temporary directory. Even when this property is true, metadata files are
    *  still extracted in the temporary directory.
    */
-  _useDirectAccess: false
+  _useDirectAccess: false,
 }

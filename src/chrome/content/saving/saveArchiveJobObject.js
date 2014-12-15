@@ -87,5 +87,5 @@ SaveArchiveJob.prototype = {
   // --- Private methods and properties ---
 
   _targetFile: null,
-  _targetType: ""
+  _targetType: "",
 }

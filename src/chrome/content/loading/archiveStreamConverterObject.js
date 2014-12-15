@@ -291,5 +291,6 @@ ArchiveStreamConverter.prototype = {
   _inputStream: null,
 
   _privateBrowsingService: ("@mozilla.org/privatebrowsing;1" in Cc) &&
-   Cc["@mozilla.org/privatebrowsing;1"].getService(Ci.nsIPrivateBrowsingService)
+   Cc["@mozilla.org/privatebrowsing;1"]
+   .getService(Ci.nsIPrivateBrowsingService),
 };

@@ -203,5 +203,5 @@ JobRunner.prototype = {
    * True if start() should run all the jobs immediately, or false if start()
    *  should run the jobs one at a time, in order.
    */
-  _runInParallel: false
+  _runInParallel: false,
 }

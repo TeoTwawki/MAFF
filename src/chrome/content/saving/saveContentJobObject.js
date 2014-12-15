@@ -181,5 +181,5 @@ SaveContentJob.prototype = {
 
   _archive: null,
   _document: null,
-  _targetDir: null
+  _targetDir: null,
 }

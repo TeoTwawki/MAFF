@@ -249,7 +249,7 @@ ExactPersistUnparsedJob.prototype = {
        Ci.nsISocketTransport.STATUS_SENDING_TO,
        Ci.nsISocketTransport.STATUS_RECEIVING_FROM,
        Ci.nsISocketTransport.STATUS_CONNECTING_TO,
-       Ci.nsISocketTransport.STATUS_WAITING_FOR
+       Ci.nsISocketTransport.STATUS_WAITING_FOR,
       ].indexOf(aStatus) < 0) {
         this._eventListener.onStatusChange(null, aRequest, aStatus, aStatusArg);
       }
@@ -275,5 +275,5 @@ ExactPersistUnparsedJob.prototype = {
   /**
    * Binary input stream created to read the data being downloaded.
    */
-  _inputStream: null
+  _inputStream: null,
 }

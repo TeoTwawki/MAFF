@@ -97,7 +97,7 @@ var ArchiveAnnotations = {
      ArchiveAnnotations.MAFANNO_DATEARCHIVED,
      ArchiveAnnotations.MAFANNO_ARCHIVENAME,
      ArchiveAnnotations.MAFANNO_TEMPURI,
-     ArchiveAnnotations.MAFANNO_DIRECTARCHIVEURI
+     ArchiveAnnotations.MAFANNO_DIRECTARCHIVEURI,
     ].forEach(function(annotationName) {
       try {
         // Clear the annotation if present on the page's specific archive URI
@@ -172,7 +172,7 @@ var ArchiveAnnotations = {
      ArchiveAnnotations.MAFANNO_ORIGINALURL,
      ArchiveAnnotations.MAFANNO_ARCHIVENAME,
      ArchiveAnnotations.MAFANNO_TEMPURI,
-     ArchiveAnnotations.MAFANNO_DIRECTARCHIVEURI
+     ArchiveAnnotations.MAFANNO_DIRECTARCHIVEURI,
     ].indexOf(aAnnotationName) >= 0;
   },
 
@@ -209,5 +209,5 @@ var ArchiveAnnotations = {
   get _annotationService() {
     return Cc["@mozilla.org/browser/annotation-service;1"].
      getService(Ci.nsIAnnotationService);
-  }
+  },
 };

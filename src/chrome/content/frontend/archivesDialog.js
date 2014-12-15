@@ -312,7 +312,7 @@ var ArchivesDialog = {
             break;
         }
       },
-      onEvent: function(aEventName) { }
+      onEvent: function(aEventName) { },
     });
     ArchivesDialog.archivesTree.controllers.insertControllerAt(0, {
       supportsCommand: function(aCommand) {
@@ -326,7 +326,7 @@ var ArchivesDialog = {
         return false;
       },
       doCommand: function(aCommand) { },
-      onEvent: function(aEventName) { }
+      onEvent: function(aEventName) { },
     });
   },
 
@@ -408,7 +408,7 @@ var ArchivesDialog = {
     [
      PlacesUtils.TYPE_X_MOZ_URL,
      PlacesUtils.TYPE_UNICODE,
-     PlacesUtils.TYPE_HTML
+     PlacesUtils.TYPE_HTML,
     ].forEach(function(type) {
       // For every node in the selection
       var dataString = "";
@@ -621,5 +621,5 @@ var ArchivesDialog = {
       return null;
     }
     return ArchiveCache.pageFromUri(nodeUri);
-  }
+  },
 }

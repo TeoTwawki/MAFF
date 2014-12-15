@@ -57,7 +57,7 @@ var EmptyWebProgressListener = {
   onProgressChange64: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
   onRefreshAttempted: function(aWebProgress, aRefreshURI, aMillis,
-   aSameURI) { }
+   aSameURI) { },
 
 };
 
@@ -185,5 +185,5 @@ MafWebProgressListener.prototype = {
 
   _mafEventListener: null,
   _wrappedObject: null,
-  _completed: false
+  _completed: false,
 }

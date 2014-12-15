@@ -141,5 +141,5 @@ MultipartMimePart.prototype = {
         Cu.reportError(e);
       }
     }
-  }
+  },
 }
