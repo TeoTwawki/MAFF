@@ -46,12 +46,7 @@ function UrlSourceFragment(aSourceData, aOptions) {
 }
 
 UrlSourceFragment.prototype = {
-  // Derive from the SourceFragment class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: SourceFragment.prototype,
-
-  // --- Public methods and properties ---
 
   /**
    * String containing the URL associated with this fragment. If necessary, the

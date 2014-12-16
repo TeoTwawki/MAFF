@@ -52,13 +52,9 @@ function SaveContentJob(aEventListener, aDocument, aTargetDir) {
 }
 
 SaveContentJob.prototype = {
-  // Derive from the Job class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: Job.prototype,
 
-  // --- Overridden Job methods ---
-
+  // Job
   _executeStart: function() {
     // Create a new MAFF or MHTML archive
     if (this.targetType == "TypeMHTML") {
@@ -91,11 +87,13 @@ SaveContentJob.prototype = {
     this._asyncWorkStarted();
   },
 
+  // Job
   _executeCancel: function(aReason) {
     // No special action is required since the worker objects do not support
     //  cancellation
   },
 
+  // Job
   _executeDispose: function() {
     // Delete the target folder if it was created successfully
     if(this._targetDir.exists()) {
@@ -103,13 +101,13 @@ SaveContentJob.prototype = {
     }
   },
 
-  // --- Callback functions for the worker objects ---
-
+  // MafEventListener
   onSaveNameDetermined: function(aSaveName) {
     // Remember the name that the save component has chosen for the index file
     this._archive.pages[0].indexLeafName = aSaveName;
   },
 
+  // MafEventListener
   onDownloadProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
     // Update job progress and propagate the event to our listener
@@ -117,12 +115,14 @@ SaveContentJob.prototype = {
      aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
   },
 
+  // MafEventListener
   onDownloadStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
     // Propagate the event to our listener
     this._eventListener.onStatusChange(aWebProgress, aRequest, aStatus,
      aMessage);
   },
 
+  // MafEventListener
   onDownloadFailed: function(aStatus) {
     this._handleAsyncCallback(function() {
       // Cancel the operation because the download failed
@@ -131,6 +131,7 @@ SaveContentJob.prototype = {
     }, this);
   },
 
+  // MafEventListener
   onDownloadComplete: function() {
     this._handleAsyncCallback(function() {
       // Add to an existing MAFF archive if required
@@ -153,6 +154,7 @@ SaveContentJob.prototype = {
     }, this);
   },
 
+  // ArchivePageCallback
   onArchivingComplete: function(code) {
     this._handleAsyncCallback(function() {
       if (code != 0) {
@@ -165,8 +167,6 @@ SaveContentJob.prototype = {
       }
     }, this);
   },
-
-  // --- Private methods and properties ---
 
   /**
    * At the end of the save operation of each page, this function is called to

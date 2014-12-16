@@ -53,12 +53,18 @@ function ExactPersistUnparsedJob(aEventListener, aResource, aIsPrivate) {
 }
 
 ExactPersistUnparsedJob.prototype = {
-  // Derive from the Job class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: Job.prototype,
 
-  // --- Public methods and properties ---
+  QueryInterface: XPCOMUtils.generateQI([
+    Ci.nsIRequestObserver,
+    Ci.nsIStreamListener,
+    Ci.nsIInterfaceRequestor,
+  ]),
+
+  // nsIInterfaceRequestor
+  getInterface: XPCOMUtils.generateQI([
+    Ci.nsIProgressEventSink,
+  ]),
 
   /**
    * PersistResource object associated with this persist job item.
@@ -70,8 +76,7 @@ ExactPersistUnparsedJob.prototype = {
    */
   isPrivate: false,
 
-  // --- Overridden Job methods ---
-
+  // Job
   _executeStart: function() {
     // If the download starts successfully, wait asynchronously for completion
     this._expectAsyncCallback(function() {
@@ -110,6 +115,7 @@ ExactPersistUnparsedJob.prototype = {
     }, this);
   },
 
+  // Job
   _executeCancel: function(aReason) {
     // Cancel the request if the download has already started
     if (this._request) {
@@ -117,13 +123,7 @@ ExactPersistUnparsedJob.prototype = {
     }
   },
 
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIRequestObserver,
-   Ci.nsIStreamListener, Ci.nsIInterfaceRequestor]),
-
-  // --- nsIRequestObserver interface functions ---
-
+  // nsIRequestObserver
   onStartRequest: function(aRequest, aContext) {
     // If the job has been canceled before the request started
     if (this.isCompleted) {
@@ -176,6 +176,7 @@ ExactPersistUnparsedJob.prototype = {
     this._eventListener.folder.addUnique(this.resource);
   },
 
+  // nsIRequestObserver
   onStopRequest: function(aRequest, aContext, aStatusCode) {
     this._handleAsyncCallback(function() {
       // If the download failed before completion
@@ -193,8 +194,7 @@ ExactPersistUnparsedJob.prototype = {
     }, this);
   },
 
-  // --- nsIStreamListener interface functions ---
-
+  // nsIStreamListener
   onDataAvailable: function(aRequest, aContext, aInputStream, aOffset,
    aCount) {
     // Ensure that the job hasn't been canceled meanwhile
@@ -215,12 +215,7 @@ ExactPersistUnparsedJob.prototype = {
     this.resource.body += this._inputStream.readBytes(aCount);
   },
 
-  // --- nsIInterfaceRequestor interface functions ---
-
-  getInterface: XPCOMUtils.generateQI([Ci.nsIProgressEventSink]),
-
-  // --- nsIProgressEventSink interface functions ---
-
+  // nsIProgressEventSink
   onProgress: function(aRequest, aContext, aProgress, aProgressMax) {
     // Propagate the event to our listener, while ensuring that the values are
     //  within the allowed range, as aProgressMax in this notification can be -1
@@ -230,6 +225,7 @@ ExactPersistUnparsedJob.prototype = {
      aProgress, realProgressMax);
   },
 
+  // nsIProgressEventSink
   onStatus: function(aRequest, aContext, aStatus, aStatusArg) {
     // Propagate the event to our listener. Since the listener for downloads
     //  is not designed to handle normal request progress notifications, which
@@ -255,8 +251,6 @@ ExactPersistUnparsedJob.prototype = {
       }
     }
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Reports to the Error Console the address of the file whose download failed.

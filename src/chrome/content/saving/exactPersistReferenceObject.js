@@ -244,8 +244,6 @@ ExactPersistReference.prototype = {
     return this._parsedJob.resource.fileUrl.getRelativeSpec(localFileUrl);
   },
 
-  // --- Private methods and properties ---
-
   _parsedJob: null,
   _saveJob: null,
 }

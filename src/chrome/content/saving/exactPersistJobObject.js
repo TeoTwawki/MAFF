@@ -148,12 +148,7 @@ function ExactPersistJob(aEventListener, aDocument, aTargetFile,
 }
 
 ExactPersistJob.prototype = {
-  // Derive from the JobRunner class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: JobRunner.prototype,
-
-  // --- Public methods and properties ---
 
   /**
    * If set to true, objects and media files will be included when saving.
@@ -270,8 +265,6 @@ ExactPersistJob.prototype = {
       aResource.contentLocation = aUriSpec;
     }
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Returns a reference to the PersistResource object corresponding to the

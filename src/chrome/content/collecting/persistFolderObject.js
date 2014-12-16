@@ -50,9 +50,6 @@ function PersistFolder(aFolder) {
 }
 
 PersistFolder.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * nsIFile object pointing to the directory where the resources will be saved.
    */
@@ -90,8 +87,6 @@ PersistFolder.prototype = {
     resourceFile.append(realFileName);
     aResource.file = resourceFile;
   },
-
-  // --- Protected methods and properties ---
 
   /**
    * This object contains one property for each of the comparable file names

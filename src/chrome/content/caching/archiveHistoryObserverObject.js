@@ -41,13 +41,9 @@
  *  operation is still pending.
  */
 var ArchiveHistoryObserver = {
-
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsINavHistoryObserver]),
-
-  // --- nsINavHistoryObserver interface functions ---
-
+  QueryInterface: XPCOMUtils.generateQI([
+    Ci.nsINavHistoryObserver,
+  ]),
   onBeginUpdateBatch: function() { },
   onEndUpdateBatch: function() { },
   onVisit: function(aURI, aVisitID, aTime, aSessionID, aReferringID,

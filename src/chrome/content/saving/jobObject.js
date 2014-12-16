@@ -56,8 +56,6 @@ function Job(aEventListener) {
 }
 
 Job.prototype = {
-  // --- Public methods and properties ---
-
   /**
    * True when the job is terminated. The job is considered terminated after
    *  start() has been called and the operation is finished, or after cancel()
@@ -163,8 +161,6 @@ Job.prototype = {
     }
   },
 
-  // --- Protected methods and properties that can be overridden ---
-
   /**
    * Called when the operation is started. Implementations must throw
    *  exceptions if starting the operation is not possible. If the function
@@ -200,8 +196,6 @@ Job.prototype = {
    * Any exception raised by this method is caught and reported.
    */
   _executeDispose: function() { },
-
-  // --- Protected methods and properties ---
 
   /**
    * Implementations may set this property to true to indicate that after the
@@ -323,8 +317,6 @@ Job.prototype = {
      aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
      aMaxTotalProgress);
   },
-
-  // --- Private methods and properties ---
 
   /**
    * True while we are expecting that a callback function from a worker object

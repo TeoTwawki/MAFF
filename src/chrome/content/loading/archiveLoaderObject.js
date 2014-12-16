@@ -40,9 +40,6 @@
  *  archives in browser windows.
  */
 var ArchiveLoader = {
-
-  // --- Public methods and properties ---
-
   /**
    * This object will be initialized on startup with properties whose names are
    *  the MIME type we need to handle, and whose values are the internal archive

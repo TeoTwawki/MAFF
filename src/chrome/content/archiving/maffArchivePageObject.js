@@ -49,12 +49,7 @@ function MaffArchivePage(aArchive) {
 }
 
 MaffArchivePage.prototype = {
-  // Derive from the ArchivePage class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: ArchivePage.prototype,
-
-  // --- Public methods and properties ---
 
   /**
    * Internal path in the archive of the main file associated with the page.
@@ -74,8 +69,7 @@ MaffArchivePage.prototype = {
      getService(Ci.nsIIOService).newURI(jarUriSpec, null, null);
   },
 
-  // --- Overridden ArchivePage methods ---
-
+  // ArchivePage
   get tempUri() {
     // If the archive that contains the page was extracted while requiring
     //  direct access to the page, no temporary local page is available
@@ -86,6 +80,7 @@ MaffArchivePage.prototype = {
     return ArchivePage.prototype.__lookupGetter__("tempUri").call(this);
   },
 
+  // ArchivePage
   setMetadataFromDocumentAndBrowser: function(aDocument, aBrowser) {
     // Set the page properties that are common to all archive types
     ArchivePage.prototype.setMetadataFromDocumentAndBrowser.call(this,
@@ -94,6 +89,7 @@ MaffArchivePage.prototype = {
     this._browserObjectForMetadata = aBrowser;
   },
 
+  // ArchivePage
   save: function() {
     // Create the "index.rdf" and "history.rdf" files near the main file
     this._saveMetadata();
@@ -109,8 +105,6 @@ MaffArchivePage.prototype = {
       creator.dispose();
     }
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Browser object to gather extended metadata from, or null if not available.

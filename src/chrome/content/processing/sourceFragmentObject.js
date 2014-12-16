@@ -57,8 +57,6 @@ function SourceFragment(aSourceData, aOptions) {
 
 SourceFragment.prototype = {
 
-  // --- Public methods and properties ---
-
   /**
    * String representing the raw data in the fragment.
    */
@@ -113,8 +111,6 @@ SourceFragment.prototype = {
       }
     }
   },
-
-  // --- Protected methods and properties ---
 
   /**
    * True if the source data has been split into child fragments, or false if

@@ -176,8 +176,6 @@ var ArchiveAnnotations = {
     ].indexOf(aAnnotationName) >= 0;
   },
 
-  // --- Private methods and properties ---
-
   /**
    * Sets the value of an annotation for the given ArchivePage object.
    *

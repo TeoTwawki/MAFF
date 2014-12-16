@@ -65,12 +65,7 @@ function CandidatesDataSource(aBrowserWindow) {
 }
 
 CandidatesDataSource.prototype = {
-  // Derive from the DataSourceWrapper class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: DataSourceWrapper.prototype,
-
-  // --- Overridden DataSourceWrapper methods and properties ---
 
   /**
    * Note: These strings are converted to actual RDF resources by the base class
@@ -102,8 +97,6 @@ CandidatesDataSource.prototype = {
     failed:                 "urn:maf:vocabulary#failed",
   },
 
-  // --- Public methods and properties ---
-
   /**
    * Getter for an RDF resource representing a candidate.
    */
@@ -126,8 +119,7 @@ CandidatesDataSource.prototype = {
    */
   selectionDisabled: false,
 
-  // --- nsIRDFDataSource interface functions ---
-
+  // nsIRDFDataSource
   Change: function(aSource, aProperty, aOldTarget, aNewTarget) {
     // Propagate the change to the wrapped object
     this._wrappedObject.Change(aSource, aProperty, aOldTarget, aNewTarget);
@@ -182,8 +174,6 @@ CandidatesDataSource.prototype = {
        this._rdfBool(!allCandidatesSelected));
     }
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Initializes the data source with the basic data needed to host candidates.

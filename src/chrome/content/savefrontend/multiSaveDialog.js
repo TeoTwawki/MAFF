@@ -62,8 +62,6 @@ var MultiSaveDialog = {
    */
   _tabsTreeView: null,
 
-  // --- Interactive dialog functions and events ---
-
   /**
    * Create the elements to be displayed.
    */
@@ -148,8 +146,6 @@ var MultiSaveDialog = {
       }
     }
   },
-
-  // --- Dialog support functions ---
 
   /**
    * Enable the save button only if at least one tab is selected.

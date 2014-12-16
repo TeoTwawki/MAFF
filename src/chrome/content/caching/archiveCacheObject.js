@@ -152,8 +152,6 @@ var ArchiveCache = {
            null;
   },
 
-  // --- Private methods and properties ---
-
   /**
    * Associative array containing all the registered Archive objects.
    */

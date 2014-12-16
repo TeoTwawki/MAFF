@@ -50,9 +50,6 @@ function Archive() {
 }
 
 Archive.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * nsIFile representing the compressed or encoded archive.
    */
@@ -125,10 +122,10 @@ Archive.prototype = {
     return this.file.path;
   },
 
-  // --- Public methods and properties that can be overridden ---
-
   /**
    * Reloads all the pages from the archive file.
+   *
+   * This method must be implemented by derived objects.
    */
   load: function() {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
@@ -136,22 +133,21 @@ Archive.prototype = {
 
   /**
    * Extracts all the pages from the archive file.
+   *
+   * This method must be implemented by derived objects.
    */
   extractAll: function() {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
-  // --- Protected methods and properties that can be overridden ---
-
   /**
-   * Returns a new page object associated with this archive. This method must be
-   *  overridden to return the proper page type.
+   * Returns a new page object associated with this archive.
+   *
+   * This method must be implemented by derived objects.
    */
   _newPage: function() {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
-
-  // --- Protected methods and properties ---
 
   /**
    * nsIFile representing a temporary directory whose subdirectories will

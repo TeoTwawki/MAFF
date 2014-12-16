@@ -49,12 +49,7 @@ function SaveJob(eventListener) {
 }
 
 SaveJob.prototype = {
-  // Derive from the Job class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: JobRunner.prototype,
-
-  // --- Public methods and properties ---
 
   /*
    * Adds new save jobs to the current operation, starting from a list of web
@@ -118,8 +113,6 @@ SaveJob.prototype = {
     maffArchiveJob.addContentFromDocumentAndBrowser(aDocument, null);
     this._addJob(maffArchiveJob);
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Always modifies the leaf name of the given nsIFile object, preserving the

@@ -50,13 +50,9 @@ function UrlListSourceFragment(aSourceData, aOptions) {
 }
 
 UrlListSourceFragment.prototype = {
-  // Derive from the SourceFragment class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: SourceFragment.prototype,
 
-  // --- Overridden protected methods and properties ---
-
+  // SourceFragment
   _executeParse: function(aAddFn) {
     // Determine which regular expression to use based on the separator type
     var separatorRe = this._options.commaSeparated ?

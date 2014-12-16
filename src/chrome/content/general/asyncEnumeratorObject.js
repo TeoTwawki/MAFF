@@ -61,9 +61,6 @@ function AsyncEnumerator(aEnumerable, aItemFn, aSuccessFn) {
 }
 
 AsyncEnumerator.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * Starts or resumes the enumeration of the items.
    *
@@ -107,8 +104,6 @@ AsyncEnumerator.prototype = {
       iterator.close();
     }
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Executes the main iteration loop. This is considered a private function.

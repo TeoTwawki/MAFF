@@ -54,12 +54,7 @@ function SaveArchiveJob(aEventListener, aTargetFile, aTargetType) {
 }
 
 SaveArchiveJob.prototype = {
-  // Derive from the Job class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: JobRunner.prototype,
-
-  // --- Public methods and properties ---
 
   addContentFromDocumentAndBrowser: function(aDocument, aBrowser, aFolderName) {
     // Determine the leaf name of the directory where the page will be saved.
@@ -83,8 +78,6 @@ SaveArchiveJob.prototype = {
     // Add the job to the list of the ones to be started
     this._addJob(job);
   },
-
-  // --- Private methods and properties ---
 
   _targetFile: null,
   _targetType: "",

@@ -48,9 +48,6 @@ function ZipCreator(aFile, aCreateNew) {
 }
 
 ZipCreator.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * Adds to the archive the contents of a directory, including its
    *  subdirectories.
@@ -76,8 +73,6 @@ ZipCreator.prototype = {
       this._zipWriter = null;
     }
   },
-
-  // --- Private methods and properties ---
 
   /** File open flags */
   PR_RDONLY      : 0x01,

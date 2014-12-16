@@ -53,12 +53,7 @@ function JobRunner(aEventListener, aRunInParallel) {
 }
 
 JobRunner.prototype = {
-  // Derive from the Job class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: Job.prototype,
-
-  // --- Protected methods and properties ---
 
   /**
    * The list of jobs to be executed.
@@ -75,8 +70,7 @@ JobRunner.prototype = {
     this._jobs.push(aJob);
   },
 
-  // --- Overridden Job methods ---
-
+  // Job
   _executeStart: function() {
     // Start the remaining jobs in order
     for (var i = 0; i < this._jobs.length; i++) {
@@ -93,6 +87,7 @@ JobRunner.prototype = {
     }
   },
 
+  // Job
   _executeCancel: function(aReason) {
     // Cancel all the jobs
     this._jobs.forEach(function(job) {
@@ -100,6 +95,7 @@ JobRunner.prototype = {
     }, this);
   },
 
+  // Job
   _checkIfCompleted: function() {
     // Check if all the jobs are completed or canceled
     var allJobsCompleted = true;
@@ -111,8 +107,7 @@ JobRunner.prototype = {
     return allJobsCompleted;
   },
 
-  // --- Callback functions for the child job objects ---
-
+  // JobEventListener
   onJobProgressChange: function(aJob, aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
     // Sum the progress, in bytes, of all the child jobs that are started
@@ -157,6 +152,7 @@ JobRunner.prototype = {
      maxUnstartedProgress);
   },
 
+  // JobEventListener
   onJobComplete: function(aJob, aResult) {
     // If an error occurred with any one of the jobs
     if (aResult != Cr.NS_OK) {
@@ -191,13 +187,12 @@ JobRunner.prototype = {
     this._notifyPossibleCompletion();
   },
 
+  // JobEventListener
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
     // Propagate this download event unaltered
     this._eventListener.onStatusChange(aWebProgress, aRequest, aStatus,
      aMessage);
   },
-
-  // --- Private methods and properties ---
 
   /**
    * True if start() should run all the jobs immediately, or false if start()

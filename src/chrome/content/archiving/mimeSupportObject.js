@@ -40,9 +40,6 @@
  *  MIME-related tasks.
  */
 var MimeSupport = {
-
-  // --- Public methods and properties ---
-
   /**
    * Returns the given string of bytes encoded to "Quoted-Printable". For more
    *  information on the "Quoted-Printable" encoding specification, see

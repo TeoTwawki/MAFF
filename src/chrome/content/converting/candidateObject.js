@@ -46,8 +46,11 @@ function Candidate() {
 }
 
 Candidate.prototype = {
-
-  // --- Public methods and properties ---
+  QueryInterface: XPCOMUtils.generateQI([
+    Ci.nsIWebProgressListener,
+    Ci.nsIWebProgressListener2,
+    Ci.nsISupportsWeakReference,
+  ]),
 
   /**
    * String representing the source format of the file to be converted.
@@ -242,14 +245,7 @@ Candidate.prototype = {
     this._removeLoadListeners();
   },
 
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIWebProgressListener,
-                                         Ci.nsIWebProgressListener2,
-                                         Ci.nsISupportsWeakReference]),
-
-  // --- nsIWebProgressListener interface functions ---
-
+  // nsIWebProgressListener
   onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
     // Remember if at least one failure notification was received while loading
     //  or saving. This will cause the load or save to fail when finished.
@@ -271,20 +267,27 @@ Candidate.prototype = {
       }
     }
   },
+
+  // nsIWebProgressListener
   onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
+
+  // nsIWebProgressListener
   onLocationChange: function(aWebProgress, aRequest, aLocation) { },
+
+  // nsIWebProgressListener
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) { },
+
+  // nsIWebProgressListener
   onSecurityChange: function(aWebProgress, aRequest, aState) { },
 
-  // --- nsIWebProgressListener2 interface functions ---
-
+  // nsIWebProgressListener2
   onProgressChange64: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
+
+  // nsIWebProgressListener2
   onRefreshAttempted: function(aWebProgress, aRefreshURI, aMillis,
    aSameURI) { },
-
-  // --- Private methods and properties ---
 
   /**
    * Reference to the callback function to be called on completion.

@@ -228,8 +228,6 @@ var StartupInitializer = {
    */
   hasAppMenu: false,
 
-  // --- Private methods and properties ---
-
   /**
    * Populates the addonVersion property with the version of the installed
    *  extension. On Firefox 4.0 and above, this operation is always completed

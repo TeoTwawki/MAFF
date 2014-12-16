@@ -43,9 +43,6 @@ function CandidateLocation() {
 }
 
 CandidateLocation.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * String representing the relative path with regard to the root location.
    */

@@ -55,12 +55,7 @@ function MultipartMimePart() {
 }
 
 MultipartMimePart.prototype = {
-  // Derive from the MimePart class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: MimePart.prototype,
-
-  // --- Public methods and properties ---
 
   /**
    * Boundary string separating the various parts.
@@ -101,8 +96,7 @@ MultipartMimePart.prototype = {
     return this.parts[0];
   },
 
-  // --- Overridden MimePart methods and properties ---
-
+  // MimePart
   get bodySection() {
     // Write the English explanatory message in the preamble
     var sectionText = "This is a multi-part message in MIME format.\r\n";

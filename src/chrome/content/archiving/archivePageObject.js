@@ -59,9 +59,6 @@ function ArchivePage(aArchive) {
 }
 
 ArchivePage.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * The parent Archive object.
    */
@@ -162,11 +159,11 @@ ArchivePage.prototype = {
      getService(Ci.nsIIOService).newFileURI(this.tempDir);
   },
 
-  // --- Public methods and properties that can be overridden ---
-
   /**
    * Sets additional metadata about the page starting from the provided document
    *  and browser objects.
+   *
+   * This method can be overridden by derived objects.
    */
   setMetadataFromDocumentAndBrowser: function(aDocument, aBrowser) {
     // Find the original metadata related to the page being saved, if present
@@ -185,8 +182,6 @@ ArchivePage.prototype = {
   save: function() {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Zero-based index of the page in the archive.

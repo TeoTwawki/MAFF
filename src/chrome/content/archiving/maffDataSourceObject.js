@@ -53,12 +53,7 @@ function MaffDataSource() {
 }
 
 MaffDataSource.prototype = {
-  // Derive from the DataSourceWrapper class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: DataSourceWrapper.prototype,
-
-  // --- Overridden DataSourceWrapper methods and properties ---
 
   /**
    * Note: These strings are converted to actual RDF resources by the base class
@@ -75,8 +70,6 @@ MaffDataSource.prototype = {
     indexFileName:   "http://maf.mozdev.org/metadata/rdf#indexfilename",
     charset:         "http://maf.mozdev.org/metadata/rdf#charset",
   },
-
-  // --- Public methods and properties ---
 
   /**
    * Getter for an RDF resource representing a predicate in the MAF namespace.
@@ -142,8 +135,6 @@ MaffDataSource.prototype = {
     // Store the value as the target of the provided predicate
     this._wrappedObject.Assert(this.resources.root, aPredicate, valueRes, true);
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Namespace prefix for MAF resource URLs.

@@ -57,14 +57,13 @@ function ArchiveStreamConverter(aInnerFactory) {
 }
 
 ArchiveStreamConverter.prototype = {
+  QueryInterface: XPCOMUtils.generateQI([
+    Ci.nsIRequestObserver,
+    Ci.nsIStreamListener,
+    Ci.nsIStreamConverter,
+  ]),
 
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIRequestObserver,
-   Ci.nsIStreamListener, Ci.nsIStreamConverter]),
-
-  // --- nsIRequestObserver interface functions ---
-
+  // nsIRequestObserver
   onStartRequest: function(aRequest, aContext) {
     // Find an existing archive object associated with the URI we are accessing
     var originalChannel = aRequest.QueryInterface(Ci.nsIChannel);
@@ -92,6 +91,7 @@ ArchiveStreamConverter.prototype = {
     new PersistFolder(dir).addUnique(this._resource);
   },
 
+  // nsIRequestObserver
   onStopRequest: function(aRequest, aContext, aStatusCode) {
     // Exit now if the download failed or was canceled before completion
     if (!Components.isSuccessCode(aStatusCode)) {
@@ -150,8 +150,7 @@ ArchiveStreamConverter.prototype = {
     this._targetListener.onStopRequest(originalChannel, aContext, Cr.NS_OK);
   },
 
-  // --- nsIStreamListener interface functions ---
-
+  // nsIStreamListener
   onDataAvailable: function(aRequest, aContext, aInputStream, aOffset,
    aCount) {
     // We have to use a scriptable stream to read from the provided stream
@@ -174,8 +173,7 @@ ArchiveStreamConverter.prototype = {
     }
   },
 
-  // --- nsIStreamConverter interface functions ---
-
+  // nsIStreamConverter
   asyncConvertData: function(aFromType, aToType, aListener, aCtxt) {
     // Execute a series of tests to determine if this document is being loaded
     //  by a DocShell, and in that case accept to handle the document loading.
@@ -211,12 +209,11 @@ ArchiveStreamConverter.prototype = {
     this._transformIntoInnerObject().asyncConvertData.apply(this, arguments);
   },
 
+  // nsIStreamConverter
   convert: function(aFromStream, aFromType, aToType, aCtxt) {
     throw new Components.Exception("Synchronous conversion not implemented",
      Cr.NS_ERROR_NOT_IMPLEMENTED);
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Returns true if the given channel is associated with a MIME message that

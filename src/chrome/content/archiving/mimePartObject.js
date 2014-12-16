@@ -45,9 +45,6 @@ function MimePart() {
 }
 
 MimePart.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * Raw octets with the concatenation of the header and body sections.
    */

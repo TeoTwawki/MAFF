@@ -39,8 +39,6 @@
  * Handles the MAF commands for integration with "Multiple Tab Handler".
  */
 var MafMultipleTabOverlay = {
-  // --- Command implementation ---
-
   /**
    * Saves the selected tabs in an archive.
    */

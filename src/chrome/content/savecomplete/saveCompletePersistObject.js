@@ -48,13 +48,12 @@ function SaveCompletePersist() {
 }
 
 SaveCompletePersist.prototype = {
+  QueryInterface: XPCOMUtils.generateQI([
+    Ci.nsICancelable,
+    Ci.nsIWebBrowserPersist,
+  ]),
 
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIWebBrowserPersist]),
-
-  // --- nsICancelable interface functions ---
-
+  // nsICancelable
   cancel: function(aReason) {
     // Update the state of this object first, then send the notifications
     this.result = aReason;
@@ -66,25 +65,30 @@ SaveCompletePersist.prototype = {
     }
   },
 
-  // --- nsIWebBrowserPersist interface functions ---
-
+  // nsIWebBrowserPersist
   persistFlags: 0,
 
+  // nsIWebBrowserPersist
   currentState: Ci.nsIWebBrowserPersist.PERSIST_STATE_READY,
 
+  // nsIWebBrowserPersist
   result: Cr.NS_OK,
 
+  // nsIWebBrowserPersist
   progressListener: null,
 
+  // nsIWebBrowserPersist
   saveURI: function(aURI, aCacheKey, aReferrer, aPostData, aExtraHeaders,
    aFile, aPrivacyContext) {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
+  // nsIWebBrowserPersist
   saveChannel: function(aChannel, aFile) {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
+  // nsIWebBrowserPersist
   saveDocument: function(aDocument, aFile, aDataPath, aOutputContentType,
    aEncodingFlags, aWrapColumn) {
     // Pass exceptions to the progress listener
@@ -199,11 +203,10 @@ SaveCompletePersist.prototype = {
     }
   },
 
+  // nsIWebBrowserPersist
   cancelSave: function() {
     this.cancel(Cr.NS_BINDING_ABORTED);
   },
-
-  // --- Additional public methods and properties ---
 
   /**
    * If set to true, objects and media files will be included when saving.
@@ -219,8 +222,6 @@ SaveCompletePersist.prototype = {
    * Associates the local path of each persisted file with its original URL.
    */
   originalUriByPath: {},
-
-  // --- Private methods and properties ---
 
   _onComplete: function() {
     // Never report the finished condition more than once

@@ -43,9 +43,6 @@ function PersistResource() {
 }
 
 PersistResource.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * Raw octets with the contents of the web resource.
    */

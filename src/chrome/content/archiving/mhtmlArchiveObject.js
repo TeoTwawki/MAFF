@@ -53,13 +53,9 @@ function MhtmlArchive(aFile) {
 }
 
 MhtmlArchive.prototype = {
-  // Derive from the Archive class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: Archive.prototype,
 
-  // --- Overridden Archive methods ---
-
+  // Archive
   extractAll: function() {
     // Create and initialize the single page object for the archive
     var page = this.addPage();
@@ -112,11 +108,10 @@ MhtmlArchive.prototype = {
     this._persistBundle.writeAll();
   },
 
+  // Archive
   _newPage: function() {
     return new MhtmlArchivePage(this);
   },
-
-  // --- Private methods and properties ---
 
   /**
    * PersistBundle object with the resources collected from the MHTML file.

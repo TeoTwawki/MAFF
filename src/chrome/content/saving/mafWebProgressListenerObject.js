@@ -42,18 +42,12 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  * Helper object for MafWebProgressListener implementation.
  */
 var EmptyWebProgressListener = {
-
-  // --- nsIWebProgressListener interface functions ---
-
   onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) { },
   onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
   onLocationChange: function(aWebProgress, aRequest, aLocation) { },
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) { },
   onSecurityChange: function(aWebProgress, aRequest, aState) { },
-
-  // --- nsIWebProgressListener2 interface functions ---
-
   onProgressChange64: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
   onRefreshAttempted: function(aWebProgress, aRefreshURI, aMillis,
@@ -98,17 +92,12 @@ function MafWebProgressListener(aMafEventListener, wrappedObject) {
 }
 
 MafWebProgressListener.prototype = {
+  QueryInterface: XPCOMUtils.generateQI([
+    Ci.nsIWebProgressListener,
+    Ci.nsIWebProgressListener2,
+  ]),
 
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIWebProgressListener,
-   Ci.nsIWebProgressListener2]),
-
-  // --- nsIWebProgressListener interface functions ---
-
-  /**
-   * Notifies the associated event listener when an interesting change occurs.
-   */
+  // nsIWebProgressListener
   onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
     // Trap exceptions to ensure the wrapped object gets called
     try {
@@ -134,18 +123,15 @@ MafWebProgressListener.prototype = {
      aStatus);
   },
 
-  /**
-   * This function must be implemented because onProgressChange64 is overridden.
-   */
+  // nsIWebProgressListener
   onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
+    // This function must be implemented as onProgressChange64 is overridden.
     this.onProgressChange64(aWebProgress, aRequest, aCurSelfProgress,
      aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
   },
 
-  /**
-   * Forwards the progress notification to the associated event listener.
-   */
+  // nsIWebProgressListener2
   onProgressChange64: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
     // Trap exceptions to ensure the wrapped object gets called
@@ -163,9 +149,7 @@ MafWebProgressListener.prototype = {
      aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
   },
 
-  /**
-   * Forwards the status notification to the associated event listener.
-   */
+  // nsIWebProgressListener
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
     // Trap exceptions to ensure the wrapped object gets called
     try {
@@ -180,8 +164,6 @@ MafWebProgressListener.prototype = {
     this._wrappedObject.onStatusChange(aWebProgress, aRequest, aStatus,
      aMessage);
   },
-
-  // --- Private methods and properties ---
 
   _mafEventListener: null,
   _wrappedObject: null,

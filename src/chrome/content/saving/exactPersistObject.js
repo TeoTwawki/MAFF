@@ -47,13 +47,12 @@ function ExactPersist() {
 }
 
 ExactPersist.prototype = {
+  QueryInterface: XPCOMUtils.generateQI([
+    Ci.nsICancelable,
+    Ci.nsIWebBrowserPersist,
+  ]),
 
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIWebBrowserPersist]),
-
-  // --- nsICancelable interface functions ---
-
+  // nsICancelable
   cancel: function(aReason) {
     this.result = aReason;
     if (this._persistJob) {
@@ -61,25 +60,30 @@ ExactPersist.prototype = {
     }
   },
 
-  // --- nsIWebBrowserPersist interface functions ---
-
+  // nsIWebBrowserPersist
   persistFlags: 0,
 
+  // nsIWebBrowserPersist
   currentState: Ci.nsIWebBrowserPersist.PERSIST_STATE_READY,
 
+  // nsIWebBrowserPersist
   result: Cr.NS_OK,
 
+  // nsIWebBrowserPersist
   progressListener: null,
 
+  // nsIWebBrowserPersist
   saveURI: function(aURI, aCacheKey, aReferrer, aPostData, aExtraHeaders,
    aFile, aPrivacyContext) {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
+  // nsIWebBrowserPersist
   saveChannel: function(aChannel, aFile) {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
+  // nsIWebBrowserPersist
   saveDocument: function(aDocument, aFile, aDataPath, aOutputContentType,
    aEncodingFlags, aWrapColumn) {
     // Pass exceptions to the progress listener
@@ -131,11 +135,10 @@ ExactPersist.prototype = {
     }
   },
 
+  // nsIWebBrowserPersist
   cancelSave: function() {
     this.cancel(Cr.NS_BINDING_ABORTED);
   },
-
-  // --- Additional public methods and properties ---
 
   /**
    * If set to true, objects and media files will be included when saving.
@@ -152,8 +155,7 @@ ExactPersist.prototype = {
    */
   persistBundle: null,
 
-  // --- Callback functions for the worker object ---
-
+  // JobEventListener
   onJobProgressChange: function(aJob, aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
     // Simply propagate the event to our listener
@@ -164,11 +166,13 @@ ExactPersist.prototype = {
     }
   },
 
+  // JobEventListener
   onJobComplete: function(aJob, aResult) {
     this.result = aResult;
     this._onComplete();
   },
 
+  // JobEventListener
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
     // Propagate this download event unaltered
     if (this.progressListener) {
@@ -176,8 +180,6 @@ ExactPersist.prototype = {
        aMessage);
     }
   },
-
-  // --- Private methods and properties ---
 
   _onComplete: function() {
     // Never report the finished condition more than once

@@ -105,8 +105,6 @@ var ConvertDialog = {
    */
   _conversionFinished: false,
 
-  // --- Interactive dialog functions and events ---
-
   /**
    * Create the elements to be displayed.
    */
@@ -596,8 +594,6 @@ var ConvertDialog = {
       textboxElement.dispatchEvent(event);
     }
   },
-
-  // --- Dialog support functions ---
 
   /**
    * Returns the label of the wizard button identified by the given name,

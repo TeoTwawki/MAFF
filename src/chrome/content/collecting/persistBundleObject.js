@@ -46,9 +46,6 @@ function PersistBundle() {
 }
 
 PersistBundle.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * Array of PersistResource objects contained in this bundle. The element with
    *  index 0 is considered the root resource, while other elements are
@@ -172,8 +169,6 @@ PersistBundle.prototype = {
       resource.writeToFile();
     }
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Associates the values of the referenceUri property with arrays containing

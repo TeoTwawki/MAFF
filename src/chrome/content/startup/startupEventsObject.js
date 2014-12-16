@@ -100,13 +100,7 @@ var StartupEvents = {
     StartupInitializer.terminate();
   },
 
-  // --- nsIObserver interface functions ---
-
-  /**
-   * This function handles all the notifications related to application startup
-   *  and shutdown. The aTopic argument is used to distinguish between
-   *  notifications.
-   */
+  // nsIObserver
   observe: function(aSubject, aTopic, aData) {
     switch (aTopic) {
       case "profile-after-change":          this.afterProfileChange(); break;
@@ -115,8 +109,6 @@ var StartupEvents = {
       case "xpcom-shutdown":                this.onAppShutdown();      break;
     }
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Array containing the observer notification topics handled by this object.

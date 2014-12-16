@@ -74,12 +74,11 @@ function ExactPersistParsedJob(aEventListener, aResource) {
 }
 
 ExactPersistParsedJob.prototype = {
-  // Derive from the Job class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: Job.prototype,
 
-  // --- Public methods and properties ---
+  QueryInterface: XPCOMUtils.generateQI([
+    Ci.nsIDocumentEncoderNodeFixup,
+  ]),
 
   /**
    * PersistResource object associated with this parsed document.
@@ -173,8 +172,6 @@ ExactPersistParsedJob.prototype = {
     // Store the actual content to be saved
     this._targetFragment = this._getEmptyScript(aScriptType);
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Unique identifier used to distinguish this job from others that may be
@@ -768,8 +765,7 @@ ExactPersistParsedJob.prototype = {
      "");
   },
 
-  // --- Overridden Job methods ---
-
+  // Job
   _executeStart: function() {
     // When all the unparsed resources have been saved, we can save this parsed
     //  resource while fixing references to other resources
@@ -841,10 +837,12 @@ ExactPersistParsedJob.prototype = {
     this._notifyCompletion();
   },
 
+  // Job
   _executeCancel: function(aReason) {
     // No special action is required since this object works synchronously
   },
 
+  // Job
   _executeDispose: function(aReason) {
     // Free the cross-references previously set in DOM nodes
     for (var [, reference] in Iterator(this.references)) {
@@ -862,12 +860,7 @@ ExactPersistParsedJob.prototype = {
     }
   },
 
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIDocumentEncoderNodeFixup]),
-
-  // --- nsIDocumentEncoderNodeFixup interface functions ---
-
+  // nsIDocumentEncoderNodeFixup
   fixupNode: function(aNode, aSerializeCloneKids) {
     // If an instruction to replace the child elements with other content is
     //  present on the parent node, return a different node in place of this
@@ -1003,8 +996,6 @@ ExactPersistParsedJob.prototype = {
       }
     ).replace(/--/, "\\2D\\2D ");
   },
-
-  // --- Reference tables ---
 
   _eventNames: [
     "onabort",

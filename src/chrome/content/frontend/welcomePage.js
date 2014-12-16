@@ -50,8 +50,6 @@ var WelcomePage = {
    */
   _beforeUnloadProcessed: false,
 
-  // --- Interactive page functions and events ---
-
   /**
    * Initializes the controls on the page.
    */
@@ -121,8 +119,6 @@ var WelcomePage = {
       }
     }
   },
-
-  // --- Dialog support functions ---
 
   /**
    * Returns true if the application is executing on Windows.

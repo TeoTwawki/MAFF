@@ -110,8 +110,6 @@ FileAssociationsCreator.prototype = {
     this._createWindowsFileExtensionAssociation(".mhtml", mhtmlProgID);
   },
 
-  // --- String support functions ---
-
   /**
    * Returns the string whose key is specified from the object's string bundle.
    */
@@ -124,8 +122,6 @@ FileAssociationsCreator.prototype = {
   _fileAssociationsStrBundle: Cc["@mozilla.org/intl/stringbundle;1"]
    .getService(Ci.nsIStringBundleService).createBundle(
    "chrome://maf/locale/fileAssociationsObject.properties"),
-
-  // --- File association support functions ---
 
   /**
    * Returns true if the host application is SeaMonkey.

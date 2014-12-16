@@ -48,13 +48,9 @@ function ExactPersistInitialJob(aEventListener, aTargetDataFolder) {
 }
 
 ExactPersistInitialJob.prototype = {
-  // Derive from the Job class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: Job.prototype,
 
-  // --- Overridden Job methods ---
-
+  // Job
   _executeStart: function() {
     // Delete the folder where the additional files will be saved
     if (this._targetDataFolder.exists()) {
@@ -64,11 +60,10 @@ ExactPersistInitialJob.prototype = {
     this._notifyCompletion();
   },
 
+  // Job
   _executeCancel: function(aReason) {
     // No special action is required since this object works synchronously
   },
-
-  // --- Private methods and properties ---
 
   _targetDataFolder: null,
 }

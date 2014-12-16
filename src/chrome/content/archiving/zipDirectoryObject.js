@@ -46,9 +46,6 @@ function ZipDirectory(aZipCreator, aDirectory, aZipEntry, aParent) {
 }
 
 ZipDirectory.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * Stores the directory into the archive. If the directory and its
    *  subdirectories don't contain any file, no ZIP entry is created.
@@ -74,8 +71,6 @@ ZipDirectory.prototype = {
       }
     }
   },
-
-  // --- Private methods and properties ---
 
   /** Constants */
   PR_USEC_PER_MSEC: 1000,

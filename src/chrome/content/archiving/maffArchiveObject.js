@@ -53,18 +53,15 @@ function MaffArchive(aFile) {
 }
 
 MaffArchive.prototype = {
-  // Derive from the Archive class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: Archive.prototype,
 
-  // --- Overridden Archive methods ---
-
+  // Archive
   load: function() {
     // Indicate that the file contains other saved pages that must be preserved
     this._createNew = false;
   },
 
+  // Archive
   extractAll: function() {
     // Initialize the converter required to call methods accepting entry names
     var converter = null;
@@ -170,11 +167,10 @@ MaffArchive.prototype = {
     }
   },
 
+  // Archive
   _newPage: function() {
     return new MaffArchivePage(this);
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Returns true if the host application runs the Gecko 10 platform or later.

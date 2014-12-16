@@ -42,9 +42,6 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  * Handles the integration with the address bar and the status bar.
  */
 var MafInterfaceOverlay = {
-
-  // --- Interactive overlay functions and events ---
-
   /**
    * Initializes the overlay by creating the appropriate event listeners that
    *  detect the changes in the currently selected page. For more information,
@@ -126,8 +123,6 @@ var MafInterfaceOverlay = {
       openUILink(href, aEvent);
     }
   },
-
-  // --- Interface state check functions ---
 
   /**
    * Object with the metadata about the current page.
@@ -318,8 +313,6 @@ var MafInterfaceOverlay = {
      Ci.nsIThread.DISPATCH_NORMAL);
   },
 
-  // --- Overlay support functions ---
-
   _archiveInfoPopup: null,
   _archiveInfoUrlbarButton: null,
   _originalUrlDescriptionValue: null,
@@ -352,22 +345,16 @@ var MafInterfaceOverlay = {
     aNotification.insertBefore(label, aNotification.firstChild);
   },
 
-  // --- Progress listener ---
-
   /**
    * This progress listener detects changes in the current location. For more
    *  information, see <https://developer.mozilla.org/en/nsIWebProgress>
    *  (retrieved 2009-08-30).
    */
   webProgressListener: {
-
-    // --- nsISupports interface functions ---
-
-    QueryInterface: XPCOMUtils.generateQI([Ci.nsIWebProgressListener,
-                                           Ci.nsISupportsWeakReference]),
-
-    // --- nsIWebProgressListener interface functions ---
-
+    QueryInterface: XPCOMUtils.generateQI([
+      Ci.nsIWebProgressListener,
+      Ci.nsISupportsWeakReference,
+    ]),
     onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) { },
     onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
      aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
@@ -385,13 +372,9 @@ var MafInterfaceOverlay = {
    *  interface elements in the main browser window.
    */
   prefObserver: {
-
-    // --- nsISupports interface functions ---
-
-    QueryInterface: XPCOMUtils.generateQI([Ci.nsIObserver]),
-
-    // --- nsIObserver interface functions ---
-
+    QueryInterface: XPCOMUtils.generateQI([
+      Ci.nsIObserver,
+    ]),
     observe: function(aSubject, aTopic, aData) {
       // Refresh the visibility of the icons
       MafInterfaceOverlay._checkArchiveInfoIcons();

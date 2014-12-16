@@ -49,12 +49,7 @@ function MhtmlArchivePage(aArchive) {
 }
 
 MhtmlArchivePage.prototype = {
-  // Derive from the ArchivePage class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: ArchivePage.prototype,
-
-  // --- Public methods and properties ---
 
   /**
    * Stores the page into the archive file asynchronously. When the operation is
@@ -114,8 +109,6 @@ MhtmlArchivePage.prototype = {
     // Parse the date from the "Date" header
     this.dateArchived = headers.date || null;
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Returns a MimePart object containing the entire encoded MHMTL message

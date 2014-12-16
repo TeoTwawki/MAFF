@@ -55,9 +55,6 @@ function CandidateFinder() {
 }
 
 CandidateFinder.prototype = {
-
-  // --- Public methods and properties ---
-
   /**
    * String representing the source format of the files to be converted.
    *
@@ -119,8 +116,6 @@ CandidateFinder.prototype = {
       yield item;
     }
   },
-
-  // --- Private methods and properties ---
 
   /**
    * This generator function yields the Candidate objects corresponding to the

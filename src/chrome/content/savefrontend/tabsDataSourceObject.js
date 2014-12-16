@@ -61,12 +61,7 @@ function TabsDataSource(aBrowserWindow) {
 }
 
 TabsDataSource.prototype = {
-  // Derive from the DataSourceWrapper class in a Mozilla-specific way. See also
-  //  <https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Inheritance>
-  //  (retrieved 2009-02-01).
   __proto__: DataSourceWrapper.prototype,
-
-  // --- Overridden DataSourceWrapper methods and properties ---
 
   /**
    * Note: These strings are converted to actual RDF resources by the base class
@@ -87,8 +82,6 @@ TabsDataSource.prototype = {
     originalUrl:     "urn:maf:vocabulary#originalUrl",
     checked:         "urn:maf:vocabulary#checked",
   },
-
-  // --- Public methods and properties ---
 
   /**
    * Getter for an RDF resource representing a window.
@@ -130,8 +123,7 @@ TabsDataSource.prototype = {
     return tabsArray;
   },
 
-  // --- Overridden nsIRDFDataSource interface functions ---
-
+  // nsIRDFDataSource
   Change: function(aSource, aProperty, aOldTarget, aNewTarget) {
     // Only allow changing the "checked" property
     if (aProperty != this.resources.checked) {
@@ -170,8 +162,6 @@ TabsDataSource.prototype = {
        this._rdfBool(!allTabsSelected));
     }
   },
-
-  // --- Private methods and properties ---
 
   /**
    * Populates the data source with the actual data derived from the open tabs

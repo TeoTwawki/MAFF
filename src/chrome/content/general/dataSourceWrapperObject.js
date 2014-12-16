@@ -93,8 +93,9 @@ function DataSourceWrapper(aInnerDataSource) {
 }
 
 DataSourceWrapper.prototype = {
-
-  // --- Public methods and properties ---
+  QueryInterface: XPCOMUtils.generateQI([
+    Ci.nsIRDFDataSource,
+  ]),
 
   /**
    * Collection of RDF resource objects that form the common subjects and the
@@ -129,33 +130,29 @@ DataSourceWrapper.prototype = {
     this.Change(aSource, aProperty, oldRdfLiteral, newRdfLiteral);
   },
 
-  // --- nsISupports interface functions ---
-
-  QueryInterface: XPCOMUtils.generateQI([Ci.nsIRDFDataSource]),
-
-  // --- nsIRDFDataSource interface functions ---
-
+  // nsIRDFDataSource
   Assert: function(aSource, aProperty, aTarget, aTruthValue) {
     // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
+  // nsIRDFDataSource
   Change: function(aSource, aProperty, aOldTarget, aNewTarget) {
     // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
+  // nsIRDFDataSource
   Move: function(aOldSource, aNewSource, aProperty, aTarget) {
     // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
+  // nsIRDFDataSource
   Unassert: function(aSource, aProperty, aTarget) {
     // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
-
-  // --- Protected methods and properties ---
 
   /**
    * Returns an RDF literal containing either "true" or "false".

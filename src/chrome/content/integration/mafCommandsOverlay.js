@@ -44,8 +44,6 @@ var MafCommandsOverlay = {
    */
   menusWithEvents: [],
 
-  // --- Interactive overlay functions and events ---
-
   /**
    * Initializes the overlay by creating some DOM elements dynamically and
    *  creating the appropriate event listeners. For more information, see
@@ -277,8 +275,6 @@ var MafCommandsOverlay = {
 
     });
   },
-
-  // --- Command implementation ---
 
   /**
    * Displays the "Browse open archives" window.
