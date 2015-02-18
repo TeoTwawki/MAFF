@@ -43,11 +43,11 @@ var MafMultipleTabOverlay = {
    * Saves the selected tabs in an archive.
    */
   saveSelectedTabsInArchive: function() {
-    // Get the list of browser elements associated with the selected tabs
+    // Get the list of browser elements associated with the selected tabs.
     var selectedTabs = MultipleTabService.getSelectedTabs().map(function(tab) {
       return tab.linkedBrowser;
     });
-    // Use the global saveDocument function with the special MAF parameters
+    // Use the global saveDocument function with the special MAF parameters.
     saveDocument(getBrowser().selectedBrowser.contentDocument,
      {mafAskSaveArchive: true, mafSaveTabs: selectedTabs});
   },

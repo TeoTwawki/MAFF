@@ -37,8 +37,8 @@
 
 /**
  * Implements a content policy observer that keeps track of which content is
- *  actually loaded in every document. This allows the exact persist component
- *  to save only content that is actually required to render the page.
+ * actually loaded in every document. This allows the exact persist component to
+ * save only content that is actually required to render the page.
  */
 
 var Ci = Components.interfaces;
@@ -76,7 +76,7 @@ MafContentPolicy.prototype = {
     }
 
     // Do not handle content that we wouldn't save as external resources in any
-    //  case, for example "data:" URIs.
+    // case, for example "data:" URIs.
     if (gNetUtil.URIChainHasFlags(aContentLocation,
      Ci.nsIProtocolHandler.URI_NON_PERSISTABLE)) {
       return Ci.nsIContentPolicy.ACCEPT;

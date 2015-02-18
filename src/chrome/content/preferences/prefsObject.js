@@ -36,13 +36,13 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
- * Defines the Prefs global object, that can be used to retrieve the values
- *  of all the MAF user customizable options. The values are managed by
- *  the standard preferences system, and can be modified using the hosting
- *  application's interface or the extension's preferences dialog.
+ * Defines the Prefs global object, that can be used to retrieve the values of
+ * all the MAF user customizable options. The values are managed by the standard
+ * preferences system, and can be modified using the hosting application's
+ * interface or the extension's preferences dialog.
  *
  * When adding a preference here, also update "prefsDialog.xul" and
- *  "prefsDefaults.js" accordingly.
+ * "prefsDefaults.js" accordingly.
  */
 var Prefs = {
   /*
@@ -71,7 +71,7 @@ var Prefs = {
 
   /**
    * Semicolon-separated list of possible suffixes for the folder containing
-   *  support data files associated with a complete page saved as HTML.
+   * support data files associated with a complete page saved as HTML.
    */
   get convertDataFolderSuffixes() {
     return this.prefBranchForMaf.getCharPref("advanced.datafoldersuffixes");
@@ -82,14 +82,14 @@ var Prefs = {
    */
   get convertDataFolderSuffixesArray() {
     // Remove spaces near separators and filter out empty elements. Spaces are
-    //  not removed if this extension is executed in Firefox 3.0.
+    // not removed if this extension is executed in Firefox 3.0.
     return this.convertDataFolderSuffixes.split(";").map(String.trim ||
      function(e) e).filter(function(e) e);
   },
 
   /**
    * Returns true if a notification bar with page details should be displayed
-   *  when an archived page is displayed.
+   * when an archived page is displayed.
    */
   get interfaceInfoBar() {
     return this.prefBranchForMaf.getBoolPref("interface.info.bar");
@@ -97,7 +97,7 @@ var Prefs = {
 
   /**
    * Returns true if an icon should be displayed in the location bar to access
-   *  page details when an archived page is displayed.
+   * page details when an archived page is displayed.
    */
   get interfaceInfoIcon() {
     return this.prefBranchForMaf.getBoolPref("interface.info.icon");
@@ -133,7 +133,7 @@ var Prefs = {
 
   /**
    * Returns true if MAF menu items related to tab saving should be shown in the
-   *  page context menu.
+   * page context menu.
    */
   get interfaceMenuPageContextForTabs() {
     return this.prefBranchForMaf.getBoolPref("interface.menu.pagecontext.tabs");
@@ -148,8 +148,8 @@ var Prefs = {
 
   /**
    * Returns false only if a previous version of the extension was installed on
-   *  the same profile, indicating that the header of the welcome page should be
-   *  changed accordingly.
+   * the same profile, indicating that the header of the welcome page should be
+   * changed accordingly.
    */
   get otherDisplayWelcome() {
     return this.prefBranchForMaf.getBoolPref("other.displaywelcome");
@@ -170,7 +170,7 @@ var Prefs = {
 
   /**
    * Returns true if the integrated "Save Complete" code should be used to
-   *  preserve scripts and source when saving complete web page contents.
+   * preserve scripts and source when saving complete web page contents.
    */
   get saveKeepScripts() {
     return this.prefBranchForMaf.getBoolPref("save.keepscripts");
@@ -178,7 +178,7 @@ var Prefs = {
 
   /**
    * Returns true if extended metadata, like the browser's current text zoom
-   *  and scroll position, must be saved in new archives.
+   * and scroll position, must be saved in new archives.
    */
   get saveMetadataExtended() {
     return this.prefBranchForMaf.getBoolPref("advanced.maff.extendedmetadata");
@@ -190,15 +190,16 @@ var Prefs = {
 
   /**
    * Returns the method to use when saving pages from the web to a local folder,
-   *  before archiving the saved elements.
+   * before archiving the saved elements.
    *
    * Possible values:
-   *   SAVEMETHOD_SNAPSHOT - (default) Take a snapshot of the page, using either
-   *                          the ExactPersist component or the integrated "Save
-   *                          Complete" code.
-   *   SAVEMETHOD_STANDARD - Use the browser's native "save complete web page"
-   *                          functionality.
-   *   (other)             - If the user has customized the preference.
+   *   SAVEMETHOD_SNAPSHOT (default)
+   *     Take a snapshot of the page, using either the ExactPersist component or
+   *     the integrated "Save Complete" code.
+   *   SAVEMETHOD_STANDARD
+   *     Use the browser's native "save complete web page" functionality.
+   *   (other)
+   *     If the user has customized the preference.
    */
   get saveMethod() {
     return this.prefBranchForMaf.getCharPref("save.method");
@@ -213,11 +214,15 @@ var Prefs = {
    * Returns the compression level to use when saving files in a MAFF archive.
    *
    * Possible values:
-   *   MAFFCOMPRESSION_DYNAMIC  - (default) Use maximum compression for all
-   *                               files, but do not re-compress media files.
-   *   MAFFCOMPRESSION_BEST     - Use maximum compression for all files.
-   *   MAFFCOMPRESSION_NONE     - Store all the files uncompressed.
-   *   (other)                  - If the user has customized the preference.
+   *   MAFFCOMPRESSION_DYNAMIC
+   *     (default) Use maximum compression for all files, but do not re-compress
+   *     media files.
+   *   MAFFCOMPRESSION_BEST
+   *     Use maximum compression for all files.
+   *   MAFFCOMPRESSION_NONE
+   *     Store all the files uncompressed.
+   *   (other)
+   *     If the user has customized the preference.
    *
    * This preference is not displayed in the preferences dialog.
    */
@@ -233,18 +238,21 @@ var Prefs = {
    * Determines how the default file name in the "Save As" dialogs is chosen.
    *
    * Possible values:
-   *   NAMINGSTRATEGY_PAGETITLE - (default) Use the title of the document
-   *                               instead of the source file name if possible.
-   *   NAMINGSTRATEGY_STANDARD  - Use the browser's default behavior.
-   *   (other)                  - If the user has customized the preference.
+   *   NAMINGSTRATEGY_PAGETITLE (default)
+   *     Use the title of the document instead of the source file name if
+   *     possible.
+   *   NAMINGSTRATEGY_STANDARD
+   *     Use the browser's default behavior.
+   *   (other)
+   *     If the user has customized the preference.
    */
   get saveNamingStrategy() {
     return this.prefBranchForMaf.getCharPref("save.namingstrategy");
   },
 
   /**
-   * Returns true if the ".mhtml" file extension should be preferred over
-   *  ".mht" in the file filters for the "Save As" dialogs.
+   * Returns true if the ".mhtml" file extension should be preferred over ".mht"
+   * in the file filters for the "Save As" dialogs.
    */
   get saveUseMhtmlExtension() {
     return this.prefBranchForMaf.getBoolPref(
@@ -253,7 +261,7 @@ var Prefs = {
 
   /**
    * Returns true if the character set specified in MAFF files should be ignored
-   *  instead of being enforced when the page is displayed.
+   * instead of being enforced when the page is displayed.
    */
   get openMaffIgnoreCharacterSet() {
     return this.prefBranchForMaf.getBoolPref(
@@ -262,8 +270,8 @@ var Prefs = {
 
   /**
    * Returns true if the contents of MAFF archives should be accessed directly
-   *  using the "jar:" protocol instead of extracting the archive to a
-   *  temporary folder and using the "file:" protocol.
+   * using the "jar:" protocol instead of extracting the archive to a
+   * temporary folder and using the "file:" protocol.
    *
    * The "jar:" protocol may be faster but using it may lock the archive file.
    */
@@ -275,15 +283,15 @@ var Prefs = {
    * Returns the absolute path of the temporary folder.
    */
   get tempFolder() {
-    // Get the value as an Unicode string
+    // Get the value as an Unicode string.
     var tempFolderPath = this.prefBranchForMaf.getComplexValue(
      "advanced.temp.folder", Ci.nsISupportsString).data;
-    // If the string is empty, use the default path, that is a subdirectory
-    //  of the system temporary directory
+    // If the string is empty, use the default path, that is a subdirectory of
+    // the system temporary directory.
     if (!tempFolderPath) {
       tempFolderPath = this._defaultTempFolderPath;
     }
-    // Return the absolute file path
+    // Return the absolute file path.
     return tempFolderPath;
   },
 
@@ -314,21 +322,21 @@ var Prefs = {
 
   /**
    * Returns the default temporary folder path, located in the system temporary
-   *  directory and different for each user profile.
+   * directory and different for each user profile.
    */
   get _defaultTempFolderPath() {
     // Since the temporary folder is cleared when the browser exits, we need to
-    //  return a path that is different for each concurrent user. We also want
-    //  the temporary path to be the same for every browsing session of the same
-    //  user, but located in the default temporary directory, thus different if
-    //  the same user profile is accessed from different computers. To ensure
-    //  this, we calculate a path based on the temporary folder, but that
-    //  includes the hash of the user profile path. This is required because on
-    //  some platforms the temporary folder is the same for all users.
+    // return a path that is different for each concurrent user. We also want
+    // the temporary path to be the same for every browsing session of the same
+    // user, but located in the default temporary directory, thus different if
+    // the same user profile is accessed from different computers. To ensure
+    // this, we calculate a path based on the temporary folder, but that
+    // includes the hash of the user profile path. This is required because on
+    // some platforms the temporary folder is the same for all users.
     var profilePath = this._dirService.get("ProfD", Ci.nsIFile).path;
     var tempDir = this._dirService.get("TmpD", Ci.nsIFile);
     tempDir.append("maftemp-" + this._getHexHashMD5(profilePath).slice(0, 8));
-    // Do not recalculate the value the second time this property is read
+    // Do not recalculate the value the second time this property is read.
     delete this._defaultTempFolderPath;
     return (this._defaultTempFolderPath = tempDir.path);
   },
@@ -337,18 +345,18 @@ var Prefs = {
    * Returns a string with the MD5 hash of the specified Unicode string.
    */
   _getHexHashMD5: function(aString) {
-    // Convert the characters to UTF-8 octets
+    // Convert the characters to UTF-8 octets.
     var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
      createInstance(Ci.nsIScriptableUnicodeConverter);
     converter.charset = "UTF-8";
     var octets = converter.convertToByteArray(aString, {});
-    // Calculate the hash of the octets
+    // Calculate the hash of the octets.
     var cryptoHash = Cc["@mozilla.org/security/hash;1"].
      createInstance(Ci.nsICryptoHash);
     cryptoHash.init(Ci.nsICryptoHash.MD5);
     cryptoHash.update(octets, octets.length);
     var hashOctets = cryptoHash.finish(false);
-    // Return the hash as a hexadecimal string
+    // Return the hash as a hexadecimal string.
     return [("0" + hashOctets.charCodeAt(i).toString(16)).slice(-2) for
      (i in hashOctets)].join("");
   },

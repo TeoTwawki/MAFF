@@ -35,12 +35,12 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions
+// Import XPCOMUtils to generate the QueryInterface functions.
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
  * This object implements nsIWebBrowserPersist, and allows displaying the
- *  current download progress and status in the browser's download window.
+ * current download progress and status in the browser's download window.
  */
 function MafArchivePersist(aSaveBrowsers, aArchiveType) {
   this._saveBrowsers = aSaveBrowsers;
@@ -87,9 +87,9 @@ MafArchivePersist.prototype = {
   // nsIWebBrowserPersist
   saveDocument: function(aDocument, aFile, aDataPath, aOutputContentType,
    aEncodingFlags, aWrapColumn) {
-    // Pass exceptions to the progress listener
+    // Pass exceptions to the progress listener.
     try {
-      // Operation in progress
+      // Operation in progress.
       this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_SAVING;
       if (this.progressListener) {
         this.progressListener.onStateChange(null, null,
@@ -97,13 +97,13 @@ MafArchivePersist.prototype = {
          Ci.nsIWebProgressListener.STATE_IS_NETWORK, Cr.NS_OK);
       }
 
-      // Find the local file to save to
+      // Find the local file to save to.
       var targetFile = aFile.QueryInterface(Ci.nsIFileURL).file;
 
-      // Create a save job and listen to its events
+      // Create a save job and listen to its events.
       var saveJob = new SaveJob(this);
 
-      // Save the selected pages or the given document in the web archive
+      // Save the selected pages or the given document in the web archive.
       if (this._saveBrowsers) {
         saveJob.addJobsFromBrowsers(this._saveBrowsers, targetFile,
          this._archiveType);
@@ -113,17 +113,17 @@ MafArchivePersist.prototype = {
       saveJob.start();
 
       // If the start succeeded, keep a reference to the save job to allow
-      //  stopping it
+      // stopping it.
       this._saveJob = saveJob;
     } catch(e) {
       Cu.reportError(e);
-      // Preserve the result code of XPCOM exceptions
+      // Preserve the result code of XPCOM exceptions.
       if (e instanceof Ci.nsIXPCException) {
         this.result = e.result;
       } else {
         this.result = Cr.NS_ERROR_FAILURE;
       }
-      // Report that the download is finished to the listener
+      // Report that the download is finished to the listener.
       this._onComplete();
     }
   },
@@ -136,7 +136,7 @@ MafArchivePersist.prototype = {
   // JobEventListener
   onJobProgressChange: function(aJob, aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
-    // Simply propagate the event to our listener
+    // Simply propagate the event to our listener.
     if (this.progressListener) {
       this.progressListener.onProgressChange(aWebProgress, aRequest,
        aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
@@ -152,7 +152,7 @@ MafArchivePersist.prototype = {
 
   // JobEventListener
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
-    // Propagate this download event unaltered
+    // Propagate this download event unaltered.
     if (this.progressListener) {
       this.progressListener.onStatusChange(aWebProgress, aRequest, aStatus,
        aMessage);
@@ -160,11 +160,11 @@ MafArchivePersist.prototype = {
   },
 
   _onComplete: function() {
-    // Never report the finished condition more than once
+    // Never report the finished condition more than once.
     if (this.currentState != Ci.nsIWebBrowserPersist.PERSIST_STATE_FINISHED) {
-      // Operation completed
+      // Operation completed.
       this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_FINISHED;
-      // Signal success or failure in the archiving process
+      // Signal success or failure in the archiving process.
       if (this.progressListener) {
         this.progressListener.onStateChange(null, null,
          Ci.nsIWebProgressListener.STATE_STOP |

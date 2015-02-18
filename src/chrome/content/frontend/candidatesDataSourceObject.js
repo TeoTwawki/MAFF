@@ -35,24 +35,24 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions
+// Import XPCOMUtils to generate the QueryInterface functions.
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
  * Provides an RDF data source that represents the files that are candidates for
- *  being converted to a different format. For each candidate, a selection state
- *  is available, along with other state properties.
+ * being converted to a different format. For each candidate, a selection state
+ * is available, along with other state properties.
  *
  * This class derives from DataSourceWrapper. See the DataSourceWrapper
- *  documentation for details.
+ * documentation for details.
  */
 function CandidatesDataSource(aBrowserWindow) {
-  // Construct the base class wrapping an in-memory RDF data source
+  // Construct the base class wrapping an in-memory RDF data source.
   DataSourceWrapper.call(this,
    Cc["@mozilla.org/rdf/datasource;1?name=in-memory-datasource"].
    createInstance(Ci.nsIRDFDataSource));
 
-  // Initialize the data
+  // Initialize the data.
   this.candidates = [];
   this.counts = {
     total: 0,
@@ -69,8 +69,8 @@ CandidatesDataSource.prototype = {
 
   /**
    * Note: These strings are converted to actual RDF resources by the base class
-   *  as soon as this data source is constructed, so GetResource must not be
-   *  called. See the DataSourceWrapper documentation for details.
+   * as soon as this data source is constructed, so GetResource must not be
+   * called. See the DataSourceWrapper documentation for details.
    */
   resources: {
     // Subjects and objects
@@ -121,18 +121,18 @@ CandidatesDataSource.prototype = {
 
   // nsIRDFDataSource
   Change: function(aSource, aProperty, aOldTarget, aNewTarget) {
-    // Propagate the change to the wrapped object
+    // Propagate the change to the wrapped object.
     this._wrappedObject.Change(aSource, aProperty, aOldTarget, aNewTarget);
 
     // If a property of a candidate changed
     if (aSource != this.resources.candidates) {
-      // Find the name of the countable property associated with the resource
+      // Find the name of the countable property associated with the resource.
       for (var [, propertyName] in
        Iterator(["checked", "obstructed", "converted", "failed"])) {
         if (aProperty == this.resources[propertyName]) {
-          // Update the associated counter appropriately
+          // Update the associated counter appropriately.
           if (aNewTarget.Value != aOldTarget.Value) {
-            // False may be expressed with an empty string or the word "false"
+            // False may be expressed with an empty string or the word "false".
             if (aNewTarget.Value == "" || aNewTarget.Value == "false") {
               this.counts[propertyName]--;
             } else {
@@ -144,12 +144,12 @@ CandidatesDataSource.prototype = {
       }
     }
 
-    // Continue only if the "checked" property has changed
+    // Continue only if the "checked" property has changed.
     if (aProperty != this.resources.checked) {
       return;
     }
 
-    // If the selection change is on a container, update the child elements
+    // If the selection change is on a container, update the child elements.
     if (aSource == this.resources.candidates) {
       var candidateSequence = this._rdfSequence(aSource);
       var candidateEnum = candidateSequence.GetElements();
@@ -157,17 +157,17 @@ CandidatesDataSource.prototype = {
         var candidateResource = candidateEnum.getNext();
         // If the item is not disabled
         if (!this.getLiteralValue(candidateResource, this.resources.disabled)) {
-          // Change the selection on the element and update the counters
+          // Change the selection on the element and update the counters.
           this.replaceLiteral(candidateResource, this.resources.checked,
            aNewTarget.Value, true);
         }
       }
     } else {
-      // If the selection change is on a child element, update the container
+      // If the selection change is on a child element, update the container.
       var candidatesResource = this.resources.candidates;
       var allCandidatesSelected = (this.counts.checked == this.counts.total);
-      // Change the selection on the element, by removing the assertion that
-      //  is no longer true and adding the new assertion
+      // Change the selection on the element, by removing the assertion that is
+      // no longer true and adding the new assertion.
       this._wrappedObject.Assert(candidatesResource, this.resources.checked,
        this._rdfBool(allCandidatesSelected), true);
       this._wrappedObject.Unassert(candidatesResource, this.resources.checked,
@@ -179,21 +179,21 @@ CandidatesDataSource.prototype = {
    * Initializes the data source with the basic data needed to host candidates.
    */
   _initDataSource: function() {
-    // Shorthand for objects commonly used throughout this function
+    // Shorthand for objects commonly used throughout this function.
     var ds = this._wrappedObject;
     var res = this.resources;
 
     // Create the root of the tree, that has a single child pointing to the
-    //  list of candidates. This is required for properly handling the recursive
-    //  XUL template generation that is used to create XUL trees.
+    // list of candidates. This is required for properly handling the recursive
+    // XUL template generation that is used to create XUL trees.
     ds.Assert(res.root, res.instanceOf, res.root, true);
     ds.Assert(res.root, res.child, res.candidates, true);
 
-    // Create the "candidates" resource, which is an RDF container
+    // Create the "candidates" resource, which is an RDF container.
     var candidatesSequence = this._rdfSequence(res.candidates);
     ds.Assert(res.candidates, res.instanceOf, res.candidates, true);
 
-    // Set additional properties of the "candidates" resource 
+    // Set additional properties of the "candidates" resource.
     ds.Assert(res.candidates, res.checked, this._rdfBool(true), true);
     ds.Assert(res.candidates, res.disabled, this._rdf.GetLiteral(""), true);
     ds.Assert(res.candidates, res.obstructed, this._rdf.GetLiteral(""), true);
@@ -207,19 +207,19 @@ CandidatesDataSource.prototype = {
    * Adds a candidate to the data source.
    */
   addCandidate: function(aCandidate) {
-    // Shorthand for objects commonly used throughout this function
+    // Shorthand for objects commonly used throughout this function.
     var ds = this._wrappedObject;
     var res = this.resources;
 
-    // Determine the index of the new candidate and retrieve its RDF resource
+    // Determine the index of the new candidate and retrieve its RDF resource.
     var candidateIndex = this.candidates.length;
     var candidateResource = this.resourceForCandidate(candidateIndex);
 
-    // Set the internal index in the array as an RDF integer
+    // Set the internal index in the array as an RDF integer.
     ds.Assert(candidateResource, res.internalIndex,
      this._rdf.GetIntLiteral(candidateIndex), true);
 
-    // Set the candidate properties as RDF literals
+    // Set the candidate properties as RDF literals.
     ds.Assert(candidateResource, res.sourceName,
      this._rdf.GetLiteral(aCandidate.location.source.leafName), true);
     if (aCandidate.dataFolderLocation && aCandidate.dataFolderLocation.source) {
@@ -239,7 +239,7 @@ CandidatesDataSource.prototype = {
     }
 
     // Set the candidate state properties as RDF literals. Candidates that have
-    //  already been converted are disabled.
+    // already been converted are disabled.
     ds.Assert(candidateResource, res.checked, this._rdfBool(true), true);
     ds.Assert(candidateResource, res.disabled, this._rdf.GetLiteral(
      aCandidate.obstructed ? "disabled" : ""), true);
@@ -251,17 +251,17 @@ CandidatesDataSource.prototype = {
     ds.Assert(candidateResource, res.converted, this._rdf.GetLiteral(""), true);
     ds.Assert(candidateResource, res.failed, this._rdf.GetLiteral(""), true);
 
-    // Add the "candidate" resource to the parent container
+    // Add the "candidate" resource to the parent container.
     this._rdfSequence(res.candidates).AppendElement(candidateResource);
 
-    // Update the counts appropriately
+    // Update the counts appropriately.
     this.counts.total++;
     this.counts.checked++;
     if (aCandidate.obstructed) {
       this.counts.obstructed++;
     }
 
-    // Save the internal index of the candidate and add the item to the array
+    // Save the internal index of the candidate and add the item to the array.
     aCandidate.internalIndex = candidateIndex;
     this.candidates.push(aCandidate);
   },

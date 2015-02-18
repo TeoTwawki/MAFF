@@ -38,9 +38,11 @@
 /**
  * Allows the creation of ZIP archives using a ZIP writer object.
  *
- * @param aFile        The nsIFile of the archive to be created or modified.
- * @param aCreateNew   True if an existing file should be overwritten, or false
- *                      if new items should be appended to the file.
+ * @param aFile
+ *        The nsIFile of the archive to be created or modified.
+ * @param aCreateNew
+ *        True if an existing file should be overwritten, or false if new items
+ *        should be appended to the file.
  */
 function ZipCreator(aFile, aCreateNew) {
   this._file = aFile;
@@ -50,14 +52,16 @@ function ZipCreator(aFile, aCreateNew) {
 ZipCreator.prototype = {
   /**
    * Adds to the archive the contents of a directory, including its
-   *  subdirectories.
+   * subdirectories.
    *
    * The archive is opened automatically, and the dispose method should be
-   *  called to close it afterwards.
+   * called to close it afterwards.
    *
-   * @param aDirectory   nsIFile representing the directory to be added. The
-   *                      leaf name of the directory itself is not used.
-   * @param aZipEntry    Name of the ZIP entry to be created for the directory.
+   * @param aDirectory
+   *        nsIFile representing the directory to be added. The leaf name of the
+   *        directory itself is not used.
+   * @param aZipEntry
+   *        Name of the ZIP entry to be created for the directory.
    */
   addDirectory: function(aDirectory, aZipEntry) {
     this._open();
@@ -88,18 +92,18 @@ ZipCreator.prototype = {
    * Opens the archive file for writing.
    */
   _open: function() {
-    // Create the ZIP writer object
+    // Create the ZIP writer object.
     var zipWriter = Cc["@mozilla.org/zipwriter;1"].
      createInstance(Ci.nsIZipWriter);
 
-    // Add to an existing archive, or create a new archive
+    // Add to an existing archive, or create a new archive.
     var openFlags = this.PR_RDWR | this.PR_CREATE_FILE;
     if (this._createNew) {
       openFlags |= this.PR_TRUNCATE;
     }
     zipWriter.open(this._file, openFlags);
 
-    // Indicate that the archive is opened
+    // Indicate that the archive is opened.
     this._zipWriter = zipWriter;
   },
 

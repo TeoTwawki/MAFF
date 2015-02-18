@@ -39,12 +39,12 @@
  * Provides parsing of an HTML source file into significant fragments.
  *
  * This class derives from SourceFragment. See the SourceFragment documentation
- *  for details.
+ * for details.
  */
 function HtmlSourceFragment(aSourceData, aOptions) {
   SourceFragment.call(this, aSourceData, aOptions);
 
-  // Parse the provided data immediately
+  // Parse the provided data immediately.
   this.parse();
 }
 
@@ -60,14 +60,14 @@ HtmlSourceFragment.prototype = {
        * aBefore   ( [\w\W]*? )
        *
        * Captures all the characters, including newlines, that are present
-       *  before the text recognized by the following expressions.
+       * before the text recognized by the following expressions.
        *
        * Parsing expressions group   ( (?:<...>|<...>|$) )
        *
        * This non-captured group follows aBefore and contains the actual parsing
-       *  expressions. The end of the string is matched explicitly in order for
-       *  the aBefore group to capture the characters after the last part of the
-       *  string that is recognized by the parsing expressions.
+       * expressions. The end of the string is matched explicitly in order for
+       * the aBefore group to capture the characters after the last part of the
+       * string that is recognized by the parsing expressions.
        *
        * aStylesheet   ( <style[^>]*>[\w\W]*?<\/style[^>]*> )
        *
@@ -80,7 +80,7 @@ HtmlSourceFragment.prototype = {
        * aTag   ( <\s*[A-Za-z]+[\w\W]*?> )
        *
        * Recognizes HTML start tags. End tags and namespaced tags are not
-       *  recognized.
+       * recognized.
        */
       /([\w\W]*?)(?:(<style[^>]*>[\w\W]*?<\/style>)|(<!--[\w\W]*?-->)|(<\s*[A-Za-z]+[\w\W]*?>)|$)/gi,
       function(aAll, aBefore, aStylesheet, aComment, aTag) {

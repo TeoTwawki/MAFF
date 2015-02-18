@@ -35,7 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions
+// Import XPCOMUtils to generate the QueryInterface functions.
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
@@ -57,15 +57,15 @@ var EmptyWebProgressListener = {
 
 /**
  * This object implements nsIWebProgressListener2 by forwarding all calls to a
- *  wrapped object. In addition, the interesting state changes are notified to
- *  the specified MAF event listener.
+ * wrapped object. In addition, the interesting state changes are notified to
+ * the specified MAF event listener.
  *
- * @param aMafEventListener   Object whose onDownloadComplete, onDownloadFailed
- *                             or onDownloadProgressChange methods will be
- *                             called.
- * @param wrappedObject       Optional wrapped object implementing
- *                             nsIWebProgressListener2. If omitted, an empty
- *                             implementation will be used.
+ * @param aMafEventListener
+ *        Object whose onDownloadComplete, onDownloadFailed or
+ *        onDownloadProgressChange methods will be called.
+ * @param wrappedObject
+ *        Optional wrapped object implementing nsIWebProgressListener2. If
+ *        omitted, an empty implementation will be used.
  */
 function MafWebProgressListener(aMafEventListener, wrappedObject) {
   if (!wrappedObject) {
@@ -75,14 +75,14 @@ function MafWebProgressListener(aMafEventListener, wrappedObject) {
   this._mafEventListener = aMafEventListener;
   this._wrappedObject = wrappedObject;
 
-  // This function creates a forwarding function for wrappedObject
+  // This function creates a forwarding function for wrappedObject.
   function makeForwardingFunction(functionName) {
     return function() {
       return wrappedObject[functionName].apply(wrappedObject, arguments);
     }
   }
 
-  // Forward all the functions that are not explicitly overrided
+  // Forward all the functions that are not explicitly overrided.
   for (var propertyName in wrappedObject) {
     if (typeof wrappedObject[propertyName] == "function" &&
      !(propertyName in this)) {
@@ -99,15 +99,15 @@ MafWebProgressListener.prototype = {
 
   // nsIWebProgressListener
   onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
-    // Trap exceptions to ensure the wrapped object gets called
+    // Trap exceptions to ensure the wrapped object gets called.
     try {
-      // Suppress all events if the download is thought to be completed
+      // Suppress all events if the download is thought to be completed.
       if (!this._completed) {
-        // If the save operation failed, notify our listener
+        // If the save operation failed, notify our listener.
         if (aStatus != Cr.NS_OK) {
           this._completed = true;
           this._mafEventListener.onDownloadFailed(aStatus);
-        // If the entire save operation is completed, notify our listener
+        // If the entire save operation is completed, notify our listener.
         } else if ((aStateFlags & Ci.nsIWebProgressListener.STATE_STOP) &&
          (aStateFlags & Ci.nsIWebProgressListener.STATE_IS_NETWORK)) {
           this._completed = true;
@@ -118,7 +118,7 @@ MafWebProgressListener.prototype = {
       Cu.reportError(e);
     }
 
-    // Forward the call to the wrapped object
+    // Forward the call to the wrapped object.
     this._wrappedObject.onStateChange(aWebProgress, aRequest, aStateFlags,
      aStatus);
   },
@@ -134,9 +134,9 @@ MafWebProgressListener.prototype = {
   // nsIWebProgressListener2
   onProgressChange64: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
-    // Trap exceptions to ensure the wrapped object gets called
+    // Trap exceptions to ensure the wrapped object gets called.
     try {
-      // Notify our listener
+      // Notify our listener.
       this._mafEventListener.onDownloadProgressChange(aWebProgress, aRequest,
        aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
        aMaxTotalProgress);
@@ -144,23 +144,23 @@ MafWebProgressListener.prototype = {
       Cu.reportError(e);
     }
 
-    // Forward the call to the wrapped object
+    // Forward the call to the wrapped object.
     this._wrappedObject.onProgressChange64(aWebProgress, aRequest,
      aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
   },
 
   // nsIWebProgressListener
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
-    // Trap exceptions to ensure the wrapped object gets called
+    // Trap exceptions to ensure the wrapped object gets called.
     try {
-      // Notify our listener
+      // Notify our listener.
       this._mafEventListener.onDownloadStatusChange(aWebProgress, aRequest,
        aStatus, aMessage);
     } catch(e) {
       Cu.reportError(e);
     }
 
-    // Forward the call to the wrapped object
+    // Forward the call to the wrapped object.
     this._wrappedObject.onStatusChange(aWebProgress, aRequest, aStatus,
      aMessage);
   },

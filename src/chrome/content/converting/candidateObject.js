@@ -35,7 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions
+// Import XPCOMUtils to generate the QueryInterface functions.
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
@@ -75,7 +75,7 @@ Candidate.prototype = {
 
   /**
    * String representing the relative path, with regard to the root search
-   *  location, of the folder where the candidate is located.
+   * location, of the folder where the candidate is located.
    */
   relativePath: "",
 
@@ -101,28 +101,30 @@ Candidate.prototype = {
 
   /**
    * Sets the location of the source, destination and bin files based on the
-   *  given parameters and the current source and destination file formats.
+   * given parameters and the current source and destination file formats.
    *
-   * @param aParentLocation       CandidateLocation object pointing to the
-   *                               parent folder that contains the candidate.
-   * @param aLeafName             File name of the candidate.
-   * @param aDataFolderLeafName   Name of the folder containing the support
-   *                               files required by the main document. If
-   *                               unspecified, no support folder is present.
+   * @param aParentLocation
+   *        CandidateLocation object pointing to the parent folder that contains
+   *        the candidate.
+   * @param aLeafName
+   *        File name of the candidate.
+   * @param aDataFolderLeafName
+   *        Name of the folder containing the support files required by the main
+   *        document. If unspecified, no support folder is present.
    */
   setLocation: function(aParentLocation, aLeafName, aDataFolderLeafName) {
-    // Set the initial location, relevant for the source and bin paths
+    // Set the initial location, relevant for the source and bin paths.
     this.relativePath = aParentLocation.relativePath;
     this.location = aParentLocation.getSubLocation(aLeafName);
 
-    // Set the location of the source support folder, if present
+    // Set the location of the source support folder, if present.
     if (aDataFolderLeafName) {
       this.dataFolderLocation = aParentLocation.getSubLocation(
        aDataFolderLeafName);
       this.dataFolderLocation.dest = null;
     }
 
-    // Determine the correct extension for the destination file
+    // Determine the correct extension for the destination file.
     var destExtension;
     switch (this.destFormat) {
       case "mhtml":
@@ -135,7 +137,7 @@ Candidate.prototype = {
         switch (this.sourceFormat) {
           case "mhtml":
           case "maff":
-            // TODO: Open the source archive and determine the extension
+            // TODO: Open the source archive and determine the extension.
             destExtension = "html";
             break;
           default:
@@ -143,25 +145,25 @@ Candidate.prototype = {
         }
     }
 
-    // Determine the base name from the provided source leaf name
+    // Determine the base name from the provided source leaf name.
     var leafNameWithoutExtension = aLeafName.replace(/\.[^.]*$/, "");
 
-    // Modify the destination location with the correct file name
+    // Modify the destination location with the correct file name.
     var destLeafName = leafNameWithoutExtension + "." + destExtension;
     this.location.dest = aParentLocation.getSubLocation(destLeafName).dest;
 
     // If the destination can be a complete web page with a support folder
     if (this.destFormat == "complete") {
-      // The source data folder location should not be present
+      // The source data folder location should not be present.
       if (this.dataFolderLocation) {
         throw "Unexpected specified for archive source file";
       }
-      // Determine the name of the destination support folder for data files
+      // Determine the name of the destination support folder for data files.
       var destFolderName = Cc["@mozilla.org/intl/stringbundle;1"].
        getService(Ci.nsIStringBundleService).
        createBundle("chrome://global/locale/contentAreaCommands.properties").
        formatStringFromName("filesFolder", [leafNameWithoutExtension], 1);
-      // Set the data folder location, where only the destination is relevant
+      // Set the data folder location, where only the destination is relevant.
       this.dataFolderLocation = aParentLocation.getSubLocation(destFolderName);
       this.dataFolderLocation.source = null;
       this.dataFolderLocation.bin = null;
@@ -169,34 +171,34 @@ Candidate.prototype = {
   },
 
   /**
-   * Sets the "obstructed" property based on the existence of the destination
-   *  or bin files.
+   * Sets the "obstructed" property based on the existence of the destination or
+   * bin files.
    */
   checkObstructed: function() {
-    // Assume that the destination is obstructed
+    // Assume that the destination is obstructed.
     this.obstructed = true;
-    // Check if the destination file already exists
+    // Check if the destination file already exists.
     if (this.location.dest.exists()) {
       return;
     }
-    // Check if the bin file already exists
+    // Check if the bin file already exists.
     if (this.location.bin && this.location.bin.exists()) {
       return;
     }
-    // If no support folder for data files is present, exit now
+    // If no support folder for data files is present, exit now.
     if (!this.dataFolderLocation) {
       this.obstructed = false;
       return
     }
-    // Check if the destination support folder already exists
+    // Check if the destination support folder already exists.
     if (this.dataFolderLocation.dest && this.dataFolderLocation.dest.exists()) {
       return;
     }
-    // Check if the bin support folder already exists
+    // Check if the bin support folder already exists.
     if (this.dataFolderLocation.bin && this.dataFolderLocation.bin.exists()) {
       return;
     }
-    // The destination files are not already present
+    // The destination files are not already present.
     this.obstructed = false;
   },
 
@@ -212,57 +214,57 @@ Candidate.prototype = {
 
   /**
    * Starts the actual conversion process. When the process is finished, the
-   *  given function is called, passing true if the operation succeeded, or
-   *  false if the operation failed.
+   * given function is called, passing true if the operation succeeded, or false
+   * if the operation failed.
    */
   convert: function(aCompleteFn) {
-    // Store a reference to the function to be called when finished
+    // Store a reference to the function to be called when finished.
     this._onComplete = aCompleteFn;
     try {
-      // Check the destination location for obstruction before starting
+      // Check the destination location for obstruction before starting.
       this._checkDestination();
-      // Register the load listeners
+      // Register the load listeners.
       this._addLoadListeners();
-      // Load the URL associated with the source file in the conversion frame
+      // Load the URL associated with the source file in the conversion frame.
       var sourceUrl = Cc["@mozilla.org/network/io-service;1"].
        getService(Ci.nsIIOService).newFileURI(this.location.source);
       this.conversionFrame.webNavigation.loadURI(sourceUrl.spec, 0, null, null,
        null);
     } catch (e) {
-      // Report the error and notify the caller
+      // Report the error and notify the caller.
       this._onFailure(e);
     }
   },
 
   /**
    * Cancels the currently running conversion process, if any. The finish
-   *  callback function will not be called in this case.
+   * callback function will not be called in this case.
    */
   cancelConversion: function() {
-    // Remember that the conversion was canceled
+    // Remember that the conversion was canceled.
     this._canceled = true;
-    // Ensure that all the event listeners are removed immediately
+    // Ensure that all the event listeners are removed immediately.
     this._removeLoadListeners();
   },
 
   // nsIWebProgressListener
   onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
     // Remember if at least one failure notification was received while loading
-    //  or saving. This will cause the load or save to fail when finished.
+    // or saving. This will cause the load or save to fail when finished.
     if (aStatus != Cr.NS_OK) {
       this._listeningException = new Components.Exception("Operation failed",
        aStatus);
     }
-    // Detect when the current load or save operation is finished
+    // Detect when the current load or save operation is finished.
     if ((aStateFlags & Ci.nsIWebProgressListener.STATE_STOP) &&
      (aStateFlags & Ci.nsIWebProgressListener.STATE_IS_NETWORK)) {
-      // Notify the appropriate function based on the current state
+      // Notify the appropriate function based on the current state.
       if (this._isListeningForLoad) {
-        // Notify that the network activity for the current load stopped
+        // Notify that the network activity for the current load stopped.
         this._loadNetworkDone = true;
         this._onLoadCompleted();
       } else if (this._isListeningForSave) {
-        // Notify that the save operation completed
+        // Notify that the save operation completed.
         this._onSaveCompleted();
       }
     }
@@ -326,7 +328,7 @@ Candidate.prototype = {
 
   /**
    * Excpetion object representing an error that occurred during the load or
-   *  save operations, or null if no error occurred.
+   * save operations, or null if no error occurred.
    */
   _listeningException: null,
 
@@ -339,29 +341,30 @@ Candidate.prototype = {
    * Registers the required load listeners.
    */
   _addLoadListeners: function() {
-    // Get a reference to the interface to add and remove web progress listeners
+    // Get a reference to the interface to add and remove web progress
+    // listeners.
     this._webProgress = this.conversionFrame.docShell.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebProgress);
-    // Build the event listener for the "load" event on the frame
+    // Build the event listener for the "load" event on the frame.
     var self = this;
     this._loadListener = function(aEvent) {
-      // If the current "load" event is for a subframe, ignore it
+      // If the current "load" event is for a subframe, ignore it.
       if (aEvent.target != self.conversionFrame.contentDocument) {
         return;
       }
-      // Notify only if appropriate based on the current state
+      // Notify only if appropriate based on the current state.
       if (self._isListeningForLoad) {
-        // Notify that the "load" event was fired
+        // Notify that the "load" event was fired.
         self._loadContentDone = true;
         self._onLoadCompleted();
       }
     };
-    // Register the web progress listener defined in this object
+    // Register the web progress listener defined in this object.
     this._webProgress.addProgressListener(this,
      Ci.nsIWebProgress.NOTIFY_STATE_NETWORK);
-    // Register the load event listener defined in this object
+    // Register the load event listener defined in this object.
     this.conversionFrame.addEventListener("load", this._loadListener, true);
-    // Set the state variables appropriately
+    // Set the state variables appropriately.
     this._listeningException = null;
     this._isListeningForLoad = true;
   },
@@ -370,15 +373,15 @@ Candidate.prototype = {
    * Removes the load listeners registered previously, if necessary.
    */
   _removeLoadListeners: function() {
-    // Check the current state before continuing
+    // Check the current state before continuing.
     if (!this._isListeningForLoad) {
       return;
     }
-    // Remove the web progress listener defined in this object
+    // Remove the web progress listener defined in this object.
     this._webProgress.removeProgressListener(this);
-    // Remove the load event listener defined in this object
+    // Remove the load event listener defined in this object.
     this.conversionFrame.removeEventListener("load", this._loadListener, true);
-    // Set the state variables appropriately
+    // Set the state variables appropriately.
     this._isListeningForLoad = false;
   },
 
@@ -386,15 +389,15 @@ Candidate.prototype = {
    * Called when the source page has been loaded.
    */
   _onLoadCompleted: function() {
-    // Wait for both triggering conditions be true
+    // Wait for both triggering conditions be true.
     if (!this._loadNetworkDone || !this._loadContentDone) {
       return;
     }
     try {
-      // Remove the load listeners first
+      // Remove the load listeners first.
       this._removeLoadListeners();
 
-      // Report any error that occurred while loading, and stop the operation
+      // Report any error that occurred while loading, and stop the operation.
       if (this._listeningException) {
         throw this._listeningException;
       }
@@ -406,7 +409,7 @@ Candidate.prototype = {
       this._waitForAllEventsStart = Date.now();
       this._waitForAllEvents();
     } catch (e) {
-      // Report the error and notify the caller
+      // Report the error and notify the caller.
       this._onFailure(e);
     }
   },
@@ -421,7 +424,7 @@ Candidate.prototype = {
    */
   _waitForAllEvents: function() {
     if (Date.now() > this._waitForAllEventsStart + 5000) {
-      // On timeout, continue even though not all events have been processed
+      // On timeout, continue even though not all events have been processed.
       this._reportConversionError("Unable to process all events generated by" +
        " the source page in a timely manner. Your computer might be busy." +
        " The conversion operation will be tried anyway.");
@@ -429,7 +432,7 @@ Candidate.prototype = {
       return;
     }
 
-    // If there are pending events, process them and retry later
+    // If there are pending events, process them and retry later.
     if (this._mainThread.hasPendingEvents())
     {
       var self = this;
@@ -439,7 +442,7 @@ Candidate.prototype = {
       return;
     }
 
-    // All events have been processed, end waiting
+    // All events have been processed, end waiting.
     this._afterLoadCompleted();
   },
 
@@ -448,22 +451,22 @@ Candidate.prototype = {
    */
   _afterLoadCompleted: function() {
     try {
-      // Check if the operation was canceled while processing the events
+      // Check if the operation was canceled while processing the events.
       if (this._canceled) {
         return;
       }
 
-      // Check the destination location for obstruction again
+      // Check the destination location for obstruction again.
       this._checkDestination();
-      // Ensure that the destination folder exists, and create it if required
+      // Ensure that the destination folder exists, and create it if required.
       if (!this.location.dest.parent.exists()) {
         this.location.dest.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
       }
 
-      // Start the save operation
+      // Start the save operation.
       this._startSaving();
     } catch (e) {
-      // Report the error and notify the caller
+      // Report the error and notify the caller.
       this._onFailure(e);
     }
   },
@@ -472,7 +475,7 @@ Candidate.prototype = {
    * Starts the save operation, which is the second step of the conversion.
    */
   _startSaving: function() {
-    // Select the save behavior that is appropriate for the destination format
+    // Select the save behavior that is appropriate for the destination format.
     var saveBehavior;
     switch (this.destFormat) {
       case "mhtml":
@@ -485,11 +488,11 @@ Candidate.prototype = {
         saveBehavior =
          this.conversionWindow.MozillaArchiveFormat.CompleteSaveBehavior;
     }
-    // Set the state variables appropriately before starting the save operation
+    // Set the state variables appropriately before starting the save operation.
     this._listeningException = null;
     this._isListeningForSave = true;
     try {
-      // Use the global saveDocument function with the special MAF parameters
+      // Use the global saveDocument function with the special MAF parameters.
       this.conversionWindow.saveDocument(
        this.conversionFrame.contentDocument, {
         targetFile: this.location.dest,
@@ -497,7 +500,7 @@ Candidate.prototype = {
         mafProgressListener: this
       });
     } catch (e) {
-      // If the operation failed before starting, reset the listening state
+      // If the operation failed before starting, reset the listening state.
       this._isListeningForSave = false;
       throw e;
     }
@@ -508,31 +511,31 @@ Candidate.prototype = {
    */
   _onSaveCompleted: function() {
     try {
-      // Indicate that the save notification has been processed
+      // Indicate that the save notification has been processed.
       this._isListeningForSave = false;
 
-      // Check if the operation was canceled while saving
+      // Check if the operation was canceled while saving.
       if (this._canceled) {
         return;
       }
 
-      // Report any error that occurred while saving, and stop the operation
+      // Report any error that occurred while saving, and stop the operation.
       if (this._listeningException) {
         throw this._listeningException;
       }
 
-      // Change the last modified time of the destination to match the source
+      // Change the last modified time of the destination to match the source.
       this.location.dest.lastModifiedTime =
        this.location.source.lastModifiedTime;
 
-      // Conversion completed successfully, move the source to the bin folder
+      // Conversion completed successfully, move the source to the bin folder.
       this._moveToBin();
     } catch (e) {
-      // Report the error and notify the caller, then exit
+      // Report the error and notify the caller, then exit.
       this._onFailure(e);
       return;
     }
-    // Report that the conversion was successful
+    // Report that the conversion was successful.
     this._onComplete(true);
   },
 
@@ -540,12 +543,12 @@ Candidate.prototype = {
    * Throws an exception if the destination location is obstructed.
    */
   _checkDestination: function() {
-    // Ensure that the destination file does not exist
+    // Ensure that the destination file does not exist.
     if (this.location.dest.exists()) {
       throw new Components.Exception(
         "The destination location is unexpectedly obstructed.");
     }
-    // Ensure that the destination support folder does not exist
+    // Ensure that the destination support folder does not exist.
     if (this.dataFolderLocation && this.dataFolderLocation.dest &&
      this.location.dest.exists()) {
       throw new Components.Exception(
@@ -557,26 +560,26 @@ Candidate.prototype = {
    * Moves the source file and support folder to the bin folder, if required.
    */
   _moveToBin: function() {
-    // Move the source file to the bin folder
+    // Move the source file to the bin folder.
     if (this.location.bin) {
-      // Ensure that the destination does not exist
+      // Ensure that the destination does not exist.
       if (this.location.bin.exists()) {
         throw new Components.Exception(
           "The bin location is unexpectedly obstructed.");
       }
-      // Move the file as required
+      // Move the file as required.
       this.location.source.moveTo(this.location.bin.parent,
        this.location.bin.leafName);
     }
-    // Move the source support folder, if present, to the bin folder
+    // Move the source support folder, if present, to the bin folder.
     if (this.dataFolderLocation) {
       if (this.dataFolderLocation.source && this.dataFolderLocation.bin) {
-        // Ensure that the destination does not exist
+        // Ensure that the destination does not exist.
         if (this.dataFolderLocation.bin.exists()) {
           throw new Components.Exception(
             "The bin location is unexpectedly obstructed.");
         }
-        // Move the folder as required
+        // Move the folder as required.
         this.dataFolderLocation.source.moveTo(
          this.dataFolderLocation.bin.parent,
          this.dataFolderLocation.bin.leafName);
@@ -586,32 +589,32 @@ Candidate.prototype = {
 
   /**
    * Reports the given exception that occurred during the conversion of this
-   *  candidate, and notifies the appropriate object that the operation failed.
+   * candidate, and notifies the appropriate object that the operation failed.
    */
   _onFailure: function(aException) {
     try {
-      // Clean up all the possible registered listeners
+      // Clean up all the possible registered listeners.
       this._removeLoadListeners();
     } catch (e) {
-      // Ignore errors during the cleanup phase
+      // Ignore errors during the cleanup phase.
       Cu.reportError(e);
     }
-    // Report the error message
+    // Report the error message.
     this._reportConversionError(aException);
-    // Report that the conversion of this candidate failed
+    // Report that the conversion of this candidate failed.
     this._onComplete(false);
   },
 
   /**
    * Reports the given exception that occurred during the conversion of this
-   *  candidate, providing additional information about the error.
+   * candidate, providing additional information about the error.
    */
   _reportConversionError: function(aException) {
     try {
-      // Determine the first part of the message for the Error Console
+      // Determine the first part of the message for the Error Console.
       var messagePrefix = "The following error occurred while converting\n" +
        this.location.source.path + ":\n\n";
-      // Report the complete message appropriately
+      // Report the complete message appropriately.
       if (aException instanceof Ci.nsIXPCException) {
         Cu.reportError(new Components.Exception(messagePrefix +
          aException.message, aException.result, aException.location,
@@ -620,7 +623,7 @@ Candidate.prototype = {
         Cu.reportError(messagePrefix + aException);
       }
     } catch (e) {
-      // In case of errors, report only the original exception
+      // In case of errors, report only the original exception.
       Cu.reportError(aException);
     }
   },

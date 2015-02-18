@@ -35,7 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions
+// Import XPCOMUtils to generate the QueryInterface functions.
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
@@ -43,8 +43,9 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  *
  * This class derives from Job. See the Job documentation for details.
  *
- * @param aResource    PersistResource object associated with the document or
- *                      other resource type to be saved.
+ * @param aResource
+ *        PersistResource object associated with the document or other resource
+ *        type to be saved.
  */
 function ExactPersistUnparsedJob(aEventListener, aResource, aIsPrivate) {
   Job.call(this, aEventListener);
@@ -78,11 +79,11 @@ ExactPersistUnparsedJob.prototype = {
 
   // Job
   _executeStart: function() {
-    // If the download starts successfully, wait asynchronously for completion
+    // If the download starts successfully, wait asynchronously for completion.
     this._expectAsyncCallback(function() {
       try {
         // Create the channel for the download. This operation may throw an
-        //  exception if a channel cannot be created for the specified URI.
+        // exception if a channel cannot be created for the specified URI.
         var channel = Cc["@mozilla.org/network/io-service;1"].
          getService(Ci.nsIIOService).newChannelFromURI(
          this.resource.originalUri);
@@ -90,25 +91,25 @@ ExactPersistUnparsedJob.prototype = {
          channel instanceof Ci.nsIPrivateBrowsingChannel) {
           channel.setPrivate(this.isPrivate);
         }
-        // Load the content from the cache if possible
+        // Load the content from the cache if possible.
         channel.loadFlags |= Ci.nsIRequest.LOAD_FROM_CACHE;
         // Receive progress notifications through the nsIProgressEventSink
-        //  interface. For more information on this interface, see
-        //  <http://mxr.mozilla.org/mozilla-central/source/netwerk/base/public/nsIProgressEventSink.idl>
-        //  (retrieved 2009-12-23).
+        // interface. For more information on this interface, see
+        // <http://mxr.mozilla.org/mozilla-central/source/netwerk/base/public/nsIProgressEventSink.idl>
+        // (retrieved 2009-12-23).
         channel.notificationCallbacks = this;
         // Start the download asynchronously. This operation may throw an
-        //  exception if the channel for the specified URI cannot be opened.
+        // exception if the channel for the specified URI cannot be opened.
         channel.asyncOpen(this, null);
       } catch (e) {
         var result = (e instanceof Ci.nsIException) ? e.result :
          Cr.NS_ERROR_FAILURE;
-        // Report unexpected errors, excluding expected error codes
+        // Report unexpected errors, excluding expected error codes.
         if (result != Cr.NS_ERROR_NO_CONTENT) {
           this._reportDownloadFailure();
           this.resource.statusCode = result;
         }
-        // Indicate that the file was not saved and the job is completed
+        // Indicate that the file was not saved and the job is completed.
         this.resource.file = null;
         this._notifyCompletion();
       }
@@ -117,7 +118,7 @@ ExactPersistUnparsedJob.prototype = {
 
   // Job
   _executeCancel: function(aReason) {
-    // Cancel the request if the download has already started
+    // Cancel the request if the download has already started.
     if (this._request) {
       this._request.cancel(aReason);
     }
@@ -125,53 +126,54 @@ ExactPersistUnparsedJob.prototype = {
 
   // nsIRequestObserver
   onStartRequest: function(aRequest, aContext) {
-    // If the job has been canceled before the request started
+    // If the job has been canceled before the request started.
     if (this.isCompleted) {
-      // Ensure that the request is canceled and exit
+      // Ensure that the request is canceled and exit.
       aRequest.cancel(Cr.NS_BINDING_ABORTED);
       return;
     }
-    // Check if an HTTP request did not succeed, and an error page was generated
+    // Check if an HTTP request did not succeed, and an error page was
+    // generated.
     var requestSucceeded = true;
     if (aRequest instanceof Ci.nsIHttpChannel) {
       try {
         requestSucceeded = aRequest.requestSucceeded;
       } catch (e) {
-        // Accessing the requestSucceeded property may raise exceptions
+        // Accessing the requestSucceeded property may raise exceptions.
       }
     }
     if (!requestSucceeded) {
-      // Ensure that the request is canceled and exit
+      // Ensure that the request is canceled and exit.
       aRequest.cancel(Cr.NS_ERROR_FILE_NOT_FOUND);
       return;
     }
-    // Store a reference to the request to allow its cancellation
+    // Store a reference to the request to allow its cancellation.
     this._request = aRequest.QueryInterface(Ci.nsIChannel);
     // At this point, we can obtain the MIME media type for the resource and use
-    //  it to determine the correct extension for the local file name
+    // it to determine the correct extension for the local file name.
     var mediaType = null;
     try {
       mediaType = this._request.contentType;
     } catch (e) {
-      // Accessing the contentType property may raise exceptions
+      // Accessing the contentType property may raise exceptions.
     }
-    // If the server did not specify a media type, determine it from the URI
+    // If the server did not specify a media type, determine it from the URI.
     if (!mediaType) {
       try {
         mediaType = Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService).
          getTypeFromURI(this.resource.originalUri);
       } catch (e) {
-        // The MIME service may raise exceptions while determining the type
+        // The MIME service may raise exceptions while determining the type.
       }
     }
     // Set the media type on the resource and determine the local file name. In
-    //  case the MIME type couldn't be determined, use a binary file type.
+    // case the MIME type couldn't be determined, use a binary file type.
     this.resource.mimeType = mediaType || "application/octet-stream";
-    // Store the charset information for the content, only if applicable
+    // Store the charset information for the content, only if applicable.
     try {
       this.resource.charset = this._request.contentCharset;
     } catch (e) {
-      // Accessing the contentCharset property may raise exceptions
+      // Accessing the contentCharset property may raise exceptions.
     }
     this._eventListener.folder.addUnique(this.resource);
   },
@@ -182,14 +184,14 @@ ExactPersistUnparsedJob.prototype = {
       // If the download failed before completion
       if (!Components.isSuccessCode(aStatusCode)) {
         this._reportDownloadFailure();
-        // Indicate that the file was not saved, and store the status code
+        // Indicate that the file was not saved, and store the status code.
         this.resource.file = null;
         this.resource.statusCode = aStatusCode;
       } else {
-        // Write the binary data to the local file
+        // Write the binary data to the local file.
         this.resource.writeToFile();
       }
-      // Notify that the job is completed
+      // Notify that the job is completed.
       this._notifyCompletion();
     }, this);
   },
@@ -197,29 +199,29 @@ ExactPersistUnparsedJob.prototype = {
   // nsIStreamListener
   onDataAvailable: function(aRequest, aContext, aInputStream, aOffset,
    aCount) {
-    // Ensure that the job hasn't been canceled meanwhile
+    // Ensure that the job hasn't been canceled meanwhile.
     if (this.isCompleted) {
       return;
     }
-    // We have to use a scriptable stream to read from the provided stream
+    // We have to use a scriptable stream to read from the provided stream.
     if (!this._inputStream) {
       // Create a new binary input stream if it doesn't exist already. Since
-      //  this is a wrapper on another stream, it doesn't require to be closed
-      //  explicitly, and the reference will be freed when this object is
-      //  garbage collected.
+      // this is a wrapper on another stream, it doesn't require to be closed
+      // explicitly, and the reference will be freed when this object is
+      // garbage collected.
       this._inputStream = Cc["@mozilla.org/binaryinputstream;1"]
        .createInstance(Ci.nsIBinaryInputStream);
       this._inputStream.setInputStream(aInputStream);
     }
-    // Add the binary data to the buffer in memory
+    // Add the binary data to the buffer in memory.
     this.resource.body += this._inputStream.readBytes(aCount);
   },
 
   // nsIProgressEventSink
   onProgress: function(aRequest, aContext, aProgress, aProgressMax) {
     // Propagate the event to our listener, while ensuring that the values are
-    //  within the allowed range, as aProgressMax in this notification can be -1
-    //  if the length of the content to be downloaded is unknown.
+    // within the allowed range, as aProgressMax in this notification can be -1
+    // if the length of the content to be downloaded is unknown.
     var realProgressMax = (aProgressMax < aProgress) ? aProgress : aProgressMax;
     this._notifyJobProgressChange(null, aRequest, aProgress, realProgressMax,
      aProgress, realProgressMax);
@@ -227,15 +229,15 @@ ExactPersistUnparsedJob.prototype = {
 
   // nsIProgressEventSink
   onStatus: function(aRequest, aContext, aStatus, aStatusArg) {
-    // Propagate the event to our listener. Since the listener for downloads
-    //  is not designed to handle normal request progress notifications, which
-    //  would result in a message box to be displayed while the download is
-    //  running, events with success status codes are filtered out.
+    // Propagate the event to our listener. Since the listener for downloads is
+    // not designed to handle normal request progress notifications, which would
+    // result in a message box to be displayed while the download is running,
+    // events with success status codes are filtered out.
     if (!Components.isSuccessCode(aStatus)) {
       // Some success status codes in this context look like error codes, and
-      //  must be filtered out manually. For more information, see
-      //  <https://developer.mozilla.org/en/nsISocketTransport> (retrieved
-      //  2009-12-23).
+      // must be filtered out manually. For more information, see
+      // <https://developer.mozilla.org/en/nsISocketTransport> (retrieved
+      // 2009-12-23).
       if ([
        Ci.nsITransport.STATUS_READING,
        Ci.nsITransport.STATUS_WRITING,
@@ -256,7 +258,7 @@ ExactPersistUnparsedJob.prototype = {
    * Reports to the Error Console the address of the file whose download failed.
    */
   _reportDownloadFailure: function() {
-    // Report the failure to the Error Console as an information message
+    // Report the failure to the Error Console as an information message.
     Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService).
      logStringMessage(this.resource.originalUri.spec + " could not be saved.");
   },

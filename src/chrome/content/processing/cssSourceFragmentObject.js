@@ -39,12 +39,12 @@
  * Provides parsing of a CSS source file into significant fragments.
  *
  * This class derives from SourceFragment. See the SourceFragment documentation
- *  for details.
+ * for details.
  */
 function CssSourceFragment(aSourceData, aOptions) {
   SourceFragment.call(this, aSourceData, aOptions);
 
-  // Parse the provided data immediately
+  // Parse the provided data immediately.
   this.parse();
 }
 
@@ -60,19 +60,19 @@ CssSourceFragment.prototype = {
        * aBefore   ( [\w\W]*? )
        *
        * Captures all the characters, including newlines, that are present
-       *  before the text recognized by the following expressions.
+       * before the text recognized by the following expressions.
        *
        * Parsing expressions group   ( (?:<...>|<...>|$) )
        *
        * This non-captured group follows aBefore and contains the actual parsing
-       *  expressions. The end of the string is matched explicitly in order for
-       *  the aBefore group to capture the characters after the last part of the
-       *  string that is recognized by the parsing expressions.
+       * expressions. The end of the string is matched explicitly in order for
+       * the aBefore group to capture the characters after the last part of the
+       * string that is recognized by the parsing expressions.
        *
        * URL parsing expression   ( (\burl\((['"])?)([^\r\n]*?)(?=\3\)) )
        *
        * Recognizes the text that can introduce an URL in the sylesheet. It can
-       *  be divided in the following parts:
+       * be divided in the following parts:
        *
        *   aUrlBefore   ( \burl\(\s*(['"]|&quot;)? )
        *
@@ -81,10 +81,10 @@ CssSourceFragment.prototype = {
        *   aUrlQuote    ( ['"]|&quot; )
        *
        *   This optional group is used in a backreference, and is already
-       *    captured inside the outer group. We include "&quot;" in case we are
-       *    processing a style declaration inside an attribute. We do that
-       *    unconditionally because, even if the input is not encoded as HTML,
-       *    optionally recognizing "&quot;" has no effect in practice.
+       *   captured inside the outer group. We include "&quot;" in case we are
+       *   processing a style declaration inside an attribute. We do that
+       *   unconditionally because, even if the input is not encoded as HTML,
+       *   optionally recognizing "&quot;" has no effect in practice.
        *
        *   aUrlText     ( [^\r\n]*? )
        *
@@ -93,13 +93,13 @@ CssSourceFragment.prototype = {
        *   End of URL lookahead   ( (?=\s*\3\)) )
        *
        *   This positive lookahead expression recognizes the end of the URL. The
-       *    text in this section will be included in the aBefore part during the
-       *    next iteration.
+       *   text in this section will be included in the aBefore part during the
+       *   next iteration.
        *
        * Import URL parsing expression   ( (@import\s+(['"]))([^\r\n]*?)(?=\6) )
        *
        * Recognizes the text that can introduce an URL in the sylesheet. It can
-       *  be divided in the following parts:
+       * be divided in the following parts:
        *
        *   aImportUrlBefore   ( @import\s+(['"]|&quot;) )
        *
@@ -108,10 +108,10 @@ CssSourceFragment.prototype = {
        *   aImportUrlQuote    ( ['"]|&quot; )
        *
        *   This mandatory group is used in a backreference, and is already
-       *    captured inside the outer group. We include "&quot;" in case we are
-       *    processing a style declaration inside an attribute. We do that
-       *    unconditionally because, even if the input is not encoded as HTML,
-       *    optionally recognizing "&quot;" has no effect in practice.
+       *   captured inside the outer group. We include "&quot;" in case we are
+       *   processing a style declaration inside an attribute. We do that
+       *   unconditionally because, even if the input is not encoded as HTML,
+       *   optionally recognizing "&quot;" has no effect in practice.
        *
        *   aImportUrlText     ( [^\r\n]*? )
        *
@@ -120,8 +120,8 @@ CssSourceFragment.prototype = {
        *   End of URL lookahead   ( (?=\s*\6) )
        *
        *   This positive lookahead expression recognizes the end of the URL. The
-       *    text in this section will be included in the aBefore part during the
-       *    next iteration.
+       *   text in this section will be included in the aBefore part during the
+       *   next iteration.
        *
        */
       /([\w\W]*?)(?:(\burl\(\s*(['"]|&quot;)?)([^\r\n]*?)(?=\s*\3\))|(@import\s+(['"]|&quot;))([^\r\n]*?)(?=\s*\6)|$)/gi,

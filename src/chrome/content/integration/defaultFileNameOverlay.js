@@ -37,18 +37,18 @@
 
 /**
  * This overlay allows changing the default strategy used by the browser to
- *  determine the file name used when saving a web page.
+ * determine the file name used when saving a web page.
  */
 
-// Apply this modification only if the original function exists
+// Apply this modification only if the original function exists.
 if (window.getDefaultFileName) {
-  // Save a reference to the original function
+  // Save a reference to the original function.
   MozillaArchiveFormat._getDefaultFileName = window.getDefaultFileName;
 
-  // Override the original function
+  // Override the original function.
   function getDefaultFileName() {
     // If the alternative naming strategy cannot be used, call the original
-    //  function to determine the file name normally
+    // function to determine the file name normally.
     return MozillaArchiveFormat.getDefaultFileName.apply(this, arguments) ||
            MozillaArchiveFormat._getDefaultFileName.apply(this, arguments);
   }
@@ -56,28 +56,28 @@ if (window.getDefaultFileName) {
 
 /**
  * This function returns the default file name to use for the given parameters,
- *  or a value that evaluates to false if the default behavior should be used.
+ * or a value that evaluates to false if the default behavior should be used.
  */
 MozillaArchiveFormat.getDefaultFileName = function(aDefaultFileName, aURI,
  aDocument, aContentDisposition) {
-  // If the related preference is not set, always use the default behavior
+  // If the related preference is not set, always use the default behavior.
   if (MozillaArchiveFormat.Prefs.saveNamingStrategy !=
    MozillaArchiveFormat.Prefs.NAMINGSTRATEGY_PAGETITLE) {
     return false;
   }
 
   // If an explicit Content-Disposition header is present, even if it does not
-  //  specify a file name, use the default behavior
+  // specify a file name, use the default behavior.
   if (aContentDisposition) {
     return false;
   }
 
-  // Use the alternative naming strategy only when saving web pages
+  // Use the alternative naming strategy only when saving web pages.
   if (!aDocument || (aDocument.contentType != "text/html" &&
    aDocument.contentType != "application/xhtml+xml")) {
     return false;
   }
 
-  // Use the title of the document, if it contains at least one valid character
+  // Use the title of the document, if it contains at least one valid character.
   return validateFileName(aDocument.title).replace(/^\s+|\s+$/g, "");
 }

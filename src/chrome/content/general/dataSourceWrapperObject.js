@@ -35,36 +35,37 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions
+// Import XPCOMUtils to generate the QueryInterface functions.
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
  * Base class that can be used to implement RDF data sources by wrapping an
- *  inner data source. This class contains the wrapping logic and provides
- *  convenience methods for manipulating the underlying data source.
+ * inner data source. This class contains the wrapping logic and provides
+ * convenience methods for manipulating the underlying data source.
  *
  * For general information about RDF data sources in Mozilla, see
- *  <https://developer.mozilla.org/en/RDF_in_Mozilla_FAQ> (retrieved
- *  2009-09-28). For more information on RDF data source implementation
- *  techniques, see <https://developer.mozilla.org/en/RDF_Datasource_How-To>
- *  (retrieved 2009-09-28).
+ * <https://developer.mozilla.org/en/RDF_in_Mozilla_FAQ> (retrieved 2009-09-28).
+ * For more information on RDF data source implementation techniques, see
+ * <https://developer.mozilla.org/en/RDF_Datasource_How-To> (retrieved
+ * 2009-09-28).
  *
- * @param aInnerDataSource   An object implementing the nsIRDFDataSource
- *                            interface that will be wrapped.
+ * @param aInnerDataSource
+ *        An object implementing the nsIRDFDataSource interface that will be
+ *        wrapped.
  */
 function DataSourceWrapper(aInnerDataSource) {
   // This object allows the implementation of the nsIRDFDataSource interface by
-  //  forwarding most of the calls to an in-memory data source. The first part
-  //  of the initialization consists in creating the wrapper functions.
+  // forwarding most of the calls to an in-memory data source. The first part of
+  // the initialization consists in creating the wrapper functions.
 
-  // This function creates a forwarding function for aInnerDataSource
+  // This function creates a forwarding function for aInnerDataSource.
   function makeForwardingFunction(functionName) {
     return function() {
       return aInnerDataSource[functionName].apply(aInnerDataSource, arguments);
     }
   }
 
-  // Forward all the functions that are not explicitly overridden
+  // Forward all the functions that are not explicitly overridden.
   for (var propertyName in aInnerDataSource) {
     if (typeof aInnerDataSource[propertyName] == "function" &&
      !(propertyName in this)) {
@@ -73,22 +74,22 @@ function DataSourceWrapper(aInnerDataSource) {
   }
 
   // We also set up a convenience access to some of the RDF resource objects
-  //  that are commonly used with this data source. This way, users don't need
-  //  to call GetResource repeatedly.
+  // that are commonly used with this data source. This way, users don't need to
+  // call GetResource repeatedly.
   for (var resourceId in this.resources) {
     if (this.resources.hasOwnProperty(resourceId)) {
       var resource = this.resources[resourceId];
       // Since the inner "resources" object is often stored in the prototype of
-      //  the derived classes, it is shared by all the instances of the data
-      //  source created from the same prototype, and the translation from URL
-      //  to RDF resource may have been already done.
+      // the derived classes, it is shared by all the instances of the data
+      // source created from the same prototype, and the translation from URL to
+      // RDF resource may have been already done.
       if (typeof resource == "string") {
         this.resources[resourceId] = this._rdf.GetResource(resource);
       }
     }
   }
 
-  // Store a reference to the wrapped object
+  // Store a reference to the wrapped object.
   this._wrappedObject = aInnerDataSource;
 }
 
@@ -99,14 +100,14 @@ DataSourceWrapper.prototype = {
 
   /**
    * Collection of RDF resource objects that form the common subjects and the
-   *  vocabulary of this RDF data source.
+   * vocabulary of this RDF data source.
    *
    * Derived classes usually override this property in their prototype, defining
-   *  the resource URLs as strings. The strings are converted to actual RDF
-   *  resources as soon as the first instance of the data source is constructed.
+   * the resource URLs as strings. The strings are converted to actual RDF
+   * resources as soon as the first instance of the data source is constructed.
    *
    * The original resource URLs can be retrieved using the ValueUTF8 property of
-   *  the resource objects.
+   * the resource objects.
    */
   resources: {},
 
@@ -123,34 +124,34 @@ DataSourceWrapper.prototype = {
    */
   replaceLiteral: function(aSource, aProperty, aNewValue) {
     // Find the RDF nodes to be modified, assuming that the required assertion
-    //  already exists in the data source
+    // already exists in the data source.
     var oldRdfLiteral = this.GetTarget(aSource, aProperty, true);
     var newRdfLiteral = this._rdf.GetLiteral(aNewValue);
-    // Execute the change
+    // Execute the change.
     this.Change(aSource, aProperty, oldRdfLiteral, newRdfLiteral);
   },
 
   // nsIRDFDataSource
   Assert: function(aSource, aProperty, aTarget, aTruthValue) {
-    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
+    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code.
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
   // nsIRDFDataSource
   Change: function(aSource, aProperty, aOldTarget, aNewTarget) {
-    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
+    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code.
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
   // nsIRDFDataSource
   Move: function(aOldSource, aNewSource, aProperty, aTarget) {
-    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
+    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code.
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 
   // nsIRDFDataSource
   Unassert: function(aSource, aProperty, aTarget) {
-    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
+    // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code.
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 

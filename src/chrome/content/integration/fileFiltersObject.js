@@ -37,7 +37,7 @@
 
 /**
  * The FileFilters global object provides access to the information to be
- *  displayed in the "Open" and "Save As" dialogs.
+ * displayed in the "Open" and "Save As" dialogs.
  */
 var FileFilters = {
   /*
@@ -46,9 +46,9 @@ var FileFilters = {
 
   /**
    * Returns an array of objects representing the file filters to use in
-   *  the various "Open" dialogs. Each object has the following properties:
-   *   - title: File format display name
-   *   - extensionString: List of file patterns associated with the file format
+   * the various "Open" dialogs. Each object has the following properties:
+   *  - title: File format display name
+   *  - extensionString: List of file patterns associated with the file format
    */
   get openFilters() {
     return [
@@ -59,24 +59,24 @@ var FileFilters = {
 
   /**
    * Returns an array of objects representing the file filters to use in
-   *  the various "Save As" dialogs. Each object has the following properties:
-   *   - title: File format display name
-   *   - extensionString: List of file patterns associated with the file format
-   *   - mafArchiveType: Either "TypeMAFF" or "scriptPath"
+   * the various "Save As" dialogs. Each object has the following properties:
+   *  - title: File format display name
+   *  - extensionString: List of file patterns associated with the file format
+   *  - mafArchiveType: Either "TypeMAFF" or "scriptPath"
    *
    * Note: To allow changing the "Save As" dialog behavior dynamically using
-   *  preferences, this function is called every time the dialog is displayed,
-   *  assuming however that the positions of the objects in the returned array
-   *  will not vary.
+   * preferences, this function is called every time the dialog is displayed,
+   * assuming however that the positions of the objects in the returned array
+   * will not vary.
    *
    * Note: Other code depends on MAFF being the first element and MHTML being
-   *  the second element in the returned array.
+   * the second element in the returned array.
    */
   get saveFilters() {
-    // Determine the default extension to use for MHTML archives
+    // Determine the default extension to use for MHTML archives.
     var mhtmlExtensionString = Prefs.saveUseMhtmlExtension ?
      "*.mhtml;*.mht" : "*.mht;*.mhtml";
-    // Return the array representing MAFF and MHTML filters
+    // Return the array representing MAFF and MHTML filters.
     return [
      { title:           this._str("savedialog.filters.maffonly"),
        extensionString: "*.maff",

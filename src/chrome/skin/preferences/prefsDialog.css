@@ -1,9 +1,9 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 /*
- * Note: This stylesheet references content stored outside of the
- *  extension's skin. It might not be compatible with all versions
- *  of Firefox or all Firefox themes.
+ * Note: This stylesheet references content stored outside of the extension's
+ * skin. It might not be compatible with all versions of Firefox or all Firefox
+ * themes.
  */
 
 prefwindow radio[pane] {
@@ -25,8 +25,8 @@ prefwindow radio[pane="paneActions"] {
 }
 
 /**
- * This style constrains the default prefwindow width, and is required
- *  because of the presence of long wrappable text.
+ * This style constrains the default prefwindow width, and is required because
+ * of the presence of long wrappable text.
  */
 prefwindow description {
   width: 30em;

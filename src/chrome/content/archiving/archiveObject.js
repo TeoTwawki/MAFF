@@ -37,13 +37,13 @@
 
 /**
  * Base class representing web archives. Derived objects must implement specific
- *  methods.
+ * methods.
  *
  * This object allows the creation and extraction of archives, and handles the
- *  metadata associated with the archive's contents.
+ * metadata associated with the archive's contents.
  */
 function Archive() {
-  // Initialize member variables explicitly for proper inheritance
+  // Initialize member variables explicitly for proper inheritance.
   this.file = null;
   this.pages = [];
   this._tempDir = null;
@@ -57,9 +57,9 @@ Archive.prototype = {
 
   /**
    * Array of ArchivePage objects holding information on each individual web
-   *  page included in the archive. Some formats may support only one page. The
-   *  order of the items is important, and reflects the index that can be used
-   *  to select a specific page in the archive.
+   * page included in the archive. Some formats may support only one page. The
+   * order of the items is important, and reflects the index that can be used
+   * to select a specific page in the archive.
    */
   pages: [],
 
@@ -77,8 +77,8 @@ Archive.prototype = {
    * String representing the leaf name of the archive file, without extension.
    */
   get name() {
-    // Returns the base name extracted from the URI object of the archive,
-    //  which always implements the nsIURL interface.
+    // Returns the base name extracted from the URI object of the archive, which
+    // always implements the nsIURL interface.
     return this.uri.QueryInterface(Ci.nsIURL).fileBaseName;
   },
 
@@ -86,14 +86,14 @@ Archive.prototype = {
    * nsIURI representing the original location of the web archive.
    *
    * This URI does not refer to a specific page in the archive. If this property
-   *  is set to an URI containing a page reference, the reference is removed.
+   * is set to an URI containing a page reference, the reference is removed.
    *
    * By default, this property corresponds to the URI of the archive file.
    */
   _uri: null,
   get uri() {
     // If the original URI for the archive was not set explicitly, generate a
-    //  new URI pointing to the local archive file
+    // new URI pointing to the local archive file.
     if (!this._uri) {
       this._uri = Cc["@mozilla.org/network/io-service;1"].
        getService(Ci.nsIIOService).newFileURI(this.file);
@@ -103,10 +103,10 @@ Archive.prototype = {
   set uri(aValue) {
     var archiveUri = aValue.clone();
     if (archiveUri instanceof Ci.nsIURL) {
-      // Ensure that the archive page number in the query part is removed
+      // Ensure that the archive page number in the query part is removed.
       archiveUri.query =
        archiveUri.query.replace(/&?web_archive_page=\d+$/, "");
-      // Try and remove the hash part, if supported by the URL implementation
+      // Try and remove the hash part, if supported by the URL implementation.
       try {
         archiveUri.ref = "";
       } catch (e) { }
@@ -118,7 +118,7 @@ Archive.prototype = {
    * String uniquely identifying the archive in the cache.
    */
   get cacheKey() {
-    // Store at most one archive object for every local file
+    // Store at most one archive object for every local file.
     return this.file.path;
   },
 
@@ -151,7 +151,7 @@ Archive.prototype = {
 
   /**
    * nsIFile representing a temporary directory whose subdirectories will
-   *  contain the expanded contents of the archived pages.
+   * contain the expanded contents of the archived pages.
    */
   _tempDir: null,
 }

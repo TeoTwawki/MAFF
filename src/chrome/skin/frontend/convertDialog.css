@@ -2,7 +2,7 @@
 
 /**
  * This icon is shown instead of the selection checkbox when a candidate is
- *  enqueued for conversion.
+ * enqueued for conversion.
  */
 #treeCandidates treechildren::-moz-tree-checkbox(enqueued) {
   list-style-image: url("cbox-status-enqueued.gif");
@@ -10,7 +10,7 @@
 
 /**
  * This icon is shown instead of the selection checkbox while a candidate is
- *  being converted.
+ * being converted.
  */
 #treeCandidates treechildren::-moz-tree-checkbox(converting) {
   list-style-image: url("cbox-status-working.gif");
@@ -18,15 +18,15 @@
 
 /**
  * This icon is shown instead of the selection checkbox when a candidate has
- *  been converted successfully.
+ * been converted successfully.
  */
 #treeCandidates treechildren::-moz-tree-checkbox(converted) {
   list-style-image: url("cbox-status-success.gif");
 }
 
 /**
- * This icon is shown instead of the selection checkbox when the conversion of
- *  a candidate failed.
+ * This icon is shown instead of the selection checkbox when the conversion of a
+ * candidate failed.
  */
 #treeCandidates treechildren::-moz-tree-checkbox(failed) {
   list-style-image: url("cbox-status-failure.gif");

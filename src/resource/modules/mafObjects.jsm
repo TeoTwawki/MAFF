@@ -1,7 +1,7 @@
 /**
  * This module exports all the common JavaScript objects that are implemented by
- *  Mozilla Archive Format. The JavaScript files with the actual implementation
- *  are listed and included in the extension's chrome code.
+ * Mozilla Archive Format. The JavaScript files with the actual implementation
+ * are listed and included in the extension's chrome code.
  *
  * This file is in the public domain :-)
  */

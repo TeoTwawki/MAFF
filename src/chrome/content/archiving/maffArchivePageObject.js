@@ -39,12 +39,12 @@
  * Represents a page within a MAFF web archive.
  *
  * This class derives from ArchivePage. See the ArchivePage documentation for
- *  details.
+ * details.
  */
 function MaffArchivePage(aArchive) {
   ArchivePage.call(this, aArchive);
 
-  // Initialize member variables explicitly for proper inheritance
+  // Initialize member variables explicitly for proper inheritance.
   this._browserObjectForMetadata = null;
 }
 
@@ -62,9 +62,9 @@ MaffArchivePage.prototype = {
    * nsIURI providing direct access to the main file in the archive.
    */
   get directArchiveUri() {
-    // Compose the requested "jar:" URI
+    // Compose the requested "jar:" URI.
     var jarUriSpec = "jar:" + this.archive.uri.spec + "!/" + this.indexZipEntry;
-    // Return the associated URI object
+    // Return the associated URI object.
     return Cc["@mozilla.org/network/io-service;1"].
      getService(Ci.nsIIOService).newURI(jarUriSpec, null, null);
   },
@@ -72,34 +72,34 @@ MaffArchivePage.prototype = {
   // ArchivePage
   get tempUri() {
     // If the archive that contains the page was extracted while requiring
-    //  direct access to the page, no temporary local page is available
+    // direct access to the page, no temporary local page is available.
     if (this.archive._useDirectAccess) {
       return null;
     }
-    // By default, return the temporary URL determined by the base object
+    // By default, return the temporary URL determined by the base object.
     return ArchivePage.prototype.__lookupGetter__("tempUri").call(this);
   },
 
   // ArchivePage
   setMetadataFromDocumentAndBrowser: function(aDocument, aBrowser) {
-    // Set the page properties that are common to all archive types
+    // Set the page properties that are common to all archive types.
     ArchivePage.prototype.setMetadataFromDocumentAndBrowser.call(this,
      aDocument, aBrowser);
-    // Store the provided browser object
+    // Store the provided browser object.
     this._browserObjectForMetadata = aBrowser;
   },
 
   // ArchivePage
   save: function() {
-    // Create the "index.rdf" and "history.rdf" files near the main file
+    // Create the "index.rdf" and "history.rdf" files near the main file.
     this._saveMetadata();
-    // Prepare the archive for creation or modification
+    // Prepare the archive for creation or modification.
     var creator = new ZipCreator(this.archive.file, this.archive._createNew);
     try {
       // Add the contents of the temporary directory to the archive, under the
-      //  ZIP entry with the same name as the temporary directory itself
+      // ZIP entry with the same name as the temporary directory itself.
       creator.addDirectory(this.tempDir, this.tempDir.leafName);
-      // In case of success, the new archive file should not be overwritten
+      // In case of success, the new archive file should not be overwritten.
       this.archive._createNew = false;
     } finally {
       creator.dispose();
@@ -113,22 +113,22 @@ MaffArchivePage.prototype = {
 
   /**
    * Loads the metadata of this page from the "index.rdf" file in the temporary
-   *  directory.
+   * directory.
    */
   _loadMetadata: function() {
     var ds = new MaffDataSource();
     var res = ds.resources;
 
-    // Get a reference to the "index.rdf" file
+    // Get a reference to the "index.rdf" file.
     var indexFile = this.tempDir.clone();
     indexFile.append("index.rdf");
 
-    // Load the metadata only if the file exists, otherwise use defaults
+    // Load the metadata only if the file exists, otherwise use defaults.
     if (indexFile.exists()) {
       ds.loadFromFile(indexFile);
     }
 
-    // Store the metadata in this object, using defaults for missing entries
+    // Store the metadata in this object, using defaults for missing entries.
     this.originalUrl = ds.getMafProperty(res.originalUrl);
     this.title = ds.getMafProperty(res.title);
     this.dateArchived = ds.getMafProperty(res.archiveTime);
@@ -139,10 +139,10 @@ MaffArchivePage.prototype = {
 
   /**
    * Saves the metadata of this page to the "index.rdf" and "history.rdf" files
-   *  in the temporary directory.
+   * in the temporary directory.
    */
   _saveMetadata: function() {
-    // Set standard metadata for "index.rdf"
+    // Set standard metadata for "index.rdf".
     var indexMetadata = [
      ["originalurl", this.originalUrl],
      ["title", this.title],
@@ -154,13 +154,13 @@ MaffArchivePage.prototype = {
     var historyMetadata = null;
     var browser = this._browserObjectForMetadata;
     if (Prefs.saveMetadataExtended && browser) {
-      // Set extended metadata for "index.rdf"
+      // Set extended metadata for "index.rdf".
       indexMetadata.push(
        ["textzoom", browser.markupDocumentViewer.textZoom],
        ["scrollx", browser.contentWindow.scrollX],
        ["scrolly", browser.contentWindow.scrollY]
       );
-      // Set extended metadata for "history.rdf"
+      // Set extended metadata for "history.rdf".
       var sessionHistory = browser.sessionHistory;
       historyMetadata = [
        ["current", sessionHistory.index],
@@ -173,7 +173,7 @@ MaffArchivePage.prototype = {
       }
     }
 
-    // Write the metadata to the required files
+    // Write the metadata to the required files.
     this._savePropertiesToFile(indexMetadata, "index.rdf")
     if (historyMetadata) {
       this._savePropertiesToFile(historyMetadata, "history.rdf")
@@ -182,17 +182,17 @@ MaffArchivePage.prototype = {
 
   /**
    * Save the provided metadata to the file with the given name in the temporary
-   *  directory.
+   * directory.
    */
   _savePropertiesToFile: function(aPropertyArray, aFileName) {
-    // Create a new data source for writing
+    // Create a new data source for writing.
     ds = new MaffDataSource();
     ds.init();
-    // Set all the properties in the given order
+    // Set all the properties in the given order.
     aPropertyArray.forEach(function([propertyname, value]) {
       ds.setMafProperty(ds.resourceForProperty(propertyname), value);
     });
-    // Actually save the metadata to the file with the provided name
+    // Actually save the metadata to the file with the provided name.
     var destFile = this.tempDir.clone();
     destFile.append(aFileName);
     ds.saveToFile(destFile);

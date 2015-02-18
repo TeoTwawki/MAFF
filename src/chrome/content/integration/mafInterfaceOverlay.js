@@ -35,7 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions
+// Import XPCOMUtils to generate the QueryInterface functions.
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
@@ -44,32 +44,32 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 var MafInterfaceOverlay = {
   /**
    * Initializes the overlay by creating the appropriate event listeners that
-   *  detect the changes in the currently selected page. For more information,
-   *  see <https://developer.mozilla.org/en/Code_snippets/Progress_Listeners>
-   *  (retrieved 2009-08-30).
+   * detect the changes in the currently selected page. For more information,
+   * see <https://developer.mozilla.org/en/Code_snippets/Progress_Listeners>
+   * (retrieved 2009-08-30).
    */
   onLoad: function() {
     // Note: since this event function is copied to be used as an event
-    //  listener, the "this" variable does not point to this object.
+    // listener, the "this" variable does not point to this object.
 
-    // Remove the previously added event listener
+    // Remove the previously added event listener.
     window.removeEventListener("load", MafInterfaceOverlay.onLoad, false);
 
-    // Get references to some of the elements of the MAF user interface
+    // Get references to some of the elements of the MAF user interface.
     MafInterfaceOverlay._initElementReferences();
 
-    // Ensure the initial state of the interface for new windows is consistent
+    // Ensure the initial state of the interface for new windows is consistent.
     MafInterfaceOverlay._updateArchiveInfo();
 
     // Register the web progress listener defined in this object, and receive
-    //  only the onLocationChange notifications
+    // only the onLocationChange notifications.
     gBrowser.addProgressListener(MafInterfaceOverlay.webProgressListener);
 
-    // Register a preference observer to update the visibility of the icons
+    // Register a preference observer to update the visibility of the icons.
     MozillaArchiveFormat.Prefs.prefBranchForMaf.addObserver(
      "interface.info.icon", MafInterfaceOverlay.prefObserver, false);
 
-    // Listen for when the browser window closes, to perform shutdown
+    // Listen for when the browser window closes, to perform shutdown.
     window.addEventListener("unload", MafInterfaceOverlay.onUnload, false);
   },
 
@@ -77,49 +77,49 @@ var MafInterfaceOverlay = {
    * Shuts down the overlay by removing the previously added event listeners.
    */
   onUnload: function() {
-    // Remove the previously added event listener
+    // Remove the previously added event listener.
     window.removeEventListener("unload", MafInterfaceOverlay.onUnload, false);
 
-    // Remove the preference observer defined in this object
+    // Remove the preference observer defined in this object.
     MozillaArchiveFormat.Prefs.prefBranchForMaf.removeObserver(
      "interface.info.icon", MafInterfaceOverlay.prefObserver);
 
-    // Remove the web progress listener defined in this object
+    // Remove the web progress listener defined in this object.
     gBrowser.removeProgressListener(MafInterfaceOverlay.webProgressListener);
   },
 
   /**
    * Displays the archive information popup, anchored to the address bar icon,
-   *  when the user clicks it with the left mouse button.
+   * when the user clicks it with the left mouse button.
    */
   onUrlbarButtonClick: function(aEvent) {
-    // Ensure that any type of click isn't handled by the outer textbox
+    // Ensure that any type of click isn't handled by the outer textbox.
     aEvent.stopPropagation();
 
-    // Handle only left clicks in the address bar
+    // Handle only left clicks in the address bar.
     if (aEvent.button != 0)
       return;
 
-    // Make sure that clicking outside the popup cannot reopen it accidentally
+    // Make sure that clicking outside the popup cannot reopen it accidentally.
     this._archiveInfoPopup.popupBoxObject.
      setConsumeRollupEvent(Ci.nsIPopupBoxObject.ROLLUP_CONSUME);
 
-    // Open the popup near the address bar icon
+    // Open the popup near the address bar icon.
     this._archiveInfoPopup.openPopup(this._archiveInfoUrlbarButton,
                                      "bottomcenter topright");
   },
 
   /**
    * From the archive information popup, opens the original location the current
-   *  page was saved from.
+   * page was saved from.
    */
   onOriginalUrlClick: function(aEvent) {
-    // Determine if the original address is present
+    // Determine if the original address is present.
     var href = this._currentPageInfo && this._currentPageInfo.originalUrl;
     if (href) {
-      // Hide the popup before opening the new address
+      // Hide the popup before opening the new address.
       this._archiveInfoPopup.hidePopup();
-      // Open the link appropriately, depending on the applied modifiers
+      // Open the link appropriately, depending on the applied modifiers.
       openUILink(href, aEvent);
     }
   },
@@ -133,14 +133,14 @@ var MafInterfaceOverlay = {
    * Updates the information about the current page.
    */
   _refreshCurrentPage: function() {
-    // Get a direct reference to the ArchivePage object, or use an empty object
+    // Get a direct reference to the ArchivePage object, or use an empty object.
     let pageInfo = MozillaArchiveFormat.ArchiveCache.pageFromUri(
      gBrowser.currentURI) || {};
     this._currentPageInfo = pageInfo;
 
-    // Format the original address for display, if present
+    // Format the original address for display, if present.
     if (pageInfo.originalUrl && !pageInfo.originalUrlForDisplay) {
-      // Ensure the address is unescaped
+      // Ensure the address is unescaped.
       var originalUrl = new String(pageInfo.originalUrl);
       originalUrl.isEscapedAsUri = true;
       pageInfo.originalUrlForDisplay = MozillaArchiveFormat.Interface.
@@ -148,7 +148,7 @@ var MafInterfaceOverlay = {
       pageInfo.hasValues = true;
     }
 
-    // Format the save date for display, if present
+    // Format the save date for display, if present.
     if (pageInfo.dateArchived && !pageInfo.dateArchivedForDisplay) {
       pageInfo.dateArchivedForDisplay = MozillaArchiveFormat.Interface.
        formatValueForDisplay(pageInfo.dateArchived);
@@ -158,7 +158,7 @@ var MafInterfaceOverlay = {
 
   /**
    * Updates the visibility and appearance of the MAF icons in the browser
-   *  window, based on the current page state and the current preferences.
+   * window, based on the current page state and the current preferences.
    */
   _checkArchiveInfoIcons: function() {
     this._archiveInfoUrlbarButton.hidden = !this._currentPageInfo.hasValues ||
@@ -167,35 +167,35 @@ var MafInterfaceOverlay = {
 
   /**
    * Updates the contents of the archive information popup, based on the
-   *  current page state.
+   * current page state.
    */
   _checkArchiveInfoPopup: function() {
-    // Update the value of the page status label
+    // Update the value of the page status label.
     var pageStatusAttributeName = this._currentPageInfo.hasValues ?
      "archivedvalue" : "normalvalue";
     document.getElementById("mafPageStatusLabel").setAttribute("value",
      document.getElementById("mafPageStatusLabel").getAttribute(
      pageStatusAttributeName));
-    // Show or hide the page details grid
+    // Show or hide the page details grid.
     document.getElementById("mafArchiveInfoDetails").hidden =
      !this._currentPageInfo.hasValues;
-    // Update the contents of the page details grid if required
+    // Update the contents of the page details grid if required.
     if (this._currentPageInfo.hasValues) {
-      // Get the original address the page was saved from
+      // Get the original address the page was saved from.
       var originalUrlLabel = document.getElementById("mafOriginalUrlLabel");
       var originalUrl = this._currentPageInfo.originalUrlForDisplay;
-      // If the original address is present
+      // If the original address is present.
       if (originalUrl) {
-        // Display the label as a link
+        // Display the label as a link.
         originalUrlLabel.setAttribute("class", "text-link");
         originalUrlLabel.setAttribute("value", originalUrl);
       } else {
-        // Display the placeholder for missing values
+        // Display the placeholder for missing values.
         originalUrlLabel.setAttribute("class", "");
         originalUrlLabel.setAttribute("value", document.
          getElementById("mafOriginalUrlLabel").getAttribute("missingvalue"));
       }
-      // Get the save date and display it, or a placeholder for missing values
+      // Get the save date and display it, or a placeholder for missing values.
       var dateArchived = this._currentPageInfo.dateArchivedForDisplay;
       document.getElementById("mafDateArchivedLabel").setAttribute("value",
        dateArchived || document.getElementById("mafDateArchivedLabel").
@@ -207,14 +207,14 @@ var MafInterfaceOverlay = {
    * Turns the "Save Page" button into "Save Page In Archive" for documents.
    */
   updateSavePageButtonLabel: function() {
-    // This operation is only needed starting from Firefox 29
+    // This operation is only needed starting from Firefox 29.
     if (!("CustomizableUI" in window)) {
       return;
     }
 
     var savePageWidget = CustomizableUI.getWidget("save-page-button");
 
-    // Change the label of the widget based on the document type
+    // Change the label of the widget based on the document type.
     var labelText;
     var contentDocument = getBrowser().selectedBrowser.contentDocument;
     if (MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml < 2 && (
@@ -233,13 +233,13 @@ var MafInterfaceOverlay = {
    * Updates the archive information notification for the current page.
    */
   _checkArchiveInfoNotification: function() {
-    // Show a notification for the page only if required
+    // Show a notification for the page only if required.
     if (!this._currentPageInfo.hasValues ||
      !MozillaArchiveFormat.Prefs.interfaceInfoBar) {
       return;
     }
 
-    // Don't display the notification again if it was closed previously
+    // Don't display the notification again if it was closed previously.
     if (gBrowser.contentDocument.mafOriginalInfoClosed) {
       return;
     }
@@ -255,7 +255,7 @@ var MafInterfaceOverlay = {
      "maf-original-info", "chrome://maf/skin/integration/page-archived.png",
      notificationBox.PRIORITY_WARNING_LOW, null);
 
-    // Show the save date only if present
+    // Show the save date only if present.
     var dateArchived = this._currentPageInfo.dateArchivedForDisplay;
     if (dateArchived) {
       this._prependNotificationLabel(notification, { value: dateArchived });
@@ -264,10 +264,10 @@ var MafInterfaceOverlay = {
       });
     }
 
-    // Show the original address only if present
+    // Show the original address only if present.
     var originalUrl = this._currentPageInfo.originalUrlForDisplay;
     if (originalUrl) {
-      // Display the label as a link
+      // Display the label as a link.
       this._prependNotificationLabel(notification, {
        value: originalUrl,
        class: "text-link",
@@ -280,11 +280,11 @@ var MafInterfaceOverlay = {
       });
     }
 
-    // Hide the unused message description element
+    // Hide the unused message description element.
     notification.ownerDocument.getAnonymousElementByAttribute(notification,
      "anonid", "messageText").hidden = true;
 
-    // Ensure that we record the fact that the notification is closed
+    // Ensure that we record the fact that the notification is closed.
     var affectedDoc = gBrowser.contentDocument;
     var button = notification.ownerDocument.getAnonymousElementByAttribute(
      notification, "anonid", "details").nextSibling;
@@ -295,19 +295,19 @@ var MafInterfaceOverlay = {
 
   /**
    * Updates the visibility and appearance of the MAF icons in the browser
-   *  window, as well as the contents of the archive information popup.
+   * window, as well as the contents of the archive information popup.
    */
   _updateArchiveInfo: function() {
-    // Use the latest information available for the current page
+    // Use the latest information available for the current page.
     this._refreshCurrentPage();
-    // Update the state of the icons
+    // Update the state of the icons.
     this._checkArchiveInfoIcons();
-    // Update the contents of the popup
+    // Update the contents of the popup.
     this._checkArchiveInfoPopup();
-    // Update the save page button label
+    // Update the save page button label.
     this.updateSavePageButtonLabel();
     // Update the contents of the notification. We must delay this operation to
-    //  support the case where tab contents have not been loaded yet.
+    // support the case where tab contents have not been loaded yet.
     Services.tm.mainThread.dispatch(
      this._checkArchiveInfoNotification.bind(this),
      Ci.nsIThread.DISPATCH_NORMAL);
@@ -347,8 +347,8 @@ var MafInterfaceOverlay = {
 
   /**
    * This progress listener detects changes in the current location. For more
-   *  information, see <https://developer.mozilla.org/en/nsIWebProgress>
-   *  (retrieved 2009-08-30).
+   * information, see <https://developer.mozilla.org/en/nsIWebProgress>
+   * (retrieved 2009-08-30).
    */
   webProgressListener: {
     QueryInterface: XPCOMUtils.generateQI([
@@ -360,7 +360,7 @@ var MafInterfaceOverlay = {
      aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
     onLocationChange: function(aWebProgress, aRequest, aLocation) {
       // Always refresh the status information when the notification is
-      //  received, even if the location points to the same URI as before
+      // received, even if the location points to the same URI as before.
       MafInterfaceOverlay._updateArchiveInfo();
     },
     onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) { },
@@ -369,19 +369,19 @@ var MafInterfaceOverlay = {
 
   /**
    * This preference observer detects changes that affect the display of the MAF
-   *  interface elements in the main browser window.
+   * interface elements in the main browser window.
    */
   prefObserver: {
     QueryInterface: XPCOMUtils.generateQI([
       Ci.nsIObserver,
     ]),
     observe: function(aSubject, aTopic, aData) {
-      // Refresh the visibility of the icons
+      // Refresh the visibility of the icons.
       MafInterfaceOverlay._checkArchiveInfoIcons();
     },
   },
 };
 
 // Now that the MafInterfaceOverlay object is defined, add the event listener
-//  that will trigger the initialization when all of the overlays are loaded
+// that will trigger the initialization when all of the overlays are loaded.
 window.addEventListener("load", MafInterfaceOverlay.onLoad, false);

@@ -50,25 +50,25 @@ CandidateLocation.prototype = {
 
   /**
    * nsIFile representing the source file or folder. This may be null for
-   *  support folders location representing a destination path only.
+   * support folders location representing a destination path only.
    */
   source: null,
 
   /**
    * nsIFile representing the destination file or folder. This may be the same
-   *  path or object as the source file.
+   * path or object as the source file.
    */
   dest: null,
 
   /**
    * nsIFile representing the place where the source will be moved after a
-   *  successful conversion. This must be the null if moving is not required.
+   * successful conversion. This must be the null if moving is not required.
    */
   bin: null,
 
   /**
    * Returns a new CandidateLocation object representing a subfolder or a file
-   *  located under the current location.
+   * located under the current location.
    */
   getSubLocation: function(aLeafName) {
     var newLocation = new CandidateLocation();

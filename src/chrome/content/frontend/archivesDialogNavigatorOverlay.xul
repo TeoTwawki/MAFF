@@ -21,7 +21,7 @@
       gDeleteByHostname = document.getElementById("placesCmd_delete:hostname");
       gDeleteByDomain = document.getElementById("placesCmd_delete:domain");
 
-      // Patch for Mozilla source file "suite/common/history/treeView.js"
+      // Patch for Mozilla source file "suite/common/history/treeView.js".
       PlacesTreeView.prototype.setTree = function PTV_setTree(aTree) {
         var hasOldTree = this._tree != null;
         this._tree = aTree;

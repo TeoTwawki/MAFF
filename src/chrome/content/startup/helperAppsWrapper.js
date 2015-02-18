@@ -5,9 +5,9 @@
  *
  */
 
-// Define a constructor function for the namespace wrapper
+// Define a constructor function for the namespace wrapper.
 var HelperAppsWrapper = new function() {
-  // Load "helperApps.js" inside this function's namespace
+  // Load "helperApps.js" inside this function's namespace.
   Cc["@mozilla.org/moz/jssubscript-loader;1"].
    getService(Ci.mozIJSSubScriptLoader).
    loadSubScript("chrome://mozapps/content/downloads/helperApps.js", this);

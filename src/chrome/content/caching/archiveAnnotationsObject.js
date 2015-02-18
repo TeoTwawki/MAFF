@@ -39,11 +39,11 @@
  * This object handles annotations on archive pages for this session.
  *
  * Annotations are used to query and display information about the known
- *  archives using the Places interfaces. At present, the actual annotations are
- *  only used to sort the results properly in the Places view of the Archives
- *  dialog. For more information, see
- *  <https://developer.mozilla.org/en/Using_the_Places_annotation_service>
- *  (retrieved 2009-05-23).
+ * archives using the Places interfaces. At present, the actual annotations are
+ * only used to sort the results properly in the Places view of the Archives
+ * dialog. For more information, see
+ * <https://developer.mozilla.org/en/Using_the_Places_annotation_service>
+ * (retrieved 2009-05-23).
  */
 var ArchiveAnnotations = {
 
@@ -71,17 +71,17 @@ var ArchiveAnnotations = {
        [ArchiveAnnotations.MAFANNO_DIRECTARCHIVEURI,
         (aPage.directArchiveUri ? aPage.directArchiveUri.spec : "")],
       ].forEach(function([annotationName, annotationValue]) {
-        // Set the annotation while handling the data types correctly
+        // Set the annotation while handling the data types correctly.
         ArchiveAnnotations._setAnnotationForPage(aPage, annotationName,
          annotationValue);
       });
     } catch (e if (e instanceof Ci.nsIException && (e.result ==
      Cr.NS_ERROR_INVALID_ARG))) {
       // This error is raised if the page is not added to history when the
-      //  functions that set annotations are called. This is common in Firefox
-      //  4.0 since page history is populated asynchronously. In this case, we
-      //  set a flag on the page object indicating that the history observer
-      //  should add the annotations after the page visit information is added.
+      // functions that set annotations are called. This is common in Firefox
+      // 4.0 since page history is populated asynchronously. In this case, we
+      // set a flag on the page object indicating that the history observer
+      // should add the annotations after the page visit information is added.
       aPage.annotationsPending = true;
     }
   },
@@ -100,7 +100,7 @@ var ArchiveAnnotations = {
      ArchiveAnnotations.MAFANNO_DIRECTARCHIVEURI,
     ].forEach(function(annotationName) {
       try {
-        // Clear the annotation if present on the page's specific archive URI
+        // Clear the annotation if present on the page's specific archive URI.
         ArchiveAnnotations._annotationService.removePageAnnotation(
          aPage.archiveUri, annotationName);
       } catch (e if (e instanceof Ci.nsIException && (e.result ==
@@ -116,12 +116,12 @@ var ArchiveAnnotations = {
    * This function returns a Date object for annotations that represent dates.
    *
    * In order to avoid problems due to the asynchronous adding of history
-   *  entries in Firefox 4.0 and above, the annotation values are not actually
-   *  read using the Places services, but extracted from the provided object.
+   * entries in Firefox 4.0 and above, the annotation values are not actually
+   * read using the Places services, but extracted from the provided object.
    */
   getAnnotationForPage: function(aPage, aAnnotationName) {
     // Get the annotation value for the page. This used to be a call to
-    //  _annotationService.getPageAnnotation before Firefox 4.0.
+    // _annotationService.getPageAnnotation before Firefox 4.0.
     var annotationValue;
     switch (aAnnotationName) {
       case ArchiveAnnotations.MAFANNO_TITLE:
@@ -145,15 +145,15 @@ var ArchiveAnnotations = {
         break;
     }
     // If the value represents an URI, store this information in the value
-    //  itself. This allows for properly displaying the value later. The
-    //  annotation should not be added if the value is empty, otherwise the
-    //  tests to detect this condition will provide incorrect results.
+    // itself. This allows for properly displaying the value later. The
+    // annotation should not be added if the value is empty, otherwise the tests
+    // to detect this condition will provide incorrect results.
     if (annotationValue && ArchiveAnnotations.annotationIsEscapedAsUri(
      aAnnotationName)) {
       annotationValue = new String(annotationValue);
       annotationValue.isEscapedAsUri = true;
     }
-    // Return the string, numeric or date value
+    // Return the string, numeric or date value.
     return annotationValue;
   },
 
@@ -184,18 +184,18 @@ var ArchiveAnnotations = {
   _setAnnotationForPage: function(aPage, aAnnotationName, aAnnotationValue) {
     var annotationValue = aAnnotationValue;
     // If this annotation represents a date, convert the Date object to a
-    //  comparable numeric value. If the date is unspecified, store the numeric
-    //  value 0 in the annotation.
+    // comparable numeric value. If the date is unspecified, store the numeric
+    // value 0 in the annotation.
     if (ArchiveAnnotations.annotationIsDate(aAnnotationName)) {
       annotationValue = annotationValue ? annotationValue.getTime() : 0;
       // In order for the sorting to work correctly, we must store the
-      //  annotation as a string, and not a numeric value. Dates before 01
-      //  January, 1970 UTC are not supported at present.
+      // annotation as a string, and not a numeric value. Dates before 01
+      // January, 1970 UTC are not supported at present.
       annotationValue = (annotationValue < 0) ? 0 : annotationValue;
       annotationValue = ("000000000000000" + annotationValue).slice(-16);
     }
     // Set the annotation on the page's specific archive URI. The annotations
-    //  will expire when the current session terminates.
+    // will expire when the current session terminates.
     ArchiveAnnotations._annotationService.setPageAnnotation(
      aPage.archiveUri, aAnnotationName, annotationValue || "", 0,
      Ci.nsIAnnotationService.EXPIRE_SESSION);

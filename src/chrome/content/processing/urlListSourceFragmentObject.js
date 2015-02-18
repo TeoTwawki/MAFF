@@ -37,15 +37,15 @@
 
 /**
  * Provides parsing of a space-spearated or comma-separated list of URIs into
- *  significant fragments.
+ * significant fragments.
  *
  * This class derives from SourceFragment. See the SourceFragment documentation
- *  for details.
+ * for details.
  */
 function UrlListSourceFragment(aSourceData, aOptions) {
   SourceFragment.call(this, aSourceData, aOptions);
 
-  // Parse the provided data immediately
+  // Parse the provided data immediately.
   this.parse();
 }
 
@@ -54,15 +54,15 @@ UrlListSourceFragment.prototype = {
 
   // SourceFragment
   _executeParse: function(aAddFn) {
-    // Determine which regular expression to use based on the separator type
+    // Determine which regular expression to use based on the separator type.
     var separatorRe = this._options.commaSeparated ?
      /(.*?)(\s*,\s*|$)/g :
      /(.*?)(\s+|$)/g;
-    // Apply the regular expression to retrieve the separated URLs
+    // Apply the regular expression to retrieve the separated URLs.
     this._sourceData.replace(
       separatorRe,
       function(aAll, aUrl, aSeparator) {
-        // Add the appropriate fragment as an URL
+        // Add the appropriate fragment as an URL.
         aAddFn(UrlSourceFragment, aUrl);
         aAddFn(SourceFragment, aSeparator);
       }

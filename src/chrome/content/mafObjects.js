@@ -1,6 +1,6 @@
 /**
  * This helper file is included by the "mafObjects.jsm" module, and loads the
- *  source code of the extension's shared objects from multiple files.
+ * source code of the extension's shared objects from multiple files.
  *
  * The common shortcuts Ci, Cc, Cr and Cu are also defined here.
  *
@@ -13,14 +13,14 @@ var Cr = Components.results;
 var Cu = Components.utils;
 
 // Since this file is loaded as part of a JavaScript code module, we must name
-//  every object to be exported explicitly. For more information, see
-//  <https://developer.mozilla.org/en/Using_JavaScript_code_modules> (retrieved
-//  2009-05-31).
+// every object to be exported explicitly. For more information, see
+// <https://developer.mozilla.org/en/Using_JavaScript_code_modules> (retrieved
+// 2009-05-31).
 var EXPORTED_SYMBOLS = [];
 
-// This try-catch block is necessary to show more details in the error console
+// This try-catch block is necessary to show more details in the error console.
 try {
-  // Export each object defined in the associated JavaScript file
+  // Export each object defined in the associated JavaScript file.
   [
    // General-purpose support objects
    ["general/asyncEnumeratorObject.js",           "AsyncEnumerator"],
@@ -107,11 +107,11 @@ try {
    ["startup/startupInitializerObject.js",        "StartupInitializer"],
 
   ].forEach(function([contentRelativePath, objectName]) {
-    // Load the source code file where the object is defined
+    // Load the source code file where the object is defined.
     Cc["@mozilla.org/moz/jssubscript-loader;1"]
      .getService(Ci.mozIJSSubScriptLoader)
      .loadSubScript("chrome://maf/content/" + contentRelativePath);
-    // Export the object's constructor or the singleton object itself
+    // Export the object's constructor or the singleton object itself.
     EXPORTED_SYMBOLS.push(objectName);
   });
 } catch (e) {

@@ -46,22 +46,22 @@ var MafCommandsOverlay = {
 
   /**
    * Initializes the overlay by creating some DOM elements dynamically and
-   *  creating the appropriate event listeners. For more information, see
-   *  <https://developer.mozilla.org/en/Dynamically_modifying_XUL-based_user_interface>
-   *  (retrieved 2009-03-01).
+   * creating the appropriate event listeners. For more information, see
+   * <https://developer.mozilla.org/en/Dynamically_modifying_XUL-based_user_interface>
+   * (retrieved 2009-03-01).
    */
   onLoad: function() {
     // Note: since this event function is copied to be used as an event
-    //  listener, the "this" variable does not point to this object.
+    // listener, the "this" variable does not point to this object.
 
-    // Remove the previously added event listener
+    // Remove the previously added event listener.
     window.removeEventListener("load", MafCommandsOverlay.onLoad, false);
 
-    // Listen for when the browser window closes, to perform shutdown
+    // Listen for when the browser window closes, to perform shutdown.
     window.addEventListener("unload", MafCommandsOverlay.onUnload, false);
 
     // If the "Save Page As" command exists in the application menu, use its
-    //  label for the main item of the extended save menu.
+    // label for the main item of the extended save menu.
     var appMenuSavePageItem = document.getElementById("appmenu_savePage");
     if (appMenuSavePageItem) {
       var saveAsLabel = appMenuSavePageItem.getAttribute("label");
@@ -70,13 +70,13 @@ var MafCommandsOverlay = {
       document.getElementById("mafMenuSavePage_appMenu_popup").setAttribute(
        "label", saveAsLabel);
       // Since we detected that an application button is present, store the
-      //  information in a variable that can be read by the preferences dialog.
+      // information in a variable that can be read by the preferences dialog.
       MozillaArchiveFormat.StartupInitializer.hasAppMenu = true;
     }
 
     // Manually add the "Save Frame In Archive" menu item to the "This Frame"
-    //  context menu. The menu item after which the new item is added has a
-    //  different name in "navigator.xul" and in "browser.xul".
+    // context menu. The menu item after which the new item is added has a
+    // different name in "navigator.xul" and in "browser.xul".
     var frameContextSubmenu = document.getElementById("frame").firstChild;
     var frameContextSubmenuAfterItem = document.getElementById("saveframeas") ||
      document.getElementById("context-saveframe");
@@ -84,7 +84,7 @@ var MafCommandsOverlay = {
      document.getElementById("mafMenuSaveFrameInArchive_pageContextMenu"),
      frameContextSubmenuAfterItem.nextSibling);
 
-    // Get a reference to the tab bar context menu
+    // Get a reference to the tab bar context menu.
     var tabContextMenu = gBrowser.tabContextMenu;
     if (!tabContextMenu) {
       // On versions of Firefox prior to 4.0, find the tab bar context menu in
@@ -94,8 +94,8 @@ var MafCommandsOverlay = {
        "anonid", "tabContextMenu");
     }
     // Insert the items before the "Reload Tab" item defined in "browser.xul",
-    //  or if this element is not accessible because it does not have an ID
-    //  insert the items just after the second menu separator.
+    // or if this element is not accessible because it does not have an ID
+    // insert the items just after the second menu separator.
     var tabContextMenuBeforeItem = document.getElementById("context_reloadTab");
     if (!tabContextMenuBeforeItem) {
       var elementList = tabContextMenu.
@@ -103,7 +103,7 @@ var MafCommandsOverlay = {
       tabContextMenuBeforeItem = elementList[1].nextSibling;
     }
     // Each element in the MAF tab bar context menu is moved to the appropriate
-    //  destination and removed from the original list.
+    // destination and removed from the original list.
     var tabContextMenuNewNodes = document.getElementById("mafTabContextMenu").
      childNodes;
     while (tabContextMenuNewNodes.length > 0) {
@@ -124,7 +124,7 @@ var MafCommandsOverlay = {
       if (element) {
         element.addEventListener("popupshowing",
          MafCommandsOverlay.onMenuPopupShowing, false);
-        // Remember that we added an event listener
+        // Remember that we added an event listener.
         MafCommandsOverlay.menusWithEvents.push(element);
       }
     });
@@ -134,10 +134,10 @@ var MafCommandsOverlay = {
    * Shuts down the overlay by removing the previously added event listeners.
    */
   onUnload: function() {
-    // Remove the previously added event listener
+    // Remove the previously added event listener.
     window.removeEventListener("unload", MafCommandsOverlay.onUnload, false);
 
-    // Remove the event listeners on the popup menus
+    // Remove the event listeners on the popup menus.
     MafCommandsOverlay.menusWithEvents.forEach(function(element) {
       element.removeEventListener("popupshowing",
        MafCommandsOverlay.onMenuPopupShowing, false);
@@ -149,13 +149,13 @@ var MafCommandsOverlay = {
    */
   onMenuPopupShowing: function(aEvent) {
     // Check that the event fired for one of the menus we are interested in and
-    //  not for one of the descendants
+    // not for one of the descendants.
     if (MafCommandsOverlay.menusWithEvents.indexOf(aEvent.target) < 0) {
       return;
     }
 
     // For the application menu, when the related preference is set, an extended
-    //  submenu replaces the standard "Save Page As" menu item.
+    // submenu replaces the standard "Save Page As" menu item.
     if (aEvent.target.id == "appmenu-popup") {
       document.getElementById("mafMenuSavePage_appMenu").hidden =
        !MozillaArchiveFormat.Prefs.interfaceMenuApp;
@@ -165,7 +165,7 @@ var MafCommandsOverlay = {
     }
 
     // On SeaMonkey, if the preference to save pages automatically is set, we
-    //  have to change the labels of the save commands appropriately.
+    // have to change the labels of the save commands appropriately.
     var autoSave = Cc["@mozilla.org/preferences-service;1"].
      getService(Ci.nsIPrefService).getBranch("").
      getBoolPref("browser.download.useDownloadDir") &&
@@ -173,9 +173,9 @@ var MafCommandsOverlay = {
      "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
 
     // For the other menus, a preference controls whether any MAF menu item is
-    //  visible at all in that particular menu. Even if the preference is true
-    //  for the menu, the single items must still be checked for visibility
-    //  based on the context.
+    // visible at all in that particular menu. Even if the preference is true
+    // for the menu, the single items must still be checked for visibility based
+    // on the context.
     var isVisibleInMenu;
     switch (aEvent.target.id) {
       case "menu_FilePopup":
@@ -189,7 +189,7 @@ var MafCommandsOverlay = {
       case "taskPopup":
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTools;
         // The visibility of the MAF submenu in the Tools menu depends only on
-        //  the related preference
+        // the related preference.
         document.getElementById("mafMenuMafSubMenu_toolsMenu").hidden =
          !MozillaArchiveFormat.Prefs.interfaceMenuTools;
         break;
@@ -202,74 +202,74 @@ var MafCommandsOverlay = {
     }
 
     // Now check every menu item and, if it is linked to one of the MAF
-    //  commands, set its visibility appropriately
+    // commands, set its visibility appropriately.
     Array.forEach(aEvent.target.getElementsByTagNameNS(
      aEvent.target.namespaceURI, "menuitem"), function(element) {
 
-      // Determine which class of MAF menu item we are handling
+      // Determine which class of MAF menu item we are handling.
       var command = element.getAttribute("command");
       var isSaveTabs = ([
        "mafCmdSaveTabsInArchive",
        "mafCmdSaveAllTabsInArchive",
        ].indexOf(command) >= 0);
 
-      // Do not handle unrelated menu items
+      // Do not handle unrelated menu items.
       if (command.slice(0, "mafCmd".length) == "mafCmd" &&
           command != "mafCmdBrowseOpenArchives") {
 
         // If the element has a different label based on whether the page will
-        //  be saved automatically, change the label accordingly
+        // be saved automatically, change the label accordingly.
         var labelSave = element.getAttribute("labelsave");
         if (labelSave) {
           element.setAttribute("label", autoSave ? labelSave :
            element.getAttribute("labelsaveas"));
         }
 
-        // Check for overall MAF element visibility in this menu
+        // Check for overall MAF element visibility in this menu.
         if (!isVisibleInMenu) {
           element.hidden = true;
 
         // The "Save Frame" commands appear only if there is a focused frame.
-        //  The "mafCmdSaveFrameInArchiveFromContext" command is not checked
-        //  because its parent menu item is already hidden if no frame is
-        //  selected when the context menu is shown.
+        // The "mafCmdSaveFrameInArchiveFromContext" command is not checked
+        // because its parent menu item is already hidden if no frame is
+        // selected when the context menu is shown.
         } else if (command == "mafCmdSaveFrameInArchiveFromWindow") {
-          // Set the visibility using the same checks done in "browser.js"
+          // Set the visibility using the same checks done in "browser.js".
           element.hidden = !content || !content.frames.length ||
             !isContentFrame(document.commandDispatcher.focusedWindow);
 
         // Tab-related menu items appear in the page context menu only if a
-        //  specific preference is set
+        // specific preference is set.
         } else if (aEvent.target.id == "contentAreaContextMenu" && isSaveTabs &&
          !MozillaArchiveFormat.Prefs.interfaceMenuPageContextForTabs) {
           element.hidden = true;
 
         // The "Save Page In Archive" menu item appears in the context menu only
-        //  if the "Save Page As" item also appears
+        // if the "Save Page As" item also appears.
         } else if (aEvent.target.id == "contentAreaContextMenu" &&
          command == "mafCmdSavePageInArchive") {
           // The event that checked for the "context-savepage" item visibility
-          //  has already been processed when we get here
+          // has already been processed when we get here.
           element.hidden = document.getElementById("context-savepage").hidden;
 
-        // All the other items have standard visibility
+        // All the other items have standard visibility.
         } else {
           element.hidden = false;
         }
       }
     });
 
-    // Show menu separators only if at least one MAF menu item is visible
+    // Show menu separators only if at least one MAF menu item is visible.
     Array.forEach(aEvent.target.getElementsByTagNameNS(
      aEvent.target.namespaceURI, "menuseparator"), function(element) {
 
-      // Filter out unrelated separators
+      // Filter out unrelated separators.
       if (["mafMenuSaveSeparator_fileMenu",
        "mafMenuConvertSeparator_fileMenu",
        "mafMenuSaveSeparator_tabsContextMenu"].indexOf(element.id) >= 0) {
         // Set visibility assuming that at least one MAF item is visible in the
-        //  menus that actually have a separator, if the user preference for
-        //  showing items in the menu is enabled
+        // menus that actually have a separator, if the user preference for
+        // showing items in the menu is enabled.
         element.hidden = !isVisibleInMenu;
       }
 
@@ -284,10 +284,10 @@ var MafCommandsOverlay = {
     var archivesDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
      getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Archives");
     if (archivesDialog) {
-      // Bring the window to the foreground
+      // Bring the window to the foreground.
       archivesDialog.focus();
     } else {
-      // Open a new window to display the available archives
+      // Open a new window to display the available archives.
       window.open(
        "chrome://maf/content/frontend/archivesDialog.xul",
        "maf-archivesDialog",
@@ -303,10 +303,10 @@ var MafCommandsOverlay = {
     var convertDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
      getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Convert");
     if (convertDialog) {
-      // Bring the window to the foreground
+      // Bring the window to the foreground.
       convertDialog.focus();
     } else {
-      // Open a new window to allow the conversion
+      // Open a new window to allow the conversion.
       window.open(
        "chrome://maf/content/frontend/convertDialog.xul",
        "maf-convertDialog",
@@ -322,10 +322,10 @@ var MafCommandsOverlay = {
     var prefsDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
      getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Prefs");
     if (prefsDialog) {
-      // Bring the window to the foreground
+      // Bring the window to the foreground.
       prefsDialog.focus();
     } else {
-      // Determine the expected behavior of preferences windows
+      // Determine the expected behavior of preferences windows.
       try {
         var instantApply =
          Components.classes["@mozilla.org/preferences-service;1"]
@@ -334,9 +334,9 @@ var MafCommandsOverlay = {
       } catch(e) {
         instantApply = false;
       }
-      // Open the preferences window. If instant apply is on, the window will
-      //  be minimizable (dialog=no), conversely if instant apply is not enabled
-      //  the window will be modal and not minimizable.
+      // Open the preferences window. If instant apply is on, the window will be
+      // minimizable (dialog=no), conversely if instant apply is not enabled the
+      // window will be modal and not minimizable.
       window.openDialog(
        "chrome://maf/content/preferences/prefsDialog.xul",
        "maf-prefsDialog",
@@ -356,7 +356,7 @@ var MafCommandsOverlay = {
       }
     }
     // Open a dialog that lets the user select which tabs will be saved. See
-    //  "multiSaveDialog.js" for a description of the dialog arguments.
+    // "multiSaveDialog.js" for a description of the dialog arguments.
     var returnValues = {};
     window.openDialog(
      "chrome://maf/content/savefrontend/multiSaveDialog.xul",
@@ -366,7 +366,7 @@ var MafCommandsOverlay = {
      returnValues);
     // If the dialog was not canceled by the user
     if (returnValues.selectedTabs) {
-      // Use the global saveDocument function with the special MAF parameters
+      // Use the global saveDocument function with the special MAF parameters.
       saveDocument(getBrowser().selectedBrowser.contentDocument,
        {mafAskSaveArchive: true, mafSaveTabs: returnValues.selectedTabs});
     }
@@ -382,7 +382,7 @@ var MafCommandsOverlay = {
         browser.reload();
       }
     }
-    // Use the global saveDocument function with the special MAF parameters
+    // Use the global saveDocument function with the special MAF parameters.
     saveDocument(getBrowser().selectedBrowser.contentDocument,
      {mafAskSaveArchive: true, mafSaveTabs: getBrowser().browsers});
   },
@@ -391,7 +391,7 @@ var MafCommandsOverlay = {
    * Saves the current tab in an archive.
    */
   savePageInArchive: function() {
-    // Use the global saveDocument function with the special MAF parameters
+    // Use the global saveDocument function with the special MAF parameters.
     saveDocument(getBrowser().selectedBrowser.contentDocument,
      {mafAskSaveArchive: true});
   },
@@ -402,7 +402,7 @@ var MafCommandsOverlay = {
   saveFrameInArchiveFromWindow: function() {
     var focusedWindow = document.commandDispatcher.focusedWindow;
     if (isContentFrame(focusedWindow)) {
-      // Use the global saveDocument function with the special MAF parameters
+      // Use the global saveDocument function with the special MAF parameters.
       saveDocument(focusedWindow.document,
        {mafAskSaveArchive: true});
     }
@@ -412,12 +412,12 @@ var MafCommandsOverlay = {
    * Saves the selected frame in an archive.
    */
   saveFrameInArchiveFromContext: function() {
-    // Use the global saveDocument function with the special MAF parameters
+    // Use the global saveDocument function with the special MAF parameters.
     saveDocument(gContextMenu.target.ownerDocument,
      {mafAskSaveArchive: true});
   },
 }
 
 // Now that the MafCommandsOverlay object is defined, add the event listener
-//  that will trigger the initialization when all of the overlays are loaded
+// that will trigger the initialization when all of the overlays are loaded.
 window.addEventListener("load", MafCommandsOverlay.onLoad, false);

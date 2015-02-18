@@ -40,10 +40,11 @@
  *
  * The opener of the dialog must provide the following parameters:
  *
- * @param window.arguments[0]   Browser window whose tabs should be saved.
- * @param window.arguments[1]   JavaScript object whose "selectedTabs" array
- *                               will be populated with the user selection if
- *                               the save operation is not canceled.
+ * @param window.arguments[0]
+ *        Browser window whose tabs should be saved.
+ * @param window.arguments[1]
+ *        JavaScript object whose "selectedTabs" array will be populated with
+ *        the user selection if the save operation is not canceled.
  */
 var MultiSaveDialog = {
   _browserWindow: window.arguments[0],
@@ -56,9 +57,9 @@ var MultiSaveDialog = {
 
   /**
    * The customized view for the tabs tree. The purpose of this property is to
-   *  keep a reference to the customized JavaScript object implementing the
-   *  view. If this explicit reference is not kept, the tree view can lose its
-   *  customizations during garbage collection.
+   * keep a reference to the customized JavaScript object implementing the view.
+   * If this explicit reference is not kept, the tree view can lose its
+   * customizations during garbage collection.
    */
   _tabsTreeView: null,
 
@@ -66,45 +67,45 @@ var MultiSaveDialog = {
    * Create the elements to be displayed.
    */
   onLoadDialog: function() {
-    // Get references to the controls to be initialized
+    // Get references to the controls to be initialized.
     var tabsTree = document.getElementById("treeTabs");
     var treeView = tabsTree.view;
 
     // Store a reference to the tree view to prevent it from losing its
-    //  customizations during garbage collection
+    // customizations during garbage collection.
     this._tabsTreeView = treeView;
 
     // Create the data source for the tree and assign it. The tabs data source
-    //  created here always loads synchronously.
+    // created here always loads synchronously.
     var tabsDataSource = new TabsDataSource(this._browserWindow);
     tabsTree.database.AddDataSource(tabsDataSource);
     tabsTree.builder.rebuild();
 
     // When the checkbox column is modified, the setCellValue function of the
-    //  tree view is called, with aValue set to either the string "true" or
-    //  "false". This implementation propagates the change to the underlying
-    //  data source.
+    // tree view is called, with aValue set to either the string "true" or
+    // "false". This implementation propagates the change to the underlying data
+    // source.
     treeView.setCellValue = function(aRow, aCol, aValue) {
       if (aCol.id == "tcChecked") {
-        // Execute the change
+        // Execute the change.
         tabsDataSource.replaceLiteral(treeView.getResourceAtIndex(aRow),
          tabsDataSource.resources.checked, aValue);
-        // Update the dialog buttons
+        // Update the dialog buttons.
         MultiSaveDialog.checkButtonState();
       }
     };
 
-    // Expand all nodes and subnodes in the tree
+    // Expand all nodes and subnodes in the tree.
     for (var rowNum = 0; rowNum < treeView.rowCount; rowNum++) {
       if (treeView.isContainer(rowNum) && !treeView.isContainerOpen(rowNum)) {
         treeView.toggleOpenState(rowNum);
       }
     }
 
-    // Store a reference to the tabs data source
+    // Store a reference to the tabs data source.
     this._tabsDataSource = tabsDataSource;
 
-    // Update the dialog buttons
+    // Update the dialog buttons.
     this.checkButtonState();
   },
 
@@ -132,12 +133,12 @@ var MultiSaveDialog = {
       treeView.selection.getRangeAt(i, start, end);
       for (var rowNum = start.value; rowNum <= end.value; rowNum++) {
         // If we are changing the state of a container, ignore the selection
-        //  changes on its children
+        // changes on its children.
         var isContainer = (rowNum === 0);
         if (isContainer) {
           forbidChildChanges = true;
         }
-        // Invert the checked state of the row
+        // Invert the checked state of the row.
         if (isContainer || !forbidChildChanges) {
           var oldValue = treeView.getCellValue(rowNum, checkboxColumn);
           var newValue = (oldValue == "true" ? "false" : "true");

@@ -35,12 +35,12 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions
+// Import XPCOMUtils to generate the QueryInterface functions.
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
  * This object implements nsIWebBrowserPersist, and allows displaying the
- *  current download progress and status in the browser's download window.
+ * current download progress and status in the browser's download window.
  */
 function ExactPersist() {
 
@@ -86,9 +86,9 @@ ExactPersist.prototype = {
   // nsIWebBrowserPersist
   saveDocument: function(aDocument, aFile, aDataPath, aOutputContentType,
    aEncodingFlags, aWrapColumn) {
-    // Pass exceptions to the progress listener
+    // Pass exceptions to the progress listener.
     try {
-      // Operation in progress
+      // Operation in progress.
       this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_SAVING;
       if (this.progressListener) {
         this.progressListener.onStateChange(null, null,
@@ -96,41 +96,41 @@ ExactPersist.prototype = {
          Ci.nsIWebProgressListener.STATE_IS_NETWORK, Cr.NS_OK);
       }
 
-      // Find the local file to save to
+      // Find the local file to save to.
       var targetFile = aFile.QueryInterface(Ci.nsIFileURL).file;
 
-      // Create a job to save the given document, and listen to its events
+      // Create a job to save the given document, and listen to its events.
       var persistJob = new ExactPersistJob(this, aDocument, targetFile,
        aDataPath, this.saveWithMedia, this.saveWithContentLocation);
 
-      // Store a reference to the PersistBundle object for the save operation
+      // Store a reference to the PersistBundle object for the save operation.
       this.persistBundle = persistJob.bundle;
 
       // When saving a page that was extracted from an archive, use the
-      //  information from the original archive to save the page correctly
+      // information from the original archive to save the page correctly.
       var originalPage = ArchiveCache.pageFromUri(aDocument.documentURIObject);
 
       // Before the job is started, change the content location of the main
-      //  document to reflect the desired location. This ensures that references
-      //  to the main document in saved files are handled correctly.
+      // document to reflect the desired location. This ensures that references
+      // to the main document in saved files are handled correctly.
       persistJob.setResourceLocation(this.persistBundle.resources[0],
        (originalPage && originalPage.originalUrl) || aDocument.documentURI);
 
-      // Save the given document
+      // Save the given document.
       persistJob.start();
 
       // If the start succeeded, keep a reference to the save job to allow
-      //  stopping it
+      // stopping it.
       this._persistJob = persistJob;
     } catch(e) {
       Cu.reportError(e);
-      // Preserve the result code of XPCOM exceptions
+      // Preserve the result code of XPCOM exceptions.
       if (e instanceof Ci.nsIXPCException) {
         this.result = e.result;
       } else {
         this.result = Cr.NS_ERROR_FAILURE;
       }
-      // Report that the download is finished to the listener
+      // Report that the download is finished to the listener.
       this._onComplete();
     }
   },
@@ -158,7 +158,7 @@ ExactPersist.prototype = {
   // JobEventListener
   onJobProgressChange: function(aJob, aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
-    // Simply propagate the event to our listener
+    // Simply propagate the event to our listener.
     if (this.progressListener) {
       this.progressListener.onProgressChange(aWebProgress, aRequest,
        aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
@@ -174,7 +174,7 @@ ExactPersist.prototype = {
 
   // JobEventListener
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
-    // Propagate this download event unaltered
+    // Propagate this download event unaltered.
     if (this.progressListener) {
       this.progressListener.onStatusChange(aWebProgress, aRequest, aStatus,
        aMessage);
@@ -182,11 +182,11 @@ ExactPersist.prototype = {
   },
 
   _onComplete: function() {
-    // Never report the finished condition more than once
+    // Never report the finished condition more than once.
     if (this.currentState != Ci.nsIWebBrowserPersist.PERSIST_STATE_FINISHED) {
-      // Operation completed
+      // Operation completed.
       this.currentState = Ci.nsIWebBrowserPersist.PERSIST_STATE_FINISHED;
-      // Signal success or failure in the archiving process
+      // Signal success or failure in the archiving process.
       if (this.progressListener) {
         this.progressListener.onStateChange(null, null,
          Ci.nsIWebProgressListener.STATE_STOP |

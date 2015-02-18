@@ -37,21 +37,23 @@
 
 /**
  * Objects derived from this class are the nodes of a tree representing a
- *  structured source file. By manipulating the nodes, portions of the source
- *  file can be altered without affecting the rest of the file.
+ * structured source file. By manipulating the nodes, portions of the source
+ * file can be altered without affecting the rest of the file.
  *
- * @param aSourceData   The initial raw text associated with this node.
- * @param aOptions      Optional object whose properties define the behavior to
- *                       apply when interacting with the content and parsing it.
- *                       The properties of this object are never modified.
+ * @param aSourceData
+ *        The initial raw text associated with this node.
+ * @param aOptions
+ *        Optional object whose properties define the behavior to apply when
+ *        interacting with the content and parsing it. The properties of this
+ *        object are never modified.
  */
 function SourceFragment(aSourceData, aOptions) {
   this._options = aOptions || {};
 
-  // Initialize other member variables explicitly
+  // Initialize other member variables explicitly.
   this._children = [];
 
-  // Initialize the object by calling the appropriate property setter
+  // Initialize the object by calling the appropriate property setter.
   this.sourceData = aSourceData;
 }
 
@@ -61,16 +63,16 @@ SourceFragment.prototype = {
    * String representing the raw data in the fragment.
    */
   get sourceData() {
-    // If this node is unparsed, simply return the raw data
+    // If this node is unparsed, simply return the raw data.
     if (!this._parsed) {
       return this._sourceData;
     }
 
-    // Reconstruct the source data from the parsed objects
+    // Reconstruct the source data from the parsed objects.
     return [fragment.sourceData for each (fragment in this)].join("");
   },
   set sourceData(aValue) {
-    // When there is new data, it is initially unparsed
+    // When there is new data, it is initially unparsed.
     this._parsed = false;
     this._sourceData = aValue;
   },
@@ -81,30 +83,30 @@ SourceFragment.prototype = {
    * This method can be used only with some of the derived classes.
    */
   parse: function() {
-    // Initialize the array of parsed fragments for the actual parser
+    // Initialize the array of parsed fragments for the actual parser.
     this._children = [];
-    // Execute the actual parsing of the raw text
+    // Execute the actual parsing of the raw text.
     var self = this;
     this._executeParse(function() {
       self._addChildFragment.apply(self, arguments);
     });
-    // If no exception occurred, use the parsed fragments
+    // If no exception occurred, use the parsed fragments.
     this._parsed = true;
   },
 
   /**
    * This iterator yields the individual unparsed fragments that are descendants
-   *  of this node. If this is an unparsed leaf node, this iterator returns the
-   *  object itself.
+   * of this node. If this is an unparsed leaf node, this iterator returns the
+   * object itself.
    */
   __iterator__: function() {
     if (!this._parsed) {
-      // This is a leaf node
+      // This is a leaf node.
       yield this;
     } else {
-      // Examine every available child fragment in order
+      // Examine every available child fragment in order.
       for (var [, child] in Iterator(this._children)) {
-        // Propagate the results of calling the child's iterator
+        // Propagate the results of calling the child's iterator.
         for (var fragment in child) {
           yield fragment;
         }
@@ -114,7 +116,7 @@ SourceFragment.prototype = {
 
   /**
    * True if the source data has been split into child fragments, or false if
-   *  this is a leaf node.
+   * this is a leaf node.
    */
   _parsed: false,
 
@@ -125,13 +127,13 @@ SourceFragment.prototype = {
 
   /**
    * Array of SourceFragment objects that represent the children of this node.
-   *  This array is populated only if "_parsed" is true.
+   * This array is populated only if "_parsed" is true.
    */
   _children: [],
 
   /**
    * This object contains the options specified on construction, and is used by
-   *  the derived classes.
+   * the derived classes.
    */
   _options: {},
 
@@ -140,8 +142,9 @@ SourceFragment.prototype = {
    *
    * Derived objects that support parsing must implement this method explicitly.
    *
-   * @param aAddFn   Provides a reference to the _addChildFragment function of
-   *                  this object, used as a shorthand by the parsing code.
+   * @param aAddFn
+   *        Provides a reference to the _addChildFragment function of this
+   *        object, used as a shorthand by the parsing code.
    */
   _executeParse: function(aAddFn) {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
@@ -149,13 +152,16 @@ SourceFragment.prototype = {
 
   /**
    * This function is called by the parser implementation to add a new child
-   *  fragment of the specified type if the provided data is not empty.
+   * fragment of the specified type if the provided data is not empty.
    *
-   * @param aTypeCtor     The constructor function for the fragment type.
-   * @param aSourceData   Actual text that is provided to the fragment
-   *                       constructor. If empty, no new fragment is created.
-   * @param aOptions      Options that are passed to the fragment constructor.
-   *                       If empty, options from this fragment are propagated.
+   * @param aTypeCtor
+   *        The constructor function for the fragment type.
+   * @param aSourceData
+   *        Actual text that is provided to the fragment constructor. If empty,
+   *        no new fragment is created.
+   * @param aOptions
+   *        Options that are passed to the fragment constructor. If empty,
+   *        options from this fragment are propagated.
    */
   _addChildFragment: function(aTypeCtor, aSourceData, aOptions) {
     if (aSourceData) {

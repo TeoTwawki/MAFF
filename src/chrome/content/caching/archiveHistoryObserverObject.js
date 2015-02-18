@@ -37,8 +37,8 @@
 
 /**
  * This object listens for new page history additions and sets the required
- *  Places annotations for all pages that were loaded and for which this
- *  operation is still pending.
+ * Places annotations for all pages that were loaded and for which this
+ * operation is still pending.
  */
 var ArchiveHistoryObserver = {
   QueryInterface: XPCOMUtils.generateQI([

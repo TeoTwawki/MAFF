@@ -40,7 +40,8 @@
  *
  * This class derives from Job. See the Job documentation for details.
  *
- * @param aTargetDataFolder   The support folder to be prepared for data files.
+ * @param aTargetDataFolder
+ *        The support folder to be prepared for data files.
  */
 function ExactPersistInitialJob(aEventListener, aTargetDataFolder) {
   Job.call(this, aEventListener);
@@ -52,17 +53,17 @@ ExactPersistInitialJob.prototype = {
 
   // Job
   _executeStart: function() {
-    // Delete the folder where the additional files will be saved
+    // Delete the folder where the additional files will be saved.
     if (this._targetDataFolder.exists()) {
       this._targetDataFolder.remove(true);
     }
-    // This job completed its execution
+    // This job completed its execution.
     this._notifyCompletion();
   },
 
   // Job
   _executeCancel: function(aReason) {
-    // No special action is required since this object works synchronously
+    // No special action is required since this object works synchronously.
   },
 
   _targetDataFolder: null,

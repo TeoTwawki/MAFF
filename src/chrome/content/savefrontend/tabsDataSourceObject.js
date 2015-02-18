@@ -35,27 +35,27 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions
+// Import XPCOMUtils to generate the QueryInterface functions.
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
  * Provides an RDF data source that represents the tabs available in browser
- *  windows. For each tab, a selection state is available, and the list of
- *  selected tabs can be retrieved.
+ * windows. For each tab, a selection state is available, and the list of
+ * selected tabs can be retrieved.
  *
  * This class derives from DataSourceWrapper. See the DataSourceWrapper
- *  documentation for details.
+ * documentation for details.
  *
- * @param aBrowserWindow   Browser window object whose tabs will be available
- *                          for selection.
+ * @param aBrowserWindow
+ *        Browser window object whose tabs will be available for selection.
  */
 function TabsDataSource(aBrowserWindow) {
-  // Construct the base class wrapping an in-memory RDF data source
+  // Construct the base class wrapping an in-memory RDF data source.
   DataSourceWrapper.call(this,
    Cc["@mozilla.org/rdf/datasource;1?name=in-memory-datasource"].
    createInstance(Ci.nsIRDFDataSource));
 
-  // Initialize the actual data
+  // Initialize the actual data.
   this._browsers = [];
   this._createDataFromWindow(aBrowserWindow);
 }
@@ -65,8 +65,8 @@ TabsDataSource.prototype = {
 
   /**
    * Note: These strings are converted to actual RDF resources by the base class
-   *  as soon as this data source is constructed, so GetResource must not be
-   *  called. See the DataSourceWrapper documentation for details.
+   * as soon as this data source is constructed, so GetResource must not be
+   * called. See the DataSourceWrapper documentation for details.
    */
   resources: {
     // Subjects and objects
@@ -99,22 +99,22 @@ TabsDataSource.prototype = {
 
   /**
    * Get an array containing the browser objects only for the tabs that are
-   *  checked.
+   * checked.
    */
   getSelectedTabs: function() {
     var tabsArray = [];
 
-    // Enumerate all the tabs in the single window
+    // Enumerate all the tabs in the single window.
     var windowSequence = this._rdfSequence(this.resourceForWindow(1));
     var windowEnum = windowSequence.GetElements();
     while (windowEnum.hasMoreElements()) {
       var tabResource = windowEnum.getNext();
-      // Get the properties of the tab
+      // Get the properties of the tab.
       var tabCheckedLiteral = this._wrappedObject.GetTarget(tabResource,
        this.resources.checked, true).QueryInterface(Ci.nsIRDFLiteral);
       var tabInternalIndexLiteral = this._wrappedObject.GetTarget(tabResource,
        this.resources.internalIndex, true).QueryInterface(Ci.nsIRDFInt);
-      // Add the tab to the array if required
+      // Add the tab to the array if required.
       if (tabCheckedLiteral.Value == "true") {
         tabsArray.push(this._browsers[tabInternalIndexLiteral.Value]);
       }
@@ -125,16 +125,16 @@ TabsDataSource.prototype = {
 
   // nsIRDFDataSource
   Change: function(aSource, aProperty, aOldTarget, aNewTarget) {
-    // Only allow changing the "checked" property
+    // Only allow changing the "checked" property.
     if (aProperty != this.resources.checked) {
-      // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code
+      // Should return NS_RDF_ASSERTION_REJECTED, but it is a success code.
       throw Cr.NS_ERROR_NOT_IMPLEMENTED;
     }
 
-    // Propagate the change to the wrapped object
+    // Propagate the change to the wrapped object.
     this._wrappedObject.Change(aSource, aProperty, aOldTarget, aNewTarget);
 
-    // If the selection change is on a container, update the child elements
+    // If the selection change is on a container, update the child elements.
     if (this._wrappedObject.HasAssertion(aSource, this.resources.instanceOf,
      this.resources.window, true)) {
       var windowSequence = this._rdfSequence(aSource);
@@ -143,19 +143,19 @@ TabsDataSource.prototype = {
       while (windowEnum.hasMoreElements()) {
         var tabResource = windowEnum.getNext();
         // Change the selection on the element, by removing the assertion that
-        //  is no longer true and adding the new assertion
+        // is no longer true and adding the new assertion.
         this._wrappedObject.Assert(tabResource, this.resources.checked,
          this._rdfBool(newSelectionState), true);
         this._wrappedObject.Unassert(tabResource, this.resources.checked,
          this._rdfBool(!newSelectionState));
       }
     } else {
-      // If the selection change is on a child element, update the container
+      // If the selection change is on a child element, update the container.
       var windowResource = this.resourceForWindow(1);
       var allTabsSelected =
        (this.getSelectedTabs().length == this._browsers.length);
-      // Change the selection on the element, by removing the assertion that
-      //  is no longer true and adding the new assertion
+      // Change the selection on the element, by removing the assertion that is
+      // no longer true and adding the new assertion.
       this._wrappedObject.Assert(windowResource, this.resources.checked,
        this._rdfBool(allTabsSelected), true);
       this._wrappedObject.Unassert(windowResource, this.resources.checked,
@@ -165,7 +165,7 @@ TabsDataSource.prototype = {
 
   /**
    * Populates the data source with the actual data derived from the open tabs
-   *  in the provided window.
+   * in the provided window.
    *
    * This is the tree-like structure of the RDF data:
    *
@@ -222,31 +222,31 @@ TabsDataSource.prototype = {
    *
    */
   _createDataFromWindow: function(aBrowserWindow) {
-    // Shorthand for objects commonly used throughout this function
+    // Shorthand for objects commonly used throughout this function.
     var ds = this._wrappedObject;
     var res = this.resources;
 
     // Create the root of the tree, that has a single child pointing to the
-    //  list of windows. This is required for properly handling the recursive
-    //  XUL template generation that is used to create XUL trees.
+    // list of windows. This is required for properly handling the recursive XUL
+    // template generation that is used to create XUL trees.
     ds.Assert(res.root, res.instanceOf, res.root, true);
     ds.Assert(res.root, res.child, res.windows, true);
 
-    // Create the "windows" resource, which is an RDF container of windows
+    // Create the "windows" resource, which is an RDF container of windows.
     var windowsSequence = this._rdfSequence(res.windows);
     ds.Assert(res.windows, res.instanceOf, res.windows, true);
 
-    // Set additional properties of the "windows" resource 
+    // Set additional properties of the "windows" resource.
     ds.Assert(res.windows, res.checked, this._rdfBool(false), true);
 
-    // Create the "window" resource, which is an RDF container of tabs, and
-    //  add it to the parent container
+    // Create the "window" resource, which is an RDF container of tabs, and add
+    // it to the parent container.
     var windowResource = this.resourceForWindow(1);
     var windowSequence = this._rdfSequence(windowResource);
     ds.Assert(windowResource, res.instanceOf, res.window, true);
     windowsSequence.AppendElement(windowResource);
 
-    // Set additional properties of the "window" resource 
+    // Set additional properties of the "window" resource.
     ds.Assert(windowResource, res.title,
      this._rdf.GetLiteral(aBrowserWindow.document.title), true);
     ds.Assert(windowResource, res.checked, this._rdfBool(false), true);
@@ -255,42 +255,42 @@ TabsDataSource.prototype = {
     var selectedTabIndex = -1;
     var browsers = aBrowserWindow.getBrowser().browsers;
     for (var i = 0; i < browsers.length; i++) {
-      // Copy the browser object reference to the internal array
+      // Copy the browser object reference to the internal array.
       this._browsers.push(browsers[i]);
 
-      // Create the "tab" resource and add it to the parent container
+      // Create the "tab" resource and add it to the parent container.
       var tabResource = this.resourceForTab(i + 1);
       windowSequence.AppendElement(tabResource);
 
-      // Set the internal index in the array as an RDF integer
+      // Set the internal index in the array as an RDF integer.
       ds.Assert(tabResource, res.internalIndex,
        this._rdf.GetIntLiteral(this._browsers.length - 1), true);
 
       // Set the tab label as an RDF literal. The actual label displayed in the
-      //  user interface is shown, which is not necessarily the page title.
+      // user interface is shown, which is not necessarily the page title.
       var tabTitle = aBrowserWindow.getBrowser().mTabs[i].label;
       ds.Assert(tabResource, res.title,
        this._rdf.GetLiteral(tabTitle), true);
 
-      // Set the original URL of the document as an RDF literal
+      // Set the original URL of the document as an RDF literal.
       var pageUrl = browsers[i].contentDocument.location.href;
       ds.Assert(tabResource, res.originalUrl,
        this._rdf.GetLiteral(pageUrl), true);
 
-      // Add the checked state
+      // Add the checked state.
       ds.Assert(tabResource, res.checked, this._rdfBool(false), true);
 
-      // Remember the index of the selected tab for later
+      // Remember the index of the selected tab for later.
       if (browsers[i] == aBrowserWindow.getBrowser().selectedBrowser) {
         selectedTabIndex = i;
       }
     }
 
     // Now that the data source is fully populated, update the selection state
-    //  for the current tab in the window
+    // for the current tab in the window.
     if (selectedTabIndex >= 0) {
       // Switch the state of the checkbox. If this is the only tab in the
-      //  window, the containing window resource will also be selected.
+      // window, the containing window resource will also be selected.
       var selectedTabResource = this.resourceForTab(selectedTabIndex + 1);
       this.Change(selectedTabResource, res.checked, this._rdfBool(false),
        this._rdfBool(true));

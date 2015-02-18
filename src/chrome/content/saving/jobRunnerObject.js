@@ -37,18 +37,19 @@
 
 /**
  * Provides the base class for a cancelable job that runs other child jobs,
- *  either in parallel or one at a time.
+ * either in parallel or one at a time.
  *
  * This class derives from Job. See the Job documentation for details.
  *
- * @param aRunInParallel   False if the jobs should be started one after the
- *                          other, or true to start them all at the same time.
+ * @param aRunInParallel
+ *        False if the jobs should be started one after the other, or true to
+ *        start them all at the same time.
  */
 function JobRunner(aEventListener, aRunInParallel) {
   Job.call(this, aEventListener);
   this._runInParallel = aRunInParallel;
 
-  // Initialize other member variables explicitly for proper inheritance
+  // Initialize other member variables explicitly for proper inheritance.
   this._jobs = [];
 }
 
@@ -63,8 +64,9 @@ JobRunner.prototype = {
   /**
    * Adds a new job at the end of the current list.
    *
-   * @param aJob   The job object to be added. This object must have been
-   *                constructed with this runner as event listener.
+   * @param aJob
+   *        The job object to be added. This object must have been constructed
+   *        with this runner as event listener.
    */
   _addJob: function(aJob) {
     this._jobs.push(aJob);
@@ -72,14 +74,14 @@ JobRunner.prototype = {
 
   // Job
   _executeStart: function() {
-    // Start the remaining jobs in order
+    // Start the remaining jobs in order.
     for (var i = 0; i < this._jobs.length; i++) {
       var job = this._jobs[i];
       if (!job.startedByRunner) {
         job.startedByRunner = true;
-        // Start the next job
+        // Start the next job.
         job.start();
-        // If required, do not start more than one job at a time
+        // If required, do not start more than one job at a time.
         if (!this._runInParallel) {
           break;
         }
@@ -89,7 +91,7 @@ JobRunner.prototype = {
 
   // Job
   _executeCancel: function(aReason) {
-    // Cancel all the jobs
+    // Cancel all the jobs.
     this._jobs.forEach(function(job) {
       job.cancel(aReason);
     }, this);
@@ -97,7 +99,7 @@ JobRunner.prototype = {
 
   // Job
   _checkIfCompleted: function() {
-    // Check if all the jobs are completed or canceled
+    // Check if all the jobs are completed or canceled.
     var allJobsCompleted = true;
     this._jobs.forEach(function(job) {
       if (!job.isCompleted) {
@@ -110,22 +112,22 @@ JobRunner.prototype = {
   // JobEventListener
   onJobProgressChange: function(aJob, aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
-    // Sum the progress, in bytes, of all the child jobs that are started
+    // Sum the progress, in bytes, of all the child jobs that are started.
     var numStartedJobs = 0;
     var numUnstartedJobs = 0;
     var curStartedProgress = 0;
     var maxStartedProgress = 0;
     this._jobs.forEach(function(job) {
       if (job.startedByRunner) {
-        // If the job is started, use its progress indication
+        // If the job is started, use its progress indication.
         if (job.maxJobProgress > 0) {
           curStartedProgress += job.curJobProgress;
           maxStartedProgress += job.maxJobProgress;
         } else {
           // If the progress properties of the job contain no meaningful value,
-          //  use dummy byte values to indicate the progress. This allows the
-          //  progress bar to advance when monitoring multiple jobs with a
-          //  persister that doesn't report the download progress.
+          // use dummy byte values to indicate the progress. This allows the
+          // progress bar to advance when monitoring multiple jobs with a
+          // persister that doesn't report the download progress.
           maxStartedProgress += 1;
           if (job.isCompleted) {
             curStartedProgress += 1;
@@ -136,17 +138,17 @@ JobRunner.prototype = {
         numUnstartedJobs++;
       }
     }, this);
-    // Estimate total progress for unstarted jobs
+    // Estimate total progress for unstarted jobs.
     var maxUnstartedProgress;
     if (!numStartedJobs) {
-      // No jobs are started, use a dummy byte value for the total progress
+      // No jobs are started, use a dummy byte value for the total progress.
       maxUnstartedProgress = 100;
     } else {
-      // Assume that the remaining jobs will have the same average byte count
+      // Assume that the remaining jobs will have the same average byte count.
       maxUnstartedProgress = Math.floor(maxStartedProgress / numStartedJobs) *
        numUnstartedJobs;
     }
-    // Propagate the event to our listener
+    // Propagate the event to our listener.
     this._notifyJobProgressChange(aWebProgress, aRequest, aCurSelfProgress,
      aMaxSelfProgress, curStartedProgress, maxStartedProgress +
      maxUnstartedProgress);
@@ -156,24 +158,24 @@ JobRunner.prototype = {
   onJobComplete: function(aJob, aResult) {
     // If an error occurred with any one of the jobs
     if (aResult != Cr.NS_OK) {
-      // Cancel all the remaining jobs
+      // Cancel all the remaining jobs.
       this.cancel(aResult);
       return;
     }
 
-    // Check the completed job progress even if not previously notified
+    // Check the completed job progress even if not previously notified.
     this.onJobProgressChange(aJob, null, null, 0, 0, aJob.curJobProgress,
      aJob.maxJobProgress);
 
-    // Start the next job if required
+    // Start the next job if required.
     if (!this._runInParallel) {
       try {
         this._executeStart();
       } catch(e) {
         // An exception when starting the next job must cause the entire
-        //  operation to be canceled
+        // operation to be canceled.
         Cu.reportError(e);
-        // Preserve the result code of XPCOM exceptions
+        // Preserve the result code of XPCOM exceptions.
         if (e instanceof Ci.nsIXPCException) {
           this.cancel(e.result);
         } else {
@@ -183,20 +185,20 @@ JobRunner.prototype = {
       }
     }
 
-    // See if the operation is completed
+    // See if the operation is completed.
     this._notifyPossibleCompletion();
   },
 
   // JobEventListener
   onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
-    // Propagate this download event unaltered
+    // Propagate this download event unaltered.
     this._eventListener.onStatusChange(aWebProgress, aRequest, aStatus,
      aMessage);
   },
 
   /**
    * True if start() should run all the jobs immediately, or false if start()
-   *  should run the jobs one at a time, in order.
+   * should run the jobs one at a time, in order.
    */
   _runInParallel: false,
 }

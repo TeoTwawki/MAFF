@@ -37,31 +37,33 @@
 
 /**
  * Represents an individual web reference found in a parsed resource. Each
- *  reference will be updated appropriately at the time the containing document
- *  is saved locally.
+ * reference will be updated appropriately at the time the containing document
+ * is saved locally.
  *
- * @param aParsedJob    ExactPersistParsedJob object containing the reference.
- * @param aProperties   Object whose properties will be applied to this object.
+ * @param aParsedJob
+ *        ExactPersistParsedJob object containing the reference.
+ * @param aProperties
+ *        Object whose properties will be applied to this object.
  */
 function ExactPersistReference(aParsedJob, aProperties) {
   this._parsedJob = aParsedJob;
   this._saveJob = aParsedJob._eventListener;
 
-  // Initialize the object with the provided properties
+  // Initialize the object with the provided properties.
   for (var [name, value] in Iterator(aProperties)) {
     this[name] = value;
   }
 
-  // Resolve the target URI immediately
+  // Resolve the target URI immediately.
   if (this.targetUriSpec) {
     try {
-      // Build an absolute URI based on the specified string
+      // Build an absolute URI based on the specified string.
       this.targetUri = Cc["@mozilla.org/network/io-service;1"].
        getService(Ci.nsIIOService).newURI(this.targetUriSpec,
        this._parsedJob.characterSet, this.targetBaseUri ||
        this._parsedJob.baseUri);
     } catch (e) {
-      // If the URI is invalid or cannot be resolved, the property remains null
+      // If the URI is invalid or cannot be resolved, the property remains null.
     }
   }
 }
@@ -83,14 +85,14 @@ ExactPersistReference.prototype = {
 
   /**
    * Name of the attribute of sourceDomNode containing the reference. If
-   *  sourceDomNode is specified and this property is empty, the reference
-   *  refers to the entire node, for example an inline "<style>" element.
+   * sourceDomNode is specified and this property is empty, the reference refers
+   * to the entire node, for example an inline "<style>" element.
    */
   sourceAttribute: "",
 
   /**
    * UriSourceFragment containing the reference. This property is specified for
-   *  references that apply to a source fragment and not directly to a DOM node.
+   * references that apply to a source fragment and not directly to a DOM node.
    */
   sourceFragment: null,
 
@@ -98,30 +100,30 @@ ExactPersistReference.prototype = {
 
   /**
    * SourceFragment containing the text to be substituted in the place indicated
-   *  by the source properties of this reference object. For example, this
-   *  property may contain the text of a "style" or "archive" attribute, or the
-   *  body of an inline stylesheet or script.
+   * by the source properties of this reference object. For example, this
+   * property may contain the text of a "style" or "archive" attribute, or the
+   * body of an inline stylesheet or script.
    */
   targetFragment: null,
 
   /**
    * String containing the actual text that defines the target URI of the
-   *  reference. This URI specification is assumed to be encoded with the
-   *  character set of the document containing the reference, and is relative to
-   *  either the document's base URI or the URI specified in targetBaseUri.
+   * reference. This URI specification is assumed to be encoded with the
+   * character set of the document containing the reference, and is relative to
+   * either the document's base URI or the URI specified in targetBaseUri.
    */
   targetUriSpec: null,
 
   /**
    * nsIURI object for the base URI to be used for resolving targetUriSpec, or
-   *  null to use the base URI of the document containing the reference.
+   * null to use the base URI of the document containing the reference.
    */
   targetBaseUri: null,
 
   /**
    * nsIURI object containing the resolved absolute target URI of the reference,
-   *  or null if the URI is invalid or cannot be properly resolved. This
-   *  property is set automatically when the reference is constructed.
+   * or null if the URI is invalid or cannot be properly resolved. This property
+   * is set automatically when the reference is constructed.
    */
   targetUri: null,
 
@@ -129,35 +131,35 @@ ExactPersistReference.prototype = {
 
   /**
    * True if the referenced resource must be saved locally. If this property is
-   *  false and none of the other save properties is set, the reference is
-   *  simply resolved to an absolute location.
+   * false and none of the other save properties is set, the reference is simply
+   * resolved to an absolute location.
    */
   saveLinkedResource: false,
 
   /**
    * Contains a reference to the parsed DOM document object that should be saved
-   *  in place of the target of the reference, or null if no parsed document is
-   *  referenced.
+   * in place of the target of the reference, or null if no parsed document is
+   * referenced.
    */
   saveLinkedDomDocument: null,
 
   /**
    * Contains a reference to the parsed DOM CSS stylesheet object that should be
-   *  saved in place of the target of the reference, or null if no parsed
-   *  stylesheet is referenced.
+   * saved in place of the target of the reference, or null if no parsed
+   * stylesheet is referenced.
    */
   saveLinkedCssStyleSheet: null,
 
   /**
    * Contains the suggested character set to be used when saving the linked
-   *  file. For CSS stylesheets, this is generally the character set specified
-   *  in the "charset" attribute of the referencing "<link>" element.
+   * file. For CSS stylesheets, this is generally the character set specified in
+   * the "charset" attribute of the referencing "<link>" element.
    */
   saveLinkedFileCharacterSetHint: null,
 
   /**
    * Contains the MIME media type of a scripting language if an empty script
-   *  should be saved in place of the target of the reference.
+   * should be saved in place of the target of the reference.
    */
   saveEmptyScriptType: "",
 
@@ -170,49 +172,49 @@ ExactPersistReference.prototype = {
 
   /**
    * True if the referenced resource should not be saved locally because it is
-   *  not needed to display the saved page.
+   * not needed to display the saved page.
    */
   originalResourceNotLoaded: false,
 
   /**
    * String containing the the URI to be substituted in the place indicated by
-   *  the source properties of this reference object. This property is relevant
-   *  only when the targetFragment property is not set.
+   * the source properties of this reference object. This property is relevant
+   * only when the targetFragment property is not set.
    *
    * For a target resource that has been saved locally, the returned URI will be
-   *  relative to the location of the document containing the reference. In
-   *  other cases, the returned URI will be absolute.
+   * relative to the location of the document containing the reference. In other
+   * cases, the returned URI will be absolute.
    */
   get resolvedTargetUriSpec() {
     // If the target of the reference is the document that contains it,
-    //  substitute it with a relative URI containing only a hash part
+    // substitute it with a relative URI containing only a hash part.
     if (this.resource == this._parsedJob.resource) {
       try {
-        // If the URI has URL syntax, use the hash part
+        // If the URI has URL syntax, use the hash part.
         return "#" + this.targetUri.QueryInterface(Ci.nsIURL).ref;
       } catch (e) {
-        // In case of errors, use only a reference to the document
+        // In case of errors, use only a reference to the document.
         return "#";
       }
     }
     // If the reference target is not associated with a PersistResource, or the
-    //  PersistResource does not have an associated local file, this object
-    //  represents a reference to an external resource that wasn't saved.
+    // PersistResource does not have an associated local file, this object
+    // represents a reference to an external resource that wasn't saved.
     if (!this.resource || !this.resource.file) {
       // JavaScript URIs are never saved, even if requested by the reference
-      //  type, and they need to be replaced with an expression that does not
-      //  cause side effects when the URI is evaluated.
+      // type, and they need to be replaced with an expression that does not
+      // cause side effects when the URI is evaluated.
       if (this.targetUri.schemeIs("javascript")) {
         return "javascript:void(0);";
       }
       // If the resource didn't need to be saved, for example because it is
-      //  referenced by a hyperlink, the resolved absolute URI of the resource
-      //  is substituted in place of the original reference.
+      // referenced by a hyperlink, the resolved absolute URI of the resource is
+      // substituted in place of the original reference.
       if (!this.saveLinkedResource) {
         return this.targetUri.spec;
       }
       // Use a different URI for the case where the resource was not included
-      //  in the saved page because it was not needed to display it.
+      // in the saved page because it was not needed to display it.
       if (this.originalResourceNotLoaded) {
         return "urn:not-loaded:" + this.targetUri.spec;
       }
@@ -224,23 +226,23 @@ ExactPersistReference.prototype = {
       return this.targetUri.spec;
     }
     // If we are saving to MHTML, the saved files should always contain absolute
-    //  references to the original location of the other saved resources. These
-    //  references must match the "Content-Location" header octet by octet, thus
-    //  cannot contain a hash part, even if it was present in the original link.
+    // references to the original location of the other saved resources. These
+    // references must match the "Content-Location" header octet by octet, thus
+    // cannot contain a hash part, even if it was present in the original link.
     if (this._saveJob.saveWithContentLocation) {
       return this.resource.contentLocation;
     }
     // The web reference will be substituted with a relative URL pointing to a
-    //  local file. The hash part in the original reference, if present, is
-    //  propagated to the new reference if possible.
+    // local file. The hash part in the original reference, if present, is
+    // propagated to the new reference if possible.
     var localFileUrl = this.resource.fileUrl.clone().QueryInterface(Ci.nsIURL);
     try {
-      // If the URI has URL syntax, propagate the hash part
+      // If the URI has URL syntax, propagate the hash part.
       localFileUrl.ref = this.targetUri.QueryInterface(Ci.nsIURL).ref;
     } catch (e) {
-      // In case of errors, use the original URI
+      // In case of errors, use the original URI.
     }
-    // Create the relative URI that points to the file and return it
+    // Create the relative URI that points to the file and return it.
     return this._parsedJob.resource.fileUrl.getRelativeSpec(localFileUrl);
   },
 

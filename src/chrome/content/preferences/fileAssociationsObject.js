@@ -44,12 +44,12 @@ var FileAssociations = {
    */
   createAssociationsForMAFF: function() {
     // First, create an explicit file association for the current user. This
-    //  operation does not require administrator privileges, but should be done
-    //  also for administrators, to ensure that no user-specific settings will
-    //  take priority over the association for all users.
+    // operation does not require administrator privileges, but should be done
+    // also for administrators, to ensure that no user-specific settings will
+    // take priority over the association for all users.
     new FileAssociationsCreator(true).createAssociationsForMAFF();
     // Create a file association for all other users, but ignore errors if the
-    //  current user does not have administrator privileges
+    // current user does not have administrator privileges.
     new FileAssociationsCreator(false).createAssociationsForMAFF();
   },
 
@@ -58,23 +58,24 @@ var FileAssociations = {
    */
   createAssociationsForMHTML: function() {
     // First, create an explicit file association for the current user. This
-    //  operation does not require administrator privileges, but should be done
-    //  also for administrators, to ensure that no user-specific settings will
-    //  take priority over the association for all users.
+    // operation does not require administrator privileges, but should be done
+    // also for administrators, to ensure that no user-specific settings will
+    // take priority over the association for all users.
     new FileAssociationsCreator(true).createAssociationsForMHTML();
     // Create a file association for all other users, but ignore errors if the
-    //  current user does not have administrator privileges
+    // current user does not have administrator privileges.
     new FileAssociationsCreator(false).createAssociationsForMHTML();
   }
 }
 
 /**
  * This object allows the creation of file association entries in the Windows
- *  registry, either for the current user or for all users in the system.
+ * registry, either for the current user or for all users in the system.
  *
- * @param aForCurrentUser   If true, creates entries for the current user.
- *                          If false, creates entries for all users, but ignores
- *                           errors caused by lack of privileges.
+ * @param aForCurrentUser
+ *        If true, creates entries for the current user. If false, creates
+ *        entries for all users, but ignores errors caused by lack of
+ *        privileges.
  */
 function FileAssociationsCreator(aForCurrentUser) {
   this._forCurrentUser = aForCurrentUser;
@@ -87,12 +88,12 @@ FileAssociationsCreator.prototype = {
    * Creates file associations for the MAFF file format.
    */
   createAssociationsForMAFF: function() {
-    // Determine the ProgID name based on the host application
+    // Determine the ProgID name based on the host application.
     var maffProgID = this._isOnSeaMonkey() ? "SeaMonkeyMAFF" : "FirefoxMAFF";
-    // Create a new ProgID for the MAFF format
+    // Create a new ProgID for the MAFF format.
     this._createWindowsFileTypeForBrowser(maffProgID,
      this._str("associate.maff.sysfiletypedesc"));
-    // Associate file extensions with the file type
+    // Associate file extensions with the file type.
     this._createWindowsFileExtensionAssociation(".maff", maffProgID);
   },
 
@@ -100,12 +101,12 @@ FileAssociationsCreator.prototype = {
    * Creates file associations for the MHTML file format.
    */
   createAssociationsForMHTML: function() {
-    // Determine the ProgID name based on the host application
+    // Determine the ProgID name based on the host application.
     var mhtmlProgID = this._isOnSeaMonkey() ? "SeaMonkeyMHTML" : "FirefoxMHTML";
-    // Create a new ProgID for the MHTML format handled by the host application
+    // Create a new ProgID for the MHTML format handled by the host application.
     this._createWindowsFileTypeForBrowser(mhtmlProgID,
      this._str("associate.mhtml.sysfiletypedesc"));
-    // Associate file extensions with the file type
+    // Associate file extensions with the file type.
     this._createWindowsFileExtensionAssociation(".mht", mhtmlProgID);
     this._createWindowsFileExtensionAssociation(".mhtml", mhtmlProgID);
   },
@@ -118,7 +119,7 @@ FileAssociationsCreator.prototype = {
      GetStringFromName(aKey));
   },
 
-  // For convenience, we use the strings from the preferences dialog
+  // For convenience, we use the strings from the preferences dialog.
   _fileAssociationsStrBundle: Cc["@mozilla.org/intl/stringbundle;1"]
    .getService(Ci.nsIStringBundleService).createBundle(
    "chrome://maf/locale/fileAssociationsObject.properties"),
@@ -141,15 +142,15 @@ FileAssociationsCreator.prototype = {
 
   /**
    * Creates a global Windows file type, under HKEY_CLASSES_ROOT, associating
-   *  the given ProgID with the browser's executable file.
+   * the given ProgID with the browser's executable file.
    */
   _createWindowsFileTypeForBrowser: function(aProgID, aDisplayName) {
     var currentProcessFile = Cc["@mozilla.org/file/directory_service;1"]
      .getService(Ci.nsIProperties).get("XREExeF", Ci.nsIFile);
 
     // Create an association with the browser. For more information, see
-    //  <https://developer.mozilla.org/En/Command_Line_Options> (retrieved
-    //  2008-11-19).
+    // <https://developer.mozilla.org/En/Command_Line_Options> (retrieved
+    // 2008-11-19).
     this._createWindowsFileType(
      aProgID,
      aDisplayName,
@@ -160,21 +161,26 @@ FileAssociationsCreator.prototype = {
   },
 
   /**
-   * Creates a global Windows file type, under HKEY_CLASSES_ROOT, with an
-   *  "open" verb and an icon from the executable file.
+   * Creates a global Windows file type, under HKEY_CLASSES_ROOT, with an "open"
+   * verb and an icon from the executable file.
    *
-   * @param aProgID           The internal ProgID of the file type.
-   * @param aDisplayName      File type name displayed in Windows Explorer.
-   * @param aExecutablePath   Path of the executable, with no quotes.
-   * @param aIconIndex        IconIndex in the executable's file.
-   * @param aCmdLineArgs      Command line arguments, where %1 is name of the
-   *                           document being opened.
+   * @param aProgID
+   *        The internal ProgID of the file type.
+   * @param aDisplayName
+   *        File type name displayed in Windows Explorer.
+   * @param aExecutablePath
+   *        Path of the executable, with no quotes.
+   * @param aIconIndex
+   *        IconIndex in the executable's file.
+   * @param aCmdLineArgs
+   *        Command line arguments, where %1 is name of the document being
+   *        opened.
    *
    * If the ProgID already exists, its settings are overwritten.
    */
   _createWindowsFileType: function(aProgID, aDisplayName, aExecutablePath,
     aCmdLineArgs, aIconIndex) {
-    // Create or open the key of the given ProgID
+    // Create or open the key of the given ProgID.
     var keyProgID = Cc["@mozilla.org/windows-registry-key;1"]
      .createInstance(Ci.nsIWindowsRegKey);
     try {
@@ -184,27 +190,27 @@ FileAssociationsCreator.prototype = {
        keyProgID.ACCESS_WRITE);
     } catch (e if !this._forCurrentUser) {
       // If we are creating a file type for all users in the system, but opening
-      //  or creating the first key failed, we ignore the error.
+      // or creating the first key failed, we ignore the error.
       return;
     }
-    // Continue with the newly opened key
+    // Continue with the newly opened key.
     try {
-      // Set the display name shown in the Windows file association GUI
+      // Set the display name shown in the Windows file association GUI.
       keyProgID.writeStringValue("", aDisplayName);
   
-      // Associate a default icon
+      // Associate a default icon.
       var keyDefaultIcon = keyProgID.createChild(
        "DefaultIcon", keyProgID.ACCESS_WRITE);
       try {
-        // Use the second icon of the specified executable
+        // Use the second icon of the specified executable.
         keyDefaultIcon.writeStringValue("", '"' + aExecutablePath + '",' +
           aIconIndex);
       } finally {
         keyDefaultIcon.close();
       }
   
-      // Create a default "open" verb that passes the quoted file name to
-      //  the specified executable
+      // Create a default "open" verb that passes the quoted file name to the
+      // specified executable.
       var keyShell = keyProgID.createChild("shell", keyProgID.ACCESS_WRITE);
       try {
         var keyOpen = keyShell.createChild("open", keyShell.ACCESS_WRITE);
@@ -230,13 +236,13 @@ FileAssociationsCreator.prototype = {
 
   /**
    * Creates a global Windows file type association, under HKEY_CLASSES_ROOT,
-   *  associating the given extension with the given ProgID.
+   * associating the given extension with the given ProgID.
    *
    * If the extension is already associated to another file type, the
-   *  association is modified.
+   * association is modified.
    */
   _createWindowsFileExtensionAssociation: function(aFileExtension, aProgID) {
-    // Create or open the key of the given file extension
+    // Create or open the key of the given file extension.
     var keyExtension = Cc["@mozilla.org/windows-registry-key;1"]
      .createInstance(Ci.nsIWindowsRegKey);
     try {
@@ -246,12 +252,12 @@ FileAssociationsCreator.prototype = {
        keyExtension.ACCESS_WRITE);
     } catch (e if !this._forCurrentUser) {
       // If we are creating a file type association for all users in the system,
-      //  but opening or creating the first key failed, we ignore the error.
+      // but opening or creating the first key failed, we ignore the error.
       return;
     }
-    // Continue with the newly opened key
+    // Continue with the newly opened key.
     try {
-      // Set the file type association
+      // Set the file type association.
       keyExtension.writeStringValue("", aProgID);
     } finally {
       keyExtension.close();

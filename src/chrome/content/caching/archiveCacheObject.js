@@ -41,24 +41,25 @@
 var ArchiveCache = {
 
   /**
-   * Register the given archive object in the cache. After an archive object
-   *  has been registered in the cache, it must not be modified without
-   *  unregistering it first.
+   * Register the given archive object in the cache. After an archive object has
+   * been registered in the cache, it must not be modified without unregistering
+   * it first.
    *
-   * @param aArchive   Object of type Archive whose metadata will be cached.
+   * @param aArchive
+   *        Object of type Archive whose metadata will be cached.
    */
   registerArchive: function(aArchive) {
-    // Remove any previously registered archive object with the same key
+    // Remove any previously registered archive object with the same key.
     var oldArchive = this._archivesByKey[aArchive.cacheKey];
     if (oldArchive) {
       this.unregisterArchive(oldArchive);
     }
-    // Register the archive in the cache
+    // Register the archive in the cache.
     this._archivesByKey[aArchive.cacheKey] = aArchive;
     this._archivesByUri[aArchive.uri.spec] = aArchive;
-    // Add information about the individual pages
+    // Add information about the individual pages.
     for (var [, page] in Iterator(aArchive.pages)) {
-      // The following URLs are normally unique for every extracted page
+      // The following URLs are normally unique for every extracted page.
       this._pagesByArchiveUri[page.archiveUri.spec] = page;
       if (page.tempUri) {
         this._pagesByTempUri[page.tempUri.spec] = page;
@@ -67,7 +68,7 @@ var ArchiveCache = {
       if (page.directArchiveUri) {
         this._pagesByDirectArchiveUri[page.directArchiveUri.spec] = page;
       }
-      // Add places annotations for the cached page
+      // Add places annotations for the cached page.
       ArchiveAnnotations.setAnnotationsForPage(page);
     }
   },
@@ -75,19 +76,20 @@ var ArchiveCache = {
   /**
    * Remove the given archive object from the cache.
    *
-   * @param aArchive   Object of type Archive to be removed from the cache.
+   * @param aArchive
+   *        Object of type Archive to be removed from the cache.
    */
   unregisterArchive: function(aArchive) {
-    // Ensure that the archive is present in the cache
+    // Ensure that the archive is present in the cache.
     if (!this._archivesByKey[aArchive.cacheKey]) {
       return;
     }
-    // Remove the archive from the cache
+    // Remove the archive from the cache.
     delete this._archivesByKey[aArchive.cacheKey];
     delete this._archivesByUri[aArchive.uri.spec];
-    // Remove information about the individual pages
+    // Remove information about the individual pages.
     for (var [, page] in Iterator(aArchive.pages)) {
-      // The following URLs are normally unique for every extracted page
+      // The following URLs are normally unique for every extracted page.
       delete this._pagesByArchiveUri[page.archiveUri.spec];
       if (page.tempUri) {
         delete this._pagesByTempUri[page.tempUri.spec];
@@ -96,7 +98,7 @@ var ArchiveCache = {
       if (page.directArchiveUri) {
         delete this._pagesByDirectArchiveUri[page.directArchiveUri.spec];
       }
-      // Clear the obsolete places annotations for the page
+      // Clear the obsolete places annotations for the page.
       ArchiveAnnotations.removeAnnotationsForPage(page);
     }
   },
@@ -104,7 +106,8 @@ var ArchiveCache = {
   /**
    * Returns the archive object associated with the given URL.
    *
-   * @param aUri   nsIURI representing the original URL of the archive.
+   * @param aUri
+   *        nsIURI representing the original URL of the archive.
    */
   archiveFromUri: function(aUri) {
     return this._archivesByUri[this._getLookupSpec(aUri)] || null;
@@ -112,37 +115,38 @@ var ArchiveCache = {
 
   /**
    * Returns the page object associated with the file referenced by the given
-   *  URL, if the URL represents a file in the temporary directory that is
-   *  related to an available extracted page.
+   * URL, if the URL represents a file in the temporary directory that is
+   * related to an available extracted page.
    *
-   * @param aUri   nsIURI to check.
+   * @param aUri
+   *        nsIURI to check.
    */
   pageFromAnyTempUri: function(aUri) {
     // Return now if the provided URL is not a file URL, thus it cannot refer to
-    //  a file in the temporary directory related to an extracted page.
+    // a file in the temporary directory related to an extracted page.
     if (!(aUri instanceof Ci.nsIFileURL)) {
       return null;
     }
-    // Check if this file is located under any archive's temporary folder
+    // Check if this file is located under any archive's temporary folder.
     for (var [, page] in Iterator(this._pagesByTempUri)) {
       var folderUri = page.tempFolderUri.QueryInterface(Ci.nsIFileURL);
-      // The following function checks whether aUri is located under the
-      //  folder represented by folderUri
+      // The following function checks whether aUri is located under the folder
+      // represented by folderUri.
       if (folderUri.getCommonBaseSpec(aUri) === folderUri.spec) {
         return page;
       }
     }
-    // The URL is unrelated to any extracted page
+    // The URL is unrelated to any extracted page.
     return null;
   },
 
   /**
    * Returns the page object associated with the given URL.
    *
-   * @param aUri   nsIURI representing one of the URLs of the main file
-   *                associated with the page. It can be the archive URL,
-   *                the URL in the temporary folder, or the direct archive
-   *                access URL (for example, a "jar" URL).
+   * @param aUri
+   *        nsIURI representing one of the URLs of the main file associated with
+   *        the page. It can be the archive URL, the URL in the temporary
+   *        folder, or the direct archive access URL (for example, a "jar" URL).
    */
   pageFromUri: function(aUri) {
     var uriSpec = this._getLookupSpec(aUri);
@@ -159,44 +163,45 @@ var ArchiveCache = {
 
   /**
    * Associative array containing all the registered Archive objects, accessible
-   *  by their original URI.
+   * by their original URI.
    */
   _archivesByUri: {},
 
   /**
    * Associative array containing all the available archived pages, accessible
-   *  by their specific archive URI.
+   * by their specific archive URI.
    */
   _pagesByArchiveUri: {},
 
   /**
    * Associative array containing all the available archived pages, accessible
-   *  by the URI of their main file in the temporary directory.
+   * by the URI of their main file in the temporary directory.
    */
   _pagesByTempUri: {},
 
   /**
    * Associative array containing all the available archived pages, accessible
-   *  by the URI of their specific temporary folder.
+   * by the URI of their specific temporary folder.
    */
   _pagesByTempFolderUri: {},
 
   /**
    * Associative array containing some of the available archived pages,
-   *  accessible by their direct archive access URI (for example, a "jar:" URI).
+   * accessible by their direct archive access URI (for example, a "jar:" URI).
    */
   _pagesByDirectArchiveUri: {},
 
   /**
    * Removes unnecessary elements from archive or page URIs, in order to look
-   *  them up in the archive cache correctly.
+   * them up in the archive cache correctly.
    *
-   * @param aUri   nsIURI to process.
+   * @param aUri
+   *        nsIURI to process.
    */
   _getLookupSpec: function(aUri) {
     var lookupUri = aUri.clone();
     if (lookupUri instanceof Ci.nsIURL) {
-      // Try and remove the hash part, if supported by the URL implementation
+      // Try and remove the hash part, if supported by the URL implementation.
       try {
         lookupUri.ref = "";
       } catch (e) { }

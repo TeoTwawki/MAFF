@@ -37,25 +37,25 @@
 
 /**
  * Allows the current thread to iterate through the items of an enumerable
- *  object, like an array, without blocking the dispatching of events like those
- *  raised by user interface interaction.
+ * object, like an array, without blocking the dispatching of events like those
+ * raised by user interface interaction.
  *
- * @param aEnumerable   The enumerable object to be examined. The Iterator
- *                       global function will be used to get a reference to the
- *                       object's iterator.
- * @param aItemFn       Callback function that will be called for every item.
- *                       The item will be the function's first argument. The
- *                       next item in the enumeration will not be examined until
- *                       the function returns. If an exception is raised, the
- *                       enumeration will be suspended until explicitly stopped.
- * @param aSuccessFn    Callback function that will be called if the enumeration
- *                       terminates normally, and the "stop" method has not been
- *                       called.
+ * @param aEnumerable
+ *        The enumerable object to be examined. The Iterator global function
+ *        will be used to get a reference to the object's iterator.
+ * @param aItemFn
+ *        Callback function that will be called for every item. The item will be
+ *        the function's first argument. The next item in the enumeration will
+ *        not be examined until the function returns. If an exception is raised,
+ *        the enumeration will be suspended until explicitly stopped.
+ * @param aSuccessFn
+ *        Callback function that will be called if the enumeration terminates
+ *        normally, and the "stop" method has not been called.
  */
 function AsyncEnumerator(aEnumerable, aItemFn, aSuccessFn) {
-  // Get the iterator for the items in the enumerable object
+  // Get the iterator for the items in the enumerable object.
   this._iterator = Iterator(aEnumerable);
-  // Save references to the callback function
+  // Save references to the callback function.
   this._itemFn = aItemFn;
   this._successFn = aSuccessFn;
 }
@@ -67,11 +67,11 @@ AsyncEnumerator.prototype = {
    * This function may also be called from within a callback function.
    */
   start: function() {
-    // If the enumeration has already been stopped, return now
+    // If the enumeration has already been stopped, return now.
     if (!this._iterator) {
       return;
     }
-    // Ensure that the paused state is reset and enter the main loop
+    // Ensure that the paused state is reset and enter the main loop.
     this._paused = false;
     this.run();
   },
@@ -92,14 +92,14 @@ AsyncEnumerator.prototype = {
    */
   stop: function() {
     // Force the "run" method to terminate as soon as the currently running
-    //  callback, if any, terminates its execution. Since the iterator will
-    //  become unavailable, the iteration will not be resumed even if the
-    //  "start" method is called before the "run" method terminates.
+    // callback, if any, terminates its execution. Since the iterator will
+    // become unavailable, the iteration will not be resumed even if the "start"
+    // method is called before the "run" method terminates.
     this._paused = true;
-    // First make the iterator unavailable
+    // First make the iterator unavailable.
     var iterator = this._iterator;
     this._iterator = null;
-    // If the iterator is also a generator, ensure it is closed
+    // If the iterator is also a generator, ensure it is closed.
     if (iterator.close) {
       iterator.close();
     }
@@ -109,46 +109,46 @@ AsyncEnumerator.prototype = {
    * Executes the main iteration loop. This is considered a private function.
    */
   run: function() {
-    // If the enumeration has already been stopped, return now
+    // If the enumeration has already been stopped, return now.
     if (!this._iterator) {
       return;
     }
-    // If the main iteration loop is already running, return now
+    // If the main iteration loop is already running, return now.
     if (this._running) {
       return;
     }
-    // Enter the main iteration loop
+    // Enter the main iteration loop.
     this._running = true;
     try {
       // The main loop is executed until one of the following occurs:
-      //  - The maximum allowed consecutive execution time passes.
-      //  - The enumeration is paused or stopped.
-      //  - The last item in the enumeration is reached.
-      //  - An exception is raised by the callback function.
+      //   - The maximum allowed consecutive execution time passes.
+      //   - The enumeration is paused or stopped.
+      //   - The last item in the enumeration is reached.
+      //   - An exception is raised by the callback function.
       var startTime = new Date();
       do {
         this._itemFn(this._iterator.next());
       } while(!this._paused &&
        new Date() - startTime < this._maxConsecutiveTimeMs);
       // If the main loop terminated because the maximum allowed consecutive
-      //  execution time passed, reschedule the "run" method immediately.
+      // execution time passed, reschedule the "run" method immediately.
       if (!this._paused) {
         this._mainThread.dispatch(this, Ci.nsIThread.DISPATCH_NORMAL);
       }
     } catch (e if e instanceof StopIteration) {
       // Enumeration terminated successfully. Make the iterator unavailable and
-      //  invoke the appropriate callback function.
+      // invoke the appropriate callback function.
       this._iterator = null;
       this._successFn();
     } finally {
-      // Indicate that the main loop terminated, even in case of exceptions
+      // Indicate that the main loop terminated, even in case of exceptions.
       this._running = false;
     }
   },
 
   /**
    * Time interval, in milliseconds, after which the enumeration is suspended
-   *  and automatically rescheduled on the current thread.
+   * and automatically rescheduled on the current thread.
    */
   _maxConsecutiveTimeMs: 25,
 

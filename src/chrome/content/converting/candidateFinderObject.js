@@ -37,14 +37,14 @@
 
 /**
  * Locates the saved web pages that are candidates for batch conversion between
- *  different file formats.
+ * different file formats.
  */
 function CandidateFinder() {
-  // Initialize the contained objects
+  // Initialize the contained objects.
   this.location = new CandidateLocation();
-  // Initialize the list of valid suffixes for the support folders
+  // Initialize the list of valid suffixes for the support folders.
   this.sourceDataFolderSuffixes = Prefs.convertDataFolderSuffixesArray;
-  // Add the files folder suffix for the current locale, if not the default
+  // Add the files folder suffix for the current locale, if not the default.
   var localizedFolderSuffix = Cc["@mozilla.org/intl/stringbundle;1"].
    getService(Ci.nsIStringBundleService).
    createBundle("chrome://global/locale/contentAreaCommands.properties").
@@ -78,7 +78,7 @@ CandidateFinder.prototype = {
 
   /**
    * CandidateLocation object representing the root directories involved in the
-   *  conversion operation.
+   * conversion operation.
    */
   location: null,
 
@@ -89,16 +89,16 @@ CandidateFinder.prototype = {
 
   /**
    * Array containing the suffixes used for recognizing the support folders in
-   *  the source tree, for example "_files".
+   * the source tree, for example "_files".
    */
   sourceDataFolderSuffixes: [],
 
   /**
    * Returns true if the values in the "sourceFormat" and "destFormat"
-   *  properties are consistent.
+   * properties are consistent.
    */
   validateFormats: function() {
-    // The "plain" and "complete" values indicate the same file format
+    // The "plain" and "complete" values indicate the same file format.
     var effectiveSourceFormat =
      (this.sourceFormat == "plain" ? "complete" : this.sourceFormat);
     return (effectiveSourceFormat != this.destFormat);
@@ -106,12 +106,12 @@ CandidateFinder.prototype = {
 
   /**
    * This iterator yields the Candidate objects corresponding to the convertible
-   *  files under the root search location. Sometimes a null value will be
-   *  returned instead of a candidate to allow the caller to keep the user
-   *  interface responsive while the search is in progress.
+   * files under the root search location. Sometimes a null value will be
+   * returned instead of a candidate to allow the caller to keep the user
+   * interface responsive while the search is in progress.
    */
   __iterator__: function() {
-    // Delegate the generation to the parameterized worker
+    // Delegate the generation to the parameterized worker.
     for (var item in this._candidatesGenerator(this.location)) {
       yield item;
     }
@@ -119,16 +119,16 @@ CandidateFinder.prototype = {
 
   /**
    * This generator function yields the Candidate objects corresponding to the
-   *  convertible files under the specified location. Sometimes a null value
-   *  will be returned instead of a candidate to allow the caller to keep the
-   *  user interface responsive while the search is in progress.
+   * convertible files under the specified location. Sometimes a null value will
+   * be returned instead of a candidate to allow the caller to keep the user
+   * interface responsive while the search is in progress.
    */
   _candidatesGenerator: function(aLocation) {
     // Enumerate all the files and subdirectories in the specified directory,
-    //  and generate three separate lists: one for folder names, one for file
-    //  names, and a string containing the concatenation of all the file names,
-    //  for faster access when searching for a particular file name in folders
-    //  containing many files.
+    // and generate three separate lists: one for folder names, one for file
+    // names, and a string containing the concatenation of all the file names,
+    // for faster access when searching for a particular file name in folders
+    // containing many files.
     var dirEntries = aLocation.source.directoryEntries;
     var subdirs = {};
     var files = {};
@@ -136,7 +136,7 @@ CandidateFinder.prototype = {
     while (dirEntries.hasMoreElements()) {
       var dirEntry = dirEntries.getNext().QueryInterface(Ci.nsIFile);
       try {
-        // Add the entry to the appropriate lists
+        // Add the entry to the appropriate lists.
         if (dirEntry.isDirectory()) {
           subdirs[dirEntry.leafName] = true;
         } else {
@@ -146,15 +146,15 @@ CandidateFinder.prototype = {
       } catch (e if (e instanceof Ci.nsIException && e.result ==
        Cr.NS_ERROR_FILE_NOT_FOUND)) {
         // In rare cases, invalid file names may generate this exception when
-        //  checking isDirectory, even if they were returned by the iterator.
+        // checking isDirectory, even if they were returned by the iterator.
       }
-      // Avoid blocking the user interface while scanning crowded folders
+      // Avoid blocking the user interface while scanning crowded folders.
       yield null;
     }
 
-    // Examine every available subfolder
+    // Examine every available subfolder.
     for (var [subdirName] in Iterator(subdirs)) {
-      // Ensure that the enumeration result is a JavaScript string
+      // Ensure that the enumeration result is a JavaScript string.
       subdirName = "" + subdirName;
       // If the subfolder is a support folder for an existing web page
       var name = this._isSupportFolderName(subdirName, filesList);
@@ -162,18 +162,18 @@ CandidateFinder.prototype = {
         // If the search should include web pages among the source files
         if (this.sourceFormat == "complete" || this.sourceFormat == "plain") {
           // Check that the associated source file has not been already used
-          //  together with another support folder
+          // together with another support folder.
           if (files[name]) {
-            // Generate a new candidate for conversion
+            // Generate a new candidate for conversion.
             yield this._newCandidate(aLocation, name, subdirName);
-            // Ensure that the file will not be used again as a candidate later
+            // Ensure that the file will not be used again as a candidate later.
             delete files[name];
           }
         }
       } else if (this.sourceIncludeSubfolders) {
         // If required, examine the contents of this subfolder recursively. The
-        //  contents of support folders for data files are never examined, even
-        //  if the folder is not returned as a candidate for conversion.
+        // contents of support folders for data files are never examined, even
+        // if the folder is not returned as a candidate for conversion.
         var newLocation = aLocation.getSubLocation(subdirName);
         for (var item in this._candidatesGenerator(newLocation)) {
           yield item;
@@ -181,13 +181,13 @@ CandidateFinder.prototype = {
       }
     }
 
-    // Examine every remaining file
+    // Examine every remaining file.
     for (var [fileName] in Iterator(files)) {
-      // Ensure that the enumeration result is a JavaScript string
+      // Ensure that the enumeration result is a JavaScript string.
       fileName = "" + fileName;
       // If the file name matches the criteria
       if (this._isSourceFileName(fileName)) {
-        // Generate a new candidate for conversion
+        // Generate a new candidate for conversion.
         yield this._newCandidate(aLocation, fileName);
       }
     }
@@ -197,24 +197,24 @@ CandidateFinder.prototype = {
    * Creates a new candidate with the given properties.
    */
   _newCandidate: function(aParentLocation, aLeafName, aDataFolderLeafName) {
-    // Create a Candidate object for the requested file formats
+    // Create a Candidate object for the requested file formats.
     var candidate = new Candidate();
     candidate.sourceFormat = this.sourceFormat;
     candidate.destFormat = this.destFormat;
-    // Set the actual file names based on the file formats
+    // Set the actual file names based on the file formats.
     candidate.setLocation(aParentLocation, aLeafName, aDataFolderLeafName);
-    // Check if the destination or bin files already exist
+    // Check if the destination or bin files already exist.
     candidate.checkObstructed();
-    // Return the newly generated candidate
+    // Return the newly generated candidate.
     return candidate;
   },
 
   /**
    * Checks the extension in the given file name and returns true if it matches
-   *  the selected source format.
+   * the selected source format.
    */
   _isSourceFileName: function(aLeafName) {
-    // Checks the extension case-insensitively
+    // Checks the extension case-insensitively.
     switch (this.sourceFormat) {
       case "plain":
         return /\.(x?html|xht|htm|xml|svgz?)$/i.test(aLeafName);
@@ -229,52 +229,52 @@ CandidateFinder.prototype = {
 
   /**
    * Returns true if the given directory name contains the data files of an
-   *  existing complete web page. The aFilesList parameter is a string
-   *  containing the concatenation of all the files.
+   * existing complete web page. The aFilesList parameter is a string containing
+   * the concatenation of all the files.
    */
   _isSupportFolderName: function(aLeafName, aFilesList) {
-    // Try with all the possible suffixes in order
+    // Try with all the possible suffixes in order.
     for (var [, suffix] in Iterator(this.sourceDataFolderSuffixes)) {
-      // Checks the suffix case-sensitively
+      // Checks the suffix case-sensitively.
       if (aLeafName.slice(-suffix.length) != suffix) {
         continue;
       }
-      // Extract the base folder name without the suffix
+      // Extract the base folder name without the suffix.
       var basePart = aLeafName.slice(0, -suffix.length);
       if (!basePart) {
         continue;
       }
-      // Look into the provided list of file names to find the associated file
+      // Look into the provided list of file names to find the associated file.
       var endPosition = 0;
       var foundFileName = false;
       while (true) {
         // Search case-sensitively for a file name that begins with the base
-        //  name obtained from the support folder name
+        // name obtained from the support folder name.
         var position = aFilesList.indexOf("::" + basePart, endPosition);
         if (position < 0) {
           break;
         }
-        // A file name was found, extract it from the list
+        // A file name was found, extract it from the list.
         var startPosition = position + "::".length;
         endPosition = aFilesList.indexOf("::", startPosition);
         var fileName = aFilesList.slice(startPosition, endPosition);
         var lastPart = fileName.slice(basePart.length);
-        // Ensure that the base name is the entire name or is followed by a dot
+        // Ensure that the base name is the entire name or is followed by a dot.
         if (lastPart && lastPart[0] != ".") {
           continue;
         }
-        // A file name that can be associated with the folder was found
+        // A file name that can be associated with the folder was found.
         foundFileName = fileName;
-        // Give priority to names that match one of the known extensions
+        // Give priority to names that match one of the known extensions.
         if (/\.(x?html|xht|htm|xml|svgz?)$/i.test(lastPart)) {
           return foundFileName;
         }
       }
       // Either a comaptible file name was not found, or a file name that does
-      //  not match one of the known extensions was found
+      // not match one of the known extensions was found.
       return foundFileName;
     }
-    // The given name is not one of a support folder
+    // The given name is not one of a support folder.
     return false;
   },
 }

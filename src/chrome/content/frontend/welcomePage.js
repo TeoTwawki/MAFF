@@ -54,19 +54,19 @@ var WelcomePage = {
    * Initializes the controls on the page.
    */
   onLoad: function() {
-    // Initialize the member variables
+    // Initialize the member variables.
     this._cbAssociateMaff = document.getElementById("cbAssociateMaff");
     this._cbAssociateMhtml = document.getElementById("cbAssociateMhtml");
-    // Apply brand names to the dialog elements
+    // Apply brand names to the dialog elements.
     Interface.applyBranding(document.getElementById("featuresHeader"));
     Interface.applyBranding(document.getElementById("associateQuestion"));
-    // Show the appropriate header if this is an update from a previous version
+    // Show the appropriate header if this is an update from a previous version.
     if (!Prefs.otherDisplayWelcome) {
       document.getElementById("featuresHeader").style.display = "none";
       document.getElementById("featuresHeaderFromUpdate").style.display = "";
       Prefs.otherDisplayWelcome = true;
     }
-    // File associations are supported on Windows only
+    // File associations are supported on Windows only.
     if (this._isOnWindows()) {
       document.getElementById("securityOverrideContent").style.display = "";
       this._cbAssociateMaff.checked = Prefs.associateMaff;
@@ -92,16 +92,16 @@ var WelcomePage = {
    * Applies the selected options before the page is closed.
    */
   beforeUnload: function(aEvent) {
-    // Ensure that this event is processed only once
+    // Ensure that this event is processed only once.
     if (this._beforeUnloadProcessed) {
       return;
     }
     this._beforeUnloadProcessed = true;
 
-    // Preselect the "All Files" open filter
+    // Preselect the "All Files" open filter.
     DynamicPrefs.openFilterIndex = 4 + FileFilters.openFilters.length;
 
-    // Apply the file association option on Windows
+    // Apply the file association option on Windows.
     if (this._isOnWindows()) {
       try {
         if (Prefs.associateMaff) {
@@ -111,7 +111,7 @@ var WelcomePage = {
           FileAssociations.createAssociationsForMHTML();
         }
       } catch(e) {
-        // Show a message box indicating that the operation failed
+        // Show a message box indicating that the operation failed.
         var str = document.getElementById("associateQuestion");
         this._prompts.alert(null, str.getAttribute("errortitle"),
          str.getAttribute("errormessage").replace("$1", e.message) + "\n\n" +
@@ -125,8 +125,8 @@ var WelcomePage = {
    */
   _isOnWindows: function() {
     // For more information, see
-    //  <https://developer.mozilla.org/en/nsIXULRuntime> and
-    //  <https://developer.mozilla.org/en/OS_TARGET> (retrieved 2008-11-19).
+    // <https://developer.mozilla.org/en/nsIXULRuntime> and
+    // <https://developer.mozilla.org/en/OS_TARGET> (retrieved 2008-11-19).
     var xulRuntimeOs = Cc["@mozilla.org/xre/app-info;1"]
      .getService(Ci.nsIXULRuntime).OS;
     return (xulRuntimeOs == "WINNT");

@@ -37,9 +37,9 @@
 
 /**
  * Defines the DynamicPrefs global object, that can be used to set and retrieve
- *  the runtime values stored in the ".current" preferences tree. These
- *  values are not accessible from the extension's preferences dialog, and are
- *  modified only by interaction with other portions of the user interface.
+ * the runtime values stored in the ".current" preferences tree. These values
+ * are not accessible from the extension's preferences dialog, and are modified
+ * only by interaction with other portions of the user interface.
  *
  * Normal extension preferences are read using "prefsObject.js" instead.
  */
@@ -50,7 +50,7 @@ var DynamicPrefs = {
 
   /**
    * Index of the selected filter in the modified "Open File" dialog box, or
-   *  zero if the index was never set before.
+   * zero if the index was never set before.
    */
   get openFilterIndex() {
     try {
@@ -65,7 +65,7 @@ var DynamicPrefs = {
 
   /**
    * Index of the selected filter in the "Save Page In Archive" dialog box, or
-   *  zero if the index was never set before.
+   * zero if the index was never set before.
    */
   get saveFilterIndex() {
     try {
@@ -80,10 +80,10 @@ var DynamicPrefs = {
 
   /**
    * Index of the selected filter in the "Save Page" dialog box when saving HTML
-   *  or XHTML documents either as complete pages or archives. This is zero if
-   *  the index was never set before, and is only used when it is greater or
-   *  equal than 2, meaning that the user chose to not save HTML or XHTML
-   *  documents in archives by default.
+   * or XHTML documents either as complete pages or archives. This is zero if
+   * the index was never set before, and is only used when it is greater or
+   * equal than 2, meaning that the user chose to not save HTML or XHTML
+   * documents in archives by default.
    */
   get saveFilterIndexHtml() {
     try {

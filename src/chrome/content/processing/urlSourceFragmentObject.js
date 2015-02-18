@@ -39,7 +39,7 @@
  * Represents an URL that is written inside a fragment of a source file.
  *
  * This class derives from SourceFragment. See the SourceFragment documentation
- *  for details.
+ * for details.
  */
 function UrlSourceFragment(aSourceData, aOptions) {
   SourceFragment.call(this, aSourceData, aOptions);
@@ -50,11 +50,11 @@ UrlSourceFragment.prototype = {
 
   /**
    * String containing the URL associated with this fragment. If necessary, the
-   *  URL is converted to and from its HTML escaped version automatically.
+   * URL is converted to and from its HTML escaped version automatically.
    */
   get urlSpec() {
     if (this._options.isEncodedAsHtml) {
-      // Decode the basic HTML entities in the raw text
+      // Decode the basic HTML entities in the raw text.
       return this._sourceData.
        replace(/&quot;/gi, '"').
        replace(/&apos;/gi, "'").
@@ -62,13 +62,13 @@ UrlSourceFragment.prototype = {
        replace(/&gt;/gi, ">").
        replace(/&amp;/gi, "&");
     } else {
-      // No decoding is necessary
+      // No decoding is necessary.
       return this._sourceData;
     }
   },
   set urlSpec(aValue) {
     if (this._options.isEncodedAsHtml) {
-      // Encode the basic HTML entities in the raw text
+      // Encode the basic HTML entities in the raw text.
       this._sourceData = aValue.
        replace(/&/g, "&amp;").
        replace(/"/g, "&quot;").
@@ -76,7 +76,7 @@ UrlSourceFragment.prototype = {
        replace(/</g, "&lt;").
        replace(/>/g, "&gt;");
     } else {
-      // No encoding is necessary
+      // No encoding is necessary.
       this._sourceData = aValue;
     }
   },

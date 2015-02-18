@@ -48,29 +48,29 @@ var PrefsDialog = {
    * Initializes the controls when the dialog is displayed.
    */
   onLoadDialog: function() {
-    // Apply brand names to the dialog elements
+    // Apply brand names to the dialog elements.
     for (var [, elementName] in Iterator(["cbInterfaceMenuApp",
      "descVisitWebsite", "descShowWelcomePageAssociate"])) {
       Interface.applyBranding(document.getElementById(elementName));
     }
-    // Check to see if the application menu is present
+    // Check to see if the application menu is present.
     document.getElementById("cbInterfaceMenuApp").hidden =
      !StartupInitializer.hasAppMenu;
-    // Determines if the welcome page handles file associations
+    // Determines if the welcome page handles file associations.
     if (this._isOnWindows()) {
       document.getElementById("boxShowWelcomePage").hidden = true;
       document.getElementById("boxShowWelcomePageAssociate").hidden = false;
     }
-    // Updates the status of the dialog controls
+    // Updates the status of the dialog controls.
     this.onSaveMethodChange();
     this.onInterfaceMenuPageContextChange();
     // At this point, we must ensure that the height of the visible description
-    //  elements is taken into account when calculating the window height.
+    // elements is taken into account when calculating the window height.
     for (let [, d] in Iterator(document.getElementsByTagName("description"))) {
       d.style.height = window.getComputedStyle(d).height;
     }
     // We must also override the explicit height that was set by the preferences
-    //  window machinery, then recalculate the window height automatically.
+    // window machinery, then recalculate the window height automatically.
     for (let [, p] in Iterator(document.getElementsByTagName("prefpane"))) {
       p = document.getAnonymousElementByAttribute(p, "class", "content-box");
       p.style.height = "auto";
@@ -107,10 +107,10 @@ var PrefsDialog = {
     var convertDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
      getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Convert");
     if (convertDialog) {
-      // Bring the window to the foreground
+      // Bring the window to the foreground.
       convertDialog.focus();
     } else {
-      // Open a new window to allow the conversion
+      // Open a new window to allow the conversion.
       window.open(
        "chrome://maf/content/frontend/convertDialog.xul",
        "maf-convertDialog",
@@ -120,11 +120,11 @@ var PrefsDialog = {
 
   /**
    * Opens the welcome page in a new browser window. This must be done from code
-   *  since labels with the "text-link" class cannot open chrome locations.
+   * since labels with the "text-link" class cannot open chrome locations.
    */
   onActionShowWelcomePageClick: function() {
     // Use the helper function defined either in "utilityOverlay.js" or in
-    //  "contentAreaUtils.js" depending on the host application.
+    // "contentAreaUtils.js" depending on the host application.
     openNewWindowWith("chrome://maf/content/frontend/welcomePage.xhtml");
   },
 
@@ -135,8 +135,8 @@ var PrefsDialog = {
    */
   _isOnWindows: function() {
     // For more information, see
-    //  <https://developer.mozilla.org/en/nsIXULRuntime> and
-    //  <https://developer.mozilla.org/en/OS_TARGET> (retrieved 2008-11-19).
+    // <https://developer.mozilla.org/en/nsIXULRuntime> and
+    // <https://developer.mozilla.org/en/OS_TARGET> (retrieved 2008-11-19).
     var xulRuntimeOs = Cc["@mozilla.org/xre/app-info;1"]
      .getService(Ci.nsIXULRuntime).OS;
     return (xulRuntimeOs == "WINNT");

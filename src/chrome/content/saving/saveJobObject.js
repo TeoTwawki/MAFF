@@ -37,14 +37,14 @@
 
 /**
  * Manages the saving process of one or more archives, providing a single
- *  progress indication. The information to be saved and the destinations must
- *  be added using the appropriate methods before starting the operation.
+ * progress indication. The information to be saved and the destinations must be
+ * added using the appropriate methods before starting the operation.
  *
  * This class derives from JobRunner. See the JobRunner documentation for
- *  details.
+ * details.
  */
 function SaveJob(eventListener) {
-  // Always save different archives in parallel
+  // Always save different archives in parallel.
   JobRunner.call(this, eventListener, true);
 }
 
@@ -53,16 +53,15 @@ SaveJob.prototype = {
 
   /*
    * Adds new save jobs to the current operation, starting from a list of web
-   *  browser objects. Depending on the target archive type, a single archive
-   *  is created for all the documents, or one archive is created for each
-   *  document.
+   * browser objects. Depending on the target archive type, a single archive is
+   * created for all the documents, or one archive is created for each document.
    */
   addJobsFromBrowsers: function(aBrowsers, aTargetFile, aTargetType) {
     // If we are saving to a MAFF archive
     if (aTargetType == "TypeMAFF") {
 
       // Create a pool of first-level folder names, in the format used by all
-      //  the recent versions of the Mozilla Archive Format extension.
+      // the recent versions of the Mozilla Archive Format extension.
       var baseName = new Date().valueOf() + "_";
       var randomIndex = Math.floor(Math.random() * (1000 - aBrowsers.length));
       var pageFolderNames = aBrowsers.map(function() {
@@ -70,11 +69,11 @@ SaveJob.prototype = {
       });
 
       // Sort the page folder names alphabetically. This allows the pages to be
-      //  displayed in the same order in which they are organized when the save
-      //  operation is invoked.
+      // displayed in the same order in which they are organized when the save
+      // operation is invoked.
       pageFolderNames.sort();
 
-      // Create a single archive with all the pages
+      // Create a single archive with all the pages.
       var maffArchiveJob = new SaveArchiveJob(this, aTargetFile, aTargetType);
       aBrowsers.forEach(function(curBrowser, curIndex) {
         maffArchiveJob.addContentFromDocumentAndBrowser(
@@ -84,19 +83,19 @@ SaveJob.prototype = {
 
     } else {
 
-      // Create an MHTML archive for each page to be saved
+      // Create an MHTML archive for each page to be saved.
       var uniqueTargetFile = aTargetFile.clone();
       aBrowsers.forEach(function(curBrowser) {
         var curTargetFile = uniqueTargetFile.clone();
 
-        // Create the save job
+        // Create the save job.
         var mhtmlArchiveJob = new SaveArchiveJob(this, curTargetFile,
          aTargetType);
         mhtmlArchiveJob.addContentFromDocumentAndBrowser(
          curBrowser.contentDocument, curBrowser);
         this._addJob(mhtmlArchiveJob);
 
-        // Get the next target file name
+        // Get the next target file name.
         this._changeCountInFilename(uniqueTargetFile);
       }, this);
 
@@ -105,10 +104,10 @@ SaveJob.prototype = {
 
   /*
    * Adds a new save job to the current operation, for the given document only.
-   *  This function should only be used to save subdocuments.
+   * This function should only be used to save subdocuments.
    */
   addJobFromDocument: function(aDocument, aTargetFile, aTargetType) {
-    // Create a single archive with the selected page
+    // Create a single archive with the selected page.
     var maffArchiveJob = new SaveArchiveJob(this, aTargetFile, aTargetType);
     maffArchiveJob.addContentFromDocumentAndBrowser(aDocument, null);
     this._addJob(maffArchiveJob);
@@ -116,13 +115,13 @@ SaveJob.prototype = {
 
   /**
    * Always modifies the leaf name of the given nsIFile object, preserving the
-   *  extension and ensuring that a file with the new name does not exist.
+   * extension and ensuring that a file with the new name does not exist.
    */
   _changeCountInFilename: function(aLocalFile) {
     do {
       // For more information on this routine, see the "uniqueFile" function in
-      //  <http://mxr.mozilla.org/firefox2/source/xpfe/communicator/resources/content/contentAreaUtils.js>
-      //  (retrieved 2009-11-24).
+      // <http://mxr.mozilla.org/firefox2/source/xpfe/communicator/resources/content/contentAreaUtils.js>
+      // (retrieved 2009-11-24).
       parts = /(-\d+)?(\.[^.]+)?$/.test(aLocalFile.leafName);
       aLocalFile.leafName = RegExp.leftContext + (RegExp.$1 - 1) + RegExp.$2;
     } while (aLocalFile.exists());

@@ -63,24 +63,24 @@ PersistResource.prototype = {
 
   /**
    * nsIURI object representing the original address from which the web resource
-   *  was retrieved. If the resource was modified after retrieval, this URI will
-   *  be different from the value of the originalUri property.
+   * was retrieved. If the resource was modified after retrieval, this URI will
+   * be different from the value of the originalUri property.
    *
    * Multiple resources in the same PersistBundle object may share the same
-   *  reference URI, if they are differently modified versions of the original.
+   * reference URI, if they are differently modified versions of the original.
    */
   referenceUri: null,
 
   /**
    * nsIURI object representing the original location of the web resource. This
-   *  property usually corresponds to the "Content-Location" header in web
-   *  archives, and uniquely identifies the resource in a PersistBundle object.
+   * property usually corresponds to the "Content-Location" header in web
+   * archives, and uniquely identifies the resource in a PersistBundle object.
    */
   originalUri: null,
 
   /**
    * URL-encoded string representing the original location of the web resource,
-   *  or the relative position of the resource with regard to a known root.
+   * or the relative position of the resource with regard to a known root.
    */
   contentLocation: "",
 
@@ -91,50 +91,51 @@ PersistResource.prototype = {
 
   /**
    * String representing the charset declaration of the web resource, or empty
-   *  if the information is not available.
+   * if the information is not available.
    */
   charset: "",
 
   /**
    * Initializes the relevant metadata about the current resource starting from
-   *  the given local file.
+   * the given local file.
    *
-   * @param aFile   nsIFile to be associated with the resource.
+   * @param aFile
+   *        nsIFile to be associated with the resource.
    */
   initFromFile: function(aFile) {
-    // Initialize the known member variables
+    // Initialize the known member variables.
     this.file = aFile;
-    // Get the MIME type from the local file if possible
+    // Get the MIME type from the local file if possible.
     var fileUri = Cc["@mozilla.org/network/io-service;1"].
      getService(Ci.nsIIOService).newFileURI(aFile);
     try {
       this.mimeType = Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService).
        getTypeFromURI(fileUri);
     } catch (e) {
-      // In case the MIME type cannot be determined, use a binary file type
+      // In case the MIME type cannot be determined, use a binary file type.
       this.mimeType = "application/octet-stream";
     }
   },
 
   /**
    * Writes the body of the resource to the associated local file. If the parent
-   *  directory of the file does not exist, all missing ancestors are created.
+   * directory of the file does not exist, all missing ancestors are created.
    */
   writeToFile: function() {
-    // Ensure that the ancestors exist
+    // Ensure that the ancestors exist.
     if (!this.file.parent.exists()) {
       this.file.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
     }
-    // Create and initialize an output stream to write to the local file
+    // Create and initialize an output stream to write to the local file.
     var outputStream = Cc["@mozilla.org/network/file-output-stream;1"].
      createInstance(Ci.nsIFileOutputStream);
     outputStream.init(this.file, -1, -1, 0);
     try {
       // Write the entire file to disk at once. If the content to be written is
-      //  4 GiB or more in size, an exception will be raised.
+      // 4 GiB or more in size, an exception will be raised.
       outputStream.write(this.body, this.body.length);
     } finally {
-      // Close the underlying stream
+      // Close the underlying stream.
       outputStream.close();
     }
   },
@@ -143,26 +144,26 @@ PersistResource.prototype = {
    * Populates the body with the contents read from the local file.
    */
   readFromFile: function() {
-    // Create and initialize an input stream to read from the local file
+    // Create and initialize an input stream to read from the local file.
     var inputStream = Cc["@mozilla.org/network/file-input-stream;1"].
      createInstance(Ci.nsIFileInputStream);
     inputStream.init(this.file, -1, 0, 0);
     try {
-      // Create and initialize a scriptable binary stream reader
+      // Create and initialize a scriptable binary stream reader.
       var binInputStream = Cc["@mozilla.org/binaryinputstream;1"].
        createInstance(Ci.nsIBinaryInputStream);
       binInputStream.setInputStream(inputStream);
       try {
         // Read the entire file and store the contents in the body property. If
-        //  the file is 4 GiB or more in size, an exception will be raised.
+        // the file is 4 GiB or more in size, an exception will be raised.
         this.body = binInputStream.readBytes(this.file.fileSize);
       } finally {
-        // Close the binary stream before returning or in case of exception
+        // Close the binary stream before returning or in case of exception.
         binInputStream.close();
       }
     } finally {
       // Close the underlying stream. This instruction has no effect if the
-      //  binary stream has been already closed successfully.
+      // binary stream has been already closed successfully.
       inputStream.close();
     }
   },

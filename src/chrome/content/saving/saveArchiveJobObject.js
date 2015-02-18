@@ -37,17 +37,19 @@
 
 /**
  * Manages the saving process of one or more web pages in an archive, providing
- *  a single progress indication. The information to be saved must be added
- *  using the appropriate methods before starting the operation.
+ * a single progress indication. The information to be saved must be added using
+ * the appropriate methods before starting the operation.
  *
  * This class derives from JobRunner. See the JobRunner documentation for
- *  details.
+ * details.
  *
- * @param aTargetFile   The nsIFile of the archive to be created.
- * @param aTargetType   The type of archive to be created (MAFF or MHTML).
+ * @param aTargetFile
+ *        The nsIFile of the archive to be created.
+ * @param aTargetType
+ *        The type of archive to be created (MAFF or MHTML).
  */
 function SaveArchiveJob(aEventListener, aTargetFile, aTargetType) {
-  // Never save pages to the same archive in parallel
+  // Never save pages to the same archive in parallel.
   JobRunner.call(this, aEventListener, false);
   this._targetFile = aTargetFile;
   this._targetType = aTargetType;
@@ -58,24 +60,24 @@ SaveArchiveJob.prototype = {
 
   addContentFromDocumentAndBrowser: function(aDocument, aBrowser, aFolderName) {
     // Determine the leaf name of the directory where the page will be saved.
-    //  This name will also be used for the first-level folder in the archive.
+    // This name will also be used for the first-level folder in the archive.
     var folderLeafName = aFolderName ||
      new Date().valueOf() + "_" + Math.floor(Math.random() * 1000);
 
-    // Determine the path of the directory where the page will be saved
+    // Determine the path of the directory where the page will be saved.
     var dir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
     dir.initWithPath(Prefs.tempFolder);
     dir.append(folderLeafName);
 
-    // Create a new object for saving page contents
+    // Create a new object for saving page contents.
     var job = new SaveContentJob(this, aDocument, dir);
     job.targetBrowser = aBrowser;
     job.targetType = this._targetType;
     job.targetFile = this._targetFile;
-    // Create a new archive if this is the first job in the list
+    // Create a new archive if this is the first job in the list.
     job.addToArchive = !!this._jobs.length;
 
-    // Add the job to the list of the ones to be started
+    // Add the job to the list of the ones to be started.
     this._addJob(job);
   },
 

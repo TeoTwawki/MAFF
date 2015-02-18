@@ -37,15 +37,15 @@
 
 /**
  * This object handles extension startup and shutdown, and acts as bookkeeper
- *  for the related observer registrations. Actual work is delegated to the
- *  StartupInitializer object.
+ * for the related observer registrations. Actual work is delegated to the
+ * StartupInitializer object.
  */
 var StartupEvents = {
 
   /**
    * This function must be called once on application startup, and simply
-   *  registers with the host application for other notifications, to be
-   *  handled by the "observe" function.
+   * registers with the host application for other notifications, to be handled
+   * by the "observe" function.
    */
   onAppStartup: function() {
     for (var [, topic] in Iterator(this._notificationTopics)) {
@@ -62,25 +62,25 @@ var StartupEvents = {
 
   /** Called when a user profile has fully loaded. */
   afterProfileChange: function() {
-    // Initialize the extension behavior
+    // Initialize the extension behavior.
     StartupInitializer.initFromCurrentProfile();
   },
 
   /** Called after all the browser windows have been shown. */
   onWindowsRestored: function() {
-    // Display the welcome page if required
+    // Display the welcome page if required.
     if (Prefs.otherDisplayWelcomePage) {
-      // Find the window where the welcome page should be displayed
+      // Find the window where the welcome page should be displayed.
       var browserWindow = Cc["@mozilla.org/appshell/window-mediator;1"].
        getService(Ci.nsIWindowMediator).
        getMostRecentWindow("navigator:browser");
       if (!browserWindow) {
         // Very rarely, it might happen that at this time all browser windows
-        //  have already been closed. In this case, we will attempt to show the
-        //  welcome page again on the next startup.
+        // have already been closed. In this case, we will attempt to show the
+        // welcome page again on the next startup.
         return;
       }
-      // Load the page in foreground
+      // Load the page in foreground.
       var welcomePageUrl = "chrome://maf/content/frontend/welcomePage.xhtml";
       var browser = browserWindow.getBrowser();
       if (browser.loadTabs) {
@@ -89,14 +89,14 @@ var StartupEvents = {
         browser.addTab(welcomePageUrl, null, null, true);
         browserWindow.content.focus();
       }
-      // The page was displayed successfully
+      // The page was displayed successfully.
       Prefs.otherDisplayWelcomePage = false;
     }
   },
 
   /** Called when the application is shutting down. */
   onAppQuit: function() {
-    // Clean up on application shutdown
+    // Clean up on application shutdown.
     StartupInitializer.terminate();
   },
 

@@ -8,9 +8,9 @@
  *
  */
 
-// Define a constructor function for the namespace wrapper
+// Define a constructor function for the namespace wrapper.
 var MafSaveComplete = new function() {
-  // Load Save Complete inside this function's namespace
+  // Load Save Complete inside this function's namespace.
   Cc["@mozilla.org/moz/jssubscript-loader;1"].
    getService(Ci.mozIJSSubScriptLoader).
    loadSubScript("chrome://maf/content/savecomplete/saver.js", this);

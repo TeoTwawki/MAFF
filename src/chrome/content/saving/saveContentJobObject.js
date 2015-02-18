@@ -40,9 +40,11 @@
  *
  * This class derives from Job. See the Job documentation for details.
  *
- * @param aDocument    The document to be saved.
- * @param aTargetDir   An nsILocalFile instance representing the temporary
- *                      directory where the document should be saved.
+ * @param aDocument
+ *        The document to be saved.
+ * @param aTargetDir
+ *        An nsILocalFile instance representing the temporary directory where
+ *        the document should be saved.
  */
 function SaveContentJob(aEventListener, aDocument, aTargetDir) {
   Job.call(this, aEventListener);
@@ -56,46 +58,46 @@ SaveContentJob.prototype = {
 
   // Job
   _executeStart: function() {
-    // Create a new MAFF or MHTML archive
+    // Create a new MAFF or MHTML archive.
     if (this.targetType == "TypeMHTML") {
       this._archive = new MhtmlArchive(this.targetFile);
     } else {
       this._archive = new MaffArchive(this.targetFile);
     }
     // Prepare a new page object for saving the current page in the archive.
-    //  This operation must be executed immediately since the metadata for the
-    //  page may not be available later, for example if the browser window where
-    //  the document is loaded is closed while the document is being saved.
+    // This operation must be executed immediately since the metadata for the
+    // page may not be available later, for example if the browser window where
+    // the document is loaded is closed while the document is being saved.
     var page = this._archive.addPage();
     page.tempDir = this._targetDir;
     page.setMetadataFromDocumentAndBrowser(this._document, this.targetBrowser);
-    // Create the target folder
+    // Create the target folder.
     this._targetDir.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
-    // Find the browser window associated with the document being saved
+    // Find the browser window associated with the document being saved.
     var browserWindow = this._document.defaultView.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebNavigation).
      QueryInterface(Ci.nsIDocShellTreeItem).rootTreeItem.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
-    // Save the document in the target folder
+    // Save the document in the target folder.
     browserWindow.wrappedJSObject.saveDocument(this._document, {
       saveDir: this._targetDir,
       saveWithMedia: (this.targetType == "TypeMAFF"),
       saveWithContentLocation: (this.targetType == "TypeMHTML"),
       mafEventListener: this
     });
-    // Wait for the save completed callback
+    // Wait for the save completed callback.
     this._asyncWorkStarted();
   },
 
   // Job
   _executeCancel: function(aReason) {
     // No special action is required since the worker objects do not support
-    //  cancellation
+    // cancellation.
   },
 
   // Job
   _executeDispose: function() {
-    // Delete the target folder if it was created successfully
+    // Delete the target folder if it was created successfully.
     if(this._targetDir.exists()) {
       this._targetDir.remove(true);
     }
@@ -103,21 +105,21 @@ SaveContentJob.prototype = {
 
   // MafEventListener
   onSaveNameDetermined: function(aSaveName) {
-    // Remember the name that the save component has chosen for the index file
+    // Remember the name that the save component has chosen for the index file.
     this._archive.pages[0].indexLeafName = aSaveName;
   },
 
   // MafEventListener
   onDownloadProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
    aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
-    // Update job progress and propagate the event to our listener
+    // Update job progress and propagate the event to our listener.
     this._notifyJobProgressChange(aWebProgress, aRequest, aCurSelfProgress,
      aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
   },
 
   // MafEventListener
   onDownloadStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
-    // Propagate the event to our listener
+    // Propagate the event to our listener.
     this._eventListener.onStatusChange(aWebProgress, aRequest, aStatus,
      aMessage);
   },
@@ -125,7 +127,7 @@ SaveContentJob.prototype = {
   // MafEventListener
   onDownloadFailed: function(aStatus) {
     this._handleAsyncCallback(function() {
-      // Cancel the operation because the download failed
+      // Cancel the operation because the download failed.
       Cu.reportError(new Components.Exception("Download failed.", aStatus));
       this.cancel(aStatus);
     }, this);
@@ -134,19 +136,19 @@ SaveContentJob.prototype = {
   // MafEventListener
   onDownloadComplete: function() {
     this._handleAsyncCallback(function() {
-      // Add to an existing MAFF archive if required
+      // Add to an existing MAFF archive if required.
       if (this.addToArchive) {
         this._archive.load();
       }
       // If the page can be saved asynchronously
       var page = this._archive.pages[0];
       if (page.asyncSave) {
-        // Save and wait for the callback from the worker object
+        // Save and wait for the callback from the worker object.
         this._expectAsyncCallback(function() {
           page.asyncSave(this);
         }, this);
       } else {
-        // Save the page synchronously
+        // Save the page synchronously.
         page.save();
         this._invalidateCachedArchive();
         this._notifyCompletion();
@@ -158,10 +160,10 @@ SaveContentJob.prototype = {
   onArchivingComplete: function(code) {
     this._handleAsyncCallback(function() {
       if (code != 0) {
-        // Cancel the operation if archiving failed
+        // Cancel the operation if archiving failed.
         this.cancel(Cr.NS_ERROR_FAILURE);
       } else {
-        // Archiving completed
+        // Archiving completed.
         this._invalidateCachedArchive();
         this._notifyCompletion();
       }
@@ -170,7 +172,7 @@ SaveContentJob.prototype = {
 
   /**
    * At the end of the save operation of each page, this function is called to
-   *  ensure that accessing the archive's location won't open a cached version.
+   * ensure that accessing the archive's location won't open a cached version.
    */
   _invalidateCachedArchive: function() {
     var archive = ArchiveCache.archiveFromUri(this._archive.uri);

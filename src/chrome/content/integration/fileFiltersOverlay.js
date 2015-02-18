@@ -45,7 +45,7 @@ var gMafMhtmlSaveBehavior;
 
 MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
                                                               curFilterIndex) {
-  // Create the new save behavior object
+  // Create the new save behavior object.
   var newSaveBehavior = new InternalSaveBehavior();
   newSaveBehavior.isComplete = true;
   newSaveBehavior.mandatoryExtension = true;
@@ -53,9 +53,9 @@ MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
     return aSaveMode & MozillaArchiveFormat.SAVEMODE_MAFARCHIVE;
   }
   newSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
-    // Access the current values in the MAF save filter objects array
+    // Access the current values in the MAF save filter objects array.
     var filter = MozillaArchiveFormat.FileFilters.saveFilters[curFilterIndex];
-    // Return the required values
+    // Return the required values.
     return {title: filter.title, extensionstring: filter.extensionString};
   }
   newSaveBehavior.getPersistObject = function(saveBrowsers) {
@@ -64,10 +64,10 @@ MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
   }
 
   // Add the save behavior to the browser, before the one already present at
-  //  index 2, assuming it is the one for saving as text only.
+  // index 2, assuming it is the one for saving as text only.
   gInternalSaveBehaviors.splice(2 + curFilterIndex, 0, newSaveBehavior);
 
-  // Save a reference to the first save behavior, considered the default
+  // Save a reference to the first save behavior, considered the default.
   if (curFilterIndex == 0) {
     gMafDefaultSaveBehavior = newSaveBehavior;
     gMafMaffSaveBehavior = newSaveBehavior;

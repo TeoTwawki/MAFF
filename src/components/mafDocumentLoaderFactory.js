@@ -39,12 +39,12 @@
  * Defines a Document Loader Factory to handle the MAF document type.
  *
  * Currently, this implementation just fires the standard MAF loading process,
- *  and refuses to create a content viewer and a stream listener.
+ * and refuses to create a content viewer and a stream listener.
  *
  * For more information on the document loading process, see
- *  <http://www.mozilla.org/newlayout/doc/webwidget.html> and
- *  <https://developer.mozilla.org/En/The_life_of_an_HTML_HTTP_request>
- *  (retrieved 2008-10-07).
+ * <http://www.mozilla.org/newlayout/doc/webwidget.html> and
+ * <https://developer.mozilla.org/En/The_life_of_an_HTML_HTTP_request>
+ * (retrieved 2008-10-07).
  */
 
 var Ci = Components.interfaces;
@@ -53,8 +53,8 @@ var Cr = Components.results;
 var Cu = Components.utils;
 
 // This JavaScript XPCOM component is constructed using XPCOMUtils. See
-//  <https://developer.mozilla.org/en/How_to_Build_an_XPCOM_Component_in_Javascript#Using_XPCOMUtils>
-//  (retrieved 2008-10-07).
+// <https://developer.mozilla.org/en/How_to_Build_an_XPCOM_Component_in_Javascript#Using_XPCOMUtils>
+// (retrieved 2008-10-07).
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /**
@@ -70,10 +70,10 @@ var EmptyStreamListener = {
   onDataAvailable: function (aRequest, aContext, aInputStream, aOffset,
    aCount) {
     // To implement the interface correctly, we must read the exact number of
-    //  bytes specified in aCount from the input stream. We have to use a
-    //  scriptable stream to read from the provided normal stream. We could
-    //  also throw an exception to abort the request, but the exception would
-    //  appear in the Error Console.
+    // bytes specified in aCount from the input stream. We have to use a
+    // scriptable stream to read from the provided normal stream. We could also
+    // throw an exception to abort the request, but the exception would appear
+    // in the Error Console.
     var scrInputStream = Cc["@mozilla.org/scriptableinputstream;1"]
      .createInstance(Ci.nsIScriptableInputStream);
     scrInputStream.init(aInputStream);
@@ -86,15 +86,15 @@ var EmptyStreamListener = {
  * Construct the MafDocumentLoaderFactory object.
  *
  * Document loader factories are XPCOM services, so they should be constructed
- *  as singletons, for example as explained in
- *  <http://weblogs.mozillazine.org/weirdal/archives/019620.html> (retrieved
- *  2008-10-07). However, since this object doesn't store any state information,
- *  we might as well create it as a normal XPCOM object.
+ * as singletons, for example as explained in
+ * <http://weblogs.mozillazine.org/weirdal/archives/019620.html> (retrieved
+ * 2008-10-07). However, since this object doesn't store any state information,
+ * we might as well create it as a normal XPCOM object.
  *
- * Document loader factories must be registered with the
- *  "Gecko-Content-Viewers" category. For MAF, this is done dynamically on
- *  startup, because the list of MIME types that this document loader factory
- *  will handle is not known in advance.
+ * Document loader factories must be registered with the "Gecko-Content-Viewers"
+ * category. For MAF, this is done dynamically on startup, because the list of
+ * MIME types that this document loader factory will handle is not known in
+ * advance.
  */
 function MafDocumentLoaderFactory() {
 
@@ -111,8 +111,8 @@ MafDocumentLoaderFactory.prototype = {
 
   /*
    * For essential nsIDocumentLoaderFactory documentation, see
-   *  <http://www.xulplanet.com/references/xpcomref/ifaces/nsIDocumentLoaderFactory.html>
-   *  (retrieved 2008-10-07).
+   * <http://www.xulplanet.com/references/xpcomref/ifaces/nsIDocumentLoaderFactory.html>
+   * (retrieved 2008-10-07).
    */
 
   createInstance: function(aCommand, aChannel, aLoadGroup, aContentType,
@@ -122,10 +122,10 @@ MafDocumentLoaderFactory.prototype = {
       throw Cr.NS_ERROR_NOT_IMPLEMENTED;
 
     // Import the MAF shared modules. We cannot do this in the global scope,
-    //  like we do for XPCOMUtils, since our resource protocol alias may not be
-    //  registered at that time. See also
-    //  <http://groups.google.com/group/mozilla.dev.tech.xpcom/browse_thread/thread/6a8ea7f803ac720a>
-    //  (retrieved 2008-12-07).
+    // like we do for XPCOMUtils, since our resource protocol alias may not be
+    // registered at that time. See also
+    // <http://groups.google.com/group/mozilla.dev.tech.xpcom/browse_thread/thread/6a8ea7f803ac720a>
+    // (retrieved 2008-12-07).
     var mafObjects = {};
     Cu.import("resource://maf/modules/mafObjects.jsm", mafObjects);
 
@@ -133,7 +133,7 @@ MafDocumentLoaderFactory.prototype = {
     var contentURI = mafObjects.ArchiveLoader.getContentUri(aChannel.URI);
 
     // Determine the probable MIME type associated with the content to display.
-    //  This is normally based on the extension of the main file in the archive.
+    // This is normally based on the extension of the main file in the archive.
     var contentType;
     var mimeService = Cc["@mozilla.org/mime;1"].getService(Ci.nsIMIMEService);
     try {
@@ -148,17 +148,17 @@ MafDocumentLoaderFactory.prototype = {
      contentType, aLoadGroup, aContainer, aExtraInfo);
 
     // Return the content viewer, which is already receiving data from our
-    //  channel, and a dummy stream listener, to throw away data from the
-    //  original channel (aChannel). 
+    // channel, and a dummy stream listener, to throw away data from the
+    // original channel (aChannel). 
     aDocListenerResult.value = EmptyStreamListener;
     return originalContentViewer;
   },
 
   createInstanceForDocument: function(aContainer, aDocument, aCommand) {
-    // This function should never have been called. As of 2008-10-07, it may
-    //  be called only from nsDocShell::CreateAboutBlankContentViewer, that
-    //  doesn't handle exceptions, so we return null instead of throwing
-    //  NS_ERROR_NOT_IMPLEMENTED.
+    // This function should never have been called. As of 2008-10-07, it may be
+    // called only from nsDocShell::CreateAboutBlankContentViewer, that doesn't
+    // handle exceptions, so we return null instead of throwing
+    // NS_ERROR_NOT_IMPLEMENTED.
     return null;
   },
 
@@ -170,17 +170,22 @@ MafDocumentLoaderFactory.prototype = {
 
   /**
    * Creates and starts a content viewer from the application's built-in
-   *  Document Loader Factory, to display the specified URI. The provided
-   *  content viewer can then be returned from an implementation of
-   *  nsIDocumentLoaderFactory.createInstance.
+   * Document Loader Factory, to display the specified URI. The provided content
+   * viewer can then be returned from an implementation of
+   * nsIDocumentLoaderFactory.createInstance.
    *
-   * @param aContentURI    The URI of the content to be displayed.
-   * @param aContentType   The MIME content type of the content to be displayed.
-   * @param aLoadGroup     See nsIDocumentLoaderFactory.createInstance.
-   * @param aContainer     See nsIDocumentLoaderFactory.createInstance.
-   * @param aExtraInfo     See nsIDocumentLoaderFactory.createInstance.
+   * @param aContentURI
+   *        The URI of the content to be displayed.
+   * @param aContentType
+   *        The MIME content type of the content to be displayed.
+   * @param aLoadGroup
+   *        See nsIDocumentLoaderFactory.createInstance.
+   * @param aContainer
+   *        See nsIDocumentLoaderFactory.createInstance.
+   * @param aExtraInfo
+   *        See nsIDocumentLoaderFactory.createInstance.
    *
-   * @return   The newly constructed content viewer.
+   * @return The newly constructed content viewer.
    */
   _startActualContentViewer: function(aContentURI, aContentType, aLoadGroup,
    aContainer, aExtraInfo) {
@@ -189,11 +194,11 @@ MafDocumentLoaderFactory.prototype = {
      .getService(Ci.nsIIOService).newChannelFromURI(aContentURI);
 
     // The content type of the channel should match the content type of the
-    //  content viewer, otherwise the content might not be displayed correctly.
+    // content viewer, otherwise the content might not be displayed correctly.
     contentChannel.contentType = aContentType;
 
     // Ask the application's built-in document loader factory to provide a
-    //  content viewer and a stream listener for our channel
+    // content viewer and a stream listener for our channel
     var originalDocListenerResult = {};
     var originalContentViewer =
      Cc['@mozilla.org/content/document-loader-factory;1']
