@@ -496,7 +496,10 @@
             src= "chrome://global/content/contentAreaUtils.js"
             />
     <script type="application/x-javascript"
-            src= "chrome://maf/content/mafBrowser.js"
+            src= "chrome://maf/content/integration/contentAreaUtils.js"
+            />
+    <script type="application/x-javascript"
+            src= "chrome://maf/content/integration/fileFiltersOverlay.js"
             />
     <iframe id=    "frmConvert"
             type=  "content"
