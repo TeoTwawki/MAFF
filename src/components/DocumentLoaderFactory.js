@@ -36,10 +36,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
- * Defines a Document Loader Factory to handle the MAF document type.
- *
- * Currently, this implementation just fires the standard MAF loading process,
- * and refuses to create a content viewer and a stream listener.
+ * Defines a Document Loader Factory to handle web archives.
  *
  * For more information on the document loading process, see
  * <http://www.mozilla.org/newlayout/doc/webwidget.html> and
@@ -47,14 +44,8 @@
  * (retrieved 2008-10-07).
  */
 
-var Ci = Components.interfaces;
-var Cc = Components.classes;
-var Cr = Components.results;
-var Cu = Components.utils;
+const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
-// This JavaScript XPCOM component is constructed using XPCOMUtils. See
-// <https://developer.mozilla.org/en/How_to_Build_an_XPCOM_Component_in_Javascript#Using_XPCOMUtils>
-// (retrieved 2008-10-07).
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 XPCOMUtils.defineLazyModuleGetter(this, "ArchiveLoader",
@@ -66,10 +57,9 @@ XPCOMUtils.defineLazyModuleGetter(this, "ArchiveLoader",
 var EmptyStreamListener = {
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIStreamListener]),
 
-  // --- nsIStreamListener interface functions ---
-
-  onStartRequest: function(aRequest, aContext) { },
-  onStopRequest: function(aRequest, aContext, aStatusCode) { },
+  // nsIStreamListener
+  onStartRequest: function () {},
+  onStopRequest: function () {},
   onDataAvailable: function (aRequest, aContext, aInputStream, aOffset,
    aCount) {
     // To implement the interface correctly, we must read the exact number of
@@ -78,7 +68,7 @@ var EmptyStreamListener = {
     // throw an exception to abort the request, but the exception would appear
     // in the Error Console.
     var scrInputStream = Cc["@mozilla.org/scriptableinputstream;1"]
-     .createInstance(Ci.nsIScriptableInputStream);
+                           .createInstance(Ci.nsIScriptableInputStream);
     scrInputStream.init(aInputStream);
     scrInputStream.read(aCount);
     scrInputStream.close();
@@ -86,38 +76,18 @@ var EmptyStreamListener = {
 };
 
 /**
- * Construct the MafDocumentLoaderFactory object.
- *
- * Document loader factories are XPCOM services, so they should be constructed
- * as singletons, for example as explained in
- * <http://weblogs.mozillazine.org/weirdal/archives/019620.html> (retrieved
- * 2008-10-07). However, since this object doesn't store any state information,
- * we might as well create it as a normal XPCOM object.
- *
  * Document loader factories must be registered with the "Gecko-Content-Viewers"
- * category. For MAF, this is done dynamically on startup, because the list of
- * MIME types that this document loader factory will handle is not known in
- * advance.
+ * category. This is done dynamically on startup, because the list of MIME types
+ * that this document loader factory will handle is not known in advance.
  */
-function MafDocumentLoaderFactory() {
+function DocumentLoaderFactory() {}
 
-}
+DocumentLoaderFactory.prototype = {
+  classID: Components.ID("{3b2f1177-d918-44ee-91a6-ba95954064bb}"),
+  QueryInterface: XPCOMUtils.generateQI([Ci.nsIDocumentLoaderFactory]),
+  _xpcom_factory: XPCOMUtils.generateSingletonFactory(DocumentLoaderFactory),
 
-MafDocumentLoaderFactory.prototype = {
-  // General XPCOM component attributes
-  classDescription: "Mozilla Archive Format Document Loader Factory",
-  classID:          Components.ID("{3b2f1177-d918-44ee-91a6-ba95954064bb}"),
-  contractID:       "@amadzone.org/maf/document-loader-factory;1",
-  QueryInterface:   XPCOMUtils.generateQI([Ci.nsIDocumentLoaderFactory]),
-
-  // --- nsIDocumentLoaderFactory interface functions ---
-
-  /*
-   * For essential nsIDocumentLoaderFactory documentation, see
-   * <http://www.xulplanet.com/references/xpcomref/ifaces/nsIDocumentLoaderFactory.html>
-   * (retrieved 2008-10-07).
-   */
-
+  // nsIDocumentLoaderFactory
   createInstance: function(aCommand, aChannel, aLoadGroup, aContentType,
    aContainer, aExtraInfo, aDocListenerResult) {
     // Only the "view" command is supported for MAF files
@@ -149,6 +119,7 @@ MafDocumentLoaderFactory.prototype = {
     return originalContentViewer;
   },
 
+  // nsIDocumentLoaderFactory
   createInstanceForDocument: function(aContainer, aDocument, aCommand) {
     // This function should never have been called. As of 2008-10-07, it may be
     // called only from nsDocShell::CreateAboutBlankContentViewer, that doesn't
@@ -157,11 +128,10 @@ MafDocumentLoaderFactory.prototype = {
     return null;
   },
 
+  // nsIDocumentLoaderFactory
   createBlankDocument: function(aLoadGroup, aPrincipal) {
     return null; // See the comment inside createInstanceForDocument.
   },
-
-  // --- Private functions ---
 
   /**
    * Creates and starts a content viewer from the application's built-in
@@ -211,10 +181,4 @@ MafDocumentLoaderFactory.prototype = {
   },
 };
 
-// XPCOM component registration
-var components = [MafDocumentLoaderFactory];
-if (XPCOMUtils.generateNSGetFactory) {
-  var NSGetFactory = XPCOMUtils.generateNSGetFactory(components);
-} else {
-  var NSGetModule = XPCOMUtils.generateNSGetModule(components);
-}
+this.NSGetFactory = XPCOMUtils.generateNSGetFactory([DocumentLoaderFactory]);

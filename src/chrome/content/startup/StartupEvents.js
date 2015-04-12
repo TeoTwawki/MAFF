@@ -41,69 +41,15 @@
  * StartupInitializer object.
  */
 var StartupEvents = {
-
-  /**
-   * This function must be called once on application startup, and simply
-   * registers with the host application for other notifications, to be handled
-   * by the "observe" function.
-   */
-  onAppStartup: function() {
-    for (var [, topic] in Iterator(this._notificationTopics)) {
-      this._observerService.addObserver(this, topic, false);
-    }
-  },
-
-  /** Called when it is time to unregister all the observers. */
-  onAppShutdown: function() {
-    for (var [, topic] in Iterator(this._notificationTopics)) {
-      this._observerService.removeObserver(this, topic);
-    }
-  },
-
-  /** Called when a user profile has fully loaded. */
-  afterProfileChange: function() {
-    // Initialize the extension behavior.
-    StartupInitializer.initFromCurrentProfile();
-  },
-
-  /** Called after all the browser windows have been shown. */
-  onWindowsRestored: function() {
-    // Display the welcome page if required.
-    if (Prefs.otherDisplayWelcomePage) {
-      // Find the window where the welcome page should be displayed.
-      var browserWindow = Cc["@mozilla.org/appshell/window-mediator;1"].
-       getService(Ci.nsIWindowMediator).
-       getMostRecentWindow("navigator:browser");
-      if (!browserWindow) {
-        // Very rarely, it might happen that at this time all browser windows
-        // have already been closed. In this case, we will attempt to show the
-        // welcome page again on the next startup.
-        return;
-      }
-      // Load the page in foreground.
-      var welcomePageUrl = "chrome://maf/content/preferences/welcomePage.xhtml";
-      var browser = browserWindow.getBrowser();
-      if (browser.loadTabs) {
-        browser.loadTabs([welcomePageUrl], false, false);
-      } else {
-        browser.addTab(welcomePageUrl, null, null, true);
-        browserWindow.content.focus();
-      }
-      // The page was displayed successfully.
-      Prefs.otherDisplayWelcomePage = false;
-    }
-  },
-
-  /** Called when the application is shutting down. */
-  onAppQuit: function() {
-    // Clean up on application shutdown.
-    StartupInitializer.terminate();
-  },
+  _notificationTopics: [
+    "sessionstore-windows-restored",
+    "quit-application",
+    "xpcom-shutdown",
+  ],
 
   // nsIObserver
   observe: function(aSubject, aTopic, aData) {
     switch (aTopic) {
-      case "profile-after-change":          this.afterProfileChange(); break;
       case "sessionstore-windows-restored": this.onWindowsRestored();  break;
       case "quit-application":              this.onAppQuit();          break;
       case "xpcom-shutdown":                this.onAppShutdown();      break;
@@ -111,15 +57,48 @@ var StartupEvents = {
   },
 
   /**
-   * Array containing the observer notification topics handled by this object.
+   * Called when a user profile has fully loaded.
    */
-  _notificationTopics: [
-   "profile-after-change",
-   "sessionstore-windows-restored",
-   "quit-application",
-   "xpcom-shutdown",
-  ],
+  afterProfileChange: function() {
+    for (let topic of this._notificationTopics) {
+      Services.obs.addObserver(this, topic, false);
+    }
+    StartupInitializer.initFromCurrentProfile();
+  },
 
-  _observerService: Cc["@mozilla.org/observer-service;1"]
-   .getService(Ci.nsIObserverService),
+  /**
+   * Called when it is time to unregister all the observers.
+   */
+  onAppShutdown: function() {
+    for (let topic of this._notificationTopics) {
+      Services.obs.removeObserver(this, topic);
+    }
+  },
+
+  /**
+   * Called after all the browser windows have been shown.
+   */
+  onWindowsRestored: function() {
+    if (Prefs.otherDisplayWelcomePage) {
+      let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
+      if (!browserWindow) {
+        // Very rarely, it might happen that at this time all browser windows
+        // have already been closed. In this case, we will attempt to show the
+        // welcome page again on the next startup.
+        return;
+      }
+      // Load the page in foreground.
+      let browser = browserWindow.getBrowser();
+      browser.loadTabs(["chrome://maf/content/preferences/welcomePage.xhtml"],
+                       false, false);
+      Prefs.otherDisplayWelcomePage = false;
+    }
+  },
+
+  /**
+   * Called when the application is shutting down.
+   */
+  onAppQuit: function() {
+    StartupInitializer.terminate();
+  },
 };

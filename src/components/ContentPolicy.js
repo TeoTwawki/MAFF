@@ -41,10 +41,7 @@
  * save only content that is actually required to render the page.
  */
 
-var Ci = Components.interfaces;
-var Cc = Components.classes;
-var Cr = Components.results;
-var Cu = Components.utils;
+const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
@@ -52,22 +49,13 @@ XPCOMUtils.defineLazyServiceGetter(this, "gNetUtil",
                                    "@mozilla.org/network/util;1",
                                    "nsINetUtil");
 
-function MafContentPolicy() {
+function ContentPolicy() {}
 
-}
+ContentPolicy.prototype = {
+  classID: Components.ID("{7380f280-ab36-4a23-b213-35c64f8586a0}"),
+  QueryInterface: XPCOMUtils.generateQI([Ci.nsIContentPolicy]),
 
-MafContentPolicy.prototype = {
-  // General XPCOM component attributes
-  classDescription: "Mozilla Archive Format Content Policy",
-  classID:          Components.ID("{7380f280-ab36-4a23-b213-35c64f8586a0}"),
-  contractID:       "@amadzone.org/maf/content-policy;1",
-  QueryInterface:   XPCOMUtils.generateQI([Ci.nsIContentPolicy]),
-
-  // Use XPCOMUtils to register with the category manager
-  _xpcom_categories: [{category: "content-policy"}],
-
-  // --- nsIContentPolicy interface functions ---
-
+  // nsIContentPolicy
   shouldLoad: function(aContentType, aContentLocation, aRequestOrigin, aContext,
    aMimeTypeGuess, aExtra) {
     // Exit now if aContext is null or is not the expected type of context
@@ -110,16 +98,11 @@ MafContentPolicy.prototype = {
     return Ci.nsIContentPolicy.ACCEPT;
   },
 
+  // nsIContentPolicy
   shouldProcess: function(aContentType, aContentLocation, aRequestOrigin,
    aContext, aMimeType, aExtra) {
     return Ci.nsIContentPolicy.ACCEPT;
   },
 };
 
-// XPCOM component registration
-var components = [MafContentPolicy];
-if (XPCOMUtils.generateNSGetFactory) {
-  var NSGetFactory = XPCOMUtils.generateNSGetFactory(components);
-} else {
-  var NSGetModule = XPCOMUtils.generateNSGetModule(components);
-}
+this.NSGetFactory = XPCOMUtils.generateNSGetFactory([ContentPolicy]);

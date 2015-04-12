@@ -41,61 +41,23 @@
  * "startup" chrome folder.
  */
 
-var Ci = Components.interfaces;
-var Cc = Components.classes;
-var Cr = Components.results;
-var Cu = Components.utils;
+const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
-// This JavaScript XPCOM component is constructed using XPCOMUtils. See
-// <https://developer.mozilla.org/en/How_to_Build_an_XPCOM_Component_in_Javascript#Using_XPCOMUtils>
-// (retrieved 2008-10-07).
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 XPCOMUtils.defineLazyModuleGetter(this, "StartupEvents",
                                   "chrome://maf/content/MozillaArchiveFormat.jsm");
 
-function MafStartup() {
+function Startup() {}
 
-}
-
-MafStartup.prototype = {
-  // General XPCOM component attributes
-  classDescription: "Mozilla Archive Format Startup Observer",
+Startup.prototype = {
   classID:          Components.ID("{37116274-8df3-4d48-8533-00eae60c844c}"),
-  contractID:       "@amadzone.org/maf/startup-observer;1",
   QueryInterface:   XPCOMUtils.generateQI([Ci.nsIObserver]),
 
-  // Use XPCOMUtils to register with the category manager. The classDescription
-  // and contractID will be used during registration. For more information, see
-  // <https://developer.mozilla.org/en/Observer_Notifications> (retrieved
-  // 2008-11-21).
-  _xpcom_categories: [{category: "app-startup", service: true}],
-
-  // --- nsIObserver interface functions ---
-
-  /**
-   * This function is called with aTopic set to "app-startup" when the
-   * application starts, before the first browser window is opened.
-   *
-   * The real initialization is done by the MAF shared modules.
-   */
+  // nsIObserver
   observe: function(aSubject, aTopic, aData) {
-    StartupEvents.onAppStartup();
-
-    // On Firefox 4.0 and above, this observer is registered only for the
-    // "profile-after-change" notification and will not receive the
-    // "app-startup" notification, while for compatibility with Firefox 3.0
-    // the same observer is registered for "app-startup".
-    if (aTopic == "profile-after-change") {
-      StartupEvents.afterProfileChange();
-    }
+    StartupEvents.afterProfileChange();
   },
 };
 
-// XPCOM component registration
-var components = [MafStartup];
-if (XPCOMUtils.generateNSGetFactory) {
-  var NSGetFactory = XPCOMUtils.generateNSGetFactory(components);
-} else {
-  var NSGetModule = XPCOMUtils.generateNSGetModule(components);
-}
+this.NSGetFactory = XPCOMUtils.generateNSGetFactory([Startup]);

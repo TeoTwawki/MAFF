@@ -25,16 +25,16 @@ locale maf zh-TW chrome/locale/zh-TW/
 skin maf classic/1.0 chrome/skin/
 skin maf-icons classic/1.0 ./
 
-component {3b2f1177-d918-44ee-91a6-ba95954064bb} components/mafDocumentLoaderFactory.js
+component {3b2f1177-d918-44ee-91a6-ba95954064bb} components/DocumentLoaderFactory.js
 contract @amadzone.org/maf/document-loader-factory;1 {3b2f1177-d918-44ee-91a6-ba95954064bb}
 
-component {37116274-8df3-4d48-8533-00eae60c844c} components/mafStartup.js
-contract @amadzone.org/maf/startup-observer;1 {37116274-8df3-4d48-8533-00eae60c844c}
-category profile-after-change MafStartup @amadzone.org/maf/startup-observer;1
+component {37116274-8df3-4d48-8533-00eae60c844c} components/Startup.js
+contract @amadzone.org/maf/startup;1 {37116274-8df3-4d48-8533-00eae60c844c}
+category profile-after-change MozillaArchiveFormat @amadzone.org/maf/startup;1
 
-component {7380f280-ab36-4a23-b213-35c64f8586a0} components/mafContentPolicy.js
+component {7380f280-ab36-4a23-b213-35c64f8586a0} components/ContentPolicy.js
 contract @amadzone.org/maf/content-policy;1 {7380f280-ab36-4a23-b213-35c64f8586a0}
-category content-policy MafContentPolicy @amadzone.org/maf/content-policy;1
+category content-policy MozillaArchiveFormat @amadzone.org/maf/content-policy;1
 
 # Integration with the browsing windows
 overlay chrome://browser/content/browser.xul chrome://maf/content/integration/mafBaseBrowserOverlay.xul
