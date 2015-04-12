@@ -113,12 +113,7 @@ function BrowserOpenFileWindow()
 
     // Show the filepicker, and remember the selected file filter.
     fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.openFilterIndex;
-    if (fp.open) {
-      // In Firefox 17 only, we must use an object wrapping the function.
-      fp.open({ done: fpCallback });
-    } else {
-      fpCallback(fp.show());
-    }
+    fp.open(fpCallback);
   } catch (ex) {
   }
 }

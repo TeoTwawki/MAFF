@@ -35,12 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import the AddonManager module, available from Firefox 4.0 onwards.
-var AddonManager = null;
-try {
-  Cu.import("resource://gre/modules/AddonManager.jsm");
-} catch (e if (e instanceof Ci.nsIException && e.result ==
- Cr.NS_ERROR_FILE_NOT_FOUND)) { }
+Cu.import("resource://gre/modules/AddonManager.jsm");
 
 /**
  * This object handles all the tasks related to extension initialization and
@@ -71,9 +66,8 @@ var StartupInitializer = {
    *   <https://developer.mozilla.org/en/How_Mozilla_determines_MIME_Types>
    */
   initFromCurrentProfile: function() {
-    // Firstly, start the operation that prepares the version information that
-    // will be used when saving web archives. This operation might be completed
-    // asynchronously starting from Firefox 4.0.
+    // Firstly, start the asynchronous operation that prepares the version
+    // information that will be used when saving web archives.
     this._setAddonVersion();
 
     // Retrieve a reference to the history service that is now available.
@@ -177,8 +171,8 @@ var StartupInitializer = {
      "*/preprocessed-web-archive",
      "@amadzone.org/maf/document-loader-factory;1");
 
-    // In SeaMonkey 2.1 and above, we have to disable the mail document loader
-    // factory in order to allow our loading process to occur.
+    // In SeaMonkey, we have to disable the mail document loader factory in
+    // order to allow our loading process to occur.
     this._categoryManager.deleteCategoryEntry("Gecko-Content-Viewers",
      "message/rfc822", false);
   },
@@ -231,22 +225,14 @@ var StartupInitializer = {
 
   /**
    * Populates the addonVersion property with the version of the installed
-   * extension. On Firefox 4.0 and above, this operation is always completed
-   * asynchronously.
+   * extension asynchronously.
    */
   _setAddonVersion: function() {
     // Get the object with the version information of Mozilla Archive Format.
     var addonId = "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}";
-    if (AddonManager) {
-      // On Firefox 4.0 and above, do the operation asynchronously.
-      AddonManager.getAddonByID(addonId, function(aAddon) {
-        StartupInitializer.addonVersion = aAddon.version;
-      });
-    } else {
-      // On versions of Firefox prior to 4.0, do the operation synchronously.
-      StartupInitializer.addonVersion = Cc["@mozilla.org/extensions/manager;1"].
-       getService(Ci.nsIExtensionManager).getItemForID(addonId).version;
-    }
+    AddonManager.getAddonByID(addonId, function (aAddon) {
+      StartupInitializer.addonVersion = aAddon.version;
+    });
   },
 
   /**
@@ -302,10 +288,10 @@ var StartupInitializer = {
       lockFactory: function(aLock) { }
     };
 
-    // Register the factory for the given ContractID. Starting from Firefox 4.0,
-    // every factory registration must have a different ClassID even if the
-    // component that implements the ContractID is the same. A random ClassID is
-    // used at each startup, since the registration is temporary.
+    // Register the factory for the given ContractID. Every factory registration
+    // must have a different ClassID even if the component that implements the
+    // ContractID is the same. A random ClassID is used at each startup, since
+    // the registration is temporary.
     var classID = Cc["@mozilla.org/uuid-generator;1"].
      getService(Ci.nsIUUIDGenerator).generateUUID();
     this._componentRegistrar.registerFactory(classID,

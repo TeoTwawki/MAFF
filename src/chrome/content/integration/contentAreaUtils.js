@@ -133,17 +133,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                       aChosenData, aReferrer, aInitiatingDocument, aSkipPrompt,
                       aCacheKey)
 {
-  // Checks if the host application runs a platform version prior to Gecko 18.
-  var platformVersion = Cc["@mozilla.org/xre/app-info;1"]
-   .getService(Ci.nsIXULAppInfo).platformVersion;
   var isSeaMonkey = Cc["@mozilla.org/xre/app-info;1"]
    .getService(Ci.nsIXULAppInfo).ID == "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
-  if (Cc["@mozilla.org/xpcom/version-comparator;1"]
-   .getService(Ci.nsIVersionComparator).compare(platformVersion, "17.*") <= 0) {
-    aCacheKey = aSkipPrompt;
-    aSkipPrompt = aInitiatingDocument;
-    aInitiatingDocument = {};
-  }
 
   if (aSkipPrompt == undefined)
     aSkipPrompt = false;

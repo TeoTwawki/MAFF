@@ -90,8 +90,8 @@ var MafCommandsOverlay = {
     // Get a reference to the tab bar context menu.
     var tabContextMenu = gBrowser.tabContextMenu;
     if (!tabContextMenu) {
-      // On versions of Firefox prior to 4.0, find the tab bar context menu in
-      // the XBL binding of the tabbed browser.
+      // On SeaMonkey, find the tab bar context menu in the XBL binding of the
+      // tabbed browser.
       var tabBrowser = document.getElementById("content");
       tabContextMenu = document.getAnonymousElementByAttribute(tabBrowser,
        "anonid", "tabContextMenu");

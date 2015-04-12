@@ -77,11 +77,10 @@ var ArchiveAnnotations = {
       });
     } catch (e if (e instanceof Ci.nsIException && (e.result ==
      Cr.NS_ERROR_INVALID_ARG))) {
-      // This error is raised if the page is not added to history when the
-      // functions that set annotations are called. This is common in Firefox
-      // 4.0 since page history is populated asynchronously. In this case, we
-      // set a flag on the page object indicating that the history observer
-      // should add the annotations after the page visit information is added.
+      // This error is raised if the page is not present in history when the
+      // functions that set annotations are called. In this case, we set a flag
+      // on the page object indicating that the history observer should add the
+      // annotations after the page visit information is added.
       aPage.annotationsPending = true;
     }
   },
@@ -116,12 +115,10 @@ var ArchiveAnnotations = {
    * This function returns a Date object for annotations that represent dates.
    *
    * In order to avoid problems due to the asynchronous adding of history
-   * entries in Firefox 4.0 and above, the annotation values are not actually
-   * read using the Places services, but extracted from the provided object.
+   * entries, the annotation values are not actually read using the Places
+   * services, but extracted from the provided object.
    */
   getAnnotationForPage: function(aPage, aAnnotationName) {
-    // Get the annotation value for the page. This used to be a call to
-    // _annotationService.getPageAnnotation before Firefox 4.0.
     var annotationValue;
     switch (aAnnotationName) {
       case ArchiveAnnotations.MAFANNO_TITLE:

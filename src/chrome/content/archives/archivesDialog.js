@@ -39,12 +39,6 @@ let { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
 Cu.import("chrome://maf/content/MozillaArchiveFormat.jsm");
 
-// Starting from Firefox 4.0, the PlacesUIUtils object lives in a module.
-try {
-  Cu.import("resource://gre/modules/PlacesUIUtils.jsm");
-} catch (e if (e instanceof Ci.nsIException && e.result ==
- Cr.NS_ERROR_FILE_NOT_FOUND)) { }
-
 /**
  * Handles the MAF dialog that displays information about the known archives.
  */
@@ -65,7 +59,7 @@ var ArchivesDialog = {
    * (retrieved 2009-05-23).
    */
   onLoadDialog: function() {
-    // Execute the initialization functions that are specific to SeaMonkey 2.1.
+    // Execute the initialization functions that are specific to SeaMonkey.
     if (window.onNavigatorLoadDialog) {
       window.onNavigatorLoadDialog();
     }
@@ -282,10 +276,9 @@ var ArchivesDialog = {
 
   /**
    * Adds a custom controller on the archives tree for overriding the clipboard
-   * commands and disabling history management commands that are available
-   * starting from Firefox 3.5 and SeaMonkey 2.1. For more information on Places
-   * controllers, see <https://developer.mozilla.org/en/Places/View_Controller>
-   * (retrieved 2009-05-24).
+   * commands and disabling history management commands. For more information,
+   * see <https://developer.mozilla.org/en/Places/View_Controller> (retrieved
+   * 2009-05-24).
    */
   customizePlacesController: function() {
     ArchivesDialog.archivesTree.controllers.insertControllerAt(0, {

@@ -20,24 +20,6 @@
     window.onNavigatorLoadDialog = function() {
       gDeleteByHostname = document.getElementById("placesCmd_delete:hostname");
       gDeleteByDomain = document.getElementById("placesCmd_delete:domain");
-
-      // Patch for Mozilla source file "suite/common/history/treeView.js".
-      PlacesTreeView.prototype.setTree = function PTV_setTree(aTree) {
-        var hasOldTree = this._tree != null;
-        this._tree = aTree;
-
-        if (this._result) {
-          if (hasOldTree) {
-            // detach from result when we are detaching from the tree.
-            // This breaks the reference cycle between us and the result.
-            if (!aTree)
-              this._result.removeObserver(this);
-          }
-          if (aTree)
-            this._finishInit();
-        }
-      };
     };
-
   </script>
 </overlay>

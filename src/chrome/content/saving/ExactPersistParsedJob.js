@@ -796,11 +796,11 @@ ExactPersistParsedJob.prototype = {
         var encoder = Cc["@mozilla.org/layout/documentEncoder;1?type=" +
          mediaType].createInstance(Ci.nsIDocumentEncoder);
         encoder.init(this._document, mediaType, 0);
-        // Because Firefox 3.6 and SeaMonkey 2.1 incorrectly wrap the text
-        // contained inside "<textarea>" elements, we have to disable text
-        // content wrapping entirely. Differently from using the raw output
-        // encoding flag, this solution preserves the newlines originally
-        // present in the text content between tags.
+        // Because Firefox and SeaMonkey incorrectly wrap the text contained
+        // inside "<textarea>" elements, we have to disable text content
+        // wrapping entirely. Differently from using the raw output encoding
+        // flag, this solution preserves the newlines originally present in the
+        // text content between tags.
         encoder.setWrapColumn(0x7FFFFFFF);
         // Save the document using its original character set. Setting this
         // property is required in order for the appropriate "<meta>"
@@ -865,10 +865,9 @@ ExactPersistParsedJob.prototype = {
   fixupNode: function(aNode, aSerializeCloneKids) {
     // If an instruction to replace the child elements with other content is
     // present on the parent node, return a different node in place of this
-    // child. This solution works on Firefox 3.0 and above since all the nodes
-    // to which this instruction is applied have a single text node as a child.
-    // This provides an alternative to working on the parent node and using
-    // aSerializeCloneKids, which is supported starting from Firefox 3.5 only.
+    // child. This solution works since all the nodes to which this instruction
+    // is applied have a single text node as a child. This is an alternative to
+    // working on the parent node and using aSerializeCloneKids.
     try {
       // Wrap all the generated scripts and stylesheets with a comment tag.
       return this._document.createComment("\r\n" + this._escapeCssComment(
@@ -882,48 +881,18 @@ ExactPersistParsedJob.prototype = {
     // Prepare the node to be modified.
     var newNode = aNode.cloneNode(false);
 
-    // Update the default values of form elements to reflect the current values.
-    // The most difficult element to handle is "<textarea>", since its value
-    // should be serialized as a child text node, and the original child node
-    // may not be present if the text area has an empty initial value.
-    if (aSerializeCloneKids) {
-      // On Firefox 3.5 and above, we can create a clone of the "<textarea>"
-      // node and serialize it together with its newly created children. We use
-      // this feature to serialize a new node having the current value of the
-      // text area as its only text child.
-      if (aNode instanceof Ci.nsIDOMHTMLTextAreaElement) {
-        // On versions prior to Firefox 7, we must query the nsIDOM3Node
-        // interface to access the textContent property.
-        if (Ci.nsIDOM3Node) {
-          newNode = newNode.QueryInterface(Ci.nsIDOM3Node);
-        }
-        newNode.textContent = aNode.value;
-        aSerializeCloneKids.value = true;
-        return newNode;
-      }
-    } else {
-      // On Firefox 3.0, we have to modify the child text node directly, but the
-      // fixup function will not be invoked if the "<textarea>" hasn't a child
-      // node to begin with. In this case, we modify the original DOM of the
-      // document, adding an empty text child that we will replace later. This
-      // is the only case where we modify the original source DOM tree.
-      if (aNode instanceof Ci.nsIDOMHTMLTextAreaElement) {
-        if (!aNode.childNodes.length) {
-          aNode.appendChild(this._document.createTextNode(""));
-        }
-      } else if (aNode.parentNode && aNode.parentNode instanceof
-       Ci.nsIDOMHTMLTextAreaElement) {
-        // This is the child of the "<textarea>" node that we must replace.
-        return this._document.createTextNode(aNode.parentNode.value);
-      }
+    if (aNode instanceof Ci.nsIDOMHTMLTextAreaElement) {
+      // For the <textarea> element, simply serialize a new node having the
+      // current value of the text area as its only text child.
+      newNode.textContent = aNode.value;
+      aSerializeCloneKids.value = true;
+      return newNode;
     }
-    // Handle the values of form elements of different types.
+
     if (aNode instanceof Ci.nsIDOMHTMLInputElement) {
-      // Check the type of the input element. Note that the mozIsTextField
-      // function is only available in Firefox 4.0 and later.
+      // Check the type of the input element.
       var inputType = aNode.getAttribute("type");
-      if ((aNode.mozIsTextField && aNode.mozIsTextField(true)) ||
-       /^\s*text\s*$/i.test(inputType)) {
+      if (aNode.mozIsTextField(true)) {
         // Store the current value of text fields, excluding password fields.
         if (!aNode.value) {
           newNode.removeAttribute("value");

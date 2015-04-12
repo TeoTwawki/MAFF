@@ -64,13 +64,6 @@ MaffArchive.prototype = {
 
   // Archive
   extractAll: function() {
-    // Initialize the converter required to call methods accepting entry names.
-    var converter = null;
-    if (!this._isOnGecko10OrLater()) {
-      converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].
-       createInstance(Ci.nsIScriptableUnicodeConverter);
-      converter.charset = "UTF-8";
-    }
     // Determine if the data files should be extracted.
     this._useDirectAccess = Prefs.openUseJarProtocol;
     // Prepare a list of all the page folders available in the archive.
@@ -130,17 +123,8 @@ MaffArchive.prototype = {
           if (!destFile.parent.exists()) {
             destFile.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
           }
-          // Extract the file in the temporary directory. The value of zipEntry,
-          // that was converted from UTF-8 to Unicode automatically during the
-          // enumeration of the "AUTF8String" type, on host platforms prior to
-          // Gecko 10 must be converted to UTF-8 again when calling the
-          // "extract" method, that accepts a "string" type. For more
-          // information on string data types and XPConnect, see
-          // <https://developer.mozilla.org/en/xpcom_string_guide#IDL_String_types>
-          // (retrieved 2009-12-23).
-          zipReader.extract(converter ?
-           (converter.ConvertFromUnicode(zipEntry) + converter.Finish()) :
-           zipEntry, destFile);
+          // Extract the file in the temporary directory.
+          zipReader.extract(zipEntry, destFile);
         }
       }
     } finally {
@@ -171,16 +155,6 @@ MaffArchive.prototype = {
   // Archive
   _newPage: function() {
     return new MaffArchivePage(this);
-  },
-
-  /**
-   * Returns true if the host application runs the Gecko 10 platform or later.
-   */
-  _isOnGecko10OrLater: function() {
-    var platformVersion = Cc["@mozilla.org/xre/app-info;1"]
-     .getService(Ci.nsIXULAppInfo).platformVersion;
-    return Cc["@mozilla.org/xpcom/version-comparator;1"]
-     .getService(Ci.nsIVersionComparator).compare(platformVersion, "10") >= 0;
   },
 
   /**

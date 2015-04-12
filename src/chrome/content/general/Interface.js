@@ -67,12 +67,11 @@ var Interface = {
        Ci.nsIScriptableDateFormat.dateFormatLong;
       var time = aForColumn ? Ci.nsIScriptableDateFormat.timeFormatNoSeconds :
        Ci.nsIScriptableDateFormat.timeFormatSeconds;
-      // Use the date formatting service to display the localized date. Note
-      // that on Firefox 3.5 and later we cannot use the native JavaScript date
-      // formatting functions, like "toLocaleString", because this code may be
-      // called at startup or in other situations where the service that
-      // converts the operating-system-provided date string to Unicode is not
-      // available in the JavaScript context.
+      // Use the date formatting service to display the localized date. We
+      // cannot use the native JavaScript date formatting functions, like
+      // "toLocaleString", because this code may be called at startup when the
+      // service that converts the operating-system-provided date string to
+      // Unicode is not available in the JavaScript context.
       return Cc["@mozilla.org/intl/scriptabledateformat;1"].
        getService(Ci.nsIScriptableDateFormat).FormatDateTime("", date, time,
         aValue.getFullYear(), aValue.getMonth() + 1, aValue.getDate(),

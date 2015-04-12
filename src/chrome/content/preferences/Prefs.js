@@ -81,10 +81,9 @@ var Prefs = {
    * Array containing one element for each valid data folder suffix.
    */
   get convertDataFolderSuffixesArray() {
-    // Remove spaces near separators and filter out empty elements. Spaces are
-    // not removed if this extension is executed in Firefox 3.0.
-    return this.convertDataFolderSuffixes.split(";").map(String.trim ||
-     function(e) e).filter(function(e) e);
+    // Remove spaces near separators and filter out empty elements.
+    return this.convertDataFolderSuffixes.split(";").map(String.trim)
+                                                    .filter(e => e);
   },
 
   /**

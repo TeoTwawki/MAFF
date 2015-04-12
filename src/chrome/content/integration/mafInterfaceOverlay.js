@@ -204,7 +204,7 @@ var MafInterfaceOverlay = {
    * Turns the "Save Page" button into "Save Page In Archive" for documents.
    */
   updateSavePageButtonLabel: function() {
-    // This operation is only needed starting from Firefox 29.
+    // This operation is needed on Firefox but not on SeaMonkey.
     if (!("CustomizableUI" in window)) {
       return;
     }
