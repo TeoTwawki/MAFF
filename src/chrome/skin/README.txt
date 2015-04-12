@@ -18,10 +18,10 @@ The files are assumed to be licensed under the tri-license (MPL/GPL/LGPL) used
 throughout the original codebase.
 
 The following files are modified versions of the above files:
-  frontend/cbox-status-enqueued.gif
-  frontend/cbox-status-failure.gif
-  frontend/cbox-status-success.gif
-  frontend/cbox-status-working.gif
+  convert/cbox-status-enqueued.gif
+  convert/cbox-status-failure.gif
+  convert/cbox-status-success.gif
+  convert/cbox-status-working.gif
 
 
 

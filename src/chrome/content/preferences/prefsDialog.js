@@ -111,7 +111,7 @@ var PrefsDialog = {
     } else {
       // Open a new window to allow the conversion.
       window.open(
-       "chrome://maf/content/frontend/convertDialog.xul",
+       "chrome://maf/content/convert/convertDialog.xul",
        "maf-convertDialog",
        "chrome,titlebar,centerscreen,resizable=yes");
     }
@@ -124,7 +124,7 @@ var PrefsDialog = {
   onActionShowWelcomePageClick: function() {
     // Use the helper function defined either in "utilityOverlay.js" or in
     // "contentAreaUtils.js" depending on the host application.
-    openNewWindowWith("chrome://maf/content/frontend/welcomePage.xhtml");
+    openNewWindowWith("chrome://maf/content/preferences/welcomePage.xhtml");
   },
 
   /* --- Dialog support functions --- */

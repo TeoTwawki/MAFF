@@ -11,9 +11,30 @@ let objectsByFolder = {
   general: [
     "AsyncEnumerator",
     "DataSourceWrapper",
+    "Interface",
+    "PersistBundle",
+    "PersistFolder",
+    "PersistResource",
+    "SourceFragment",
+    "CssSourceFragment",
+    "HtmlSourceFragment",
+    "TagSourceFragment",
+    "UrlListSourceFragment",
+    "UrlSourceFragment",
   ],
-  archiving: [
+  archives: [
+    "ArchiveAnnotations",
+    "ArchiveHistoryObserver",
+  ],
+  convert: [
+    "Candidate",
+    "CandidateFinder",
+    "CandidateLocation",
+    "CandidatesDataSource",
+  ],
+  engine: [
     "Archive",
+    "ArchiveCache",
     "ArchivePage",
     "MaffArchive",
     "MaffArchivePage",
@@ -26,27 +47,9 @@ let objectsByFolder = {
     "ZipCreator",
     "ZipDirectory",
   ],
-  caching: [
-    "ArchiveCache",
-    "ArchiveAnnotations",
-    "ArchiveHistoryObserver",
-  ],
-  collecting: [
-    "PersistBundle",
-    "PersistFolder",
-    "PersistResource",
-  ],
-  converting: [
-    "CandidateFinder",
-    "CandidateLocation",
-    "Candidate",
-  ],
-  frontend: [
-    "CandidatesDataSource",
-    "Interface",
-  ],
   integration: [
     "FileFilters",
+    "TabsDataSource",
   ],
   loading: [
     "ArchiveLoader",
@@ -57,20 +60,9 @@ let objectsByFolder = {
     "FileAssociations",
     "Prefs",
   ],
-  processing: [
-    "SourceFragment",
-    "CssSourceFragment",
-    "HtmlSourceFragment",
-    "TagSourceFragment",
-    "UrlListSourceFragment",
-    "UrlSourceFragment",
-  ],
   savecomplete: [
     "MafSaveComplete",
     "SaveCompletePersist",
-  ],
-  savefrontend: [
-    "TabsDataSource",
   ],
   saving: [
     "Job",

@@ -81,7 +81,7 @@ var StartupEvents = {
         return;
       }
       // Load the page in foreground.
-      var welcomePageUrl = "chrome://maf/content/frontend/welcomePage.xhtml";
+      var welcomePageUrl = "chrome://maf/content/preferences/welcomePage.xhtml";
       var browser = browserWindow.getBrowser();
       if (browser.loadTabs) {
         browser.loadTabs([welcomePageUrl], false, false);

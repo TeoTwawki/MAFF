@@ -289,7 +289,7 @@ var MafCommandsOverlay = {
     } else {
       // Open a new window to display the available archives.
       window.open(
-       "chrome://maf/content/frontend/archivesDialog.xul",
+       "chrome://maf/content/archives/archivesDialog.xul",
        "maf-archivesDialog",
        "chrome,titlebar,centerscreen,resizable=yes");
     }
@@ -308,7 +308,7 @@ var MafCommandsOverlay = {
     } else {
       // Open a new window to allow the conversion.
       window.open(
-       "chrome://maf/content/frontend/convertDialog.xul",
+       "chrome://maf/content/convert/convertDialog.xul",
        "maf-convertDialog",
        "chrome,titlebar,centerscreen,resizable=yes");
     }
@@ -359,7 +359,7 @@ var MafCommandsOverlay = {
     // "multiSaveDialog.js" for a description of the dialog arguments.
     var returnValues = {};
     window.openDialog(
-     "chrome://maf/content/savefrontend/multiSaveDialog.xul",
+     "chrome://maf/content/integration/multiSaveDialog.xul",
      "maf-multiSaveDialog",
      "chrome,titlebar,centerscreen,modal,resizable=yes",
      window,
