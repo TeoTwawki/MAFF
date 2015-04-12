@@ -43,7 +43,8 @@
  * ***** END LICENSE BLOCK ***** */
 
 var MozillaArchiveFormat = {};
-Cu.import("resource://maf/modules/mafObjects.jsm", MozillaArchiveFormat);
+Cu.import("chrome://maf/content/MozillaArchiveFormat.jsm",
+          MozillaArchiveFormat);
 
 /**
  * internalSave: Used when saving a document or URL.

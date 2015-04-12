@@ -35,9 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions.
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
 /**
  * Provides an RDF data source that represents the files that are candidates for
  * being converted to a different format. For each candidate, a selection state

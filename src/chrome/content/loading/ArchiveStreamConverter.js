@@ -35,9 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions.
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
 /**
  * This XPCOM component is registered for all the ContractIDs associated with
  * the stream converters for the MIME types that are handled as web archives.

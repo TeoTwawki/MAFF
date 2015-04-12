@@ -35,9 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions.
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
 /**
  * Provides an RDF data source that gives access to the files containing the
  * saved page metadata of MAFF archives, both for reading and for writing.

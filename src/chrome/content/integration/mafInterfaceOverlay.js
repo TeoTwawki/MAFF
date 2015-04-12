@@ -35,9 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions.
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
 /**
  * Handles the integration with the address bar and the status bar.
  */

@@ -57,6 +57,9 @@ var Cu = Components.utils;
 // (retrieved 2008-10-07).
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
+XPCOMUtils.defineLazyModuleGetter(this, "ArchiveLoader",
+                                  "chrome://maf/content/MozillaArchiveFormat.jsm");
+
 /**
  * Helper object for nsIDocumentLoaderFactory.createInstance implementation.
  */
@@ -121,16 +124,8 @@ MafDocumentLoaderFactory.prototype = {
     if (aCommand != "view")
       throw Cr.NS_ERROR_NOT_IMPLEMENTED;
 
-    // Import the MAF shared modules. We cannot do this in the global scope,
-    // like we do for XPCOMUtils, since our resource protocol alias may not be
-    // registered at that time. See also
-    // <http://groups.google.com/group/mozilla.dev.tech.xpcom/browse_thread/thread/6a8ea7f803ac720a>
-    // (retrieved 2008-12-07).
-    var mafObjects = {};
-    Cu.import("resource://maf/modules/mafObjects.jsm", mafObjects);
-
     // Retrieve the URI of the content associated with the page to be displayed
-    var contentURI = mafObjects.ArchiveLoader.getContentUri(aChannel.URI);
+    var contentURI = ArchiveLoader.getContentUri(aChannel.URI);
 
     // Determine the probable MIME type associated with the content to display.
     // This is normally based on the extension of the main file in the archive.

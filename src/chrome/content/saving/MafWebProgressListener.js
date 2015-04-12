@@ -35,9 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions.
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
 /**
  * Helper object for MafWebProgressListener implementation.
  */

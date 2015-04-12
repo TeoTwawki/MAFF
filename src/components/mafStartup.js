@@ -38,7 +38,7 @@
 /**
  * Implements an application startup observer. This module is just a stub, and
  * the actual initialization of the extension is done by the objects in the
- * "startup" chrome folder, loaded through the "mafObjects.jsm" module.
+ * "startup" chrome folder.
  */
 
 var Ci = Components.interfaces;
@@ -50,6 +50,9 @@ var Cu = Components.utils;
 // <https://developer.mozilla.org/en/How_to_Build_an_XPCOM_Component_in_Javascript#Using_XPCOMUtils>
 // (retrieved 2008-10-07).
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+
+XPCOMUtils.defineLazyModuleGetter(this, "StartupEvents",
+                                  "chrome://maf/content/MozillaArchiveFormat.jsm");
 
 function MafStartup() {
 
@@ -77,21 +80,14 @@ MafStartup.prototype = {
    * The real initialization is done by the MAF shared modules.
    */
   observe: function(aSubject, aTopic, aData) {
-    // Import the MAF shared modules and call the functions defined there. We
-    // cannot do this in the global scope, like we do for XPCOMUtils, since our
-    // resource protocol alias may not be registered at that time. See also
-    // <http://groups.google.com/group/mozilla.dev.tech.xpcom/browse_thread/thread/6a8ea7f803ac720a>
-    // (retrieved 2008-12-07).
-    var mafObjects = {};
-    Cu.import("resource://maf/modules/mafObjects.jsm", mafObjects);
-    mafObjects.StartupEvents.onAppStartup();
+    StartupEvents.onAppStartup();
 
     // On Firefox 4.0 and above, this observer is registered only for the
     // "profile-after-change" notification and will not receive the
     // "app-startup" notification, while for compatibility with Firefox 3.0
     // the same observer is registered for "app-startup".
     if (aTopic == "profile-after-change") {
-      mafObjects.StartupEvents.afterProfileChange();
+      StartupEvents.afterProfileChange();
     }
   },
 };

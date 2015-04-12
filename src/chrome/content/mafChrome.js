@@ -13,4 +13,4 @@ var Cr = Components.results;
 var Cu = Components.utils;
 
 // Import the common objects from the shared modules.
-Cu.import("resource://maf/modules/mafObjects.jsm");
+Cu.import("chrome://maf/content/MozillaArchiveFormat.jsm");

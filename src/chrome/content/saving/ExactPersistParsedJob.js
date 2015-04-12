@@ -35,9 +35,6 @@ k * ***** BEGIN LICENSE BLOCK *****
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Import XPCOMUtils to generate the QueryInterface functions.
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
 /**
  * This object implements the logic required to fix web references in parsed
  * content documents that are being saved to another location.

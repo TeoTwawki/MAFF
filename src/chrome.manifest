@@ -25,8 +25,6 @@ locale	maf	zh-TW	chrome/locale/zh-TW/
 skin	maf	classic/1.0	chrome/skin/
 skin	maf-icons	classic/1.0	./
 
-resource	maf	resource/
-
 # Component registraton
 component	{3b2f1177-d918-44ee-91a6-ba95954064bb}	components/mafDocumentLoaderFactory.js
 contract	@amadzone.org/maf/document-loader-factory;1	{3b2f1177-d918-44ee-91a6-ba95954064bb}
