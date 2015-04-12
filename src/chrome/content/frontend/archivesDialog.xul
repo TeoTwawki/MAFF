@@ -56,7 +56,6 @@
  onload=    "ArchivesDialog.onLoadDialog();"
  >
   <!-- Dialog machinery -->
-  <script type="application/x-javascript" src="../mafChrome.js" />
   <script type="application/x-javascript" src="archivesDialog.js" />
 
   <broadcasterset>

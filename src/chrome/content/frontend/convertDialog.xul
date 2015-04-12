@@ -59,7 +59,6 @@
  onwizardcancel="return ConvertDialog.onWizardCancel();"
  >
   <!-- Dialog machinery -->
-  <script type="application/x-javascript" src="../mafChrome.js" />
   <script type="application/x-javascript" src="convertDialog.js" />
 
   <!-- Introduction -->

@@ -35,6 +35,10 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
+
+Cu.import("chrome://maf/content/MozillaArchiveFormat.jsm");
+
 /**
  * Handles the MAF tab save dialog.
  *

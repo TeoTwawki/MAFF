@@ -35,10 +35,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var Ci = Components.interfaces;
-var Cc = Components.classes;
-var Cr = Components.results;
-var Cu = Components.utils;
+const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
+
+Cu.import("chrome://maf/content/MozillaArchiveFormat.jsm");
 
 /**
  * Handles the MAF preferences dialog.

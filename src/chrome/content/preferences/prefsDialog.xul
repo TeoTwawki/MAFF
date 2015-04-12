@@ -263,9 +263,6 @@
      -  prefpanes for the prefwindow to work correctly.
      -->
   <script type="application/x-javascript"
-          src="../mafChrome.js"
-          />
-  <script type="application/x-javascript"
           src= "prefsDialog.js"
           />
 </prefwindow>
