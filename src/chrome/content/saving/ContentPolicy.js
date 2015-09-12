@@ -35,25 +35,23 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+XPCOMUtils.defineLazyServiceGetter(this, "gNetUtil",
+                                   "@mozilla.org/network/util;1",
+                                   "nsINetUtil");
+
 /**
  * Implements a content policy observer that keeps track of which content is
  * actually loaded in every document. This allows the exact persist component to
  * save only content that is actually required to render the page.
  */
+function ContentPolicy() {
 
-const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
-
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
-XPCOMUtils.defineLazyServiceGetter(this, "gNetUtil",
-                                   "@mozilla.org/network/util;1",
-                                   "nsINetUtil");
-
-function ContentPolicy() {}
+}
 
 ContentPolicy.prototype = {
   classID: Components.ID("{7380f280-ab36-4a23-b213-35c64f8586a0}"),
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIContentPolicy]),
+  _xpcom_factory: XPCOMUtils.generateSingletonFactory(ContentPolicy),
 
   // nsIContentPolicy
   shouldLoad: function(aContentType, aContentLocation, aRequestOrigin, aContext,
@@ -104,5 +102,3 @@ ContentPolicy.prototype = {
     return Ci.nsIContentPolicy.ACCEPT;
   },
 };
-
-this.NSGetFactory = XPCOMUtils.generateNSGetFactory([ContentPolicy]);

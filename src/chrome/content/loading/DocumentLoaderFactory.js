@@ -36,22 +36,6 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
- * Defines a Document Loader Factory to handle web archives.
- *
- * For more information on the document loading process, see
- * <http://www.mozilla.org/newlayout/doc/webwidget.html> and
- * <https://developer.mozilla.org/En/The_life_of_an_HTML_HTTP_request>
- * (retrieved 2008-10-07).
- */
-
-const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
-
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
-XPCOMUtils.defineLazyModuleGetter(this, "ArchiveLoader",
-                                  "chrome://maf/content/MozillaArchiveFormat.jsm");
-
-/**
  * Helper object for nsIDocumentLoaderFactory.createInstance implementation.
  */
 var EmptyStreamListener = {
@@ -76,6 +60,13 @@ var EmptyStreamListener = {
 };
 
 /**
+ * Defines a Document Loader Factory to handle web archives.
+ *
+ * For more information on the document loading process, see
+ * <http://www.mozilla.org/newlayout/doc/webwidget.html> and
+ * <https://developer.mozilla.org/En/The_life_of_an_HTML_HTTP_request>
+ * (retrieved 2008-10-07).
+ *
  * Document loader factories must be registered with the "Gecko-Content-Viewers"
  * category. This is done dynamically on startup, because the list of MIME types
  * that this document loader factory will handle is not known in advance.
@@ -180,5 +171,3 @@ DocumentLoaderFactory.prototype = {
     return originalContentViewer;
   },
 };
-
-this.NSGetFactory = XPCOMUtils.generateNSGetFactory([DocumentLoaderFactory]);

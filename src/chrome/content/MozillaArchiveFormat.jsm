@@ -50,6 +50,7 @@ let objectsByFolder = {
   loading: [
     "ArchiveLoader",
     "ArchiveStreamConverter",
+    "DocumentLoaderFactory",
   ],
   preferences: [
     "DynamicPrefs",
@@ -59,6 +60,7 @@ let objectsByFolder = {
   saving: [
     "Job",
     "JobRunner",
+    "ContentPolicy",
     "ExactPersistInitialJob",
     "ExactPersistJob",
     "ExactPersist",

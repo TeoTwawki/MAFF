@@ -35,6 +35,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+Cu.import("resource://gre/modules/FileUtils.jsm");
+
 /**
  * Defines the Prefs global object, that can be used to retrieve the values of
  * all the MAF user customizable options. The values are managed by the standard
@@ -217,7 +219,7 @@ var Prefs = {
   },
 
   /*
-   * Other public properties
+   * Other properties
    */
 
   /**
@@ -230,15 +232,22 @@ var Prefs = {
    getService(Ci.nsIPrefService).getBranch("extensions.maf.").
    QueryInterface(Ci.nsIPrefBranch2),
 
-  /*
-   * Private methods and properties
-   */
-
   /**
    * Returns the default temporary folder path, located in the system temporary
    * directory and different for each user profile.
    */
   get _defaultTempFolderPath() {
+    // Do not recalculate the value the second time this property is read.
+    delete this._defaultTempFolderPath;
+    return (this._defaultTempFolderPath = Services.cpmm.sendSyncMessage(
+     "MozillaArchiveFormat:ComputeDefaultTempFolderPath")[0]);
+  },
+
+  /**
+   * Computes the default temporary folder path, located in the system temporary
+   * directory and different for each user profile.
+   */
+  computeDefaultTempFolderPath: function() {
     // Since the temporary folder is cleared when the browser exits, we need to
     // return a path that is different for each concurrent user. We also want
     // the temporary path to be the same for every browsing session of the same
@@ -250,9 +259,7 @@ var Prefs = {
     var profilePath = this._dirService.get("ProfD", Ci.nsIFile).path;
     var tempDir = this._dirService.get("TmpD", Ci.nsIFile);
     tempDir.append("maftemp-" + this._getHexHashMD5(profilePath).slice(0, 8));
-    // Do not recalculate the value the second time this property is read.
-    delete this._defaultTempFolderPath;
-    return (this._defaultTempFolderPath = tempDir.path);
+    return tempDir.path;
   },
 
   /**

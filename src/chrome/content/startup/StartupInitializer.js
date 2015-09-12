@@ -35,8 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-Cu.import("resource://gre/modules/AddonManager.jsm");
-
 /**
  * This object handles all the tasks related to extension initialization and
  * termination.
@@ -75,17 +73,6 @@ var StartupInitializer = {
      Cc["@mozilla.org/browser/nav-history-service;1"].
      getService(Ci.nsINavHistoryService);
 
-    // For each available archive type, define the file extensions and the MIME
-    // media types that are recognized as being associated with the file type.
-    var archiveTypesToRegister = [
-     { mafArchiveType: "TypeMAFF",
-       fileExtensions: ["maff"],
-       mimeTypes:      ["application/x-maff"] },
-     { mafArchiveType: "TypeMHTML",
-       fileExtensions: ["mht", "mhtml"],
-       mimeTypes:      ["application/x-mht", "message/rfc822"] },
-    ];
-
     // Firstly, clean up the permanent file extension associations created by
     // MAF 0.7.1 and earlier, that collapsed the MIME types for MAFF and MHTML.
     var helperApps = new HelperAppsWrapper.HelperApps();
@@ -121,6 +108,33 @@ var StartupInitializer = {
     if (mimeTypesModified) {
       helperApps.flush();
     }
+
+    // Register listeners for global messages from the content processes.
+    Services.ppmm.addMessageListener(
+     "MozillaArchiveFormat:ComputeDefaultTempFolderPath",
+     () => Prefs.computeDefaultTempFolderPath());
+
+    // Continue initialization in the parent and all the child processes.
+    Services.ppmm.loadProcessScript(`data:,
+      Components.utils.import("chrome://maf/content/MozillaArchiveFormat.jsm");
+      StartupInitializer.initForEachProcess();
+    `, true);
+  },
+
+  /**
+   * This function is called by a process script when the profile is ready.
+   */
+  initForEachProcess: function() {
+    // For each available archive type, define the file extensions and the MIME
+    // media types that are recognized as being associated with the file type.
+    var archiveTypesToRegister = [
+     { mafArchiveType: "TypeMAFF",
+       fileExtensions: ["maff"],
+       mimeTypes:      ["application/x-maff"] },
+     { mafArchiveType: "TypeMHTML",
+       fileExtensions: ["mht", "mhtml"],
+       mimeTypes:      ["application/x-mht", "message/rfc822"] },
+    ];
 
     // Build a list of MIME types and associated archive types. This list will
     // be used by the archive loader to determine how to handle web archives.
@@ -160,10 +174,22 @@ var StartupInitializer = {
        "?from=" + mimeType + "&to=*/*", "");
     }
 
+    // This component detects which resources have been loaded in a document.
+    this._componentRegistrar.registerFactory(
+     ContentPolicy.prototype.classID,
+     "Mozilla Archive Format Content Policy",
+     "@amadzone.org/maf/content-policy;1",
+     ContentPolicy.prototype._xpcom_factory);
+
     // Register this extension's document loader factory, which is used for
     // complex web content in order to display the original location of the
     // archive in the address bar, and still use the actual content location
     // for resolving relative references inside the archive.
+    this._componentRegistrar.registerFactory(
+     DocumentLoaderFactory.prototype.classID,
+     "Mozilla Archive Format Document Loader Factory",
+     "@amadzone.org/maf/document-loader-factory;1",
+     DocumentLoaderFactory.prototype._xpcom_factory);
     this._addCategoryEntryForSession("Gecko-Content-Viewers",
      "*/preprocessed-web-archive",
      "@amadzone.org/maf/document-loader-factory;1");
@@ -217,6 +243,8 @@ var StartupInitializer = {
   _setAddonVersion: function() {
     // Get the object with the version information of Mozilla Archive Format.
     var addonId = "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}";
+    let { AddonManager } =
+     Cu.import("resource://gre/modules/AddonManager.jsm", {});
     AddonManager.getAddonByID(addonId, function (aAddon) {
       StartupInitializer.addonVersion = aAddon.version;
     });
