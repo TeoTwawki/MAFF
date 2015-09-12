@@ -1,15 +1,7 @@
-﻿<!-- Shortcut keys -->
-
-<!ENTITY command.browseopenarchives.key "M">
-<!ENTITY command.browseopenarchives.modifiers "alt">
-
 <!-- Menu items for general Mozilla Archive Format commands -->
 
 <!ENTITY menuitem.mafsubmenu.label "Mozilla Archive Format">
 <!ENTITY menuitem.mafsubmenu.accesskey.toolsmenu "M">
-
-<!ENTITY menuitem.browseopenarchives.label "Browse Open Archives…">
-<!ENTITY menuitem.browseopenarchives.accesskey.toolsmenu "r">
 
 <!ENTITY menuitem.convertsavedpages.label "Convert Saved Pages…">
 <!ENTITY menuitem.convertsavedpages.accesskey.toolsmenu "C">

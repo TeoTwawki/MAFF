@@ -22,10 +22,6 @@ let objectsByFolder = {
     "UrlListSourceFragment",
     "UrlSourceFragment",
   ],
-  archives: [
-    "ArchiveAnnotations",
-    "ArchiveHistoryObserver",
-  ],
   convert: [
     "Candidate",
     "CandidateFinder",

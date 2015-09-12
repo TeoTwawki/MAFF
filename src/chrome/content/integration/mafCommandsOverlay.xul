@@ -63,9 +63,6 @@
 
   <!-- User interface commands -->
   <commandset>
-    <command id=       "mafCmdBrowseOpenArchives"
-             oncommand="MafCommandsOverlay.browseOpenArchives();"
-             />
     <command id=       "mafCmdConvertSavedPages"
              oncommand="MafCommandsOverlay.convertSavedPages();"
              />
@@ -88,15 +85,6 @@
              oncommand="MafCommandsOverlay.saveFrameInArchiveFromContext();"
              />
   </commandset>
-
-  <!-- Shortcut keys -->
-  <keyset>
-    <key id=       "mafKeyBrowseOpenArchives"
-         key=      "&command.browseopenarchives.key;"
-         modifiers="&command.browseopenarchives.modifiers;"
-         command=  "mafCmdBrowseOpenArchives"
-         />
-  </keyset>
 
   <!-- Application button -->
   <vbox id="appmenuPrimaryPane">
@@ -185,12 +173,6 @@
         accesskey=  "&menuitem.mafsubmenu.accesskey.toolsmenu;"
         >
     <menupopup id="mafMenuPopupMafSubMenu_toolsMenu">
-      <menuitem label=      "&menuitem.browseopenarchives.label;"
-                accesskey=  "&menuitem.browseopenarchives.accesskey.toolsmenu;"
-                key=        "mafKeyBrowseOpenArchives"
-                command=    "mafCmdBrowseOpenArchives"
-                />
-      <menuseparator />
       <menuitem id=         "mafMenuSavePageInArchive_toolsMenu"
                 labelsaveas="&menuitem.savepageinarchiveas.label;"
                 labelsave=  "&menuitem.savepageinarchive.label.v2;"

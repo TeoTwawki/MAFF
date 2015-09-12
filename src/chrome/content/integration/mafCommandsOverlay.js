@@ -217,8 +217,7 @@ var MafCommandsOverlay = {
        ].indexOf(command) >= 0);
 
       // Do not handle unrelated menu items.
-      if (command.slice(0, "mafCmd".length) == "mafCmd" &&
-          command != "mafCmdBrowseOpenArchives") {
+      if (command.slice(0, "mafCmd".length) == "mafCmd") {
 
         // If the element has a different label based on whether the page will
         // be saved automatically, change the label accordingly.
@@ -277,25 +276,6 @@ var MafCommandsOverlay = {
       }
 
     });
-  },
-
-  /**
-   * Displays the "Browse open archives" window.
-   */
-  browseOpenArchives: function() {
-    // If the archives window is already opened
-    var archivesDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
-     getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Archives");
-    if (archivesDialog) {
-      // Bring the window to the foreground.
-      archivesDialog.focus();
-    } else {
-      // Open a new window to display the available archives.
-      window.open(
-       "chrome://maf/content/archives/archivesDialog.xul",
-       "maf-archivesDialog",
-       "chrome,titlebar,centerscreen,resizable=yes");
-    }
   },
 
   /**

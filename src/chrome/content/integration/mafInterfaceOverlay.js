@@ -137,18 +137,33 @@ var MafInterfaceOverlay = {
 
     // Format the original address for display, if present.
     if (pageInfo.originalUrl && !pageInfo.originalUrlForDisplay) {
-      // Ensure the address is unescaped.
-      var originalUrl = new String(pageInfo.originalUrl);
-      originalUrl.isEscapedAsUri = true;
-      pageInfo.originalUrlForDisplay = MozillaArchiveFormat.Interface.
-       formatValueForDisplay(originalUrl);
+      try {
+        pageInfo.originalUrlForDisplay =
+         Cc["@mozilla.org/intl/texttosuburi;1"].
+         getService(Ci.nsITextToSubURI).
+         unEscapeURIForUI("UTF-8", pageInfo.originalUrl);
+      } catch (e) {
+        // In case of errors, display the unescaped URI.
+        pageInfo.originalUrlForDisplay = pageInfo.originalUrl;
+      }
       pageInfo.hasValues = true;
     }
 
     // Format the save date for display, if present.
     if (pageInfo.dateArchived && !pageInfo.dateArchivedForDisplay) {
-      pageInfo.dateArchivedForDisplay = MozillaArchiveFormat.Interface.
-       formatValueForDisplay(pageInfo.dateArchived);
+      // Use the date formatting service to display the localized date. We
+      // cannot use the native JavaScript date formatting functions, like
+      // "toLocaleString", because this code may be called at startup when the
+      // service that converts the operating-system-provided date string to
+      // Unicode is not available in the JavaScript context.
+      let dateValue = pageInfo.dateArchived;
+      pageInfo.dateArchivedForDisplay = 
+       Cc["@mozilla.org/intl/scriptabledateformat;1"].
+       getService(Ci.nsIScriptableDateFormat).FormatDateTime("",
+       Ci.nsIScriptableDateFormat.dateFormatLong,
+       Ci.nsIScriptableDateFormat.timeFormatSeconds,
+       dateValue.getFullYear(), dateValue.getMonth() + 1, dateValue.getDate(),
+       dateValue.getHours(), dateValue.getMinutes(), dateValue.getSeconds());
       pageInfo.hasValues = true;
     }
   },
