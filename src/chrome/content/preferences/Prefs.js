@@ -138,7 +138,8 @@ var Prefs = {
    * Returns true if the commands to save web archives should be available.
    */
   get saveEnabled() {
-    return this.prefBranchForMaf.getCharPref("save.method") == "snapshot";
+    return this.prefBranchForMaf.getCharPref("save.method") == "snapshot" &&
+           !Services.appinfo.browserTabsRemoteAutostart;
   },
 
   /** Enumeration for saveMaffCompression */

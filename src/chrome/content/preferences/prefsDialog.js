@@ -57,8 +57,18 @@ var PrefsDialog = {
       document.getElementById("boxShowWelcomePage").hidden = true;
       document.getElementById("boxShowWelcomePageAssociate").hidden = false;
     }
+    // The preferences do not apply if multi-process is enabled.
+    var isMultiprocess = Services.appinfo.browserTabsRemoteAutostart;
+    document.getElementById("boxMain").hidden = isMultiprocess;
+    document.getElementById("boxMultiprocess").hidden = !isMultiprocess;
     // Updates the status of the dialog controls.
     this.onSaveMethodChange();
+  },
+
+  /**
+   * Updates the window size after some elements may have been added or removed.
+   */
+  sizeToContent: function() {
     // At this point, we must ensure that the height of the visible description
     // elements is taken into account when calculating the window height.
     for (let [, d] in Iterator(document.getElementsByTagName("description"))) {
@@ -82,6 +92,9 @@ var PrefsDialog = {
     var enabled = document.getElementById("prefSaveMethod").value == "snapshot";
     document.getElementById("radioSaveFormatMaff").disabled = !enabled;
     document.getElementById("radioSaveFormatMhtml").disabled = !enabled;
+    document.getElementById("boxConvertSavedPages").hidden = !enabled ||
+     Services.appinfo.browserTabsRemoteAutostart;
+    this.sizeToContent();
   },
 
   /**

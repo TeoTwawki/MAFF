@@ -80,6 +80,7 @@
                   type=    "bool"
                   />
     </preferences>
+    <vbox id="boxMain">
     <label control="rgrSaveMethods"
            value=  "&save.method.grouplabel;"
            class=  "header"
@@ -128,20 +129,45 @@
               label=     "&info.bar.label;"
               accesskey= "&info.bar.accesskey;"
               />
+    </vbox>
+    <vbox id="boxMultiprocess">
+    <spacer height="10" />
+    <label value="Read-only access to web archives" class="header"/>
+    <description>
+      Multi-process is only partially supported by this version of the Mozilla
+      Archive Format add-on.
+    </description>
+    <spacer height="20" />
+    <description>
+      You can read your saved web archives, but in order to create new archives
+      or view the original location and save date, you have to
+      <span style="font-weight: bold;">disable multi-process from the browser
+      options</span>.
+    </description>
+    <spacer height="20" />
+    <description>
+      This is only required until a compatible version of the add-on is
+      released. If you have automatic add-on updates enabled, the save
+      functionality for multi-process will be restored as soon as a compatible
+      version is available.
+    </description>
+    </vbox>
   </prefpane>
 
   <!-- Actions pane -->
   <prefpane id=   "paneActions"
             label="&pane.actions.label;"
             >
-    <label value=    "&action.convertsavedpages.label;"
-           onclick=  "PrefsDialog.onActionConvertSavedPagesClick();"
-           class=    "text-link header"
-           />
-    <description class="indent">
-      &action.convertsavedpages.description;
-    </description>
-    <spacer height="10" />
+    <vbox id="boxConvertSavedPages">
+      <label value=    "&action.convertsavedpages.label;"
+             onclick=  "PrefsDialog.onActionConvertSavedPagesClick();"
+             class=    "text-link header"
+             />
+      <description class="indent">
+        &action.convertsavedpages.description;
+      </description>
+      <spacer height="10" />
+    </vbox>
     <vbox id="boxShowWelcomePage">
       <label value=  "&action.showwelcomepage.label;"
              onclick="PrefsDialog.onActionShowWelcomePageClick();"
