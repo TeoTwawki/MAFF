@@ -7,7 +7,6 @@
 <!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
 <!ENTITY save.format.maff.accesskey "M">
 <!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
-<!ENTITY save.format.mhtml.partial.label "MHTML (variant with limited compatibility)">
 <!ENTITY save.format.mhtml.accesskey "H">
 <!ENTITY save.method.grouplabel "When saving a complete page:">
 <!ENTITY save.method.snapshot.label "Take an exact snapshot">

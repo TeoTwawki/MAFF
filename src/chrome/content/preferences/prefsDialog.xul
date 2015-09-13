@@ -79,14 +79,14 @@
     <radiogroup id=        "rgrSaveFormats"
                 preference="prefSaveFormat"
                 >
-      <radio value=    "0"
+      <radio id=       "radioSaveFormatMaff"
+             value=    "0"
              label=    "&save.format.maff.label;"
              accesskey="&save.format.maff.accesskey;"
              />
       <radio id=          "radioSaveFormatMhtml"
              value=       "1"
-             labelfull=   "&save.format.mhtml.full.label;"
-             labelpartial="&save.format.mhtml.partial.label;"
+             label=       "&save.format.mhtml.full.label;"
              accesskey=   "&save.format.mhtml.accesskey;"
              />
     </radiogroup>

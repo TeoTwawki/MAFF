@@ -152,6 +152,9 @@ var MafCommandsOverlay = {
         break;
     }
 
+    // Show the menu items only if we have the ability to save web archives.
+    isVisibleInMenu = isVisibleInMenu && MozillaArchiveFormat.Prefs.saveEnabled;
+
     // Now check every menu item and, if it is linked to one of the MAF
     // commands, set its visibility appropriately.
     Array.forEach(aEvent.target.getElementsByTagNameNS(

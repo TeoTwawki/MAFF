@@ -196,7 +196,8 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       contentType: aContentType,
       // When saving all tabs, only offer the choice of creating an archive.
       saveMode: mafAskSaveArchive ? MozillaArchiveFormat.SAVEMODE_MAFARCHIVE : saveMode,
-      saveInArchiveFirst: mafAskSaveArchive || mafPreferSaveArchive,
+      saveInArchiveFirst: MozillaArchiveFormat.Prefs.saveEnabled &&
+                          (mafAskSaveArchive || mafPreferSaveArchive),
       saveBehavior: MozillaArchiveFormat.CompleteSaveBehavior,
       file: file
     };
@@ -341,8 +342,7 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   var persist;
   if (persistArgs.persistObject) {
     persist = persistArgs.persistObject;
-  } else if (MozillaArchiveFormat.Prefs.saveMethod ==
-             MozillaArchiveFormat.Prefs.SAVEMETHOD_SNAPSHOT &&
+  } else if (MozillaArchiveFormat.Prefs.saveEnabled &&
       persistArgs.sourceDocument && !persistArgs.targetContentType &&
       (persistArgs.sourceDocument.contentType == "text/html" ||
       persistArgs.sourceDocument.contentType == "application/xhtml+xml")) {
@@ -986,7 +986,8 @@ MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
   newSaveBehavior.isComplete = true;
   newSaveBehavior.mandatoryExtension = true;
   newSaveBehavior.isValidForSaveMode = function(aSaveMode) {
-    return aSaveMode & MozillaArchiveFormat.SAVEMODE_MAFARCHIVE;
+    return MozillaArchiveFormat.Prefs.saveEnabled &&
+     (aSaveMode & MozillaArchiveFormat.SAVEMODE_MAFARCHIVE);
   }
   newSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
     // Access the current values in the MAF save filter objects array.

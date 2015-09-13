@@ -146,24 +146,11 @@ var Prefs = {
     return this.prefBranchForMaf.getBoolPref("advanced.maff.extendedmetadata");
   },
 
-  /** Enumeration for saveMethod */
-  SAVEMETHOD_SNAPSHOT: "snapshot",
-  SAVEMETHOD_STANDARD: "standard",
-
   /**
-   * Returns the method to use when saving pages from the web to a local folder,
-   * before archiving the saved elements.
-   *
-   * Possible values:
-   *   SAVEMETHOD_SNAPSHOT (default)
-   *     Take a snapshot of the page using the ExactPersist component.
-   *   SAVEMETHOD_STANDARD
-   *     Use the browser's native "save complete web page" functionality.
-   *   (other)
-   *     If the user has customized the preference.
+   * Returns true if the commands to save web archives should be available.
    */
-  get saveMethod() {
-    return this.prefBranchForMaf.getCharPref("save.method");
+  get saveEnabled() {
+    return this.prefBranchForMaf.getCharPref("save.method") == "snapshot";
   },
 
   /** Enumeration for saveMaffCompression */

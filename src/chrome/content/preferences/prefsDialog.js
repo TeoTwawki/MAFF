@@ -79,11 +79,9 @@ var PrefsDialog = {
    * Enables other dialog controls depending on the selected save method.
    */
   onSaveMethodChange: function() {
-    var saveMethod = document.getElementById("prefSaveMethod").value;
-    let (r = document.getElementById("radioSaveFormatMhtml")) {
-      let attribute = (saveMethod == "snapshot") ? "labelfull" : "labelpartial";
-      r.setAttribute("label", r.getAttribute(attribute));
-    }
+    var enabled = document.getElementById("prefSaveMethod").value == "snapshot";
+    document.getElementById("radioSaveFormatMaff").disabled = !enabled;
+    document.getElementById("radioSaveFormatMhtml").disabled = !enabled;
   },
 
   /**

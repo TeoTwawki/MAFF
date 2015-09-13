@@ -229,7 +229,8 @@ var MafInterfaceOverlay = {
     // Change the label of the widget based on the document type.
     var labelText;
     var contentDocument = getBrowser().selectedBrowser.contentDocument;
-    if (MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml < 2 && (
+    if (MozillaArchiveFormat.Prefs.saveEnabled &&
+     MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml < 2 && (
      contentDocument.contentType == "text/html" ||
      contentDocument.contentType == "application/xhtml+xml")) {
       labelText = document.
