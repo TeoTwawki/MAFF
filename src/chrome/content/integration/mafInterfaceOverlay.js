@@ -396,5 +396,8 @@ var MafInterfaceOverlay = {
 };
 
 // Now that the MafInterfaceOverlay object is defined, add the event listener
-// that will trigger the initialization when all of the overlays are loaded.
-window.addEventListener("load", MafInterfaceOverlay.onLoad, false);
+// that will trigger the initialization when all of the overlays are loaded,
+// unless we are running in a multi-process browser.
+if (!Services.appinfo.browserTabsRemoteAutostart) {
+  window.addEventListener("load", MafInterfaceOverlay.onLoad, false);
+}
