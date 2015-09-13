@@ -126,10 +126,6 @@
                   name=    "extensions.maf.interface.menu.file"
                   type=    "bool"
                   />
-      <preference id=      "prefInterfaceMenuTools"
-                  name=    "extensions.maf.interface.menu.tools"
-                  type=    "bool"
-                  />
       <preference id=      "prefInterfaceMenuTabsContext"
                   name=    "extensions.maf.interface.menu.tabscontext"
                   type=    "bool"
@@ -154,10 +150,6 @@
     <checkbox preference="prefInterfaceMenuFile" 
               label=     "&menu.file.label;"
               accesskey= "&menu.file.accesskey;"
-              />
-    <checkbox preference="prefInterfaceMenuTools" 
-              label=     "&menu.tools.label;"
-              accesskey= "&menu.tools.accesskey;"
               />
     <checkbox preference="prefInterfaceMenuTabsContext" 
               label=     "&menu.tabscontext.label;"

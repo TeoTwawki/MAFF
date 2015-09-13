@@ -63,9 +63,6 @@
     <command id=       "mafCmdConvertSavedPages"
              oncommand="MafCommandsOverlay.convertSavedPages();"
              />
-    <command id=       "mafCmdPreferences"
-             oncommand="MafCommandsOverlay.preferences();"
-             />
     <command id=       "mafCmdSaveTabsInArchive"
              oncommand="MafCommandsOverlay.saveTabsInArchive();"
              />
@@ -123,51 +120,6 @@
                    insertbefore="menu_sendLink"
                    />
   </menupopup>
-
-  <!-- Browser's Tools menu, applied depending on the host application -->
-  <menu id="mafMenuMafSubMenu_toolsMenu"
-        label=      "&menuitem.mafsubmenu.label;"
-        accesskey=  "&menuitem.mafsubmenu.accesskey.toolsmenu;"
-        >
-    <menupopup id="mafMenuPopupMafSubMenu_toolsMenu">
-      <menuitem id=         "mafMenuSavePageInArchive_toolsMenu"
-                labelsaveas="&menuitem.savepageinarchiveas.label;"
-                labelsave=  "&menuitem.savepageinarchive.label.v2;"
-                accesskey=  "&menuitem.savepageinarchive.accesskey.toolsmenu;"
-                command=    "mafCmdSavePageInArchive"
-                />
-      <menuitem id=         "mafMenuSaveFrameInArchive_toolsMenu"
-                labelsaveas="&menuitem.saveframeinarchiveas.label;"
-                labelsave=  "&menuitem.saveframeinarchive.label.v2;"
-                accesskey=  "&menuitem.saveframeinarchive.accesskey.toolsmenu;"
-                command=    "mafCmdSaveFrameInArchiveFromWindow"
-                />
-      <menuitem id=         "mafMenuSaveTabsInArchive_toolsMenu"
-                labelsaveas="&menuitem.savetabsinarchiveas.label;"
-                labelsave=  "&menuitem.savetabsinarchive.label;"
-                accesskey=  "&menuitem.savetabsinarchive.accesskey.toolsmenu;"
-                command=    "mafCmdSaveTabsInArchive"
-                />
-      <menuitem id=         "mafMenuSaveAllTabsInArchive_toolsMenu"
-                labelsaveas="&menuitem.savealltabsinarchiveas.label;"
-                labelsave=  "&menuitem.savealltabsinarchive.label;"
-                accesskey=  "&menuitem.savealltabsinarchive.accesskey.toolsmenu;"
-                command=    "mafCmdSaveAllTabsInArchive"
-                />
-      <menuseparator />
-      <menuitem id=         "mafMenuConvertSavedPages_toolsMenu"
-                label=      "&menuitem.convertsavedpages.label;"
-                accesskey=  "&menuitem.convertsavedpages.accesskey.toolsmenu;"
-                command=    "mafCmdConvertSavedPages"
-                />
-      <menuseparator />
-      <menuitem id=         "mafMenuPreferences_toolsMenu"
-                label=      "&menuitem.options.label;"
-                accesskey=  "&menuitem.options.accesskey.toolsmenu;"
-                command=    "mafCmdPreferences"
-                />
-    </menupopup>
-  </menu>
 
   <!--
      - Browser's tab bar context menu. Since the context menu is defined inside

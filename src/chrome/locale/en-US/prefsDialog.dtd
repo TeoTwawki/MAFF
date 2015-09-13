@@ -25,8 +25,6 @@
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
 <!ENTITY menu.file.label "File menu">
 <!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tools.label "Tools menu">
-<!ENTITY menu.tools.accesskey "l">
 <!ENTITY menu.tabscontext.label "Tab bar context menu">
 <!ENTITY menu.tabscontext.accesskey "x">
 

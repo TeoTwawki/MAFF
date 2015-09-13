@@ -95,7 +95,6 @@ var MafCommandsOverlay = {
     // 2009-03-01).
     [
      document.getElementById("menu_FilePopup"),
-     document.getElementById("mafMenuMafSubMenu_toolsMenu").parentNode,
      tabContextMenu
     ].forEach(function(element) {
       if (element) {
@@ -147,18 +146,6 @@ var MafCommandsOverlay = {
     switch (aEvent.target.id) {
       case "menu_FilePopup":
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuFile;
-        break;
-      case "more-tools-menupopup":
-        // This identifier is used by the More Tools Menu add-on. See
-        // <https://addons.mozilla.org/firefox/addon/more-tools-menu/>
-        // (retrieved 2012-03-22).
-      case "menu_ToolsPopup":
-      case "taskPopup":
-        isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTools;
-        // The visibility of the MAF submenu in the Tools menu depends only on
-        // the related preference.
-        document.getElementById("mafMenuMafSubMenu_toolsMenu").hidden =
-         !MozillaArchiveFormat.Prefs.interfaceMenuTools;
         break;
       default: // Assume this is the tab bar context menu, which has no ID
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTabsContext;
@@ -232,37 +219,6 @@ var MafCommandsOverlay = {
        "chrome://maf/content/convert/convertDialog.xul",
        "maf-convertDialog",
        "chrome,titlebar,centerscreen,resizable=yes");
-    }
-  },
-
-  /**
-   * Displays the preferences window.
-   */
-  preferences: function() {
-    // If the preferences window is already opened
-    var prefsDialog = Cc["@mozilla.org/appshell/window-mediator;1"].
-     getService(Ci.nsIWindowMediator).getMostRecentWindow("Maf:Prefs");
-    if (prefsDialog) {
-      // Bring the window to the foreground.
-      prefsDialog.focus();
-    } else {
-      // Determine the expected behavior of preferences windows.
-      try {
-        var instantApply =
-         Components.classes["@mozilla.org/preferences-service;1"]
-         .getService(Components.interfaces.nsIPrefService)
-         .getBranch("").getBoolPref("browser.preferences.instantApply");
-      } catch(e) {
-        instantApply = false;
-      }
-      // Open the preferences window. If instant apply is on, the window will be
-      // minimizable (dialog=no), conversely if instant apply is not enabled the
-      // window will be modal and not minimizable.
-      window.openDialog(
-       "chrome://maf/content/preferences/prefsDialog.xul",
-       "maf-prefsDialog",
-       "chrome,titlebar,toolbar,centerscreen," +
-       (instantApply ? "dialog=no" : "modal"));
     }
   },
 

@@ -110,13 +110,6 @@ var Prefs = {
   },
 
   /**
-   * Returns true if MAF menu items should be shown in the Tools menu.
-   */
-  get interfaceMenuTools() {
-    return this.prefBranchForMaf.getBoolPref("interface.menu.tools");
-  },
-
-  /**
    * Returns true if MAF menu items should be shown in the tab bar context menu.
    */
   get interfaceMenuTabsContext() {
