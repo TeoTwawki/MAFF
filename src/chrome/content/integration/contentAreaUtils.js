@@ -104,10 +104,10 @@ Components.utils.import("chrome://maf/content/MozillaArchiveFormat.jsm",
  *         - saveDir: nsILocalFile instance pointing to the directory where the
  *           specified document should be saved. The filename is determined
  *           automatically, using "index" as the basename.
- *         - saveWithMedia: If true, the Save Complete persist object is
- *           configured to save the media files that are present in the page.
- *         - saveWithContentLocation: If true, the Save Complete persist object
- *           is configured to save the page for inclusion in an MHTML file.
+ *         - saveWithMedia: If true, the persist object is configured to save
+ *           the media files that are present in the page.
+ *         - saveWithContentLocation: If true, the persist object is configured
+ *           to save the page for inclusion in an MHTML file.
  *         - mafEventListener: Object implementing the onSaveNameDetermined,
  *           onDownloadComplete, and onDownloadFailed event functions. The
  *           persistObject property may also be set on the object.
@@ -346,14 +346,9 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
       persistArgs.sourceDocument && !persistArgs.targetContentType &&
       (persistArgs.sourceDocument.contentType == "text/html" ||
       persistArgs.sourceDocument.contentType == "application/xhtml+xml")) {
-    // Save Complete can only save a complete HTML document without converting
-    // its content type, while the ExactPersist component could also save XML
-    // and SVG, but not as accurately as the browser's standard save system.
-    if (MozillaArchiveFormat.Prefs.saveKeepScripts) {
-      persist = new MozillaArchiveFormat.SaveCompletePersist();
-    } else {
-      persist = new MozillaArchiveFormat.ExactPersist();
-    }
+    // The ExactPersist component can also save XML and SVG, but not as
+    // accurately as the browser's standard save system.
+    persist = new MozillaArchiveFormat.ExactPersist();
     // If the document saving was initiated by MAF
     if (typeof aSkipPrompt == "object" && aSkipPrompt.mafEventListener) {
       // Configure the persist object appropriately.

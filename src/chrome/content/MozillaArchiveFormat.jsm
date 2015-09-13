@@ -56,10 +56,6 @@ let objectsByFolder = {
     "FileAssociations",
     "Prefs",
   ],
-  savecomplete: [
-    "MafSaveComplete",
-    "SaveCompletePersist",
-  ],
   saving: [
     "Job",
     "JobRunner",

@@ -168,14 +168,6 @@ var Prefs = {
   },
 
   /**
-   * Returns true if the integrated "Save Complete" code should be used to
-   * preserve scripts and source when saving complete web page contents.
-   */
-  get saveKeepScripts() {
-    return this.prefBranchForMaf.getBoolPref("save.keepscripts");
-  },
-
-  /**
    * Returns true if extended metadata, like the browser's current text zoom
    * and scroll position, must be saved in new archives.
    */
@@ -193,8 +185,7 @@ var Prefs = {
    *
    * Possible values:
    *   SAVEMETHOD_SNAPSHOT (default)
-   *     Take a snapshot of the page, using either the ExactPersist component or
-   *     the integrated "Save Complete" code.
+   *     Take a snapshot of the page using the ExactPersist component.
    *   SAVEMETHOD_STANDARD
    *     Use the browser's native "save complete web page" functionality.
    *   (other)
