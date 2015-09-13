@@ -13,8 +13,6 @@ pref("extensions.maf.interface.info.icon", true);
 pref("extensions.maf.interface.info.bar", true);
 pref("extensions.maf.interface.menu.file", true);
 pref("extensions.maf.interface.menu.tools", true);
-pref("extensions.maf.interface.menu.pagecontext", false);
-pref("extensions.maf.interface.menu.pagecontext.tabs", false);
 pref("extensions.maf.interface.menu.tabscontext", true);
 pref("extensions.maf.other.displaywelcome", true);
 pref("extensions.maf.other.displaywelcomepage", true);

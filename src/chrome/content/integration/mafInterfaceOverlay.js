@@ -233,7 +233,7 @@ var MafInterfaceOverlay = {
      contentDocument.contentType == "text/html" ||
      contentDocument.contentType == "application/xhtml+xml")) {
       labelText = document.
-       getElementById("mafMenuSavePageInArchive_pageContextMenu").
+       getElementById("mafMenuSavePageInArchive_fileMenu").
        getAttribute("labelsave");
     } else {
       labelText = CustomizableUI.getLocalizedProperty(savePageWidget, "label");

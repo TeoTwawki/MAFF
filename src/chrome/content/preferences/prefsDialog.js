@@ -59,7 +59,6 @@ var PrefsDialog = {
     }
     // Updates the status of the dialog controls.
     this.onSaveMethodChange();
-    this.onInterfaceMenuPageContextChange();
     // At this point, we must ensure that the height of the visible description
     // elements is taken into account when calculating the window height.
     for (let [, d] in Iterator(document.getElementsByTagName("description"))) {
@@ -85,14 +84,6 @@ var PrefsDialog = {
       let attribute = (saveMethod == "snapshot") ? "labelfull" : "labelpartial";
       r.setAttribute("label", r.getAttribute(attribute));
     }
-  },
-
-  /**
-   * Enables other dialog controls depending on the page context menu option.
-   */
-  onInterfaceMenuPageContextChange: function() {
-    document.getElementById("cbInterfaceMenuPageContextForTabs").disabled =
-     !document.getElementById("prefInterfaceMenuPageContext").value;
   },
 
   /**

@@ -78,9 +78,6 @@
     <command id=       "mafCmdSaveFrameInArchiveFromWindow"
              oncommand="MafCommandsOverlay.saveFrameInArchiveFromWindow();"
              />
-    <command id=       "mafCmdSaveFrameInArchiveFromContext"
-             oncommand="MafCommandsOverlay.saveFrameInArchiveFromContext();"
-             />
   </commandset>
 
   <!-- Navigator's or Browser's File menu -->
@@ -171,48 +168,6 @@
                 />
     </menupopup>
   </menu>
-
-  <!-- Browser's page context menu -->
-  <popup id="contentAreaContextMenu">
-    <menuitem id=          "mafMenuSavePageInArchive_pageContextMenu"
-              insertafter= "context-savepage"
-              labelsaveas= "&menuitem.savepageinarchiveas.label;"
-              labelsave=   "&menuitem.savepageinarchive.label.v2;"
-              accesskey=   "&menuitem.savepageinarchive.accesskey.pagecontextmenu;"
-              command=     "mafCmdSavePageInArchive"
-              />
-    <menuitem id=          "mafMenuSaveTabsInArchive_pageContextMenu"
-              insertbefore="context-sendpage"
-              labelsaveas= "&menuitem.savetabsinarchiveas.label;"
-              labelsave=   "&menuitem.savetabsinarchive.label;"
-              accesskey=   "&menuitem.savetabsinarchive.accesskey.pagecontextmenu;"
-              command=     "mafCmdSaveTabsInArchive"
-              />
-    <menuitem id=          "mafMenuSaveAllTabsInArchive_pageContextMenu"
-              insertbefore="context-sendpage"
-              labelsaveas= "&menuitem.savealltabsinarchiveas.label;"
-              labelsave=   "&menuitem.savealltabsinarchive.label;"
-              accesskey=   "&menuitem.savealltabsinarchive.accesskey.pagecontextmenu;"
-              command=     "mafCmdSaveAllTabsInArchive"
-              />
-  </popup>
-
-  <!--
-     - Frame submenu of the browser's page context menu. Since the element to
-     -  be overlaid does not have an ID, the integration is not done using the
-     -  standard XUL overlay mechanism, but using a specific JavaScript routine
-     -  on load.
-     -->
-  <popupset>
-    <menupopup id="mafFrameContextSubmenu">
-      <menuitem id=         "mafMenuSaveFrameInArchive_pageContextMenu"
-                labelsaveas="&menuitem.saveframeinarchiveas.label;"
-                labelsave=  "&menuitem.saveframeinarchive.label.v2;"
-                accesskey=  "&menuitem.saveframeinarchive.accesskey.pagecontextmenu;"
-                command=    "mafCmdSaveFrameInArchiveFromContext"
-                />
-    </menupopup>
-  </popupset>
 
   <!--
      - Browser's tab bar context menu. Since the context menu is defined inside

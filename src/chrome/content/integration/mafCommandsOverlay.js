@@ -63,16 +63,6 @@ var MafCommandsOverlay = {
     // Listen for when the browser window closes, to perform shutdown.
     window.addEventListener("unload", MafCommandsOverlay.onUnload, false);
 
-    // Manually add the "Save Frame In Archive" menu item to the "This Frame"
-    // context menu. The menu item after which the new item is added has a
-    // different name in "navigator.xul" and in "browser.xul".
-    var frameContextSubmenu = document.getElementById("frame").firstChild;
-    var frameContextSubmenuAfterItem = document.getElementById("saveframeas") ||
-     document.getElementById("context-saveframe");
-    frameContextSubmenu.insertBefore(
-     document.getElementById("mafMenuSaveFrameInArchive_pageContextMenu"),
-     frameContextSubmenuAfterItem.nextSibling);
-
     // Get a reference to the tab bar context menu.
     var tabContextMenu = gBrowser.tabContextMenu;
     if (!tabContextMenu) {
@@ -106,7 +96,6 @@ var MafCommandsOverlay = {
     [
      document.getElementById("menu_FilePopup"),
      document.getElementById("mafMenuMafSubMenu_toolsMenu").parentNode,
-     document.getElementById("contentAreaContextMenu"),
      tabContextMenu
     ].forEach(function(element) {
       if (element) {
@@ -171,9 +160,6 @@ var MafCommandsOverlay = {
         document.getElementById("mafMenuMafSubMenu_toolsMenu").hidden =
          !MozillaArchiveFormat.Prefs.interfaceMenuTools;
         break;
-      case "contentAreaContextMenu":
-        isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuPageContext;
-        break;
       default: // Assume this is the tab bar context menu, which has no ID
         isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTabsContext;
         break;
@@ -186,12 +172,6 @@ var MafCommandsOverlay = {
 
       // Determine which class of MAF menu item we are handling.
       var command = element.getAttribute("command");
-      var isSaveTabs = ([
-       "mafCmdSaveTabsInArchive",
-       "mafCmdSaveAllTabsInArchive",
-       ].indexOf(command) >= 0);
-
-      // Do not handle unrelated menu items.
       if (command.slice(0, "mafCmd".length) == "mafCmd") {
 
         // If the element has a different label based on whether the page will
@@ -207,27 +187,10 @@ var MafCommandsOverlay = {
           element.hidden = true;
 
         // The "Save Frame" commands appear only if there is a focused frame.
-        // The "mafCmdSaveFrameInArchiveFromContext" command is not checked
-        // because its parent menu item is already hidden if no frame is
-        // selected when the context menu is shown.
         } else if (command == "mafCmdSaveFrameInArchiveFromWindow") {
           // Set the visibility using the same checks done in "browser.js".
           element.hidden = !content || !content.frames.length ||
             !isContentFrame(document.commandDispatcher.focusedWindow);
-
-        // Tab-related menu items appear in the page context menu only if a
-        // specific preference is set.
-        } else if (aEvent.target.id == "contentAreaContextMenu" && isSaveTabs &&
-         !MozillaArchiveFormat.Prefs.interfaceMenuPageContextForTabs) {
-          element.hidden = true;
-
-        // The "Save Page In Archive" menu item appears in the context menu only
-        // if the "Save Page As" item also appears.
-        } else if (aEvent.target.id == "contentAreaContextMenu" &&
-         command == "mafCmdSavePageInArchive") {
-          // The event that checked for the "context-savepage" item visibility
-          // has already been processed when we get here.
-          element.hidden = document.getElementById("context-savepage").hidden;
 
         // All the other items have standard visibility.
         } else {
@@ -364,15 +327,6 @@ var MafCommandsOverlay = {
       saveDocument(focusedWindow.document,
        {mafAskSaveArchive: true});
     }
-  },
-
-  /**
-   * Saves the selected frame in an archive.
-   */
-  saveFrameInArchiveFromContext: function() {
-    // Use the global saveDocument function with the special MAF parameters.
-    saveDocument(gContextMenu.target.ownerDocument,
-     {mafAskSaveArchive: true});
   },
 }
 

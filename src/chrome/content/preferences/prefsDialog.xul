@@ -130,15 +130,6 @@
                   name=    "extensions.maf.interface.menu.tools"
                   type=    "bool"
                   />
-      <preference id=      "prefInterfaceMenuPageContext"
-                  name=    "extensions.maf.interface.menu.pagecontext"
-                  type=    "bool"
-                  onchange="PrefsDialog.onInterfaceMenuPageContextChange();"
-                  />
-      <preference id=      "prefInterfaceMenuPageContextForTabs"
-                  name=    "extensions.maf.interface.menu.pagecontext.tabs"
-                  type=    "bool"
-                  />
       <preference id=      "prefInterfaceMenuTabsContext"
                   name=    "extensions.maf.interface.menu.tabscontext"
                   type=    "bool"
@@ -167,16 +158,6 @@
     <checkbox preference="prefInterfaceMenuTools" 
               label=     "&menu.tools.label;"
               accesskey= "&menu.tools.accesskey;"
-              />
-    <checkbox preference="prefInterfaceMenuPageContext" 
-              label=     "&menu.pagecontext.label;"
-              accesskey= "&menu.pagecontext.accesskey;"
-              />
-    <checkbox id=        "cbInterfaceMenuPageContextForTabs"
-              preference="prefInterfaceMenuPageContextForTabs" 
-              label=     "&menu.pagecontext.tabs.label;"
-              accesskey= "&menu.pagecontext.tabs.accesskey;"
-              class=     "indent"
               />
     <checkbox preference="prefInterfaceMenuTabsContext" 
               label=     "&menu.tabscontext.label;"
