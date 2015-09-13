@@ -48,13 +48,10 @@ var PrefsDialog = {
    */
   onLoadDialog: function() {
     // Apply brand names to the dialog elements.
-    for (var [, elementName] in Iterator(["cbInterfaceMenuApp",
-     "descVisitWebsite", "descShowWelcomePageAssociate"])) {
+    for (var [, elementName] in Iterator(["descVisitWebsite",
+     "descShowWelcomePageAssociate"])) {
       Interface.applyBranding(document.getElementById(elementName));
     }
-    // Check to see if the application menu is present.
-    document.getElementById("cbInterfaceMenuApp").hidden =
-     !StartupInitializer.hasAppMenu;
     // Determines if the welcome page handles file associations.
     if (this._isOnWindows()) {
       document.getElementById("boxShowWelcomePage").hidden = true;

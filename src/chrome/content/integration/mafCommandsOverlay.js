@@ -63,20 +63,6 @@ var MafCommandsOverlay = {
     // Listen for when the browser window closes, to perform shutdown.
     window.addEventListener("unload", MafCommandsOverlay.onUnload, false);
 
-    // If the "Save Page As" command exists in the application menu, use its
-    // label for the main item of the extended save menu.
-    var appMenuSavePageItem = document.getElementById("appmenu_savePage");
-    if (appMenuSavePageItem) {
-      var saveAsLabel = appMenuSavePageItem.getAttribute("label");
-      document.getElementById("mafMenuSavePage_appMenu").setAttribute("label",
-       saveAsLabel);
-      document.getElementById("mafMenuSavePage_appMenu_popup").setAttribute(
-       "label", saveAsLabel);
-      // Since we detected that an application button is present, store the
-      // information in a variable that can be read by the preferences dialog.
-      MozillaArchiveFormat.StartupInitializer.hasAppMenu = true;
-    }
-
     // Manually add the "Save Frame In Archive" menu item to the "This Frame"
     // context menu. The menu item after which the new item is added has a
     // different name in "navigator.xul" and in "browser.xul".
@@ -118,7 +104,6 @@ var MafCommandsOverlay = {
     // <https://developer.mozilla.org/en/XUL/PopupGuide/PopupEvents> (retrieved
     // 2009-03-01).
     [
-     document.getElementById("appmenu-popup"),
      document.getElementById("menu_FilePopup"),
      document.getElementById("mafMenuMafSubMenu_toolsMenu").parentNode,
      document.getElementById("contentAreaContextMenu"),
@@ -154,16 +139,6 @@ var MafCommandsOverlay = {
     // Check that the event fired for one of the menus we are interested in and
     // not for one of the descendants.
     if (MafCommandsOverlay.menusWithEvents.indexOf(aEvent.target) < 0) {
-      return;
-    }
-
-    // For the application menu, when the related preference is set, an extended
-    // submenu replaces the standard "Save Page As" menu item.
-    if (aEvent.target.id == "appmenu-popup") {
-      document.getElementById("mafMenuSavePage_appMenu").hidden =
-       !MozillaArchiveFormat.Prefs.interfaceMenuApp;
-      document.getElementById("appmenu_savePage").hidden =
-       MozillaArchiveFormat.Prefs.interfaceMenuApp;
       return;
     }
 

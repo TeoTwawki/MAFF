@@ -122,10 +122,6 @@
                   name=    "extensions.maf.interface.info.bar"
                   type=    "bool"
                   />
-      <preference id=      "prefInterfaceMenuApp"
-                  name=    "extensions.maf.interface.menu.app"
-                  type=    "bool"
-                  />
       <preference id=      "prefInterfaceMenuFile"
                   name=    "extensions.maf.interface.menu.file"
                   type=    "bool"
@@ -164,11 +160,6 @@
     <label value="&menu.grouplabel;"
            class="header"
            />
-    <checkbox id=        "cbInterfaceMenuApp"
-              preference="prefInterfaceMenuApp" 
-              label=     "&menu.app.label;"
-              accesskey= "&menu.app.accesskey;"
-              />
     <checkbox preference="prefInterfaceMenuFile" 
               label=     "&menu.file.label;"
               accesskey= "&menu.file.accesskey;"

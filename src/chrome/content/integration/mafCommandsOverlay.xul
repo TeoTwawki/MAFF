@@ -83,43 +83,6 @@
              />
   </commandset>
 
-  <!-- Application button -->
-  <vbox id="appmenuPrimaryPane">
-    <splitmenu id=         "mafMenuSavePage_appMenu"
-               command=    "Browser:SavePage"
-               insertafter="appmenu_savePage"
-               >
-      <menupopup>
-        <menuitem id=     "mafMenuSavePage_appMenu_popup"
-                  command="Browser:SavePage"
-                  key=    "key_savePage"
-                  />
-        <menuitem id=     "mafMenuSavePageInArchive_appMenu"
-                  label=  "&menuitem.savepageinarchiveas.label;"
-                  command="mafCmdSavePageInArchive"
-                  />
-        <menuitem id=     "mafMenuSaveTabsInArchive_appMenu"
-                  label=  "&menuitem.savetabsinarchiveas.label;"
-                  command="mafCmdSaveTabsInArchive"
-                  />
-        <menuitem id=     "mafMenuSaveAllTabsInArchive_appMenu"
-                  label=  "&menuitem.savealltabsinarchiveas.label;"
-                  command="mafCmdSaveAllTabsInArchive"
-                  />
-        <menuseparator />
-        <menuitem id=     "mafMenuConvertSavedPages_appMenu"
-                  label=  "&menuitem.convertsavedpages.label;"
-                  command="mafCmdConvertSavedPages"
-                  />
-        <menuseparator />
-        <menuitem id=     "mafMenuPreferences_appMenu"
-                  label=  "&menuitem.options.label;"
-                  command="mafCmdPreferences"
-                  />
-      </menupopup>
-    </splitmenu>
-  </vbox>
-
   <!-- Navigator's or Browser's File menu -->
   <menupopup id="menu_FilePopup">
     <menuitem id=          "mafMenuSavePageInArchive_fileMenu"

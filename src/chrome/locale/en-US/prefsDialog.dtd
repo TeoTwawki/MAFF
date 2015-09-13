@@ -23,8 +23,6 @@
 <!ENTITY info.bar.label "Display an information bar">
 <!ENTITY info.bar.accesskey "D">
 <!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
-<!ENTITY menu.app.label "$brandShortName menu">
-<!ENTITY menu.app.accesskey "m">
 <!ENTITY menu.file.label "File menu">
 <!ENTITY menu.file.accesskey "F">
 <!ENTITY menu.tools.label "Tools menu">

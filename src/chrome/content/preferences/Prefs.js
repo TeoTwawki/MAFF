@@ -103,13 +103,6 @@ var Prefs = {
   },
 
   /**
-   * Returns true if MAF menu items should be shown in the application menu.
-   */
-  get interfaceMenuApp() {
-    return this.prefBranchForMaf.getBoolPref("interface.menu.app");
-  },
-
-  /**
    * Returns true if MAF menu items should be shown in the File menu.
    */
   get interfaceMenuFile() {
