@@ -127,6 +127,16 @@ var Prefs = {
   },
 
   /**
+   * Returns true if the multi-process welcome dialog should be displayed.
+   */
+  get otherDisplayWelcomeMultiprocess() {
+    return this.prefBranchForMaf.getBoolPref("other.displayE10Snotice");
+  },
+  set otherDisplayWelcomeMultiprocess(aValue) {
+    this.prefBranchForMaf.setBoolPref("other.displayE10Snotice", aValue);
+  },
+
+  /**
    * Returns true if extended metadata, like the browser's current text zoom
    * and scroll position, must be saved in new archives.
    */

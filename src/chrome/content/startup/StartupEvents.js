@@ -79,19 +79,26 @@ var StartupEvents = {
    * Called after all the browser windows have been shown.
    */
   onWindowsRestored: function() {
+    let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
+    if (!browserWindow) {
+      // Very rarely, it might happen that at this time all browser windows
+      // have already been closed. In this case, we will attempt to show the
+      // welcome page again on the next startup.
+      return;
+    }
     if (Prefs.otherDisplayWelcomePage) {
-      let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
-      if (!browserWindow) {
-        // Very rarely, it might happen that at this time all browser windows
-        // have already been closed. In this case, we will attempt to show the
-        // welcome page again on the next startup.
-        return;
-      }
       // Load the page in foreground.
       let browser = browserWindow.getBrowser();
       browser.loadTabs(["chrome://maf/content/preferences/welcomePage.xhtml"],
                        false, false);
       Prefs.otherDisplayWelcomePage = false;
+    }
+    if (Services.appinfo.browserTabsRemoteAutostart &&
+     Prefs.otherDisplayWelcomeMultiprocess) {
+      browserWindow.openDialog(
+       "chrome://maf/content/preferences/prefsDialog.xul", "",
+       "chrome,titlebar,toolbar,centerscreen,modal");
+      Prefs.otherDisplayWelcomeMultiprocess = false;
     }
   },
 
