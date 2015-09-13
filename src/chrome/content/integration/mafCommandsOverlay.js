@@ -170,19 +170,7 @@ var MafCommandsOverlay = {
         }
 
         // Check for overall MAF element visibility in this menu.
-        if (!isVisibleInMenu) {
-          element.hidden = true;
-
-        // The "Save Frame" commands appear only if there is a focused frame.
-        } else if (command == "mafCmdSaveFrameInArchiveFromWindow") {
-          // Set the visibility using the same checks done in "browser.js".
-          element.hidden = !content || !content.frames.length ||
-            !isContentFrame(document.commandDispatcher.focusedWindow);
-
-        // All the other items have standard visibility.
-        } else {
-          element.hidden = false;
-        }
+        element.hidden = !isVisibleInMenu;
       }
     });
 
@@ -271,18 +259,6 @@ var MafCommandsOverlay = {
     // Use the global saveDocument function with the special MAF parameters.
     saveDocument(getBrowser().selectedBrowser.contentDocument,
      {mafAskSaveArchive: true});
-  },
-
-  /**
-   * Saves the focused frame in an archive.
-   */
-  saveFrameInArchiveFromWindow: function() {
-    var focusedWindow = document.commandDispatcher.focusedWindow;
-    if (isContentFrame(focusedWindow)) {
-      // Use the global saveDocument function with the special MAF parameters.
-      saveDocument(focusedWindow.document,
-       {mafAskSaveArchive: true});
-    }
   },
 }
 

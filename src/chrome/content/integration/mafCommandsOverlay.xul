@@ -72,9 +72,6 @@
     <command id=       "mafCmdSavePageInArchive"
              oncommand="MafCommandsOverlay.savePageInArchive();"
              />
-    <command id=       "mafCmdSaveFrameInArchiveFromWindow"
-             oncommand="MafCommandsOverlay.saveFrameInArchiveFromWindow();"
-             />
   </commandset>
 
   <!-- Navigator's or Browser's File menu -->
@@ -85,13 +82,6 @@
               labelsave=   "&menuitem.savepageinarchive.label.v2;"
               accesskey=   "&menuitem.savepageinarchive.accesskey.filemenu;"
               command=     "mafCmdSavePageInArchive"
-              />
-    <menuitem id=          "mafMenuSaveFrameInArchive_fileMenu"
-              insertafter= "saveframe,menu_saveFrame"
-              labelsaveas= "&menuitem.saveframeinarchiveas.label;"
-              labelsave=   "&menuitem.saveframeinarchive.label.v2;"
-              accesskey=   "&menuitem.saveframeinarchive.accesskey.filemenu;"
-              command=     "mafCmdSaveFrameInArchiveFromWindow"
               />
     <menuitem id=          "mafMenuSaveTabsInArchive_fileMenu"
               insertbefore="saveMenuBlockEnd,menu_sendLink"

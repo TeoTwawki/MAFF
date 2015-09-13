@@ -20,7 +20,3 @@
 <!ENTITY menuitem.savepageinarchiveas.label "Save Page In Archive As…">
 <!ENTITY menuitem.savepageinarchive.label.v2 "Save Page In Archive">
 <!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">
-
-<!ENTITY menuitem.saveframeinarchiveas.label "Save Frame In Archive As…">
-<!ENTITY menuitem.saveframeinarchive.label.v2 "Save Frame In Archive">
-<!ENTITY menuitem.saveframeinarchive.accesskey.filemenu "h">
