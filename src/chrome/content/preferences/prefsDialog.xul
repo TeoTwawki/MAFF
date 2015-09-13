@@ -62,35 +62,24 @@
             label="&pane.main.label;"
             >
     <preferences>
-      <preference id=      "prefSaveFormat"
-                  name=    "extensions.maf.current.save.filterindex"
-                  type=    "int"
-                  />
       <preference id=      "prefSaveMethod"
                   name=    "extensions.maf.save.method"
                   type=    "string"
                   onchange="PrefsDialog.onSaveMethodChange();"
                   />
+      <preference id=      "prefSaveFormat"
+                  name=    "extensions.maf.current.save.filterindex"
+                  type=    "int"
+                  />
+      <preference id=      "prefInterfaceInfoIcon"
+                  name=    "extensions.maf.interface.info.icon"
+                  type=    "bool"
+                  />
+      <preference id=      "prefInterfaceInfoBar"
+                  name=    "extensions.maf.interface.info.bar"
+                  type=    "bool"
+                  />
     </preferences>
-    <label control="rgrSaveFormats"
-           value=  "&save.format.grouplabel;"
-           class=  "header"
-           />
-    <radiogroup id=        "rgrSaveFormats"
-                preference="prefSaveFormat"
-                >
-      <radio id=       "radioSaveFormatMaff"
-             value=    "0"
-             label=    "&save.format.maff.label;"
-             accesskey="&save.format.maff.accesskey;"
-             />
-      <radio id=          "radioSaveFormatMhtml"
-             value=       "1"
-             label=       "&save.format.mhtml.full.label;"
-             accesskey=   "&save.format.mhtml.accesskey;"
-             />
-    </radiogroup>
-    <spacer height="10" />
     <label control="rgrSaveMethods"
            value=  "&save.method.grouplabel;"
            class=  "header"
@@ -107,22 +96,26 @@
              accesskey="&save.method.standard.accesskey;"
              />
     </radiogroup>
-  </prefpane>
-
-  <!-- Interface pane -->
-  <prefpane id=   "paneInterface"
-            label="&pane.interface.label;"
-            >
-    <preferences>
-      <preference id=      "prefInterfaceInfoIcon"
-                  name=    "extensions.maf.interface.info.icon"
-                  type=    "bool"
-                  />
-      <preference id=      "prefInterfaceInfoBar"
-                  name=    "extensions.maf.interface.info.bar"
-                  type=    "bool"
-                  />
-    </preferences>
+    <spacer height="10" />
+    <label control="rgrSaveFormats"
+           value=  "&save.format.grouplabel;"
+           class=  "header"
+           />
+    <radiogroup id=        "rgrSaveFormats"
+                preference="prefSaveFormat"
+                >
+      <radio id=       "radioSaveFormatMaff"
+             value=    "0"
+             label=    "&save.format.maff.label;"
+             accesskey="&save.format.maff.accesskey;"
+             />
+      <radio id=       "radioSaveFormatMhtml"
+             value=    "1"
+             label=    "&save.format.mhtml.full.label;"
+             accesskey="&save.format.mhtml.accesskey;"
+             />
+    </radiogroup>
+    <spacer height="10" />
     <label control="rgrInterfaceInfo"
            value=  "&info.grouplabel;"
            class=  "header"
