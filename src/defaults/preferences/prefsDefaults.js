@@ -20,4 +20,3 @@ pref("extensions.maf.interface.menu.tabscontext", true);
 pref("extensions.maf.other.displaywelcome", true);
 pref("extensions.maf.other.displaywelcomepage", true);
 pref("extensions.maf.save.method", "snapshot");
-pref("extensions.maf.save.namingstrategy", "pagetitle");

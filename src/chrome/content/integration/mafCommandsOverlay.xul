@@ -55,9 +55,6 @@
           src="chrome://maf/content/integration/contentAreaUtils.js"
           />
   <script type="application/x-javascript"
-          src="chrome://maf/content/integration/defaultFileNameOverlay.js"
-          />
-  <script type="application/x-javascript"
           src="chrome://maf/content/integration/mafCommandsOverlay.js"
           />
 

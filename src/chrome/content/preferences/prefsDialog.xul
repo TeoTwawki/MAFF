@@ -71,10 +71,6 @@
                   type=    "string"
                   onchange="PrefsDialog.onSaveMethodChange();"
                   />
-      <preference id=      "prefSaveNamingStrategy"
-                  name=    "extensions.maf.save.namingstrategy"
-                  type=    "string"
-                  />
     </preferences>
     <label control="rgrSaveFormats"
            value=  "&save.format.grouplabel;"
@@ -109,23 +105,6 @@
       <radio value=    "standard"
              label=    "&save.method.standard.label;"
              accesskey="&save.method.standard.accesskey;"
-             />
-    </radiogroup>
-    <spacer height="10" />
-    <label control="rgrSaveNamingStrategy"
-           value=  "&save.namingstrategy.grouplabel;"
-           class=  "header"
-           />
-    <radiogroup id=        "rgrSaveNamingStrategy"
-                preference="prefSaveNamingStrategy"
-                >
-      <radio value=    "pagetitle"
-             label=    "&save.namingstrategy.title.label;"
-             accesskey="&save.namingstrategy.title.accesskey;"
-             />
-      <radio value=    "standard"
-             label=    "&save.namingstrategy.standard.label;"
-             accesskey="&save.namingstrategy.standard.accesskey;"
              />
     </radiogroup>
   </prefpane>

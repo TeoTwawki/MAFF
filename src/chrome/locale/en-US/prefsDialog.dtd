@@ -14,11 +14,6 @@
 <!ENTITY save.method.snapshot.accesskey "k">
 <!ENTITY save.method.standard.label "Use browser's standard save system">
 <!ENTITY save.method.standard.accesskey "b">
-<!ENTITY save.namingstrategy.grouplabel "For the suggested file name:">
-<!ENTITY save.namingstrategy.title.label "Use the title of the page">
-<!ENTITY save.namingstrategy.title.accesskey "g">
-<!ENTITY save.namingstrategy.standard.label "Use browser's standard naming strategy">
-<!ENTITY save.namingstrategy.standard.accesskey "w">
 
 <!-- Interface pane -->
 <!ENTITY pane.interface.label "Interface">

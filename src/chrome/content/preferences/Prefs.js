@@ -220,26 +220,6 @@ var Prefs = {
     return this.prefBranchForMaf.getCharPref("advanced.maff.compression");
   },
 
-  /** Enumeration for saveNamingStrategy */
-  NAMINGSTRATEGY_PAGETITLE: "pagetitle",
-  NAMINGSTRATEGY_STANDARD:  "standard",
-
-  /**
-   * Determines how the default file name in the "Save As" dialogs is chosen.
-   *
-   * Possible values:
-   *   NAMINGSTRATEGY_PAGETITLE (default)
-   *     Use the title of the document instead of the source file name if
-   *     possible.
-   *   NAMINGSTRATEGY_STANDARD
-   *     Use the browser's default behavior.
-   *   (other)
-   *     If the user has customized the preference.
-   */
-  get saveNamingStrategy() {
-    return this.prefBranchForMaf.getCharPref("save.namingstrategy");
-  },
-
   /**
    * Returns true if the ".mhtml" file extension should be preferred over ".mht"
    * in the file filters for the "Save As" dialogs.
