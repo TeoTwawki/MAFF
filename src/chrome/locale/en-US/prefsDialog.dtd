@@ -21,11 +21,6 @@
 <!ENTITY info.icon.accesskey "S">
 <!ENTITY info.bar.label "Display an information bar">
 <!ENTITY info.bar.accesskey "D">
-<!ENTITY menu.grouplabel "Show Mozilla Archive Format menu items in:">
-<!ENTITY menu.file.label "File menu">
-<!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tabscontext.label "Tab bar context menu">
-<!ENTITY menu.tabscontext.accesskey "x">
 
 <!-- Actions pane -->
 <!ENTITY pane.actions.label "Actions">

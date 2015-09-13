@@ -103,20 +103,6 @@ var Prefs = {
   },
 
   /**
-   * Returns true if MAF menu items should be shown in the File menu.
-   */
-  get interfaceMenuFile() {
-    return this.prefBranchForMaf.getBoolPref("interface.menu.file");
-  },
-
-  /**
-   * Returns true if MAF menu items should be shown in the tab bar context menu.
-   */
-  get interfaceMenuTabsContext() {
-    return this.prefBranchForMaf.getBoolPref("interface.menu.tabscontext");
-  },
-
-  /**
    * Returns false only if a previous version of the extension was installed on
    * the same profile, indicating that the header of the welcome page should be
    * changed accordingly.

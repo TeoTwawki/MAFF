@@ -138,22 +138,8 @@ var MafCommandsOverlay = {
      Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).ID ==
      "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
 
-    // For the other menus, a preference controls whether any MAF menu item is
-    // visible at all in that particular menu. Even if the preference is true
-    // for the menu, the single items must still be checked for visibility based
-    // on the context.
-    var isVisibleInMenu;
-    switch (aEvent.target.id) {
-      case "menu_FilePopup":
-        isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuFile;
-        break;
-      default: // Assume this is the tab bar context menu, which has no ID
-        isVisibleInMenu = MozillaArchiveFormat.Prefs.interfaceMenuTabsContext;
-        break;
-    }
-
     // Show the menu items only if we have the ability to save web archives.
-    isVisibleInMenu = isVisibleInMenu && MozillaArchiveFormat.Prefs.saveEnabled;
+    var isVisibleInMenu = MozillaArchiveFormat.Prefs.saveEnabled;
 
     // Now check every menu item and, if it is linked to one of the MAF
     // commands, set its visibility appropriately.

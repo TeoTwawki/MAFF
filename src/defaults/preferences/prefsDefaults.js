@@ -11,8 +11,6 @@ pref("extensions.maf.associate.maff", true);
 pref("extensions.maf.associate.mhtml", true);
 pref("extensions.maf.interface.info.icon", true);
 pref("extensions.maf.interface.info.bar", true);
-pref("extensions.maf.interface.menu.file", true);
-pref("extensions.maf.interface.menu.tabscontext", true);
 pref("extensions.maf.other.displaywelcome", true);
 pref("extensions.maf.other.displaywelcomepage", true);
 pref("extensions.maf.save.method", "snapshot");

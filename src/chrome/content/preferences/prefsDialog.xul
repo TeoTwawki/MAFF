@@ -122,14 +122,6 @@
                   name=    "extensions.maf.interface.info.bar"
                   type=    "bool"
                   />
-      <preference id=      "prefInterfaceMenuFile"
-                  name=    "extensions.maf.interface.menu.file"
-                  type=    "bool"
-                  />
-      <preference id=      "prefInterfaceMenuTabsContext"
-                  name=    "extensions.maf.interface.menu.tabscontext"
-                  type=    "bool"
-                  />
     </preferences>
     <label control="rgrInterfaceInfo"
            value=  "&info.grouplabel;"
@@ -142,18 +134,6 @@
     <checkbox preference="prefInterfaceInfoBar" 
               label=     "&info.bar.label;"
               accesskey= "&info.bar.accesskey;"
-              />
-    <spacer height="10" />
-    <label value="&menu.grouplabel;"
-           class="header"
-           />
-    <checkbox preference="prefInterfaceMenuFile" 
-              label=     "&menu.file.label;"
-              accesskey= "&menu.file.accesskey;"
-              />
-    <checkbox preference="prefInterfaceMenuTabsContext" 
-              label=     "&menu.tabscontext.label;"
-              accesskey= "&menu.tabscontext.accesskey;"
               />
   </prefpane>
 
