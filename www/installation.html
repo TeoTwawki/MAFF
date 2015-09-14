@@ -86,34 +86,37 @@
  $maf_latest_fx); ?> has the following user-visible improvements over MAF
  <?php echo $maf_previous_fx; ?>:</p>
 <ul>
-  <li>Improved compactness when saving complete web pages:
+  <li>When multi-process Firefox is enabled, compatibility information is
+   displayed in English in the main pane of the options dialog, and the dialog
+   is shown automatically the first time this condition is detected.</li>
+  <li>Partial compatibility with multi-process Firefox:
     <ul>
-      <li>Stylesheet rules that don't apply to any element in the current page
-       are now removed from the saved file. This can greatly increase
-       compactness when content is modified by scripts or other extensions
-       before saving.</li>
-      <li>The option to take an exact snapshot of the page is now selected by
-       default, to take advantage of various improvements in the save method,
-       even if it was deselected in a previous version of the add-on. The
-       browser's standard save system and the integrated Save Complete component
-       can still be selected from the options dialog and the internal
-       configuration settings respectively.</li>
+      <li>Full support for displaying the contents of web archives.</li>
+      <li>The notification bar with information about the original save date and
+       location is not displayed when multi-process Firefox is enabled.</li>
+      <li>Web archives cannot be created when multi-process Firefox is enabled,
+       however it is now possible to use the browser's standard save system to
+       save complete web pages in multiple files, without disabling the add-on
+       first.</li>
     </ul>
   </li>
-  <li>The notification bar with information about the original save date and
-   location can now be disabled from the options.</li>
-  <li>Now file associations on Windows are created correctly when using the
-   add-on in third-party browsers based on Firefox or SeaMonkey.</li>
-  <li>Removed elements:
+  <li>Several features have been removed or redesigned in preparation for full
+   compatibility with multi-process Firefox:
     <ul>
-      <li>The option to display an archive information icon in the status bar is
-       not available anymore, together with the option to display the icon in
-       the location bar at all times. The icon can only be displayed in the
-       location bar when an archived page is opened.</li>
-      <li>The creation of MHTML files that are fully compatible with other
-       browsers cannot be explicitly disabled anymore. All the generated MHTML
-       files are now fully compatible, as long as the option to take an exact
-       snapshot of the page is selected.</li>
+      <li>Taking an exact snapshot of the page is now required to create web
+       archives, and the browser's standard save system can only be used to save
+       complete web pages in multiple files. All the generated MHTML files are
+       now fully compatible with other browsers, since the option to create
+       partially compatible archives using the browser's standard save system is
+       not available anymore.</li>
+      <li>The separate Archives dialog has been removed.</li>
+      <li>The integrated Save Complete component has been removed.</li>
+      <li>The existing integration with the page context menu, the Tools menu,
+       and the application menu of older versions of Firefox has been removed in
+       favor of the integration with the customizable menu button.</li>
+      <li>The preference to use the page title instead of the default suggested
+       file name in the "Save As" dialog has been removed since this is now the
+       default naming strategy in Firefox.</li>
     </ul>
   </li>
 </ul>
@@ -131,9 +134,6 @@
    Sort</a> extension has a known incompatibility with MAF. The conflict cannot
    be resolved without proper modifications to both extensions, and Download
    Sort is not actively maintained at this time.</li>
-  <li>The integrated
-   <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-   extension cannot always save pages with dynamic contents correctly.</li>
   <li>When saving multiple tabs in an archive, the save operation fails if the
    tabs are closed before the operation is completed.</li>
   <li>When saving a page in an archive fails, retrying the download from the

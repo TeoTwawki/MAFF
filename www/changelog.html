@@ -9,6 +9,40 @@
      that integrate with Mozilla Archive Format using internal methods.</li>
   </ul>
   <h2>Changelog for version 3.0</h2>
+  <h3><a name="whatwasnew"></a>What was new in version 3.0?</h3>
+  <p>MAF 3.0.3 had the following user-visible improvements over MAF 2.0.6:</p>
+  <ul>
+    <li>Improved compactness when saving complete web pages:
+      <ul>
+        <li>Stylesheet rules that don't apply to any element in the current page
+         are now removed from the saved file. This can greatly increase
+         compactness when content is modified by scripts or other extensions
+         before saving.</li>
+        <li>The option to take an exact snapshot of the page is now selected by
+         default, to take advantage of various improvements in the save method,
+         even if it was deselected in a previous version of the add-on. The
+         browser's standard save system and the integrated Save Complete
+         component can still be selected from the options dialog and the
+         internal configuration settings respectively.</li>
+      </ul>
+    </li>
+    <li>The notification bar with information about the original save date and
+     location can now be disabled from the options.</li>
+    <li>Now file associations on Windows are created correctly when using the
+     add-on in third-party browsers based on Firefox or SeaMonkey.</li>
+    <li>Removed elements:
+      <ul>
+        <li>The option to display an archive information icon in the status bar
+         is not available anymore, together with the option to display the icon
+         in the location bar at all times. The icon can only be displayed in the
+         location bar when an archived page is opened.</li>
+        <li>The creation of MHTML files that are fully compatible with other
+         browsers cannot be explicitly disabled anymore. All the generated MHTML
+         files are now fully compatible, as long as the option to take an exact
+         snapshot of the page is selected.</li>
+      </ul>
+    </li>
+  </ul>
   <h3>Changes from 3.0.2 to 3.0.3</h3>
   <ul>
     <li><b>Change:</b> Compatibility with the latest versions of Firefox and
@@ -65,7 +99,7 @@
      including Firefox 3.6 and SeaMonkey 2.1.</li>
   </ul>
   <h2>Changelog for version 2.0</h2>
-  <h3><a name="whatwasnew"></a>What was new in version 2.0?</h3>
+  <h3>What was new in version 2.0?</h3>
   <p>MAF 2.0.6 had the following user-visible improvements over MAF 1.0.0:</p>
   <ul>
     <li>Greatly improved performance, accuracy and compactness when the option
