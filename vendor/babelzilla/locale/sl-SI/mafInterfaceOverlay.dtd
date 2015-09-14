@@ -1,0 +1,6 @@
+<!ENTITY archiveinfo.status.normal.label "Ta stran ni vključena v arhiv.">
+<!ENTITY archiveinfo.status.archived.label "To je arhivirana stran.">
+<!ENTITY archiveinfo.maforiginalurl.label "Shranjeno iz:">
+<!ENTITY archiveinfo.maforiginalurl.missing.label "(ni na voljo)">
+<!ENTITY archiveinfo.mafdatearchived.label "Shranjeno:">
+<!ENTITY archiveinfo.mafdatearchived.missing.label "(ni na voljo)">

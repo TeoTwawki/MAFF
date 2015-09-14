@@ -2,25 +2,7 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Ana">
-<!ENTITY save.namingstrategy.grouplabel "For the suggested file name:">
-<!ENTITY save.namingstrategy.standard.label "Use browser's standard naming strategy">
-<!ENTITY save.namingstrategy.standard.accesskey "w">
 <!-- Interface pane -->
-<!ENTITY pane.interface.label "Arayüz">
-<!ENTITY menu.grouplabel "Mozilla Arşiv Biçimi menü ögelerini şunda göster:">
-<!ENTITY menu.app.label "$brandShortName menu">
-<!ENTITY menu.app.accesskey "m">
-<!ENTITY menu.file.label "Dosya menüsü">
-<!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tools.label "Araçlar menüsü">
-<!ENTITY menu.tools.accesskey "l">
-<!ENTITY menu.pagecontext.label "Sayfa içeriği menüsü">
-<!ENTITY menu.pagecontext.accesskey "P">
-<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
-<!ENTITY menu.pagecontext.tabs.accesskey "h">
-<!ENTITY menu.tabscontext.label "Sekme çubuğu içerik menüsü">
-<!ENTITY menu.tabscontext.accesskey "x">
-<!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.actions.label "Actions">
 <!ENTITY action.convertsavedpages.label "Convert Saved Pages">
 <!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">

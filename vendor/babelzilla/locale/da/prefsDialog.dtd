@@ -2,25 +2,7 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Hoved">
-<!ENTITY save.namingstrategy.grouplabel "For the suggested file name:">
-<!ENTITY save.namingstrategy.standard.label "Use browser's standard naming strategy">
-<!ENTITY save.namingstrategy.standard.accesskey "w">
 <!-- Interface pane -->
-<!ENTITY pane.interface.label "Brugerflade">
-<!ENTITY menu.grouplabel "Vis Mozilla Archive Format menuelementer i:">
-<!ENTITY menu.app.label "$brandShortName menu">
-<!ENTITY menu.app.accesskey "m">
-<!ENTITY menu.file.label "Filer-menu">
-<!ENTITY menu.file.accesskey "F">
-<!ENTITY menu.tools.label "Funktioner-menu">
-<!ENTITY menu.tools.accesskey "u">
-<!ENTITY menu.pagecontext.label "Side kontekstmenu">
-<!ENTITY menu.pagecontext.accesskey "S">
-<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
-<!ENTITY menu.pagecontext.tabs.accesskey "h">
-<!ENTITY menu.tabscontext.label "Fanebladslinje kontekstmenu">
-<!ENTITY menu.tabscontext.accesskey "o">
-<!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.actions.label "Actions">
 <!ENTITY action.convertsavedpages.label "Convert Saved Pages">
 <!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">

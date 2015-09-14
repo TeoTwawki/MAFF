@@ -1,0 +1,19 @@
+<!ENTITY page.title "Вітаємо">
+<!ENTITY welcome.label "Дякуємо за встановлення Mozilla Archive Format!">
+<!ENTITY features.header.label "Це розширення покращує багато рис $brandShortName.">
+<!ENTITY features.headerfromupdate.label "Ваше розширення оновлено до останньої версії.">
+<!ENTITY features.item1.label "Веб-сторінки зберігаються більш точно, що ви бачите то і отримуєте.">
+<!ENTITY features.item2.label "Ви можете зберегти один чи більше вкладок в один файл (веб-архів).">
+<!ENTITY features.item4.label "Ви можете зберігати відео і аудіо HTML5 та ще багато чого!">
+<!ENTITY features.footer.label "Ви можете контролювати обрані властивості розширення.">
+<!ENTITY features.link.label "Відвідайте нашу сторінку для ознайомлення з усіма можливостями розширення.">
+<!ENTITY associate.question.label "Ви хочете відкривати ці типи файлів веб-архіву за допомогою $brandShortName?">
+<!ENTITY associate.maff.label "MAFF">
+<!ENTITY associate.maff.accesskey "M">
+<!ENTITY associate.mhtml.label "MHTML">
+<!ENTITY associate.mhtml.accesskey "H">
+<!ENTITY associate.explanation1.label "Якщо ви не впевнені, то залиште обидва обрані параметра. Вони набудуть чинності після закриття цієї сторінки.">
+<!ENTITY associate.explanation2.label "Ви можете змінити ваші уподобання в будь-який час за допомогою панелі управління операційної системи.">
+<!ENTITY associate.error.title "Помилка при створенні асоціацій файлів">
+<!ENTITY associate.error.msg "Сталася помилка при налаштуванні файлового менеджера: $1.">
+<!ENTITY associate.errortip.msg "Для того, щоб відкрити веб-архіви з $brandShortName, ви повинні створити необхідні асоціації файлів за допомогою панелі керування операційної системи, або повторіть операцію у вікні налаштувань Mozilla Archive.">

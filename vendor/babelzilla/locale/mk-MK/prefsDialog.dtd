@@ -2,25 +2,7 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Главно">
-<!ENTITY save.namingstrategy.grouplabel "За предложеното име на датотеката:">
-<!ENTITY save.namingstrategy.standard.label "Користи ја стандардната стратегија за именување на прелистувачот">
-<!ENTITY save.namingstrategy.standard.accesskey "ч">
 <!-- Interface pane -->
-<!ENTITY pane.interface.label "Интерфејс">
-<!ENTITY menu.grouplabel "Покажи ги елементите на менито на Mozilla форматот на архиви во:">
-<!ENTITY menu.app.label "$brandShortName menu">
-<!ENTITY menu.app.accesskey "m">
-<!ENTITY menu.file.label "Мени на датотеката">
-<!ENTITY menu.file.accesskey "М">
-<!ENTITY menu.tools.label "Мени на алатките">
-<!ENTITY menu.tools.accesskey "н">
-<!ENTITY menu.pagecontext.label "Контекстуално мени на страницата">
-<!ENTITY menu.pagecontext.accesskey "с">
-<!ENTITY menu.pagecontext.tabs.label "Show items for saving tabs">
-<!ENTITY menu.pagecontext.tabs.accesskey "h">
-<!ENTITY menu.tabscontext.label "Контекстуално мени на лентата со јазичиња">
-<!ENTITY menu.tabscontext.accesskey "у">
-<!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.actions.label "Actions">
 <!ENTITY action.convertsavedpages.label "Convert Saved Pages">
 <!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">

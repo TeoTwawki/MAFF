@@ -2,25 +2,7 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format - Opciones">
 <!-- Main pane -->
 <!ENTITY pane.main.label "Principal">
-<!ENTITY save.namingstrategy.grouplabel "Para el nombre de archivo sugerido:">
-<!ENTITY save.namingstrategy.standard.label "Usar la estrategia de nombrado estándar del navegador">
-<!ENTITY save.namingstrategy.standard.accesskey "t">
 <!-- Interface pane -->
-<!ENTITY pane.interface.label "Interfaz">
-<!ENTITY menu.grouplabel "Mostrar los elementos de menú de Mozilla Archive Format en:">
-<!ENTITY menu.app.label "Menú de $brandShortName">
-<!ENTITY menu.app.accesskey "m">
-<!ENTITY menu.file.label "Menú Archivo">
-<!ENTITY menu.file.accesskey "A">
-<!ENTITY menu.tools.label "Menú Herramientas">
-<!ENTITY menu.tools.accesskey "H">
-<!ENTITY menu.pagecontext.label "Menú contextual">
-<!ENTITY menu.pagecontext.accesskey "c">
-<!ENTITY menu.pagecontext.tabs.label "Mostrar elementos para guardar pestañas">
-<!ENTITY menu.pagecontext.tabs.accesskey "o">
-<!ENTITY menu.tabscontext.label "Menú contextual de la barra de pestañas">
-<!ENTITY menu.tabscontext.accesskey "x">
-<!-- File associations pane. This pane is visible only on Windows. -->
 <!ENTITY pane.actions.label "Acciones">
 <!ENTITY action.convertsavedpages.label "Convertir las páginas guardadas">
 <!ENTITY action.convertsavedpages.description "El asistente de conversión de páginas guardadas le ayudará a convertir una página web guardada anteriormente a un formato diferente.">
