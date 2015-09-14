@@ -17,6 +17,7 @@ locale maf pl chrome/locale/pl/
 locale maf pt-BR chrome/locale/pt-BR/
 locale maf ro chrome/locale/ro/
 locale maf ru chrome/locale/ru/
+locale maf sl-SI chrome/locale/sl-SI/
 locale maf sv-SE chrome/locale/sv-SE/
 locale maf tr chrome/locale/tr/
 locale maf zh-CN chrome/locale/zh-CN/
