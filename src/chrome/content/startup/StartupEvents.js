@@ -63,7 +63,34 @@ var StartupEvents = {
     for (let topic of this._notificationTopics) {
       Services.obs.addObserver(this, topic, false);
     }
+
+    // Start the asynchronous operation that prepares the version information
+    // that will be used when saving web archives.
+    this._setAddonVersion();
+
     StartupInitializer.initFromCurrentProfile();
+  },
+
+  /**
+   * This promise is resolved with the add-on version when it is known.
+   */
+  _promiseAddonVersion: null,
+
+  /**
+   * Populates the StartupInitializer.addonVersion property with the version of
+   * the installed extension asynchronously.
+   */
+  _setAddonVersion: function() {
+    // Get the object with the version information of Mozilla Archive Format.
+    var addonId = "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}";
+    let { AddonManager } =
+     Cu.import("resource://gre/modules/AddonManager.jsm", {});
+    this._promiseAddonVersion = new Promise(resolve => {
+      AddonManager.getAddonByID(addonId, function (aAddon) {
+        StartupInitializer.addonVersion = aAddon.version;
+        resolve(aAddon.version);
+      });
+    });
   },
 
   /**
@@ -79,27 +106,33 @@ var StartupEvents = {
    * Called after all the browser windows have been shown.
    */
   onWindowsRestored: function() {
-    let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
-    if (!browserWindow) {
-      // Very rarely, it might happen that at this time all browser windows
-      // have already been closed. In this case, we will attempt to show the
-      // welcome page again on the next startup.
-      return;
-    }
-    if (Prefs.otherDisplayWelcomePage) {
-      // Load the page in foreground.
-      let browser = browserWindow.getBrowser();
-      browser.loadTabs(["chrome://maf/content/preferences/welcomePage.xhtml"],
-                       false, false);
-      Prefs.otherDisplayWelcomePage = false;
-    }
-    if (Services.appinfo.browserTabsRemoteAutostart &&
-     Prefs.otherDisplayWelcomeMultiprocess) {
-      browserWindow.openDialog(
-       "chrome://maf/content/preferences/prefsDialog.xul", "",
-       "chrome,titlebar,toolbar,centerscreen,modal");
-      Prefs.otherDisplayWelcomeMultiprocess = false;
-    }
+    this._promiseAddonVersion.then(version => {
+      let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
+      if (!browserWindow) {
+        // Very rarely, it might happen that at this time all browser windows
+        // have already been closed. In this case, we will attempt to show the
+        // welcome page again on the next startup.
+        return;
+      }
+      let isBetaAddon = /a|b|rc/.test(version);
+      if (isBetaAddon) {
+        Prefs.otherBeta = true;
+      }
+      if (Prefs.otherDisplayWelcomePage) {
+        // Load the page in foreground.
+        let browser = browserWindow.getBrowser();
+        browser.loadTabs(["chrome://maf/content/preferences/welcomePage.xhtml"],
+                         false, false);
+        Prefs.otherDisplayWelcomePage = false;
+      }
+      if (Services.appinfo.browserTabsRemoteAutostart &&
+       Prefs.otherDisplayWelcomeMultiprocess) {
+        browserWindow.openDialog(
+         "chrome://maf/content/preferences/prefsDialog.xul", "",
+         "chrome,titlebar,toolbar,centerscreen,modal");
+        Prefs.otherDisplayWelcomeMultiprocess = false;
+      }
+    }).catch(Cu.reportError);
   },
 
   /**

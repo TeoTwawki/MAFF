@@ -64,10 +64,6 @@ var StartupInitializer = {
    *   <https://developer.mozilla.org/en/How_Mozilla_determines_MIME_Types>
    */
   initFromCurrentProfile: function() {
-    // Firstly, start the asynchronous operation that prepares the version
-    // information that will be used when saving web archives.
-    this._setAddonVersion();
-
     // Retrieve a reference to the history service that is now available.
     this._historyService = ("nsINavHistoryService" in Ci) &&
      Cc["@mozilla.org/browser/nav-history-service;1"].
@@ -238,20 +234,6 @@ var StartupInitializer = {
    * Version of the installed extension, obtained from the extension's metadata.
    */
   addonVersion: "",
-
-  /**
-   * Populates the addonVersion property with the version of the installed
-   * extension asynchronously.
-   */
-  _setAddonVersion: function() {
-    // Get the object with the version information of Mozilla Archive Format.
-    var addonId = "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}";
-    let { AddonManager } =
-     Cu.import("resource://gre/modules/AddonManager.jsm", {});
-    AddonManager.getAddonByID(addonId, function (aAddon) {
-      StartupInitializer.addonVersion = aAddon.version;
-    });
-  },
 
   /**
    * Calls nsIMIMEService.getTypeFromExtension, and if the call fails

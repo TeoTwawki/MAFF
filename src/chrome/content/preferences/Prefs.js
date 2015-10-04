@@ -105,6 +105,16 @@ var Prefs = {
   },
 
   /**
+   * Set to true if a beta version of the add-on has previously been installed.
+   */
+  get otherBeta() {
+    return this.prefBranchForMaf.getBoolPref("other.beta");
+  },
+  set otherBeta(aValue) {
+    this.prefBranchForMaf.setBoolPref("other.beta", aValue);
+  },
+
+  /**
    * Returns false only if a previous version of the extension was installed on
    * the same profile, indicating that the header of the welcome page should be
    * changed accordingly.
