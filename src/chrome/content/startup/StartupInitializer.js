@@ -180,6 +180,9 @@ var StartupInitializer = {
      "Mozilla Archive Format Content Policy",
      "@amadzone.org/maf/content-policy;1",
      ContentPolicy.prototype._xpcom_factory);
+    this._addCategoryEntryForSession("content-policy",
+     "MozillaArchiveFormat",
+     "@amadzone.org/maf/content-policy;1");
 
     // Register this extension's document loader factory, which is used for
     // complex web content in order to display the original location of the
