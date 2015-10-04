@@ -5,6 +5,6 @@
 
 $maf_previous_fx = "3.1.0";
 $maf_latest_fx = "3.1.0";
-$maf_experimental_fx = "4.0b1";
+$maf_experimental_fx = "4.0b2";
 
 ?>
