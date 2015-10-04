@@ -105,13 +105,18 @@ var StartupInitializer = {
       helperApps.flush();
     }
 
+    // The Services.ppmm getter is not available in Firefox 38.
+    let ppmm = Cc["@mozilla.org/parentprocessmessagemanager;1"].
+     getService(Ci.nsIMessageBroadcaster).
+     QueryInterface(Ci.nsIProcessScriptLoader);
+
     // Register listeners for global messages from the content processes.
-    Services.ppmm.addMessageListener(
+    ppmm.addMessageListener(
      "MozillaArchiveFormat:ComputeDefaultTempFolderPath",
      () => Prefs.computeDefaultTempFolderPath());
 
     // Continue initialization in the parent and all the child processes.
-    Services.ppmm.loadProcessScript(`data:,
+    ppmm.loadProcessScript(`data:,
       Components.utils.import("chrome://maf/content/MozillaArchiveFormat.jsm");
       StartupInitializer.initForEachProcess();
     `, true);

@@ -258,9 +258,13 @@ var Prefs = {
    * directory and different for each user profile.
    */
   get _defaultTempFolderPath() {
+    // The Services.cpmm getter is not available in Firefox 38.
+    let cpmm = Cc["@mozilla.org/childprocessmessagemanager;1"].
+     getService(Ci.nsIMessageSender);
+
     // Do not recalculate the value the second time this property is read.
     delete this._defaultTempFolderPath;
-    return (this._defaultTempFolderPath = Services.cpmm.sendSyncMessage(
+    return (this._defaultTempFolderPath = cpmm.sendSyncMessage(
      "MozillaArchiveFormat:ComputeDefaultTempFolderPath")[0]);
   },
 
