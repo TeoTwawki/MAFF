@@ -7,7 +7,6 @@
     <em:id>{7f57cf46-4467-4c2d-adfa-0cba7c507e54}</em:id>
     <em:version>4.0b2</em:version>
     <em:type>2</em:type>
-    <em:updateURL>https://www.mozdev.org/p/updates/maf/%7B7f57cf46-4467-4c2d-adfa-0cba7c507e54%7D/update.rdf</em:updateURL>
 
     <!-- Target Application this extension can install into,
         with minimum and maximum supported versions. -->
