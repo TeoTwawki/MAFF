@@ -46,6 +46,17 @@ var MozillaArchiveFormat = {};
 Components.utils.import("chrome://maf/content/MozillaArchiveFormat.jsm",
                         MozillaArchiveFormat);
 
+if (!Services.appinfo.browserTabsRemoteAutostart) {
+
+/**
+ * This function is overridden for compatibility with Firefox 42.
+ */
+function saveBrowser(aBrowser, aSkipPrompt, aOuterWindowID=0)
+{
+  saveDocument(!aOuterWindowID ? aBrowser.contentDocument :
+   Services.wm.getOuterWindowWithId(aOuterWindowID).document, aSkipPrompt);
+}
+
 /**
  * internalSave: Used when saving a document or URL.
  *
@@ -784,6 +795,8 @@ function mafAppendFiltersForContentType(aFilePicker, aContentType,
     aReturnBehaviorArray.push(MozillaArchiveFormat.NormalSaveBehavior);
   }
 }
+
+} // if (!Services.appinfo.browserTabsRemoteAutostart)
 
 /**
  * The stateless objects that extend this one represent the possible methods to
