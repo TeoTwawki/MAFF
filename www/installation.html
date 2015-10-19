@@ -12,29 +12,19 @@
     <p class="maf-box-text">For Firefox and SeaMonkey.</p>
   </div>
 </div>
-<p class="maf-box-after">This link downloads the most recent version available
- at the <a href="https://addons.mozilla.org/addon/212">Mozilla Add-ons</a>
- website. This version is updated less frequently, tested more extensively, and
- fully translated in several languages.</p>
+<p class="maf-box-after">This link downloads the release version available at
+ the <a href="https://addons.mozilla.org/addon/212">Mozilla Add-ons</a> website.
+ This version is updated less frequently, tested more extensively, and fully
+ translated in several languages.</p>
 <div class="maf-box maf-preview">
-  <?php if ($maf_experimental_fx) { ?>
   <p class="maf-box-title"><a
-   href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_experimental_fx; ?>.xpi">Try
-   Mozilla Archive Format <?php echo $maf_experimental_fx; ?></a></p>
-  <p class="maf-box-text">This preview improves
-   <a href="#whatsnew">compatibility</a> over previous versions.</p>
-  <?php } else { ?> 
-  <p class="maf-box-title"><a
-   href="http://downloads.mozdev.org/maf/maf-<?php echo $maf_latest_fx; ?>.xpi">Install
-   from the Preview Channel</a></p>
+   href="https://addons.mozilla.org/downloads/latest-beta/212/addon-212-latest.xpi?src=external-mozdev-installation">Install
+    from the Beta Channel</a></p>
   <p class="maf-box-text">You will get new versions as soon as they are
    available.</p>
-  <?php } ?>
 </div>
-<p class="maf-box-after">This link downloads the add-on from this website, where
- new versions are published as soon as they are available. If you download from
- this link, you will get new features sooner, although at first they will be
- available only in English.</p>
+<p class="maf-box-after">If you download from this link you will get new
+ features sooner, although at first they will be available only in English.</p>
 
 <h2>Compatibility</h2>
 <p>Mozilla Archive Format, at the time of each release, is tested and verified
@@ -82,9 +72,7 @@
     <div class="maf-column-contents">
 
 <h2><a name="whatsnew"></a>What's new in the latest version?</h2>
-<p>MAF <?php echo ($maf_experimental_fx ? $maf_experimental_fx :
- $maf_latest_fx); ?> has the following user-visible improvements over MAF
- <?php echo $maf_previous_fx; ?>:</p>
+<p>The following improvements are currently available in the Beta Channel:</p>
 <ul>
   <li>When multi-process Firefox is enabled, compatibility information is
    displayed in English in the main pane of the options dialog, and the dialog
@@ -123,8 +111,7 @@
 <p><a href="changelog.html#whatwasnew">What was new in the previous
  version?</a></p>
 <h2>Known issues</h2>
-<p>MAF <?php echo ($maf_experimental_fx ? $maf_experimental_fx :
- $maf_latest_fx); ?> has the following known issues:</p>
+<p>The latest version has the following known issues:</p>
 <ul>
   <li>In order to open MHTML files when the
    <a href="https://addons.mozilla.org/firefox/addon/1419">IE Tab</a> extension
