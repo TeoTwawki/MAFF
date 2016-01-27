@@ -36,7 +36,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 // This declaration is required for SeaMonkey compatibility.
-let { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
+var { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
 /**
  * Handles the MAF integrated user interface commands.
