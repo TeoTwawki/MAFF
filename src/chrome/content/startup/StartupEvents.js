@@ -35,6 +35,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+XPCOMUtils.defineLazyModuleGetter(this, "UpdateUtils",
+                                  "resource://gre/modules/UpdateUtils.jsm");
+
 /**
  * This object handles extension startup and shutdown, and acts as bookkeeper
  * for the related observer registrations. Actual work is delegated to the
@@ -106,7 +109,7 @@ var StartupEvents = {
    * Called after all the browser windows have been shown.
    */
   onWindowsRestored: function() {
-    this._promiseAddonVersion.then(version => {
+    this.shouldUpdateToBeta().then(shouldUpdateToBeta => {
       let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
       if (!browserWindow) {
         // Very rarely, it might happen that at this time all browser windows
@@ -114,13 +117,17 @@ var StartupEvents = {
         // welcome page again on the next startup.
         return;
       }
-      let isBetaAddon = /a|b|rc/.test(version);
-      if (isBetaAddon) {
-        Prefs.otherBeta = true;
-      }
-      if (Prefs.otherDisplayWelcomePage) {
+      let browser = browserWindow.getBrowser();
+      if (shouldUpdateToBeta && Prefs.otherDisplayUpdateBetaPage) {
+        // Display the request to update to the Beta Channel as an alternative
+        // welcome page. The normal welcome page with file associations will be
+        // displayed on the next startup if was not shown before.
+        browser.loadTabs(
+         ["chrome://maf/content/preferences/updateBetaPage.xhtml"],
+         false, false);
+        Prefs.otherDisplayUpdateBetaPage = false;
+      } else if (Prefs.otherDisplayWelcomePage) {
         // Load the page in foreground.
-        let browser = browserWindow.getBrowser();
         browser.loadTabs(["chrome://maf/content/preferences/welcomePage.xhtml"],
                          false, false);
         Prefs.otherDisplayWelcomePage = false;
@@ -140,5 +147,27 @@ var StartupEvents = {
    */
   onAppQuit: function() {
     StartupInitializer.terminate();
+  },
+
+  /**
+   * Returns a promise that resolves to true if the add-on is installed from the
+   * Release channel on a pre-release version of the browser.
+   */
+  shouldUpdateToBeta: function() {
+    return this._promiseAddonVersion.then(version => {
+      try {
+        let isReleaseBrowser = /^(release|esr)($|\-)/.test(
+         UpdateUtils.UpdateChannel);
+        let isBetaAddon = /a|b|rc/.test(version);
+        if (isBetaAddon) {
+          Prefs.otherBeta = true;
+        }
+        return !isReleaseBrowser && !isBetaAddon;
+      } catch (e) {
+        // UpdateUtils.jsm is not available on Firefox 38 ESR, so in case of
+        // exception we assume the browser is a release version.
+        return false;
+      }
+    });
   },
 };
