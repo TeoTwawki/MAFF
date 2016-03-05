@@ -46,12 +46,10 @@ var MozillaArchiveFormat = {};
 Components.utils.import("chrome://maf/content/MozillaArchiveFormat.jsm",
                         MozillaArchiveFormat);
 
-if (!Services.appinfo.browserTabsRemoteAutostart) {
-
 /**
  * This function is overridden for compatibility with Firefox 42.
  */
-function saveBrowser(aBrowser, aSkipPrompt, aOuterWindowID=0)
+function mafSaveBrowser(aBrowser, aSkipPrompt, aOuterWindowID=0)
 {
   saveDocument(!aOuterWindowID ? aBrowser.contentDocument :
    Services.wm.getOuterWindowWithId(aOuterWindowID).document, aSkipPrompt);
@@ -139,10 +137,10 @@ function saveBrowser(aBrowser, aSkipPrompt, aOuterWindowID=0)
  *        If set will be passed to saveURI.  See nsIWebBrowserPersist for
  *        allowed values.
  */
-function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
-                      aContentType, aShouldBypassCache, aFilePickerTitleKey,
-                      aChosenData, aReferrer, aInitiatingDocument, aSkipPrompt,
-                      aCacheKey)
+function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
+                         aContentType, aShouldBypassCache, aFilePickerTitleKey,
+                         aChosenData, aReferrer, aInitiatingDocument,
+                         aSkipPrompt, aCacheKey)
 {
   var isSeaMonkey = Cc["@mozilla.org/xre/app-info;1"]
    .getService(Ci.nsIXULAppInfo).ID == "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
@@ -348,7 +346,7 @@ function internalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  * @param persistArgs.initiatingWindow
  *        The window from which the save operation was initiated.
  */
-function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
+function mafInternalPersist(persistArgs, /* For MAF */ aSkipPrompt)
 {
   var persist;
   if (persistArgs.persistObject) {
@@ -490,7 +488,8 @@ function internalPersist(persistArgs, /* For MAF */ aSkipPrompt)
  *        directory of the picker is retrieved from/stored in the 
  *        Content Pref Service using this URI.
  */
-function getTargetFile(aFpP, aCallback, /* optional */ aSkipPrompt, /* optional */ aRelatedURI)
+function mafGetTargetFile(aFpP, aCallback, /* optional */ aSkipPrompt,
+                          /* optional */ aRelatedURI)
 {
   if (!getTargetFile.DownloadLastDir)
     Components.utils.import("resource://gre/modules/DownloadLastDir.jsm", getTargetFile);
@@ -753,6 +752,13 @@ function getTargetFile(aFpP, aCallback, /* optional */ aSkipPrompt, /* optional 
   }
 }
 
+if (!Services.appinfo.browserTabsRemoteAutostart) {
+  saveBrowser = mafSaveBrowser;
+  internalSave = mafInternalSave;
+  internalPersist = mafInternalPersist;
+  getTargetFile = mafGetTargetFile;
+}
+
 /**
  * Populate the filter list of the file picker using the valid save behaviors
  * for the specified save mode. The aReturnBehaviorArray is populated with the
@@ -795,8 +801,6 @@ function mafAppendFiltersForContentType(aFilePicker, aContentType,
     aReturnBehaviorArray.push(MozillaArchiveFormat.NormalSaveBehavior);
   }
 }
-
-} // if (!Services.appinfo.browserTabsRemoteAutostart)
 
 /**
  * The stateless objects that extend this one represent the possible methods to
