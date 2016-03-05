@@ -303,8 +303,8 @@ var Prefs = {
     cryptoHash.update(octets, octets.length);
     var hashOctets = cryptoHash.finish(false);
     // Return the hash as a hexadecimal string.
-    return [("0" + hashOctets.charCodeAt(i).toString(16)).slice(-2) for
-     (i in hashOctets)].join("");
+    return [for (c of hashOctets)
+     ("0" + c.charCodeAt(0).toString(16)).slice(-2)].join("");
   },
 
   _dirService: Cc["@mozilla.org/file/directory_service;1"]
