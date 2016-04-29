@@ -60,7 +60,6 @@ var UpdateBetaPage = {
     // Apply brand names to the dialog elements.
     Interface.applyBranding(document.getElementById("betaHeader"));
     Interface.applyBranding(document.getElementById("betaBody"));
-    Interface.applyBranding(document.getElementById("compatibilityFeature"));
   },
 
   /**
