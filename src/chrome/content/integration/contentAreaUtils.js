@@ -102,8 +102,9 @@ function mafSaveBrowser(aBrowser, aSkipPrompt, aOuterWindowID=0)
  * @param aReferrer
  *        the referrer URI object (not URL string) to use, or null
  *        if no referrer should be sent.
- * @param aInitiatingDocument
+ * @param aInitiatingDocument [optional]
  *        The document from which the save was initiated.
+ *        If this is omitted then aIsContentWindowPrivate has to be provided.
  * @param aSkipPrompt [optional]
  *        If set to true, we will attempt to save the file to the
  *        default downloads folder without prompting.
@@ -136,11 +137,15 @@ function mafSaveBrowser(aBrowser, aSkipPrompt, aOuterWindowID=0)
  * @param aCacheKey [optional]
  *        If set will be passed to saveURI.  See nsIWebBrowserPersist for
  *        allowed values.
+ * @param aIsContentWindowPrivate [optional]
+ *        This parameter is provided when the aInitiatingDocument is not a
+ *        real document object. Stores whether aInitiatingDocument.defaultView
+ *        was private or not.
  */
 function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
                          aContentType, aShouldBypassCache, aFilePickerTitleKey,
                          aChosenData, aReferrer, aInitiatingDocument,
-                         aSkipPrompt, aCacheKey)
+                         aSkipPrompt, aCacheKey, aIsContentWindowPrivate)
 {
   var isSeaMonkey = Cc["@mozilla.org/xre/app-info;1"]
    .getService(Ci.nsIXULAppInfo).ID == "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
@@ -307,7 +312,8 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       sourceCacheKey    : aCacheKey,
       sourcePostData    : aDocument ? getPostData(aDocument) : null,
       bypassCache       : aShouldBypassCache,
-      initiatingWindow  : aInitiatingDocument.defaultView,
+      initiatingWindow  : aInitiatingDocument && aInitiatingDocument.defaultView,
+      isContentWindowPrivate : aIsContentWindowPrivate,
       persistObject     : mafPersistObject
     };
 
@@ -343,8 +349,12 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  *        "text/plain" is meaningful.
  * @param persistArgs.bypassCache
  *        If true, the document will always be refetched from the server
- * @param persistArgs.initiatingWindow
+ * @param persistArgs.initiatingWindow [optional]
  *        The window from which the save operation was initiated.
+ *        If this is omitted then isContentWindowPrivate has to be provided.
+ * @param persistArgs.isContentWindowPrivate [optional]
+ *        If present then isPrivate is set to this value without using
+ *        persistArgs.initiatingWindow.
  */
 function mafInternalPersist(persistArgs, /* For MAF */ aSkipPrompt)
 {
@@ -385,8 +395,11 @@ function mafInternalPersist(persistArgs, /* For MAF */ aSkipPrompt)
   // Find the URI associated with the target file
   var targetFileURL = makeFileURI(persistArgs.targetFile);
 
-  var isPrivate = persistArgs.initiatingWindow &&
-   PrivateBrowsingUtils.isWindowPrivate(persistArgs.initiatingWindow);
+  var isPrivate = persistArgs.isContentWindowPrivate;
+  if (isPrivate === undefined) {
+    isPrivate = persistArgs.initiatingWindow &&
+     PrivateBrowsingUtils.isWindowPrivate(persistArgs.initiatingWindow);
+  }
 
   // Mozilla Archive Format indirectly uses this function to save an already
   // loaded document to a temporary file on disk, before generating the final
@@ -442,27 +455,14 @@ function mafInternalPersist(persistArgs, /* For MAF */ aSkipPrompt)
     persist.saveDocument(persistArgs.sourceDocument, targetFileURL, filesFolder,
                          persistArgs.targetContentType, encodingFlags, kWrapColumn);
   } else {
-    let privacyContext = persistArgs.initiatingWindow &&
-                         persistArgs.initiatingWindow
-                                    .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                                    .getInterface(Components.interfaces.nsIWebNavigation)
-                                    .QueryInterface(Components.interfaces.nsILoadContext);
-
-    // Checks if the host application runs a platform version prior to Gecko 36.
-    let platformVersion = Cc["@mozilla.org/xre/app-info;1"]
-                            .getService(Ci.nsIXULAppInfo).platformVersion;
-    if (Cc["@mozilla.org/xpcom/version-comparator;1"]
-          .getService(Ci.nsIVersionComparator)
-          .compare(platformVersion, "35.*") <= 0) {
-      persist.saveURI(persistArgs.sourceURI,
-                      persistArgs.sourceCacheKey, persistArgs.sourceReferrer, persistArgs.sourcePostData, null,
-                      targetFileURL, privacyContext);
-    } else {
-      persist.saveURI(persistArgs.sourceURI,
-                      persistArgs.sourceCacheKey, persistArgs.sourceReferrer,
-                      Components.interfaces.nsIHttpChannel.REFERRER_POLICY_NO_REFERRER_WHEN_DOWNGRADE,
-                      persistArgs.sourcePostData, null, targetFileURL, privacyContext);
-    }
+    persist.savePrivacyAwareURI(persistArgs.sourceURI,
+                                persistArgs.sourceCacheKey,
+                                persistArgs.sourceReferrer,
+                                Components.interfaces.nsIHttpChannel.REFERRER_POLICY_NO_REFERRER_WHEN_DOWNGRADE,
+                                persistArgs.sourcePostData,
+                                null,
+                                targetFileURL,
+                                isPrivate);
   }
 }
 
