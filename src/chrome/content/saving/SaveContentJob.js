@@ -140,33 +140,9 @@ SaveContentJob.prototype = {
       if (this.addToArchive) {
         this._archive.load();
       }
-      // If the page can be saved asynchronously
-      var page = this._archive.pages[0];
-      if (page.asyncSave) {
-        // Save and wait for the callback from the worker object.
-        this._expectAsyncCallback(function() {
-          page.asyncSave(this);
-        }, this);
-      } else {
-        // Save the page synchronously.
-        page.save();
-        this._invalidateCachedArchive();
-        this._notifyCompletion();
-      }
-    }, this);
-  },
-
-  // ArchivePageCallback
-  onArchivingComplete: function(code) {
-    this._handleAsyncCallback(function() {
-      if (code != 0) {
-        // Cancel the operation if archiving failed.
-        this.cancel(Cr.NS_ERROR_FAILURE);
-      } else {
-        // Archiving completed.
-        this._invalidateCachedArchive();
-        this._notifyCompletion();
-      }
+      this._archive.pages[0].save(this.persistObject);
+      this._invalidateCachedArchive();
+      this._notifyCompletion();
     }, this);
   },
 

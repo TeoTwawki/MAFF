@@ -51,13 +51,8 @@ function MhtmlArchivePage(aArchive) {
 MhtmlArchivePage.prototype = {
   __proto__: ArchivePage.prototype,
 
-  /**
-   * Stores the page into the archive file asynchronously. When the operation is
-   * completed, the onArchivingComplete method of the provided object is called,
-   * passing the error code as its first argument.
-   */
-  asyncSave: function(aCallbackObject) {
-    var persistObject = aCallbackObject.persistObject;
+  // ArchivePage
+  save: function(persistObject) {
     // Collect the support files associated with this archiving operation.
     var archiveBundle = new PersistBundle();
     var originalBundle = persistObject && persistObject.persistBundle;
@@ -73,8 +68,6 @@ MhtmlArchivePage.prototype = {
     var mhtmlMessage = this._buildMessage(archiveBundle, !originalBundle);
     // Write the MHTML archive to disk.
     this._writeArchive(mhtmlMessage.text);
-    // Notify that the archiving operation is completed.
-    aCallbackObject.onArchivingComplete(0);
   },
 
   /**
