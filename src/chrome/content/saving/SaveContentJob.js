@@ -71,20 +71,25 @@ SaveContentJob.prototype = {
     var page = this._archive.addPage();
     page.tempDir = this._targetDir;
     page.setMetadataFromDocumentAndBrowser(this._document, this.targetBrowser);
-    // Create the target folder.
-    this._targetDir.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
     // Find the browser window associated with the document being saved.
     var browserWindow = this._document.defaultView.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebNavigation).
      QueryInterface(Ci.nsIDocShellTreeItem).rootTreeItem.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
-    // Save the document in the target folder.
-    browserWindow.wrappedJSObject.saveDocument(this._document, {
-      saveDir: this._targetDir,
-      saveWithMedia: (this.targetType == "TypeMAFF"),
-      saveWithContentLocation: (this.targetType == "TypeMHTML"),
-      mafEventListener: this
-    });
+    // Create the target folder.
+    this._targetDir.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
+    try {
+      // Save the document in the target folder.
+      browserWindow.wrappedJSObject.saveDocument(this._document, {
+        saveDir: this._targetDir,
+        saveWithMedia: (this.targetType == "TypeMAFF"),
+        saveWithContentLocation: (this.targetType == "TypeMHTML"),
+        mafEventListener: this
+      });
+    } catch (ex) {
+      this._removeTargetDir();
+      throw ex;
+    }
     // Wait for the save completed callback.
     this._asyncWorkStarted();
   },
@@ -93,14 +98,6 @@ SaveContentJob.prototype = {
   _executeCancel: function(aReason) {
     // No special action is required since the worker objects do not support
     // cancellation.
-  },
-
-  // Job
-  _executeDispose: function() {
-    // Delete the target folder if it was created successfully.
-    if(this._targetDir.exists()) {
-      this._targetDir.remove(true);
-    }
   },
 
   // MafEventListener
@@ -129,6 +126,7 @@ SaveContentJob.prototype = {
     this._handleAsyncCallback(function() {
       // Cancel the operation because the download failed.
       Cu.reportError(new Components.Exception("Download failed.", aStatus));
+      this._removeTargetDir();
       this.cancel(aStatus);
     }, this);
   },
@@ -136,11 +134,15 @@ SaveContentJob.prototype = {
   // MafEventListener
   onDownloadComplete: function() {
     this._handleAsyncCallback(function() {
-      // Add to an existing MAFF archive if required.
-      if (this.addToArchive) {
-        this._archive.load();
+      try {
+        // Add to an existing MAFF archive if required.
+        if (this.addToArchive) {
+          this._archive.load();
+        }
+        this._archive.pages[0].save(this.persistObject);
+      } finally {
+        this._removeTargetDir();
       }
-      this._archive.pages[0].save(this.persistObject);
       this._invalidateCachedArchive();
       this._notifyCompletion();
     }, this);
@@ -154,6 +156,17 @@ SaveContentJob.prototype = {
     var archive = ArchiveCache.archiveFromUri(this._archive.uri);
     if (archive) {
       ArchiveCache.unregisterArchive(archive);
+    }
+  },
+
+  /**
+   * Remove the temporary folder after completion or failure.
+   */
+  _removeTargetDir: function() {
+    try {
+      this._targetDir.remove(true);
+    } catch (ex) {
+      Cu.reportError(ex);
     }
   },
 
