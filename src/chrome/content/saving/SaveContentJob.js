@@ -90,8 +90,6 @@ SaveContentJob.prototype = {
       this._removeTargetDir();
       throw ex;
     }
-    // Wait for the save completed callback.
-    this._asyncWorkStarted();
   },
 
   // Job
