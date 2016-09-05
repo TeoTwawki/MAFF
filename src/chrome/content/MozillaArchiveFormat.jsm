@@ -6,6 +6,7 @@ const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 Cu.import("resource://gre/modules/Services.jsm");
+Cu.import("resource://gre/modules/NetUtil.jsm");
 
 let objectsByFolder = {
   general: [
@@ -68,7 +69,6 @@ let objectsByFolder = {
     "ExactPersistReference",
     "ExactPersistUnparsedJob",
     "MafArchivePersist",
-    "MafWebProgressListener",
     "SaveArchiveJob",
     "SaveContentJob",
     "SaveJob",
