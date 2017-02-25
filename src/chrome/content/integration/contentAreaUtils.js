@@ -114,13 +114,6 @@ function mafSaveBrowser(aBrowser, aSkipPrompt, aOuterWindowID=0)
  *         - mafAskSaveArchive: True to ask to save archives only.
  *         - mafSaveTabs [optional]: Array of browser objects corresponding to
  *           the tabs to be saved.
- *        When this function is called, directly or indirectly, by Mozilla
- *        Archive Format to create an archive automatically, this parameter can
- *        also be an object with the following properties:
- *         - targetFile: nsIFile of the final destination page or archive.
- *         - saveBehavior: Save behavior to use when creating the file.
- *         - mafProgressListener: Object implementing the nsIWebProgressListener
- *           interface, used to detect when the operation completes.
  * @param aCacheKey [optional]
  *        If set will be passed to saveURI.  See nsIWebBrowserPersist for
  *        allowed values.
@@ -177,7 +170,7 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   if (aChosenData) {
     file = aChosenData.file;
     sourceURI = aChosenData.uri;
-    saveBehavior = MozillaArchiveFormat.CompleteSaveBehavior;
+    saveBehavior = MozillaArchiveFormat.NormalSaveBehavior;
 
     continueSave();
   } else {
@@ -206,33 +199,18 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     // Find a URI to use for determining last-downloaded-to directory.
     let relatedURI = aReferrer || sourceURI;
 
-    // When aSkipPrompt is an object provided by Mozilla Archive Format, no user
-    // prompt is shown and the file is saved with the specified name.
-    if (typeof aSkipPrompt == "object") {
-      file = aSkipPrompt.targetFile.clone();
-      saveBehavior = aSkipPrompt.saveBehavior;
+    getTargetFile(fpParams, function(aDialogCancelled) {
+      if (aDialogCancelled)
+        return;
+
+      saveBehavior = fpParams.saveBehavior;
+      file = fpParams.file;
 
       continueSave();
-    } else {
-      getTargetFile(fpParams, function(aDialogCancelled) {
-        if (aDialogCancelled)
-          return;
-
-        saveBehavior = fpParams.saveBehavior;
-        file = fpParams.file;
-
-        continueSave();
-      }, aSkipPrompt, relatedURI);
-    }
+    }, aSkipPrompt, relatedURI);
   }
 
   function continueSave() {
-    // The save behavior may not be valid for the save mode if it was determined
-    // automatically instead of through the file picker.
-    if (!saveBehavior.isValidForSaveMode(saveMode)) {
-      saveBehavior = MozillaArchiveFormat.NormalSaveBehavior;
-    }
-
     // Create a custom web browser persist object if required.
     var mafPersistObject = null;
     if (saveBehavior.getPersistObject) {
@@ -267,7 +245,7 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     };
 
     // Start the actual save process.
-    internalPersist(persistArgs, aSkipPrompt);
+    internalPersist(persistArgs);
   }
 }
 
@@ -305,7 +283,7 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  *        If present then isPrivate is set to this value without using
  *        persistArgs.initiatingWindow.
  */
-function mafInternalPersist(persistArgs, /* For MAF */ aSkipPrompt)
+function mafInternalPersist(persistArgs)
 {
   var persist;
   if (persistArgs.persistObject) {
@@ -342,20 +320,10 @@ function mafInternalPersist(persistArgs, /* For MAF */ aSkipPrompt)
      PrivateBrowsingUtils.isWindowPrivate(persistArgs.initiatingWindow);
   }
 
-  // Mozilla Archive Format indirectly uses this function to save an already
-  // loaded document to a temporary file on disk, before generating the final
-  // archive. If the document saving was initiated by MAF, we use the provided
-  // download listener instead of creating a transfer object.
-  var tr;
-  if (typeof aSkipPrompt == "object" && aSkipPrompt.mafProgressListener) {
-    tr = aSkipPrompt.mafProgressListener;
-  } else {
-    // Create download and initiate it (below)
-    tr = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
-    tr.init(persistArgs.sourceURI,
-            targetFileURL, "", null, null, null, persist, isPrivate);
-  }
-
+  // Create download and initiate it (below)
+  var tr = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
+  tr.init(persistArgs.sourceURI,
+          targetFileURL, "", null, null, null, persist, isPrivate);
   persist.progressListener = new DownloadListener(window, tr);
 
   if (persistArgs.sourceDocument) {
