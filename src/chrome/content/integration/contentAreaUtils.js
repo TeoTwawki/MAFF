@@ -143,12 +143,13 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   // Note: aDocument == null when this code is used by save-link-as...
   var saveMode = mafGetSaveModeForContentType(aContentType, aDocument);
 
-  var file, sourceURI, saveBehavior;
+  var file, sourceURI, saveAsType, saveBehavior;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
   // FileName/Extension will be ignored if aChosenData supplied.
   if (aChosenData) {
     file = aChosenData.file;
     sourceURI = aChosenData.uri;
+    saveAsType = kSaveAsType_Complete;
     saveBehavior = MozillaArchiveFormat.NormalSaveBehavior;
 
     continueSave();
@@ -168,6 +169,7 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       fileInfo,
       contentType: aContentType,
       saveMode,
+      saveAsType: kSaveAsType_Complete,
       saveBehavior: MozillaArchiveFormat.CompleteSaveBehavior,
       file
     };
@@ -179,6 +181,7 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       if (!aDialogAccepted)
         return;
 
+      saveAsType = fpParams.saveAsType;
       saveBehavior = fpParams.saveBehavior;
       file = fpParams.file;
 
@@ -211,7 +214,12 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       mafPersistObject = new MozillaArchiveFormat.ExactPersist();
     }
 
-    var useSaveDocument = (aDocument != null) && saveBehavior.isComplete;
+    // XXX We depend on the following holding true in appendFiltersForContentType():
+    // If we should save as a complete page, the saveAsType is kSaveAsType_Complete.
+    // If we should save as text, the saveAsType is kSaveAsType_Text.
+    var useSaveDocument = aDocument &&
+                          ((saveAsType == kSaveAsType_Complete) ||
+                           (saveAsType == kSaveAsType_Text));
     // If we're saving a document, and are saving either in complete mode or
     // as converted text, pass the document to the web browser persist component.
     // If we're just saving the HTML (second option in the list), send only the URI.
@@ -229,7 +237,7 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       sourceURI,
       sourceReferrer    : aReferrer,
       sourceDocument    : useSaveDocument ? aDocument : null,
-      targetContentType : saveBehavior.targetContentType,
+      targetContentType : (saveAsType == kSaveAsType_Text) ? "text/plain" : null,
       targetFile        : file,
       sourceCacheKey    : aCacheKey,
       sourcePostData    : nonCPOWDocument ? getPostData(aDocument) : null,
@@ -452,6 +460,8 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       // nsIFilePicker interface does not guarantee this.
       aFpP.saveBehavior = saveBehaviors[fp.filterIndex] ?
        saveBehaviors[fp.filterIndex] : MozillaArchiveFormat.NormalSaveBehavior;
+      aFpP.saveAsType = aFpP.saveBehavior.targetContentType ? kSaveAsType_Text :
+                        aFpP.saveBehavior.isComplete ? kSaveAsType_Complete : 1;
       // Save the selected file object and URL.
       aFpP.file = fp.file;
       aFpP.fileURL = fp.fileURL;
