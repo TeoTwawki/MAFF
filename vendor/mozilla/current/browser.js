@@ -1,47 +1,227 @@
-# -*- Mode: javascript; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-let Ci = Components.interfaces;
-let Cu = Components.utils;
+var Ci = Components.interfaces;
+var Cu = Components.utils;
+var Cc = Components.classes;
+var Cr = Components.results;
 
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-Cu.import("resource:///modules/RecentWindow.jsm");
+Cu.import("resource://gre/modules/Services.jsm");
+Cu.import("resource://gre/modules/ContextualIdentityService.jsm");
+Cu.import("resource://gre/modules/NotificationDB.jsm");
 
-XPCOMUtils.defineLazyModuleGetter(this, "Task",
-                                  "resource://gre/modules/Task.jsm");
+// lazy module getters
+
+/* global AboutHome:false, AddonWatcher:false, AppConstants: false,
+          BrowserUITelemetry:false, BrowserUsageTelemetry:false, BrowserUtils:false,
+          CastingApps:false, CharsetMenu:false, Color:false, ContentSearch:false,
+          Deprecated:false, E10SUtils:false, FormValidationHandler:false,
+          GMPInstallManager:false, LightweightThemeManager:false, Log:false,
+          LoginManagerParent:false, NewTabUtils:false, PageThumbs:false,
+          PluralForm:false, Preferences:false, PrivateBrowsingUtils:false,
+          ProcessHangMonitor:false, PromiseUtils:false, ReaderMode:false,
+          ReaderParent:false, RecentWindow:false, SessionStore:false,
+          ShortcutUtils:false, SimpleServiceDiscovery:false, SitePermissions:false,
+          Social:false, TabCrashHandler:false, Task:false, TelemetryStopwatch:false,
+          Translation:false, UITour:false, UpdateUtils:false, Weave:false,
+          fxAccounts:false, gDevTools:false, gDevToolsBrowser:false, webrtcUI:false
+ */
+
+/**
+ * IF YOU ADD OR REMOVE FROM THIS LIST, PLEASE UPDATE THE LIST ABOVE AS WELL.
+ * XXX Bug 1325373 is for making eslint detect these automatically.
+ */
+[
+  ["AboutHome", "resource:///modules/AboutHome.jsm"],
+  ["AddonWatcher", "resource://gre/modules/AddonWatcher.jsm"],
+  ["AppConstants", "resource://gre/modules/AppConstants.jsm"],
+  ["BrowserUITelemetry", "resource:///modules/BrowserUITelemetry.jsm"],
+  ["BrowserUsageTelemetry", "resource:///modules/BrowserUsageTelemetry.jsm"],
+  ["BrowserUtils", "resource://gre/modules/BrowserUtils.jsm"],
+  ["CastingApps", "resource:///modules/CastingApps.jsm"],
+  ["CharsetMenu", "resource://gre/modules/CharsetMenu.jsm"],
+  ["Color", "resource://gre/modules/Color.jsm"],
+  ["ContentSearch", "resource:///modules/ContentSearch.jsm"],
+  ["Deprecated", "resource://gre/modules/Deprecated.jsm"],
+  ["E10SUtils", "resource:///modules/E10SUtils.jsm"],
+  ["ExtensionsUI", "resource:///modules/ExtensionsUI.jsm"],
+  ["FormValidationHandler", "resource:///modules/FormValidationHandler.jsm"],
+  ["GMPInstallManager", "resource://gre/modules/GMPInstallManager.jsm"],
+  ["LightweightThemeManager", "resource://gre/modules/LightweightThemeManager.jsm"],
+  ["Log", "resource://gre/modules/Log.jsm"],
+  ["LoginManagerParent", "resource://gre/modules/LoginManagerParent.jsm"],
+  ["NewTabUtils", "resource://gre/modules/NewTabUtils.jsm"],
+  ["PageThumbs", "resource://gre/modules/PageThumbs.jsm"],
+  ["PluralForm", "resource://gre/modules/PluralForm.jsm"],
+  ["Preferences", "resource://gre/modules/Preferences.jsm"],
+  ["PrivateBrowsingUtils", "resource://gre/modules/PrivateBrowsingUtils.jsm"],
+  ["ProcessHangMonitor", "resource:///modules/ProcessHangMonitor.jsm"],
+  ["PromiseUtils", "resource://gre/modules/PromiseUtils.jsm"],
+  ["ReaderMode", "resource://gre/modules/ReaderMode.jsm"],
+  ["ReaderParent", "resource:///modules/ReaderParent.jsm"],
+  ["RecentWindow", "resource:///modules/RecentWindow.jsm"],
+  ["SessionStore", "resource:///modules/sessionstore/SessionStore.jsm"],
+  ["ShortcutUtils", "resource://gre/modules/ShortcutUtils.jsm"],
+  ["SimpleServiceDiscovery", "resource://gre/modules/SimpleServiceDiscovery.jsm"],
+  ["SitePermissions", "resource:///modules/SitePermissions.jsm"],
+  ["Social", "resource:///modules/Social.jsm"],
+  ["TabCrashHandler", "resource:///modules/ContentCrashHandlers.jsm"],
+  ["Task", "resource://gre/modules/Task.jsm"],
+  ["TelemetryStopwatch", "resource://gre/modules/TelemetryStopwatch.jsm"],
+  ["Translation", "resource:///modules/translation/Translation.jsm"],
+  ["UITour", "resource:///modules/UITour.jsm"],
+  ["UpdateUtils", "resource://gre/modules/UpdateUtils.jsm"],
+  ["Weave", "resource://services-sync/main.js"],
+  ["fxAccounts", "resource://gre/modules/FxAccounts.jsm"],
+  ["gDevTools", "resource://devtools/client/framework/gDevTools.jsm"],
+  ["gDevToolsBrowser", "resource://devtools/client/framework/gDevTools.jsm"],
+  ["webrtcUI", "resource:///modules/webrtcUI.jsm", ]
+].forEach(([name, resource]) => XPCOMUtils.defineLazyModuleGetter(this, name, resource));
+
+XPCOMUtils.defineLazyModuleGetter(this, "SafeBrowsing",
+  "resource://gre/modules/SafeBrowsing.jsm");
+
+if (AppConstants.MOZ_CRASHREPORTER) {
+  XPCOMUtils.defineLazyModuleGetter(this, "PluginCrashReporter",
+    "resource:///modules/ContentCrashHandlers.jsm");
+}
+
+// lazy service getters
+
+/* global Favicons:false, WindowsUIUtils:false, gAboutNewTabService:false,
+          gDNSService:false
+*/
+/**
+ * IF YOU ADD OR REMOVE FROM THIS LIST, PLEASE UPDATE THE LIST ABOVE AS WELL.
+ * XXX Bug 1325373 is for making eslint detect these automatically.
+ */
+[
+  ["Favicons", "@mozilla.org/browser/favicon-service;1", "mozIAsyncFavicons"],
+  ["WindowsUIUtils", "@mozilla.org/windows-ui-utils;1", "nsIWindowsUIUtils"],
+  ["gAboutNewTabService", "@mozilla.org/browser/aboutnewtab-service;1", "nsIAboutNewTabService"],
+  ["gDNSService", "@mozilla.org/network/dns-service;1", "nsIDNSService"],
+].forEach(([name, cc, ci]) => XPCOMUtils.defineLazyServiceGetter(this, name, cc, ci));
+
+if (AppConstants.MOZ_CRASHREPORTER) {
+  XPCOMUtils.defineLazyServiceGetter(this, "gCrashReporter",
+                                     "@mozilla.org/xre/app-info;1",
+                                     "nsICrashReporter");
+}
+
+XPCOMUtils.defineLazyServiceGetter(this, "gSerializationHelper",
+                                   "@mozilla.org/network/serialization-helper;1",
+                                   "nsISerializationHelper");
+
+XPCOMUtils.defineLazyGetter(this, "BrowserToolboxProcess", function() {
+  let tmp = {};
+  Cu.import("resource://devtools/client/framework/ToolboxProcess.jsm", tmp);
+  return tmp.BrowserToolboxProcess;
+});
+
+XPCOMUtils.defineLazyGetter(this, "gBrowserBundle", function() {
+  return Services.strings.createBundle("chrome://browser/locale/browser.properties");
+});
+
+XPCOMUtils.defineLazyGetter(this, "gCustomizeMode", function() {
+  let scope = {};
+  Cu.import("resource:///modules/CustomizeMode.jsm", scope);
+  return new scope.CustomizeMode(window);
+});
+
+XPCOMUtils.defineLazyGetter(this, "gPrefService", function() {
+  return Services.prefs;
+});
+
+XPCOMUtils.defineLazyGetter(this, "InlineSpellCheckerUI", function() {
+  let tmp = {};
+  Cu.import("resource://gre/modules/InlineSpellChecker.jsm", tmp);
+  return new tmp.InlineSpellChecker();
+});
+
+XPCOMUtils.defineLazyGetter(this, "PageMenuParent", function() {
+  let tmp = {};
+  Cu.import("resource://gre/modules/PageMenu.jsm", tmp);
+  return new tmp.PageMenuParent();
+});
+
+XPCOMUtils.defineLazyGetter(this, "PopupNotifications", function() {
+  let tmp = {};
+  Cu.import("resource://gre/modules/PopupNotifications.jsm", tmp);
+  try {
+    // Hide all notifications while the URL is being edited and the address bar
+    // has focus, including the virtual focus in the results popup.
+    let shouldSuppress = () => {
+      return gURLBar.getAttribute("pageproxystate") != "valid" &&
+             gURLBar.focused;
+    };
+    return new tmp.PopupNotifications(gBrowser,
+                                      document.getElementById("notification-popup"),
+                                      document.getElementById("notification-popup-box"),
+                                      { shouldSuppress });
+  } catch (ex) {
+    Cu.reportError(ex);
+    return null;
+  }
+});
+
+XPCOMUtils.defineLazyGetter(this, "Win7Features", function() {
+  if (AppConstants.platform != "win")
+    return null;
+
+  const WINTASKBAR_CONTRACTID = "@mozilla.org/windows-taskbar;1";
+  if (WINTASKBAR_CONTRACTID in Cc &&
+      Cc[WINTASKBAR_CONTRACTID].getService(Ci.nsIWinTaskbar).available) {
+    let AeroPeek = Cu.import("resource:///modules/WindowsPreviewPerTab.jsm", {}).AeroPeek;
+    return {
+      onOpenWindow() {
+        AeroPeek.onOpenWindow(window);
+      },
+      onCloseWindow() {
+        AeroPeek.onCloseWindow(window);
+      }
+    };
+  }
+  return null;
+});
 
 const nsIWebNavigation = Ci.nsIWebNavigation;
 
-var gCharsetMenu = null;
 var gLastBrowserCharset = null;
-var gPrevCharset = null;
-var gProxyFavIcon = null;
 var gLastValidURLStr = "";
 var gInPrintPreviewMode = false;
 var gContextMenu = null; // nsContextMenu instance
-var gMultiProcessBrowser = false;
+var gMultiProcessBrowser =
+  window.QueryInterface(Ci.nsIInterfaceRequestor)
+        .getInterface(Ci.nsIWebNavigation)
+        .QueryInterface(Ci.nsILoadContext)
+        .useRemoteTabs;
+var gAppInfo = Cc["@mozilla.org/xre/app-info;1"]
+                  .getService(Ci.nsIXULAppInfo)
+                  .QueryInterface(Ci.nsIXULRuntime);
 
-#ifndef XP_MACOSX
-var gEditUIVisible = true;
-#endif
+if (AppConstants.platform != "macosx") {
+  var gEditUIVisible = true;
+}
 
+/* globals gBrowser, gNavToolbox, gURLBar, gNavigatorBundle*/
 [
   ["gBrowser",            "content"],
   ["gNavToolbox",         "navigator-toolbox"],
   ["gURLBar",             "urlbar"],
   ["gNavigatorBundle",    "bundle_browser"]
-].forEach(function (elementGlobal) {
+].forEach(function(elementGlobal) {
   var [name, id] = elementGlobal;
-  window.__defineGetter__(name, function () {
+  window.__defineGetter__(name, function() {
     var element = document.getElementById(id);
     if (!element)
       return null;
     delete window[name];
     return window[name] = element;
   });
-  window.__defineSetter__(name, function (val) {
+  window.__defineSetter__(name, function(val) {
     delete window[name];
     return window[name] = val;
   });
@@ -58,89 +238,18 @@ this.__defineGetter__("gFindBarInitialized", function() {
   return window.gBrowser.isFindBarInitialized();
 });
 
-XPCOMUtils.defineLazyGetter(this, "gPrefService", function() {
-  return Services.prefs;
-});
-
 this.__defineGetter__("AddonManager", function() {
   let tmp = {};
   Cu.import("resource://gre/modules/AddonManager.jsm", tmp);
   return this.AddonManager = tmp.AddonManager;
 });
-this.__defineSetter__("AddonManager", function (val) {
+this.__defineSetter__("AddonManager", function(val) {
   delete this.AddonManager;
   return this.AddonManager = val;
 });
 
-this.__defineGetter__("PluralForm", function() {
-  Cu.import("resource://gre/modules/PluralForm.jsm");
-  return this.PluralForm;
-});
-this.__defineSetter__("PluralForm", function (val) {
-  delete this.PluralForm;
-  return this.PluralForm = val;
-});
 
-XPCOMUtils.defineLazyModuleGetter(this, "TelemetryStopwatch",
-  "resource://gre/modules/TelemetryStopwatch.jsm");
-
-XPCOMUtils.defineLazyModuleGetter(this, "AboutHomeUtils",
-  "resource:///modules/AboutHomeUtils.jsm");
-
-#ifdef MOZ_SERVICES_SYNC
-XPCOMUtils.defineLazyModuleGetter(this, "Weave",
-  "resource://services-sync/main.js");
-#endif
-
-XPCOMUtils.defineLazyGetter(this, "PopupNotifications", function () {
-  let tmp = {};
-  Cu.import("resource://gre/modules/PopupNotifications.jsm", tmp);
-  try {
-    return new tmp.PopupNotifications(gBrowser,
-                                      document.getElementById("notification-popup"),
-                                      document.getElementById("notification-popup-box"));
-  } catch (ex) {
-    Cu.reportError(ex);
-    return null;
-  }
-});
-
-XPCOMUtils.defineLazyGetter(this, "DeveloperToolbar", function() {
-  let tmp = {};
-  Cu.import("resource:///modules/devtools/DeveloperToolbar.jsm", tmp);
-  return new tmp.DeveloperToolbar(window, document.getElementById("developer-toolbar"));
-});
-
-XPCOMUtils.defineLazyGetter(this, "BrowserDebuggerProcess", function() {
-  let tmp = {};
-  Cu.import("resource:///modules/devtools/DebuggerProcess.jsm", tmp);
-  return tmp.BrowserDebuggerProcess;
-});
-
-XPCOMUtils.defineLazyModuleGetter(this, "Social",
-  "resource:///modules/Social.jsm");
-
-XPCOMUtils.defineLazyModuleGetter(this, "PageThumbs",
-  "resource://gre/modules/PageThumbs.jsm");
-
-#ifdef MOZ_SAFE_BROWSING
-XPCOMUtils.defineLazyModuleGetter(this, "SafeBrowsing",
-  "resource://gre/modules/SafeBrowsing.jsm");
-#endif
-
-XPCOMUtils.defineLazyModuleGetter(this, "gBrowserNewTabPreloader",
-  "resource:///modules/BrowserNewTabPreloader.jsm", "BrowserNewTabPreloader");
-
-XPCOMUtils.defineLazyModuleGetter(this, "PrivateBrowsingUtils",
-  "resource://gre/modules/PrivateBrowsingUtils.jsm");
-
-XPCOMUtils.defineLazyModuleGetter(this, "SitePermissions",
-  "resource:///modules/SitePermissions.jsm");
-
-XPCOMUtils.defineLazyModuleGetter(this, "SessionStore",
-  "resource:///modules/sessionstore/SessionStore.jsm");
-
-let gInitialPages = [
+var gInitialPages = [
   "about:blank",
   "about:newtab",
   "about:home",
@@ -149,72 +258,18 @@ let gInitialPages = [
   "about:sessionrestore"
 ];
 
-#include browser-addons.js
-#include browser-feeds.js
-#include browser-fullScreen.js
-#include browser-fullZoom.js
-#include browser-places.js
-#include browser-plugins.js
-#include browser-safebrowsing.js
-#include browser-social.js
-#include browser-tabPreviews.js
-#include browser-tabview.js
-#include browser-thumbnails.js
-#include browser-webrtcUI.js
-#include browser-gestureSupport.js
-
-#ifdef MOZ_DATA_REPORTING
-#include browser-data-submission-info-bar.js
-#endif
-
-#ifdef MOZ_SERVICES_SYNC
-#include browser-syncui.js
-#endif
-
-XPCOMUtils.defineLazyGetter(this, "Win7Features", function () {
-#ifdef XP_WIN
-  const WINTASKBAR_CONTRACTID = "@mozilla.org/windows-taskbar;1";
-  if (WINTASKBAR_CONTRACTID in Cc &&
-      Cc[WINTASKBAR_CONTRACTID].getService(Ci.nsIWinTaskbar).available) {
-    let AeroPeek = Cu.import("resource:///modules/WindowsPreviewPerTab.jsm", {}).AeroPeek;
-    return {
-      onOpenWindow: function () {
-        AeroPeek.onOpenWindow(window);
-      },
-      onCloseWindow: function () {
-        AeroPeek.onCloseWindow(window);
-      }
-    };
-  }
-#endif
-  return null;
-});
-
-#ifdef MOZ_CRASHREPORTER
-XPCOMUtils.defineLazyServiceGetter(this, "gCrashReporter",
-                                   "@mozilla.org/xre/app-info;1",
-                                   "nsICrashReporter");
-#endif
-
-XPCOMUtils.defineLazyGetter(this, "PageMenu", function() {
-  let tmp = {};
-  Cu.import("resource://gre/modules/PageMenu.jsm", tmp);
-  return new tmp.PageMenu();
-});
+function* browserWindows() {
+  let windows = Services.wm.getEnumerator("navigator:browser");
+  while (windows.hasMoreElements())
+    yield windows.getNext();
+}
 
 /**
 * We can avoid adding multiple load event listeners and save some time by adding
 * one listener that calls all real handlers.
 */
 function pageShowEventHandlers(persisted) {
-  charsetLoadListener();
   XULBrowserWindow.asyncUpdateUI();
-
-  // The PluginClickToPlay events are not fired when navigating using the
-  // BF cache. |persisted| is true when the page is loaded from the
-  // BF cache, so this code reshows the notification if necessary.
-  if (persisted)
-    gPluginHandler.reshowClickToPlayNotification();
 }
 
 function UpdateBackForwardCommands(aWebNavigation) {
@@ -248,15 +303,29 @@ function UpdateBackForwardCommands(aWebNavigation) {
  * XXXmano: should this live in toolbarbutton.xml?
  */
 function SetClickAndHoldHandlers() {
-  var timer;
+  // Bug 414797: Clone the back/forward buttons' context menu into both buttons.
+  let popup = document.getElementById("backForwardMenu").cloneNode(true);
+  popup.removeAttribute("id");
+  // Prevent the back/forward buttons' context attributes from being inherited.
+  popup.setAttribute("context", "");
 
-  function openMenu(aButton) {
-    cancelHold(aButton);
-    aButton.firstChild.hidden = false;
-    aButton.open = true;
-  }
+  let backButton = document.getElementById("back-button");
+  backButton.setAttribute("type", "menu");
+  backButton.appendChild(popup);
+  gClickAndHoldListenersOnElement.add(backButton);
 
-  function mousedownHandler(aEvent) {
+  let forwardButton = document.getElementById("forward-button");
+  popup = popup.cloneNode(true);
+  forwardButton.setAttribute("type", "menu");
+  forwardButton.appendChild(popup);
+  gClickAndHoldListenersOnElement.add(forwardButton);
+}
+
+
+const gClickAndHoldListenersOnElement = {
+  _timers: new Map(),
+
+  _mousedownHandler(aEvent) {
     if (aEvent.button != 0 ||
         aEvent.currentTarget.open ||
         aEvent.currentTarget.disabled)
@@ -265,32 +334,12 @@ function SetClickAndHoldHandlers() {
     // Prevent the menupopup from opening immediately
     aEvent.currentTarget.firstChild.hidden = true;
 
-    aEvent.currentTarget.addEventListener("mouseout", mouseoutHandler, false);
-    aEvent.currentTarget.addEventListener("mouseup", mouseupHandler, false);
-    timer = setTimeout(openMenu, 500, aEvent.currentTarget);
-  }
+    aEvent.currentTarget.addEventListener("mouseout", this);
+    aEvent.currentTarget.addEventListener("mouseup", this);
+    this._timers.set(aEvent.currentTarget, setTimeout((b) => this._openMenu(b), 500, aEvent.currentTarget));
+  },
 
-  function mouseoutHandler(aEvent) {
-    let buttonRect = aEvent.currentTarget.getBoundingClientRect();
-    if (aEvent.clientX >= buttonRect.left &&
-        aEvent.clientX <= buttonRect.right &&
-        aEvent.clientY >= buttonRect.bottom)
-      openMenu(aEvent.currentTarget);
-    else
-      cancelHold(aEvent.currentTarget);
-  }
-
-  function mouseupHandler(aEvent) {
-    cancelHold(aEvent.currentTarget);
-  }
-
-  function cancelHold(aButton) {
-    clearTimeout(timer);
-    aButton.removeEventListener("mouseout", mouseoutHandler, false);
-    aButton.removeEventListener("mouseup", mouseupHandler, false);
-  }
-
-  function clickHandler(aEvent) {
+  _clickHandler(aEvent) {
     if (aEvent.button == 0 &&
         aEvent.target == aEvent.currentTarget &&
         !aEvent.currentTarget.open &&
@@ -300,42 +349,72 @@ function SetClickAndHoldHandlers() {
                                 aEvent.ctrlKey, aEvent.altKey, aEvent.shiftKey,
                                 aEvent.metaKey, null);
       aEvent.currentTarget.dispatchEvent(cmdEvent);
+
+      // This is here to cancel the XUL default event
+      // dom.click() triggers a command even if there is a click handler
+      // however this can now be prevented with preventDefault().
+      aEvent.preventDefault();
     }
+  },
+
+  _openMenu(aButton) {
+    this._cancelHold(aButton);
+    aButton.firstChild.hidden = false;
+    aButton.open = true;
+  },
+
+  _mouseoutHandler(aEvent) {
+    let buttonRect = aEvent.currentTarget.getBoundingClientRect();
+    if (aEvent.clientX >= buttonRect.left &&
+        aEvent.clientX <= buttonRect.right &&
+        aEvent.clientY >= buttonRect.bottom)
+      this._openMenu(aEvent.currentTarget);
+    else
+      this._cancelHold(aEvent.currentTarget);
+  },
+
+  _mouseupHandler(aEvent) {
+    this._cancelHold(aEvent.currentTarget);
+  },
+
+  _cancelHold(aButton) {
+    clearTimeout(this._timers.get(aButton));
+    aButton.removeEventListener("mouseout", this);
+    aButton.removeEventListener("mouseup", this);
+  },
+
+  handleEvent(e) {
+    switch (e.type) {
+      case "mouseout":
+        this._mouseoutHandler(e);
+        break;
+      case "mousedown":
+        this._mousedownHandler(e);
+        break;
+      case "click":
+        this._clickHandler(e);
+        break;
+      case "mouseup":
+        this._mouseupHandler(e);
+        break;
+    }
+  },
+
+  remove(aButton) {
+    aButton.removeEventListener("mousedown", this, true);
+    aButton.removeEventListener("click", this, true);
+  },
+
+  add(aElm) {
+    this._timers.delete(aElm);
+
+    aElm.addEventListener("mousedown", this, true);
+    aElm.addEventListener("click", this, true);
   }
-
-  function _addClickAndHoldListenersOnElement(aElm) {
-    aElm.addEventListener("mousedown", mousedownHandler, true);
-    aElm.addEventListener("click", clickHandler, true);
-  }
-
-  // Bug 414797: Clone unified-back-forward-button's context menu into both the
-  // back and the forward buttons.
-  var unifiedButton = document.getElementById("unified-back-forward-button");
-  if (unifiedButton && !unifiedButton._clickHandlersAttached) {
-    unifiedButton._clickHandlersAttached = true;
-
-    let popup = document.getElementById("backForwardMenu").cloneNode(true);
-    popup.removeAttribute("id");
-    // Prevent the context attribute on unified-back-forward-button from being
-    // inherited.
-    popup.setAttribute("context", "");
-
-    let backButton = document.getElementById("back-button");
-    backButton.setAttribute("type", "menu");
-    backButton.appendChild(popup);
-    _addClickAndHoldListenersOnElement(backButton);
-
-    let forwardButton = document.getElementById("forward-button");
-    popup = popup.cloneNode(true);
-    forwardButton.setAttribute("type", "menu");
-    forwardButton.appendChild(popup);
-    _addClickAndHoldListenersOnElement(forwardButton);
-  }
-}
+};
 
 const gSessionHistoryObserver = {
-  observe: function(subject, topic, data)
-  {
+  observe(subject, topic, data) {
     if (topic != "browser:purge-session-history")
       return;
 
@@ -347,10 +426,84 @@ const gSessionHistoryObserver = {
     // Hide session restore button on about:home
     window.messageManager.broadcastAsyncMessage("Browser:HideSessionRestoreButton");
 
-    if (gURLBar) {
-      // Clear undo history of the URL bar
-      gURLBar.editor.transactionManager.clear()
+    // Clear undo history of the URL bar
+    gURLBar.editor.transactionManager.clear()
+  }
+};
+
+const gStoragePressureObserver = {
+  _lastNotificationTime: -1,
+
+  observe(subject, topic, data) {
+    if (topic != "QuotaManager::StoragePressure" ||
+        !Services.prefs.getBoolPref("browser.storageManager.enabled")) {
+      return;
     }
+
+    // Don't display notification twice within the given interval.
+    // This is because
+    //   - not to annoy user
+    //   - give user some time to clean space.
+    //     Even user sees notification and starts acting, it still takes some time.
+    const MIN_NOTIFICATION_INTERVAL_MS =
+      Services.prefs.getIntPref("browser.storageManager.pressureNotification.minIntervalMS");
+    let duration = Date.now() - this._lastNotificationTime;
+    if (duration <= MIN_NOTIFICATION_INTERVAL_MS) {
+      return;
+    }
+    this._lastNotificationTime = Date.now();
+
+    const BYTES_IN_GIGABYTE = 1073741824;
+    const USAGE_THRESHOLD_BYTES = BYTES_IN_GIGABYTE *
+      Services.prefs.getIntPref("browser.storageManager.pressureNotification.usageThresholdGB");
+    let msg = "";
+    let buttons = [];
+    let usage = parseInt(data);
+    let prefStrBundle = document.getElementById("bundle_preferences");
+    let brandShortName = document.getElementById("bundle_brand").getString("brandShortName");
+    let notificationBox = document.getElementById("high-priority-global-notificationbox");
+    buttons.push({
+      label: prefStrBundle.getString("spaceAlert.learnMoreButton.label"),
+      accessKey: prefStrBundle.getString("spaceAlert.learnMoreButton.accesskey"),
+      callback(notificationBar, button) {
+        let learnMoreURL = Services.urlFormatter.formatURLPref("app.support.baseURL") + "storage-permissions";
+        gBrowser.selectedTab = gBrowser.addTab(learnMoreURL);
+      }
+    });
+    if (usage < USAGE_THRESHOLD_BYTES) {
+      // The firefox-used space < 5GB, then warn user to free some disk space.
+      // This is because this usage is small and not the main cause for space issue.
+      // In order to avoid the bad and wrong impression among users that
+      // firefox eats disk space a lot, indicate users to clean up other disk space.
+      msg = prefStrBundle.getFormattedString("spaceAlert.under5GB.message", [brandShortName]);
+      buttons.push({
+        label: prefStrBundle.getString("spaceAlert.under5GB.okButton.label"),
+        accessKey: prefStrBundle.getString("spaceAlert.under5GB.okButton.accesskey"),
+        callback() {}
+      });
+    } else {
+      // The firefox-used space >= 5GB, then guide users to about:preferences
+      // to clear some data stored on firefox by websites.
+      let descriptionStringID = "spaceAlert.over5GB.message";
+      let prefButtonLabelStringID = "spaceAlert.over5GB.prefButton.label";
+      let prefButtonAccesskeyStringID = "spaceAlert.over5GB.prefButton.accesskey";
+      if (AppConstants.platform == "win") {
+        descriptionStringID = "spaceAlert.over5GB.messageWin";
+        prefButtonLabelStringID = "spaceAlert.over5GB.prefButtonWin.label";
+        prefButtonAccesskeyStringID = "spaceAlert.over5GB.prefButtonWin.accesskey";
+      }
+      msg = prefStrBundle.getFormattedString(descriptionStringID, [brandShortName]);
+      buttons.push({
+        label: prefStrBundle.getString(prefButtonLabelStringID),
+        accessKey: prefStrBundle.getString(prefButtonAccesskeyStringID),
+        callback(notificationBar, button) {
+          gBrowser.ownerGlobal.openPreferences("advanced", { advancedTab: "networkTab" });
+        }
+      });
+    }
+
+    notificationBox.appendNotification(
+      msg, "storage-pressure-notification", null, notificationBox.PRIORITY_WARNING_HIGH, buttons, null);
   }
 };
 
@@ -374,7 +527,7 @@ function findChildShell(aDocument, aDocShell, aSoughtURI) {
       (aSoughtURI && aSoughtURI.spec == aDocShell.currentURI.spec))
     return aDocShell;
 
-  var node = aDocShell.QueryInterface(Components.interfaces.nsIDocShellTreeNode);
+  var node = aDocShell.QueryInterface(Components.interfaces.nsIDocShellTreeItem);
   for (var i = 0; i < node.childCount; ++i) {
     var docShell = node.getChildAt(i);
     docShell = findChildShell(aDocument, docShell, aSoughtURI);
@@ -387,59 +540,75 @@ function findChildShell(aDocument, aDocShell, aSoughtURI) {
 var gPopupBlockerObserver = {
   _reportButton: null,
 
-  onReportButtonClick: function (aEvent)
-  {
-    if (aEvent.button != 0 || aEvent.target != this._reportButton)
+  onReportButtonMousedown(aEvent) {
+    // The button is part of the textbox that is considered the popup's anchor,
+    // thus consumeoutsideclicks="false" is ignored. Moreover On OS X the popup
+    // is hidden well before mousedown gets dispatched.
+    // Thus, if the popup is open and the user clicks on the button, it gets
+    // hidden before mousedown, and may then be unexpectedly reopened by click.
+    // To avoid this, we check if mousedown is in the same tick as popupHidden,
+    // and, in such a case, we don't handle the click event.
+    // Note we can't just openPopup in mousedown, cause this popup is shared by
+    // multiple anchors, and we could end up opening it just before the other
+    // anchor tries to hide it.
+    if (aEvent.button != 0 || aEvent.target != this._reportButton || this.isPopupHidingTick)
       return;
 
-    document.getElementById("blockedPopupOptions")
-            .openPopup(this._reportButton, "after_end", 0, 2, false, false, aEvent);
+    this._reportButton.addEventListener("click", event => {
+      document.getElementById("blockedPopupOptions")
+              .openPopup(event.target, "after_end", 0, 2, false, false, event);
+    }, { once: true });
   },
 
-  handleEvent: function (aEvent)
-  {
+  handleEvent(aEvent) {
     if (aEvent.originalTarget != gBrowser.selectedBrowser)
       return;
 
-    if (!this._reportButton && gURLBar)
+    if (!this._reportButton)
       this._reportButton = document.getElementById("page-report-button");
 
-    if (!gBrowser.pageReport) {
+    if (!gBrowser.selectedBrowser.blockedPopups ||
+        gBrowser.selectedBrowser.blockedPopups.count == 0) {
       // Hide the icon in the location bar (if the location bar exists)
-      if (gURLBar)
-        this._reportButton.hidden = true;
+      this._reportButton.hidden = true;
+
+      // Hide the notification box (if it's visible).
+      let notificationBox = gBrowser.getNotificationBox();
+      let notification = notificationBox.getNotificationWithValue("popup-blocked");
+      if (notification) {
+        notificationBox.removeNotification(notification, false);
+      }
       return;
     }
 
-    if (gURLBar)
-      this._reportButton.hidden = false;
+    this._reportButton.hidden = false;
 
     // Only show the notification again if we've not already shown it. Since
     // notifications are per-browser, we don't need to worry about re-adding
     // it.
-    if (!gBrowser.pageReport.reported) {
+    if (!gBrowser.selectedBrowser.blockedPopups.reported) {
       if (gPrefService.getBoolPref("privacy.popups.showBrowserMessage")) {
         var brandBundle = document.getElementById("bundle_brand");
         var brandShortName = brandBundle.getString("brandShortName");
-        var popupCount = gBrowser.pageReport.length;
-#ifdef XP_WIN
-        var popupButtonText = gNavigatorBundle.getString("popupWarningButton");
-        var popupButtonAccesskey = gNavigatorBundle.getString("popupWarningButton.accesskey");
-#else
-        var popupButtonText = gNavigatorBundle.getString("popupWarningButtonUnix");
-        var popupButtonAccesskey = gNavigatorBundle.getString("popupWarningButtonUnix.accesskey");
-#endif
+        var popupCount = gBrowser.selectedBrowser.blockedPopups.length;
+
+        var stringKey = AppConstants.platform == "win"
+                        ? "popupWarningButton"
+                        : "popupWarningButtonUnix";
+
+        var popupButtonText = gNavigatorBundle.getString(stringKey);
+        var popupButtonAccesskey = gNavigatorBundle.getString(stringKey + ".accesskey");
+
         var messageBase = gNavigatorBundle.getString("popupWarning.message");
         var message = PluralForm.get(popupCount, messageBase)
                                 .replace("#1", brandShortName)
                                 .replace("#2", popupCount);
 
-        var notificationBox = gBrowser.getNotificationBox();
-        var notification = notificationBox.getNotificationWithValue("popup-blocked");
+        let notificationBox = gBrowser.getNotificationBox();
+        let notification = notificationBox.getNotificationWithValue("popup-blocked");
         if (notification) {
           notification.label = message;
-        }
-        else {
+        } else {
           var buttons = [{
             label: popupButtonText,
             accessKey: popupButtonAccesskey,
@@ -456,24 +625,25 @@ var gPopupBlockerObserver = {
 
       // Record the fact that we've reported this blocked popup, so we don't
       // show it again.
-      gBrowser.pageReport.reported = true;
+      gBrowser.selectedBrowser.blockedPopups.reported = true;
     }
   },
 
-  toggleAllowPopupsForSite: function (aEvent)
-  {
+  toggleAllowPopupsForSite(aEvent) {
     var pm = Services.perms;
     var shouldBlock = aEvent.target.getAttribute("block") == "true";
     var perm = shouldBlock ? pm.DENY_ACTION : pm.ALLOW_ACTION;
-    pm.add(gBrowser.currentURI, "popup", perm);
+    pm.addFromPrincipal(gBrowser.contentPrincipal, "popup", perm);
+
+    if (!shouldBlock)
+      this.showAllBlockedPopups(gBrowser.selectedBrowser);
 
     gBrowser.getNotificationBox().removeCurrentNotification();
   },
 
-  fillPopupList: function (aEvent)
-  {
+  fillPopupList(aEvent) {
     // XXXben - rather than using |currentURI| here, which breaks down on multi-framed sites
-    //          we should really walk the pageReport and create a list of "allow for <host>"
+    //          we should really walk the blockedPopups and create a list of "allow for <host>"
     //          menuitems for the common subset of hosts present in the report, this will
     //          make us frame-safe.
     //
@@ -481,27 +651,26 @@ var gPopupBlockerObserver = {
     //          also back out the fix for bug 343772 where
     //          nsGlobalWindow::CheckOpenAllow() was changed to also
     //          check if the top window's location is whitelisted.
-    var uri = gBrowser.currentURI;
+    let browser = gBrowser.selectedBrowser;
+    var uri = browser.contentPrincipal.URI || browser.currentURI;
     var blockedPopupAllowSite = document.getElementById("blockedPopupAllowSite");
     try {
       blockedPopupAllowSite.removeAttribute("hidden");
-
+      let uriHost = uri.asciiHost ? uri.host : uri.spec;
       var pm = Services.perms;
       if (pm.testPermission(uri, "popup") == pm.ALLOW_ACTION) {
         // Offer an item to block popups for this site, if a whitelist entry exists
         // already for it.
-        let blockString = gNavigatorBundle.getFormattedString("popupBlock", [uri.host || uri.spec]);
+        let blockString = gNavigatorBundle.getFormattedString("popupBlock", [uriHost]);
         blockedPopupAllowSite.setAttribute("label", blockString);
         blockedPopupAllowSite.setAttribute("block", "true");
-      }
-      else {
+      } else {
         // Offer an item to allow popups for this site
-        let allowString = gNavigatorBundle.getFormattedString("popupAllow", [uri.host || uri.spec]);
+        let allowString = gNavigatorBundle.getFormattedString("popupAllow", [uriHost]);
         blockedPopupAllowSite.setAttribute("label", allowString);
         blockedPopupAllowSite.removeAttribute("block");
       }
-    }
-    catch (e) {
+    } catch (e) {
       blockedPopupAllowSite.setAttribute("hidden", "true");
     }
 
@@ -510,106 +679,124 @@ var gPopupBlockerObserver = {
     else
       blockedPopupAllowSite.removeAttribute("disabled");
 
-    var foundUsablePopupURI = false;
-    var pageReports = gBrowser.pageReport;
-    if (pageReports) {
-      for (let pageReport of pageReports) {
-        // popupWindowURI will be null if the file picker popup is blocked.
-        // xxxdz this should make the option say "Show file picker" and do it (Bug 590306)
-        if (!pageReport.popupWindowURI)
-          continue;
-        var popupURIspec = pageReport.popupWindowURI.spec;
-
-        // Sometimes the popup URI that we get back from the pageReport
-        // isn't useful (for instance, netscape.com's popup URI ends up
-        // being "http://www.netscape.com", which isn't really the URI of
-        // the popup they're trying to show).  This isn't going to be
-        // useful to the user, so we won't create a menu item for it.
-        if (popupURIspec == "" || popupURIspec == "about:blank" ||
-            popupURIspec == uri.spec)
-          continue;
-
-        // Because of the short-circuit above, we may end up in a situation
-        // in which we don't have any usable popup addresses to show in
-        // the menu, and therefore we shouldn't show the separator.  However,
-        // since we got past the short-circuit, we must've found at least
-        // one usable popup URI and thus we'll turn on the separator later.
-        foundUsablePopupURI = true;
-
-        var menuitem = document.createElement("menuitem");
-        var label = gNavigatorBundle.getFormattedString("popupShowPopupPrefix",
-                                                        [popupURIspec]);
-        menuitem.setAttribute("label", label);
-        menuitem.setAttribute("popupWindowURI", popupURIspec);
-        menuitem.setAttribute("popupWindowFeatures", pageReport.popupWindowFeatures);
-        menuitem.setAttribute("popupWindowName", pageReport.popupWindowName);
-        menuitem.setAttribute("oncommand", "gPopupBlockerObserver.showBlockedPopup(event);");
-        menuitem.requestingWindow = pageReport.requestingWindow;
-        menuitem.requestingDocument = pageReport.requestingDocument;
-        aEvent.target.appendChild(menuitem);
-      }
-    }
-
-    // Show or hide the separator, depending on whether we added any
-    // showable popup addresses to the menu.
-    var blockedPopupsSeparator =
-      document.getElementById("blockedPopupsSeparator");
-    if (foundUsablePopupURI)
-      blockedPopupsSeparator.removeAttribute("hidden");
-    else
-      blockedPopupsSeparator.setAttribute("hidden", true);
-
-    var blockedPopupDontShowMessage = document.getElementById("blockedPopupDontShowMessage");
-    var showMessage = gPrefService.getBoolPref("privacy.popups.showBrowserMessage");
+    let blockedPopupDontShowMessage = document.getElementById("blockedPopupDontShowMessage");
+    let showMessage = gPrefService.getBoolPref("privacy.popups.showBrowserMessage");
     blockedPopupDontShowMessage.setAttribute("checked", !showMessage);
     if (aEvent.target.anchorNode.id == "page-report-button") {
       aEvent.target.anchorNode.setAttribute("open", "true");
       blockedPopupDontShowMessage.setAttribute("label", gNavigatorBundle.getString("popupWarningDontShowFromLocationbar"));
-    } else
+    } else {
       blockedPopupDontShowMessage.setAttribute("label", gNavigatorBundle.getString("popupWarningDontShowFromMessage"));
+    }
+
+    let blockedPopupsSeparator =
+        document.getElementById("blockedPopupsSeparator");
+    blockedPopupsSeparator.setAttribute("hidden", true);
+
+    gBrowser.selectedBrowser.retrieveListOfBlockedPopups().then(blockedPopups => {
+      let foundUsablePopupURI = false;
+      if (blockedPopups) {
+        for (let i = 0; i < blockedPopups.length; i++) {
+          let blockedPopup = blockedPopups[i];
+
+          // popupWindowURI will be null if the file picker popup is blocked.
+          // xxxdz this should make the option say "Show file picker" and do it (Bug 590306)
+          if (!blockedPopup.popupWindowURIspec)
+            continue;
+
+          var popupURIspec = blockedPopup.popupWindowURIspec;
+
+          // Sometimes the popup URI that we get back from the blockedPopup
+          // isn't useful (for instance, netscape.com's popup URI ends up
+          // being "http://www.netscape.com", which isn't really the URI of
+          // the popup they're trying to show).  This isn't going to be
+          // useful to the user, so we won't create a menu item for it.
+          if (popupURIspec == "" || popupURIspec == "about:blank" ||
+              popupURIspec == "<self>" ||
+              popupURIspec == uri.spec)
+            continue;
+
+          // Because of the short-circuit above, we may end up in a situation
+          // in which we don't have any usable popup addresses to show in
+          // the menu, and therefore we shouldn't show the separator.  However,
+          // since we got past the short-circuit, we must've found at least
+          // one usable popup URI and thus we'll turn on the separator later.
+          foundUsablePopupURI = true;
+
+          var menuitem = document.createElement("menuitem");
+          var label = gNavigatorBundle.getFormattedString("popupShowPopupPrefix",
+                                                          [popupURIspec]);
+          menuitem.setAttribute("label", label);
+          menuitem.setAttribute("oncommand", "gPopupBlockerObserver.showBlockedPopup(event);");
+          menuitem.setAttribute("popupReportIndex", i);
+          menuitem.popupReportBrowser = browser;
+          aEvent.target.appendChild(menuitem);
+        }
+      }
+
+      // Show the separator if we added any
+      // showable popup addresses to the menu.
+      if (foundUsablePopupURI)
+        blockedPopupsSeparator.removeAttribute("hidden");
+    }, null);
   },
 
-  onPopupHiding: function (aEvent) {
-    if (aEvent.target.anchorNode.id == "page-report-button")
+  onPopupHiding(aEvent) {
+    if (aEvent.target.anchorNode.id == "page-report-button") {
       aEvent.target.anchorNode.removeAttribute("open");
+
+      this.isPopupHidingTick = true;
+      setTimeout(() => this.isPopupHidingTick = false, 0);
+    }
 
     let item = aEvent.target.lastChild;
     while (item && item.getAttribute("observes") != "blockedPopupsSeparator") {
       let next = item.previousSibling;
-      item.parentNode.removeChild(item);
+      item.remove();
       item = next;
     }
   },
 
-  showBlockedPopup: function (aEvent)
-  {
+  showBlockedPopup(aEvent) {
     var target = aEvent.target;
-    var popupWindowURI = target.getAttribute("popupWindowURI");
-    var features = target.getAttribute("popupWindowFeatures");
-    var name = target.getAttribute("popupWindowName");
-
-    var dwi = target.requestingWindow;
-
-    // If we have a requesting window and the requesting document is
-    // still the current document, open the popup.
-    if (dwi && dwi.document == target.requestingDocument) {
-      dwi.open(popupWindowURI, name, features);
-    }
+    var popupReportIndex = target.getAttribute("popupReportIndex");
+    let browser = target.popupReportBrowser;
+    browser.unblockPopup(popupReportIndex);
   },
 
-  editPopupSettings: function ()
-  {
-    var host = "";
+  showAllBlockedPopups(aBrowser) {
+    aBrowser.retrieveListOfBlockedPopups().then(popups => {
+      for (let i = 0; i < popups.length; i++) {
+        if (popups[i].popupWindowURIspec)
+          aBrowser.unblockPopup(i);
+      }
+    }, null);
+  },
+
+  editPopupSettings() {
+    let prefillValue = "";
     try {
-      host = gBrowser.currentURI.host;
-    }
-    catch (e) { }
+      // We use contentPrincipal rather than currentURI to get the right
+      // value in case this is a data: URI that's inherited off something else.
+      // Some principals don't have URIs, so fall back in case URI is not present.
+      let principalURI = gBrowser.contentPrincipal.URI || gBrowser.currentURI;
+      if (principalURI) {
+        // asciiHost conveniently doesn't throw.
+        if (principalURI.asciiHost) {
+          prefillValue = principalURI.prePath;
+        } else {
+          // For host-less URIs like file://, prePath would effectively allow
+          // popups everywhere on file://. Use the full spec:
+          prefillValue = principalURI.spec;
+        }
+      }
+    } catch (e) { }
 
     var bundlePreferences = document.getElementById("bundle_preferences");
     var params = { blockVisible   : false,
                    sessionVisible : false,
                    allowVisible   : true,
-                   prefilledHost  : host,
+                   prefilledHost  : prefillValue,
                    permissionType : "popup",
                    windowTitle    : bundlePreferences.getString("popuppermissionstitle"),
                    introText      : bundlePreferences.getString("popuppermissionstext") };
@@ -617,123 +804,346 @@ var gPopupBlockerObserver = {
     if (existingWindow) {
       existingWindow.initWithParams(params);
       existingWindow.focus();
-    }
-    else
+    } else
       window.openDialog("chrome://browser/content/preferences/permissions.xul",
                         "_blank", "resizable,dialog=no,centerscreen", params);
   },
 
-  dontShowMessage: function ()
-  {
+  dontShowMessage() {
     var showMessage = gPrefService.getBoolPref("privacy.popups.showBrowserMessage");
     gPrefService.setBoolPref("privacy.popups.showBrowserMessage", !showMessage);
     gBrowser.getNotificationBox().removeCurrentNotification();
   }
 };
 
-const gFormSubmitObserver = {
-  QueryInterface : XPCOMUtils.generateQI([Ci.nsIFormSubmitObserver]),
+function gKeywordURIFixup({ target: browser, data: fixupInfo }) {
+  let deserializeURI = (spec) => spec ? makeURI(spec) : null;
 
-  panel: null,
+  // We get called irrespective of whether we did a keyword search, or
+  // whether the original input would be vaguely interpretable as a URL,
+  // so figure that out first.
+  let alternativeURI = deserializeURI(fixupInfo.fixedURI);
+  if (!fixupInfo.keywordProviderName || !alternativeURI || !alternativeURI.host) {
+    return;
+  }
 
-  init: function()
-  {
-    this.panel = document.getElementById('invalid-form-popup');
-  },
+  // At this point we're still only just about to load this URI.
+  // When the async DNS lookup comes back, we may be in any of these states:
+  // 1) still on the previous URI, waiting for the preferredURI (keyword
+  //    search) to respond;
+  // 2) at the keyword search URI (preferredURI)
+  // 3) at some other page because the user stopped navigation.
+  // We keep track of the currentURI to detect case (1) in the DNS lookup
+  // callback.
+  let previousURI = browser.currentURI;
+  let preferredURI = deserializeURI(fixupInfo.preferredURI);
 
-  notifyInvalidSubmit : function (aFormElement, aInvalidElements)
-  {
-    // We are going to handle invalid form submission attempt by focusing the
-    // first invalid element and show the corresponding validation message in a
-    // panel attached to the element.
-    if (!aInvalidElements.length) {
+  // now swap for a weak ref so we don't hang on to browser needlessly
+  // even if the DNS query takes forever
+  let weakBrowser = Cu.getWeakReference(browser);
+  browser = null;
+
+  // Additionally, we need the host of the parsed url
+  let hostName = alternativeURI.host;
+  // and the ascii-only host for the pref:
+  let asciiHost = alternativeURI.asciiHost;
+  // Normalize out a single trailing dot - NB: not using endsWith/lastIndexOf
+  // because we need to be sure this last dot is the *only* dot, too.
+  // More generally, this is used for the pref and should stay in sync with
+  // the code in nsDefaultURIFixup::KeywordURIFixup .
+  if (asciiHost.indexOf(".") == asciiHost.length - 1) {
+    asciiHost = asciiHost.slice(0, -1);
+  }
+
+  let isIPv4Address = host => {
+    let parts = host.split(".");
+    if (parts.length != 4) {
+      return false;
+    }
+    return parts.every(part => {
+      let n = parseInt(part, 10);
+      return n >= 0 && n <= 255;
+    });
+  };
+  // Avoid showing fixup information if we're suggesting an IP. Note that
+  // decimal representations of IPs are normalized to a 'regular'
+  // dot-separated IP address by network code, but that only happens for
+  // numbers that don't overflow. Longer numbers do not get normalized,
+  // but still work to access IP addresses. So for instance,
+  // 1097347366913 (ff7f000001) gets resolved by using the final bytes,
+  // making it the same as 7f000001, which is 127.0.0.1 aka localhost.
+  // While 2130706433 would get normalized by network, 1097347366913
+  // does not, and we have to deal with both cases here:
+  if (isIPv4Address(asciiHost) || /^(?:\d+|0x[a-f0-9]+)$/i.test(asciiHost))
+    return;
+
+  let onLookupComplete = (request, record, status) => {
+    let browserRef = weakBrowser.get();
+    if (!Components.isSuccessCode(status) || !browserRef)
+      return;
+
+    let currentURI = browserRef.currentURI;
+    // If we're in case (3) (see above), don't show an info bar.
+    if (!currentURI.equals(previousURI) &&
+        !currentURI.equals(preferredURI)) {
       return;
     }
 
-    // Don't show the popup if the current tab doesn't contain the invalid form.
-    if (gBrowser.contentDocument !=
-        aFormElement.ownerDocument.defaultView.top.document) {
+    // show infobar offering to visit the host
+    let notificationBox = gBrowser.getNotificationBox(browserRef);
+    if (notificationBox.getNotificationWithValue("keyword-uri-fixup"))
       return;
-    }
 
-    let element = aInvalidElements.queryElementAt(0, Ci.nsISupports);
+    let message = gNavigatorBundle.getFormattedString(
+      "keywordURIFixup.message", [hostName]);
+    let yesMessage = gNavigatorBundle.getFormattedString(
+      "keywordURIFixup.goTo", [hostName])
 
-    if (!(element instanceof HTMLInputElement ||
-          element instanceof HTMLTextAreaElement ||
-          element instanceof HTMLSelectElement ||
-          element instanceof HTMLButtonElement)) {
-      return;
-    }
-
-    this.panel.firstChild.textContent = element.validationMessage;
-
-    element.focus();
-
-    // If the user interacts with the element and makes it valid or leaves it,
-    // we want to remove the popup.
-    // We could check for clicks but a click is already removing the popup.
-    function blurHandler() {
-      gFormSubmitObserver.panel.hidePopup();
-    };
-    function inputHandler(e) {
-      if (e.originalTarget.validity.valid) {
-        gFormSubmitObserver.panel.hidePopup();
-      } else {
-        // If the element is now invalid for a new reason, we should update the
-        // error message.
-        if (gFormSubmitObserver.panel.firstChild.textContent !=
-            e.originalTarget.validationMessage) {
-          gFormSubmitObserver.panel.firstChild.textContent =
-            e.originalTarget.validationMessage;
+    let buttons = [
+      {
+        label: yesMessage,
+        accessKey: gNavigatorBundle.getString("keywordURIFixup.goTo.accesskey"),
+        callback() {
+          // Do not set this preference while in private browsing.
+          if (!PrivateBrowsingUtils.isWindowPrivate(window)) {
+            let pref = "browser.fixup.domainwhitelist." + asciiHost;
+            Services.prefs.setBoolPref(pref, true);
+          }
+          openUILinkIn(alternativeURI.spec, "current");
+        }
+      },
+      {
+        label: gNavigatorBundle.getString("keywordURIFixup.dismiss"),
+        accessKey: gNavigatorBundle.getString("keywordURIFixup.dismiss.accesskey"),
+        callback() {
+          let notification = notificationBox.getNotificationWithValue("keyword-uri-fixup");
+          notificationBox.removeNotification(notification, true);
         }
       }
-    };
-    element.addEventListener("input", inputHandler, false);
-    element.addEventListener("blur", blurHandler, false);
+    ];
+    let notification =
+      notificationBox.appendNotification(message, "keyword-uri-fixup", null,
+                                         notificationBox.PRIORITY_INFO_HIGH,
+                                         buttons);
+    notification.persistence = 1;
+  };
 
-    // One event to bring them all and in the darkness bind them.
-    this.panel.addEventListener("popuphiding", function onPopupHiding(aEvent) {
-      aEvent.target.removeEventListener("popuphiding", onPopupHiding, false);
-      element.removeEventListener("input", inputHandler, false);
-      element.removeEventListener("blur", blurHandler, false);
-    }, false);
+  try {
+    gDNSService.asyncResolve(hostName, 0, onLookupComplete, Services.tm.mainThread);
+  } catch (ex) {
+    // Do nothing if the URL is invalid (we don't want to show a notification in that case).
+    if (ex.result != Cr.NS_ERROR_UNKNOWN_HOST) {
+      // ... otherwise, report:
+      Cu.reportError(ex);
+    }
+  }
+}
 
-    this.panel.hidden = false;
+function serializeInputStream(aStream) {
+  let data = {
+    content: NetUtil.readInputStreamToString(aStream, aStream.available()),
+  };
 
-    // We want to show the popup at the middle of checkbox and radio buttons
-    // and where the content begin for the other elements.
-    let offset = 0;
-    let position = "";
+  if (aStream instanceof Ci.nsIMIMEInputStream) {
+    data.headers = new Map();
+    aStream.visitHeaders((name, value) => {
+      data.headers.set(name, value);
+    });
+  }
 
-    if (element.tagName == 'INPUT' &&
-        (element.type == 'radio' || element.type == 'checkbox')) {
-      position = "bottomcenter topleft";
-    } else {
-      let win = element.ownerDocument.defaultView;
-      let style = win.getComputedStyle(element, null);
-      let utils = win.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                     .getInterface(Components.interfaces.nsIDOMWindowUtils);
+  return data;
+}
 
-      if (style.direction == 'rtl') {
-        offset = parseInt(style.paddingRight) + parseInt(style.borderRightWidth);
-      } else {
-        offset = parseInt(style.paddingLeft) + parseInt(style.borderLeftWidth);
+// A shared function used by both remote and non-remote browser XBL bindings to
+// load a URI or redirect it to the correct process.
+function _loadURIWithFlags(browser, uri, params) {
+  let tab = gBrowser.getTabForBrowser(browser);
+  // Preloaded browsers don't have tabs, so we ignore those.
+  if (tab) {
+    maybeRecordAbandonmentTelemetry(tab, "newURI");
+  }
+
+  if (!uri) {
+    uri = "about:blank";
+  }
+  let triggeringPrincipal = params.triggeringPrincipal || null;
+  let flags = params.flags || 0;
+  let referrer = params.referrerURI;
+  let referrerPolicy = ("referrerPolicy" in params ? params.referrerPolicy :
+                        Ci.nsIHttpChannel.REFERRER_POLICY_UNSET);
+  let postData = params.postData;
+
+  let currentRemoteType = browser.remoteType;
+  let requiredRemoteType =
+    E10SUtils.getRemoteTypeForURI(uri, gMultiProcessBrowser, currentRemoteType);
+  let mustChangeProcess = requiredRemoteType != currentRemoteType;
+
+  // !requiredRemoteType means we're loading in the parent/this process.
+  if (!requiredRemoteType) {
+    browser.inLoadURI = true;
+  }
+  try {
+    if (!mustChangeProcess) {
+      if (params.userContextId) {
+        browser.webNavigation.setOriginAttributesBeforeLoading({ userContextId: params.userContextId });
       }
 
-      offset = Math.round(offset * utils.fullZoom);
+      browser.webNavigation.loadURIWithOptions(uri, flags,
+                                               referrer, referrerPolicy,
+                                               postData, null, null, triggeringPrincipal);
+    } else {
+      // Check if the current browser is allowed to unload.
+      let {permitUnload, timedOut} = browser.permitUnload();
+      if (!timedOut && !permitUnload) {
+        return;
+      }
 
-      position = "after_start";
+      if (postData) {
+        postData = serializeInputStream(postData);
+      }
+
+      let loadParams = {
+        uri,
+        triggeringPrincipal: triggeringPrincipal
+          ? gSerializationHelper.serializeToString(triggeringPrincipal)
+          : null,
+        flags,
+        referrer: referrer ? referrer.spec : null,
+        referrerPolicy,
+        postData
+      }
+
+      if (params.userContextId) {
+        loadParams.userContextId = params.userContextId;
+      }
+
+      LoadInOtherProcess(browser, loadParams);
     }
+  } catch (e) {
+    // If anything goes wrong when switching remoteness, just switch remoteness
+    // manually and load the URI.
+    // We might lose history that way but at least the browser loaded a page.
+    // This might be necessary if SessionStore wasn't initialized yet i.e.
+    // when the homepage is a non-remote page.
+    if (mustChangeProcess) {
+      Cu.reportError(e);
+      gBrowser.updateBrowserRemotenessByURL(browser, uri);
 
-    this.panel.openPopup(element, position, offset, 0);
+      if (params.userContextId) {
+        browser.webNavigation.setOriginAttributesBeforeLoading({ userContextId: params.userContextId });
+      }
+
+      browser.webNavigation.loadURIWithOptions(uri, flags, referrer, referrerPolicy,
+                                               postData, null, null, triggeringPrincipal);
+    } else {
+      throw e;
+    }
+  } finally {
+    if (!requiredRemoteType) {
+      browser.inLoadURI = false;
+    }
   }
-};
+}
+
+// Starts a new load in the browser first switching the browser to the correct
+// process
+function LoadInOtherProcess(browser, loadOptions, historyIndex = -1) {
+  let tab = gBrowser.getTabForBrowser(browser);
+  SessionStore.navigateAndRestore(tab, loadOptions, historyIndex);
+}
+
+// Called when a docshell has attempted to load a page in an incorrect process.
+// This function is responsible for loading the page in the correct process.
+function RedirectLoad({ target: browser, data }) {
+  // We should only start the redirection if the browser window has finished
+  // starting up. Otherwise, we should wait until the startup is done.
+  if (gBrowserInit.delayedStartupFinished) {
+    LoadInOtherProcess(browser, data.loadOptions, data.historyIndex);
+  } else {
+    let delayedStartupFinished = (subject, topic) => {
+      if (topic == "browser-delayed-startup-finished" &&
+          subject == window) {
+        Services.obs.removeObserver(delayedStartupFinished, topic);
+        LoadInOtherProcess(browser, data.loadOptions, data.historyIndex);
+      }
+    };
+    Services.obs.addObserver(delayedStartupFinished,
+                             "browser-delayed-startup-finished",
+                             false);
+  }
+}
+
+addEventListener("DOMContentLoaded", function onDCL() {
+  removeEventListener("DOMContentLoaded", onDCL);
+
+  // There are some windows, like macBrowserOverlay.xul, that
+  // load browser.js, but never load tabbrowser.xml. We can ignore
+  // those cases.
+  if (!gBrowser || !gBrowser.updateBrowserRemoteness) {
+    return;
+  }
+
+  window.QueryInterface(Ci.nsIInterfaceRequestor)
+        .getInterface(nsIWebNavigation)
+        .QueryInterface(Ci.nsIDocShellTreeItem).treeOwner
+        .QueryInterface(Ci.nsIInterfaceRequestor)
+        .getInterface(Ci.nsIXULWindow)
+        .XULBrowserWindow = window.XULBrowserWindow;
+  window.QueryInterface(Ci.nsIDOMChromeWindow).browserDOMWindow =
+    new nsBrowserAccess();
+
+  let initBrowser =
+    document.getAnonymousElementByAttribute(gBrowser, "anonid", "initialBrowser");
+
+  // The window's first argument is a tab if and only if we are swapping tabs.
+  // We must set the browser's usercontextid before updateBrowserRemoteness(),
+  // so that the newly created remote tab child has the correct usercontextid.
+  if (window.arguments) {
+    let tabToOpen = window.arguments[0];
+    if (tabToOpen instanceof XULElement && tabToOpen.hasAttribute("usercontextid")) {
+      initBrowser.setAttribute("usercontextid", tabToOpen.getAttribute("usercontextid"));
+    }
+  }
+
+  gBrowser.updateBrowserRemoteness(initBrowser, gMultiProcessBrowser);
+});
 
 var gBrowserInit = {
-  onLoad: function() {
-    gMultiProcessBrowser = gPrefService.getBoolPref("browser.tabs.remote");
+  delayedStartupFinished: false,
 
-    var mustLoadSidebar = false;
+  onLoad() {
+    gBrowser.addEventListener("DOMUpdatePageReport", gPopupBlockerObserver);
+
+    Services.obs.addObserver(gPluginHandler.NPAPIPluginCrashed, "plugin-crashed", false);
+
+    window.addEventListener("AppCommand", HandleAppCommandEvent, true);
+
+    // These routines add message listeners. They must run before
+    // loading the frame script to ensure that we don't miss any
+    // message sent between when the frame script is loaded and when
+    // the listener is registered.
+    DOMLinkHandler.init();
+    gPageStyleMenu.init();
+    LanguageDetectionListener.init();
+    BrowserOnClick.init();
+    FeedHandler.init();
+    CompactTheme.init();
+    AboutPrivateBrowsingListener.init();
+    TrackingProtection.init();
+    RefreshBlocker.init();
+    CaptivePortalWatcher.init();
+
+    let mm = window.getGroupMessageManager("browsers");
+    mm.loadFrameScript("chrome://browser/content/tab-content.js", true);
+    mm.loadFrameScript("chrome://browser/content/content.js", true);
+    mm.loadFrameScript("chrome://browser/content/content-UITour.js", true);
+    mm.loadFrameScript("chrome://global/content/manifestMessages.js", true);
+
+    // initialize observers and listeners
+    // and give C++ access to gBrowser
+    XULBrowserWindow.init();
+
+    window.messageManager.addMessageListener("Browser:LoadURI", RedirectLoad);
 
     if (!gMultiProcessBrowser) {
       // There is a Content:Click message manually sent from content.
@@ -742,75 +1152,9 @@ var gBrowserInit = {
         .addSystemEventListener(gBrowser, "click", contentAreaClick, true);
     }
 
-    gBrowser.addEventListener("DOMUpdatePageReport", gPopupBlockerObserver, false);
-
-    // Note that the XBL binding is untrusted
-    gBrowser.addEventListener("PluginBindingAttached", gPluginHandler, true, true);
-    gBrowser.addEventListener("PluginCrashed",         gPluginHandler, true);
-    gBrowser.addEventListener("PluginOutdated",        gPluginHandler, true);
-    gBrowser.addEventListener("PluginInstantiated",    gPluginHandler, true);
-    gBrowser.addEventListener("PluginRemoved",         gPluginHandler, true);
-
-    gBrowser.addEventListener("NewPluginInstalled", gPluginHandler.newPluginInstalled, true);
-
-    Services.obs.addObserver(gPluginHandler.pluginCrashed, "plugin-crashed", false);
-
-    window.addEventListener("AppCommand", HandleAppCommandEvent, true);
-
-    messageManager.loadFrameScript("chrome://browser/content/content.js", true);
-    messageManager.loadFrameScript("chrome://browser/content/content-sessionStore.js", true);
-
-    // initialize observers and listeners
-    // and give C++ access to gBrowser
-    XULBrowserWindow.init();
-    window.QueryInterface(Ci.nsIInterfaceRequestor)
-          .getInterface(nsIWebNavigation)
-          .QueryInterface(Ci.nsIDocShellTreeItem).treeOwner
-          .QueryInterface(Ci.nsIInterfaceRequestor)
-          .getInterface(Ci.nsIXULWindow)
-          .XULBrowserWindow = window.XULBrowserWindow;
-    window.QueryInterface(Ci.nsIDOMChromeWindow).browserDOMWindow =
-      new nsBrowserAccess();
-
-    // set default character set if provided
-    // window.arguments[1]: character set (string)
-    if ("arguments" in window && window.arguments.length > 1 && window.arguments[1]) {
-      if (window.arguments[1].startsWith("charset=")) {
-        var arrayArgComponents = window.arguments[1].split("=");
-        if (arrayArgComponents) {
-          //we should "inherit" the charset menu setting in a new window
-          getMarkupDocumentViewer().defaultCharacterSet = arrayArgComponents[1];
-        }
-      }
-    }
-
-    // Manually hook up session and global history for the first browser
-    // so that we don't have to load global history before bringing up a
-    // window.
-    // Wire up session and global history before any possible
-    // progress notifications for back/forward button updating
-    gBrowser.webNavigation.sessionHistory = Cc["@mozilla.org/browser/shistory;1"].
-                                            createInstance(Ci.nsISHistory);
-    Services.obs.addObserver(gBrowser.browsers[0], "browser:purge-session-history", false);
-
-    // remove the disablehistory attribute so the browser cleans up, as
-    // though it had done this work itself
-    gBrowser.browsers[0].removeAttribute("disablehistory");
-
-    // enable global history
-    try {
-      if (!gMultiProcessBrowser)
-      gBrowser.docShell.useGlobalHistory = true;
-    } catch(ex) {
-      Cu.reportError("Places database may be locked: " + ex);
-    }
-
     // hook up UI through progress listener
     gBrowser.addProgressListener(window.XULBrowserWindow);
     gBrowser.addTabsProgressListener(window.TabsProgressListener);
-
-    // setup our common DOMLinkAdded listener
-    gBrowser.addEventListener("DOMLinkAdded", DOMLinkHandler, false);
 
     // setup simple gestures support
     gGestureSupport.init(true);
@@ -818,140 +1162,65 @@ var gBrowserInit = {
     // setup history swipe animation
     gHistorySwipeAnimation.init();
 
-    if (window.opener && !window.opener.closed &&
-        PrivateBrowsingUtils.isWindowPrivate(window) == PrivateBrowsingUtils.isWindowPrivate(window.opener)) {
-      let openerSidebarBox = window.opener.document.getElementById("sidebar-box");
-      // If the opener had a sidebar, open the same sidebar in our window.
-      // The opener can be the hidden window too, if we're coming from the state
-      // where no windows are open, and the hidden window has no sidebar box.
-      if (openerSidebarBox && !openerSidebarBox.hidden) {
-        let sidebarCmd = openerSidebarBox.getAttribute("sidebarcommand");
-        let sidebarCmdElem = document.getElementById(sidebarCmd);
+    SidebarUI.init();
 
-        // dynamically generated sidebars will fail this check.
-        if (sidebarCmdElem) {
-          let sidebarBox = document.getElementById("sidebar-box");
-          let sidebarTitle = document.getElementById("sidebar-title");
-
-          sidebarTitle.setAttribute(
-            "value", window.opener.document.getElementById("sidebar-title").getAttribute("value"));
-          sidebarBox.setAttribute("width", openerSidebarBox.boxObject.width);
-
-          sidebarBox.setAttribute("sidebarcommand", sidebarCmd);
-          // Note: we're setting 'src' on sidebarBox, which is a <vbox>, not on
-          // the <browser id="sidebar">. This lets us delay the actual load until
-          // delayedStartup().
-          sidebarBox.setAttribute(
-            "src", window.opener.document.getElementById("sidebar").getAttribute("src"));
-          mustLoadSidebar = true;
-
-          sidebarBox.hidden = false;
-          document.getElementById("sidebar-splitter").hidden = false;
-          sidebarCmdElem.setAttribute("checked", "true");
-        }
-      }
-    }
-    else {
-      let box = document.getElementById("sidebar-box");
-      if (box.hasAttribute("sidebarcommand")) {
-        let commandID = box.getAttribute("sidebarcommand");
-        if (commandID) {
-          let command = document.getElementById(commandID);
-          if (command) {
-            mustLoadSidebar = true;
-            box.hidden = false;
-            document.getElementById("sidebar-splitter").hidden = false;
-            command.setAttribute("checked", "true");
-          }
-          else {
-            // Remove the |sidebarcommand| attribute, because the element it
-            // refers to no longer exists, so we should assume this sidebar
-            // panel has been uninstalled. (249883)
-            box.removeAttribute("sidebarcommand");
-          }
-        }
-      }
-    }
-
-    // Certain kinds of automigration rely on this notification to complete their
-    // tasks BEFORE the browser window is shown.
-    Services.obs.notifyObservers(null, "browser-window-before-show", "");
+    // Certain kinds of automigration rely on this notification to complete
+    // their tasks BEFORE the browser window is shown. SessionStore uses it to
+    // restore tabs into windows AFTER important parts like gMultiProcessBrowser
+    // have been initialized.
+    Services.obs.notifyObservers(window, "browser-window-before-show", "");
 
     // Set a sane starting width/height for all resolutions on new profiles.
     if (!document.documentElement.hasAttribute("width")) {
-      let defaultWidth;
-      let defaultHeight;
+      const TARGET_WIDTH = 1280;
+      const TARGET_HEIGHT = 1040;
+      let width = Math.min(screen.availWidth * .9, TARGET_WIDTH);
+      let height = Math.min(screen.availHeight * .9, TARGET_HEIGHT);
 
-      // Very small: maximize the window
-      // Portrait  : use about full width and 3/4 height, to view entire pages
-      //             at once (without being obnoxiously tall)
-      // Widescreen: use about half width, to suggest side-by-side page view
-      // Otherwise : use 3/4 height and width
-      if (screen.availHeight <= 600) {
+      document.documentElement.setAttribute("width", width);
+      document.documentElement.setAttribute("height", height);
+
+      if (width < TARGET_WIDTH && height < TARGET_HEIGHT) {
         document.documentElement.setAttribute("sizemode", "maximized");
-        defaultWidth = 610;
-        defaultHeight = 450;
       }
-      else {
-        if (screen.availWidth <= screen.availHeight) {
-          defaultWidth = screen.availWidth * .9;
-          defaultHeight = screen.availHeight * .75;
-        }
-        else if (screen.availWidth >= 2048) {
-          defaultWidth = (screen.availWidth / 2) - 20;
-          defaultHeight = screen.availHeight - 10;
-        }
-        else {
-          defaultWidth = screen.availWidth * .75;
-          defaultHeight = screen.availHeight * .75;
-        }
-
-#ifdef MOZ_WIDGET_GTK2
-        // On X, we're not currently able to account for the size of the window
-        // border.  Use 28px as a guess (titlebar + bottom window border)
-        defaultHeight -= 28;
-#endif
-      }
-      document.documentElement.setAttribute("width", defaultWidth);
-      document.documentElement.setAttribute("height", defaultHeight);
     }
-
-    if (!gShowPageResizers)
-      document.getElementById("status-bar").setAttribute("hideresizer", "true");
 
     if (!window.toolbar.visible) {
       // adjust browser UI for popups
-      if (gURLBar) {
-        gURLBar.setAttribute("readonly", "true");
-        gURLBar.setAttribute("enablehistory", "false");
-      }
-      goSetCommandEnabled("cmd_newNavigatorTab", false);
+      gURLBar.setAttribute("readonly", "true");
+      gURLBar.setAttribute("enablehistory", "false");
     }
 
-#ifdef MENUBAR_CAN_AUTOHIDE
-    updateAppButtonDisplay();
-#endif
-
     // Misc. inits.
+    TabletModeUpdater.init();
     CombinedStopReload.init();
-    TabsOnTop.init();
     gPrivateBrowsingUI.init();
-    TabsInTitlebar.init();
-    retrieveToolbarIconsizesFromTheme();
+
+    if (window.matchMedia("(-moz-os-version: windows-win8)").matches &&
+        window.matchMedia("(-moz-windows-default-theme)").matches) {
+      let windowFrameColor = new Color(...Cu.import("resource:///modules/Windows8WindowFrameColor.jsm", {})
+                                            .Windows8WindowFrameColor.get());
+      // Default to black for foreground text.
+      if (!windowFrameColor.isContrastRatioAcceptable(new Color(0, 0, 0))) {
+        document.documentElement.setAttribute("darkwindowframe", "true");
+      }
+    }
+
+    ToolbarIconColor.init();
 
     // Wait until chrome is painted before executing code not critical to making the window visible
-    this._boundDelayedStartup = this._delayedStartup.bind(this, mustLoadSidebar);
+    this._boundDelayedStartup = this._delayedStartup.bind(this);
     window.addEventListener("MozAfterPaint", this._boundDelayedStartup);
 
     this._loadHandled = true;
   },
 
-  _cancelDelayedStartup: function () {
+  _cancelDelayedStartup() {
     window.removeEventListener("MozAfterPaint", this._boundDelayedStartup);
     this._boundDelayedStartup = null;
   },
 
-  _delayedStartup: function(mustLoadSidebar) {
+  _delayedStartup() {
     let tmp = {};
     Cu.import("resource://gre/modules/TelemetryTimestamps.jsm", tmp);
     let TelemetryTimestamps = tmp.TelemetryTimestamps;
@@ -959,34 +1228,46 @@ var gBrowserInit = {
 
     this._cancelDelayedStartup();
 
-    // We need to set the MozApplicationManifest event listeners up
-    // before we start loading the home pages in case a document has
-    // a "manifest" attribute, in which the MozApplicationManifest event
-    // will be fired.
-    gBrowser.addEventListener("MozApplicationManifest",
-                              OfflineApps, false);
-    // listen for offline apps on social
-    let socialBrowser = document.getElementById("social-sidebar-browser");
-    socialBrowser.addEventListener("MozApplicationManifest",
-                              OfflineApps, false);
-
-    let uriToLoad = this._getUriToLoad();
-    var isLoadingBlank = isBlankPageURL(uriToLoad);
+    // We need to set the OfflineApps message listeners up before we
+    // load homepages, which might need them.
+    OfflineApps.init();
 
     // This pageshow listener needs to be registered before we may call
     // swapBrowsersAndCloseOther() to receive pageshow events fired by that.
-    gBrowser.addEventListener("pageshow", function(event) {
-      // Filter out events that are not about the document load we are interested in
-      if (content && event.target == content.document)
-        setTimeout(pageShowEventHandlers, 0, event.persisted);
-    }, true);
+    let mm = window.messageManager;
+    mm.addMessageListener("PageVisibility:Show", function(message) {
+      if (message.target == gBrowser.selectedBrowser) {
+        setTimeout(pageShowEventHandlers, 0, message.data.persisted);
+      }
+    });
 
+    gBrowser.addEventListener("AboutTabCrashedLoad", function(event) {
+      let ownerDoc = event.originalTarget;
+
+      if (!ownerDoc.documentURI.startsWith("about:tabcrashed")) {
+        return;
+      }
+
+      let browser = gBrowser.getBrowserForDocument(event.target);
+      // Reset the zoom for the tabcrashed page.
+      ZoomManager.setZoomForBrowser(browser, 1);
+    }, false, true);
+
+    gBrowser.addEventListener("InsecureLoginFormsStateChange", function() {
+      gIdentityHandler.refreshForInsecureLoginForms();
+    });
+
+    gBrowser.addEventListener("PermissionStateChange", function() {
+      gIdentityHandler.refreshIdentityBlock();
+    });
+
+    let uriToLoad = this._getUriToLoad();
     if (uriToLoad && uriToLoad != "about:blank") {
-      if (uriToLoad instanceof Ci.nsISupportsArray) {
-        let count = uriToLoad.Count();
+      if (uriToLoad instanceof Ci.nsIArray) {
+        let count = uriToLoad.length;
         let specs = [];
         for (let i = 0; i < count; i++) {
-          let urisstring = uriToLoad.GetElementAt(i).QueryInterface(Ci.nsISupportsString);
+          let urisstring = uriToLoad.queryElementAt(i, Ci.nsISupportsString);
           specs.push(urisstring.data);
         }
 
@@ -995,81 +1276,138 @@ var gBrowserInit = {
         try {
           gBrowser.loadTabs(specs, false, true);
         } catch (e) {}
-      }
-      else if (uriToLoad instanceof XULElement) {
+      } else if (uriToLoad instanceof XULElement) {
         // swap the given tab with the default about:blank tab and then close
         // the original tab in the other window.
+        let tabToOpen = uriToLoad;
+
+        // If this tab was passed as a window argument, clear the
+        // reference to it from the arguments array.
+        if (window.arguments[0] == tabToOpen) {
+          window.arguments[0] = null;
+        }
 
         // Stop the about:blank load
         gBrowser.stop();
         // make sure it has a docshell
         gBrowser.docShell;
 
-        gBrowser.swapBrowsersAndCloseOther(gBrowser.selectedTab, uriToLoad);
-      }
-      // window.arguments[2]: referrer (nsIURI)
-      //                 [3]: postData (nsIInputStream)
-      //                 [4]: allowThirdPartyFixup (bool)
-      else if (window.arguments.length >= 3) {
-        loadURI(uriToLoad, window.arguments[2], window.arguments[3] || null,
-                window.arguments[4] || false);
+        // We must set usercontextid before updateBrowserRemoteness()
+        // so that the newly created remote tab child has correct usercontextid
+        if (tabToOpen.hasAttribute("usercontextid")) {
+          let usercontextid = tabToOpen.getAttribute("usercontextid");
+          gBrowser.selectedBrowser.setAttribute("usercontextid", usercontextid);
+        }
+
+        try {
+          // Make sure selectedBrowser has the same remote settings as the one
+          // we are swapping in.
+          gBrowser.updateBrowserRemoteness(gBrowser.selectedBrowser,
+                                           tabToOpen.linkedBrowser.isRemoteBrowser,
+                                           { remoteType: tabToOpen.linkedBrowser.remoteType });
+          gBrowser.swapBrowsersAndCloseOther(gBrowser.selectedTab, tabToOpen);
+        } catch (e) {
+          Cu.reportError(e);
+        }
+      } else if (window.arguments.length >= 3) {
+        // window.arguments[2]: referrer (nsIURI | string)
+        //                 [3]: postData (nsIInputStream)
+        //                 [4]: allowThirdPartyFixup (bool)
+        //                 [5]: referrerPolicy (int)
+        //                 [6]: userContextId (int)
+        //                 [7]: originPrincipal (nsIPrincipal)
+        let referrerURI = window.arguments[2];
+        if (typeof(referrerURI) == "string") {
+          try {
+            referrerURI = makeURI(referrerURI);
+          } catch (e) {
+            referrerURI = null;
+          }
+        }
+        let referrerPolicy = (window.arguments[5] != undefined ?
+            window.arguments[5] : Ci.nsIHttpChannel.REFERRER_POLICY_UNSET);
+        let userContextId = (window.arguments[6] != undefined ?
+            window.arguments[6] : Ci.nsIScriptSecurityManager.DEFAULT_USER_CONTEXT_ID);
+        loadURI(uriToLoad, referrerURI, window.arguments[3] || null,
+                window.arguments[4] || false, referrerPolicy, userContextId,
+                // pass the origin principal (if any) and force its use to create
+                // an initial about:blank viewer if present:
+                window.arguments[7], !!window.arguments[7]);
         window.focus();
-      }
-      // Note: loadOneOrMoreURIs *must not* be called if window.arguments.length >= 3.
-      // Such callers expect that window.arguments[0] is handled as a single URI.
-      else
+      } else {
+        // Note: loadOneOrMoreURIs *must not* be called if window.arguments.length >= 3.
+        // Such callers expect that window.arguments[0] is handled as a single URI.
         loadOneOrMoreURIs(uriToLoad);
+      }
     }
 
-#ifdef MOZ_SAFE_BROWSING
     // Bug 778855 - Perf regression if we do this here. To be addressed in bug 779008.
     setTimeout(function() { SafeBrowsing.init(); }, 2000);
-#endif
 
+    Services.obs.addObserver(gIdentityHandler, "perm-changed", false);
     Services.obs.addObserver(gSessionHistoryObserver, "browser:purge-session-history", false);
+    Services.obs.addObserver(gStoragePressureObserver, "QuotaManager::StoragePressure", false);
     Services.obs.addObserver(gXPInstallObserver, "addon-install-disabled", false);
     Services.obs.addObserver(gXPInstallObserver, "addon-install-started", false);
     Services.obs.addObserver(gXPInstallObserver, "addon-install-blocked", false);
+    Services.obs.addObserver(gXPInstallObserver, "addon-install-origin-blocked", false);
     Services.obs.addObserver(gXPInstallObserver, "addon-install-failed", false);
+    Services.obs.addObserver(gXPInstallObserver, "addon-install-confirmation", false);
     Services.obs.addObserver(gXPInstallObserver, "addon-install-complete", false);
-    Services.obs.addObserver(gFormSubmitObserver, "invalidformsubmit", false);
+    window.messageManager.addMessageListener("Browser:URIFixup", gKeywordURIFixup);
 
     BrowserOffline.init();
-    OfflineApps.init();
     IndexedDBPromptHelper.init();
-    gFormSubmitObserver.init();
-    SocialUI.init();
-    AddonManager.addAddonListener(AddonsMgrListener);
-    WebrtcIndicator.init();
 
-    // Ensure login manager is up and running.
-    Services.logins;
+    if (AppConstants.E10S_TESTING_ONLY)
+      gRemoteTabsUI.init();
 
-    if (mustLoadSidebar) {
-      let sidebar = document.getElementById("sidebar");
-      let sidebarBox = document.getElementById("sidebar-box");
-      sidebar.setAttribute("src", sidebarBox.getAttribute("src"));
-    }
+    // Initialize the full zoom setting.
+    // We do this before the session restore service gets initialized so we can
+    // apply full zoom settings to tabs restored by the session restore service.
+    FullZoom.init();
+    PanelUI.init();
+    LightweightThemeListener.init();
 
     UpdateUrlbarSearchSplitterState();
 
-    if (!isLoadingBlank || !focusAndSelectUrlBar())
-      gBrowser.selectedBrowser.focus();
-
-    gNavToolbox.customizeDone = BrowserToolboxCustomizeDone;
-    gNavToolbox.customizeChange = BrowserToolboxCustomizeChange;
-
-    // Set up Sanitize Item
-    this._initializeSanitizer();
+    if (!(isBlankPageURL(uriToLoad) || uriToLoad == "about:privatebrowsing") ||
+        !focusAndSelectUrlBar()) {
+      if (gBrowser.selectedBrowser.isRemoteBrowser) {
+        // If the initial browser is remote, in order to optimize for first paint,
+        // we'll defer switching focus to that browser until it has painted.
+        let focusedElement = document.commandDispatcher.focusedElement;
+        mm.addMessageListener("Browser:FirstPaint", function onFirstPaint() {
+          mm.removeMessageListener("Browser:FirstPaint", onFirstPaint);
+          // If focus didn't move while we were waiting for first paint, we're okay
+          // to move to the browser.
+          if (document.commandDispatcher.focusedElement == focusedElement) {
+            gBrowser.selectedBrowser.focus();
+          }
+        });
+      } else {
+        // If the initial browser is not remote, we can focus the browser
+        // immediately with no paint performance impact.
+        gBrowser.selectedBrowser.focus();
+      }
+    }
 
     // Enable/Disable auto-hide tabbar
     gBrowser.tabContainer.updateVisibility();
+
+    BookmarkingUI.init();
+    AutoShowBookmarksToolbar.init();
 
     gPrefService.addObserver(gHomeButton.prefDomain, gHomeButton, false);
 
     var homeButton = document.getElementById("home-button");
     gHomeButton.updateTooltip(homeButton);
-    gHomeButton.updatePersonalToolbarStyle(homeButton);
+
+    let safeMode = document.getElementById("helpSafeMode");
+    if (Services.appinfo.inSafeMode) {
+      safeMode.label = safeMode.getAttribute("stoplabel");
+      safeMode.accesskey = safeMode.getAttribute("stopaccesskey");
+    }
 
     // BiDi UI
     gBidiUI = isBidiEnabled();
@@ -1085,17 +1423,9 @@ var gBrowserInit = {
     if (!getBoolPref("ui.click_hold_context_menus", false))
       SetClickAndHoldHandlers();
 
-    // Initialize the full zoom setting.
-    // We do this before the session restore service gets initialized so we can
-    // apply full zoom settings to tabs restored by the session restore service.
-    FullZoom.init();
-
-    // Bug 666804 - NetworkPrioritizer support for e10s
-    if (!gMultiProcessBrowser) {
-      let NP = {};
-      Cu.import("resource:///modules/NetworkPrioritizer.jsm", NP);
-      NP.trackBrowserWindow(window);
-    }
+    let NP = {};
+    Cu.import("resource:///modules/NetworkPrioritizer.jsm", NP);
+    NP.trackBrowserWindow(window);
 
     PlacesToolbarHelper.init();
 
@@ -1106,161 +1436,71 @@ var gBrowserInit = {
     // auto-resume downloads begin (such as after crashing or quitting with
     // active downloads) and speeds up the first-load of the download manager UI.
     // If the user manually opens the download manager before the timeout, the
-    // downloads will start right away, and getting the service again won't hurt.
+    // downloads will start right away, and initializing again won't hurt.
     setTimeout(function() {
-      let DownloadsCommon =
-        Cu.import("resource:///modules/DownloadsCommon.jsm", {}).DownloadsCommon;
-      if (DownloadsCommon.useJSTransfer) {
-        // Open the data link without initalizing nsIDownloadManager.
-        DownloadsCommon.initializeAllDataLinks();
-      } else {
-        // Initalizing nsIDownloadManager will trigger the data link.
-        Services.downloads;
+      try {
+        Cu.import("resource:///modules/DownloadsCommon.jsm", {})
+          .DownloadsCommon.initializeAllDataLinks();
+        Cu.import("resource:///modules/DownloadsTaskbar.jsm", {})
+          .DownloadsTaskbar.registerIndicator(window);
+      } catch (ex) {
+        Cu.reportError(ex);
       }
-      let DownloadTaskbarProgress =
-        Cu.import("resource://gre/modules/DownloadTaskbarProgress.jsm", {}).DownloadTaskbarProgress;
-      DownloadTaskbarProgress.onBrowserWindowLoad(window);
     }, 10000);
+
+    // Load the Login Manager data from disk off the main thread, some time
+    // after startup.  If the data is required before the timeout, for example
+    // because a restored page contains a password field, it will be loaded on
+    // the main thread, and this initialization request will be ignored.
+    setTimeout(function() {
+      try {
+        Services.logins;
+      } catch (ex) {
+        Cu.reportError(ex);
+      }
+    }, 3000);
 
     // The object handling the downloads indicator is also initialized here in the
     // delayed startup function, but the actual indicator element is not loaded
     // unless there are downloads to be displayed.
     DownloadsButton.initializeIndicator();
 
-#ifndef XP_MACOSX
-    updateEditUIVisibility();
-    let placesContext = document.getElementById("placesContext");
-    placesContext.addEventListener("popupshowing", updateEditUIVisibility, false);
-    placesContext.addEventListener("popuphiding", updateEditUIVisibility, false);
-#endif
-
-    gBrowser.mPanelContainer.addEventListener("InstallBrowserTheme", LightWeightThemeWebInstaller, false, true);
-    gBrowser.mPanelContainer.addEventListener("PreviewBrowserTheme", LightWeightThemeWebInstaller, false, true);
-    gBrowser.mPanelContainer.addEventListener("ResetBrowserThemePreview", LightWeightThemeWebInstaller, false, true);
-
-    // Bug 666808 - AeroPeek support for e10s
-    if (!gMultiProcessBrowser) {
-      if (Win7Features)
-        Win7Features.onOpenWindow();
+    if (AppConstants.platform != "macosx") {
+      updateEditUIVisibility();
+      let placesContext = document.getElementById("placesContext");
+      placesContext.addEventListener("popupshowing", updateEditUIVisibility);
+      placesContext.addEventListener("popuphiding", updateEditUIVisibility);
     }
 
-   // called when we go into full screen, even if initiated by a web page script
-    window.addEventListener("fullscreen", onFullScreen, true);
+    LightWeightThemeWebInstaller.init();
 
-    // Called when we enter DOM full-screen mode. Note we can already be in browser
-    // full-screen mode when we enter DOM full-screen mode.
-    window.addEventListener("MozEnteredDomFullscreen", onMozEnteredDomFullscreen, true);
+    if (Win7Features)
+      Win7Features.onOpenWindow();
 
-    if (window.fullScreen)
-      onFullScreen();
-    if (document.mozFullScreen)
-      onMozEnteredDomFullscreen();
+    FullScreen.init();
+    PointerLock.init();
 
-#ifdef MOZ_SERVICES_SYNC
     // initialize the sync UI
     gSyncUI.init();
-#endif
+    gFxAccounts.init();
 
-#ifdef MOZ_DATA_REPORTING
-    gDataNotificationInfoBar.init();
-#endif
+    if (AppConstants.MOZ_DATA_REPORTING)
+      gDataNotificationInfoBar.init();
 
     gBrowserThumbnails.init();
 
-    setUrlAndSearchBarWidthForConditionalForwardButton();
-    window.addEventListener("resize", function resizeHandler(event) {
-      if (event.target == window)
-        setUrlAndSearchBarWidthForConditionalForwardButton();
-    });
+    gMenuButtonBadgeManager.init();
 
-    // Enable developer toolbar?
-    let devToolbarEnabled = gPrefService.getBoolPref("devtools.toolbar.enabled");
-    if (devToolbarEnabled) {
-      let cmd = document.getElementById("Tools:DevToolbar");
-      cmd.removeAttribute("disabled");
-      cmd.removeAttribute("hidden");
-      document.getElementById("Tools:DevToolbarFocus").removeAttribute("disabled");
+    gMenuButtonUpdateBadge.init();
 
-      // Show the toolbar if it was previously visible
-      if (gPrefService.getBoolPref("devtools.toolbar.visible")) {
-        DeveloperToolbar.show(false);
-      }
-    }
+    gExtensionsNotifications.init();
 
-    // Enable Chrome Debugger?
-    let chromeEnabled = gPrefService.getBoolPref("devtools.chrome.enabled");
-    let remoteEnabled = chromeEnabled &&
-                        gPrefService.getBoolPref("devtools.debugger.chrome-enabled") &&
-                        gPrefService.getBoolPref("devtools.debugger.remote-enabled");
-    if (remoteEnabled) {
-      let cmd = document.getElementById("Tools:ChromeDebugger");
-      cmd.removeAttribute("disabled");
-      cmd.removeAttribute("hidden");
-    }
+    window.addEventListener("mousemove", MousePosTracker);
+    window.addEventListener("dragover", MousePosTracker);
 
-    // Enable Error Console?
-    let consoleEnabled = gPrefService.getBoolPref("devtools.errorconsole.enabled");
-    if (consoleEnabled) {
-      let cmd = document.getElementById("Tools:ErrorConsole");
-      cmd.removeAttribute("disabled");
-      cmd.removeAttribute("hidden");
-    }
-
-    // Enable Scratchpad in the UI, if the preference allows this.
-    let scratchpadEnabled = gPrefService.getBoolPref(Scratchpad.prefEnabledName);
-    if (scratchpadEnabled) {
-      let cmd = document.getElementById("Tools:Scratchpad");
-      cmd.removeAttribute("disabled");
-      cmd.removeAttribute("hidden");
-    }
-
-    // Enable DevTools connection screen, if the preference allows this.
-    let devtoolsRemoteEnabled = gPrefService.getBoolPref("devtools.debugger.remote-enabled");
-    if (devtoolsRemoteEnabled) {
-      let cmd = document.getElementById("Tools:DevToolsConnect");
-      cmd.removeAttribute("disabled");
-      cmd.removeAttribute("hidden");
-    }
-
-#ifdef MENUBAR_CAN_AUTOHIDE
-    // If the user (or the locale) hasn't enabled the top-level "Character
-    // Encoding" menu via the "browser.menu.showCharacterEncoding" preference,
-    // hide it.
-    if ("true" != gPrefService.getComplexValue("browser.menu.showCharacterEncoding",
-                                               Ci.nsIPrefLocalizedString).data)
-      document.getElementById("appmenu_charsetMenu").hidden = true;
-#endif
-
-    // Enable Responsive UI?
-    let responsiveUIEnabled = gPrefService.getBoolPref("devtools.responsiveUI.enabled");
-    if (responsiveUIEnabled) {
-      let cmd = document.getElementById("Tools:ResponsiveUI");
-      cmd.removeAttribute("disabled");
-      cmd.removeAttribute("hidden");
-    }
-
-    // Add Devtools menuitems and listeners
-    gDevToolsBrowser.registerBrowserWindow(window);
-
-    let appMenuButton = document.getElementById("appmenu-button");
-    let appMenuPopup = document.getElementById("appmenu-popup");
-    if (appMenuButton && appMenuPopup) {
-      let appMenuOpening = null;
-      appMenuButton.addEventListener("mousedown", function(event) {
-        if (event.button == 0)
-          appMenuOpening = new Date();
-      }, false);
-      appMenuPopup.addEventListener("popupshown", function(event) {
-        if (event.target != appMenuPopup || !appMenuOpening)
-          return;
-        let duration = new Date() - appMenuOpening;
-        appMenuOpening = null;
-        Services.telemetry.getHistogramById("FX_APP_MENU_OPEN_MS").add(duration);
-      }, false);
-    }
-
-    window.addEventListener("mousemove", MousePosTracker, false);
-    window.addEventListener("dragover", MousePosTracker, false);
+    gNavToolbox.addEventListener("customizationstarting", CustomizationHandler);
+    gNavToolbox.addEventListener("customizationchange", CustomizationHandler);
+    gNavToolbox.addEventListener("customizationending", CustomizationHandler);
 
     // End startup crash tracking after a delay to catch crashes while restoring
     // tabs and to postpone saving the pref to disk.
@@ -1271,39 +1511,78 @@ var gBrowserInit = {
       Cu.reportError("Could not end startup crash tracking: " + ex);
     }
 
-#ifdef XP_WIN
-#ifdef MOZ_METRO
-    gMetroPrefs.prefDomain.forEach(function(prefName) {
-      gMetroPrefs.pushDesktopControlledPrefToMetro(prefName);
-      Services.prefs.addObserver(prefName, gMetroPrefs, false);
-    }, this);
-#endif
-#endif
+    // Delay this a minute because there's no rush
+    setTimeout(() => {
+      this.gmpInstallManager = new GMPInstallManager();
+      // We don't really care about the results, if someone is interested they
+      // can check the log.
+      this.gmpInstallManager.simpleCheckAndInstall().then(null, () => {});
+    }, 1000 * 60);
 
-    if (gMultiProcessBrowser) {
-      // Bug 862519 - Backspace doesn't work in electrolysis builds.
-      // We bypass the problem by disabling the backspace-to-go-back command.
-      document.getElementById("cmd_handleBackspace").setAttribute("disabled", true);
-    }
+    // Report via telemetry whether we're able to play MP4/H.264/AAC video.
+    // We suspect that some Windows users have a broken or have not installed
+    // Windows Media Foundation, and we'd like to know how many. We'd also like
+    // to know how good our coverage is on other platforms.
+    // Note: we delay by 90 seconds reporting this, as calling canPlayType()
+    // on Windows will cause DLLs to load, i.e. cause disk I/O.
+    setTimeout(() => {
+      let v = document.createElementNS("http://www.w3.org/1999/xhtml", "video");
+      let aacWorks = v.canPlayType("audio/mp4") != "";
+      Services.telemetry.getHistogramById("VIDEO_CAN_CREATE_AAC_DECODER").add(aacWorks);
+      let h264Works = v.canPlayType("video/mp4") != "";
+      Services.telemetry.getHistogramById("VIDEO_CAN_CREATE_H264_DECODER").add(h264Works);
+    }, 90 * 1000);
 
     SessionStore.promiseInitialized.then(() => {
+      // Bail out if the window has been closed in the meantime.
+      if (window.closed) {
+        return;
+      }
+
       // Enable the Restore Last Session command if needed
-      if (SessionStore.canRestoreLastSession &&
-          !PrivateBrowsingUtils.isWindowPrivate(window))
-        goSetCommandEnabled("Browser:RestoreLastSession", true);
+      RestoreLastSessionObserver.init();
 
-      TabView.init();
+      SidebarUI.startDelayedLoad();
+      SocialUI.init();
 
-      setTimeout(function () { BrowserChromeTest.markAsReady(); }, 0);
+      // Start monitoring slow add-ons
+      AddonWatcher.init();
+
+      // Telemetry for master-password - we do this after 5 seconds as it
+      // can cause IO if NSS/PSM has not already initialized.
+      setTimeout(() => {
+        if (window.closed) {
+          return;
+        }
+        let tokenDB = Cc["@mozilla.org/security/pk11tokendb;1"]
+                        .getService(Ci.nsIPK11TokenDB);
+        let token = tokenDB.getInternalKeyToken();
+        let mpEnabled = token.hasPassword;
+        if (mpEnabled) {
+          Services.telemetry.getHistogramById("MASTER_PASSWORD_ENABLED").add(mpEnabled);
+        }
+      }, 5000);
+
+      PanicButtonNotifier.init();
     });
+
+    gBrowser.tabContainer.addEventListener("TabSelect", function() {
+      for (let panel of document.querySelectorAll("panel[tabspecific='true']")) {
+        if (panel.state == "open") {
+          panel.hidePopup();
+        }
+      }
+    });
+
+    this.delayedStartupFinished = true;
 
     Services.obs.notifyObservers(window, "browser-delayed-startup-finished", "");
     TelemetryTimestamps.add("delayedStartupFinished");
   },
 
   // Returns the URI(s) to load at startup.
-  _getUriToLoad: function () {
-    // window.arguments[0]: URI to load (string), or an nsISupportsArray of
+  _getUriToLoad() {
+    // window.arguments[0]: URI to load (string), or an nsIArray of
     //                      nsISupportsStrings to load, or a xul:tab of
     //                      a tabbrowser, which will be replaced by this
     //                      window (for this case, all other arguments are
@@ -1326,19 +1605,12 @@ var gBrowserInit = {
     return uri;
   },
 
-  onUnload: function() {
+  onUnload() {
     // In certain scenarios it's possible for unload to be fired before onload,
     // (e.g. if the window is being closed after browser.js loads but before the
     // load completes). In that case, there's nothing to do here.
     if (!this._loadHandled)
       return;
-
-    gDevToolsBrowser.forgetBrowserWindow(window);
-
-    let desc = Object.getOwnPropertyDescriptor(window, "DeveloperToolbar");
-    if (desc && !desc.get) {
-      DeveloperToolbar.destroy();
-    }
 
     // First clean up services initialized in gBrowserInit.onLoad (or those whose
     // uninit methods don't depend on the services having been initialized).
@@ -1349,9 +1621,13 @@ var gBrowserInit = {
 
     gHistorySwipeAnimation.uninit();
 
-    FullScreen.cleanup();
+    FullScreen.uninit();
 
-    Services.obs.removeObserver(gPluginHandler.pluginCrashed, "plugin-crashed");
+    gFxAccounts.uninit();
+
+    gExtensionsNotifications.uninit();
+
+    Services.obs.removeObserver(gPluginHandler.NPAPIPluginCrashed, "plugin-crashed");
 
     try {
       gBrowser.removeProgressListener(window.XULBrowserWindow);
@@ -1359,20 +1635,35 @@ var gBrowserInit = {
     } catch (ex) {
     }
 
-    BookmarkingUI.uninit();
+    PlacesToolbarHelper.uninit();
 
-    TabsOnTop.uninit();
+    BookmarkingUI.uninit();
 
     TabsInTitlebar.uninit();
 
-    var enumerator = Services.wm.getEnumerator(null);
-    enumerator.getNext();
-    if (!enumerator.hasMoreElements()) {
-      document.persist("sidebar-box", "sidebarcommand");
-      document.persist("sidebar-box", "width");
-      document.persist("sidebar-box", "src");
-      document.persist("sidebar-title", "value");
-    }
+    ToolbarIconColor.uninit();
+
+    TabletModeUpdater.uninit();
+
+    gTabletModePageCounter.finish();
+
+    BrowserOnClick.uninit();
+
+    FeedHandler.uninit();
+
+    CompactTheme.uninit();
+
+    TrackingProtection.uninit();
+
+    RefreshBlocker.uninit();
+
+    CaptivePortalWatcher.uninit();
+
+    gMenuButtonUpdateBadge.uninit();
+
+    gMenuButtonBadgeManager.uninit();
+
+    SidebarUI.uninit();
 
     // Now either cancel delayedStartup, or clean up the services initialized from
     // it.
@@ -1384,17 +1675,22 @@ var gBrowserInit = {
 
       gPrefService.removeObserver(ctrlTab.prefName, ctrlTab);
       ctrlTab.uninit();
-      TabView.uninit();
+      SocialUI.uninit();
       gBrowserThumbnails.uninit();
       FullZoom.destroy();
 
+      Services.obs.removeObserver(gIdentityHandler, "perm-changed");
       Services.obs.removeObserver(gSessionHistoryObserver, "browser:purge-session-history");
+      Services.obs.removeObserver(gStoragePressureObserver, "QuotaManager::StoragePressure");
       Services.obs.removeObserver(gXPInstallObserver, "addon-install-disabled");
       Services.obs.removeObserver(gXPInstallObserver, "addon-install-started");
       Services.obs.removeObserver(gXPInstallObserver, "addon-install-blocked");
+      Services.obs.removeObserver(gXPInstallObserver, "addon-install-origin-blocked");
       Services.obs.removeObserver(gXPInstallObserver, "addon-install-failed");
+      Services.obs.removeObserver(gXPInstallObserver, "addon-install-confirmation");
       Services.obs.removeObserver(gXPInstallObserver, "addon-install-complete");
-      Services.obs.removeObserver(gFormSubmitObserver, "invalidformsubmit");
+      window.messageManager.removeMessageListener("Browser:URIFixup", gKeywordURIFixup);
+      window.messageManager.removeMessageListener("Browser:LoadURI", RedirectLoad);
 
       try {
         gPrefService.removeObserver(gHomeButton.prefDomain, gHomeButton);
@@ -1402,23 +1698,18 @@ var gBrowserInit = {
         Cu.reportError(ex);
       }
 
-#ifdef XP_WIN
-#ifdef MOZ_METRO
-      gMetroPrefs.prefDomain.forEach(function(prefName) {
-        Services.prefs.removeObserver(prefName, gMetroPrefs);
-      });
-#endif
-#endif
+      if (this.gmpInstallManager) {
+        this.gmpInstallManager.uninit();
+      }
 
       BrowserOffline.uninit();
-      OfflineApps.uninit();
       IndexedDBPromptHelper.uninit();
-      AddonManager.removeAddonListener(AddonsMgrListener);
-      SocialUI.uninit();
+      LightweightThemeListener.uninit();
+      PanelUI.uninit();
+      AutoShowBookmarksToolbar.uninit();
     }
 
     // Final window teardown, do this last.
-    window.XULBrowserWindow.destroy();
     window.XULBrowserWindow = null;
     window.QueryInterface(Ci.nsIInterfaceRequestor)
           .getInterface(Ci.nsIWebNavigation)
@@ -1428,19 +1719,20 @@ var gBrowserInit = {
           .XULBrowserWindow = null;
     window.QueryInterface(Ci.nsIDOMChromeWindow).browserDOMWindow = null;
   },
+};
 
-#ifdef XP_MACOSX
+if (AppConstants.platform == "macosx") {
   // nonBrowserWindowStartup(), nonBrowserWindowDelayedStartup(), and
   // nonBrowserWindowShutdown() are used for non-browser windows in
   // macBrowserOverlay
-  nonBrowserWindowStartup: function() {
+  gBrowserInit.nonBrowserWindowStartup = function() {
     // Disable inappropriate commands / submenus
-    var disabledItems = ['Browser:SavePage',
-                         'Browser:SendLink', 'cmd_pageSetup', 'cmd_print', 'cmd_find', 'cmd_findAgain',
-                         'viewToolbarsMenu', 'viewSidebarMenuMenu', 'Browser:Reload',
-                         'viewFullZoomMenu', 'pageStyleMenu', 'charsetMenu', 'View:PageSource', 'View:FullScreen',
-                         'viewHistorySidebar', 'Browser:AddBookmarkAs', 'Browser:BookmarkAllTabs',
-                         'View:PageInfo', 'Browser:ToggleTabView', 'Browser:ToggleAddonBar'];
+    var disabledItems = ["Browser:SavePage",
+                         "Browser:SendLink", "cmd_pageSetup", "cmd_print", "cmd_find", "cmd_findAgain",
+                         "viewToolbarsMenu", "viewSidebarMenuMenu", "Browser:Reload",
+                         "viewFullZoomMenu", "pageStyleMenu", "charsetMenu", "View:PageSource", "View:FullScreen",
+                         "viewHistorySidebar", "Browser:AddBookmarkAs", "Browser:BookmarkAllTabs",
+                         "View:PageInfo"];
     var element;
 
     for (let disabledItem of disabledItems) {
@@ -1452,7 +1744,7 @@ var gBrowserInit = {
     // If no windows are active (i.e. we're the hidden window), disable the close, minimize
     // and zoom menu commands as well
     if (window.location.href == "chrome://browser/content/hiddenWindow.xul") {
-      var hiddenWindowDisabledItems = ['cmd_close', 'minimizeWindow', 'zoomWindow'];
+      var hiddenWindowDisabledItems = ["cmd_close", "minimizeWindow", "zoomWindow"];
       for (let hiddenWindowDisabledItem of hiddenWindowDisabledItems) {
         element = document.getElementById(hiddenWindowDisabledItem);
         if (element)
@@ -1475,40 +1767,40 @@ var gBrowserInit = {
           let dockSupport = Cc["@mozilla.org/widget/macdocksupport;1"]
                             .getService(Ci.nsIMacDockSupport);
           dockSupport.dockMenu = nativeMenu;
-        }
-        catch (e) {
+        } catch (e) {
         }
       }
     }
-
-    SocialUI.nonBrowserWindowInit();
 
     if (PrivateBrowsingUtils.permanentPrivateBrowsing) {
       document.getElementById("macDockMenuNewWindow").hidden = true;
     }
 
     this._delayedStartupTimeoutId = setTimeout(this.nonBrowserWindowDelayedStartup.bind(this), 0);
-  },
+  };
 
-  nonBrowserWindowDelayedStartup: function() {
+  gBrowserInit.nonBrowserWindowDelayedStartup = function() {
     this._delayedStartupTimeoutId = null;
 
     // initialise the offline listener
     BrowserOffline.init();
 
-    // Set up Sanitize Item
-    this._initializeSanitizer();
-
     // initialize the private browsing UI
     gPrivateBrowsingUI.init();
 
-#ifdef MOZ_SERVICES_SYNC
     // initialize the sync UI
     gSyncUI.init();
-#endif
-  },
 
-  nonBrowserWindowShutdown: function() {
+    if (AppConstants.E10S_TESTING_ONLY) {
+      gRemoteTabsUI.init();
+    }
+  };
+
+  gBrowserInit.nonBrowserWindowShutdown = function() {
+    let dockSupport = Cc["@mozilla.org/widget/macdocksupport;1"]
+                      .getService(Ci.nsIMacDockSupport);
+    dockSupport.dockMenu = null;
+
     // If nonBrowserWindowDelayedStartup hasn't run yet, we have no work to do -
     // just cancel the pending timeout and return;
     if (this._delayedStartupTimeoutId) {
@@ -1517,65 +1809,19 @@ var gBrowserInit = {
     }
 
     BrowserOffline.uninit();
-  },
-#endif
-
-  _initializeSanitizer: function() {
-    const kDidSanitizeDomain = "privacy.sanitize.didShutdownSanitize";
-    if (gPrefService.prefHasUserValue(kDidSanitizeDomain)) {
-      gPrefService.clearUserPref(kDidSanitizeDomain);
-      // We need to persist this preference change, since we want to
-      // check it at next app start even if the browser exits abruptly
-      gPrefService.savePrefFile(null);
-    }
-
-    /**
-     * Migrate Firefox 3.0 privacy.item prefs under one of these conditions:
-     *
-     * a) User has customized any privacy.item prefs
-     * b) privacy.sanitize.sanitizeOnShutdown is set
-     */
-    if (!gPrefService.getBoolPref("privacy.sanitize.migrateFx3Prefs")) {
-      let itemBranch = gPrefService.getBranch("privacy.item.");
-      let itemArray = itemBranch.getChildList("");
-
-      // See if any privacy.item prefs are set
-      let doMigrate = itemArray.some(function (name) itemBranch.prefHasUserValue(name));
-      // Or if sanitizeOnShutdown is set
-      if (!doMigrate)
-        doMigrate = gPrefService.getBoolPref("privacy.sanitize.sanitizeOnShutdown");
-
-      if (doMigrate) {
-        let cpdBranch = gPrefService.getBranch("privacy.cpd.");
-        let clearOnShutdownBranch = gPrefService.getBranch("privacy.clearOnShutdown.");
-        for (let name of itemArray) {
-          try {
-            // don't migrate password or offlineApps clearing in the CRH dialog since
-            // there's no UI for those anymore. They default to false. bug 497656
-            if (name != "passwords" && name != "offlineApps")
-              cpdBranch.setBoolPref(name, itemBranch.getBoolPref(name));
-            clearOnShutdownBranch.setBoolPref(name, itemBranch.getBoolPref(name));
-          }
-          catch(e) {
-            Cu.reportError("Exception thrown during privacy pref migration: " + e);
-          }
-        }
-      }
-
-      gPrefService.setBoolPref("privacy.sanitize.migrateFx3Prefs", true);
-    }
-  },
+  };
 }
 
 
 /* Legacy global init functions */
 var BrowserStartup        = gBrowserInit.onLoad.bind(gBrowserInit);
 var BrowserShutdown       = gBrowserInit.onUnload.bind(gBrowserInit);
-#ifdef XP_MACOSX
-var nonBrowserWindowStartup        = gBrowserInit.nonBrowserWindowStartup.bind(gBrowserInit);
-var nonBrowserWindowDelayedStartup = gBrowserInit.nonBrowserWindowDelayedStartup.bind(gBrowserInit);
-var nonBrowserWindowShutdown       = gBrowserInit.nonBrowserWindowShutdown.bind(gBrowserInit);
-#endif
+
+if (AppConstants.platform == "macosx") {
+  var nonBrowserWindowStartup        = gBrowserInit.nonBrowserWindowStartup.bind(gBrowserInit);
+  var nonBrowserWindowDelayedStartup = gBrowserInit.nonBrowserWindowDelayedStartup.bind(gBrowserInit);
+  var nonBrowserWindowShutdown       = gBrowserInit.nonBrowserWindowShutdown.bind(gBrowserInit);
+}
 
 function HandleAppCommandEvent(evt) {
   switch (evt.command) {
@@ -1596,7 +1842,7 @@ function HandleAppCommandEvent(evt) {
     BrowserSearch.webSearch();
     break;
   case "Bookmarks":
-    toggleSidebar('viewBookmarksSidebar');
+    SidebarUI.toggle("viewBookmarksSidebar");
     break;
   case "Home":
     BrowserHome();
@@ -1611,25 +1857,36 @@ function HandleAppCommandEvent(evt) {
     gFindBar.onFindCommand();
     break;
   case "Help":
-    openHelpLink('firefox-help');
+    openHelpLink("firefox-help");
     break;
   case "Open":
     BrowserOpenFileWindow();
     break;
   case "Print":
-    PrintUtils.print();
+    PrintUtils.printWindow(gBrowser.selectedBrowser.outerWindowID,
+                           gBrowser.selectedBrowser);
     break;
   case "Save":
-    saveDocument(window.content.document);
+    saveBrowser(gBrowser.selectedBrowser);
     break;
   case "SendMail":
-    MailIntegration.sendLinkForWindow(window.content);
+    MailIntegration.sendLinkForBrowser(gBrowser.selectedBrowser);
     break;
   default:
     return;
   }
   evt.stopPropagation();
   evt.preventDefault();
+}
+
+function maybeRecordAbandonmentTelemetry(tab, type) {
+  if (!tab.hasAttribute("busy")) {
+    return;
+  }
+
+  let histogram = Services.telemetry
+                          .getHistogramById("BUSY_TAB_ABANDONED");
+  histogram.add(type);
 }
 
 function gotoHistoryIndex(aEvent) {
@@ -1643,16 +1900,18 @@ function gotoHistoryIndex(aEvent) {
     // Normal click. Go there in the current tab and update session history.
 
     try {
+      maybeRecordAbandonmentTelemetry(gBrowser.selectedTab,
+                                      "historyNavigation");
       gBrowser.gotoIndex(index);
-    }
-    catch(ex) {
+    } catch (ex) {
       return false;
     }
     return true;
   }
   // Modified click. Go there in a new tab/window.
 
-  duplicateTabIn(gBrowser.selectedTab, where, index - gBrowser.sessionHistory.index);
+  let historyindex = aEvent.target.getAttribute("historyindex");
+  duplicateTabIn(gBrowser.selectedTab, where, Number(historyindex));
   return true;
 }
 
@@ -1661,12 +1920,11 @@ function BrowserForward(aEvent) {
 
   if (where == "current") {
     try {
+      maybeRecordAbandonmentTelemetry(gBrowser.selectedTab, "forward");
       gBrowser.goForward();
+    } catch (ex) {
     }
-    catch(ex) {
-    }
-  }
-  else {
+  } else {
     duplicateTabIn(gBrowser.selectedTab, where, 1);
   }
 }
@@ -1676,18 +1934,16 @@ function BrowserBack(aEvent) {
 
   if (where == "current") {
     try {
+      maybeRecordAbandonmentTelemetry(gBrowser.selectedTab, "back");
       gBrowser.goBack();
+    } catch (ex) {
     }
-    catch(ex) {
-    }
-  }
-  else {
+  } else {
     duplicateTabIn(gBrowser.selectedTab, where, -1);
   }
 }
 
-function BrowserHandleBackspace()
-{
+function BrowserHandleBackspace() {
   switch (gPrefService.getIntPref("browser.backspace_action")) {
   case 0:
     BrowserBack();
@@ -1698,8 +1954,7 @@ function BrowserHandleBackspace()
   }
 }
 
-function BrowserHandleShiftBackspace()
-{
+function BrowserHandleShiftBackspace() {
   switch (gPrefService.getIntPref("browser.backspace_action")) {
   case 0:
     BrowserForward();
@@ -1712,16 +1967,16 @@ function BrowserHandleShiftBackspace()
 
 function BrowserStop() {
   const stopFlags = nsIWebNavigation.STOP_ALL;
+  maybeRecordAbandonmentTelemetry(gBrowser.selectedTab, "stop");
   gBrowser.webNavigation.stop(stopFlags);
 }
 
 function BrowserReloadOrDuplicate(aEvent) {
-  var backgroundTabModifier = aEvent.button == 1 ||
-#ifdef XP_MACOSX
-    aEvent.metaKey;
-#else
-    aEvent.ctrlKey;
-#endif
+  let metaKeyPressed = AppConstants.platform == "macosx"
+                       ? aEvent.metaKey
+                       : aEvent.ctrlKey;
+  var backgroundTabModifier = aEvent.button == 1 || metaKeyPressed;
+
   if (aEvent.shiftKey && !backgroundTabModifier) {
     BrowserReloadSkipCache();
     return;
@@ -1735,6 +1990,10 @@ function BrowserReloadOrDuplicate(aEvent) {
 }
 
 function BrowserReload() {
+  if (gBrowser.currentURI.schemeIs("view-source")) {
+    // Bug 1167797: For view source, we always skip the cache
+    return BrowserReloadSkipCache();
+  }
   const reloadFlags = nsIWebNavigation.LOAD_FLAGS_NONE;
   BrowserReloadWithFlags(reloadFlags);
 }
@@ -1778,29 +2037,38 @@ function BrowserGoHome(aEvent) {
   }
 }
 
-function loadOneOrMoreURIs(aURIString)
-{
-#ifdef XP_MACOSX
+function loadOneOrMoreURIs(aURIString) {
   // we're not a browser window, pass the URI string to a new browser window
-  if (window.location.href != getBrowserURL())
-  {
+  if (window.location.href != getBrowserURL()) {
     window.openDialog(getBrowserURL(), "_blank", "all,dialog=no", aURIString);
     return;
   }
-#endif
+
   // This function throws for certain malformed URIs, so use exception handling
   // so that we don't disrupt startup
   try {
     gBrowser.loadTabs(aURIString.split("|"), false, true);
-  }
-  catch (e) {
+  } catch (e) {
   }
 }
 
 function focusAndSelectUrlBar() {
+  // In customize mode, the url bar is disabled. If a new tab is opened or the
+  // user switches to a different tab, this function gets called before we've
+  // finished leaving customize mode, and the url bar will still be disabled.
+  // We can't focus it when it's disabled, so we need to re-run ourselves when
+  // we've finished leaving customize mode.
+  if (CustomizationHandler.isExitingCustomizeMode) {
+    gNavToolbox.addEventListener("aftercustomization", function() {
+      focusAndSelectUrlBar();
+    }, {once: true});
+
+    return true;
+  }
+
   if (gURLBar) {
     if (window.fullScreen)
-      FullScreen.mouseoverToggle(true);
+      FullScreen.showNavToolbox();
 
     gURLBar.select();
     if (document.activeElement == gURLBar.inputField)
@@ -1813,44 +2081,48 @@ function openLocation() {
   if (focusAndSelectUrlBar())
     return;
 
-#ifdef XP_MACOSX
   if (window.location.href != getBrowserURL()) {
     var win = getTopWin();
     if (win) {
       // If there's an open browser window, it should handle this command
       win.focus()
       win.openLocation();
-    }
-    else {
+    } else {
       // If there are no open browser windows, open a new one
-      win = window.openDialog("chrome://browser/content/", "_blank",
-                              "chrome,all,dialog=no", BROWSER_NEW_TAB_URL);
-      win.addEventListener("load", openLocationCallback, false);
+      window.openDialog("chrome://browser/content/", "_blank",
+                        "chrome,all,dialog=no", BROWSER_NEW_TAB_URL);
     }
-    return;
   }
-#endif
-  openDialog("chrome://browser/content/openLocation.xul", "_blank",
-             "chrome,modal,titlebar", window);
 }
 
-function openLocationCallback()
-{
-  // make sure the DOM is ready
-  setTimeout(function() { this.openLocation(); }, 0);
-}
+function BrowserOpenTab(event) {
+  let where = "tab";
+  let relatedToCurrent = false;
 
-function BrowserOpenTab()
-{
-  openUILinkIn(BROWSER_NEW_TAB_URL, "tab");
+  if (event) {
+    where = whereToOpenLink(event, false, true);
+
+    switch (where) {
+      case "tab":
+      case "tabshifted":
+        // When accel-click or middle-click are used, open the new tab as
+        // related to the current tab.
+        relatedToCurrent = true;
+        break;
+      case "current":
+        where = "tab";
+        break;
+    }
+  }
+
+  openUILinkIn(BROWSER_NEW_TAB_URL, where, { relatedToCurrent });
 }
 
 /* Called from the openLocation dialog. This allows that dialog to instruct
    its opener to open a new window and then step completely out of the way.
    Anything less byzantine is causing horrible crashes, rather believably,
    though oddly only on Linux. */
-function delayedOpenWindow(chrome, flags, href, postData)
-{
+function delayedOpenWindow(chrome, flags, href, postData) {
   // The other way to use setTimeout,
   // setTimeout(openDialog, 10, chrome, "_blank", flags, url),
   // doesn't work here.  The extra "magic" extra argument setTimeout adds to
@@ -1861,8 +2133,7 @@ function delayedOpenWindow(chrome, flags, href, postData)
 
 /* Required because the tab needs time to set up its content viewers and get the load of
    the URI kicked off before becoming the active content area. */
-function delayedOpenTab(aUrl, aReferrer, aCharset, aPostData, aAllowThirdPartyFixup)
-{
+function delayedOpenTab(aUrl, aReferrer, aCharset, aPostData, aAllowThirdPartyFixup) {
   gBrowser.loadOneTab(aUrl, {
                       referrerURI: aReferrer,
                       charset: aCharset,
@@ -1880,8 +2151,7 @@ var gLastOpenDirectory = {
                                                      Ci.nsILocalFile);
         if (!this._lastDir.exists())
           this._lastDir = null;
-      }
-      catch(e) {}
+      } catch (e) {}
     }
     return this._lastDir;
   },
@@ -1889,7 +2159,7 @@ var gLastOpenDirectory = {
     try {
       if (!val || !val.isDirectory())
         return;
-    } catch(e) {
+    } catch (e) {
       return;
     }
     this._lastDir = val.clone();
@@ -1899,13 +2169,12 @@ var gLastOpenDirectory = {
       gPrefService.setComplexValue("browser.open.lastDir", Ci.nsILocalFile,
                                    this._lastDir);
   },
-  reset: function() {
+  reset() {
     this._lastDir = null;
   }
 };
 
-function BrowserOpenFileWindow()
-{
+function BrowserOpenFileWindow() {
   // Get filepicker component.
   try {
     const nsIFilePicker = Ci.nsIFilePicker;
@@ -1935,130 +2204,118 @@ function BrowserOpenFileWindow()
 }
 
 function BrowserCloseTabOrWindow() {
-#ifdef XP_MACOSX
   // If we're not a browser window, just close the window
   if (window.location.href != getBrowserURL()) {
     closeWindow(true);
     return;
   }
-#endif
 
   // If the current tab is the last one, this will close the window.
   gBrowser.removeCurrentTab({animate: true});
 }
 
-function BrowserTryToCloseWindow()
-{
+function BrowserTryToCloseWindow() {
   if (WindowIsClosing())
     window.close();     // WindowIsClosing does all the necessary checks
 }
 
-function loadURI(uri, referrer, postData, allowThirdPartyFixup) {
-  if (postData === undefined)
-    postData = null;
-
-  var flags = nsIWebNavigation.LOAD_FLAGS_NONE;
-  if (allowThirdPartyFixup)
-    flags |= nsIWebNavigation.LOAD_FLAGS_ALLOW_THIRD_PARTY_FIXUP;
-
+function loadURI(uri, referrer, postData, allowThirdPartyFixup, referrerPolicy,
+                 userContextId, originPrincipal, forceAboutBlankViewerInCurrent) {
   try {
-    gBrowser.loadURIWithFlags(uri, flags, referrer, null, postData);
+    openLinkIn(uri, "current",
+               { referrerURI: referrer,
+                 referrerPolicy,
+                 postData,
+                 allowThirdPartyFixup,
+                 userContextId,
+                 originPrincipal,
+                 forceAboutBlankViewerInCurrent,
+               });
   } catch (e) {}
 }
 
-function getShortcutOrURIAndPostData(aURL) {
-  return Task.spawn(function() {
+/**
+ * Given a string, will generate a more appropriate urlbar value if a Places
+ * keyword or a search alias is found at the beginning of it.
+ *
+ * @param url
+ *        A string that may begin with a keyword or an alias.
+ *
+ * @return {Promise}
+ * @resolves { url, postData, mayInheritPrincipal }. If it's not possible
+ *           to discern a keyword or an alias, url will be the input string.
+ */
+function getShortcutOrURIAndPostData(url, callback = null) {
+  if (callback) {
+    Deprecated.warning("Please use the Promise returned by " +
+                       "getShortcutOrURIAndPostData() instead of passing a " +
+                       "callback",
+                       "https://bugzilla.mozilla.org/show_bug.cgi?id=1100294");
+  }
+  return Task.spawn(function* () {
     let mayInheritPrincipal = false;
     let postData = null;
-    let shortcutURL = null;
-    let keyword = aURL;
-    let param = "";
+    // Split on the first whitespace.
+    let [keyword, param = ""] = url.trim().split(/\s(.+)/, 2);
 
-    let offset = aURL.indexOf(" ");
-    if (offset > 0) {
-      keyword = aURL.substr(0, offset);
-      param = aURL.substr(offset + 1);
+    if (!keyword) {
+      return { url, postData, mayInheritPrincipal };
     }
 
     let engine = Services.search.getEngineByAlias(keyword);
     if (engine) {
-      let submission = engine.getSubmission(param);
-      postData = submission.postData;
-      throw new Task.Result({ postData: submission.postData,
-                              url: submission.uri.spec,
-                              mayInheritPrincipal: mayInheritPrincipal });
+      let submission = engine.getSubmission(param, null, "keyword");
+      return { url: submission.uri.spec,
+               postData: submission.postData,
+               mayInheritPrincipal };
     }
 
-    [shortcutURL, postData] =
-      PlacesUtils.getURLAndPostDataForKeyword(keyword);
+    // A corrupt Places database could make this throw, breaking navigation
+    // from the location bar.
+    let entry = null;
+    try {
+      entry = yield PlacesUtils.keywords.fetch(keyword);
+    } catch (ex) {
+      Cu.reportError(`Unable to fetch Places keyword "${keyword}": ${ex}`);
+    }
+    if (!entry || !entry.url) {
+      // This is not a Places keyword.
+      return { url, postData, mayInheritPrincipal };
+    }
 
-    if (!shortcutURL)
-      throw new Task.Result({ postData: postData, url: aURL,
-                              mayInheritPrincipal: mayInheritPrincipal });
-
-    let escapedPostData = "";
-    if (postData)
-      escapedPostData = unescape(postData);
-
-    if (/%s/i.test(shortcutURL) || /%s/i.test(escapedPostData)) {
-      let charset = "";
-      const re = /^(.*)\&mozcharset=([a-zA-Z][_\-a-zA-Z0-9]+)\s*$/;
-      let matches = shortcutURL.match(re);
-      if (matches)
-        [, shortcutURL, charset] = matches;
-      else {
-        // Try to get the saved character-set.
-        try {
-          // makeURI throws if URI is invalid.
-          // Will return an empty string if character-set is not found.
-          charset = yield PlacesUtils.getCharsetForURI(makeURI(shortcutURL));
-        } catch (e) {}
+    try {
+      [url, postData] =
+        yield BrowserUtils.parseUrlAndPostData(entry.url.href,
+                                               entry.postData,
+                                               param);
+      if (postData) {
+        postData = getPostDataStream(postData);
       }
 
-      // encodeURIComponent produces UTF-8, and cannot be used for other charsets.
-      // escape() works in those cases, but it doesn't uri-encode +, @, and /.
-      // Therefore we need to manually replace these ASCII characters by their
-      // encodeURIComponent result, to match the behavior of nsEscape() with
-      // url_XPAlphas
-      let encodedParam = "";
-      if (charset && charset != "UTF-8")
-        encodedParam = escape(convertFromUnicode(charset, param)).
-                       replace(/[+@\/]+/g, encodeURIComponent);
-      else // Default charset is UTF-8
-        encodedParam = encodeURIComponent(param);
-
-      shortcutURL = shortcutURL.replace(/%s/g, encodedParam).replace(/%S/g, param);
-
-      if (/%s/i.test(escapedPostData)) // POST keyword
-        postData = getPostDataStream(escapedPostData, param, encodedParam,
-                                               "application/x-www-form-urlencoded");
-    }
-    else if (param) {
-      // This keyword doesn't take a parameter, but one was provided. Just return
-      // the original URL.
-      postData = null;
-
-      throw new Task.Result({ postData: postData, url: aURL,
-                              mayInheritPrincipal: mayInheritPrincipal });
+      // Since this URL came from a bookmark, it's safe to let it inherit the
+      // current document's principal.
+      mayInheritPrincipal = true;
+    } catch (ex) {
+      // It was not possible to bind the param, just use the original url value.
     }
 
-    // This URL came from a bookmark, so it's safe to let it inherit the current
-    // document's principal.
-    mayInheritPrincipal = true;
-
-    throw new Task.Result({ postData: postData, url: shortcutURL,
-                            mayInheritPrincipal: mayInheritPrincipal });
+    return { url, postData, mayInheritPrincipal };
+  }).then(data => {
+    if (callback) {
+      callback(data);
+    }
+    return data;
   });
 }
 
-function getPostDataStream(aStringData, aKeyword, aEncKeyword, aType) {
-  var dataStream = Cc["@mozilla.org/io/string-input-stream;1"].
-                   createInstance(Ci.nsIStringInputStream);
-  aStringData = aStringData.replace(/%s/g, aEncKeyword).replace(/%S/g, aKeyword);
-  dataStream.data = aStringData;
+function getPostDataStream(aPostDataString,
+                           aType = "application/x-www-form-urlencoded") {
+  let dataStream = Cc["@mozilla.org/io/string-input-stream;1"]
+                     .createInstance(Ci.nsIStringInputStream);
+  dataStream.data = aPostDataString;
 
-  var mimeStream = Cc["@mozilla.org/network/mime-input-stream;1"].
-                   createInstance(Ci.nsIMIMEInputStream);
+  let mimeStream = Cc["@mozilla.org/network/mime-input-stream;1"]
+                     .createInstance(Ci.nsIMIMEInputStream);
   mimeStream.addHeader("Content-Type", aType);
   mimeStream.addContentLength = true;
   mimeStream.setData(dataStream);
@@ -2071,8 +2328,7 @@ function getLoadContext() {
                .QueryInterface(Ci.nsILoadContext);
 }
 
-function readFromClipboard()
-{
+function readFromClipboard() {
   var url;
 
   try {
@@ -2103,63 +2359,156 @@ function readFromClipboard()
   return url;
 }
 
-function BrowserViewSourceOfDocument(aDocument)
-{
-  var pageCookie;
-  var webNav;
+/**
+ * Open the View Source dialog.
+ *
+ * @param aArgsOrDocument
+ *        Either an object or a Document. Passing a Document is deprecated,
+ *        and is not supported with e10s. This function will throw if
+ *        aArgsOrDocument is a CPOW.
+ *
+ *        If aArgsOrDocument is an object, that object can take the
+ *        following properties:
+ *
+ *        URL (required):
+ *          A string URL for the page we'd like to view the source of.
+ *        browser (optional):
+ *          The browser containing the document that we would like to view the
+ *          source of. This is required if outerWindowID is passed.
+ *        outerWindowID (optional):
+ *          The outerWindowID of the content window containing the document that
+ *          we want to view the source of. You only need to provide this if you
+ *          want to attempt to retrieve the document source from the network
+ *          cache.
+ *        lineNumber (optional):
+ *          The line number to focus on once the source is loaded.
+ */
+function BrowserViewSourceOfDocument(aArgsOrDocument) {
+  let args;
 
-  // Get the document charset
-  var docCharset = "charset=" + aDocument.characterSet;
+  if (aArgsOrDocument instanceof Document) {
+    let doc = aArgsOrDocument;
+    // Deprecated API - callers should pass args object instead.
+    if (Cu.isCrossProcessWrapper(doc)) {
+      throw new Error("BrowserViewSourceOfDocument cannot accept a CPOW " +
+                      "as a document.");
+    }
 
-  // Get the nsIWebNavigation associated with the document
-  try {
-      var win;
-      var ifRequestor;
+    let requestor = doc.defaultView
+                       .QueryInterface(Ci.nsIInterfaceRequestor);
+    let browser = requestor.getInterface(Ci.nsIWebNavigation)
+                           .QueryInterface(Ci.nsIDocShell)
+                           .chromeEventHandler;
+    let outerWindowID = requestor.getInterface(Ci.nsIDOMWindowUtils)
+                                 .outerWindowID;
+    let URL = browser.currentURI.spec;
+    args = { browser, outerWindowID, URL };
+  } else {
+    args = aArgsOrDocument;
+  }
 
-      // Get the DOMWindow for the requested document.  If the DOMWindow
-      // cannot be found, then just use the content window...
-      //
-      // XXX:  This is a bit of a hack...
-      win = aDocument.defaultView;
-      if (win == window) {
-        win = content;
+  let viewInternal = () => {
+    let inTab = Services.prefs.getBoolPref("view_source.tab");
+    if (inTab) {
+      let tabBrowser = gBrowser;
+      let preferredRemoteType;
+      if (!tabBrowser) {
+        if (!args.browser) {
+          throw new Error("BrowserViewSourceOfDocument should be passed the " +
+                          "subject browser if called from a window without " +
+                          "gBrowser defined.");
+        }
+        preferredRemoteType = args.browser.remoteType;
+      } else {
+        // Some internal URLs (such as specific chrome: and about: URLs that are
+        // not yet remote ready) cannot be loaded in a remote browser.  View
+        // source in tab expects the new view source browser's remoteness to match
+        // that of the original URL, so disable remoteness if necessary for this
+        // URL.
+        preferredRemoteType =
+          E10SUtils.getRemoteTypeForURI(args.URL, gMultiProcessBrowser);
       }
-      ifRequestor = win.QueryInterface(Components.interfaces.nsIInterfaceRequestor);
 
-      webNav = ifRequestor.getInterface(nsIWebNavigation);
-  } catch(err) {
-      // If nsIWebNavigation cannot be found, just get the one for the whole
-      // window...
-      webNav = gBrowser.webNavigation;
+      // In the case of popups, we need to find a non-popup browser window.
+      if (!tabBrowser || !window.toolbar.visible) {
+        // This returns only non-popup browser windows by default.
+        let browserWindow = RecentWindow.getMostRecentBrowserWindow();
+        tabBrowser = browserWindow.gBrowser;
+      }
+
+      // `viewSourceInBrowser` will load the source content from the page
+      // descriptor for the tab (when possible) or fallback to the network if
+      // that fails.  Either way, the view source module will manage the tab's
+      // location, so use "about:blank" here to avoid unnecessary redundant
+      // requests.
+      let tab = tabBrowser.loadOneTab("about:blank", {
+        relatedToCurrent: true,
+        inBackground: false,
+        preferredRemoteType,
+        sameProcessAsFrameLoader: args.browser ? args.browser.frameLoader : null
+      });
+      args.viewSourceBrowser = tabBrowser.getBrowserForTab(tab);
+      top.gViewSourceUtils.viewSourceInBrowser(args);
+    } else {
+      top.gViewSourceUtils.viewSource(args);
+    }
   }
-  //
-  // Get the 'PageDescriptor' for the current document. This allows the
-  // view-source to access the cached copy of the content rather than
-  // refetching it from the network...
-  //
-  try{
-    var PageLoader = webNav.QueryInterface(Components.interfaces.nsIWebPageDescriptor);
 
-    pageCookie = PageLoader.currentDescriptor;
-  } catch(err) {
-    // If no page descriptor is available, just use the view-source URL...
+  // Check if external view source is enabled.  If so, try it.  If it fails,
+  // fallback to internal view source.
+  if (Services.prefs.getBoolPref("view_source.editor.external")) {
+    top.gViewSourceUtils
+       .openInExternalEditor(args, null, null, null, result => {
+      if (!result) {
+        viewInternal();
+      }
+    });
+  } else {
+    // Display using internal view source
+    viewInternal();
   }
-
-  top.gViewSourceUtils.viewSource(webNav.currentURI.spec, pageCookie, aDocument);
 }
 
-// doc - document to use for source, or null for this window's document
+/**
+ * Opens the View Source dialog for the source loaded in the root
+ * top-level document of the browser. This is really just a
+ * convenience wrapper around BrowserViewSourceOfDocument.
+ *
+ * @param browser
+ *        The browser that we want to load the source of.
+ */
+function BrowserViewSource(browser) {
+  BrowserViewSourceOfDocument({
+    browser,
+    outerWindowID: browser.outerWindowID,
+    URL: browser.currentURI.spec,
+  });
+}
+
+// documentURL - URL of the document to view, or null for this window's document
 // initialTab - name of the initial tab to display, or null for the first tab
 // imageElement - image to load in the Media Tab of the Page Info window; can be null/omitted
-function BrowserPageInfo(doc, initialTab, imageElement) {
-  var args = {doc: doc, initialTab: initialTab, imageElement: imageElement};
+// frameOuterWindowID - the id of the frame that the context menu opened in; can be null/omitted
+// browser - the browser containing the document we're interested in inspecting; can be null/omitted
+function BrowserPageInfo(documentURL, initialTab, imageElement, frameOuterWindowID, browser) {
+  if (documentURL instanceof HTMLDocument) {
+    Deprecated.warning("Please pass the location URL instead of the document " +
+                       "to BrowserPageInfo() as the first argument.",
+                       "https://bugzilla.mozilla.org/show_bug.cgi?id=1238180");
+    documentURL = documentURL.location;
+  }
+
+  let args = { initialTab, imageElement, frameOuterWindowID, browser };
   var windows = Services.wm.getEnumerator("Browser:page-info");
 
-  var documentURL = doc ? doc.location : window.content.document.location;
+  documentURL = documentURL || window.gBrowser.selectedBrowser.currentURI.spec;
 
   // Check for windows matching the url
   while (windows.hasMoreElements()) {
     var currentWindow = windows.getNext();
+    if (currentWindow.closed) {
+      continue;
+    }
     if (currentWindow.document.documentElement.getAttribute("relatedUrl") == documentURL) {
       currentWindow.focus();
       currentWindow.resetPageInfo(args);
@@ -2172,6 +2521,12 @@ function BrowserPageInfo(doc, initialTab, imageElement) {
                     "chrome,toolbar,dialog=no,resizable", args);
 }
 
+/**
+ * Sets the URI to display in the location bar.
+ *
+ * @param aURI [optional]
+ *        nsIURI to set. If this is unspecified, the current URI will be used.
+ */
 function URLBarSetURI(aURI) {
   var value = gBrowser.userTypedValue;
   var valid = false;
@@ -2184,12 +2539,21 @@ function URLBarSetURI(aURI) {
     } catch (e) {}
 
     // Replace initial page URIs with an empty string
-    // only if there's no opener (bug 370555).
-    // Bug 863515 - Make content.opener checks work in electrolysis.
-    if (gInitialPages.indexOf(uri.spec) != -1)
-      value = !gMultiProcessBrowser && content.opener ? uri.spec : "";
-    else
-      value = losslessDecodeURI(uri);
+    // 1. only if there's no opener (bug 370555).
+    // 2. if remote newtab is enabled and it's the default remote newtab page
+    let defaultRemoteURL = gAboutNewTabService.remoteEnabled &&
+                           uri.spec === gAboutNewTabService.newTabURL;
+    if ((gInitialPages.includes(uri.spec) || defaultRemoteURL) &&
+        checkEmptyPageOrigin(gBrowser.selectedBrowser, uri)) {
+      value = "";
+    } else {
+      // We should deal with losslessDecodeURI throwing for exotic URIs
+      try {
+        value = losslessDecodeURI(uri);
+      } catch (ex) {
+        value = "about:blank";
+      }
+    }
 
     valid = !isBlankPageURL(uri.spec);
   }
@@ -2200,48 +2564,74 @@ function URLBarSetURI(aURI) {
 }
 
 function losslessDecodeURI(aURI) {
-  var value = aURI.spec;
-  // Try to decode as UTF-8 if there's no encoding sequence that we would break.
-  if (!/%25(?:3B|2F|3F|3A|40|26|3D|2B|24|2C|23)/i.test(value))
-    try {
-      value = decodeURI(value)
-                // 1. decodeURI decodes %25 to %, which creates unintended
-                //    encoding sequences. Re-encode it, unless it's part of
-                //    a sequence that survived decodeURI, i.e. one for:
-                //    ';', '/', '?', ':', '@', '&', '=', '+', '$', ',', '#'
-                //    (RFC 3987 section 3.2)
-                // 2. Re-encode whitespace so that it doesn't get eaten away
-                //    by the location bar (bug 410726).
-                .replace(/%(?!3B|2F|3F|3A|40|26|3D|2B|24|2C|23)|[\r\n\t]/ig,
-                         encodeURIComponent);
-    } catch (e) {}
+  let scheme = aURI.scheme;
+  if (scheme == "moz-action")
+    throw new Error("losslessDecodeURI should never get a moz-action URI");
 
-  // Encode invisible characters (line and paragraph separator,
-  // object replacement character) (bug 452979)
-  value = value.replace(/[\v\x0c\x1c\x1d\x1e\x1f\u2028\u2029\ufffc]/g,
+  var value = aURI.spec;
+
+  let decodeASCIIOnly = !["https", "http", "file", "ftp"].includes(scheme);
+  // Try to decode as UTF-8 if there's no encoding sequence that we would break.
+  if (!/%25(?:3B|2F|3F|3A|40|26|3D|2B|24|2C|23)/i.test(value)) {
+    if (decodeASCIIOnly) {
+      // This only decodes ascii characters (hex) 20-7e, except 25 (%).
+      // This avoids both cases stipulated below (%-related issues, and \r, \n
+      // and \t, which would be %0d, %0a and %09, respectively) as well as any
+      // non-US-ascii characters.
+      value = value.replace(/%(2[0-4]|2[6-9a-f]|[3-6][0-9a-f]|7[0-9a-e])/g, decodeURI);
+    } else {
+      try {
+        value = decodeURI(value)
+                  // 1. decodeURI decodes %25 to %, which creates unintended
+                  //    encoding sequences. Re-encode it, unless it's part of
+                  //    a sequence that survived decodeURI, i.e. one for:
+                  //    ';', '/', '?', ':', '@', '&', '=', '+', '$', ',', '#'
+                  //    (RFC 3987 section 3.2)
+                  // 2. Re-encode whitespace so that it doesn't get eaten away
+                  //    by the location bar (bug 410726).
+                  .replace(/%(?!3B|2F|3F|3A|40|26|3D|2B|24|2C|23)|[\r\n\t]/ig,
+                           encodeURIComponent);
+      } catch (e) {}
+    }
+  }
+
+  // Encode invisible characters (C0/C1 control characters, U+007F [DEL],
+  // U+00A0 [no-break space], line and paragraph separator,
+  // object replacement character) (bug 452979, bug 909264)
+  value = value.replace(/[\u0000-\u001f\u007f-\u00a0\u2028\u2029\ufffc]/g,
                         encodeURIComponent);
 
   // Encode default ignorable characters (bug 546013)
   // except ZWNJ (U+200C) and ZWJ (U+200D) (bug 582186).
   // This includes all bidirectional formatting characters.
   // (RFC 3987 sections 3.2 and 4.1 paragraph 6)
-  value = value.replace(/[\u00ad\u034f\u115f-\u1160\u17b4-\u17b5\u180b-\u180d\u200b\u200e-\u200f\u202a-\u202e\u2060-\u206f\u3164\ufe00-\ufe0f\ufeff\uffa0\ufff0-\ufff8]|\ud834[\udd73-\udd7a]|[\udb40-\udb43][\udc00-\udfff]/g,
+  value = value.replace(/[\u00ad\u034f\u061c\u115f-\u1160\u17b4-\u17b5\u180b-\u180d\u200b\u200e-\u200f\u202a-\u202e\u2060-\u206f\u3164\ufe00-\ufe0f\ufeff\uffa0\ufff0-\ufff8]|\ud834[\udd73-\udd7a]|[\udb40-\udb43][\udc00-\udfff]/g,
                         encodeURIComponent);
   return value;
 }
 
-function UpdateUrlbarSearchSplitterState()
-{
+function UpdateUrlbarSearchSplitterState() {
   var splitter = document.getElementById("urlbar-search-splitter");
   var urlbar = document.getElementById("urlbar-container");
   var searchbar = document.getElementById("search-container");
-  var stop = document.getElementById("stop-button");
+
+  if (document.documentElement.getAttribute("customizing") == "true") {
+    if (splitter) {
+      splitter.remove();
+    }
+    return;
+  }
+
+  // If the splitter is already in the right place, we don't need to do anything:
+  if (splitter &&
+      ((splitter.nextSibling == searchbar && splitter.previousSibling == urlbar) ||
+       (splitter.nextSibling == urlbar && splitter.previousSibling == searchbar))) {
+    return;
+  }
 
   var ibefore = null;
   if (urlbar && searchbar) {
-    if (urlbar.nextSibling == searchbar ||
-        urlbar.getAttribute("combined") &&
-        stop && stop.nextSibling == searchbar)
+    if (urlbar.nextSibling == searchbar)
       ibefore = searchbar;
     else if (searchbar.nextSibling == urlbar)
       ibefore = urlbar;
@@ -2254,299 +2644,561 @@ function UpdateUrlbarSearchSplitterState()
       splitter.setAttribute("resizebefore", "flex");
       splitter.setAttribute("resizeafter", "flex");
       splitter.setAttribute("skipintoolbarset", "true");
+      splitter.setAttribute("overflows", "false");
       splitter.className = "chromeclass-toolbar-additional";
     }
     urlbar.parentNode.insertBefore(splitter, ibefore);
   } else if (splitter)
-    splitter.parentNode.removeChild(splitter);
+    splitter.remove();
 }
 
-function setUrlAndSearchBarWidthForConditionalForwardButton() {
-  // Workaround for bug 694084: Showing/hiding the conditional forward button resizes
-  // the search bar when the url/search bar splitter hasn't been used.
-  var urlbarContainer = document.getElementById("urlbar-container");
-  var searchbarContainer = document.getElementById("search-container");
-  if (!urlbarContainer ||
-      !searchbarContainer ||
-      urlbarContainer.hasAttribute("width") ||
-      searchbarContainer.hasAttribute("width") ||
-      urlbarContainer.parentNode != searchbarContainer.parentNode)
-    return;
-  urlbarContainer.style.width = searchbarContainer.style.width = "";
-  var urlbarWidth = urlbarContainer.clientWidth;
-  var searchbarWidth = searchbarContainer.clientWidth;
-  urlbarContainer.style.width = urlbarWidth + "px";
-  searchbarContainer.style.width = searchbarWidth + "px";
-}
-
-function UpdatePageProxyState()
-{
+function UpdatePageProxyState() {
   if (gURLBar && gURLBar.value != gLastValidURLStr)
     SetPageProxyState("invalid");
 }
 
-function SetPageProxyState(aState)
-{
-  BookmarkingUI.onPageProxyStateChanged(aState);
-
+/**
+ * Updates the user interface to indicate whether the URI in the location bar is
+ * different than the loaded page, because it's being edited or because a search
+ * result is currently selected and is displayed in the location bar.
+ *
+ * @param aState
+ *        The string "valid" indicates that the security indicators and other
+ *        related user interface elments should be shown because the URI in the
+ *        location bar matches the loaded page. The string "invalid" indicates
+ *        that the URI in the location bar is different than the loaded page.
+ */
+function SetPageProxyState(aState) {
   if (!gURLBar)
     return;
 
-  if (!gProxyFavIcon)
-    gProxyFavIcon = document.getElementById("page-proxy-favicon");
-
+  let oldPageProxyState = gURLBar.getAttribute("pageproxystate");
+  // The "browser_urlbar_stop_pending.js" test uses a MutationObserver to do
+  // some verifications at this point, and it breaks if we don't write the
+  // attribute, even if it hasn't changed (bug 1338115).
   gURLBar.setAttribute("pageproxystate", aState);
-  gProxyFavIcon.setAttribute("pageproxystate", aState);
 
   // the page proxy state is set to valid via OnLocationChange, which
   // gets called when we switch tabs.
   if (aState == "valid") {
     gLastValidURLStr = gURLBar.value;
-    gURLBar.addEventListener("input", UpdatePageProxyState, false);
+    gURLBar.addEventListener("input", UpdatePageProxyState);
   } else if (aState == "invalid") {
-    gURLBar.removeEventListener("input", UpdatePageProxyState, false);
+    gURLBar.removeEventListener("input", UpdatePageProxyState);
   }
+
+  // After we've ensured that we've applied the listeners and updated the value
+  // of gLastValidURLStr, return early if the actual state hasn't changed.
+  if (oldPageProxyState == aState) {
+    return;
+  }
+
+  UpdatePopupNotificationsVisibility();
 }
 
-function PageProxyClickHandler(aEvent)
-{
+function UpdatePopupNotificationsVisibility() {
+  // Only need to do something if the PopupNotifications object for this window
+  // has already been initialized (i.e. its getter no longer exists).
+  if (Object.getOwnPropertyDescriptor(window, "PopupNotifications").get) {
+    return;
+  }
+
+  // Notify PopupNotifications that the visible anchors may have changed. This
+  // also checks the suppression state according to the "shouldSuppress"
+  // function defined earlier in this file.
+  PopupNotifications.anchorVisibilityChange();
+}
+
+function PageProxyClickHandler(aEvent) {
   if (aEvent.button == 1 && gPrefService.getBoolPref("middlemouse.paste"))
     middleMousePaste(aEvent);
 }
 
-/**
- *  Handle load of some pages (about:*) so that we can make modifications
- *  to the DOM for unprivileged pages.
- */
-function BrowserOnAboutPageLoad(doc) {
-  if (doc.documentURI.toLowerCase() == "about:home") {
-    // XXX bug 738646 - when Marketplace is launched, remove this statement and
-    // the hidden attribute set on the apps button in aboutHome.xhtml
-    if (getBoolPref("browser.aboutHome.apps", false))
-      doc.getElementById("apps").removeAttribute("hidden");
+var gMenuButtonBadgeManager = {
+  BADGEID_APPUPDATE: "update",
+  BADGEID_DOWNLOAD: "download",
+  BADGEID_FXA: "fxa",
+  BADGEID_ADDONS: "addons",
 
-    let ss = Components.classes["@mozilla.org/browser/sessionstore;1"].
-             getService(Components.interfaces.nsISessionStore);
-    if (ss.canRestoreLastSession &&
-        !PrivateBrowsingUtils.isWindowPrivate(window))
-      doc.getElementById("launcher").setAttribute("session", "true");
+  fxaBadge: null,
+  downloadBadge: null,
+  appUpdateBadge: null,
+  addonsBadge: null,
 
-    // Inject search engine and snippets URL.
-    let docElt = doc.documentElement;
-    // set the following attributes BEFORE searchEngineURL, which triggers to
-    // show the snippets when it's set.
-    docElt.setAttribute("snippetsURL", AboutHomeUtils.snippetsURL);
-    if (AboutHomeUtils.showKnowYourRights) {
-      docElt.setAttribute("showKnowYourRights", "true");
-      // Set pref to indicate we've shown the notification.
-      let currentVersion = Services.prefs.getIntPref("browser.rights.version");
-      Services.prefs.setBoolPref("browser.rights." + currentVersion + ".shown", true);
-    }
-    docElt.setAttribute("snippetsVersion", AboutHomeUtils.snippetsVersion);
+  init() {
+    PanelUI.panel.addEventListener("popupshowing", this, true);
+  },
 
-    let updateSearchEngine = function() {
-      let engine = AboutHomeUtils.defaultSearchEngine;
-      docElt.setAttribute("searchEngineName", engine.name);
-      docElt.setAttribute("searchEnginePostData", engine.postDataString || "");
-      // Again, keep the searchEngineURL as the last attribute, because the
-      // mutation observer in aboutHome.js is counting on that.
-      docElt.setAttribute("searchEngineURL", engine.searchURL);
-    };
-    updateSearchEngine();
+  uninit() {
+    PanelUI.panel.removeEventListener("popupshowing", this, true);
+  },
 
-    // Listen for the event that's triggered when the user changes search engine.
-    // At this point we simply reload about:home to reflect the change.
-    Services.obs.addObserver(updateSearchEngine, "browser-search-engine-modified", false);
-
-    // Remove the observer when the page is reloaded or closed.
-    doc.defaultView.addEventListener("pagehide", function removeObserver() {
-      doc.defaultView.removeEventListener("pagehide", removeObserver);
-      Services.obs.removeObserver(updateSearchEngine, "browser-search-engine-modified");
-    }, false);
-
-#ifdef MOZ_SERVICES_HEALTHREPORT
-    doc.addEventListener("AboutHomeSearchEvent", function onSearch(e) {
-      BrowserSearch.recordSearchInHealthReport(e.detail, "abouthome");
-    }, true, true);
-#endif
-  }
-}
-
-/**
- * Handle command events bubbling up from error page content
- */
-let BrowserOnClick = {
-  handleEvent: function BrowserOnClick_handleEvent(aEvent) {
-    if (!aEvent.isTrusted || // Don't trust synthetic events
-        aEvent.button == 2 || aEvent.target.localName != "button") {
-      return;
-    }
-
-    let originalTarget = aEvent.originalTarget;
-    let ownerDoc = originalTarget.ownerDocument;
-
-    // If the event came from an ssl error page, it is probably either the "Add
-    // Exception…" or "Get me out of here!" button
-    if (ownerDoc.documentURI.startsWith("about:certerror")) {
-      this.onAboutCertError(originalTarget, ownerDoc);
-    }
-    else if (ownerDoc.documentURI.startsWith("about:blocked")) {
-      this.onAboutBlocked(originalTarget, ownerDoc);
-    }
-    else if (ownerDoc.documentURI.startsWith("about:neterror")) {
-      this.onAboutNetError(originalTarget, ownerDoc);
-    }
-    else if (ownerDoc.documentURI.toLowerCase() == "about:home") {
-      this.onAboutHome(originalTarget, ownerDoc);
+  handleEvent(e) {
+    if (e.type === "popupshowing") {
+      this.clearBadges();
     }
   },
 
-  onAboutCertError: function BrowserOnClick_onAboutCertError(aTargetElm, aOwnerDoc) {
-    let elmId = aTargetElm.getAttribute("id");
-    let secHistogram = Services.telemetry.getHistogramById("SECURITY_UI");
-    let isTopFrame = (aOwnerDoc.defaultView.parent === aOwnerDoc.defaultView);
+  _showBadge() {
+    let badgeToShow = this.downloadBadge || this.appUpdateBadge || this.fxaBadge || this.addonsBadge;
 
-    switch (elmId) {
+    if (badgeToShow) {
+      PanelUI.menuButton.setAttribute("badge-status", badgeToShow);
+    } else {
+      PanelUI.menuButton.removeAttribute("badge-status");
+    }
+  },
+
+  _changeBadge(badgeId, badgeStatus = null) {
+    if (badgeId == this.BADGEID_APPUPDATE) {
+      this.appUpdateBadge = badgeStatus;
+    } else if (badgeId == this.BADGEID_DOWNLOAD) {
+      this.downloadBadge = badgeStatus;
+    } else if (badgeId == this.BADGEID_FXA) {
+      this.fxaBadge = badgeStatus;
+    } else if (badgeId == this.BADGEID_ADDONS) {
+      this.addonsBadge = badgeStatus;
+    } else {
+      Cu.reportError("The badge ID '" + badgeId + "' is unknown!");
+    }
+    this._showBadge();
+  },
+
+  addBadge(badgeId, badgeStatus) {
+    if (!badgeStatus) {
+      Cu.reportError("badgeStatus must be defined");
+      return;
+    }
+    this._changeBadge(badgeId, badgeStatus);
+  },
+
+  removeBadge(badgeId) {
+    this._changeBadge(badgeId);
+  },
+
+  clearBadges() {
+    this.appUpdateBadge = null;
+    this.downloadBadge = null;
+    this.fxaBadge = null;
+    this._showBadge();
+  }
+};
+
+// Setup the hamburger button badges for updates, if enabled.
+var gMenuButtonUpdateBadge = {
+  enabled: false,
+  badgeWaitTime: 0,
+  timer: null,
+  cancelObserverRegistered: false,
+
+  init() {
+    try {
+      this.enabled = Services.prefs.getBoolPref("app.update.badge");
+    } catch (e) {}
+    if (this.enabled) {
+      try {
+        this.badgeWaitTime = Services.prefs.getIntPref("app.update.badgeWaitTime");
+      } catch (e) {
+        this.badgeWaitTime = 345600; // 4 days
+      }
+      Services.obs.addObserver(this, "update-staged", false);
+      Services.obs.addObserver(this, "update-downloaded", false);
+    }
+  },
+
+  uninit() {
+    if (this.timer)
+      this.timer.cancel();
+    if (this.enabled) {
+      Services.obs.removeObserver(this, "update-staged");
+      Services.obs.removeObserver(this, "update-downloaded");
+      this.enabled = false;
+    }
+    if (this.cancelObserverRegistered) {
+      Services.obs.removeObserver(this, "update-canceled");
+      this.cancelObserverRegistered = false;
+    }
+  },
+
+  onMenuPanelCommand(event) {
+    if (event.originalTarget.getAttribute("update-status") === "succeeded") {
+      // restart the app
+      let cancelQuit = Cc["@mozilla.org/supports-PRBool;1"]
+                       .createInstance(Ci.nsISupportsPRBool);
+      Services.obs.notifyObservers(cancelQuit, "quit-application-requested", "restart");
+
+      if (!cancelQuit.data) {
+        Services.startup.quit(Services.startup.eAttemptQuit | Services.startup.eRestart);
+      }
+    } else {
+      // open the page for manual update
+      let url = Services.urlFormatter.formatURLPref("app.update.url.manual");
+      openUILinkIn(url, "tab");
+    }
+  },
+
+  observe(subject, topic, status) {
+    if (topic == "update-canceled") {
+      this.reset();
+      return;
+    }
+    if (status == "failed") {
+      // Background update has failed, let's show the UI responsible for
+      // prompting the user to update manually.
+      this.uninit();
+      this.displayBadge(false);
+      return;
+    }
+
+    // Give the user badgeWaitTime seconds to react before prompting.
+    this.timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this.timer.initWithCallback(this, this.badgeWaitTime * 1000,
+                                this.timer.TYPE_ONE_SHOT);
+    // The timer callback will call uninit() when it completes.
+  },
+
+  notify() {
+    // If the update is successfully applied, or if the updater has fallen back
+    // to non-staged updates, add a badge to the hamburger menu to indicate an
+    // update will be applied once the browser restarts.
+    this.uninit();
+    this.displayBadge(true);
+  },
+
+  displayBadge(succeeded) {
+    let status = succeeded ? "succeeded" : "failed";
+    let badgeStatus = "update-" + status;
+    gMenuButtonBadgeManager.addBadge(gMenuButtonBadgeManager.BADGEID_APPUPDATE, badgeStatus);
+
+    let stringId;
+    let updateButtonText;
+    if (succeeded) {
+      let brandBundle = document.getElementById("bundle_brand");
+      let brandShortName = brandBundle.getString("brandShortName");
+      stringId = "appmenu.restartNeeded.description";
+      updateButtonText = gNavigatorBundle.getFormattedString(stringId,
+                                                             [brandShortName]);
+      Services.obs.addObserver(this, "update-canceled", false);
+      this.cancelObserverRegistered = true;
+    } else {
+      stringId = "appmenu.updateFailed.description";
+      updateButtonText = gNavigatorBundle.getString(stringId);
+    }
+
+    let updateButton = document.getElementById("PanelUI-update-status");
+    updateButton.setAttribute("label", updateButtonText);
+    updateButton.setAttribute("update-status", status);
+    updateButton.hidden = false;
+  },
+
+  reset() {
+    gMenuButtonBadgeManager.removeBadge(
+      gMenuButtonBadgeManager.BADGEID_APPUPDATE);
+    let updateButton = document.getElementById("PanelUI-update-status");
+    updateButton.hidden = true;
+    this.uninit();
+    this.init();
+  }
+};
+
+// Values for telemtery bins: see TLS_ERROR_REPORT_UI in Histograms.json
+const TLS_ERROR_REPORT_TELEMETRY_AUTO_CHECKED   = 2;
+const TLS_ERROR_REPORT_TELEMETRY_AUTO_UNCHECKED = 3;
+const TLS_ERROR_REPORT_TELEMETRY_MANUAL_SEND    = 4;
+const TLS_ERROR_REPORT_TELEMETRY_AUTO_SEND      = 5;
+
+const PREF_SSL_IMPACT_ROOTS = ["security.tls.version.", "security.ssl3."];
+
+const PREF_SSL_IMPACT = PREF_SSL_IMPACT_ROOTS.reduce((prefs, root) => {
+  return prefs.concat(Services.prefs.getChildList(root));
+}, []);
+
+/**
+ * Handle command events bubbling up from error page content
+ * or from about:newtab or from remote error pages that invoke
+ * us via async messaging.
+ */
+var BrowserOnClick = {
+  init() {
+    let mm = window.messageManager;
+    mm.addMessageListener("Browser:CertExceptionError", this);
+    mm.addMessageListener("Browser:OpenCaptivePortalPage", this);
+    mm.addMessageListener("Browser:SiteBlockedError", this);
+    mm.addMessageListener("Browser:EnableOnlineMode", this);
+    mm.addMessageListener("Browser:SendSSLErrorReport", this);
+    mm.addMessageListener("Browser:SetSSLErrorReportAuto", this);
+    mm.addMessageListener("Browser:ResetSSLPreferences", this);
+    mm.addMessageListener("Browser:SSLErrorReportTelemetry", this);
+    mm.addMessageListener("Browser:SSLErrorGoBack", this);
+
+    Services.obs.addObserver(this, "captive-portal-login-abort", false);
+    Services.obs.addObserver(this, "captive-portal-login-success", false);
+  },
+
+  uninit() {
+    let mm = window.messageManager;
+    mm.removeMessageListener("Browser:CertExceptionError", this);
+    mm.removeMessageListener("Browser:SiteBlockedError", this);
+    mm.removeMessageListener("Browser:EnableOnlineMode", this);
+    mm.removeMessageListener("Browser:SendSSLErrorReport", this);
+    mm.removeMessageListener("Browser:SetSSLErrorReportAuto", this);
+    mm.removeMessageListener("Browser:ResetSSLPreferences", this);
+    mm.removeMessageListener("Browser:SSLErrorReportTelemetry", this);
+    mm.removeMessageListener("Browser:SSLErrorGoBack", this);
+
+    Services.obs.removeObserver(this, "captive-portal-login-abort");
+    Services.obs.removeObserver(this, "captive-portal-login-success");
+  },
+
+  observe(aSubject, aTopic, aData) {
+    switch (aTopic) {
+      case "captive-portal-login-abort":
+      case "captive-portal-login-success":
+        // Broadcast when a captive portal is freed so that error pages
+        // can refresh themselves.
+        window.messageManager.broadcastAsyncMessage("Browser:CaptivePortalFreed");
+      break;
+    }
+  },
+
+  receiveMessage(msg) {
+    switch (msg.name) {
+      case "Browser:CertExceptionError":
+        this.onCertError(msg.target, msg.data.elementId,
+                         msg.data.isTopFrame, msg.data.location,
+                         msg.data.securityInfoAsString);
+      break;
+      case "Browser:OpenCaptivePortalPage":
+        CaptivePortalWatcher.ensureCaptivePortalTab();
+      break;
+      case "Browser:SiteBlockedError":
+        this.onAboutBlocked(msg.data.elementId, msg.data.reason,
+                            msg.data.isTopFrame, msg.data.location,
+                            msg.data.blockedInfo);
+      break;
+      case "Browser:EnableOnlineMode":
+        if (Services.io.offline) {
+          // Reset network state and refresh the page.
+          Services.io.offline = false;
+          msg.target.reload();
+        }
+      break;
+      case "Browser:SendSSLErrorReport":
+        this.onSSLErrorReport(msg.target,
+                              msg.data.uri,
+                              msg.data.securityInfo);
+      break;
+      case "Browser:ResetSSLPreferences":
+        for (let prefName of PREF_SSL_IMPACT) {
+          Services.prefs.clearUserPref(prefName);
+        }
+        msg.target.reload();
+      break;
+      case "Browser:SetSSLErrorReportAuto":
+        Services.prefs.setBoolPref("security.ssl.errorReporting.automatic", msg.json.automatic);
+        let bin = TLS_ERROR_REPORT_TELEMETRY_AUTO_UNCHECKED;
+        if (msg.json.automatic) {
+          bin = TLS_ERROR_REPORT_TELEMETRY_AUTO_CHECKED;
+        }
+        Services.telemetry.getHistogramById("TLS_ERROR_REPORT_UI").add(bin);
+      break;
+      case "Browser:SSLErrorReportTelemetry":
+        let reportStatus = msg.data.reportStatus;
+        Services.telemetry.getHistogramById("TLS_ERROR_REPORT_UI")
+          .add(reportStatus);
+      break;
+      case "Browser:SSLErrorGoBack":
+        goBackFromErrorPage();
+      break;
+    }
+  },
+
+  onSSLErrorReport(browser, uri, securityInfo) {
+    if (!Services.prefs.getBoolPref("security.ssl.errorReporting.enabled")) {
+      Cu.reportError("User requested certificate error report sending, but certificate error reporting is disabled");
+      return;
+    }
+
+    let serhelper = Cc["@mozilla.org/network/serialization-helper;1"]
+                           .getService(Ci.nsISerializationHelper);
+    let transportSecurityInfo = serhelper.deserializeObject(securityInfo);
+    transportSecurityInfo.QueryInterface(Ci.nsITransportSecurityInfo)
+
+    let errorReporter = Cc["@mozilla.org/securityreporter;1"]
+                          .getService(Ci.nsISecurityReporter);
+    errorReporter.reportTLSError(transportSecurityInfo,
+                                 uri.host, uri.port);
+  },
+
+  onCertError(browser, elementId, isTopFrame, location, securityInfoAsString) {
+    let secHistogram = Services.telemetry.getHistogramById("SECURITY_UI");
+    let securityInfo;
+
+    switch (elementId) {
       case "exceptionDialogButton":
         if (isTopFrame) {
           secHistogram.add(Ci.nsISecurityUITelemetry.WARNING_BAD_CERT_TOP_CLICK_ADD_EXCEPTION);
         }
-        let params = { exceptionAdded : false };
+
+        securityInfo = getSecurityInfo(securityInfoAsString);
+        let sslStatus = securityInfo.QueryInterface(Ci.nsISSLStatusProvider)
+                                    .SSLStatus;
+        let params = { exceptionAdded : false,
+                       sslStatus };
 
         try {
           switch (Services.prefs.getIntPref("browser.ssl_override_behavior")) {
             case 2 : // Pre-fetch & pre-populate
               params.prefetchCert = true;
             case 1 : // Pre-populate
-              params.location = aOwnerDoc.location.href;
+              params.location = location;
           }
         } catch (e) {
           Components.utils.reportError("Couldn't get ssl_override pref: " + e);
         }
 
-        window.openDialog('chrome://pippki/content/exceptionDialog.xul',
-                          '','chrome,centerscreen,modal', params);
+        window.openDialog("chrome://pippki/content/exceptionDialog.xul",
+                          "", "chrome,centerscreen,modal", params);
 
         // If the user added the exception cert, attempt to reload the page
         if (params.exceptionAdded) {
-          aOwnerDoc.location.reload();
+          browser.reload();
         }
         break;
 
-      case "getMeOutOfHereButton":
+      case "returnButton":
         if (isTopFrame) {
           secHistogram.add(Ci.nsISecurityUITelemetry.WARNING_BAD_CERT_TOP_GET_ME_OUT_OF_HERE);
         }
-        getMeOutOfHere();
+        goBackFromErrorPage();
         break;
 
-      case "technicalContent":
-        if (isTopFrame) {
-          secHistogram.add(Ci.nsISecurityUITelemetry.WARNING_BAD_CERT_TOP_TECHNICAL_DETAILS);
-        }
-        break;
-
-      case "expertContent":
+      case "advancedButton":
         if (isTopFrame) {
           secHistogram.add(Ci.nsISecurityUITelemetry.WARNING_BAD_CERT_TOP_UNDERSTAND_RISKS);
         }
+
+        securityInfo = getSecurityInfo(securityInfoAsString);
+        let errorInfo = getDetailedCertErrorInfo(location,
+                                                 securityInfo);
+        browser.messageManager.sendAsyncMessage( "CertErrorDetails", {
+            code: securityInfo.errorCode,
+            info: errorInfo
+        });
+        break;
+
+      case "copyToClipboard":
+        const gClipboardHelper = Cc["@mozilla.org/widget/clipboardhelper;1"]
+                                    .getService(Ci.nsIClipboardHelper);
+        securityInfo = getSecurityInfo(securityInfoAsString);
+        let detailedInfo = getDetailedCertErrorInfo(location,
+                                                    securityInfo);
+        gClipboardHelper.copyString(detailedInfo);
         break;
 
     }
   },
 
-  onAboutBlocked: function BrowserOnClick_onAboutBlocked(aTargetElm, aOwnerDoc) {
-    let elmId = aTargetElm.getAttribute("id");
+  onAboutBlocked(elementId, reason, isTopFrame, location, blockedInfo) {
+    // Depending on what page we are displaying here (malware/phishing/unwanted)
+    // use the right strings and links for each.
+    let bucketName = "";
+    let sendTelemetry = false;
+    if (reason === "malware") {
+      sendTelemetry = true;
+      bucketName = "WARNING_MALWARE_PAGE_";
+    } else if (reason === "phishing") {
+      sendTelemetry = true;
+      bucketName = "WARNING_PHISHING_PAGE_";
+    } else if (reason === "unwanted") {
+      sendTelemetry = true;
+      bucketName = "WARNING_UNWANTED_PAGE_";
+    }
     let secHistogram = Services.telemetry.getHistogramById("SECURITY_UI");
-
-    // The event came from a button on a malware/phishing block page
-    // First check whether it's malware or phishing, so that we can
-    // use the right strings/links
-    let isMalware = /e=malwareBlocked/.test(aOwnerDoc.documentURI);
-    let bucketName = isMalware ? "WARNING_MALWARE_PAGE_":"WARNING_PHISHING_PAGE_";
     let nsISecTel = Ci.nsISecurityUITelemetry;
-    let isIframe = (aOwnerDoc.defaultView.parent === aOwnerDoc.defaultView);
-    bucketName += isIframe ? "TOP_" : "FRAME_";
-
-    switch (elmId) {
+    bucketName += isTopFrame ? "TOP_" : "FRAME_";
+    switch (elementId) {
       case "getMeOutButton":
-        secHistogram.add(nsISecTel[bucketName + "GET_ME_OUT_OF_HERE"]);
+        if (sendTelemetry) {
+          secHistogram.add(nsISecTel[bucketName + "GET_ME_OUT_OF_HERE"]);
+        }
         getMeOutOfHere();
         break;
 
       case "reportButton":
-        // This is the "Why is this site blocked" button.  For malware,
-        // we can fetch a site-specific report, for phishing, we redirect
-        // to the generic page describing phishing protection.
+        // This is the "Why is this site blocked" button. We redirect
+        // to the generic page describing phishing/malware protection.
 
-        // We log even if malware/phishing info URL couldn't be found:
+        // We log even if malware/phishing/unwanted info URL couldn't be found:
         // the measurement is for how many users clicked the WHY BLOCKED button
-        secHistogram.add(nsISecTel[bucketName + "WHY_BLOCKED"]);
-
-        if (isMalware) {
-          // Get the stop badware "why is this blocked" report url,
-          // append the current url, and go there.
-          try {
-            let reportURL = formatURL("browser.safebrowsing.malware.reportURL", true);
-            reportURL += aOwnerDoc.location.href;
-            content.location = reportURL;
-          } catch (e) {
-            Components.utils.reportError("Couldn't get malware report URL: " + e);
-          }
+        if (sendTelemetry) {
+          secHistogram.add(nsISecTel[bucketName + "WHY_BLOCKED"]);
         }
-        else { // It's a phishing site, not malware
-          try {
-            content.location = formatURL("browser.safebrowsing.warning.infoURL", true);
-          } catch (e) {
-            Components.utils.reportError("Couldn't get phishing info URL: " + e);
-          }
-        }
+        openHelpLink("phishing-malware", false, "current");
         break;
 
       case "ignoreWarningButton":
-        secHistogram.add(nsISecTel[bucketName + "IGNORE_WARNING"]);
-        this.ignoreWarningButton(isMalware);
+        if (gPrefService.getBoolPref("browser.safebrowsing.allowOverride")) {
+          if (sendTelemetry) {
+            secHistogram.add(nsISecTel[bucketName + "IGNORE_WARNING"]);
+          }
+          this.ignoreWarningButton(reason, blockedInfo);
+        }
         break;
     }
   },
 
-  ignoreWarningButton: function BrowserOnClick_ignoreWarningButton(aIsMalware) {
+  ignoreWarningButton(reason, blockedInfo) {
     // Allow users to override and continue through to the site,
     // but add a notify bar as a reminder, so that they don't lose
     // track after, e.g., tab switching.
-    gBrowser.loadURIWithFlags(content.location.href,
+    gBrowser.loadURIWithFlags(gBrowser.currentURI.spec,
                               nsIWebNavigation.LOAD_FLAGS_BYPASS_CLASSIFIER,
                               null, null, null);
 
-    Services.perms.add(makeURI(content.location.href), "safe-browsing",
+    Services.perms.add(gBrowser.currentURI, "safe-browsing",
                        Ci.nsIPermissionManager.ALLOW_ACTION,
                        Ci.nsIPermissionManager.EXPIRE_SESSION);
 
     let buttons = [{
       label: gNavigatorBundle.getString("safebrowsing.getMeOutOfHereButton.label"),
       accessKey: gNavigatorBundle.getString("safebrowsing.getMeOutOfHereButton.accessKey"),
-      callback: function() { getMeOutOfHere(); }
+      callback() { getMeOutOfHere(); }
     }];
 
     let title;
-    if (aIsMalware) {
-      title = gNavigatorBundle.getString("safebrowsing.reportedAttackSite");
-      buttons[1] = {
-        label: gNavigatorBundle.getString("safebrowsing.notAnAttackButton.label"),
-        accessKey: gNavigatorBundle.getString("safebrowsing.notAnAttackButton.accessKey"),
-        callback: function() {
-          openUILinkIn(gSafeBrowsing.getReportURL('MalwareError'), 'tab');
-        }
-      };
-    } else {
-      title = gNavigatorBundle.getString("safebrowsing.reportedWebForgery");
-      buttons[1] = {
-        label: gNavigatorBundle.getString("safebrowsing.notAForgeryButton.label"),
-        accessKey: gNavigatorBundle.getString("safebrowsing.notAForgeryButton.accessKey"),
-        callback: function() {
-          openUILinkIn(gSafeBrowsing.getReportURL('Error'), 'tab');
-        }
-      };
+    if (reason === "malware") {
+      let reportUrl = gSafeBrowsing.getReportURL("MalwareMistake", blockedInfo);
+
+      // There's no button if we can not get report url, for example if the provider
+      // of blockedInfo is not Google
+      if (reportUrl) {
+        buttons[1] = {
+          label: gNavigatorBundle.getString("safebrowsing.notAnAttackButton.label"),
+          accessKey: gNavigatorBundle.getString("safebrowsing.notAnAttackButton.accessKey"),
+          callback() {
+            openUILinkIn(reportUrl, "tab");
+          }
+        };
+      }
+    } else if (reason === "phishing") {
+      let reportUrl = gSafeBrowsing.getReportURL("PhishMistake", blockedInfo);
+
+      // There's no button if we can not get report url, for example if the provider
+      // of blockedInfo is not Google
+      if (reportUrl) {
+        buttons[1] = {
+          label: gNavigatorBundle.getString("safebrowsing.notADeceptiveSiteButton.label"),
+          accessKey: gNavigatorBundle.getString("safebrowsing.notADeceptiveSiteButton.accessKey"),
+          callback() {
+            openUILinkIn(reportUrl, "tab");
+          }
+        };
+      }
+    } else if (reason === "unwanted") {
+      title = gNavigatorBundle.getString("safebrowsing.reportedUnwantedSite");
+      // There is no button for reporting errors since Google doesn't currently
+      // provide a URL endpoint for these reports.
     }
 
     let notificationBox = gBrowser.getNotificationBox();
@@ -2568,56 +3220,6 @@ let BrowserOnClick = {
     // doesn't get removed on redirects.
     notification.persistence = -1;
   },
-
-  onAboutNetError: function BrowserOnClick_onAboutNetError(aTargetElm, aOwnerDoc) {
-    let elmId = aTargetElm.getAttribute("id");
-    if (elmId != "errorTryAgain" || !/e=netOffline/.test(aOwnerDoc.documentURI))
-      return;
-    Services.io.offline = false;
-  },
-
-  onAboutHome: function BrowserOnClick_onAboutHome(aTargetElm, aOwnerDoc) {
-    let elmId = aTargetElm.getAttribute("id");
-
-    switch (elmId) {
-      case "restorePreviousSession":
-        let ss = Cc["@mozilla.org/browser/sessionstore;1"].
-                 getService(Ci.nsISessionStore);
-        if (ss.canRestoreLastSession) {
-          ss.restoreLastSession();
-        }
-        aOwnerDoc.getElementById("launcher").removeAttribute("session");
-        break;
-
-      case "downloads":
-        BrowserDownloadsUI();
-        break;
-
-      case "bookmarks":
-        PlacesCommandHook.showPlacesOrganizer("AllBookmarks");
-        break;
-
-      case "history":
-        PlacesCommandHook.showPlacesOrganizer("History");
-        break;
-
-      case "apps":
-        openUILinkIn("https://marketplace.mozilla.org/", "tab");
-        break;
-
-      case "addons":
-        BrowserOpenAddonsMgr();
-        break;
-
-      case "sync":
-        openPreferences("paneSync");
-        break;
-
-      case "settings":
-        openPreferences();
-        break;
-    }
-  },
 };
 
 /**
@@ -2628,6 +3230,35 @@ let BrowserOnClick = {
  * when their own homepage is infected, we can get them somewhere safe.
  */
 function getMeOutOfHere() {
+  gBrowser.loadURI(getDefaultHomePage());
+}
+
+/**
+ * Re-direct the browser to the previous page or a known-safe page if no
+ * previous page is found in history.  This function is used when the user
+ * browses to a secure page with certificate issues and is presented with
+ * about:certerror.  The "Go Back" button should take the user to the previous
+ * or a default start page so that even when their own homepage is on a server
+ * that has certificate errors, we can get them somewhere safe.
+ */
+function goBackFromErrorPage() {
+  const ss = Cc["@mozilla.org/browser/sessionstore;1"].
+             getService(Ci.nsISessionStore);
+  let state = JSON.parse(ss.getTabState(gBrowser.selectedTab));
+  if (state.index == 1) {
+    // If the unsafe page is the first or the only one in history, go to the
+    // start page.
+    gBrowser.loadURI(getDefaultHomePage());
+  } else {
+    BrowserBack();
+  }
+}
+
+/**
+ * Return the default start page for the cases when the user's own homepage is
+ * infected, so we can get them somewhere safe.
+ */
+function getDefaultHomePage() {
   // Get the start page from the *default* pref branch, not the user's
   var prefs = Services.prefs.getDefaultBranch(null);
   var url = BROWSER_NEW_TAB_URL;
@@ -2635,86 +3266,227 @@ function getMeOutOfHere() {
     url = prefs.getComplexValue("browser.startup.homepage",
                                 Ci.nsIPrefLocalizedString).data;
     // If url is a pipe-delimited set of pages, just take the first one.
-    if (url.contains("|"))
+    if (url.includes("|"))
       url = url.split("|")[0];
-  } catch(e) {
+  } catch (e) {
     Components.utils.reportError("Couldn't get homepage pref: " + e);
   }
-  content.location = url;
+  return url;
 }
 
-function BrowserFullScreen()
-{
+function BrowserFullScreen() {
   window.fullScreen = !window.fullScreen;
 }
 
-function onFullScreen(event) {
-  FullScreen.toggle(event);
+function mirrorShow(popup) {
+  let services = [];
+  if (Services.prefs.getBoolPref("browser.casting.enabled")) {
+    services = CastingApps.getServicesForMirroring();
+  }
+  popup.ownerDocument.getElementById("menu_mirrorTabCmd").hidden = !services.length;
 }
 
-function onMozEnteredDomFullscreen(event) {
-  FullScreen.enterDomFullscreen(event);
+function mirrorMenuItemClicked(event) {
+  gBrowser.selectedBrowser.messageManager.sendAsyncMessage("SecondScreen:tab-mirror",
+                                                           {service: event.originalTarget._service});
 }
 
-function getWebNavigation()
-{
+function populateMirrorTabMenu(popup) {
+  popup.innerHTML = null;
+  if (!Services.prefs.getBoolPref("browser.casting.enabled")) {
+    return;
+  }
+  let doc = popup.ownerDocument;
+  let services = CastingApps.getServicesForMirroring();
+  services.forEach(service => {
+    let item = doc.createElement("menuitem");
+    item.setAttribute("label", service.friendlyName);
+    item._service = service;
+    item.addEventListener("command", mirrorMenuItemClicked);
+    popup.appendChild(item);
+  });
+}
+
+function getWebNavigation() {
   return gBrowser.webNavigation;
 }
 
 function BrowserReloadWithFlags(reloadFlags) {
-  /* First, we'll try to use the session history object to reload so
-   * that framesets are handled properly. If we're in a special
-   * window (such as view-source) that has no session history, fall
-   * back on using the web navigation's reload method.
-   */
-
-  var webNav = gBrowser.webNavigation;
-  try {
-    var sh = webNav.sessionHistory;
-    if (sh)
-      webNav = sh.QueryInterface(nsIWebNavigation);
-  } catch (e) {
+  let url = gBrowser.currentURI.spec;
+  if (gBrowser.updateBrowserRemotenessByURL(gBrowser.selectedBrowser, url)) {
+    // If the remoteness has changed, the new browser doesn't have any
+    // information of what was loaded before, so we need to load the previous
+    // URL again.
+    gBrowser.loadURIWithFlags(url, reloadFlags);
+    return;
   }
 
-  try {
-    webNav.reload(reloadFlags);
-  } catch (e) {
+  // Do this after the above case where we might flip remoteness.
+  // Unfortunately, we'll count the remoteness flip case as a
+  // "newURL" load, since we're using loadURIWithFlags, but hopefully
+  // that's rare enough to not matter.
+  maybeRecordAbandonmentTelemetry(gBrowser.selectedTab, "reload");
+
+  // Reset temporary permissions on the current tab. This is done here
+  // because we only want to reset permissions on user reload.
+  SitePermissions.clearTemporaryPermissions(gBrowser.selectedBrowser);
+
+  let windowUtils = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                          .getInterface(Ci.nsIDOMWindowUtils);
+
+  gBrowser.selectedBrowser
+          .messageManager
+          .sendAsyncMessage("Browser:Reload",
+                            { flags: reloadFlags,
+                              handlingUserInput: windowUtils.isHandlingUserInput });
+}
+
+function getSecurityInfo(securityInfoAsString) {
+  if (!securityInfoAsString)
+    return null;
+
+  const serhelper = Cc["@mozilla.org/network/serialization-helper;1"]
+                       .getService(Ci.nsISerializationHelper);
+  let securityInfo = serhelper.deserializeObject(securityInfoAsString);
+  securityInfo.QueryInterface(Ci.nsITransportSecurityInfo);
+
+  return securityInfo;
+}
+
+/**
+ * Returns a string with detailed information about the certificate validation
+ * failure from the specified URI that can be used to send a report.
+ */
+function getDetailedCertErrorInfo(location, securityInfo) {
+  if (!securityInfo)
+    return "";
+
+  let certErrorDetails = location;
+  let code = securityInfo.errorCode;
+  let errors = Cc["@mozilla.org/nss_errors_service;1"]
+                  .getService(Ci.nsINSSErrorsService);
+
+  certErrorDetails += "\r\n\r\n" + errors.getErrorMessage(errors.getXPCOMFromNSSError(code));
+
+  const sss = Cc["@mozilla.org/ssservice;1"]
+                 .getService(Ci.nsISiteSecurityService);
+  // SiteSecurityService uses different storage if the channel is
+  // private. Thus we must give isSecureURI correct flags or we
+  // might get incorrect results.
+  let flags = PrivateBrowsingUtils.isWindowPrivate(window) ?
+              Ci.nsISocketProvider.NO_PERMANENT_STORAGE : 0;
+
+  let uri = Services.io.newURI(location);
+
+  let hasHSTS = sss.isSecureURI(sss.HEADER_HSTS, uri, flags);
+  let hasHPKP = sss.isSecureURI(sss.HEADER_HPKP, uri, flags);
+  certErrorDetails += "\r\n\r\n" +
+                      gNavigatorBundle.getFormattedString("certErrorDetailsHSTS.label",
+                                                          [hasHSTS]);
+  certErrorDetails += "\r\n" +
+                      gNavigatorBundle.getFormattedString("certErrorDetailsKeyPinning.label",
+                                                          [hasHPKP]);
+
+  let certChain = "";
+  if (securityInfo.failedCertChain) {
+    let certs = securityInfo.failedCertChain.getEnumerator();
+    while (certs.hasMoreElements()) {
+      let cert = certs.getNext();
+      cert.QueryInterface(Ci.nsIX509Cert);
+      certChain += getPEMString(cert);
+    }
   }
+
+  certErrorDetails += "\r\n\r\n" +
+                      gNavigatorBundle.getString("certErrorDetailsCertChain.label") +
+                      "\r\n\r\n" + certChain;
+
+  return certErrorDetails;
+}
+
+// TODO: can we pull getDERString and getPEMString in from pippki.js instead of
+// duplicating them here?
+function getDERString(cert) {
+  var length = {};
+  var derArray = cert.getRawDER(length);
+  var derString = "";
+  for (var i = 0; i < derArray.length; i++) {
+    derString += String.fromCharCode(derArray[i]);
+  }
+  return derString;
+}
+
+function getPEMString(cert) {
+  var derb64 = btoa(getDERString(cert));
+  // Wrap the Base64 string into lines of 64 characters,
+  // with CRLF line breaks (as specified in RFC 1421).
+  var wrapped = derb64.replace(/(\S{64}(?!$))/g, "$1\r\n");
+  return "-----BEGIN CERTIFICATE-----\r\n"
+         + wrapped
+         + "\r\n-----END CERTIFICATE-----\r\n";
 }
 
 var PrintPreviewListener = {
   _printPreviewTab: null,
   _tabBeforePrintPreview: null,
+  _simplifyPageTab: null,
 
-  getPrintPreviewBrowser: function () {
+  getPrintPreviewBrowser() {
     if (!this._printPreviewTab) {
+      let browser = gBrowser.selectedBrowser;
+      let preferredRemoteType = browser.remoteType;
       this._tabBeforePrintPreview = gBrowser.selectedTab;
-      this._printPreviewTab = gBrowser.loadOneTab("about:blank",
-                                                  { inBackground: false });
+      this._printPreviewTab = gBrowser.loadOneTab("about:printpreview", {
+        inBackground: false,
+        preferredRemoteType,
+        sameProcessAsFrameLoader: browser.frameLoader
+      });
       gBrowser.selectedTab = this._printPreviewTab;
     }
     return gBrowser.getBrowserForTab(this._printPreviewTab);
   },
-  getSourceBrowser: function () {
+  createSimplifiedBrowser() {
+    let browser = this._tabBeforePrintPreview.linkedBrowser;
+    this._simplifyPageTab = gBrowser.loadOneTab("about:printpreview", {
+      inBackground: true,
+      sameProcessAsFrameLoader: browser.frameLoader
+     });
+    return this.getSimplifiedSourceBrowser();
+  },
+  getSourceBrowser() {
     return this._tabBeforePrintPreview ?
       this._tabBeforePrintPreview.linkedBrowser : gBrowser.selectedBrowser;
   },
-  getNavToolbox: function () {
+  getSimplifiedSourceBrowser() {
+    return this._simplifyPageTab ?
+      gBrowser.getBrowserForTab(this._simplifyPageTab) : null;
+  },
+  getNavToolbox() {
     return gNavToolbox;
   },
-  onEnter: function () {
+  onEnter() {
+    // We might have accidentally switched tabs since the user invoked print
+    // preview
+    if (gBrowser.selectedTab != this._printPreviewTab) {
+      gBrowser.selectedTab = this._printPreviewTab;
+    }
     gInPrintPreviewMode = true;
     this._toggleAffectedChrome();
   },
-  onExit: function () {
+  onExit() {
     gBrowser.selectedTab = this._tabBeforePrintPreview;
     this._tabBeforePrintPreview = null;
     gInPrintPreviewMode = false;
     this._toggleAffectedChrome();
+    if (this._simplifyPageTab) {
+      gBrowser.removeTab(this._simplifyPageTab);
+      this._simplifyPageTab = null;
+    }
     gBrowser.removeTab(this._printPreviewTab);
+    gBrowser.deactivatePrintPreviewBrowsers();
     this._printPreviewTab = null;
   },
-  _toggleAffectedChrome: function () {
+  _toggleAffectedChrome() {
     gNavToolbox.collapsed = gInPrintPreviewMode;
 
     if (gInPrintPreviewMode)
@@ -2722,29 +3494,18 @@ var PrintPreviewListener = {
     else
       this._showChrome();
 
-    if (this._chromeState.sidebarOpen)
-      toggleSidebar(this._sidebarCommand);
-
-#ifdef MENUBAR_CAN_AUTOHIDE
-    updateAppButtonDisplay();
-#endif
+    TabsInTitlebar.allowedBy("print-preview", !gInPrintPreviewMode);
   },
-  _hideChrome: function () {
+  _hideChrome() {
     this._chromeState = {};
 
-    var sidebar = document.getElementById("sidebar-box");
-    this._chromeState.sidebarOpen = !sidebar.hidden;
-    this._sidebarCommand = sidebar.getAttribute("sidebarcommand");
+    this._chromeState.sidebarOpen = SidebarUI.isOpen;
+    this._sidebarCommand = SidebarUI.currentID;
+    SidebarUI.hide();
 
     var notificationBox = gBrowser.getNotificationBox();
     this._chromeState.notificationsOpen = !notificationBox.notificationsHidden;
     notificationBox.notificationsHidden = true;
-
-    document.getElementById("sidebar").setAttribute("src", "about:blank");
-    var addonBar = document.getElementById("addon-bar");
-    this._chromeState.addonBarOpen = !addonBar.collapsed;
-    addonBar.collapsed = true;
-    gBrowser.updateWindowResizers();
 
     this._chromeState.findOpen = gFindBarInitialized && !gFindBar.hidden;
     if (gFindBarInitialized)
@@ -2761,14 +3522,9 @@ var PrintPreviewListener = {
       syncNotifications.notificationsHidden = true;
     }
   },
-  _showChrome: function () {
+  _showChrome() {
     if (this._chromeState.notificationsOpen)
       gBrowser.getNotificationBox().notificationsHidden = false;
-
-    if (this._chromeState.addonBarOpen) {
-      document.getElementById("addon-bar").collapsed = false;
-      gBrowser.updateWindowResizers();
-    }
 
     if (this._chromeState.findOpen)
       gFindBar.open();
@@ -2778,289 +3534,172 @@ var PrintPreviewListener = {
 
     if (this._chromeState.syncNotificationsOpen)
       document.getElementById("sync-notifications").notificationsHidden = false;
-  }
+
+    if (this._chromeState.sidebarOpen)
+      SidebarUI.show(this._sidebarCommand);
+  },
+
+  activateBrowser(browser) {
+    gBrowser.activateBrowserForPrintPreview(browser);
+  },
 }
 
-function getMarkupDocumentViewer()
-{
+function getMarkupDocumentViewer() {
   return gBrowser.markupDocumentViewer;
 }
 
 // This function is obsolete. Newer code should use <tooltip page="true"/> instead.
-function FillInHTMLTooltip(tipElement)
-{
+function FillInHTMLTooltip(tipElement) {
   document.getElementById("aHTMLTooltip").fillInPageTooltip(tipElement);
 }
 
 var browserDragAndDrop = {
-  canDropLink: function (aEvent) Services.droppedLinkHandler.canDropLink(aEvent, true),
+  canDropLink: aEvent => Services.droppedLinkHandler.canDropLink(aEvent, true),
 
-  dragOver: function (aEvent)
-  {
+  dragOver(aEvent) {
     if (this.canDropLink(aEvent)) {
       aEvent.preventDefault();
     }
   },
 
-  drop: function (aEvent, aName, aDisallowInherit) {
-    return Services.droppedLinkHandler.dropLink(aEvent, aName, aDisallowInherit);
+  dropLinks(aEvent, aDisallowInherit) {
+    return Services.droppedLinkHandler.dropLinks(aEvent, aDisallowInherit);
   }
 };
 
 var homeButtonObserver = {
-  onDrop: function (aEvent)
-    {
+  onDrop(aEvent) {
       // disallow setting home pages that inherit the principal
-      let url = browserDragAndDrop.drop(aEvent, {}, true);
-      setTimeout(openHomeDialog, 0, url);
+      let links = browserDragAndDrop.dropLinks(aEvent, true);
+      if (links.length) {
+        setTimeout(openHomeDialog, 0, links.map(link => link.url).join("|"));
+      }
     },
 
-  onDragOver: function (aEvent)
-    {
+  onDragOver(aEvent) {
+      if (gPrefService.prefIsLocked("browser.startup.homepage")) {
+        return;
+      }
       browserDragAndDrop.dragOver(aEvent);
       aEvent.dropEffect = "link";
     },
-  onDragExit: function (aEvent)
-    {
+  onDragExit(aEvent) {
     }
 }
 
-function openHomeDialog(aURL)
-{
+function openHomeDialog(aURL) {
   var promptTitle = gNavigatorBundle.getString("droponhometitle");
-  var promptMsg   = gNavigatorBundle.getString("droponhomemsg");
+  var promptMsg;
+  if (aURL.includes("|")) {
+    promptMsg = gNavigatorBundle.getString("droponhomemsgMultiple");
+  } else {
+    promptMsg = gNavigatorBundle.getString("droponhomemsg");
+  }
+
   var pressedVal  = Services.prompt.confirmEx(window, promptTitle, promptMsg,
                           Services.prompt.STD_YES_NO_BUTTONS,
                           null, null, null, null, {value:0});
 
   if (pressedVal == 0) {
     try {
-      var str = Components.classes["@mozilla.org/supports-string;1"]
-                          .createInstance(Components.interfaces.nsISupportsString);
-      str.data = aURL;
+      var homepageStr = Components.classes["@mozilla.org/supports-string;1"]
+                        .createInstance(Components.interfaces.nsISupportsString);
+      homepageStr.data = aURL;
       gPrefService.setComplexValue("browser.startup.homepage",
-                                   Components.interfaces.nsISupportsString, str);
+                                   Components.interfaces.nsISupportsString, homepageStr);
     } catch (ex) {
-      dump("Failed to set the home page.\n"+ex+"\n");
+      dump("Failed to set the home page.\n" + ex + "\n");
     }
-  }
-}
-
-var bookmarksButtonObserver = {
-  onDrop: function (aEvent)
-  {
-    let name = { };
-    let url = browserDragAndDrop.drop(aEvent, name);
-    try {
-      PlacesUIUtils.showBookmarkDialog({ action: "add"
-                                       , type: "bookmark"
-                                       , uri: makeURI(url)
-                                       , title: name
-                                       , hiddenRows: [ "description"
-                                                     , "location"
-                                                     , "loadInSidebar"
-                                                     , "keyword" ]
-                                       }, window);
-    } catch(ex) { }
-  },
-
-  onDragOver: function (aEvent)
-  {
-    browserDragAndDrop.dragOver(aEvent);
-    aEvent.dropEffect = "link";
-  },
-
-  onDragExit: function (aEvent)
-  {
   }
 }
 
 var newTabButtonObserver = {
-  onDragOver: function (aEvent)
-  {
+  onDragOver(aEvent) {
     browserDragAndDrop.dragOver(aEvent);
   },
-
-  onDragExit: function (aEvent)
-  {
-  },
-
-  onDrop: function (aEvent)
-  {
-    let url = browserDragAndDrop.drop(aEvent, { });
-    Task.spawn(function() {
-      let data = yield getShortcutOrURIAndPostData(url);
-      if (data.url) {
-        // allow third-party services to fixup this URL
+  onDragExit(aEvent) {},
+  onDrop: Task.async(function* (aEvent) {
+    let links = browserDragAndDrop.dropLinks(aEvent);
+    for (let link of links) {
+      if (link.url) {
+        let data = yield getShortcutOrURIAndPostData(link.url);
+        // Allow third-party services to fixup this URL.
         openNewTabWith(data.url, null, data.postData, aEvent, true);
       }
-    });
-  }
+    }
+  })
 }
 
 var newWindowButtonObserver = {
-  onDragOver: function (aEvent)
-  {
+  onDragOver(aEvent) {
     browserDragAndDrop.dragOver(aEvent);
   },
-  onDragExit: function (aEvent)
-  {
-  },
-  onDrop: function (aEvent)
-  {
-    let url = browserDragAndDrop.drop(aEvent, { });
-    Task.spawn(function() {
-      let data = yield getShortcutOrURIAndPostData(url);
-      if (data.url) {
-        // allow third-party services to fixup this URL
+  onDragExit(aEvent) {},
+  onDrop: Task.async(function* (aEvent) {
+    let links = browserDragAndDrop.dropLinks(aEvent);
+    for (let link of links) {
+      if (link.url) {
+        let data = yield getShortcutOrURIAndPostData(link.url);
+        // Allow third-party services to fixup this URL.
         openNewWindowWith(data.url, null, data.postData, true);
       }
-    });
-  }
+    }
+  })
 }
 
 const DOMLinkHandler = {
-  handleEvent: function (event) {
-    switch (event.type) {
-      case "DOMLinkAdded":
-        this.onLinkAdded(event);
+  init() {
+    let mm = window.messageManager;
+    mm.addMessageListener("Link:AddFeed", this);
+    mm.addMessageListener("Link:SetIcon", this);
+    mm.addMessageListener("Link:AddSearch", this);
+  },
+
+  receiveMessage(aMsg) {
+    switch (aMsg.name) {
+      case "Link:AddFeed":
+        let link = {type: aMsg.data.type, href: aMsg.data.href, title: aMsg.data.title};
+        FeedHandler.addFeed(link, aMsg.target);
+        break;
+
+      case "Link:SetIcon":
+        this.setIcon(aMsg.target, aMsg.data.url, aMsg.data.loadingPrincipal);
+        break;
+
+      case "Link:AddSearch":
+        this.addSearch(aMsg.target, aMsg.data.engine, aMsg.data.url);
         break;
     }
   },
-  getLinkIconURI: function(aLink) {
-    let targetDoc = aLink.ownerDocument;
-    var uri = makeURI(aLink.href, targetDoc.characterSet);
 
-    // Verify that the load of this icon is legal.
-    // Some error or special pages can load their favicon.
-    // To be on the safe side, only allow chrome:// favicons.
-    var isAllowedPage = [
-      /^about:neterror\?/,
-      /^about:blocked\?/,
-      /^about:certerror\?/,
-      /^about:home$/,
-    ].some(function (re) re.test(targetDoc.documentURI));
+  setIcon(aBrowser, aURL, aLoadingPrincipal) {
+    if (gBrowser.isFailedIcon(aURL))
+      return false;
 
-    if (!isAllowedPage || !uri.schemeIs("chrome")) {
-      var ssm = Services.scriptSecurityManager;
-      try {
-        ssm.checkLoadURIWithPrincipal(targetDoc.nodePrincipal, uri,
-                                      Ci.nsIScriptSecurityManager.DISALLOW_SCRIPT);
-      } catch(e) {
-        return null;
-      }
-    }
+    let tab = gBrowser.getTabForBrowser(aBrowser);
+    if (!tab)
+      return false;
 
-    try {
-      var contentPolicy = Cc["@mozilla.org/layout/content-policy;1"].
-                          getService(Ci.nsIContentPolicy);
-    } catch(e) {
-      return null; // Refuse to load if we can't do a security check.
-    }
-
-    // Security says okay, now ask content policy
-    if (contentPolicy.shouldLoad(Ci.nsIContentPolicy.TYPE_IMAGE,
-                                 uri, targetDoc.documentURIObject,
-                                 aLink, aLink.type, null)
-                                 != Ci.nsIContentPolicy.ACCEPT)
-      return null;
-
-    try {
-      uri.userPass = "";
-    } catch(e) {
-      // some URIs are immutable
-    }
-    return uri;
+    gBrowser.setIcon(tab, aURL, aLoadingPrincipal);
+    return true;
   },
-  onLinkAdded: function (event) {
-    var link = event.originalTarget;
-    var rel = link.rel && link.rel.toLowerCase();
-    if (!link || !link.ownerDocument || !rel || !link.href)
+
+  addSearch(aBrowser, aEngine, aURL) {
+    let tab = gBrowser.getTabForBrowser(aBrowser);
+    if (!tab)
       return;
 
-    var feedAdded = false;
-    var iconAdded = false;
-    var searchAdded = false;
-    var rels = {};
-    for (let relString of rel.split(/\s+/))
-      rels[relString] = true;
-
-    for (let relVal in rels) {
-      switch (relVal) {
-        case "feed":
-        case "alternate":
-          if (!feedAdded) {
-            if (!rels.feed && rels.alternate && rels.stylesheet)
-              break;
-
-            if (isValidFeed(link, link.ownerDocument.nodePrincipal, rels.feed)) {
-              FeedHandler.addFeed(link, link.ownerDocument);
-              feedAdded = true;
-            }
-          }
-          break;
-        case "icon":
-          if (!iconAdded) {
-            if (!gPrefService.getBoolPref("browser.chrome.site_icons"))
-              break;
-
-            var uri = this.getLinkIconURI(link);
-            if (!uri)
-              break;
-
-            if (gBrowser.isFailedIcon(uri))
-              break;
-
-            var browserIndex = gBrowser.getBrowserIndexForDocument(link.ownerDocument);
-            // no browser? no favicon.
-            if (browserIndex == -1)
-              break;
-
-            let tab = gBrowser.tabs[browserIndex];
-            gBrowser.setIcon(tab, uri.spec);
-            iconAdded = true;
-          }
-          break;
-        case "search":
-          if (!searchAdded) {
-            var type = link.type && link.type.toLowerCase();
-            type = type.replace(/^\s+|\s*(?:;.*)?$/g, "");
-
-            if (type == "application/opensearchdescription+xml" && link.title &&
-                /^(?:https?|ftp):/i.test(link.href)) {
-              var engine = { title: link.title, href: link.href };
-              BrowserSearch.addEngine(engine, link.ownerDocument);
-              searchAdded = true;
-            }
-          }
-          break;
-      }
-    }
-  }
+    BrowserSearch.addEngine(aBrowser, aEngine, makeURI(aURL));
+  },
 }
 
 const BrowserSearch = {
-  addEngine: function(engine, targetDoc) {
-    if (!this.searchBar)
-      return;
-
-    var browser = gBrowser.getBrowserForDocument(targetDoc);
-    // ignore search engines from subframes (see bug 479408)
-    if (!browser)
-      return;
-
+  addEngine(browser, engine, uri) {
     // Check to see whether we've already added an engine with this title
     if (browser.engines) {
-      if (browser.engines.some(function (e) e.title == engine.title))
+      if (browser.engines.some(e => e.title == engine.title))
         return;
     }
-
-    // Append the URI and an appropriate title to the browser data.
-    // Use documentURIObject in the check for shouldLoadFavIcon so that we
-    // do the right thing with about:-style error pages.  Bug 453442
-    var iconURL = null;
-    if (gBrowser.shouldLoadFavIcon(targetDoc.documentURIObject))
-      iconURL = targetDoc.documentURIObject.prePath + "/favicon.ico";
 
     var hidden = false;
     // If this engine (identified by title) is already in the list, add it
@@ -3074,12 +3713,33 @@ const BrowserSearch = {
 
     engines.push({ uri: engine.href,
                    title: engine.title,
-                   icon: iconURL });
+                   get icon() { return browser.mIconURL; }
+                 });
 
     if (hidden)
       browser.hiddenEngines = engines;
-    else
+    else {
       browser.engines = engines;
+      if (browser == gBrowser.selectedBrowser)
+        this.updateOpenSearchBadge();
+    }
+  },
+
+  /**
+   * Update the browser UI to show whether or not additional engines are
+   * available when a page is loaded or the user switches tabs to a page that
+   * has search engines.
+   */
+  updateOpenSearchBadge() {
+    var searchBar = this.searchBar;
+    if (!searchBar)
+      return;
+
+    var engines = gBrowser.selectedBrowser.engines;
+    if (engines && engines.length > 0)
+      searchBar.setAttribute("addengines", "true");
+    else
+      searchBar.removeAttribute("addengines");
   },
 
   /**
@@ -3088,7 +3748,6 @@ const BrowserSearch = {
    * or focuses an existing window, if necessary.
    */
   webSearch: function BrowserSearch_webSearch() {
-#ifdef XP_MACOSX
     if (window.location.href != getBrowserURL()) {
       var win = getTopWin();
       if (win) {
@@ -3097,7 +3756,7 @@ const BrowserSearch = {
         win.BrowserSearch.webSearch();
       } else {
         // If there are no open browser windows, open a new one
-        var observer = function observer(subject, topic, data) {
+        var observer = function(subject, topic, data) {
           if (subject == win) {
             BrowserSearch.webSearch();
             Services.obs.removeObserver(observer, "browser-delayed-startup-finished");
@@ -3109,14 +3768,39 @@ const BrowserSearch = {
       }
       return;
     }
-#endif
-    var searchBar = this.searchBar;
-    if (searchBar && window.fullScreen)
-      FullScreen.mouseoverToggle(true);
-    if (searchBar)
+
+    let focusUrlBarIfSearchFieldIsNotActive = function(aSearchBar) {
+      if (!aSearchBar || document.activeElement != aSearchBar.textbox.inputField) {
+        focusAndSelectUrlBar();
+      }
+    };
+
+    let searchBar = this.searchBar;
+    let placement = CustomizableUI.getPlacementOfWidget("search-container");
+    let focusSearchBar = () => {
+      searchBar = this.searchBar;
       searchBar.select();
-    if (!searchBar || document.activeElement != searchBar.textbox.inputField)
-      openUILinkIn(Services.search.defaultEngine.searchForm, "current");
+      focusUrlBarIfSearchFieldIsNotActive(searchBar);
+    };
+    if (placement && placement.area == CustomizableUI.AREA_PANEL) {
+      // The panel is not constructed until the first time it is shown.
+      PanelUI.show().then(focusSearchBar);
+      return;
+    }
+    if (placement && placement.area == CustomizableUI.AREA_NAVBAR && searchBar &&
+        searchBar.parentNode.getAttribute("overflowedItem") == "true") {
+      let navBar = document.getElementById(CustomizableUI.AREA_NAVBAR);
+      navBar.overflowable.show().then(() => {
+        focusSearchBar();
+      });
+      return;
+    }
+    if (searchBar) {
+      if (window.fullScreen)
+        FullScreen.showNavToolbox();
+      searchBar.select();
+    }
+    focusUrlBarIfSearchFieldIsNotActive(searchBar);
   },
 
   /**
@@ -3135,11 +3819,11 @@ const BrowserSearch = {
    *        allows the search service to provide a different nsISearchSubmission
    *        depending on e.g. where the search is triggered in the UI.
    *
-   * @return string Name of the search engine used to perform a search or null
-   *         if a search was not performed.
+   * @return engine The search engine used to perform a search, or null if no
+   *                search was performed.
    */
-  loadSearch: function BrowserSearch_search(searchText, useNewTab, purpose) {
-    var engine;
+  _loadSearch(searchText, useNewTab, purpose) {
+    let engine;
 
     // If the search bar is visible, use the current engine, otherwise, fall
     // back to the default engine.
@@ -3148,7 +3832,7 @@ const BrowserSearch = {
     else
       engine = Services.search.defaultEngine;
 
-    var submission = engine.getSubmission(searchText, null, purpose); // HTML response
+    let submission = engine.getSubmission(searchText, null, purpose); // HTML response
 
     // getSubmission can return null if the engine doesn't have a URL
     // with a text/html response type.  This is unlikely (since
@@ -3162,9 +3846,23 @@ const BrowserSearch = {
     openLinkIn(submission.uri.spec,
                useNewTab ? "tab" : "current",
                { postData: submission.postData,
-                 inBackground: inBackground,
+                 inBackground,
                  relatedToCurrent: true });
 
+    return engine;
+  },
+
+  /**
+   * Just like _loadSearch, but preserving an old API.
+   *
+   * @return string Name of the search engine used to perform a search or null
+   *         if a search was not performed.
+   */
+  loadSearch: function BrowserSearch_search(searchText, useNewTab, purpose) {
+    let engine = BrowserSearch._loadSearch(searchText, useNewTab, purpose);
+    if (!engine) {
+      return null;
+    }
     return engine.name;
   },
 
@@ -3174,11 +3872,17 @@ const BrowserSearch = {
    * This should only be called from the context menu. See
    * BrowserSearch.loadSearch for the preferred API.
    */
-  loadSearchFromContext: function (terms) {
-    let engine = BrowserSearch.loadSearch(terms, true, "contextmenu");
+  loadSearchFromContext(terms) {
+    let engine = BrowserSearch._loadSearch(terms, true, "contextmenu");
     if (engine) {
-      BrowserSearch.recordSearchInHealthReport(engine, "contextmenu");
+      BrowserSearch.recordSearchInTelemetry(engine, "contextmenu");
     }
+  },
+
+  pasteAndSearch(event) {
+    BrowserSearch.searchBar.select();
+    goDoCommand("cmd_paste");
+    BrowserSearch.searchBar.handleSearchCommand(event);
   },
 
   /**
@@ -3188,48 +3892,82 @@ const BrowserSearch = {
     return document.getElementById("searchbar");
   },
 
+  get searchEnginesURL() {
+    return formatURL("browser.search.searchEnginesURL", true);
+  },
+
   loadAddEngines: function BrowserSearch_loadAddEngines() {
     var newWindowPref = gPrefService.getIntPref("browser.link.open_newwindow");
     var where = newWindowPref == 3 ? "tab" : "window";
-    var searchEnginesURL = formatURL("browser.search.searchEnginesURL", true);
-    openUILinkIn(searchEnginesURL, where);
+    openUILinkIn(this.searchEnginesURL, where);
+  },
+
+  _getSearchEngineId(engine) {
+    if (engine && engine.identifier) {
+      return engine.identifier;
+    }
+
+    if (!engine || (engine.name === undefined) ||
+        !Services.prefs.getBoolPref("toolkit.telemetry.enabled"))
+      return "other";
+
+    return "other-" + engine.name;
   },
 
   /**
-   * Helper to record a search with Firefox Health Report.
+   * Helper to record a search with Telemetry.
    *
-   * FHR records only search counts and nothing pertaining to the search itself.
+   * Telemetry records only search counts and nothing pertaining to the search itself.
    *
    * @param engine
-   *        (string) The name of the engine used to perform the search. This
-   *        is typically nsISearchEngine.name.
+   *        (nsISearchEngine) The engine handling the search.
    * @param source
-   *        (string) Where the search originated from. See the FHR
-   *        SearchesProvider for allowed values.
+   *        (string) Where the search originated from. See BrowserUsageTelemetry for
+   *        allowed values.
+   * @param details [optional]
+   *        An optional parameter passed to |BrowserUsageTelemetry.recordSearch|.
+   *        See its documentation for allowed options.
+   *        Additionally, if the search was a suggested search, |details.selection|
+   *        indicates where the item was in the suggestion list and how the user
+   *        selected it: {selection: {index: The selected index, kind: "key" or "mouse"}}
    */
-  recordSearchInHealthReport: function (engine, source) {
-#ifdef MOZ_SERVICES_HEALTHREPORT
-    let reporter = Cc["@mozilla.org/datareporting/service;1"]
-                     .getService()
-                     .wrappedJSObject
-                     .healthReporter;
-
-    // This can happen if the FHR component of the data reporting service is
-    // disabled. This is controlled by a pref that most will never use.
-    if (!reporter) {
-      return;
+  recordSearchInTelemetry(engine, source, details = {}) {
+    BrowserUITelemetry.countSearchEvent(source, null, details.selection);
+    try {
+      BrowserUsageTelemetry.recordSearch(engine, source, details);
+    } catch (ex) {
+      Cu.reportError(ex);
     }
-
-    reporter.onInit().then(function record() {
-      try {
-        reporter.getProvider("org.mozilla.searches").recordSearch(engine, source);
-      } catch (ex) {
-        Cu.reportError(ex);
-      }
-    });
-#endif
   },
+
+  /**
+   * Helper to record a one-off search with Telemetry.
+   *
+   * Telemetry records only search counts and nothing pertaining to the search itself.
+   *
+   * @param engine
+   *        (nsISearchEngine) The engine handling the search.
+   * @param source
+   *        (string) Where the search originated from. See BrowserUsageTelemetry for
+   *        allowed values.
+   * @param type
+   *        (string) Indicates how the user selected the search item.
+   * @param where
+   *        (string) Where was the search link opened (e.g. new tab, current tab, ..).
+   */
+  recordOneoffSearchInTelemetry(engine, source, type, where) {
+    let id = this._getSearchEngineId(engine) + "." + source;
+    BrowserUITelemetry.countOneoffSearchEvent(id, type, where);
+    try {
+      const details = {type, isOneOff: true};
+      BrowserUsageTelemetry.recordSearch(engine, source, details);
+    } catch (ex) {
+      Cu.reportError(ex);
+    }
+  }
 };
+
+XPCOMUtils.defineConstant(this, "BrowserSearch", BrowserSearch);
 
 function FillHistoryMenu(aParent) {
   // Lazily add the hover listeners on first showing and never remove them
@@ -3239,97 +3977,138 @@ function FillHistoryMenu(aParent) {
       // Only the current page should have the checked attribute, so skip it
       if (!aEvent.target.hasAttribute("checked"))
         XULBrowserWindow.setOverLink(aEvent.target.getAttribute("uri"));
-    }, false);
+    });
     aParent.addEventListener("DOMMenuItemInactive", function() {
       XULBrowserWindow.setOverLink("");
-    }, false);
+    });
 
     aParent.hasStatusListener = true;
   }
 
   // Remove old entries if any
-  var children = aParent.childNodes;
+  let children = aParent.childNodes;
   for (var i = children.length - 1; i >= 0; --i) {
     if (children[i].hasAttribute("index"))
       aParent.removeChild(children[i]);
   }
 
-  var webNav = gBrowser.webNavigation;
-  var sessionHistory = webNav.sessionHistory;
+  const MAX_HISTORY_MENU_ITEMS = 15;
 
-  var count = sessionHistory.count;
-  if (count <= 1) // don't display the popup for a single item
+  const tooltipBack = gNavigatorBundle.getString("tabHistory.goBack");
+  const tooltipCurrent = gNavigatorBundle.getString("tabHistory.current");
+  const tooltipForward = gNavigatorBundle.getString("tabHistory.goForward");
+
+  function updateSessionHistory(sessionHistory, initial) {
+    let count = sessionHistory.entries.length;
+
+    if (!initial) {
+      if (count <= 1) {
+        // if there is only one entry now, close the popup.
+        aParent.hidePopup();
+        return;
+      } else if (aParent.id != "backForwardMenu" && !aParent.parentNode.open) {
+        // if the popup wasn't open before, but now needs to be, reopen the menu.
+        // It should trigger FillHistoryMenu again. This might happen with the
+        // delay from click-and-hold menus but skip this for the context menu
+        // (backForwardMenu) rather than figuring out how the menu should be
+        // positioned and opened as it is an extreme edgecase.
+        aParent.parentNode.open = true;
+        return;
+      }
+    }
+
+    let index = sessionHistory.index;
+    let half_length = Math.floor(MAX_HISTORY_MENU_ITEMS / 2);
+    let start = Math.max(index - half_length, 0);
+    let end = Math.min(start == 0 ? MAX_HISTORY_MENU_ITEMS : index + half_length + 1, count);
+    if (end == count) {
+      start = Math.max(count - MAX_HISTORY_MENU_ITEMS, 0);
+    }
+
+    let existingIndex = 0;
+
+    for (let j = end - 1; j >= start; j--) {
+      let entry = sessionHistory.entries[j];
+      let uri = entry.url;
+
+      let item = existingIndex < children.length ?
+                   children[existingIndex] : document.createElement("menuitem");
+
+      let entryURI = BrowserUtils.makeURI(entry.url, entry.charset, null);
+      item.setAttribute("uri", uri);
+      item.setAttribute("label", entry.title || uri);
+      item.setAttribute("index", j);
+
+      // Cache this so that gotoHistoryIndex doesn't need the original index
+      item.setAttribute("historyindex", j - index);
+
+      if (j != index) {
+        PlacesUtils.favicons.getFaviconURLForPage(entryURI, function(aURI) {
+          if (aURI) {
+            let iconURL = PlacesUtils.favicons.getFaviconLinkForIcon(aURI).spec;
+            item.style.listStyleImage = "url(" + iconURL + ")";
+          }
+        });
+      }
+
+      if (j < index) {
+        item.className = "unified-nav-back menuitem-iconic menuitem-with-favicon";
+        item.setAttribute("tooltiptext", tooltipBack);
+      } else if (j == index) {
+        item.setAttribute("type", "radio");
+        item.setAttribute("checked", "true");
+        item.className = "unified-nav-current";
+        item.setAttribute("tooltiptext", tooltipCurrent);
+      } else {
+        item.className = "unified-nav-forward menuitem-iconic menuitem-with-favicon";
+        item.setAttribute("tooltiptext", tooltipForward);
+      }
+
+      if (!item.parentNode) {
+        aParent.appendChild(item);
+      }
+
+      existingIndex++;
+    }
+
+    if (!initial) {
+      let existingLength = children.length;
+      while (existingIndex < existingLength) {
+        aParent.removeChild(aParent.lastChild);
+        existingIndex++;
+      }
+    }
+  }
+
+  let sessionHistory = SessionStore.getSessionHistory(gBrowser.selectedTab, updateSessionHistory);
+  if (!sessionHistory)
     return false;
 
-  const MAX_HISTORY_MENU_ITEMS = 15;
-  var index = sessionHistory.index;
-  var half_length = Math.floor(MAX_HISTORY_MENU_ITEMS / 2);
-  var start = Math.max(index - half_length, 0);
-  var end = Math.min(start == 0 ? MAX_HISTORY_MENU_ITEMS : index + half_length + 1, count);
-  if (end == count)
-    start = Math.max(count - MAX_HISTORY_MENU_ITEMS, 0);
+  // don't display the popup for a single item
+  if (sessionHistory.entries.length <= 1)
+    return false;
 
-  var tooltipBack = gNavigatorBundle.getString("tabHistory.goBack");
-  var tooltipCurrent = gNavigatorBundle.getString("tabHistory.current");
-  var tooltipForward = gNavigatorBundle.getString("tabHistory.goForward");
-
-  for (var j = end - 1; j >= start; j--) {
-    let item = document.createElement("menuitem");
-    let entry = sessionHistory.getEntryAtIndex(j, false);
-    let uri = entry.URI.spec;
-
-    item.setAttribute("uri", uri);
-    item.setAttribute("label", entry.title || uri);
-    item.setAttribute("index", j);
-
-    if (j != index) {
-      PlacesUtils.favicons.getFaviconURLForPage(entry.URI, function (aURI) {
-        if (aURI) {
-          let iconURL = PlacesUtils.favicons.getFaviconLinkForIcon(aURI).spec;
-          item.style.listStyleImage = "url(" + iconURL + ")";
-        }
-      });
-    }
-
-    if (j < index) {
-      item.className = "unified-nav-back menuitem-iconic menuitem-with-favicon";
-      item.setAttribute("tooltiptext", tooltipBack);
-    } else if (j == index) {
-      item.setAttribute("type", "radio");
-      item.setAttribute("checked", "true");
-      item.className = "unified-nav-current";
-      item.setAttribute("tooltiptext", tooltipCurrent);
-    } else {
-      item.className = "unified-nav-forward menuitem-iconic menuitem-with-favicon";
-      item.setAttribute("tooltiptext", tooltipForward);
-    }
-
-    aParent.appendChild(item);
-  }
+  updateSessionHistory(sessionHistory, true);
   return true;
 }
 
 function addToUrlbarHistory(aUrlToAdd) {
   if (!PrivateBrowsingUtils.isWindowPrivate(window) &&
       aUrlToAdd &&
-      !aUrlToAdd.contains(" ") &&
+      !aUrlToAdd.includes(" ") &&
       !/[\x00-\x1F]/.test(aUrlToAdd))
     PlacesUIUtils.markPageAsTyped(aUrlToAdd);
 }
 
-function toJavaScriptConsole()
-{
-  toOpenWindowByType("global:console", "chrome://global/content/console.xul");
+function BrowserDownloadsUI() {
+  if (PrivateBrowsingUtils.isWindowPrivate(window)) {
+    openUILinkIn("about:downloads", "tab");
+  } else {
+    PlacesCommandHook.showPlacesOrganizer("Downloads");
+  }
 }
 
-function BrowserDownloadsUI()
-{
-  Cc["@mozilla.org/download-manager-ui;1"].
-  getService(Ci.nsIDownloadManagerUI).show(window);
-}
-
-function toOpenWindowByType(inType, uri, features)
-{
+function toOpenWindowByType(inType, uri, features) {
   var topWindow = Services.wm.getMostRecentWindow(inType);
 
   if (topWindow)
@@ -3340,8 +4119,7 @@ function toOpenWindowByType(inType, uri, features)
     window.open(uri, "_blank", "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar");
 }
 
-function OpenBrowserWindow(options)
-{
+function OpenBrowserWindow(options) {
   var telemetryObj = {};
   TelemetryStopwatch.start("FX_NEW_WINDOW_MS", telemetryObj);
 
@@ -3350,16 +4128,28 @@ function OpenBrowserWindow(options)
         doc != document &&
         doc.defaultView == win) {
       Services.obs.removeObserver(newDocumentShown, "document-shown");
+      Services.obs.removeObserver(windowClosed, "domwindowclosed");
       TelemetryStopwatch.finish("FX_NEW_WINDOW_MS", telemetryObj);
     }
-  };
+  }
+
+  function windowClosed(subject) {
+    if (subject == win) {
+      Services.obs.removeObserver(newDocumentShown, "document-shown");
+      Services.obs.removeObserver(windowClosed, "domwindowclosed");
+    }
+  }
+
+  // Make sure to remove the 'document-shown' observer in case the window
+  // is being closed right after it was opened to avoid leaking.
   Services.obs.addObserver(newDocumentShown, "document-shown", false);
+  Services.obs.addObserver(windowClosed, "domwindowclosed", false);
 
   var charsetArg = new String();
   var handler = Components.classes["@mozilla.org/browser/clh;1"]
                           .getService(Components.interfaces.nsIBrowserHandler);
   var defaultArgs = handler.defaultArgs;
-  var wintype = document.documentElement.getAttribute('windowtype');
+  var wintype = document.documentElement.getAttribute("windowtype");
 
   var extraFeatures = "";
   if (options && options.private) {
@@ -3372,174 +4162,40 @@ function OpenBrowserWindow(options)
     extraFeatures = ",non-private";
   }
 
+  if (options && options.remote) {
+    extraFeatures += ",remote";
+  } else if (options && options.remote === false) {
+    extraFeatures += ",non-remote";
+  }
+
+  // If the window is maximized, we want to skip the animation, since we're
+  // going to be taking up most of the screen anyways, and we want to optimize
+  // for showing the user a useful window as soon as possible.
+  if (window.windowState == window.STATE_MAXIMIZED) {
+    extraFeatures += ",suppressanimation";
+  }
+
   // if and only if the current window is a browser window and it has a document with a character
   // set, then extract the current charset menu setting from the current document and use it to
   // initialize the new browser window...
   var win;
-  if (window && (wintype == "navigator:browser") && window.content && window.content.document)
-  {
+  if (window && (wintype == "navigator:browser") && window.content && window.content.document) {
     var DocCharset = window.content.document.characterSet;
-    charsetArg = "charset="+DocCharset;
+    charsetArg = "charset=" + DocCharset;
 
-    //we should "inherit" the charset menu setting in a new window
+    // we should "inherit" the charset menu setting in a new window
     win = window.openDialog("chrome://browser/content/", "_blank", "chrome,all,dialog=no" + extraFeatures, defaultArgs, charsetArg);
-  }
-  else // forget about the charset information.
-  {
+  } else {
+    // forget about the charset information.
     win = window.openDialog("chrome://browser/content/", "_blank", "chrome,all,dialog=no" + extraFeatures, defaultArgs);
   }
 
   return win;
 }
 
-var gCustomizeSheet = false;
+// Only here for backwards compat, we should remove this soon
 function BrowserCustomizeToolbar() {
-  // Disable the toolbar context menu items
-  var menubar = document.getElementById("main-menubar");
-  for (let childNode of menubar.childNodes)
-    childNode.setAttribute("disabled", true);
-
-  var cmd = document.getElementById("cmd_CustomizeToolbars");
-  cmd.setAttribute("disabled", "true");
-
-  var splitter = document.getElementById("urlbar-search-splitter");
-  if (splitter)
-    splitter.parentNode.removeChild(splitter);
-
-  CombinedStopReload.uninit();
-
-  PlacesToolbarHelper.customizeStart();
-  BookmarkingUI.customizeStart();
-  DownloadsButton.customizeStart();
-
-  TabsInTitlebar.allowedBy("customizing-toolbars", false);
-
-  var customizeURL = "chrome://global/content/customizeToolbar.xul";
-  gCustomizeSheet = getBoolPref("toolbar.customization.usesheet", false);
-
-  if (gCustomizeSheet) {
-    let sheetFrame = document.createElement("iframe");
-    let panel = document.getElementById("customizeToolbarSheetPopup");
-    sheetFrame.id = "customizeToolbarSheetIFrame";
-    sheetFrame.toolbox = gNavToolbox;
-    sheetFrame.panel = panel;
-    sheetFrame.setAttribute("style", panel.getAttribute("sheetstyle"));
-    panel.appendChild(sheetFrame);
-
-    // Open the panel, but make it invisible until the iframe has loaded so
-    // that the user doesn't see a white flash.
-    panel.style.visibility = "hidden";
-    gNavToolbox.addEventListener("beforecustomization", function onBeforeCustomization() {
-      gNavToolbox.removeEventListener("beforecustomization", onBeforeCustomization, false);
-      panel.style.removeProperty("visibility");
-    }, false);
-
-    sheetFrame.setAttribute("src", customizeURL);
-
-    panel.openPopup(gNavToolbox, "after_start", 0, 0);
-  } else {
-    window.openDialog(customizeURL,
-                      "CustomizeToolbar",
-                      "chrome,titlebar,toolbar,location,resizable,dependent",
-                      gNavToolbox);
-  }
-}
-
-function BrowserToolboxCustomizeDone(aToolboxChanged) {
-  if (gCustomizeSheet) {
-    document.getElementById("customizeToolbarSheetPopup").hidePopup();
-    let iframe = document.getElementById("customizeToolbarSheetIFrame");
-    iframe.parentNode.removeChild(iframe);
-  }
-
-  // Update global UI elements that may have been added or removed
-  if (aToolboxChanged) {
-    gURLBar = document.getElementById("urlbar");
-
-    gProxyFavIcon = document.getElementById("page-proxy-favicon");
-    gHomeButton.updateTooltip();
-    gIdentityHandler._cacheElements();
-    window.XULBrowserWindow.init();
-
-#ifndef XP_MACOSX
-    updateEditUIVisibility();
-#endif
-
-    // Hacky: update the PopupNotifications' object's reference to the iconBox,
-    // if it already exists, since it may have changed if the URL bar was
-    // added/removed.
-    if (!window.__lookupGetter__("PopupNotifications"))
-      PopupNotifications.iconBox = document.getElementById("notification-popup-box");
-  }
-
-  PlacesToolbarHelper.customizeDone();
-  BookmarkingUI.customizeDone();
-  DownloadsButton.customizeDone();
-
-  // The url bar splitter state is dependent on whether stop/reload
-  // and the location bar are combined, so we need this ordering
-  CombinedStopReload.init();
-  UpdateUrlbarSearchSplitterState();
-  setUrlAndSearchBarWidthForConditionalForwardButton();
-
-  // Update the urlbar
-  if (gURLBar) {
-    URLBarSetURI();
-    XULBrowserWindow.asyncUpdateUI();
-    BookmarkingUI.updateStarState();
-    SocialMark.updateMarkState();
-    SocialShare.update();
-  }
-
-  TabsInTitlebar.allowedBy("customizing-toolbars", true);
-
-  // Re-enable parts of the UI we disabled during the dialog
-  var menubar = document.getElementById("main-menubar");
-  for (let childNode of menubar.childNodes)
-    childNode.setAttribute("disabled", false);
-  var cmd = document.getElementById("cmd_CustomizeToolbars");
-  cmd.removeAttribute("disabled");
-
-  // make sure to re-enable click-and-hold
-  if (!getBoolPref("ui.click_hold_context_menus", false))
-    SetClickAndHoldHandlers();
-
-  gBrowser.selectedBrowser.focus();
-}
-
-function BrowserToolboxCustomizeChange(aType) {
-  switch (aType) {
-    case "iconsize":
-    case "mode":
-      retrieveToolbarIconsizesFromTheme();
-      break;
-    default:
-      gHomeButton.updatePersonalToolbarStyle();
-      BookmarkingUI.customizeChange();
-  }
-}
-
-/**
- * Allows themes to override the "iconsize" attribute on toolbars.
- */
-function retrieveToolbarIconsizesFromTheme() {
-  function retrieveToolbarIconsize(aToolbar) {
-    if (aToolbar.localName != "toolbar")
-      return;
-
-    // The theme indicates that it wants to override the "iconsize" attribute
-    // by specifying a special value for the "counter-reset" property on the
-    // toolbar. A custom property cannot be used because getComputedStyle can
-    // only return the values of standard CSS properties.
-    let counterReset = getComputedStyle(aToolbar).counterReset;
-    if (counterReset == "smallicons 0")
-      aToolbar.setAttribute("iconsize", "small");
-    else if (counterReset == "largeicons 0")
-      aToolbar.setAttribute("iconsize", "large");
-  }
-
-  Array.forEach(gNavToolbox.childNodes, retrieveToolbarIconsize);
-  gNavToolbox.externalToolbars.forEach(retrieveToolbarIconsize);
+  gCustomizeMode.enter();
 }
 
 /**
@@ -3562,15 +4218,13 @@ function retrieveToolbarIconsizesFromTheme() {
  * and we need to always update the edit commands.  Thus on Mac this function
  * is a no op.
  */
-function updateEditUIVisibility()
-{
-#ifndef XP_MACOSX
+function updateEditUIVisibility() {
+  if (AppConstants.platform == "macosx")
+    return;
+
   let editMenuPopupState = document.getElementById("menu_EditPopup").state;
   let contextMenuPopupState = document.getElementById("contentAreaContextMenu").state;
   let placesContextMenuPopupState = document.getElementById("placesContext").state;
-#ifdef MENUBAR_CAN_AUTOHIDE
-  let appMenuPopupState = document.getElementById("appmenu-popup").state;
-#endif
 
   // The UI is visible if the Edit menu is opening or open, if the context menu
   // is open, or if the toolbar has been customized to include the Cut, Copy,
@@ -3581,13 +4235,7 @@ function updateEditUIVisibility()
                    contextMenuPopupState == "open" ||
                    placesContextMenuPopupState == "showing" ||
                    placesContextMenuPopupState == "open" ||
-#ifdef MENUBAR_CAN_AUTOHIDE
-                   appMenuPopupState == "showing" ||
-                   appMenuPopupState == "open" ||
-#endif
-                   document.getElementById("cut-button") ||
-                   document.getElementById("copy-button") ||
-                   document.getElementById("paste-button") ? true : false;
+                   document.getElementById("edit-controls") ? true : false;
 
   // If UI is visible, update the edit commands' enabled state to reflect
   // whether or not they are actually enabled for the current focus/selection.
@@ -3607,65 +4255,81 @@ function updateEditUIVisibility()
     goSetCommandEnabled("cmd_delete", true);
     goSetCommandEnabled("cmd_switchTextDirection", true);
   }
-#endif
+}
+
+/**
+ * Opens a new tab with the userContextId specified as an attribute of
+ * sourceEvent. This attribute is propagated to the top level originAttributes
+ * living on the tab's docShell.
+ *
+ * @param event
+ *        A click event on a userContext File Menu option
+ */
+function openNewUserContextTab(event) {
+  openUILinkIn(BROWSER_NEW_TAB_URL, "tab", {
+    userContextId: parseInt(event.target.getAttribute("data-usercontextid")),
+  });
+}
+
+/**
+ * Updates File Menu User Context UI visibility depending on
+ * privacy.userContext.enabled pref state.
+ */
+function updateUserContextUIVisibility() {
+  let menu = document.getElementById("menu_newUserContext");
+  menu.hidden = !Services.prefs.getBoolPref("privacy.userContext.enabled");
+  if (PrivateBrowsingUtils.isWindowPrivate(window)) {
+    menu.setAttribute("disabled", "true");
+  }
+}
+
+/**
+ * Updates the User Context UI indicators if the browser is in a non-default context
+ */
+function updateUserContextUIIndicator() {
+  let hbox = document.getElementById("userContext-icons");
+
+  let userContextId = gBrowser.selectedBrowser.getAttribute("usercontextid");
+  if (!userContextId) {
+    hbox.setAttribute("data-identity-color", "");
+    hbox.hidden = true;
+    return;
+  }
+
+  let identity = ContextualIdentityService.getPublicIdentityFromId(userContextId);
+  if (!identity) {
+    hbox.setAttribute("data-identity-color", "");
+    hbox.hidden = true;
+    return;
+  }
+
+  hbox.setAttribute("data-identity-color", identity.color);
+
+  let label = document.getElementById("userContext-label");
+  label.setAttribute("value", ContextualIdentityService.getUserContextLabel(userContextId));
+
+  let indicator = document.getElementById("userContext-indicator");
+  indicator.setAttribute("data-identity-icon", identity.icon);
+
+  hbox.hidden = false;
 }
 
 /**
  * Makes the Character Encoding menu enabled or disabled as appropriate.
  * To be called when the View menu or the app menu is opened.
  */
-function updateCharacterEncodingMenuState()
-{
+function updateCharacterEncodingMenuState() {
   let charsetMenu = document.getElementById("charsetMenu");
-  let appCharsetMenu = document.getElementById("appmenu_charsetMenu");
-  let appDevCharsetMenu =
-    document.getElementById("appmenu_developer_charsetMenu");
   // gBrowser is null on Mac when the menubar shows in the context of
   // non-browser windows. The above elements may be null depending on
   // what parts of the menubar are present. E.g. no app menu on Mac.
-  if (gBrowser &&
-      gBrowser.docShell &&
-      gBrowser.docShell.mayEnableCharacterEncodingMenu) {
+  if (gBrowser && gBrowser.selectedBrowser.mayEnableCharacterEncodingMenu) {
     if (charsetMenu) {
       charsetMenu.removeAttribute("disabled");
     }
-    if (appCharsetMenu) {
-      appCharsetMenu.removeAttribute("disabled");
-    }
-    if (appDevCharsetMenu) {
-      appDevCharsetMenu.removeAttribute("disabled");
-    }
-  } else {
-    if (charsetMenu) {
-      charsetMenu.setAttribute("disabled", "true");
-    }
-    if (appCharsetMenu) {
-      appCharsetMenu.setAttribute("disabled", "true");
-    }
-    if (appDevCharsetMenu) {
-      appDevCharsetMenu.setAttribute("disabled", "true");
-    }
+  } else if (charsetMenu) {
+    charsetMenu.setAttribute("disabled", "true");
   }
-}
-
-/**
- * Returns true if |aMimeType| is text-based, false otherwise.
- *
- * @param aMimeType
- *        The MIME type to check.
- *
- * If adding types to this function, please also check the similar
- * function in findbar.xml
- */
-function mimeTypeIsTextBased(aMimeType)
-{
-  return aMimeType.startsWith("text/") ||
-         aMimeType.endsWith("+xml") ||
-         aMimeType == "application/x-javascript" ||
-         aMimeType == "application/javascript" ||
-         aMimeType == "application/json" ||
-         aMimeType == "application/xml" ||
-         aMimeType == "mozilla.application/cached-xul";
 }
 
 var XULBrowserWindow = {
@@ -3676,10 +4340,10 @@ var XULBrowserWindow = {
   startTime: 0,
   statusText: "",
   isBusy: false,
-  inContentWhitelist: ["about:addons", "about:downloads", "about:permissions",
-                       "about:sync-progress", "about:preferences"],
+  // Left here for add-on compatibility, see bug 752434
+  inContentWhitelist: [],
 
-  QueryInterface: function (aIID) {
+  QueryInterface(aIID) {
     if (aIID.equals(Ci.nsIWebProgressListener) ||
         aIID.equals(Ci.nsIWebProgressListener2) ||
         aIID.equals(Ci.nsISupportsWeakReference) ||
@@ -3689,50 +4353,54 @@ var XULBrowserWindow = {
     throw Cr.NS_NOINTERFACE;
   },
 
-  get stopCommand () {
+  get stopCommand() {
     delete this.stopCommand;
     return this.stopCommand = document.getElementById("Browser:Stop");
   },
-  get reloadCommand () {
+  get reloadCommand() {
     delete this.reloadCommand;
     return this.reloadCommand = document.getElementById("Browser:Reload");
   },
-  get statusTextField () {
-    delete this.statusTextField;
-    return this.statusTextField = document.getElementById("statusbar-display");
+  get statusTextField() {
+    return gBrowser.getStatusPanel();
   },
-  get isImage () {
+  get isImage() {
     delete this.isImage;
     return this.isImage = document.getElementById("isImage");
   },
+  get canViewSource() {
+    delete this.canViewSource;
+    return this.canViewSource = document.getElementById("canViewSource");
+  },
 
-  init: function () {
-    this.throbberElement = document.getElementById("navigator-throbber");
-
+  init() {
     // Initialize the security button's state and tooltip text.
     var securityUI = gBrowser.securityUI;
-    this.onSecurityChange(null, null, securityUI.state);
+    this.onSecurityChange(null, null, securityUI.state, true);
   },
 
-  destroy: function () {
-    // XXXjag to avoid leaks :-/, see bug 60729
-    delete this.throbberElement;
-    delete this.stopCommand;
-    delete this.reloadCommand;
-    delete this.statusTextField;
-    delete this.statusText;
-  },
-
-  setJSStatus: function () {
+  setJSStatus() {
     // unsupported
   },
 
-  setDefaultStatus: function (status) {
+  forceInitialBrowserRemote(aRemoteType) {
+    let initBrowser =
+      document.getAnonymousElementByAttribute(gBrowser, "anonid", "initialBrowser");
+    gBrowser.updateBrowserRemoteness(initBrowser, true, { remoteType: aRemoteType });
+  },
+
+  forceInitialBrowserNonRemote(aOpener) {
+    let initBrowser =
+      document.getAnonymousElementByAttribute(gBrowser, "anonid", "initialBrowser");
+    gBrowser.updateBrowserRemoteness(initBrowser, false, { opener: aOpener });
+  },
+
+  setDefaultStatus(status) {
     this.defaultStatus = status;
     this.updateStatusField();
   },
 
-  setOverLink: function (url, anchorElt) {
+  setOverLink(url, anchorElt) {
     // Encode bidirectional formatting characters.
     // (RFC 3987 sections 3.2 and 4.1 paragraph 6)
     url = url.replace(/[\u200e\u200f\u202a\u202b\u202c\u202d\u202e]/g,
@@ -3745,7 +4413,32 @@ var XULBrowserWindow = {
     LinkTargetDisplay.update();
   },
 
-  updateStatusField: function () {
+  showTooltip(x, y, tooltip, direction) {
+    if (Cc["@mozilla.org/widget/dragservice;1"].getService(Ci.nsIDragService).
+        getCurrentSession()) {
+      return;
+    }
+
+    // The x,y coordinates are relative to the <browser> element using
+    // the chrome zoom level.
+    let elt = document.getElementById("remoteBrowserTooltip");
+    elt.label = tooltip;
+    elt.style.direction = direction;
+
+    let anchor = gBrowser.selectedBrowser;
+    elt.openPopupAtScreen(anchor.boxObject.screenX + x, anchor.boxObject.screenY + y, false, null);
+  },
+
+  hideTooltip() {
+    let elt = document.getElementById("remoteBrowserTooltip");
+    elt.hidePopup();
+  },
+
+  getTabCount() {
+    return gBrowser.tabs.length;
+  },
+
+  updateStatusField() {
     var text, type, types = ["overLink"];
     if (this._busyUI)
       types.push("status");
@@ -3769,71 +4462,64 @@ var XULBrowserWindow = {
   },
 
   // Called before links are navigated to to allow us to retarget them if needed.
-  onBeforeLinkTraversal: function(originalTarget, linkURI, linkNode, isAppTab) {
-    let target = this._onBeforeLinkTraversal(originalTarget, linkURI, linkNode, isAppTab);
+  onBeforeLinkTraversal(originalTarget, linkURI, linkNode, isAppTab) {
+    let target = BrowserUtils.onBeforeLinkTraversal(originalTarget, linkURI, linkNode, isAppTab);
     SocialUI.closeSocialPanelForLinkTraversal(target, linkNode);
     return target;
   },
 
-  _onBeforeLinkTraversal: function(originalTarget, linkURI, linkNode, isAppTab) {
-    // Don't modify non-default targets or targets that aren't in top-level app
-    // tab docshells (isAppTab will be false for app tab subframes).
-    if (originalTarget != "" || !isAppTab)
-      return originalTarget;
+  // Check whether this URI should load in the current process
+  shouldLoadURI(aDocShell, aURI, aReferrer, aTriggeringPrincipal) {
+    if (!gMultiProcessBrowser)
+      return true;
 
-    // External links from within app tabs should always open in new tabs
-    // instead of replacing the app tab's page (Bug 575561)
-    let linkHost;
-    let docHost;
-    try {
-      linkHost = linkURI.host;
-      docHost = linkNode.ownerDocument.documentURIObject.host;
-    } catch(e) {
-      // nsIURI.host can throw for non-nsStandardURL nsIURIs.
-      // If we fail to get either host, just return originalTarget.
-      return originalTarget;
+    let browser = aDocShell.QueryInterface(Ci.nsIDocShellTreeItem)
+                           .sameTypeRootTreeItem
+                           .QueryInterface(Ci.nsIDocShell)
+                           .chromeEventHandler;
+
+    // Ignore loads that aren't in the main tabbrowser
+    if (browser.localName != "browser" || !browser.getTabBrowser || browser.getTabBrowser() != gBrowser)
+      return true;
+
+    if (!E10SUtils.shouldLoadURI(aDocShell, aURI, aReferrer)) {
+      E10SUtils.redirectLoad(aDocShell, aURI, aReferrer, aTriggeringPrincipal, false);
+      return false;
     }
 
-    if (docHost == linkHost)
-      return originalTarget;
-
-    // Special case: ignore "www" prefix if it is part of host string
-    let [longHost, shortHost] =
-      linkHost.length > docHost.length ? [linkHost, docHost] : [docHost, linkHost];
-    if (longHost == "www." + shortHost)
-      return originalTarget;
-
-    return "_blank";
+    return true;
   },
 
-  onProgressChange: function (aWebProgress, aRequest,
-                              aCurSelfProgress, aMaxSelfProgress,
-                              aCurTotalProgress, aMaxTotalProgress) {
+  onProgressChange(aWebProgress, aRequest,
+                             aCurSelfProgress, aMaxSelfProgress,
+                             aCurTotalProgress, aMaxTotalProgress) {
     // Do nothing.
   },
 
-  onProgressChange64: function (aWebProgress, aRequest,
-                                aCurSelfProgress, aMaxSelfProgress,
-                                aCurTotalProgress, aMaxTotalProgress) {
+  onProgressChange64(aWebProgress, aRequest,
+                               aCurSelfProgress, aMaxSelfProgress,
+                               aCurTotalProgress, aMaxTotalProgress) {
     return this.onProgressChange(aWebProgress, aRequest,
       aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress,
       aMaxTotalProgress);
   },
 
   // This function fires only for the currently selected tab.
-  onStateChange: function (aWebProgress, aRequest, aStateFlags, aStatus) {
+  onStateChange(aWebProgress, aRequest, aStateFlags, aStatus) {
     const nsIWebProgressListener = Ci.nsIWebProgressListener;
     const nsIChannel = Ci.nsIChannel;
+
+    let browser = gBrowser.selectedBrowser;
 
     if (aStateFlags & nsIWebProgressListener.STATE_START &&
         aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
 
       if (aRequest && aWebProgress.isTopLevel) {
         // clear out feed data
-        gBrowser.selectedBrowser.feeds = null;
+        browser.feeds = null;
 
         // clear out search-engine data
-        gBrowser.selectedBrowser.engines = null;
+        browser.engines = null;
       }
 
       this.isBusy = true;
@@ -3841,22 +4527,18 @@ var XULBrowserWindow = {
       if (!(aStateFlags & nsIWebProgressListener.STATE_RESTORING)) {
         this._busyUI = true;
 
-        // Turn the throbber on.
-        if (this.throbberElement)
-          this.throbberElement.setAttribute("busy", "true");
-
         // XXX: This needs to be based on window activity...
         this.stopCommand.removeAttribute("disabled");
         CombinedStopReload.switchToStop();
       }
-    }
-    else if (aStateFlags & nsIWebProgressListener.STATE_STOP) {
+    } else if (aStateFlags & nsIWebProgressListener.STATE_STOP) {
       // This (thanks to the filter) is a network stop or the last
       // request stop outside of loading the document, stop throbbers
       // and progress bars and such
       if (aRequest) {
         let msg = "";
         let location;
+        let canViewSource = true;
         // Get the URI either from a channel or a pseudo-object
         if (aRequest instanceof nsIChannel || "URI" in aRequest) {
           location = aRequest.URI;
@@ -3864,6 +4546,9 @@ var XULBrowserWindow = {
           // For keyword URIs clear the user typed value since they will be changed into real URIs
           if (location.scheme == "keyword" && aWebProgress.isTopLevel)
             gBrowser.userTypedValue = null;
+
+          canViewSource = !Services.prefs.getBoolPref("view_source.tab") ||
+                          location.scheme != "view-source";
 
           if (location.spec != "about:blank") {
             switch (aStatus) {
@@ -3878,10 +4563,18 @@ var XULBrowserWindow = {
         this.setDefaultStatus(msg);
 
         // Disable menu entries for images, enable otherwise
-        if (!gMultiProcessBrowser && content.document && mimeTypeIsTextBased(content.document.contentType))
-          this.isImage.removeAttribute('disabled');
-        else
-          this.isImage.setAttribute('disabled', 'true');
+        if (browser.documentContentType && BrowserUtils.mimeTypeIsTextBased(browser.documentContentType)) {
+          this.isImage.removeAttribute("disabled");
+        } else {
+          canViewSource = false;
+          this.isImage.setAttribute("disabled", "true");
+        }
+
+        if (canViewSource) {
+          this.canViewSource.removeAttribute("disabled");
+        } else {
+          this.canViewSource.setAttribute("disabled", "true");
+        }
       }
 
       this.isBusy = false;
@@ -3889,23 +4582,17 @@ var XULBrowserWindow = {
       if (this._busyUI) {
         this._busyUI = false;
 
-        // Turn the throbber off.
-        if (this.throbberElement)
-          this.throbberElement.removeAttribute("busy");
-
         this.stopCommand.setAttribute("disabled", "true");
         CombinedStopReload.switchToReload(aRequest instanceof Ci.nsIRequest);
       }
     }
   },
 
-  onLocationChange: function (aWebProgress, aRequest, aLocationURI, aFlags) {
+  onLocationChange(aWebProgress, aRequest, aLocationURI, aFlags) {
     var location = aLocationURI ? aLocationURI.spec : "";
 
-    // Hide the form invalid popup.
-    if (gFormSubmitObserver.panel) {
-      gFormSubmitObserver.panel.hidePopup();
-    }
+    // If displayed, hide the form validation popup.
+    FormValidationHandler.hidePopup();
 
     let pageTooltip = document.getElementById("aHTMLTooltip");
     let tooltipNode = pageTooltip.triggerNode;
@@ -3913,9 +4600,8 @@ var XULBrowserWindow = {
       // Optimise for the common case
       if (aWebProgress.isTopLevel) {
         pageTooltip.hidePopup();
-      }
-      else {
-        for (let tooltipWindow = tooltipNode.ownerDocument.defaultView;
+      } else {
+        for (let tooltipWindow = tooltipNode.ownerGlobal;
              tooltipWindow != tooltipWindow.parent;
              tooltipWindow = tooltipWindow.parent) {
           if (tooltipWindow == aWebProgress.DOMWindow) {
@@ -3926,11 +4612,13 @@ var XULBrowserWindow = {
       }
     }
 
+    let browser = gBrowser.selectedBrowser;
+
     // Disable menu entries for images, enable otherwise
-    if (!gMultiProcessBrowser && content.document && mimeTypeIsTextBased(content.document.contentType))
-      this.isImage.removeAttribute('disabled');
+    if (browser.documentContentType && BrowserUtils.mimeTypeIsTextBased(browser.documentContentType))
+      this.isImage.removeAttribute("disabled");
     else
-      this.isImage.setAttribute('disabled', 'true');
+      this.isImage.setAttribute("disabled", "true");
 
     this.hideOverLinkImmediately = true;
     this.setOverLink("", null);
@@ -3941,9 +4629,8 @@ var XULBrowserWindow = {
     // Update urlbar only if a new page was loaded on the primary content area
     // Do not update urlbar if there was a subframe navigation
 
-    var browser = gBrowser.selectedBrowser;
     if (aWebProgress.isTopLevel) {
-      if ((location == "about:blank" && (gMultiProcessBrowser || !content.opener)) ||
+      if ((location == "about:blank" && checkEmptyPageOrigin()) ||
           location == "") {  // Second condition is for new tabs, otherwise
                              // reload function is enabled until tab is refreshed.
         this.reloadCommand.setAttribute("disabled", "true");
@@ -3951,35 +4638,25 @@ var XULBrowserWindow = {
         this.reloadCommand.removeAttribute("disabled");
       }
 
-      if (gURLBar) {
-        URLBarSetURI(aLocationURI);
+      URLBarSetURI(aLocationURI);
 
-        // Update starring UI
-        BookmarkingUI.updateStarState();
-        if (SocialUI.enabled) {
-          SocialMark.updateMarkState();
-          SocialShare.update();
-        }
-      }
+      BookmarkingUI.onLocationChange();
 
-      // Show or hide browser chrome based on the whitelist
-      if (this.hideChromeForLocation(location)) {
-        document.documentElement.setAttribute("disablechrome", "true");
-      } else {
-        let ss = Cc["@mozilla.org/browser/sessionstore;1"].getService(Ci.nsISessionStore);
-        if (ss.getTabValue(gBrowser.selectedTab, "appOrigin"))
-          document.documentElement.setAttribute("disablechrome", "true");
-        else
-          document.documentElement.removeAttribute("disablechrome");
-      }
+      gIdentityHandler.onLocationChange();
+
+      SocialUI.updateState();
+
+      UITour.onLocationChange(location);
+
+      gTabletModePageCounter.inc();
 
       // Utility functions for disabling find
-      var shouldDisableFind = function shouldDisableFind(aDocument) {
+      var shouldDisableFind = function(aDocument) {
         let docElt = aDocument.documentElement;
         return docElt && docElt.getAttribute("disablefastfind") == "true";
       }
 
-      var disableFindCommands = function disableFindCommands(aDisable) {
+      var disableFindCommands = function(aDisable) {
         let findCommands = [document.getElementById("cmd_find"),
                             document.getElementById("cmd_findAgain"),
                             document.getElementById("cmd_findPrevious")];
@@ -3991,7 +4668,7 @@ var XULBrowserWindow = {
         }
       }
 
-      var onContentRSChange = function onContentRSChange(e) {
+      var onContentRSChange = function(e) {
         if (e.target.readyState != "interactive" && e.target.readyState != "complete")
           return;
 
@@ -4013,31 +4690,56 @@ var XULBrowserWindow = {
         }
       } else
         disableFindCommands(false);
+
+      // Try not to instantiate gCustomizeMode as much as possible,
+      // so don't use CustomizeMode.jsm to check for URI or customizing.
+      if (location == "about:blank" &&
+          gBrowser.selectedTab.hasAttribute("customizemode")) {
+        gCustomizeMode.enter();
+      } else if (CustomizationHandler.isEnteringCustomizeMode ||
+                 CustomizationHandler.isCustomizing()) {
+        gCustomizeMode.exit();
+      }
     }
     UpdateBackForwardCommands(gBrowser.webNavigation);
+    ReaderParent.updateReaderButton(gBrowser.selectedBrowser);
 
     gGestureSupport.restoreRotationState();
 
     // See bug 358202, when tabs are switched during a drag operation,
     // timers don't fire on windows (bug 203573)
     if (aRequest)
-      setTimeout(function () { XULBrowserWindow.asyncUpdateUI(); }, 0);
+      setTimeout(function() { XULBrowserWindow.asyncUpdateUI(); }, 0);
     else
       this.asyncUpdateUI();
+
+    if (AppConstants.MOZ_CRASHREPORTER && aLocationURI) {
+      let uri = aLocationURI.clone();
+      try {
+        // If the current URI contains a username/password, remove it.
+        uri.userPass = "";
+      } catch (ex) { /* Ignore failures on about: URIs. */ }
+
+      try {
+        gCrashReporter.annotateCrashReport("URL", uri.spec);
+      } catch (ex) {
+        // Don't make noise when the crash reporter is built but not enabled.
+        if (ex.result != Components.results.NS_ERROR_NOT_INITIALIZED) {
+          throw ex;
+        }
+      }
+    }
   },
 
-  asyncUpdateUI: function () {
+  asyncUpdateUI() {
     FeedHandler.updateFeeds();
+    BrowserSearch.updateOpenSearchBadge();
   },
 
-  hideChromeForLocation: function(aLocation) {
-    aLocation = aLocation.toLowerCase();
-    return this.inContentWhitelist.some(function(aSpec) {
-      return aSpec == aLocation;
-    });
-  },
+  // Left here for add-on compatibility, see bug 752434
+  hideChromeForLocation() {},
 
-  onStatusChange: function (aWebProgress, aRequest, aStatus, aMessage) {
+  onStatusChange(aWebProgress, aRequest, aStatus, aMessage) {
     this.status = aMessage;
     this.updateStatusField();
   },
@@ -4046,48 +4748,40 @@ var XULBrowserWindow = {
   _state: null,
   _lastLocation: null,
 
-  onSecurityChange: function (aWebProgress, aRequest, aState) {
+  // This is called in multiple ways:
+  //  1. Due to the nsIWebProgressListener.onSecurityChange notification.
+  //  2. Called by tabbrowser.xml when updating the current browser.
+  //  3. Called directly during this object's initializations.
+  // aRequest will be null always in case 2 and 3, and sometimes in case 1 (for
+  // instance, there won't be a request when STATE_BLOCKED_TRACKING_CONTENT is observed).
+  onSecurityChange(aWebProgress, aRequest, aState, aIsSimulated) {
     // Don't need to do anything if the data we use to update the UI hasn't
     // changed
     let uri = gBrowser.currentURI;
     let spec = uri.spec;
     if (this._state == aState &&
-        this._lastLocation == spec)
+        this._lastLocation == spec) {
+      // Switching to a tab of the same URL doesn't change most security
+      // information, but tab specific permissions may be different.
+      gIdentityHandler.refreshIdentityBlock();
       return;
+    }
     this._state = aState;
     this._lastLocation = spec;
 
-    // aState is defined as a bitmask that may be extended in the future.
-    // We filter out any unknown bits before testing for known values.
-    const wpl = Components.interfaces.nsIWebProgressListener;
-    const wpl_security_bits = wpl.STATE_IS_SECURE |
-                              wpl.STATE_IS_BROKEN |
-                              wpl.STATE_IS_INSECURE;
-    var level;
-
-    switch (this._state & wpl_security_bits) {
-      case wpl.STATE_IS_SECURE:
-        level = "high";
-        break;
-      case wpl.STATE_IS_BROKEN:
-        level = "broken";
-        break;
+    if (typeof(aIsSimulated) != "boolean" && typeof(aIsSimulated) != "undefined") {
+      throw "onSecurityChange: aIsSimulated receieved an unexpected type";
     }
 
-    if (level) {
-      // We don't style the Location Bar based on the the 'level' attribute
-      // anymore, but still set it for third-party themes.
-      if (gURLBar)
-        gURLBar.setAttribute("level", level);
-    } else {
-      if (gURLBar)
-        gURLBar.removeAttribute("level");
-    }
+    // Make sure the "https" part of the URL is striked out or not,
+    // depending on the current mixed active content blocking state.
+    gURLBar.formatValue();
 
     try {
       uri = Services.uriFixup.createExposableURI(uri);
     } catch (e) {}
-    gIdentityHandler.checkIdentity(this._state, uri);
+    gIdentityHandler.updateIdentity(this._state, uri);
+    TrackingProtection.onSecurityChange(this._state, aIsSimulated);
   },
 
   // simulate all change notifications after switching tabs
@@ -4109,6 +4803,17 @@ var XULBrowserWindow = {
     if (loadingDone)
       return;
     this.onStatusChange(gBrowser.webProgress, null, 0, aMessage);
+  },
+
+  navigateAndRestoreByIndex: function XWB_navigateAndRestoreByIndex(aBrowser, aIndex) {
+    let tab = gBrowser.getTabForBrowser(aBrowser);
+    if (tab) {
+      SessionStore.navigateAndRestore(tab, {}, aIndex);
+      return;
+    }
+
+    throw new Error("Trying to navigateAndRestore a browser which was " +
+                    "not attached to this tabbrowser is unsupported");
   }
 };
 
@@ -4121,9 +4826,11 @@ var LinkTargetDisplay = {
   DELAY_HIDE: 250,
   _timer: 0,
 
-  get _isVisible () XULBrowserWindow.statusTextField.label != "",
+  get _isVisible() {
+    return XULBrowserWindow.statusTextField.label != "";
+  },
 
-  update: function () {
+  update() {
     clearTimeout(this._timer);
     window.removeEventListener("mousemove", this, true);
 
@@ -4144,7 +4851,7 @@ var LinkTargetDisplay = {
     }
   },
 
-  handleEvent: function (event) {
+  handleEvent(event) {
     switch (event.type) {
       case "mousemove":
         // Restart the delay since the mouse was moved
@@ -4154,14 +4861,14 @@ var LinkTargetDisplay = {
     }
   },
 
-  _showDelayed: function () {
-    this._timer = setTimeout(function (self) {
+  _showDelayed() {
+    this._timer = setTimeout(function(self) {
       XULBrowserWindow.updateStatusField();
       window.removeEventListener("mousemove", self, true);
     }, this.DELAY_SHOW, this);
   },
 
-  _hide: function () {
+  _hide() {
     clearTimeout(this._timer);
 
     XULBrowserWindow.updateStatusField();
@@ -4169,55 +4876,42 @@ var LinkTargetDisplay = {
 };
 
 var CombinedStopReload = {
-  init: function () {
+  init() {
     if (this._initialized)
       return;
 
-    var urlbar = document.getElementById("urlbar-container");
-    var reload = document.getElementById("reload-button");
-    var stop = document.getElementById("stop-button");
-
-    if (urlbar) {
-      if (urlbar.parentNode.getAttribute("mode") != "icons" ||
-          !reload || urlbar.nextSibling != reload ||
-          !stop || reload.nextSibling != stop)
-        urlbar.removeAttribute("combined");
-      else {
-        urlbar.setAttribute("combined", "true");
-        reload = document.getElementById("urlbar-reload-button");
-        stop = document.getElementById("urlbar-stop-button");
-      }
-    }
+    let reload = document.getElementById("urlbar-reload-button");
+    let stop = document.getElementById("urlbar-stop-button");
     if (!stop || !reload || reload.nextSibling != stop)
       return;
 
     this._initialized = true;
     if (XULBrowserWindow.stopCommand.getAttribute("disabled") != "true")
       reload.setAttribute("displaystop", "true");
-    stop.addEventListener("click", this, false);
+    stop.addEventListener("click", this);
     this.reload = reload;
     this.stop = stop;
   },
 
-  uninit: function () {
+  uninit() {
     if (!this._initialized)
       return;
 
     this._cancelTransition();
     this._initialized = false;
-    this.stop.removeEventListener("click", this, false);
+    this.stop.removeEventListener("click", this);
     this.reload = null;
     this.stop = null;
   },
 
-  handleEvent: function (event) {
+  handleEvent(event) {
     // the only event we listen to is "click" on the stop button
     if (event.button == 0 &&
         !this.stop.disabled)
       this._stopClicked = true;
   },
 
-  switchToStop: function () {
+  switchToStop() {
     if (!this._initialized)
       return;
 
@@ -4225,7 +4919,7 @@ var CombinedStopReload = {
     this.reload.setAttribute("displaystop", "true");
   },
 
-  switchToReload: function (aDelay) {
+  switchToReload(aDelay) {
     if (!this._initialized)
       return;
 
@@ -4245,14 +4939,14 @@ var CombinedStopReload = {
     // Temporarily disable the reload button to prevent the user from
     // accidentally reloading the page when intending to click the stop button
     this.reload.disabled = true;
-    this._timer = setTimeout(function (self) {
+    this._timer = setTimeout(function(self) {
       self._timer = 0;
       self.reload.disabled = XULBrowserWindow.reloadCommand
                                              .getAttribute("disabled") == "true";
     }, 650, this);
   },
 
-  _cancelTransition: function () {
+  _cancelTransition() {
     if (this._timer) {
       clearTimeout(this._timer);
       this._timer = 0;
@@ -4261,66 +4955,71 @@ var CombinedStopReload = {
 };
 
 var TabsProgressListener = {
-  onStateChange: function (aBrowser, aWebProgress, aRequest, aStateFlags, aStatus) {
-#ifdef MOZ_CRASHREPORTER
-    if (aRequest instanceof Ci.nsIChannel &&
-        aStateFlags & Ci.nsIWebProgressListener.STATE_START &&
-        aStateFlags & Ci.nsIWebProgressListener.STATE_IS_DOCUMENT &&
-        gCrashReporter.enabled) {
-      gCrashReporter.annotateCrashReport("URL", aRequest.URI.spec);
-    }
-#endif
+  // Keep track of which browsers we've started load timers for, since
+  // we won't see STATE_START events for pre-rendered tabs.
+  _startedLoadTimer: new WeakSet(),
 
+  onStateChange(aBrowser, aWebProgress, aRequest, aStateFlags, aStatus) {
     // Collect telemetry data about tab load times.
-    if (aWebProgress.isTopLevel) {
+    if (aWebProgress.isTopLevel && (!aRequest.originalURI || aRequest.originalURI.spec.scheme != "about")) {
       if (aStateFlags & Ci.nsIWebProgressListener.STATE_IS_WINDOW) {
-        if (aStateFlags & Ci.nsIWebProgressListener.STATE_START)
+        if (aStateFlags & Ci.nsIWebProgressListener.STATE_START) {
+          this._startedLoadTimer.add(aBrowser);
           TelemetryStopwatch.start("FX_PAGE_LOAD_MS", aBrowser);
-        else if (aStateFlags & Ci.nsIWebProgressListener.STATE_STOP)
+          Services.telemetry.getHistogramById("FX_TOTAL_TOP_VISITS").add(true);
+        } else if (aStateFlags & Ci.nsIWebProgressListener.STATE_STOP &&
+                   this._startedLoadTimer.has(aBrowser)) {
+          this._startedLoadTimer.delete(aBrowser);
           TelemetryStopwatch.finish("FX_PAGE_LOAD_MS", aBrowser);
+        }
       } else if (aStateFlags & Ci.nsIWebProgressListener.STATE_STOP &&
-                 aStatus == Cr.NS_BINDING_ABORTED) {
+                 aStatus == Cr.NS_BINDING_ABORTED &&
+                 this._startedLoadTimer.has(aBrowser)) {
+        this._startedLoadTimer.delete(aBrowser);
         TelemetryStopwatch.cancel("FX_PAGE_LOAD_MS", aBrowser);
       }
     }
 
-    // Attach a listener to watch for "click" events bubbling up from error
-    // pages and other similar page. This lets us fix bugs like 401575 which
-    // require error page UI to do privileged things, without letting error
-    // pages have any privilege themselves.
-    // We can't look for this during onLocationChange since at that point the
-    // document URI is not yet the about:-uri of the error page.
+    // We used to listen for clicks in the browser here, but when that
+    // became unnecessary, removing the code below caused focus issues.
+    // This code should be removed. Tracked in bug 1337794.
+    let isRemoteBrowser = aBrowser.isRemoteBrowser;
+    // We check isRemoteBrowser here to avoid requesting the doc CPOW
+    let doc = isRemoteBrowser ? null : aWebProgress.DOMWindow.document;
 
-    let doc = gMultiProcessBrowser ? null : aWebProgress.DOMWindow.document;
-    if (!gMultiProcessBrowser &&
+    if (!isRemoteBrowser &&
         aStateFlags & Ci.nsIWebProgressListener.STATE_STOP &&
         Components.isSuccessCode(aStatus) &&
         doc.documentURI.startsWith("about:") &&
         !doc.documentURI.toLowerCase().startsWith("about:blank") &&
+        !doc.documentURI.toLowerCase().startsWith("about:home") &&
         !doc.documentElement.hasAttribute("hasBrowserHandlers")) {
       // STATE_STOP may be received twice for documents, thus store an
       // attribute to ensure handling it just once.
       doc.documentElement.setAttribute("hasBrowserHandlers", "true");
-      aBrowser.addEventListener("click", BrowserOnClick, true);
       aBrowser.addEventListener("pagehide", function onPageHide(event) {
         if (event.target.defaultView.frameElement)
           return;
-        aBrowser.removeEventListener("click", BrowserOnClick, true);
         aBrowser.removeEventListener("pagehide", onPageHide, true);
         if (event.target.documentElement)
           event.target.documentElement.removeAttribute("hasBrowserHandlers");
       }, true);
-
-      // We also want to make changes to page UI for unprivileged about pages.
-      BrowserOnAboutPageLoad(doc);
     }
   },
 
-  onLocationChange: function (aBrowser, aWebProgress, aRequest, aLocationURI,
-                              aFlags) {
+  onLocationChange(aBrowser, aWebProgress, aRequest, aLocationURI,
+                             aFlags) {
     // Filter out location changes caused by anchor navigation
     // or history.push/pop/replaceState.
-    if (aFlags & Ci.nsIWebProgressListener.LOCATION_CHANGE_SAME_DOCUMENT)
+    if (aFlags & Ci.nsIWebProgressListener.LOCATION_CHANGE_SAME_DOCUMENT) {
+      // Reader mode actually cares about these:
+      let mm = gBrowser.selectedBrowser.messageManager;
+      mm.sendAsyncMessage("Reader:PushState", {isArticle: gBrowser.selectedBrowser.isArticle});
+      return;
+    }
+
+    // Filter out location changes in sub documents.
+    if (!aWebProgress.isTopLevel)
       return;
 
     // Only need to call locationChange if the PopupNotifications object
@@ -4329,66 +5028,16 @@ var TabsProgressListener = {
     if (!Object.getOwnPropertyDescriptor(window, "PopupNotifications").get)
       PopupNotifications.locationChange(aBrowser);
 
+    let tab = gBrowser.getTabForBrowser(aBrowser);
+    if (tab && tab._sharingState) {
+      gBrowser.setBrowserSharing(aBrowser, {});
+    }
+    webrtcUI.forgetStreamsFromBrowser(aBrowser);
+
     gBrowser.getNotificationBox(aBrowser).removeTransientNotifications();
 
-    // Filter out location changes in sub documents.
-    if (aWebProgress.isTopLevel) {
-      // Initialize the click-to-play state.
-      aBrowser._clickToPlayPluginsActivated = new Map();
-      aBrowser._clickToPlayAllPluginsActivated = false;
-      aBrowser._pluginScriptedState = gPluginHandler.PLUGIN_SCRIPTED_STATE_NONE;
-
-      FullZoom.onLocationChange(aLocationURI, false, aBrowser);
-    }
+    FullZoom.onLocationChange(aLocationURI, false, aBrowser);
   },
-
-  onRefreshAttempted: function (aBrowser, aWebProgress, aURI, aDelay, aSameURI) {
-    if (gPrefService.getBoolPref("accessibility.blockautorefresh")) {
-      let brandBundle = document.getElementById("bundle_brand");
-      let brandShortName = brandBundle.getString("brandShortName");
-      let refreshButtonText =
-        gNavigatorBundle.getString("refreshBlocked.goButton");
-      let refreshButtonAccesskey =
-        gNavigatorBundle.getString("refreshBlocked.goButton.accesskey");
-      let message =
-        gNavigatorBundle.getFormattedString(aSameURI ? "refreshBlocked.refreshLabel"
-                                                     : "refreshBlocked.redirectLabel",
-                                            [brandShortName]);
-      let docShell = aWebProgress.DOMWindow
-                                 .QueryInterface(Ci.nsIInterfaceRequestor)
-                                 .getInterface(Ci.nsIWebNavigation)
-                                 .QueryInterface(Ci.nsIDocShell);
-      let notificationBox = gBrowser.getNotificationBox(aBrowser);
-      let notification = notificationBox.getNotificationWithValue("refresh-blocked");
-      if (notification) {
-        notification.label = message;
-        notification.refreshURI = aURI;
-        notification.delay = aDelay;
-        notification.docShell = docShell;
-      } else {
-        let buttons = [{
-          label: refreshButtonText,
-          accessKey: refreshButtonAccesskey,
-          callback: function (aNotification, aButton) {
-            var refreshURI = aNotification.docShell
-                                          .QueryInterface(Ci.nsIRefreshURI);
-            refreshURI.forceRefreshURI(aNotification.refreshURI,
-                                       aNotification.delay, true);
-          }
-        }];
-        notification =
-          notificationBox.appendNotification(message, "refresh-blocked",
-                                             "chrome://browser/skin/Info.png",
-                                             notificationBox.PRIORITY_INFO_MEDIUM,
-                                             buttons);
-        notification.refreshURI = aURI;
-        notification.delay = aDelay;
-        notification.docShell = docShell;
-      }
-      return false;
-    }
-    return true;
-  }
 }
 
 function nsBrowserAccess() { }
@@ -4396,15 +5045,17 @@ function nsBrowserAccess() { }
 nsBrowserAccess.prototype = {
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIBrowserDOMWindow, Ci.nsISupports]),
 
-  _openURIInNewTab: function(aURI, aOpener, aIsExternal) {
+  _openURIInNewTab(aURI, aReferrer, aReferrerPolicy, aIsPrivate,
+                             aIsExternal, aForceNotRemote = false,
+                             aUserContextId = Ci.nsIScriptSecurityManager.DEFAULT_USER_CONTEXT_ID,
+                             aOpener = null, aTriggeringPrincipal = null) {
     let win, needToFocusWin;
 
     // try the current window.  if we're in a popup, fall back on the most recent browser window
     if (window.toolbar.visible)
       win = window;
     else {
-      let isPrivate = PrivateBrowsingUtils.isWindowPrivate(aOpener || window);
-      win = RecentWindow.getMostRecentBrowserWindow({private: isPrivate});
+      win = RecentWindow.getMostRecentBrowserWindow({private: aIsPrivate});
       needToFocusWin = true;
     }
 
@@ -4420,12 +5071,18 @@ nsBrowserAccess.prototype = {
     }
 
     let loadInBackground = gPrefService.getBoolPref("browser.tabs.loadDivertedInBackground");
-    let referrer = aOpener ? makeURI(aOpener.location.href) : null;
 
     let tab = win.gBrowser.loadOneTab(aURI ? aURI.spec : "about:blank", {
-                                      referrerURI: referrer,
+                                      triggeringPrincipal: aTriggeringPrincipal,
+                                      referrerURI: aReferrer,
+                                      referrerPolicy: aReferrerPolicy,
+                                      userContextId: aUserContextId,
                                       fromExternal: aIsExternal,
-                                      inBackground: loadInBackground});
+                                      inBackground: loadInBackground,
+                                      forceNotRemote: aForceNotRemote,
+                                      forceBrowserInsertion: true,
+                                      opener: aOpener,
+                                      });
     let browser = win.gBrowser.getBrowserForTab(tab);
 
     if (needToFocusWin || (!loadInBackground && aIsExternal))
@@ -4434,12 +5091,26 @@ nsBrowserAccess.prototype = {
     return browser;
   },
 
-  openURI: function (aURI, aOpener, aWhere, aContext) {
+  openURI(aURI, aOpener, aWhere, aFlags) {
+    // This function should only ever be called if we're opening a URI
+    // from a non-remote browser window (via nsContentTreeOwner).
+    if (aOpener && Cu.isCrossProcessWrapper(aOpener)) {
+      Cu.reportError("nsBrowserAccess.openURI was passed a CPOW for aOpener. " +
+                     "openURI should only ever be called from non-remote browsers.");
+      throw Cr.NS_ERROR_FAILURE;
+    }
+
     var newWindow = null;
-    var isExternal = (aContext == Ci.nsIBrowserDOMWindow.OPEN_EXTERNAL);
+    var isExternal = !!(aFlags & Ci.nsIBrowserDOMWindow.OPEN_EXTERNAL);
+
+    if (aOpener && isExternal) {
+      Cu.reportError("nsBrowserAccess.openURI did not expect an opener to be " +
+                     "passed if the context is OPEN_EXTERNAL.");
+      throw Cr.NS_ERROR_FAILURE;
+    }
 
     if (isExternal && aURI && aURI.schemeIs("chrome")) {
-      dump("use -chrome command-line option to load external chrome urls\n");
+      dump("use --chrome command-line option to load external chrome urls\n");
       return null;
     }
 
@@ -4450,27 +5121,62 @@ nsBrowserAccess.prototype = {
       else
         aWhere = gPrefService.getIntPref("browser.link.open_newwindow");
     }
+
+    let referrer = aOpener ? makeURI(aOpener.location.href) : null;
+    let triggeringPrincipal = null;
+    let referrerPolicy = Ci.nsIHttpChannel.REFERRER_POLICY_UNSET;
+    if (aOpener && aOpener.document) {
+      referrerPolicy = aOpener.document.referrerPolicy;
+      triggeringPrincipal = aOpener.document.nodePrincipal;
+    }
+    let isPrivate = aOpener
+                  ? PrivateBrowsingUtils.isContentWindowPrivate(aOpener)
+                  : PrivateBrowsingUtils.isWindowPrivate(window);
+
     switch (aWhere) {
       case Ci.nsIBrowserDOMWindow.OPEN_NEWWINDOW :
         // FIXME: Bug 408379. So how come this doesn't send the
         // referrer like the other loads do?
         var url = aURI ? aURI.spec : "about:blank";
+        let features = "all,dialog=no";
+        if (isPrivate) {
+          features += ",private";
+        }
         // Pass all params to openDialog to ensure that "url" isn't passed through
         // loadOneOrMoreURIs, which splits based on "|"
-        newWindow = openDialog(getBrowserURL(), "_blank", "all,dialog=no", url, null, null, null);
+        newWindow = openDialog(getBrowserURL(), "_blank", features, url, null, null, null);
         break;
       case Ci.nsIBrowserDOMWindow.OPEN_NEWTAB :
-        let browser = this._openURIInNewTab(aURI, aOpener, isExternal);
-        newWindow = browser.contentWindow;
+        // If we have an opener, that means that the caller is expecting access
+        // to the nsIDOMWindow of the opened tab right away. For e10s windows,
+        // this means forcing the newly opened browser to be non-remote so that
+        // we can hand back the nsIDOMWindow. The XULBrowserWindow.shouldLoadURI
+        // will do the job of shuttling off the newly opened browser to run in
+        // the right process once it starts loading a URI.
+        let forceNotRemote = !!aOpener;
+        let userContextId = aOpener && aOpener.document
+                              ? aOpener.document.nodePrincipal.originAttributes.userContextId
+                              : Ci.nsIScriptSecurityManager.DEFAULT_USER_CONTEXT_ID;
+        let openerWindow = (aFlags & Ci.nsIBrowserDOMWindow.OPEN_NO_OPENER) ? null : aOpener;
+        let browser = this._openURIInNewTab(aURI, referrer, referrerPolicy,
+                                            isPrivate, isExternal,
+                                            forceNotRemote, userContextId,
+                                            openerWindow, triggeringPrincipal);
+        if (browser)
+          newWindow = browser.contentWindow;
         break;
       default : // OPEN_CURRENTWINDOW or an illegal value
         newWindow = content;
         if (aURI) {
-          let referrer = aOpener ? makeURI(aOpener.location.href) : null;
           let loadflags = isExternal ?
                             Ci.nsIWebNavigation.LOAD_FLAGS_FROM_EXTERNAL :
                             Ci.nsIWebNavigation.LOAD_FLAGS_NONE;
-          gBrowser.loadURIWithFlags(aURI.spec, loadflags, referrer, null, null);
+          gBrowser.loadURIWithFlags(aURI.spec, {
+                                    triggeringPrincipal,
+                                    flags: loadflags,
+                                    referrerURI: referrer,
+                                    referrerPolicy,
+                                    });
         }
         if (!gPrefService.getBoolPref("browser.tabs.loadDivertedInBackground"))
           window.focus();
@@ -4478,24 +5184,46 @@ nsBrowserAccess.prototype = {
     return newWindow;
   },
 
-  openURIInFrame: function browser_openURIInFrame(aURI, aOpener, aWhere, aContext) {
+  openURIInFrame: function browser_openURIInFrame(aURI, aParams, aWhere, aFlags) {
     if (aWhere != Ci.nsIBrowserDOMWindow.OPEN_NEWTAB) {
       dump("Error: openURIInFrame can only open in new tabs");
       return null;
     }
 
-    var isExternal = (aContext == Ci.nsIBrowserDOMWindow.OPEN_EXTERNAL);
-    let browser = this._openURIInNewTab(aURI, aOpener, isExternal);
-    return browser.QueryInterface(Ci.nsIFrameLoaderOwner);
+    var isExternal = !!(aFlags & Ci.nsIBrowserDOMWindow.OPEN_EXTERNAL);
+
+    var userContextId = aParams.openerOriginAttributes &&
+                        ("userContextId" in aParams.openerOriginAttributes)
+                          ? aParams.openerOriginAttributes.userContextId
+                          : Ci.nsIScriptSecurityManager.DEFAULT_USER_CONTEXT_ID
+
+    let referrer = aParams.referrer ? makeURI(aParams.referrer) : null;
+    let browser = this._openURIInNewTab(aURI, referrer,
+                                        aParams.referrerPolicy,
+                                        aParams.isPrivate,
+                                        isExternal, false,
+                                        userContextId, null,
+                                        aParams.triggeringPrincipal);
+    if (browser)
+      return browser.QueryInterface(Ci.nsIFrameLoaderOwner);
+
+    return null;
   },
 
-  isTabContentWindow: function (aWindow) {
-    return gBrowser.browsers.some(function (browser) browser.contentWindow == aWindow);
+  isTabContentWindow(aWindow) {
+    return gBrowser.browsers.some(browser => browser.contentWindow == aWindow);
   },
 
-  get contentWindow() {
-    return gBrowser.contentWindow;
-  }
+  canClose() {
+    return CanCloseWindow();
+  },
+}
+
+function getTogglableToolbars() {
+  let toolbarNodes = Array.slice(gNavToolbox.childNodes);
+  toolbarNodes = toolbarNodes.concat(gNavToolbox.externalToolbars);
+  toolbarNodes = toolbarNodes.filter(node => node.getAttribute("toolbarname"));
+  return toolbarNodes;
 }
 
 function onViewToolbarsPopupShowing(aEvent, aInsertPoint) {
@@ -4504,7 +5232,7 @@ function onViewToolbarsPopupShowing(aEvent, aInsertPoint) {
     return;
 
   // Empty the menu
-  for (var i = popup.childNodes.length-1; i >= 0; --i) {
+  for (var i = popup.childNodes.length - 1; i >= 0; --i) {
     var deadItem = popup.childNodes[i];
     if (deadItem.hasAttribute("toolbarId"))
       popup.removeChild(deadItem);
@@ -4512,452 +5240,211 @@ function onViewToolbarsPopupShowing(aEvent, aInsertPoint) {
 
   var firstMenuItem = aInsertPoint || popup.firstChild;
 
-  let toolbarNodes = Array.slice(gNavToolbox.childNodes);
-  toolbarNodes.push(document.getElementById("addon-bar"));
+  let toolbarNodes = getTogglableToolbars();
 
   for (let toolbar of toolbarNodes) {
-    let toolbarName = toolbar.getAttribute("toolbarname");
-    if (toolbarName) {
-      let menuItem = document.createElement("menuitem");
-      let hidingAttribute = toolbar.getAttribute("type") == "menubar" ?
-                            "autohide" : "collapsed";
-      menuItem.setAttribute("id", "toggle_" + toolbar.id);
-      menuItem.setAttribute("toolbarId", toolbar.id);
-      menuItem.setAttribute("type", "checkbox");
-      menuItem.setAttribute("label", toolbarName);
-      menuItem.setAttribute("checked", toolbar.getAttribute(hidingAttribute) != "true");
-      if (popup.id != "appmenu_customizeMenu")
-        menuItem.setAttribute("accesskey", toolbar.getAttribute("accesskey"));
-      if (popup.id != "toolbar-context-menu")
-        menuItem.setAttribute("key", toolbar.getAttribute("key"));
+    let menuItem = document.createElement("menuitem");
+    let hidingAttribute = toolbar.getAttribute("type") == "menubar" ?
+                          "autohide" : "collapsed";
+    menuItem.setAttribute("id", "toggle_" + toolbar.id);
+    menuItem.setAttribute("toolbarId", toolbar.id);
+    menuItem.setAttribute("type", "checkbox");
+    menuItem.setAttribute("label", toolbar.getAttribute("toolbarname"));
+    menuItem.setAttribute("checked", toolbar.getAttribute(hidingAttribute) != "true");
+    menuItem.setAttribute("accesskey", toolbar.getAttribute("accesskey"));
+    if (popup.id != "toolbar-context-menu")
+      menuItem.setAttribute("key", toolbar.getAttribute("key"));
 
-      popup.insertBefore(menuItem, firstMenuItem);
+    popup.insertBefore(menuItem, firstMenuItem);
 
-      menuItem.addEventListener("command", onViewToolbarCommand, false);
+    menuItem.addEventListener("command", onViewToolbarCommand);
+  }
+
+
+  let moveToPanel = popup.querySelector(".customize-context-moveToPanel");
+  let removeFromToolbar = popup.querySelector(".customize-context-removeFromToolbar");
+  // View -> Toolbars menu doesn't have the moveToPanel or removeFromToolbar items.
+  if (!moveToPanel || !removeFromToolbar) {
+    return;
+  }
+
+  // triggerNode can be a nested child element of a toolbaritem.
+  let toolbarItem = popup.triggerNode;
+
+  if (toolbarItem && toolbarItem.localName == "toolbarpaletteitem") {
+    toolbarItem = toolbarItem.firstChild;
+  } else if (toolbarItem && toolbarItem.localName != "toolbar") {
+    while (toolbarItem && toolbarItem.parentNode) {
+      let parent = toolbarItem.parentNode;
+      if ((parent.classList && parent.classList.contains("customization-target")) ||
+          parent.getAttribute("overflowfortoolbar") || // Needs to work in the overflow list as well.
+          parent.localName == "toolbarpaletteitem" ||
+          parent.localName == "toolbar")
+        break;
+      toolbarItem = parent;
     }
+  } else {
+    toolbarItem = null;
+  }
+
+  let showTabStripItems = toolbarItem && toolbarItem.id == "tabbrowser-tabs";
+  for (let node of popup.querySelectorAll('menuitem[contexttype="toolbaritem"]')) {
+    node.hidden = showTabStripItems;
+  }
+
+  for (let node of popup.querySelectorAll('menuitem[contexttype="tabbar"]')) {
+    node.hidden = !showTabStripItems;
+  }
+
+  if (showTabStripItems) {
+    PlacesCommandHook.updateBookmarkAllTabsCommand();
+
+    let haveMultipleTabs = gBrowser.visibleTabs.length > 1;
+    document.getElementById("toolbar-context-reloadAllTabs").disabled = !haveMultipleTabs;
+
+    document.getElementById("toolbar-context-undoCloseTab").disabled =
+      SessionStore.getClosedTabCount(window) == 0;
+    return;
+  }
+
+  // In some cases, we will exit the above loop with toolbarItem being the
+  // xul:document. That has no parentNode, and we should disable the items in
+  // this case.
+  let movable = toolbarItem && toolbarItem.parentNode &&
+                CustomizableUI.isWidgetRemovable(toolbarItem);
+  if (movable) {
+    moveToPanel.removeAttribute("disabled");
+    removeFromToolbar.removeAttribute("disabled");
+  } else {
+    moveToPanel.setAttribute("disabled", true);
+    removeFromToolbar.setAttribute("disabled", true);
   }
 }
 
 function onViewToolbarCommand(aEvent) {
   var toolbarId = aEvent.originalTarget.getAttribute("toolbarId");
-  var toolbar = document.getElementById(toolbarId);
   var isVisible = aEvent.originalTarget.getAttribute("checked") == "true";
-  setToolbarVisibility(toolbar, isVisible);
+  CustomizableUI.setToolbarVisibility(toolbarId, isVisible);
 }
 
-function setToolbarVisibility(toolbar, isVisible) {
-  var hidingAttribute = toolbar.getAttribute("type") == "menubar" ?
-                        "autohide" : "collapsed";
+function setToolbarVisibility(toolbar, isVisible, persist = true) {
+  let hidingAttribute;
+  if (toolbar.getAttribute("type") == "menubar") {
+    hidingAttribute = "autohide";
+    if (AppConstants.platform == "linux") {
+      Services.prefs.setBoolPref("ui.key.menuAccessKeyFocuses", !isVisible);
+    }
+  } else {
+    hidingAttribute = "collapsed";
+  }
 
   toolbar.setAttribute(hidingAttribute, !isVisible);
-  document.persist(toolbar.id, hidingAttribute);
+  if (persist) {
+    document.persist(toolbar.id, hidingAttribute);
+  }
+
+  let eventParams = {
+    detail: {
+      visible: isVisible
+    },
+    bubbles: true
+  };
+  let event = new CustomEvent("toolbarvisibilitychange", eventParams);
+  toolbar.dispatchEvent(event);
 
   PlacesToolbarHelper.init();
   BookmarkingUI.onToolbarVisibilityChange();
-  gBrowser.updateWindowResizers();
-
-#ifdef MENUBAR_CAN_AUTOHIDE
-  updateAppButtonDisplay();
-#endif
+  if (isVisible)
+    ToolbarIconColor.inferFromText();
 }
 
-var TabsOnTop = {
-  init: function TabsOnTop_init() {
-    Services.prefs.addObserver(this._prefName, this, false);
-
-    // Only show the toggle UI if the user disabled tabs on top.
-    if (Services.prefs.getBoolPref(this._prefName)) {
-      for (let item of document.querySelectorAll("menuitem[command=cmd_ToggleTabsOnTop]"))
-        item.parentNode.removeChild(item);
+var TabletModeUpdater = {
+  init() {
+    if (AppConstants.isPlatformAndVersionAtLeast("win", "10")) {
+      this.update(WindowsUIUtils.inTabletMode);
+      Services.obs.addObserver(this, "tablet-mode-change", false);
     }
   },
 
-  uninit: function TabsOnTop_uninit() {
-    Services.prefs.removeObserver(this._prefName, this);
+  uninit() {
+    if (AppConstants.isPlatformAndVersionAtLeast("win", "10")) {
+      Services.obs.removeObserver(this, "tablet-mode-change");
+    }
   },
 
-  toggle: function () {
-    this.enabled = !Services.prefs.getBoolPref(this._prefName);
+  observe(subject, topic, data) {
+    this.update(data == "tablet-mode");
   },
 
-  syncUI: function () {
-    let userEnabled = Services.prefs.getBoolPref(this._prefName);
-    let enabled = userEnabled && gBrowser.tabContainer.visible;
-
-    document.getElementById("cmd_ToggleTabsOnTop")
-            .setAttribute("checked", userEnabled);
-
-    document.documentElement.setAttribute("tabsontop", enabled);
-    document.getElementById("navigator-toolbox").setAttribute("tabsontop", enabled);
-    document.getElementById("TabsToolbar").setAttribute("tabsontop", enabled);
-    document.getElementById("nav-bar").setAttribute("tabsontop", enabled);
-    gBrowser.tabContainer.setAttribute("tabsontop", enabled);
-    TabsInTitlebar.allowedBy("tabs-on-top", enabled);
-  },
-
-  get enabled () {
-    return gNavToolbox.getAttribute("tabsontop") == "true";
-  },
-
-  set enabled (val) {
-    Services.prefs.setBoolPref(this._prefName, !!val);
-    return val;
-  },
-
-  observe: function (subject, topic, data) {
-    if (topic == "nsPref:changed")
-      this.syncUI();
-  },
-
-  _prefName: "browser.tabs.onTop"
-}
-
-var TabsInTitlebar = {
-  init: function () {
-#ifdef CAN_DRAW_IN_TITLEBAR
-    this._readPref();
-    Services.prefs.addObserver(this._prefName, this, false);
-
-    // Don't trust the initial value of the sizemode attribute; wait for
-    // the resize event (handled in tabbrowser.xml).
-    this.allowedBy("sizemode", false);
-
-    this._initialized = true;
-#endif
-  },
-
-  allowedBy: function (condition, allow) {
-#ifdef CAN_DRAW_IN_TITLEBAR
-    if (allow) {
-      if (condition in this._disallowed) {
-        delete this._disallowed[condition];
-        this._update();
-      }
+  update(isInTabletMode) {
+    let wasInTabletMode = document.documentElement.hasAttribute("tabletmode");
+    if (isInTabletMode) {
+      document.documentElement.setAttribute("tabletmode", "true");
     } else {
-      if (!(condition in this._disallowed)) {
-        this._disallowed[condition] = null;
-        this._update();
-      }
+      document.documentElement.removeAttribute("tabletmode");
     }
-#endif
-  },
-
-  get enabled() {
-    return document.documentElement.getAttribute("tabsintitlebar") == "true";
-  },
-
-#ifdef CAN_DRAW_IN_TITLEBAR
-  observe: function (subject, topic, data) {
-    if (topic == "nsPref:changed")
-      this._readPref();
-  },
-
-  _initialized: false,
-  _disallowed: {},
-  _prefName: "browser.tabs.drawInTitlebar",
-
-  _readPref: function () {
-    this.allowedBy("pref",
-                   Services.prefs.getBoolPref(this._prefName));
-  },
-
-  _update: function () {
-    function $(id) document.getElementById(id);
-    function rect(ele) ele.getBoundingClientRect();
-
-    if (!this._initialized || window.fullScreen)
-      return;
-
-    let allowed = true;
-    for (let something in this._disallowed) {
-      allowed = false;
-      break;
-    }
-
-    if (allowed == this.enabled)
-      return;
-
-    let titlebar = $("titlebar");
-
-    if (allowed) {
-      let tabsToolbar       = $("TabsToolbar");
-
-#ifdef MENUBAR_CAN_AUTOHIDE
-      let appmenuButtonBox  = $("appmenu-button-container");
-      this._sizePlaceholder("appmenu-button", rect(appmenuButtonBox).width);
-#endif
-      let captionButtonsBox = $("titlebar-buttonbox");
-      this._sizePlaceholder("caption-buttons", rect(captionButtonsBox).width);
-
-      let tabsToolbarRect = rect(tabsToolbar);
-      let titlebarTop = rect($("titlebar-content")).top;
-      titlebar.style.marginBottom = - Math.min(tabsToolbarRect.top - titlebarTop,
-                                               tabsToolbarRect.height) + "px";
-
-      document.documentElement.setAttribute("tabsintitlebar", "true");
-
-      if (!this._draghandle) {
-        let tmp = {};
-        Components.utils.import("resource://gre/modules/WindowDraggingUtils.jsm", tmp);
-        this._draghandle = new tmp.WindowDraggingElement(tabsToolbar);
-        this._draghandle.mouseDownCheck = function () {
-          return !this._dragBindingAlive && TabsInTitlebar.enabled;
-        };
-      }
-    } else {
-      document.documentElement.removeAttribute("tabsintitlebar");
-
-      titlebar.style.marginBottom = "";
+    if (wasInTabletMode != isInTabletMode) {
+      TabsInTitlebar.updateAppearance(true);
     }
   },
-
-  _sizePlaceholder: function (type, width) {
-    Array.forEach(document.querySelectorAll(".titlebar-placeholder[type='"+ type +"']"),
-                  function (node) { node.width = width; });
-  },
-#endif
-
-  uninit: function () {
-#ifdef CAN_DRAW_IN_TITLEBAR
-    this._initialized = false;
-    Services.prefs.removeObserver(this._prefName, this);
-#endif
-  }
 };
 
-#ifdef MENUBAR_CAN_AUTOHIDE
-function updateAppButtonDisplay() {
-  var displayAppButton =
-    !gInPrintPreviewMode &&
-    window.menubar.visible &&
-    document.getElementById("toolbar-menubar").getAttribute("autohide") == "true";
+var gTabletModePageCounter = {
+  enabled: false,
+  inc() {
+    this.enabled = AppConstants.isPlatformAndVersionAtLeast("win", "10.0");
+    if (!this.enabled) {
+      this.inc = () => {};
+      return;
+    }
+    this.inc = this._realInc;
+    this.inc();
+  },
 
-#ifdef CAN_DRAW_IN_TITLEBAR
-  document.getElementById("titlebar").hidden = !displayAppButton;
+  _desktopCount: 0,
+  _tabletCount: 0,
+  _realInc() {
+    let inTabletMode = document.documentElement.hasAttribute("tabletmode");
+    this[inTabletMode ? "_tabletCount" : "_desktopCount"]++;
+  },
 
-  if (displayAppButton)
-    document.documentElement.setAttribute("chromemargin", "0,2,2,2");
-  else
-    document.documentElement.removeAttribute("chromemargin");
+  finish() {
+    if (this.enabled) {
+      let histogram = Services.telemetry.getKeyedHistogramById("FX_TABLETMODE_PAGE_LOAD");
+      histogram.add("tablet", this._tabletCount);
+      histogram.add("desktop", this._desktopCount);
+    }
+  },
+};
 
-  TabsInTitlebar.allowedBy("drawing-in-titlebar", displayAppButton);
-#else
-  document.getElementById("appmenu-toolbar-button").hidden =
-    !displayAppButton;
-#endif
-}
-#endif
-
-#ifdef CAN_DRAW_IN_TITLEBAR
-function onTitlebarMaxClick() {
-  if (window.windowState == window.STATE_MAXIMIZED)
-    window.restore();
-  else
-    window.maximize();
-}
-#endif
-
-function displaySecurityInfo()
-{
+function displaySecurityInfo() {
   BrowserPageInfo(null, "securityTab");
 }
 
-/**
- * Opens or closes the sidebar identified by commandID.
- *
- * @param commandID a string identifying the sidebar to toggle; see the
- *                  note below. (Optional if a sidebar is already open.)
- * @param forceOpen boolean indicating whether the sidebar should be
- *                  opened regardless of its current state (optional).
- * @note
- * We expect to find a xul:broadcaster element with the specified ID.
- * The following attributes on that element may be used and/or modified:
- *  - id           (required) the string to match commandID. The convention
- *                 is to use this naming scheme: 'view<sidebar-name>Sidebar'.
- *  - sidebarurl   (required) specifies the URL to load in this sidebar.
- *  - sidebartitle or label (in that order) specify the title to
- *                 display on the sidebar.
- *  - checked      indicates whether the sidebar is currently displayed.
- *                 Note that toggleSidebar updates this attribute when
- *                 it changes the sidebar's visibility.
- *  - group        this attribute must be set to "sidebar".
- */
-function toggleSidebar(commandID, forceOpen) {
-
-  var sidebarBox = document.getElementById("sidebar-box");
-  if (!commandID)
-    commandID = sidebarBox.getAttribute("sidebarcommand");
-
-  var sidebarBroadcaster = document.getElementById(commandID);
-  var sidebar = document.getElementById("sidebar"); // xul:browser
-  var sidebarTitle = document.getElementById("sidebar-title");
-  var sidebarSplitter = document.getElementById("sidebar-splitter");
-
-  if (sidebarBroadcaster.getAttribute("checked") == "true") {
-    if (!forceOpen) {
-      // Replace the document currently displayed in the sidebar with about:blank
-      // so that we can free memory by unloading the page. We need to explicitly
-      // create a new content viewer because the old one doesn't get destroyed
-      // until about:blank has loaded (which does not happen as long as the
-      // element is hidden).
-      sidebar.setAttribute("src", "about:blank");
-      sidebar.docShell.createAboutBlankContentViewer(null);
-
-      sidebarBroadcaster.removeAttribute("checked");
-      sidebarBox.setAttribute("sidebarcommand", "");
-      sidebarTitle.value = "";
-      sidebarBox.hidden = true;
-      sidebarSplitter.hidden = true;
-      gBrowser.selectedBrowser.focus();
-    } else {
-      fireSidebarFocusedEvent();
-    }
-    return;
-  }
-
-  // now we need to show the specified sidebar
-
-  // ..but first update the 'checked' state of all sidebar broadcasters
-  var broadcasters = document.getElementsByAttribute("group", "sidebar");
-  for (let broadcaster of broadcasters) {
-    // skip elements that observe sidebar broadcasters and random
-    // other elements
-    if (broadcaster.localName != "broadcaster")
-      continue;
-
-    if (broadcaster != sidebarBroadcaster)
-      broadcaster.removeAttribute("checked");
-    else
-      sidebarBroadcaster.setAttribute("checked", "true");
-  }
-
-  sidebarBox.hidden = false;
-  sidebarSplitter.hidden = false;
-
-  var url = sidebarBroadcaster.getAttribute("sidebarurl");
-  var title = sidebarBroadcaster.getAttribute("sidebartitle");
-  if (!title)
-    title = sidebarBroadcaster.getAttribute("label");
-  sidebar.setAttribute("src", url); // kick off async load
-  sidebarBox.setAttribute("sidebarcommand", sidebarBroadcaster.id);
-  sidebarTitle.value = title;
-
-  // We set this attribute here in addition to setting it on the <browser>
-  // element itself, because the code in gBrowserInit.onUnload persists this
-  // attribute, not the "src" of the <browser id="sidebar">. The reason it
-  // does that is that we want to delay sidebar load a bit when a browser
-  // window opens. See delayedStartup().
-  sidebarBox.setAttribute("src", url);
-
-  if (sidebar.contentDocument.location.href != url)
-    sidebar.addEventListener("load", sidebarOnLoad, true);
-  else // older code handled this case, so we do it too
-    fireSidebarFocusedEvent();
-}
-
-function sidebarOnLoad(event) {
-  var sidebar = document.getElementById("sidebar");
-  sidebar.removeEventListener("load", sidebarOnLoad, true);
-  // We're handling the 'load' event before it bubbles up to the usual
-  // (non-capturing) event handlers. Let it bubble up before firing the
-  // SidebarFocused event.
-  setTimeout(fireSidebarFocusedEvent, 0);
-}
-
-/**
- * Fire a "SidebarFocused" event on the sidebar's |window| to give the sidebar
- * a chance to adjust focus as needed. An additional event is needed, because
- * we don't want to focus the sidebar when it's opened on startup or in a new
- * window, only when the user opens the sidebar.
- */
-function fireSidebarFocusedEvent() {
-  var sidebar = document.getElementById("sidebar");
-  var event = document.createEvent("Events");
-  event.initEvent("SidebarFocused", true, false);
-  sidebar.contentWindow.dispatchEvent(event);
-}
-
-#ifdef XP_WIN
-#ifdef MOZ_METRO
-/**
- * Some prefs that have consequences in both Metro and Desktop such as
- * app-update prefs, are automatically pushed from Desktop here for use
- * in Metro.
- */
-var gMetroPrefs = {
-  prefDomain: ["app.update.auto", "app.update.enabled",
-               "app.update.service.enabled",
-               "app.update.metro.enabled"],
-  observe: function (aSubject, aTopic, aPrefName)
-  {
-    if (aTopic != "nsPref:changed")
-      return;
-
-    this.pushDesktopControlledPrefToMetro(aPrefName);
-  },
-
-  /**
-   * Writes the pref to HKCU in the registry and adds a pref-observer to keep
-   * the registry in sync with changes to the value.
-   */
-  pushDesktopControlledPrefToMetro: function(aPrefName) {
-    let registry = Cc["@mozilla.org/windows-registry-key;1"].
-                    createInstance(Ci.nsIWindowsRegKey);
-    try {
-      var prefType = Services.prefs.getPrefType(aPrefName);
-      let prefFunc;
-      if (prefType == Components.interfaces.nsIPrefBranch.PREF_INT)
-        prefFunc = "getIntPref";
-      else if (prefType == Components.interfaces.nsIPrefBranch.PREF_BOOL)
-        prefFunc = "getBoolPref";
-      else if (prefType == Components.interfaces.nsIPrefBranch.PREF_STRING)
-        prefFunc = "getCharPref";
-      else
-        throw "Unsupported pref type";
-
-      let prefValue = Services.prefs[prefFunc](aPrefName);
-      registry.create(Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
-                    "Software\\Mozilla\\Firefox\\Metro\\Prefs\\" + prefType,
-                    Ci.nsIWindowsRegKey.ACCESS_WRITE);
-      // Always write as string, but the registry subfolder will determine
-      // how Metro interprets that string value.
-      registry.writeStringValue(aPrefName, prefValue);
-    } catch (ex) {
-      Components.utils.reportError("Couldn't push pref " + aPrefName + ": " + ex);
-    } finally {
-      registry.close();
-    }
-  }
-};
-#endif
-#endif
 
 var gHomeButton = {
   prefDomain: "browser.startup.homepage",
-  observe: function (aSubject, aTopic, aPrefName)
-  {
+  observe(aSubject, aTopic, aPrefName) {
     if (aTopic != "nsPref:changed" || aPrefName != this.prefDomain)
       return;
 
     this.updateTooltip();
   },
 
-  updateTooltip: function (homeButton)
-  {
+  updateTooltip(homeButton) {
     if (!homeButton)
       homeButton = document.getElementById("home-button");
     if (homeButton) {
       var homePage = this.getHomePage();
-      homePage = homePage.replace(/\|/g,', ');
-      if (homePage.toLowerCase() == "about:home")
+      homePage = homePage.replace(/\|/g, ", ");
+      if (["about:home", "about:newtab"].includes(homePage.toLowerCase()))
         homeButton.setAttribute("tooltiptext", homeButton.getAttribute("aboutHomeOverrideTooltip"));
       else
         homeButton.setAttribute("tooltiptext", homePage);
     }
   },
 
-  getHomePage: function ()
-  {
+  getHomePage() {
     var url;
     try {
       url = gPrefService.getComplexValue(this.prefDomain,
@@ -4974,101 +5461,93 @@ var gHomeButton = {
 
     return url;
   },
-
-  updatePersonalToolbarStyle: function (homeButton)
-  {
-    if (!homeButton)
-      homeButton = document.getElementById("home-button");
-    if (homeButton)
-      homeButton.className = homeButton.parentNode.id == "PersonalToolbar"
-                               || homeButton.parentNode.parentNode.id == "PersonalToolbar" ?
-                             homeButton.className.replace("toolbarbutton-1", "bookmark-item") :
-                             homeButton.className.replace("bookmark-item", "toolbarbutton-1");
-  }
 };
 
-/**
- * Gets the selected text in the active browser. Leading and trailing
- * whitespace is removed, and consecutive whitespace is replaced by a single
- * space. A maximum of 150 characters will be returned, regardless of the value
- * of aCharLen.
- *
- * @param aCharLen
- *        The maximum number of characters to return.
- */
+const nodeToTooltipMap = {
+  "bookmarks-menu-button": "bookmarksMenuButton.tooltip",
+  "new-window-button": "newWindowButton.tooltip",
+  "new-tab-button": "newTabButton.tooltip",
+  "tabs-newtab-button": "newTabButton.tooltip",
+  "fullscreen-button": "fullscreenButton.tooltip",
+  "downloads-button": "downloads.tooltip",
+};
+const nodeToShortcutMap = {
+  "bookmarks-menu-button": "manBookmarkKb",
+  "new-window-button": "key_newNavigator",
+  "new-tab-button": "key_newNavigatorTab",
+  "tabs-newtab-button": "key_newNavigatorTab",
+  "fullscreen-button": "key_fullScreen",
+  "downloads-button": "key_openDownloads"
+};
+
+if (AppConstants.platform == "macosx") {
+  nodeToTooltipMap["print-button"] = "printButton.tooltip";
+  nodeToShortcutMap["print-button"] = "printKb";
+}
+
+const gDynamicTooltipCache = new Map();
+function UpdateDynamicShortcutTooltipText(aTooltip) {
+  let nodeId = aTooltip.triggerNode.id || aTooltip.triggerNode.getAttribute("anonid");
+  if (!gDynamicTooltipCache.has(nodeId) && nodeId in nodeToTooltipMap) {
+    let strId = nodeToTooltipMap[nodeId];
+    let args = [];
+    if (nodeId in nodeToShortcutMap) {
+      let shortcutId = nodeToShortcutMap[nodeId];
+      let shortcut = document.getElementById(shortcutId);
+      if (shortcut) {
+        args.push(ShortcutUtils.prettifyShortcut(shortcut));
+      }
+    }
+    gDynamicTooltipCache.set(nodeId, gNavigatorBundle.getFormattedString(strId, args));
+  }
+  aTooltip.setAttribute("label", gDynamicTooltipCache.get(nodeId));
+}
+
 function getBrowserSelection(aCharLen) {
-  // selections of more than 150 characters aren't useful
-  const kMaxSelectionLen = 150;
-  const charLen = Math.min(aCharLen || kMaxSelectionLen, kMaxSelectionLen);
-  let commandDispatcher = document.commandDispatcher;
+  Deprecated.warning("getBrowserSelection",
+                     "https://bugzilla.mozilla.org/show_bug.cgi?id=1134769");
 
-  var focusedWindow = commandDispatcher.focusedWindow;
-  var selection = focusedWindow.getSelection().toString();
-  // try getting a selected text in text input.
-  if (!selection) {
-    let element = commandDispatcher.focusedElement;
-    var isOnTextInput = function isOnTextInput(elem) {
-      // we avoid to return a value if a selection is in password field.
-      // ref. bug 565717
-      return elem instanceof HTMLTextAreaElement ||
-             (elem instanceof HTMLInputElement && elem.mozIsTextField(true));
-    };
-
-    if (isOnTextInput(element)) {
-      selection = element.QueryInterface(Ci.nsIDOMNSEditableElement)
-                         .editor.selection.toString();
-    }
+  let focusedElement = document.activeElement;
+  if (focusedElement && focusedElement.localName == "browser" &&
+      focusedElement.isRemoteBrowser) {
+    throw "getBrowserSelection doesn't support child process windows";
   }
 
-  if (selection) {
-    if (selection.length > charLen) {
-      // only use the first charLen important chars. see bug 221361
-      var pattern = new RegExp("^(?:\\s*.){0," + charLen + "}");
-      pattern.test(selection);
-      selection = RegExp.lastMatch;
-    }
-
-    selection = selection.trim().replace(/\s+/g, " ");
-
-    if (selection.length > charLen)
-      selection = selection.substr(0, charLen);
-  }
-  return selection;
+  return BrowserUtils.getSelectionDetails(window, aCharLen).text;
 }
 
 var gWebPanelURI;
-function openWebPanel(aTitle, aURI)
-{
-    // Ensure that the web panels sidebar is open.
-    toggleSidebar('viewWebPanelsSidebar', true);
+function openWebPanel(title, uri) {
+  // Ensure that the web panels sidebar is open.
+  SidebarUI.show("viewWebPanelsSidebar");
 
-    // Set the title of the panel.
-    document.getElementById("sidebar-title").value = aTitle;
+  // Set the title of the panel.
+  SidebarUI.title = title;
 
-    // Tell the Web Panels sidebar to load the bookmark.
-    var sidebar = document.getElementById("sidebar");
-    if (sidebar.docShell && sidebar.contentDocument && sidebar.contentDocument.getElementById('web-panels-browser')) {
-        sidebar.contentWindow.loadWebPanel(aURI);
-        if (gWebPanelURI) {
-            gWebPanelURI = "";
-            sidebar.removeEventListener("load", asyncOpenWebPanel, true);
-        }
+  // Tell the Web Panels sidebar to load the bookmark.
+  if (SidebarUI.browser.docShell && SidebarUI.browser.contentDocument &&
+      SidebarUI.browser.contentDocument.getElementById("web-panels-browser")) {
+    SidebarUI.browser.contentWindow.loadWebPanel(uri);
+    if (gWebPanelURI) {
+      gWebPanelURI = "";
+      SidebarUI.browser.removeEventListener("load", asyncOpenWebPanel, true);
     }
-    else {
-        // The panel is still being constructed.  Attach an onload handler.
-        if (!gWebPanelURI)
-            sidebar.addEventListener("load", asyncOpenWebPanel, true);
-        gWebPanelURI = aURI;
+  } else {
+    // The panel is still being constructed.  Attach an onload handler.
+    if (!gWebPanelURI) {
+      SidebarUI.browser.addEventListener("load", asyncOpenWebPanel, true);
     }
+    gWebPanelURI = uri;
+  }
 }
 
-function asyncOpenWebPanel(event)
-{
-    var sidebar = document.getElementById("sidebar");
-    if (gWebPanelURI && sidebar.contentDocument && sidebar.contentDocument.getElementById('web-panels-browser'))
-        sidebar.contentWindow.loadWebPanel(gWebPanelURI);
-    gWebPanelURI = "";
-    sidebar.removeEventListener("load", asyncOpenWebPanel, true);
+function asyncOpenWebPanel(event) {
+  if (gWebPanelURI && SidebarUI.browser.contentDocument &&
+      SidebarUI.browser.contentDocument.getElementById("web-panels-browser")) {
+    SidebarUI.browser.contentWindow.loadWebPanel(gWebPanelURI);
+  }
+  gWebPanelURI = "";
+  SidebarUI.browser.removeEventListener("load", asyncOpenWebPanel, true);
 }
 
 /*
@@ -5087,10 +5566,8 @@ function asyncOpenWebPanel(event)
  * @note linkNode will be null if the click wasn't on an anchor
  *       element (or XLink).
  */
-function hrefAndLinkNodeForClickEvent(event)
-{
-  function isHTMLLink(aNode)
-  {
+function hrefAndLinkNodeForClickEvent(event) {
+  function isHTMLLink(aNode) {
     // Be consistent with what nsContextMenu.js does.
     return ((aNode instanceof HTMLAnchorElement && aNode.href) ||
             (aNode instanceof HTMLAreaElement && aNode.href) ||
@@ -5109,10 +5586,16 @@ function hrefAndLinkNodeForClickEvent(event)
   let href, baseURI;
   node = event.target;
   while (node && !href) {
-    if (node.nodeType == Node.ELEMENT_NODE) {
-      href = node.getAttributeNS("http://www.w3.org/1999/xlink", "href");
-      if (href)
+    if (node.nodeType == Node.ELEMENT_NODE &&
+        (node.localName == "a" ||
+         node.namespaceURI == "http://www.w3.org/1998/Math/MathML")) {
+      href = node.getAttribute("href") ||
+             node.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+
+      if (href) {
         baseURI = node.baseURI;
+        break;
+      }
     }
     node = node.parentNode;
   }
@@ -5131,8 +5614,7 @@ function hrefAndLinkNodeForClickEvent(event)
  *        Whether the event comes from a web panel.
  * @note default event is prevented if the click is handled.
  */
-function contentAreaClick(event, isPanelClick)
-{
+function contentAreaClick(event, isPanelClick) {
   if (!event.isTrusted || event.defaultPrevented || event.button == 2)
     return;
 
@@ -5156,7 +5638,7 @@ function contentAreaClick(event, isPanelClick)
     // if no modifier keys are down and if there's no target or the target
     // equals _main (the IE convention) or _content (the Mozilla convention).
     let target = linkNode.target;
-    let mainTarget = !target || target == "_content" || target  == "_main";
+    let mainTarget = !target || target == "_content" || target == "_main";
     if (isPanelClick && mainTarget) {
       // javascript and data links should be executed in the current browser.
       if (linkNode.getAttribute("onclick") ||
@@ -5166,8 +5648,7 @@ function contentAreaClick(event, isPanelClick)
 
       try {
         urlSecurityCheck(href, linkNode.ownerDocument.nodePrincipal);
-      }
-      catch(ex) {
+      } catch (ex) {
         // Prevent loading unsecure destinations.
         event.preventDefault();
         return;
@@ -5230,9 +5711,50 @@ function handleLinkClick(event, href, linkNode) {
     return true;
   }
 
+  var referrerURI = doc.documentURIObject;
+  // if the mixedContentChannel is present and the referring URI passes
+  // a same origin check with the target URI, we can preserve the users
+  // decision of disabling MCB on a page for it's child tabs.
+  var persistAllowMixedContentInChildTab = false;
+
+  if (where == "tab" && gBrowser.docShell.mixedContentChannel) {
+    const sm = Services.scriptSecurityManager;
+    try {
+      var targetURI = makeURI(href);
+      sm.checkSameOriginURI(referrerURI, targetURI, false);
+      persistAllowMixedContentInChildTab = true;
+    } catch (e) { }
+  }
+
+  // first get document wide referrer policy, then
+  // get referrer attribute from clicked link and parse it and
+  // allow per element referrer to overrule the document wide referrer if enabled
+  let referrerPolicy = doc.referrerPolicy;
+  if (Services.prefs.getBoolPref("network.http.enablePerElementReferrer") &&
+      linkNode) {
+    let referrerAttrValue = Services.netUtils.parseAttributePolicyString(linkNode.
+                            getAttribute("referrerpolicy"));
+    if (referrerAttrValue != Ci.nsIHttpChannel.REFERRER_POLICY_UNSET) {
+      referrerPolicy = referrerAttrValue;
+    }
+  }
+
   urlSecurityCheck(href, doc.nodePrincipal);
-  openLinkIn(href, where, { referrerURI: doc.documentURIObject,
-                            charset: doc.characterSet });
+  let params = {
+    charset: doc.characterSet,
+    allowMixedContent: persistAllowMixedContentInChildTab,
+    referrerURI,
+    referrerPolicy,
+    noReferrer: BrowserUtils.linkHasNoReferrer(linkNode),
+    originPrincipal: doc.nodePrincipal,
+  };
+
+  // The new tab/window must use the same userContextId
+  if (doc.nodePrincipal.originAttributes.userContextId) {
+    params.userContextId = doc.nodePrincipal.originAttributes.userContextId;
+  }
+
+  openLinkIn(href, where, params);
   event.preventDefault();
   return true;
 }
@@ -5246,7 +5768,9 @@ function middleMousePaste(event) {
   // bar's behavior (stripsurroundingwhitespace)
   clipboard = clipboard.replace(/\s*\n\s*/g, "");
 
-  // if it's not the current tab, we don't need to do anything because the 
+  clipboard = stripUnsafeProtocolOnPaste(clipboard);
+
+  // if it's not the current tab, we don't need to do anything because the
   // browser doesn't exist.
   let where = whereToOpenLink(event, true, false);
   let lastLocationChange;
@@ -5254,8 +5778,7 @@ function middleMousePaste(event) {
     lastLocationChange = gBrowser.selectedBrowser.lastLocationChange;
   }
 
-  Task.spawn(function() {
-    let data = yield getShortcutOrURIAndPostData(clipboard);
+  getShortcutOrURIAndPostData(clipboard).then(data => {
     try {
       makeURI(data.url);
     } catch (ex) {
@@ -5282,173 +5805,184 @@ function middleMousePaste(event) {
   event.stopPropagation();
 }
 
-function handleDroppedLink(event, url, name)
-{
+function stripUnsafeProtocolOnPaste(pasteData) {
+  // Don't allow pasting javascript URIs since we don't support
+  // LOAD_FLAGS_DISALLOW_INHERIT_PRINCIPAL for those.
+  let changed = false;
+  let pasteDataNoJS = pasteData.replace(/\r?\n/g, "")
+                               .replace(/^(?:\s*javascript:)+/i,
+                                        () => {
+                                                changed = true;
+                                                return "";
+                                              });
+  return changed ? pasteDataNoJS : pasteData;
+}
+
+// handleDroppedLink has the following 2 overloads:
+//   handleDroppedLink(event, url, name)
+//   handleDroppedLink(event, links)
+function handleDroppedLink(event, urlOrLinks, name) {
+  let links;
+  if (Array.isArray(urlOrLinks)) {
+    links = urlOrLinks;
+  } else {
+    links = [{ url: urlOrLinks, name, type: "" }];
+  }
+
   let lastLocationChange = gBrowser.selectedBrowser.lastLocationChange;
 
-  Task.spawn(function() {
-    let data = yield getShortcutOrURIAndPostData(url);
-    if (data.url &&
-        lastLocationChange == gBrowser.selectedBrowser.lastLocationChange)
-      loadURI(data.url, null, data.postData, false);
+  let userContextId = gBrowser.selectedBrowser.getAttribute("usercontextid");
+
+  // event is null if links are dropped in content process.
+  // inBackground should be false, as it's loading into current browser.
+  let inBackground = false;
+  if (event) {
+    inBackground = Services.prefs.getBoolPref("browser.tabs.loadInBackground");
+    if (event.shiftKey)
+      inBackground = !inBackground;
+  }
+
+  Task.spawn(function*() {
+    let urls = [];
+    let postDatas = [];
+    for (let link of links) {
+      let data = yield getShortcutOrURIAndPostData(link.url);
+      urls.push(data.url);
+      postDatas.push(data.postData);
+    }
+    if (lastLocationChange == gBrowser.selectedBrowser.lastLocationChange) {
+      gBrowser.loadTabs(urls, {
+        inBackground,
+        replace: true,
+        allowThirdPartyFixup: false,
+        postDatas,
+        userContextId,
+      });
+    }
   });
 
-  // Keep the event from being handled by the dragDrop listeners
-  // built-in to gecko if they happen to be above us.
-  event.preventDefault();
-};
-
-function MultiplexHandler(event)
-{ try {
-    var node = event.target;
-    var name = node.getAttribute('name');
-
-    if (name == 'detectorGroup') {
-        BrowserCharsetReload();
-        SelectDetector(event, false);
-    } else if (name == 'charsetGroup') {
-        var charset = node.getAttribute('id');
-        charset = charset.substring('charset.'.length, charset.length)
-        BrowserSetForcedCharacterSet(charset);
-    } else if (name == 'charsetCustomize') {
-        //do nothing - please remove this else statement, once the charset prefs moves to the pref window
-    } else {
-        BrowserSetForcedCharacterSet(node.getAttribute('id'));
-    }
-    } catch(ex) { alert(ex); }
+  // If links are dropped in content process, event.preventDefault() should be
+  // called in content process.
+  if (event) {
+    // Keep the event from being handled by the dragDrop listeners
+    // built-in to gecko if they happen to be above us.
+    event.preventDefault();
+  }
 }
 
-function SelectDetector(event, doReload)
-{
-    var uri =  event.target.getAttribute("id");
-    var prefvalue = uri.substring('chardet.'.length, uri.length);
-    if ("off" == prefvalue) { // "off" is special value to turn off the detectors
-        prefvalue = "";
-    }
-
-    try {
-        var str =  Cc["@mozilla.org/supports-string;1"].
-                   createInstance(Ci.nsISupportsString);
-
-        str.data = prefvalue;
-        gPrefService.setComplexValue("intl.charset.detector", Ci.nsISupportsString, str);
-        if (doReload)
-          window.content.location.reload();
-    }
-    catch (ex) {
-        dump("Failed to set the intl.charset.detector preference.\n");
-    }
-}
-
-function BrowserSetForcedCharacterSet(aCharset)
-{
-  gBrowser.docShell.gatherCharsetMenuTelemetry();
-  gBrowser.docShell.charset = aCharset;
-  // Save the forced character-set
-  if (!PrivateBrowsingUtils.isWindowPrivate(window))
-    PlacesUtils.setCharsetForURI(getWebNavigation().currentURI, aCharset);
+function BrowserSetForcedCharacterSet(aCharset) {
+  if (aCharset) {
+    gBrowser.selectedBrowser.characterSet = aCharset;
+    // Save the forced character-set
+    if (!PrivateBrowsingUtils.isWindowPrivate(window))
+      PlacesUtils.setCharsetForURI(getWebNavigation().currentURI, aCharset);
+  }
   BrowserCharsetReload();
 }
 
-function BrowserCharsetReload()
-{
+function BrowserCharsetReload() {
   BrowserReloadWithFlags(nsIWebNavigation.LOAD_FLAGS_CHARSET_CHANGE);
 }
 
-function charsetMenuGetElement(parent, id) {
-  return parent.getElementsByAttribute("id", id)[0];
-}
-
 function UpdateCurrentCharset(target) {
-    // extract the charset from DOM
-    var wnd = document.commandDispatcher.focusedWindow;
-    if ((window == wnd) || (wnd == null)) wnd = window.content;
-
-    // Uncheck previous item
-    if (gPrevCharset) {
-        var pref_item = charsetMenuGetElement(target, "charset." + gPrevCharset);
-        if (pref_item)
-          pref_item.setAttribute('checked', 'false');
-    }
-
-    var menuitem = charsetMenuGetElement(target, "charset." + wnd.document.characterSet);
-    if (menuitem) {
-        menuitem.setAttribute('checked', 'true');
-    }
-}
-
-function UpdateCharsetDetector(target) {
-  var prefvalue;
-
-  try {
-    prefvalue = gPrefService.getComplexValue("intl.charset.detector", Ci.nsIPrefLocalizedString).data;
-  }
-  catch (ex) {}
-
-  if (!prefvalue)
-    prefvalue = "off";
-
-  var menuitem = charsetMenuGetElement(target, "chardet." + prefvalue);
-  if (menuitem)
-    menuitem.setAttribute("checked", "true");
-}
-
-function UpdateMenus(event) {
-  UpdateCurrentCharset(event.target);
-  UpdateCharsetDetector(event.target);
-}
-
-function CreateMenu(node) {
-  Services.obs.notifyObservers(null, "charsetmenu-selected", node);
-}
-
-function charsetLoadListener() {
-  var charset = window.content.document.characterSet;
-
-  if (charset.length > 0 && (charset != gLastBrowserCharset)) {
-    if (!gCharsetMenu)
-      gCharsetMenu = Cc['@mozilla.org/rdf/datasource;1?name=charset-menu'].getService(Ci.nsICurrentCharsetListener);
-    gCharsetMenu.SetCurrentCharset(charset);
-    gPrevCharset = gLastBrowserCharset;
-    gLastBrowserCharset = charset;
+  let selectedCharset = CharsetMenu.foldCharset(gBrowser.selectedBrowser.characterSet);
+  for (let menuItem of target.getElementsByTagName("menuitem")) {
+    let isSelected = menuItem.getAttribute("charset") === selectedCharset;
+    menuItem.setAttribute("checked", isSelected);
   }
 }
 
 var gPageStyleMenu = {
+  // This maps from a <browser> element (or, more specifically, a
+  // browser's permanentKey) to an Object that contains the most recent
+  // information about the browser content's stylesheets. That Object
+  // is populated via the PageStyle:StyleSheets message from the content
+  // process. The Object should have the following structure:
+  //
+  // filteredStyleSheets (Array):
+  //   An Array of objects with a filtered list representing all stylesheets
+  //   that the current page offers. Each object has the following members:
+  //
+  //   title (String):
+  //     The title of the stylesheet
+  //
+  //   disabled (bool):
+  //     Whether or not the stylesheet is currently applied
+  //
+  //   href (String):
+  //     The URL of the stylesheet. Stylesheets loaded via a data URL will
+  //     have this property set to null.
+  //
+  // authorStyleDisabled (bool):
+  //   Whether or not the user currently has "No Style" selected for
+  //   the current page.
+  //
+  // preferredStyleSheetSet (bool):
+  //   Whether or not the user currently has the "Default" style selected
+  //   for the current page.
+  //
+  _pageStyleSheets: new WeakMap(),
 
-  _getAllStyleSheets: function (frameset) {
-    var styleSheetsArray = Array.slice(frameset.document.styleSheets);
-    for (let i = 0; i < frameset.frames.length; i++) {
-      let frameSheets = this._getAllStyleSheets(frameset.frames[i]);
-      styleSheetsArray = styleSheetsArray.concat(frameSheets);
-    }
-    return styleSheetsArray;
+  init() {
+    let mm = window.messageManager;
+    mm.addMessageListener("PageStyle:StyleSheets", (msg) => {
+      this._pageStyleSheets.set(msg.target.permanentKey, msg.data);
+    });
   },
 
-  fillPopup: function (menuPopup) {
+  /**
+   * Returns an array of Objects representing stylesheets in a
+   * browser. Note that the pageshow event needs to fire in content
+   * before this information will be available.
+   *
+   * @param browser (optional)
+   *        The <xul:browser> to search for stylesheets. If omitted, this
+   *        defaults to the currently selected tab's browser.
+   * @returns Array
+   *        An Array of Objects representing stylesheets in the browser.
+   *        See the documentation for gPageStyleMenu for a description
+   *        of the Object structure.
+   */
+  getBrowserStyleSheets(browser) {
+    if (!browser) {
+      browser = gBrowser.selectedBrowser;
+    }
+
+    let data = this._pageStyleSheets.get(browser.permanentKey);
+    if (!data) {
+      return [];
+    }
+    return data.filteredStyleSheets;
+  },
+
+  _getStyleSheetInfo(browser) {
+    let data = this._pageStyleSheets.get(browser.permanentKey);
+    if (!data) {
+      return {
+        filteredStyleSheets: [],
+        authorStyleDisabled: false,
+        preferredStyleSheetSet: true
+      };
+    }
+
+    return data;
+  },
+
+  fillPopup(menuPopup) {
+    let styleSheetInfo = this._getStyleSheetInfo(gBrowser.selectedBrowser);
     var noStyle = menuPopup.firstChild;
     var persistentOnly = noStyle.nextSibling;
     var sep = persistentOnly.nextSibling;
     while (sep.nextSibling)
       menuPopup.removeChild(sep.nextSibling);
 
-    var styleSheets = this._getAllStyleSheets(window.content);
+    let styleSheets = styleSheetInfo.filteredStyleSheets;
     var currentStyleSheets = {};
-    var styleDisabled = getMarkupDocumentViewer().authorStyleDisabled;
+    var styleDisabled = styleSheetInfo.authorStyleDisabled;
     var haveAltSheets = false;
     var altStyleSelected = false;
 
     for (let currentStyleSheet of styleSheets) {
-      if (!currentStyleSheet.title)
-        continue;
-
-      // Skip any stylesheets whose media attribute doesn't match.
-      if (currentStyleSheet.media.length > 0) {
-        let mediaQueryList = currentStyleSheet.media.mediaText;
-        if (!window.content.matchMedia(mediaQueryList).matches)
-          continue;
-      }
-
       if (!currentStyleSheet.disabled)
         altStyleSelected = true;
 
@@ -5474,51 +6008,28 @@ var gPageStyleMenu = {
 
     noStyle.setAttribute("checked", styleDisabled);
     persistentOnly.setAttribute("checked", !altStyleSelected && !styleDisabled);
-    persistentOnly.hidden = (window.content.document.preferredStyleSheetSet) ? haveAltSheets : false;
+    persistentOnly.hidden = styleSheetInfo.preferredStyleSheetSet ? haveAltSheets : false;
     sep.hidden = (noStyle.hidden && persistentOnly.hidden) || !haveAltSheets;
   },
 
-  _stylesheetInFrame: function (frame, title) {
-    return Array.some(frame.document.styleSheets,
-                      function (stylesheet) stylesheet.title == title);
+  switchStyleSheet(title) {
+    let mm = gBrowser.selectedBrowser.messageManager;
+    mm.sendAsyncMessage("PageStyle:Switch", {title});
   },
 
-  _stylesheetSwitchFrame: function (frame, title) {
-    var docStyleSheets = frame.document.styleSheets;
-
-    for (let i = 0; i < docStyleSheets.length; ++i) {
-      let docStyleSheet = docStyleSheets[i];
-
-      if (docStyleSheet.title)
-        docStyleSheet.disabled = (docStyleSheet.title != title);
-      else if (docStyleSheet.disabled)
-        docStyleSheet.disabled = false;
-    }
-  },
-
-  _stylesheetSwitchAll: function (frameset, title) {
-    if (!title || this._stylesheetInFrame(frameset, title))
-      this._stylesheetSwitchFrame(frameset, title);
-
-    for (let i = 0; i < frameset.frames.length; i++)
-      this._stylesheetSwitchAll(frameset.frames[i], title);
-  },
-
-  switchStyleSheet: function (title, contentWindow) {
-    getMarkupDocumentViewer().authorStyleDisabled = false;
-    this._stylesheetSwitchAll(contentWindow || content, title);
-  },
-
-  disableStyle: function () {
-    getMarkupDocumentViewer().authorStyleDisabled = true;
+  disableStyle() {
+    let mm = gBrowser.selectedBrowser.messageManager;
+    mm.sendAsyncMessage("PageStyle:Disable");
   },
 };
 
 /* Legacy global page-style functions */
-var getAllStyleSheets   = gPageStyleMenu._getAllStyleSheets.bind(gPageStyleMenu);
 var stylesheetFillPopup = gPageStyleMenu.fillPopup.bind(gPageStyleMenu);
 function stylesheetSwitchAll(contentWindow, title) {
-  gPageStyleMenu.switchStyleSheet(title, contentWindow);
+  // We ignore the contentWindow param. Add-ons don't appear to use
+  // it, and it's difficult to support in e10s (where it will be a
+  // CPOW).
+  gPageStyleMenu.switchStyleSheet(title);
 }
 function setStyleDisabled(disabled) {
   if (disabled)
@@ -5526,13 +6037,20 @@ function setStyleDisabled(disabled) {
 }
 
 
+var LanguageDetectionListener = {
+  init() {
+    window.messageManager.addMessageListener("Translation:DocumentState", msg => {
+      Translation.documentStateReceived(msg.target, msg.data);
+    });
+  }
+};
+
+
 var BrowserOffline = {
   _inited: false,
 
-  /////////////////////////////////////////////////////////////////////////////
   // BrowserOffline Public Methods
-  init: function ()
-  {
+  init() {
     if (!this._uiElement)
       this._uiElement = document.getElementById("workOfflineMenuitemState");
 
@@ -5543,22 +6061,14 @@ var BrowserOffline = {
     this._inited = true;
   },
 
-  uninit: function ()
-  {
+  uninit() {
     if (this._inited) {
       Services.obs.removeObserver(this, "network:offline-status-changed");
     }
   },
 
-  toggleOfflineStatus: function ()
-  {
+  toggleOfflineStatus() {
     var ioService = Services.io;
-
-    // Stop automatic management of the offline status
-    try {
-      ioService.manageOfflineStatus = false;
-    } catch (ex) {
-    }
 
     if (!ioService.offline && !this._canGoOffline()) {
       this._updateOfflineUI(false);
@@ -5568,20 +6078,18 @@ var BrowserOffline = {
     ioService.offline = !ioService.offline;
   },
 
-  /////////////////////////////////////////////////////////////////////////////
   // nsIObserver
-  observe: function (aSubject, aTopic, aState)
-  {
+  observe(aSubject, aTopic, aState) {
     if (aTopic != "network:offline-status-changed")
       return;
 
-    this._updateOfflineUI(aState == "offline");
+    // This notification is also received because of a loss in connectivity,
+    // which we ignore by updating the UI to the current value of io.offline
+    this._updateOfflineUI(Services.io.offline);
   },
 
-  /////////////////////////////////////////////////////////////////////////////
   // BrowserOffline Implementation Methods
-  _canGoOffline: function ()
-  {
+  _canGoOffline() {
     try {
       var cancelGoOffline = Cc["@mozilla.org/supports-PRBool;1"].createInstance(Ci.nsISupportsPRBool);
       Services.obs.notifyObservers(cancelGoOffline, "offline-requested", null);
@@ -5589,16 +6097,14 @@ var BrowserOffline = {
       // Something aborted the quit process.
       if (cancelGoOffline.data)
         return false;
-    }
-    catch (ex) {
+    } catch (ex) {
     }
 
     return true;
   },
 
   _uiElement: null,
-  _updateOfflineUI: function (aOffline)
-  {
+  _updateOfflineUI(aOffline) {
     var offlineLocked = gPrefService.prefIsLocked("network.online");
     if (offlineLocked)
       this._uiElement.setAttribute("disabled", "true");
@@ -5608,141 +6114,53 @@ var BrowserOffline = {
 };
 
 var OfflineApps = {
-  /////////////////////////////////////////////////////////////////////////////
-  // OfflineApps Public Methods
-  init: function ()
-  {
-    Services.obs.addObserver(this, "offline-cache-update-completed", false);
-  },
-
-  uninit: function ()
-  {
-    Services.obs.removeObserver(this, "offline-cache-update-completed");
-  },
-
-  handleEvent: function(event) {
-    if (event.type == "MozApplicationManifest") {
-      this.offlineAppRequested(event.originalTarget.defaultView);
-    }
-  },
-
-  /////////////////////////////////////////////////////////////////////////////
-  // OfflineApps Implementation Methods
-
-  // XXX: _getBrowserWindowForContentWindow and _getBrowserForContentWindow
-  // were taken from browser/components/feeds/src/WebContentConverter.
-  _getBrowserWindowForContentWindow: function(aContentWindow) {
-    return aContentWindow.QueryInterface(Ci.nsIInterfaceRequestor)
-                         .getInterface(Ci.nsIWebNavigation)
-                         .QueryInterface(Ci.nsIDocShellTreeItem)
-                         .rootTreeItem
-                         .QueryInterface(Ci.nsIInterfaceRequestor)
-                         .getInterface(Ci.nsIDOMWindow)
-                         .wrappedJSObject;
-  },
-
-  _getBrowserForContentWindow: function(aBrowserWindow, aContentWindow) {
-    // This depends on pseudo APIs of browser.js and tabbrowser.xml
-    aContentWindow = aContentWindow.top;
-    var browsers = aBrowserWindow.gBrowser.browsers;
-    for (let browser of browsers) {
-      if (browser.contentWindow == aContentWindow)
-        return browser;
-    }
-    // handle other browser/iframe elements that may need popupnotifications
-    let browser = aContentWindow
-                          .QueryInterface(Ci.nsIInterfaceRequestor)
-                          .getInterface(Ci.nsIWebNavigation)
-                          .QueryInterface(Ci.nsIDocShell)
-                          .chromeEventHandler;
-    if (browser.getAttribute("popupnotificationanchor"))
-      return browser;
-    return null;
-  },
-
-  _getManifestURI: function(aWindow) {
-    if (!aWindow.document.documentElement)
-      return null;
-
-    var attr = aWindow.document.documentElement.getAttribute("manifest");
-    if (!attr)
-      return null;
-
-    try {
-      var contentURI = makeURI(aWindow.location.href, null, null);
-      return makeURI(attr, aWindow.document.characterSet, contentURI);
-    } catch (e) {
-      return null;
-    }
-  },
-
-  // A cache update isn't tied to a specific window.  Try to find
-  // the best browser in which to warn the user about space usage
-  _getBrowserForCacheUpdate: function(aCacheUpdate) {
-    // Prefer the current browser
-    var uri = this._getManifestURI(content);
-    if (uri && uri.equals(aCacheUpdate.manifestURI)) {
-      return gBrowser.selectedBrowser;
-    }
-
-    var browsers = gBrowser.browsers;
-    for (let browser of browsers) {
-      uri = this._getManifestURI(browser.contentWindow);
-      if (uri && uri.equals(aCacheUpdate.manifestURI)) {
-        return browser;
-      }
-    }
-
-    // is this from a non-tab browser/iframe?
-    browsers = document.querySelectorAll("iframe[popupnotificationanchor] | browser[popupnotificationanchor]");
-    for (let browser of browsers) {
-      uri = this._getManifestURI(browser.contentWindow);
-      if (uri && uri.equals(aCacheUpdate.manifestURI)) {
-        return browser;
-      }
-    }
-
-    return null;
-  },
-
-  _warnUsage: function(aBrowser, aURI) {
-    if (!aBrowser)
+  warnUsage(browser, uri) {
+    if (!browser)
       return;
 
     let mainAction = {
       label: gNavigatorBundle.getString("offlineApps.manageUsage"),
       accessKey: gNavigatorBundle.getString("offlineApps.manageUsageAccessKey"),
-      callback: OfflineApps.manage
+      callback: this.manage
     };
 
-    let warnQuota = gPrefService.getIntPref("offline-apps.quota.warn");
+    let warnQuotaKB = Services.prefs.getIntPref("offline-apps.quota.warn");
+    // This message shows the quota in MB, and so we divide the quota (in kb) by 1024.
     let message = gNavigatorBundle.getFormattedString("offlineApps.usage",
-                                                      [ aURI.host,
-                                                        warnQuota / 1024 ]);
+                                                      [ uri.host,
+                                                        warnQuotaKB / 1024 ]);
 
     let anchorID = "indexedDB-notification-icon";
-    PopupNotifications.show(aBrowser, "offline-app-usage", message,
-                            anchorID, mainAction);
+    let options = {
+      persistent: true,
+      hideClose: true,
+    };
+    PopupNotifications.show(browser, "offline-app-usage", message,
+                            anchorID, mainAction, null, options);
 
     // Now that we've warned once, prevent the warning from showing up
     // again.
-    Services.perms.add(aURI, "offline-app",
+    Services.perms.add(uri, "offline-app",
                        Ci.nsIOfflineCacheUpdateService.ALLOW_NO_WARN);
   },
 
   // XXX: duplicated in preferences/advanced.js
-  _getOfflineAppUsage: function (host, groups)
-  {
-    var cacheService = Cc["@mozilla.org/network/application-cache-service;1"].
+  _getOfflineAppUsage(host, groups) {
+    let cacheService = Cc["@mozilla.org/network/application-cache-service;1"].
                        getService(Ci.nsIApplicationCacheService);
-    if (!groups)
-      groups = cacheService.getGroups();
+    if (!groups) {
+      try {
+        groups = cacheService.getGroups();
+      } catch (ex) {
+        return 0;
+      }
+    }
 
-    var usage = 0;
+    let usage = 0;
     for (let group of groups) {
-      var uri = Services.io.newURI(group, null, null);
+      let uri = Services.io.newURI(group);
       if (uri.asciiHost == host) {
-        var cache = cacheService.getActiveCache(group);
+        let cache = cacheService.getActiveCache(group);
         usage += cache.usage;
       }
     }
@@ -5750,13 +6168,15 @@ var OfflineApps = {
     return usage;
   },
 
-  _checkUsage: function(aURI) {
+  _usedMoreThanWarnQuota(uri) {
     // if the user has already allowed excessive usage, don't bother checking
-    if (Services.perms.testExactPermission(aURI, "offline-app") !=
+    if (Services.perms.testExactPermission(uri, "offline-app") !=
         Ci.nsIOfflineCacheUpdateService.ALLOW_NO_WARN) {
-      var usage = this._getOfflineAppUsage(aURI.asciiHost);
-      var warnQuota = gPrefService.getIntPref("offline-apps.quota.warn");
-      if (usage >= warnQuota * 1024) {
+      let usageBytes = this._getOfflineAppUsage(uri.asciiHost);
+      let warnQuotaKB = Services.prefs.getIntPref("offline-apps.quota.warn");
+      // The pref is in kb, the usage we get is in bytes, so multiply the quota
+      // to compare correctly:
+      if (usageBytes >= warnQuotaKB * 1024) {
         return true;
       }
     }
@@ -5764,60 +6184,41 @@ var OfflineApps = {
     return false;
   },
 
-  offlineAppRequested: function(aContentWindow) {
-    if (!gPrefService.getBoolPref("browser.offline-apps.notify")) {
-      return;
-    }
-
-    let browserWindow = this._getBrowserWindowForContentWindow(aContentWindow);
-    let browser = this._getBrowserForContentWindow(browserWindow,
-                                                   aContentWindow);
-
-    let currentURI = aContentWindow.document.documentURIObject;
-
-    // don't bother showing UI if the user has already made a decision
-    if (Services.perms.testExactPermission(currentURI, "offline-app") != Services.perms.UNKNOWN_ACTION)
-      return;
-
-    try {
-      if (gPrefService.getBoolPref("offline-apps.allow_by_default")) {
-        // all pages can use offline capabilities, no need to ask the user
-        return;
-      }
-    } catch(e) {
-      // this pref isn't set by default, ignore failures
-    }
-
-    let host = currentURI.asciiHost;
+  requestPermission(browser, docId, uri) {
+    let host = uri.asciiHost;
     let notificationID = "offline-app-requested-" + host;
     let notification = PopupNotifications.getNotification(notificationID, browser);
 
     if (notification) {
-      notification.options.documents.push(aContentWindow.document);
+      notification.options.controlledItems.push([
+        Cu.getWeakReference(browser), docId, uri
+      ]);
     } else {
       let mainAction = {
-        label: gNavigatorBundle.getString("offlineApps.allow"),
-        accessKey: gNavigatorBundle.getString("offlineApps.allowAccessKey"),
-        callback: function() {
-          for (let document of notification.options.documents) {
-            OfflineApps.allowSite(document);
+        label: gNavigatorBundle.getString("offlineApps.allowStoring.label"),
+        accessKey: gNavigatorBundle.getString("offlineApps.allowStoring.accesskey"),
+        callback() {
+          for (let [ciBrowser, ciDocId, ciUri] of notification.options.controlledItems) {
+            OfflineApps.allowSite(ciBrowser, ciDocId, ciUri);
           }
         }
       };
       let secondaryActions = [{
-        label: gNavigatorBundle.getString("offlineApps.never"),
-        accessKey: gNavigatorBundle.getString("offlineApps.neverAccessKey"),
-        callback: function() {
-          for (let document of notification.options.documents) {
-            OfflineApps.disallowSite(document);
+        label: gNavigatorBundle.getString("offlineApps.dontAllow.label"),
+        accessKey: gNavigatorBundle.getString("offlineApps.dontAllow.accesskey"),
+        callback() {
+          for (let [, , ciUri] of notification.options.controlledItems) {
+            OfflineApps.disallowSite(ciUri);
           }
         }
       }];
-      let message = gNavigatorBundle.getFormattedString("offlineApps.available",
-                                                        [ host ]);
+      let message = gNavigatorBundle.getFormattedString("offlineApps.available2",
+                                                        [host]);
       let anchorID = "indexedDB-notification-icon";
-      let options= {
-        documents : [ aContentWindow.document ]
+      let options = {
+        persistent: true,
+        hideClose: true,
+        controlledItems : [[Cu.getWeakReference(browser), docId, uri]]
       };
       notification = PopupNotifications.show(browser, notificationID, message,
                                              anchorID, mainAction,
@@ -5825,134 +6226,96 @@ var OfflineApps = {
     }
   },
 
-  allowSite: function(aDocument) {
-    Services.perms.add(aDocument.documentURIObject, "offline-app", Services.perms.ALLOW_ACTION);
+  disallowSite(uri) {
+    Services.perms.add(uri, "offline-app", Services.perms.DENY_ACTION);
+  },
+
+  allowSite(browserRef, docId, uri) {
+    Services.perms.add(uri, "offline-app", Services.perms.ALLOW_ACTION);
 
     // When a site is enabled while loading, manifest resources will
     // start fetching immediately.  This one time we need to do it
     // ourselves.
-    this._startFetching(aDocument);
+    let browser = browserRef.get();
+    if (browser && browser.messageManager) {
+      browser.messageManager.sendAsyncMessage("OfflineApps:StartFetching", {
+        docId,
+      });
+    }
   },
 
-  disallowSite: function(aDocument) {
-    Services.perms.add(aDocument.documentURIObject, "offline-app", Services.perms.DENY_ACTION);
-  },
-
-  manage: function() {
+  manage() {
     openAdvancedPreferences("networkTab");
   },
 
-  _startFetching: function(aDocument) {
-    if (!aDocument.documentElement)
-      return;
-
-    var manifest = aDocument.documentElement.getAttribute("manifest");
-    if (!manifest)
-      return;
-
-    var manifestURI = makeURI(manifest, aDocument.characterSet,
-                              aDocument.documentURIObject);
-
-    var updateService = Cc["@mozilla.org/offlinecacheupdate-service;1"].
-                        getService(Ci.nsIOfflineCacheUpdateService);
-    updateService.scheduleUpdate(manifestURI, aDocument.documentURIObject, window);
+  receiveMessage(msg) {
+    switch (msg.name) {
+      case "OfflineApps:CheckUsage":
+        let uri = makeURI(msg.data.uri);
+        if (this._usedMoreThanWarnQuota(uri)) {
+          this.warnUsage(msg.target, uri);
+        }
+        break;
+      case "OfflineApps:RequestPermission":
+        this.requestPermission(msg.target, msg.data.docId, makeURI(msg.data.uri));
+        break;
+    }
   },
 
-  /////////////////////////////////////////////////////////////////////////////
-  // nsIObserver
-  observe: function (aSubject, aTopic, aState)
-  {
-    if (aTopic == "offline-cache-update-completed") {
-      var cacheUpdate = aSubject.QueryInterface(Ci.nsIOfflineCacheUpdate);
-
-      var uri = cacheUpdate.manifestURI;
-      if (OfflineApps._checkUsage(uri)) {
-        var browser = this._getBrowserForCacheUpdate(cacheUpdate);
-        if (browser) {
-          OfflineApps._warnUsage(browser, cacheUpdate.manifestURI);
-        }
-      }
-    }
-  }
+  init() {
+    let mm = window.messageManager;
+    mm.addMessageListener("OfflineApps:CheckUsage", this);
+    mm.addMessageListener("OfflineApps:RequestPermission", this);
+  },
 };
 
 var IndexedDBPromptHelper = {
   _permissionsPrompt: "indexedDB-permissions-prompt",
   _permissionsResponse: "indexedDB-permissions-response",
 
-  _quotaPrompt: "indexedDB-quota-prompt",
-  _quotaResponse: "indexedDB-quota-response",
-  _quotaCancel: "indexedDB-quota-cancel",
-
   _notificationIcon: "indexedDB-notification-icon",
 
   init:
   function IndexedDBPromptHelper_init() {
     Services.obs.addObserver(this, this._permissionsPrompt, false);
-    Services.obs.addObserver(this, this._quotaPrompt, false);
-    Services.obs.addObserver(this, this._quotaCancel, false);
   },
 
   uninit:
   function IndexedDBPromptHelper_uninit() {
     Services.obs.removeObserver(this, this._permissionsPrompt);
-    Services.obs.removeObserver(this, this._quotaPrompt);
-    Services.obs.removeObserver(this, this._quotaCancel);
   },
 
   observe:
   function IndexedDBPromptHelper_observe(subject, topic, data) {
-    if (topic != this._permissionsPrompt &&
-        topic != this._quotaPrompt &&
-        topic != this._quotaCancel) {
+    if (topic != this._permissionsPrompt) {
       throw new Error("Unexpected topic!");
     }
 
     var requestor = subject.QueryInterface(Ci.nsIInterfaceRequestor);
 
-    var contentWindow = requestor.getInterface(Ci.nsIDOMWindow);
-    var contentDocument = contentWindow.document;
-    var browserWindow =
-      OfflineApps._getBrowserWindowForContentWindow(contentWindow);
-
-    if (browserWindow != window) {
-      // Must belong to some other window.
+    var browser = requestor.getInterface(Ci.nsIDOMNode);
+    if (browser.ownerGlobal != window) {
+      // Only listen for notifications for browsers in our chrome window.
       return;
     }
 
-    var browser =
-      OfflineApps._getBrowserForContentWindow(browserWindow, contentWindow);
-
-    var host = contentDocument.documentURIObject.asciiHost;
+    // Get the host name if available or the file path otherwise.
+    var host = browser.currentURI.asciiHost || browser.currentURI.path;
 
     var message;
     var responseTopic;
     if (topic == this._permissionsPrompt) {
-      message = gNavigatorBundle.getFormattedString("offlineApps.available",
+      message = gNavigatorBundle.getFormattedString("offlineApps.available2",
                                                     [ host ]);
       responseTopic = this._permissionsResponse;
     }
-    else if (topic == this._quotaPrompt) {
-      message = gNavigatorBundle.getFormattedString("indexedDB.usage",
-                                                    [ host, data ]);
-      responseTopic = this._quotaResponse;
-    }
-    else if (topic == this._quotaCancel) {
-      responseTopic = this._quotaResponse;
-    }
-
-    const hiddenTimeoutDuration = 30000; // 30 seconds
-    const firstTimeoutDuration = 300000; // 5 minutes
-
-    var timeoutId;
 
     var observer = requestor.getInterface(Ci.nsIObserver);
 
     var mainAction = {
-      label: gNavigatorBundle.getString("offlineApps.allow"),
-      accessKey: gNavigatorBundle.getString("offlineApps.allowAccessKey"),
-      callback: function() {
-        clearTimeout(timeoutId);
+      label: gNavigatorBundle.getString("offlineApps.allowStoring.label"),
+      accessKey: gNavigatorBundle.getString("offlineApps.allowStoring.accesskey"),
+      callback() {
         observer.observe(null, responseTopic,
                          Ci.nsIPermissionManager.ALLOW_ACTION);
       }
@@ -5960,93 +6323,60 @@ var IndexedDBPromptHelper = {
 
     var secondaryActions = [
       {
-        label: gNavigatorBundle.getString("offlineApps.never"),
-        accessKey: gNavigatorBundle.getString("offlineApps.neverAccessKey"),
-        callback: function() {
-          clearTimeout(timeoutId);
+        label: gNavigatorBundle.getString("offlineApps.dontAllow.label"),
+        accessKey: gNavigatorBundle.getString("offlineApps.dontAllow.accesskey"),
+        callback() {
           observer.observe(null, responseTopic,
                            Ci.nsIPermissionManager.DENY_ACTION);
         }
       }
     ];
 
-    // This will be set to the result of PopupNotifications.show() below, or to
-    // the result of PopupNotifications.getNotification() if this is a
-    // quotaCancel notification.
-    var notification;
-
-    function timeoutNotification() {
-      // Remove the notification.
-      if (notification) {
-        notification.remove();
-      }
-
-      // Clear all of our timeout stuff. We may be called directly, not just
-      // when the timeout actually elapses.
-      clearTimeout(timeoutId);
-
-      // And tell the page that the popup timed out.
-      observer.observe(null, responseTopic,
-                       Ci.nsIPermissionManager.UNKNOWN_ACTION);
-    }
-
-    var options = {
-      eventCallback: function(state) {
-        // Don't do anything if the timeout has not been set yet.
-        if (!timeoutId) {
-          return;
-        }
-
-        // If the popup is being dismissed start the short timeout.
-        if (state == "dismissed") {
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(timeoutNotification, hiddenTimeoutDuration);
-          return;
-        }
-
-        // If the popup is being re-shown then clear the timeout allowing
-        // unlimited waiting.
-        if (state == "shown") {
-          clearTimeout(timeoutId);
-        }
-      }
-    };
-
-    if (topic == this._quotaCancel) {
-      notification = PopupNotifications.getNotification(this._quotaPrompt,
-                                                        browser);
-      timeoutNotification();
-      return;
-    }
-
-    notification = PopupNotifications.show(browser, topic, message,
-                                           this._notificationIcon, mainAction,
-                                           secondaryActions, options);
-
-    // Set the timeoutId after the popup has been created, and use the long
-    // timeout value. If the user doesn't notice the popup after this amount of
-    // time then it is most likely not visible and we want to alert the page.
-    timeoutId = setTimeout(timeoutNotification, firstTimeoutDuration);
+    PopupNotifications.show(
+      browser, topic, message, this._notificationIcon, mainAction, secondaryActions,
+      {
+        persistent: true,
+        hideClose: !Services.prefs.getBoolPref("privacy.permissionPrompts.showCloseButton"),
+      });
   }
 };
 
-function WindowIsClosing()
-{
-  if (TabView.isVisible()) {
-    TabView.hide();
-    return false;
+function CanCloseWindow() {
+  // Avoid redundant calls to canClose from showing multiple
+  // PermitUnload dialogs.
+  if (Services.startup.shuttingDown || window.skipNextCanClose) {
+    return true;
   }
 
+  for (let browser of gBrowser.browsers) {
+    let {permitUnload, timedOut} = browser.permitUnload();
+    if (timedOut) {
+      return true;
+    }
+    if (!permitUnload) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function WindowIsClosing() {
   if (!closeWindow(false, warnAboutClosingWindow))
     return false;
 
-  for (let browser of gBrowser.browsers) {
-    let ds = browser.docShell;
-    if (ds.contentViewer && !ds.contentViewer.permitUnload())
-      return false;
+  // In theory we should exit here and the Window's internal Close
+  // method should trigger canClose on nsBrowserAccess. However, by
+  // that point it's too late to be able to show a prompt for
+  // PermitUnload. So we do it here, when we still can.
+  if (CanCloseWindow()) {
+    // This flag ensures that the later canClose call does nothing.
+    // It's only needed to make tests pass, since they detect the
+    // prompt even when it's not actually shown.
+    window.skipNextCanClose = true;
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 /**
@@ -6055,26 +6385,25 @@ function WindowIsClosing()
  * @returns true if closing can proceed, false if it got cancelled.
  */
 function warnAboutClosingWindow() {
-  // Popups aren't considered full browser windows.
-  let isPBWindow = PrivateBrowsingUtils.isWindowPrivate(window);
+  // Popups aren't considered full browser windows; we also ignore private windows.
+  let isPBWindow = PrivateBrowsingUtils.isWindowPrivate(window) &&
+        !PrivateBrowsingUtils.permanentPrivateBrowsing;
   if (!isPBWindow && !toolbar.visible)
     return gBrowser.warnAboutClosingTabs(gBrowser.closingTabsEnum.ALL);
 
   // Figure out if there's at least one other browser window around.
-  let e = Services.wm.getEnumerator("navigator:browser");
   let otherPBWindowExists = false;
   let nonPopupPresent = false;
-  while (e.hasMoreElements()) {
-    let win = e.getNext();
-    if (win != window) {
+  for (let win of browserWindows()) {
+    if (!win.closed && win != window) {
       if (isPBWindow && PrivateBrowsingUtils.isWindowPrivate(win))
         otherPBWindowExists = true;
       if (win.toolbar.visible)
         nonPopupPresent = true;
-      // If the current window is not in private browsing mode we don't need to 
-      // look for other pb windows, we can leave the loop when finding the 
-      // first non-popup window. If however the current window is in private 
-      // browsing mode then we need at least one other pb and one non-popup 
+      // If the current window is not in private browsing mode we don't need to
+      // look for other pb windows, we can leave the loop when finding the
+      // first non-popup window. If however the current window is in private
+      // browsing mode then we need at least one other pb and one non-popup
       // window to break out early.
       if ((!isPBWindow || otherPBWindowExists) && nonPopupPresent)
         break;
@@ -6107,23 +6436,19 @@ function warnAboutClosingWindow() {
 
   os.notifyObservers(null, "browser-lastwindow-close-granted", null);
 
-#ifdef XP_MACOSX
   // OS X doesn't quit the application when the last window is closed, but keeps
   // the session alive. Hence don't prompt users to save tabs, but warn about
   // closing multiple tabs.
-  return isPBWindow || gBrowser.warnAboutClosingTabs(gBrowser.closingTabsEnum.ALL);
-#else
-  return true;
-#endif
+  return AppConstants.platform != "macosx"
+         || (isPBWindow || gBrowser.warnAboutClosingTabs(gBrowser.closingTabsEnum.ALL));
 }
 
 var MailIntegration = {
-  sendLinkForWindow: function (aWindow) {
-    this.sendMessage(aWindow.location.href,
-                     aWindow.document.title);
+  sendLinkForBrowser(aBrowser) {
+    this.sendMessage(aBrowser.currentURI.spec, aBrowser.contentTitle);
   },
 
-  sendMessage: function (aBody, aSubject) {
+  sendMessage(aBody, aSubject) {
     // generate a mailto url based on the url and the url's title
     var mailtoUrl = "mailto:";
     if (aBody) {
@@ -6140,7 +6465,7 @@ var MailIntegration = {
   // a generic method which can be used to pass arbitrary urls to the operating
   // system.
   // aURL --> a nsIURI which represents the url to launch
-  _launchExternalUrl: function (aURL) {
+  _launchExternalUrl(aURL) {
     var extProtocolSvc =
        Cc["@mozilla.org/uriloader/external-protocol-service;1"]
          .getService(Ci.nsIExternalProtocolService);
@@ -6150,11 +6475,11 @@ var MailIntegration = {
 };
 
 function BrowserOpenAddonsMgr(aView) {
-  if (aView) {
+  return new Promise(resolve => {
     let emWindow;
     let browserWindow;
 
-    var receivePong = function receivePong(aSubject, aTopic, aData) {
+    var receivePong = function(aSubject, aTopic, aData) {
       let browserWin = aSubject.QueryInterface(Ci.nsIInterfaceRequestor)
                                .getInterface(Ci.nsIWebNavigation)
                                .QueryInterface(Ci.nsIDocShellTreeItem)
@@ -6171,146 +6496,67 @@ function BrowserOpenAddonsMgr(aView) {
     Services.obs.removeObserver(receivePong, "EM-pong");
 
     if (emWindow) {
-      emWindow.loadView(aView);
+      if (aView) {
+        emWindow.loadView(aView);
+      }
       browserWindow.gBrowser.selectedTab =
         browserWindow.gBrowser._getTabForContentWindow(emWindow);
       emWindow.focus();
+      resolve(emWindow);
       return;
     }
-  }
 
-  var newLoad = !switchToTabHavingURI("about:addons", true);
-
-  if (aView) {
     // This must be a new load, else the ping/pong would have
     // found the window above.
+    let whereToOpen = (window.gBrowser && isTabEmpty(gBrowser.selectedTab)) ?
+                      "current" :
+                      "tab";
+    openUILinkIn("about:addons", whereToOpen);
+
     Services.obs.addObserver(function observer(aSubject, aTopic, aData) {
       Services.obs.removeObserver(observer, aTopic);
-      aSubject.loadView(aView);
-    }, "EM-loaded", false);
-  }
-}
-
-function GetSearchFieldBookmarkData(node) {
-  var charset = node.ownerDocument.characterSet;
-
-  var formBaseURI = makeURI(node.form.baseURI,
-                            charset);
-
-  var formURI = makeURI(node.form.getAttribute("action"),
-                        charset,
-                        formBaseURI);
-
-  var spec = formURI.spec;
-
-  var isURLEncoded =
-               (node.form.method.toUpperCase() == "POST"
-                && (node.form.enctype == "application/x-www-form-urlencoded" ||
-                    node.form.enctype == ""));
-
-  var title = gNavigatorBundle.getFormattedString("addKeywordTitleAutoFill",
-                                                  [node.ownerDocument.title]);
-  var description = PlacesUIUtils.getDescriptionFromDocument(node.ownerDocument);
-
-  var formData = [];
-
-  function escapeNameValuePair(aName, aValue, aIsFormUrlEncoded) {
-    if (aIsFormUrlEncoded)
-      return escape(aName + "=" + aValue);
-    else
-      return escape(aName) + "=" + escape(aValue);
-  }
-
-  for (let el of node.form.elements) {
-    if (!el.type) // happens with fieldsets
-      continue;
-
-    if (el == node) {
-      formData.push((isURLEncoded) ? escapeNameValuePair(el.name, "%s", true) :
-                                     // Don't escape "%s", just append
-                                     escapeNameValuePair(el.name, "", false) + "%s");
-      continue;
-    }
-
-    let type = el.type.toLowerCase();
-
-    if (((el instanceof HTMLInputElement && el.mozIsTextField(true)) ||
-        type == "hidden" || type == "textarea") ||
-        ((type == "checkbox" || type == "radio") && el.checked)) {
-      formData.push(escapeNameValuePair(el.name, el.value, isURLEncoded));
-    } else if (el instanceof HTMLSelectElement && el.selectedIndex >= 0) {
-      for (var j=0; j < el.options.length; j++) {
-        if (el.options[j].selected)
-          formData.push(escapeNameValuePair(el.name, el.options[j].value,
-                                            isURLEncoded));
+      if (aView) {
+        aSubject.loadView(aView);
       }
-    }
-  }
-
-  var postData;
-
-  if (isURLEncoded)
-    postData = formData.join("&");
-  else
-    spec += "?" + formData.join("&");
-
-  return {
-    spec: spec,
-    title: title,
-    description: description,
-    postData: postData,
-    charSet: charset
-  };
+      aSubject.QueryInterface(Ci.nsIDOMWindow);
+      aSubject.focus();
+      resolve(aSubject);
+    }, "EM-loaded", false);
+  });
 }
-
 
 function AddKeywordForSearchField() {
-  bookmarkData = GetSearchFieldBookmarkData(document.popupNode);
+  let mm = gBrowser.selectedBrowser.messageManager;
 
-  PlacesUIUtils.showBookmarkDialog({ action: "add"
-                                   , type: "bookmark"
-                                   , uri: makeURI(bookmarkData.spec)
-                                   , title: bookmarkData.title
-                                   , description: bookmarkData.description
-                                   , keyword: ""
-                                   , postData: bookmarkData.postData
-                                   , charSet: bookmarkData.charset
-                                   , hiddenRows: [ "location"
-                                                 , "description"
-                                                 , "tags"
-                                                 , "loadInSidebar" ]
-                                   }, window);
-}
+  let onMessage = (message) => {
+    mm.removeMessageListener("ContextMenu:SearchFieldBookmarkData:Result", onMessage);
 
-function SwitchDocumentDirection(aWindow) {
-  // document.dir can also be "auto", in which case it won't change
-  if (aWindow.document.dir == "ltr" || aWindow.document.dir == "") {
-    aWindow.document.dir = "rtl";
-  } else if (aWindow.document.dir == "rtl") {
-    aWindow.document.dir = "ltr";
+    let bookmarkData = message.data;
+    let title = gNavigatorBundle.getFormattedString("addKeywordTitleAutoFill",
+                                                    [bookmarkData.title]);
+    PlacesUIUtils.showBookmarkDialog({ action: "add"
+                                     , type: "bookmark"
+                                     , uri: makeURI(bookmarkData.spec)
+                                     , title
+                                     , description: bookmarkData.description
+                                     , keyword: ""
+                                     , postData: bookmarkData.postData
+                                     , charSet: bookmarkData.charset
+                                     , hiddenRows: [ "location"
+                                                   , "description"
+                                                   , "tags"
+                                                   , "loadInSidebar" ]
+                                     }, window);
   }
-  for (var run = 0; run < aWindow.frames.length; run++)
-    SwitchDocumentDirection(aWindow.frames[run]);
-}
+  mm.addMessageListener("ContextMenu:SearchFieldBookmarkData:Result", onMessage);
 
-function convertFromUnicode(charset, str)
-{
-  try {
-    var unicodeConverter = Components
-       .classes["@mozilla.org/intl/scriptableunicodeconverter"]
-       .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-    unicodeConverter.charset = charset;
-    str = unicodeConverter.ConvertFromUnicode(str);
-    return str + unicodeConverter.Finish();
-  } catch(ex) {
-    return null;
-  }
+  mm.sendAsyncMessage("ContextMenu:SearchFieldBookmarkData", {}, { target: gContextMenu.target });
 }
 
 /**
  * Re-open a closed tab.
  * @param aIndex
- *        The index of the tab (via nsSessionStore.getClosedTabData)
+ *        The index of the tab (via SessionStore.getClosedTabData)
  * @returns a reference to the reopened tab.
  */
 function undoCloseTab(aIndex) {
@@ -6320,48 +6566,26 @@ function undoCloseTab(aIndex) {
     blankTabToRemove = gBrowser.selectedTab;
 
   var tab = null;
-  var ss = Cc["@mozilla.org/browser/sessionstore;1"].
-           getService(Ci.nsISessionStore);
-  let numberOfTabsToUndoClose = 0;
-  if (Number.isInteger(aIndex)) {
-    if (ss.getClosedTabCount(window) > aIndex) {
-      numberOfTabsToUndoClose = 1;
-    } else {
-      return tab;
-    }
-  } else {
-    numberOfTabsToUndoClose = ss.getNumberOfTabsClosedLast(window);
-    aIndex = 0;
-  }
+  if (SessionStore.getClosedTabCount(window) > (aIndex || 0)) {
+    tab = SessionStore.undoCloseTab(window, aIndex || 0);
 
-  while (numberOfTabsToUndoClose > 0 &&
-         numberOfTabsToUndoClose--) {
-    TabView.prepareUndoCloseTab(blankTabToRemove);
-    tab = ss.undoCloseTab(window, aIndex);
-    TabView.afterUndoCloseTab();
-    if (blankTabToRemove) {
+    if (blankTabToRemove)
       gBrowser.removeTab(blankTabToRemove);
-      blankTabToRemove = null;
-    }
   }
 
-  // Reset the number of tabs closed last time to the default.
-  ss.setNumberOfTabsClosedLast(window, 1);
   return tab;
 }
 
 /**
  * Re-open a closed window.
  * @param aIndex
- *        The index of the window (via nsSessionStore.getClosedWindowData)
+ *        The index of the window (via SessionStore.getClosedWindowData)
  * @returns a reference to the reopened window.
  */
 function undoCloseWindow(aIndex) {
-  let ss = Cc["@mozilla.org/browser/sessionstore;1"].
-           getService(Ci.nsISessionStore);
   let window = null;
-  if (ss.getClosedWindowCount() > (aIndex || 0))
-    window = ss.undoCloseWindow(aIndex || 0);
+  if (SessionStore.getClosedWindowCount() > (aIndex || 0))
+    window = SessionStore.undoCloseWindow(aIndex || 0);
 
   return window;
 }
@@ -6374,25 +6598,77 @@ function isTabEmpty(aTab) {
   if (aTab.hasAttribute("busy"))
     return false;
 
+  if (aTab.hasAttribute("customizemode"))
+    return false;
+
   let browser = aTab.linkedBrowser;
   if (!isBlankPageURL(browser.currentURI.spec))
     return false;
 
-  // Bug 863515 - Make content.opener checks work in electrolysis.
-  if (!gMultiProcessBrowser && browser.contentWindow.opener)
+  if (!checkEmptyPageOrigin(browser))
     return false;
 
-  if (browser.sessionHistory && browser.sessionHistory.count >= 2)
+  if (browser.canGoForward || browser.canGoBack)
     return false;
 
   return true;
 }
 
-#ifdef MOZ_SERVICES_SYNC
-function BrowserOpenSyncTabs() {
-  switchToTabHavingURI("about:sync-tabs", true);
+/**
+ * Check whether a page can be considered as 'empty', that its URI
+ * reflects its origin, and that if it's loaded in a tab, that tab
+ * could be considered 'empty' (e.g. like the result of opening
+ * a 'blank' new tab).
+ *
+ * We have to do more than just check the URI, because especially
+ * for things like about:blank, it is possible that the opener or
+ * some other page has control over the contents of the page.
+ *
+ * @param browser {Browser}
+ *        The browser whose page we're checking (the selected browser
+ *        in this window if omitted).
+ * @param uri {nsIURI}
+ *        The URI against which we're checking (the browser's currentURI
+ *        if omitted).
+ *
+ * @return false if the page was opened by or is controlled by arbitrary web
+ *         content, unless that content corresponds with the URI.
+ *         true if the page is blank and controlled by a principal matching
+ *         that URI (or the system principal if the principal has no URI)
+ */
+function checkEmptyPageOrigin(browser = gBrowser.selectedBrowser,
+                              uri = browser.currentURI) {
+  // If another page opened this page with e.g. window.open, this page might
+  // be controlled by its opener - return false.
+  if (browser.hasContentOpener) {
+    return false;
+  }
+  let contentPrincipal = browser.contentPrincipal;
+  // Not all principals have URIs...
+  if (contentPrincipal.URI) {
+    // There are two specialcases involving about:blank. One is where
+    // the user has manually loaded it and it got created with a null
+    // principal. The other involves the case where we load
+    // some other empty page in a browser and the current page is the
+    // initial about:blank page (which has that as its principal, not
+    // just URI in which case it could be web-based). Especially in
+    // e10s, we need to tackle that case specifically to avoid race
+    // conditions when updating the URL bar.
+    if ((uri.spec == "about:blank" && contentPrincipal.isNullPrincipal) ||
+        contentPrincipal.URI.spec == "about:blank") {
+      return true;
+    }
+    return contentPrincipal.URI.equals(uri);
+  }
+  // ... so for those that don't have them, enforce that the page has the
+  // system principal (this matches e.g. on about:newtab).
+  let ssm = Services.scriptSecurityManager;
+  return ssm.isSystemPrincipal(contentPrincipal);
 }
-#endif
+
+function BrowserOpenSyncTabs() {
+  gSyncUI.openSyncedTabsPanel();
+}
 
 /**
  * Format a URL
@@ -6411,144 +6687,248 @@ function formatURL(aFormat, aIsPref) {
  * Utility object to handle manipulations of the identity indicators in the UI
  */
 var gIdentityHandler = {
-  // Mode strings used to control CSS display
-  IDENTITY_MODE_IDENTIFIED                             : "verifiedIdentity", // High-quality identity information
-  IDENTITY_MODE_DOMAIN_VERIFIED                        : "verifiedDomain",   // Minimal SSL CA-signed domain verification
-  IDENTITY_MODE_UNKNOWN                                : "unknownIdentity",  // No trusted identity information
-  IDENTITY_MODE_MIXED_DISPLAY_LOADED                   : "unknownIdentity mixedContent mixedDisplayContent",  // SSL with unauthenticated display content
-  IDENTITY_MODE_MIXED_ACTIVE_LOADED                    : "unknownIdentity mixedContent mixedActiveContent",  // SSL with unauthenticated active (and perhaps also display) content
-  IDENTITY_MODE_MIXED_DISPLAY_LOADED_ACTIVE_BLOCKED    : "unknownIdentity mixedContent",  // SSL with unauthenticated display content; unauthenticated active content is blocked.
-  IDENTITY_MODE_CHROMEUI                               : "chromeUI",         // Part of the product's UI
+  /**
+   * nsIURI for which the identity UI is displayed. This has been already
+   * processed by nsIURIFixup.createExposableURI.
+   */
+  _uri: null,
 
-  // Cache the most recent SSLStatus and Location seen in checkIdentity
-  _lastStatus : null,
-  _lastUri : null,
-  _mode : "unknownIdentity",
+  /**
+   * We only know the connection type if this._uri has a defined "host" part.
+   *
+   * These URIs, like "about:" and "data:" URIs, will usually be treated as a
+   * non-secure connection, unless they refer to an internally implemented
+   * browser page or resolve to "file:" URIs.
+   */
+  _uriHasHost: false,
+
+  /**
+   * Whether this._uri refers to an internally implemented browser page.
+   *
+   * Note that this is set for some "about:" pages, but general "chrome:" URIs
+   * are not included in this category by default.
+   */
+  _isSecureInternalUI: false,
+
+  /**
+   * nsISSLStatus metadata provided by gBrowser.securityUI the last time the
+   * identity UI was updated, or null if the connection is not secure.
+   */
+  _sslStatus: null,
+
+  /**
+   * Bitmask provided by nsIWebProgressListener.onSecurityChange.
+   */
+  _state: 0,
+
+  get _isBroken() {
+    return this._state & Ci.nsIWebProgressListener.STATE_IS_BROKEN;
+  },
+
+  get _isSecure() {
+    // If a <browser> is included within a chrome document, then this._state
+    // will refer to the security state for the <browser> and not the top level
+    // document. In this case, don't upgrade the security state in the UI
+    // with the secure state of the embedded <browser>.
+    return !this._isURILoadedFromFile && this._state & Ci.nsIWebProgressListener.STATE_IS_SECURE;
+  },
+
+  get _isEV() {
+    // If a <browser> is included within a chrome document, then this._state
+    // will refer to the security state for the <browser> and not the top level
+    // document. In this case, don't upgrade the security state in the UI
+    // with the EV state of the embedded <browser>.
+    return !this._isURILoadedFromFile && this._state & Ci.nsIWebProgressListener.STATE_IDENTITY_EV_TOPLEVEL;
+  },
+
+  get _isMixedActiveContentLoaded() {
+    return this._state & Ci.nsIWebProgressListener.STATE_LOADED_MIXED_ACTIVE_CONTENT;
+  },
+
+  get _isMixedActiveContentBlocked() {
+    return this._state & Ci.nsIWebProgressListener.STATE_BLOCKED_MIXED_ACTIVE_CONTENT;
+  },
+
+  get _isMixedPassiveContentLoaded() {
+    return this._state & Ci.nsIWebProgressListener.STATE_LOADED_MIXED_DISPLAY_CONTENT;
+  },
+
+  get _isCertUserOverridden() {
+    return this._state & Ci.nsIWebProgressListener.STATE_CERT_USER_OVERRIDDEN;
+  },
+
+  get _hasInsecureLoginForms() {
+    // checks if the page has been flagged for an insecure login. Also checks
+    // if the pref to degrade the UI is set to true
+    return LoginManagerParent.hasInsecureLoginForms(gBrowser.selectedBrowser) &&
+           Services.prefs.getBoolPref("security.insecure_password.ui.enabled");
+  },
 
   // smart getters
-  get _encryptionLabel () {
-    delete this._encryptionLabel;
-    this._encryptionLabel = {};
-    this._encryptionLabel[this.IDENTITY_MODE_DOMAIN_VERIFIED] =
-      gNavigatorBundle.getString("identity.encrypted2");
-    this._encryptionLabel[this.IDENTITY_MODE_IDENTIFIED] =
-      gNavigatorBundle.getString("identity.encrypted2");
-    this._encryptionLabel[this.IDENTITY_MODE_UNKNOWN] =
-      gNavigatorBundle.getString("identity.unencrypted");
-    this._encryptionLabel[this.IDENTITY_MODE_MIXED_DISPLAY_LOADED] =
-      gNavigatorBundle.getString("identity.mixed_display_loaded");
-    this._encryptionLabel[this.IDENTITY_MODE_MIXED_ACTIVE_LOADED] =
-      gNavigatorBundle.getString("identity.mixed_active_loaded2");
-    this._encryptionLabel[this.IDENTITY_MODE_MIXED_DISPLAY_LOADED_ACTIVE_BLOCKED] =
-      gNavigatorBundle.getString("identity.mixed_display_loaded_active_blocked");
-    return this._encryptionLabel;
-  },
-  get _identityPopup () {
+  get _identityPopup() {
     delete this._identityPopup;
     return this._identityPopup = document.getElementById("identity-popup");
   },
-  get _identityBox () {
+  get _identityBox() {
     delete this._identityBox;
     return this._identityBox = document.getElementById("identity-box");
   },
-  get _identityPopupContentBox () {
-    delete this._identityPopupContentBox;
-    return this._identityPopupContentBox =
-      document.getElementById("identity-popup-content-box");
+  get _identityPopupMultiView() {
+    delete this._identityPopupMultiView;
+    return this._identityPopupMultiView = document.getElementById("identity-popup-multiView");
   },
-  get _identityPopupChromeLabel () {
-    delete this._identityPopupChromeLabel;
-    return this._identityPopupChromeLabel =
-      document.getElementById("identity-popup-chromeLabel");
+  get _identityPopupContentHosts() {
+    delete this._identityPopupContentHosts;
+    let selector = ".identity-popup-host";
+    return this._identityPopupContentHosts = [
+      ...this._identityPopupMultiView._mainView.querySelectorAll(selector),
+      ...document.querySelectorAll(selector)
+    ];
   },
-  get _identityPopupContentHost () {
-    delete this._identityPopupContentHost;
-    return this._identityPopupContentHost =
-      document.getElementById("identity-popup-content-host");
+  get _identityPopupContentHostless() {
+    delete this._identityPopupContentHostless;
+    let selector = ".identity-popup-hostless";
+    return this._identityPopupContentHostless = [
+      ...this._identityPopupMultiView._mainView.querySelectorAll(selector),
+      ...document.querySelectorAll(selector)
+    ];
   },
-  get _identityPopupContentOwner () {
+  get _identityPopupContentOwner() {
     delete this._identityPopupContentOwner;
     return this._identityPopupContentOwner =
       document.getElementById("identity-popup-content-owner");
   },
-  get _identityPopupContentSupp () {
+  get _identityPopupContentSupp() {
     delete this._identityPopupContentSupp;
     return this._identityPopupContentSupp =
       document.getElementById("identity-popup-content-supplemental");
   },
-  get _identityPopupContentVerif () {
+  get _identityPopupContentVerif() {
     delete this._identityPopupContentVerif;
     return this._identityPopupContentVerif =
       document.getElementById("identity-popup-content-verifier");
   },
-  get _identityPopupEncLabel () {
-    delete this._identityPopupEncLabel;
-    return this._identityPopupEncLabel =
-      document.getElementById("identity-popup-encryption-label");
+  get _identityPopupMixedContentLearnMore() {
+    delete this._identityPopupMixedContentLearnMore;
+    return this._identityPopupMixedContentLearnMore =
+      document.getElementById("identity-popup-mcb-learn-more");
   },
-  get _identityIconLabel () {
+  get _identityPopupInsecureLoginFormsLearnMore() {
+    delete this._identityPopupInsecureLoginFormsLearnMore;
+    return this._identityPopupInsecureLoginFormsLearnMore =
+      document.getElementById("identity-popup-insecure-login-forms-learn-more");
+  },
+  get _identityIconLabels() {
+    delete this._identityIconLabels;
+    return this._identityIconLabels = document.getElementById("identity-icon-labels");
+  },
+  get _identityIconLabel() {
     delete this._identityIconLabel;
     return this._identityIconLabel = document.getElementById("identity-icon-label");
   },
-  get _overrideService () {
+  get _connectionIcon() {
+    delete this._connectionIcon;
+    return this._connectionIcon = document.getElementById("connection-icon");
+  },
+  get _overrideService() {
     delete this._overrideService;
     return this._overrideService = Cc["@mozilla.org/security/certoverride;1"]
                                      .getService(Ci.nsICertOverrideService);
   },
-  get _identityIconCountryLabel () {
+  get _identityIconCountryLabel() {
     delete this._identityIconCountryLabel;
     return this._identityIconCountryLabel = document.getElementById("identity-icon-country-label");
   },
-  get _identityIcon () {
+  get _identityIcon() {
     delete this._identityIcon;
-    return this._identityIcon = document.getElementById("page-proxy-favicon");
+    return this._identityIcon = document.getElementById("identity-icon");
   },
-  get _permissionsContainer () {
-    delete this._permissionsContainer;
-    return this._permissionsContainer = document.getElementById("identity-popup-permissions");
-  },
-  get _permissionList () {
+  get _permissionList() {
     delete this._permissionList;
     return this._permissionList = document.getElementById("identity-popup-permission-list");
   },
-
-  /**
-   * Rebuild cache of the elements that may or may not exist depending
-   * on whether there's a location bar.
-   */
-  _cacheElements : function() {
-    delete this._identityBox;
-    delete this._identityIconLabel;
-    delete this._identityIconCountryLabel;
-    delete this._identityIcon;
-    delete this._permissionsContainer;
-    delete this._permissionList;
-    this._identityBox = document.getElementById("identity-box");
-    this._identityIconLabel = document.getElementById("identity-icon-label");
-    this._identityIconCountryLabel = document.getElementById("identity-icon-country-label");
-    this._identityIcon = document.getElementById("page-proxy-favicon");
-    this._permissionsContainer = document.getElementById("identity-popup-permissions");
-    this._permissionList = document.getElementById("identity-popup-permission-list");
+  get _permissionEmptyHint() {
+    delete this._permissionEmptyHint;
+    return this._permissionEmptyHint = document.getElementById("identity-popup-permission-empty-hint");
+  },
+  get _permissionReloadHint() {
+    delete this._permissionReloadHint;
+    return this._permissionReloadHint = document.getElementById("identity-popup-permission-reload-hint");
+  },
+  get _permissionAnchors() {
+    delete this._permissionAnchors;
+    let permissionAnchors = {};
+    for (let anchor of document.getElementById("blocked-permissions-container").children) {
+      permissionAnchors[anchor.getAttribute("data-permission-id")] = anchor;
+    }
+    return this._permissionAnchors = permissionAnchors;
   },
 
   /**
    * Handler for mouseclicks on the "More Information" button in the
    * "identity-popup" panel.
    */
-  handleMoreInfoClick : function(event) {
+  handleMoreInfoClick(event) {
     displaySecurityInfo();
     event.stopPropagation();
     this._identityPopup.hidePopup();
   },
 
+  toggleSubView(name, anchor) {
+    let view = this._identityPopupMultiView;
+    if (view.showingSubView) {
+      view.showMainView();
+    } else {
+      view.showSubView(`identity-popup-${name}View`, anchor);
+    }
+
+    // If an element is focused that's not the anchor, clear the focus.
+    // Elements of hidden views have -moz-user-focus:ignore but setting that
+    // per CSS selector doesn't blur a focused element in those hidden views.
+    if (Services.focus.focusedElement != anchor) {
+      Services.focus.clearFocus(window);
+    }
+  },
+
+  disableMixedContentProtection() {
+    // Use telemetry to measure how often unblocking happens
+    const kMIXED_CONTENT_UNBLOCK_EVENT = 2;
+    let histogram =
+      Services.telemetry.getHistogramById(
+        "MIXED_CONTENT_UNBLOCK_COUNTER");
+    histogram.add(kMIXED_CONTENT_UNBLOCK_EVENT);
+    // Reload the page with the content unblocked
+    BrowserReloadWithFlags(
+      Ci.nsIWebNavigation.LOAD_FLAGS_ALLOW_MIXED_CONTENT);
+    this._identityPopup.hidePopup();
+  },
+
+  enableMixedContentProtection() {
+    gBrowser.selectedBrowser.messageManager.sendAsyncMessage(
+      "MixedContent:ReenableProtection", {});
+    BrowserReload();
+    this._identityPopup.hidePopup();
+  },
+
+  removeCertException() {
+    if (!this._uriHasHost) {
+      Cu.reportError("Trying to revoke a cert exception on a URI without a host?");
+      return;
+    }
+    let host = this._uri.host;
+    let port = this._uri.port > 0 ? this._uri.port : 443;
+    this._overrideService.clearValidityOverride(host, port);
+    BrowserReloadSkipCache();
+    this._identityPopup.hidePopup();
+  },
+
   /**
-   * Helper to parse out the important parts of _lastStatus (of the SSL cert in
+   * Helper to parse out the important parts of _sslStatus (of the SSL cert in
    * particular) for use in constructing identity UI strings
   */
-  getIdentityData : function() {
+  getIdentityData() {
     var result = {};
-    var status = this._lastStatus.QueryInterface(Components.interfaces.nsISSLStatus);
-    var cert = status.serverCert;
+    var cert = this._sslStatus.serverCert;
 
     // Human readable name of Subject
     result.subjectOrg = cert.organization;
@@ -6575,196 +6955,217 @@ var gIdentityHandler = {
   },
 
   /**
-   * Determine the identity of the page being displayed by examining its SSL cert
-   * (if available) and, if necessary, update the UI to reflect this.  Intended to
-   * be called by onSecurityChange
+   * Update the identity user interface for the page currently being displayed.
    *
-   * @param PRUint32 state
-   * @param nsIURI uri The address for which the UI should be updated.
+   * This examines the SSL certificate metadata, if available, as well as the
+   * connection type and other security-related state information for the page.
+   *
+   * @param state
+   *        Bitmask provided by nsIWebProgressListener.onSecurityChange.
+   * @param uri
+   *        nsIURI for which the identity UI should be displayed, already
+   *        processed by nsIURIFixup.createExposableURI.
    */
-  checkIdentity : function(state, uri) {
-    var currentStatus = gBrowser.securityUI
-                                .QueryInterface(Components.interfaces.nsISSLStatusProvider)
-                                .SSLStatus;
-    this._lastStatus = currentStatus;
-    this._lastUri = uri;
+  updateIdentity(state, uri) {
+    let shouldHidePopup = this._uri && (this._uri.spec != uri.spec);
+    this._state = state;
 
-    let nsIWebProgressListener = Ci.nsIWebProgressListener;
-
-    // For some URIs like data: we can't get a host and so can't do
-    // anything useful here. Chrome URIs however get special treatment.
-    let unknown = false;
-    try {
-      uri.host;
-    } catch (e) { unknown = true; }
-
-    if ((uri.scheme == "chrome" || uri.scheme == "about") &&
-        uri.spec !== "about:blank") {
-      this.setMode(this.IDENTITY_MODE_CHROMEUI);
-    } else if (unknown) {
-      this.setMode(this.IDENTITY_MODE_UNKNOWN);
-    } else if (state & nsIWebProgressListener.STATE_IDENTITY_EV_TOPLEVEL) {
-      this.setMode(this.IDENTITY_MODE_IDENTIFIED);
-    } else if (state & nsIWebProgressListener.STATE_IS_SECURE) {
-      this.setMode(this.IDENTITY_MODE_DOMAIN_VERIFIED);
-    } else if (state & nsIWebProgressListener.STATE_IS_BROKEN) {
-      if ((state & nsIWebProgressListener.STATE_LOADED_MIXED_ACTIVE_CONTENT) &&
-          gPrefService.getBoolPref("security.mixed_content.block_active_content")) {
-        this.setMode(this.IDENTITY_MODE_MIXED_ACTIVE_LOADED);
-      } else if ((state & nsIWebProgressListener.STATE_BLOCKED_MIXED_ACTIVE_CONTENT) &&
-                gPrefService.getBoolPref("security.mixed_content.block_active_content")) {
-        this.setMode(this.IDENTITY_MODE_MIXED_DISPLAY_LOADED_ACTIVE_BLOCKED);
-      } else {
-        this.setMode(this.IDENTITY_MODE_MIXED_DISPLAY_LOADED);
-      }
-    } else {
-      this.setMode(this.IDENTITY_MODE_UNKNOWN);
+    // Firstly, populate the state properties required to display the UI. See
+    // the documentation of the individual properties for details.
+    this.setURI(uri);
+    this._sslStatus = gBrowser.securityUI
+                              .QueryInterface(Ci.nsISSLStatusProvider)
+                              .SSLStatus;
+    if (this._sslStatus) {
+      this._sslStatus.QueryInterface(Ci.nsISSLStatus);
     }
 
-    // Ensure the doorhanger is shown when mixed active content is blocked.
-    if (state & nsIWebProgressListener.STATE_BLOCKED_MIXED_ACTIVE_CONTENT)
-      this.showMixedContentDoorhanger();
+    // Then, update the user interface with the available data.
+    this.refreshIdentityBlock();
+    // Handle a location change while the Control Center is focused
+    // by closing the popup (bug 1207542)
+    if (shouldHidePopup) {
+      this._identityPopup.hidePopup();
+    }
+
+    // NOTE: We do NOT update the identity popup (the control center) when
+    // we receive a new security state on the existing page (i.e. from a
+    // subframe). If the user opened the popup and looks at the provided
+    // information we don't want to suddenly change the panel contents.
   },
 
   /**
-   * Display the Mixed Content Blocker doohanger, providing an option
-   * to the user to override mixed content blocking
+   * This is called asynchronously when requested by the Logins module, after
+   * the insecure login forms state for the page has been updated.
    */
-  showMixedContentDoorhanger : function() {
-    // If we've already got an active notification, bail out to avoid showing it repeatedly.
-    if (PopupNotifications.getNotification("mixed-content-blocked", gBrowser.selectedBrowser))
+  refreshForInsecureLoginForms() {
+    // Check this._uri because we don't want to refresh the user interface if
+    // this is called before the first page load in the window for any reason.
+    if (!this._uri) {
+      Cu.reportError("Unexpected early call to refreshForInsecureLoginForms.");
       return;
+    }
+    this.refreshIdentityBlock();
+  },
 
-    let helplink = document.getElementById("mixed-content-blocked-helplink");
-    helplink.href = Services.urlFormatter.formatURLPref("browser.mixedcontent.warning.infoURL");
+  updateSharingIndicator() {
+    let tab = gBrowser.selectedTab;
+    let sharing = tab.getAttribute("sharing");
+    if (sharing)
+      this._identityBox.setAttribute("sharing", sharing);
+    else
+      this._identityBox.removeAttribute("sharing");
 
-    let brandBundle = document.getElementById("bundle_brand");
-    let brandShortName = brandBundle.getString("brandShortName");
-    let messageString = gNavigatorBundle.getFormattedString("mixedContentBlocked.message", [brandShortName]);
-    let action = {
-      label: gNavigatorBundle.getString("mixedContentBlocked.keepBlockingButton.label"),
-      accessKey: gNavigatorBundle.getString("mixedContentBlocked.keepBlockingButton.accesskey"),
-      callback: function() { /* NOP */ }
-    };
-    let secondaryActions = [
-      {
-        label: gNavigatorBundle.getString("mixedContentBlocked.unblock.label"),
-        accessKey: gNavigatorBundle.getString("mixedContentBlocked.unblock.accesskey"),
-        callback: function() {
-          // Reload the page with the content unblocked
-          BrowserReloadWithFlags(nsIWebNavigation.LOAD_FLAGS_ALLOW_MIXED_CONTENT);
-        }
-      }
-    ];
-    let options = {
-      dismissed: true,
-    };
-    PopupNotifications.show(gBrowser.selectedBrowser, "mixed-content-blocked",
-                            messageString, "mixed-content-blocked-notification-icon",
-                            action, secondaryActions, options);
+    this._sharingState = tab._sharingState;
+
+    if (this._identityPopup.state == "open") {
+      this._handleHeightChange(() => this.updateSitePermissions());
+    }
   },
 
   /**
-   * Return the eTLD+1 version of the current hostname
+   * Attempt to provide proper IDN treatment for host names
    */
-  getEffectiveHost : function() {
+  getEffectiveHost() {
     if (!this._IDNService)
       this._IDNService = Cc["@mozilla.org/network/idn-service;1"]
                          .getService(Ci.nsIIDNService);
     try {
-      let baseDomain =
-        Services.eTLD.getBaseDomainFromHost(this._lastUri.host);
-      return this._IDNService.convertToDisplayIDN(baseDomain, {});
+      return this._IDNService.convertToDisplayIDN(this._uri.host, {});
     } catch (e) {
       // If something goes wrong (e.g. host is an IP address) just fail back
       // to the full domain.
-      return this._lastUri.host;
+      return this._uri.host;
     }
   },
 
   /**
-   * Update the UI to reflect the specified mode, which should be one of the
-   * IDENTITY_MODE_* constants.
+   * Return the CSS class name to set on the "fullscreen-warning" element to
+   * display information about connection security in the notification shown
+   * when a site enters the fullscreen mode.
    */
-  setMode : function(newMode) {
+  get pointerlockFsWarningClassName() {
+    // Note that the fullscreen warning does not handle _isSecureInternalUI.
+    if (this._uriHasHost && this._isEV) {
+      return "verifiedIdentity";
+    }
+    if (this._uriHasHost && this._isSecure) {
+      return "verifiedDomain";
+    }
+    return "unknownIdentity";
+  },
+
+  /**
+   * Updates the identity block user interface with the data from this object.
+   */
+  refreshIdentityBlock() {
     if (!this._identityBox) {
-      // No identity box means the identity box is not visible, in which
-      // case there's nothing to do.
       return;
     }
 
-    this._identityPopup.className = newMode;
-    this._identityBox.className = newMode;
-    this.setIdentityMessages(newMode);
-
-    // Update the popup too, if it's open
-    if (this._identityPopup.state == "open")
-      this.setPopupMessages(newMode);
-
-    this._mode = newMode;
-  },
-
-  /**
-   * Set up the messages for the primary identity UI based on the specified mode,
-   * and the details of the SSL cert, where applicable
-   *
-   * @param newMode The newly set identity mode.  Should be one of the IDENTITY_MODE_* constants.
-   */
-  setIdentityMessages : function(newMode) {
     let icon_label = "";
     let tooltip = "";
     let icon_country_label = "";
     let icon_labels_dir = "ltr";
 
-    switch (newMode) {
-    case this.IDENTITY_MODE_DOMAIN_VERIFIED: {
-      let iData = this.getIdentityData();
-
-      // Verifier is either the CA Org, for a normal cert, or a special string
-      // for certs that are trusted because of a security exception.
-      tooltip = gNavigatorBundle.getFormattedString("identity.identified.verifier",
-                                                    [iData.caOrg]);
-
-      // This can't throw, because URI's with a host that throw don't end up in this case.
-      let host = this._lastUri.host;
-      let port = 443;
-      try {
-        if (this._lastUri.port > 0)
-          port = this._lastUri.port;
-      } catch (e) {}
-
-      if (this._overrideService.hasMatchingOverride(host, port, iData.cert, {}, {}))
-        tooltip = gNavigatorBundle.getString("identity.identified.verified_by_you");
-
-      break; }
-    case this.IDENTITY_MODE_IDENTIFIED: {
-      // If it's identified, then we can populate the dialog with credentials
-      let iData = this.getIdentityData();
-      tooltip = gNavigatorBundle.getFormattedString("identity.identified.verifier",
-                                                    [iData.caOrg]);
-      icon_label = iData.subjectOrg;
-      if (iData.country)
-        icon_country_label = "(" + iData.country + ")";
-
-      // If the organization name starts with an RTL character, then
-      // swap the positions of the organization and country code labels.
-      // The Unicode ranges reflect the definition of the UCS2_CHAR_IS_BIDI
-      // macro in intl/unicharutil/util/nsBidiUtils.h. When bug 218823 gets
-      // fixed, this test should be replaced by one adhering to the
-      // Unicode Bidirectional Algorithm proper (at the paragraph level).
-      icon_labels_dir = /^[\u0590-\u08ff\ufb1d-\ufdff\ufe70-\ufefc]/.test(icon_label) ?
-                        "rtl" : "ltr";
-      break; }
-    case this.IDENTITY_MODE_CHROMEUI:
+    if (this._isSecureInternalUI) {
+      this._identityBox.className = "chromeUI";
       let brandBundle = document.getElementById("bundle_brand");
-      icon_label = brandBundle.getString("brandShortName");
-      break;
-    default:
-      tooltip = gNavigatorBundle.getString("identity.unknown.tooltip");
+      icon_label = brandBundle.getString("brandShorterName");
+    } else if (this._uriHasHost && this._isEV) {
+      this._identityBox.className = "verifiedIdentity";
+      if (this._isMixedActiveContentBlocked) {
+        this._identityBox.classList.add("mixedActiveBlocked");
+      }
+
+      if (!this._isCertUserOverridden) {
+        // If it's identified, then we can populate the dialog with credentials
+        let iData = this.getIdentityData();
+        tooltip = gNavigatorBundle.getFormattedString("identity.identified.verifier",
+                                                      [iData.caOrg]);
+        icon_label = iData.subjectOrg;
+        if (iData.country)
+          icon_country_label = "(" + iData.country + ")";
+
+        // If the organization name starts with an RTL character, then
+        // swap the positions of the organization and country code labels.
+        // The Unicode ranges reflect the definition of the UCS2_CHAR_IS_BIDI
+        // macro in intl/unicharutil/util/nsBidiUtils.h. When bug 218823 gets
+        // fixed, this test should be replaced by one adhering to the
+        // Unicode Bidirectional Algorithm proper (at the paragraph level).
+        icon_labels_dir = /^[\u0590-\u08ff\ufb1d-\ufdff\ufe70-\ufefc]/.test(icon_label) ?
+                          "rtl" : "ltr";
+      }
+
+    } else if (this._uriHasHost && this._isSecure) {
+      this._identityBox.className = "verifiedDomain";
+      if (this._isMixedActiveContentBlocked) {
+        this._identityBox.classList.add("mixedActiveBlocked");
+      }
+      if (!this._isCertUserOverridden) {
+        // It's a normal cert, verifier is the CA Org.
+        tooltip = gNavigatorBundle.getFormattedString("identity.identified.verifier",
+                                                      [this.getIdentityData().caOrg]);
+      }
+    } else {
+      this._identityBox.className = "unknownIdentity";
+      if (this._isBroken) {
+        if (this._isMixedActiveContentLoaded) {
+          this._identityBox.classList.add("mixedActiveContent");
+        } else if (this._isMixedActiveContentBlocked) {
+          this._identityBox.classList.add("mixedDisplayContentLoadedActiveBlocked");
+        } else if (this._isMixedPassiveContentLoaded) {
+          this._identityBox.classList.add("mixedDisplayContent");
+        } else {
+          this._identityBox.classList.add("weakCipher");
+        }
+      }
+      if (this._hasInsecureLoginForms) {
+        // Insecure login forms can only be present on "unknown identity"
+        // pages, either already insecure or with mixed active content loaded.
+        this._identityBox.classList.add("insecureLoginForms");
+      }
+    }
+
+    if (this._isCertUserOverridden) {
+      this._identityBox.classList.add("certUserOverridden");
+      // Cert is trusted because of a security exception, verifier is a special string.
+      tooltip = gNavigatorBundle.getString("identity.identified.verified_by_you");
+    }
+
+    let permissionAnchors = this._permissionAnchors;
+
+    // hide all permission icons
+    for (let icon of Object.values(permissionAnchors)) {
+      icon.removeAttribute("showing");
+    }
+
+    // keeps track if we should show an indicator that there are active permissions
+    let hasGrantedPermissions = false;
+
+    // show permission icons
+    let permissions = SitePermissions.getAllForBrowser(gBrowser.selectedBrowser);
+    for (let permission of permissions) {
+      if (permission.state == SitePermissions.BLOCK) {
+
+        let icon = permissionAnchors[permission.id];
+        if (icon) {
+          icon.setAttribute("showing", "true");
+        }
+
+      } else if (permission.state != SitePermissions.UNKNOWN) {
+        hasGrantedPermissions = true;
+      }
+    }
+
+    if (hasGrantedPermissions) {
+      this._identityBox.classList.add("grantedPermissions");
     }
 
     // Push the appropriate strings out to the UI
-    this._identityBox.tooltipText = tooltip;
+    this._connectionIcon.tooltipText = tooltip;
+    this._identityIconLabels.tooltipText = tooltip;
+    this._identityIcon.tooltipText = gNavigatorBundle.getString("identity.icon.tooltip");
     this._identityIconLabel.value = icon_label;
     this._identityIconCountryLabel.value = icon_country_label;
     // Set cropping and direction
@@ -6778,35 +7179,109 @@ var gIdentityHandler = {
    * Set up the title and content messages for the identity message popup,
    * based on the specified mode, and the details of the SSL cert, where
    * applicable
-   *
-   * @param newMode The newly set identity mode.  Should be one of the IDENTITY_MODE_* constants.
    */
-  setPopupMessages : function(newMode) {
+  refreshIdentityPopup() {
+    // Update "Learn More" for Mixed Content Blocking and Insecure Login Forms.
+    let baseURL = Services.urlFormatter.formatURLPref("app.support.baseURL");
+    this._identityPopupMixedContentLearnMore
+        .setAttribute("href", baseURL + "mixed-content");
+    this._identityPopupInsecureLoginFormsLearnMore
+        .setAttribute("href", baseURL + "insecure-password");
 
-    this._identityPopup.className = newMode;
-    this._identityPopupContentBox.className = newMode;
+    // Determine connection security information.
+    let connection = "not-secure";
+    if (this._isSecureInternalUI) {
+      connection = "chrome";
+    } else if (this._isURILoadedFromFile) {
+      connection = "file";
+    } else if (this._isEV) {
+      connection = "secure-ev";
+    } else if (this._isCertUserOverridden) {
+      connection = "secure-cert-user-overridden";
+    } else if (this._isSecure) {
+      connection = "secure";
+    }
 
-    // Set the static strings up front
-    this._identityPopupEncLabel.textContent = this._encryptionLabel[newMode];
+    // Determine if there are insecure login forms.
+    let loginforms = "secure";
+    if (this._hasInsecureLoginForms) {
+      loginforms = "insecure";
+    }
+
+    // Determine the mixed content state.
+    let mixedcontent = [];
+    if (this._isMixedPassiveContentLoaded) {
+      mixedcontent.push("passive-loaded");
+    }
+    if (this._isMixedActiveContentLoaded) {
+      mixedcontent.push("active-loaded");
+    } else if (this._isMixedActiveContentBlocked) {
+      mixedcontent.push("active-blocked");
+    }
+    mixedcontent = mixedcontent.join(" ");
+
+    // We have no specific flags for weak ciphers (yet). If a connection is
+    // broken and we can't detect any mixed content loaded then it's a weak
+    // cipher.
+    let ciphers = "";
+    if (this._isBroken && !this._isMixedActiveContentLoaded && !this._isMixedPassiveContentLoaded) {
+      ciphers = "weak";
+    }
+
+    // Update all elements.
+    let elementIDs = [
+      "identity-popup",
+      "identity-popup-securityView-body",
+    ];
+
+    function updateAttribute(elem, attr, value) {
+      if (value) {
+        elem.setAttribute(attr, value);
+      } else {
+        elem.removeAttribute(attr);
+      }
+    }
+
+    for (let id of elementIDs) {
+      let element = document.getElementById(id);
+      updateAttribute(element, "connection", connection);
+      updateAttribute(element, "loginforms", loginforms);
+      updateAttribute(element, "ciphers", ciphers);
+      updateAttribute(element, "mixedcontent", mixedcontent);
+      updateAttribute(element, "isbroken", this._isBroken);
+    }
 
     // Initialize the optional strings to empty values
     let supplemental = "";
     let verifier = "";
     let host = "";
     let owner = "";
+    let hostless = false;
 
-    switch (newMode) {
-    case this.IDENTITY_MODE_DOMAIN_VERIFIED:
+    try {
       host = this.getEffectiveHost();
-      owner = gNavigatorBundle.getString("identity.ownerUnknown2");
-      verifier = this._identityBox.tooltipText;
-      break;
-    case this.IDENTITY_MODE_IDENTIFIED: {
-      // If it's identified, then we can populate the dialog with credentials
+    } catch (e) {
+      // Some URIs might have no hosts.
+    }
+
+    // Fallback for special protocols.
+    if (!host) {
+      host = this._uri.specIgnoringRef;
+      // Special URIs without a host (eg, about:) should crop the end so
+      // the protocol can be seen.
+      hostless = true;
+    }
+
+    // Fill in the CA name if we have a valid TLS certificate.
+    if (this._isSecure || this._isCertUserOverridden) {
+      verifier = this._identityIconLabels.tooltipText;
+    }
+
+    // Fill in organization information if we have a valid EV certificate.
+    if (this._isEV) {
       let iData = this.getIdentityData();
-      host = this.getEffectiveHost();
-      owner = iData.subjectOrg;
-      verifier = this._identityBox.tooltipText;
+      host = owner = iData.subjectOrg;
+      verifier = this._identityIconLabels.tooltipText;
 
       // Build an appropriate supplemental block out of whatever location data we have
       if (iData.city)
@@ -6818,39 +7293,71 @@ var gIdentityHandler = {
         supplemental += iData.state;
       else if (iData.country) // Country only
         supplemental += iData.country;
-      break; }
-    case this.IDENTITY_MODE_CHROMEUI: {
-      let brandBundle = document.getElementById("bundle_brand");
-      let brandShortName = brandBundle.getString("brandShortName");
-      this._identityPopupChromeLabel.textContent = gNavigatorBundle.getFormattedString("identity.chrome",
-                                                                                       [brandShortName]);
-      break; }
     }
 
-    // Push the appropriate strings out to the UI
-    this._identityPopupContentHost.textContent = host;
+    // Push the appropriate strings out to the UI.
+    this._identityPopupContentHosts.forEach((el) => {
+      el.textContent = host;
+      el.hidden = hostless;
+    });
+    this._identityPopupContentHostless.forEach((el) => {
+      el.setAttribute("value", host);
+      el.hidden = !hostless;
+    });
     this._identityPopupContentOwner.textContent = owner;
     this._identityPopupContentSupp.textContent = supplemental;
     this._identityPopupContentVerif.textContent = verifier;
+
+    // Update per-site permissions section.
+    this.updateSitePermissions();
+  },
+
+  setURI(uri) {
+    this._uri = uri;
+
+    try {
+      this._uri.host;
+      this._uriHasHost = true;
+    } catch (ex) {
+      this._uriHasHost = false;
+    }
+
+    let whitelist = /^(?:accounts|addons|cache|config|crashes|customizing|downloads|healthreport|home|license|newaddon|permissions|preferences|privatebrowsing|rights|searchreset|sessionrestore|support|welcomeback)(?:[?#]|$)/i;
+    this._isSecureInternalUI = uri.schemeIs("about") && whitelist.test(uri.path);
+
+    // Create a channel for the sole purpose of getting the resolved URI
+    // of the request to determine if it's loaded from the file system.
+    this._isURILoadedFromFile = false;
+    let chanOptions = {uri: this._uri, loadUsingSystemPrincipal: true};
+    let resolvedURI;
+    try {
+      resolvedURI = NetUtil.newChannel(chanOptions).URI;
+      if (resolvedURI.schemeIs("jar")) {
+        // Given a URI "jar:<jar-file-uri>!/<jar-entry>"
+        // create a new URI using <jar-file-uri>!/<jar-entry>
+        resolvedURI = NetUtil.newURI(resolvedURI.path);
+      }
+      // Check the URI again after resolving.
+      this._isURILoadedFromFile = resolvedURI.schemeIs("file");
+    } catch (ex) {
+      // NetUtil's methods will throw for malformed URIs and the like
+    }
   },
 
   /**
    * Click handler for the identity-box element in primary chrome.
    */
-  handleIdentityButtonEvent : function(event) {
-    TelemetryStopwatch.start("FX_IDENTITY_POPUP_OPEN_MS");
+  handleIdentityButtonEvent(event) {
     event.stopPropagation();
 
     if ((event.type == "click" && event.button != 0) ||
         (event.type == "keypress" && event.charCode != KeyEvent.DOM_VK_SPACE &&
          event.keyCode != KeyEvent.DOM_VK_RETURN)) {
-      TelemetryStopwatch.cancel("FX_IDENTITY_POPUP_OPEN_MS");
       return; // Left click, space or enter only
     }
 
     // Don't allow left click, space or enter if the location has been modified.
     if (gURLBar.getAttribute("pageproxystate") != "valid") {
-      TelemetryStopwatch.cancel("FX_IDENTITY_POPUP_OPEN_MS");
       return;
     }
 
@@ -6858,113 +7365,242 @@ var gIdentityHandler = {
     // the popup is actually needed
     this._identityPopup.hidden = false;
 
-    // Update the popup strings
-    this.setPopupMessages(this._identityBox.className);
+    // Remove the reload hint that we show after a user has cleared a permission.
+    this._permissionReloadHint.setAttribute("hidden", "true");
 
-    this.updateSitePermissions();
+    // Update the popup strings
+    this.refreshIdentityPopup();
 
     // Add the "open" attribute to the identity box for styling
     this._identityBox.setAttribute("open", "true");
-    var self = this;
-    this._identityPopup.addEventListener("popuphidden", function onPopupHidden(e) {
-      e.currentTarget.removeEventListener("popuphidden", onPopupHidden, false);
-      self._identityBox.removeAttribute("open");
-    }, false);
 
     // Now open the popup, anchored off the primary chrome element
     this._identityPopup.openPopup(this._identityIcon, "bottomcenter topleft");
   },
 
-  onPopupShown : function(event) {
-    TelemetryStopwatch.finish("FX_IDENTITY_POPUP_OPEN_MS");
+  onPopupShown(event) {
+    if (event.target == this._identityPopup) {
+      // Move focus to the next available element in the identity popup.
+      // This is required by role=alertdialog and fixes an issue where
+      // an already open panel would steal focus from the identity popup.
+      document.commandDispatcher.advanceFocusIntoSubtree(this._identityPopup);
 
-    document.getElementById('identity-popup-more-info-button').focus();
-
-    this._identityPopup.addEventListener("blur", this, true);
-    this._identityPopup.addEventListener("popuphidden", this);
+      window.addEventListener("focus", this, true);
+    }
   },
 
-  onDragStart: function (event) {
+  onPopupHidden(event) {
+    if (event.target == this._identityPopup) {
+      window.removeEventListener("focus", this, true);
+      this._identityBox.removeAttribute("open");
+    }
+  },
+
+  handleEvent(event) {
+    let elem = document.activeElement;
+    let position = elem.compareDocumentPosition(this._identityPopup);
+
+    if (!(position & (Node.DOCUMENT_POSITION_CONTAINS |
+                      Node.DOCUMENT_POSITION_CONTAINED_BY)) &&
+        !this._identityPopup.hasAttribute("noautohide")) {
+      // Hide the panel when focusing an element that is
+      // neither an ancestor nor descendant unless the panel has
+      // @noautohide (e.g. for a tour).
+      this._identityPopup.hidePopup();
+    }
+  },
+
+  observe(subject, topic, data) {
+    if (topic == "perm-changed") {
+      this.refreshIdentityBlock();
+    }
+  },
+
+  onDragStart(event) {
     if (gURLBar.getAttribute("pageproxystate") != "valid")
       return;
 
-    var value = content.location.href;
-    var urlString = value + "\n" + content.document.title;
-    var htmlString = "<a href=\"" + value + "\">" + value + "</a>";
+    let value = gBrowser.currentURI.spec;
+    let urlString = value + "\n" + gBrowser.contentTitle;
+    let htmlString = "<a href=\"" + value + "\">" + value + "</a>";
 
-    var dt = event.dataTransfer;
+    let dt = event.dataTransfer;
     dt.setData("text/x-moz-url", urlString);
     dt.setData("text/uri-list", value);
     dt.setData("text/plain", value);
     dt.setData("text/html", htmlString);
-    dt.setDragImage(gProxyFavIcon, 16, 16);
+    dt.setDragImage(this._identityIcon, 16, 16);
   },
- 
-  handleEvent: function (event) {
-    switch (event.type) {
-      case "blur":
-        // Focus hasn't moved yet, need to wait until after the blur event.
-        setTimeout(() => {
-          if (document.activeElement &&
-              document.activeElement.compareDocumentPosition(this._identityPopup) &
-                Node.DOCUMENT_POSITION_CONTAINS)
-            return;
 
-          this._identityPopup.hidePopup();
-        }, 0);
-        break;
-      case "popuphidden":
-        this._identityPopup.removeEventListener("blur", this, true);
-        this._identityPopup.removeEventListener("popuphidden", this);
-        break;
+  onLocationChange() {
+    this._permissionReloadHint.setAttribute("hidden", "true");
+
+    if (!this._permissionList.hasChildNodes()) {
+      this._permissionEmptyHint.removeAttribute("hidden");
     }
   },
 
-  updateSitePermissions: function () {
+  updateSitePermissions() {
     while (this._permissionList.hasChildNodes())
       this._permissionList.removeChild(this._permissionList.lastChild);
 
-    let uri = gBrowser.currentURI;
+    let permissions =
+      SitePermissions.getAllPermissionDetailsForBrowser(gBrowser.selectedBrowser);
 
-    for (let permission of SitePermissions.listPermissions()) {
-      let state = SitePermissions.get(uri, permission);
-
-      if (state == SitePermissions.UNKNOWN)
-        continue;
-
-      let item = this._createPermissionItem(permission, state);
+    if (this._sharingState) {
+      // If WebRTC device or screen permissions are in use, we need to find
+      // the associated permission item to set the inUse field to true.
+      for (let id of ["camera", "microphone", "screen"]) {
+        if (this._sharingState[id]) {
+          let found = false;
+          for (let permission of permissions) {
+            if (permission.id != id)
+              continue;
+            found = true;
+            permission.inUse = true;
+            break;
+          }
+          if (!found) {
+            // If the permission item we were looking for doesn't exist,
+            // the user has temporarily allowed sharing and we need to add
+            // an item in the permissions array to reflect this.
+            permissions.push({
+              id,
+              state: SitePermissions.ALLOW,
+              scope: SitePermissions.SCOPE_REQUEST,
+              inUse: true,
+            });
+          }
+        }
+      }
+    }
+    for (let permission of permissions) {
+      let item = this._createPermissionItem(permission);
       this._permissionList.appendChild(item);
     }
 
-    this._permissionsContainer.hidden = !this._permissionList.hasChildNodes();
+    // Show a placeholder text if there's no permission and no reload hint.
+    if (!this._permissionList.hasChildNodes() &&
+        this._permissionReloadHint.hasAttribute("hidden")) {
+      this._permissionEmptyHint.removeAttribute("hidden");
+    } else {
+      this._permissionEmptyHint.setAttribute("hidden", "true");
+    }
   },
 
-  _createPermissionItem: function (aPermission, aState) {
-    let menulist = document.createElement("menulist");
-    let menupopup = document.createElement("menupopup");
-    for (let state of SitePermissions.getAvailableStates(aPermission)) {
-      if (state == SitePermissions.UNKNOWN)
-        continue;
-      let menuitem = document.createElement("menuitem");
-      menuitem.setAttribute("value", state);
-      menuitem.setAttribute("label", SitePermissions.getStateLabel(aPermission, state));
-      menupopup.appendChild(menuitem);
+  _handleHeightChange(aFunction, aWillShowReloadHint) {
+    let heightBefore = getComputedStyle(this._permissionList).height;
+    aFunction();
+    let heightAfter = getComputedStyle(this._permissionList).height;
+    // Showing the reload hint increases the height, we need to account for it.
+    if (aWillShowReloadHint) {
+      heightAfter = parseInt(heightAfter) +
+                    parseInt(getComputedStyle(this._permissionList.nextSibling).height);
     }
-    menulist.appendChild(menupopup);
-    menulist.setAttribute("value", aState);
-    menulist.setAttribute("oncommand", "SitePermissions.set(gBrowser.currentURI, '" +
-                                       aPermission + "', this.value)");
-    menulist.setAttribute("id", "identity-popup-permission:" + aPermission);
+    let heightChange = parseInt(heightAfter) - parseInt(heightBefore);
+    if (heightChange)
+      this._identityPopupMultiView.setHeightToFit(heightChange);
+  },
 
-    let label = document.createElement("label");
-    label.setAttribute("flex", "1");
-    label.setAttribute("control", menulist.getAttribute("id"));
-    label.setAttribute("value", SitePermissions.getPermissionLabel(aPermission));
-
+  _createPermissionItem(aPermission) {
     let container = document.createElement("hbox");
+    container.setAttribute("class", "identity-popup-permission-item");
     container.setAttribute("align", "center");
-    container.appendChild(label);
-    container.appendChild(menulist);
+
+    let img = document.createElement("image");
+    let classes = "identity-popup-permission-icon " + aPermission.id + "-icon";
+    if (aPermission.state == SitePermissions.BLOCK)
+      classes += " blocked-permission-icon";
+    if (aPermission.inUse)
+      classes += " in-use";
+    img.setAttribute("class", classes);
+
+    let nameLabel = document.createElement("label");
+    nameLabel.setAttribute("flex", "1");
+    nameLabel.setAttribute("class", "identity-popup-permission-label");
+    nameLabel.textContent = SitePermissions.getPermissionLabel(aPermission.id);
+
+    let stateLabel = document.createElement("label");
+    stateLabel.setAttribute("flex", "1");
+    stateLabel.setAttribute("class", "identity-popup-permission-state-label");
+    let {state, scope} = aPermission;
+    // If the user did not permanently allow this device but it is currently
+    // used, set the variables to display a "temporarily allowed" info.
+    if (state != SitePermissions.ALLOW && aPermission.inUse) {
+      state = SitePermissions.ALLOW;
+      scope = SitePermissions.SCOPE_REQUEST;
+    }
+    stateLabel.textContent = SitePermissions.getCurrentStateLabel(state, scope);
+
+    let button = document.createElement("button");
+    button.setAttribute("class", "identity-popup-permission-remove-button");
+    let tooltiptext = gNavigatorBundle.getString("permissions.remove.tooltip");
+    button.setAttribute("tooltiptext", tooltiptext);
+    button.addEventListener("command", () => {
+	  let browser = gBrowser.selectedBrowser;
+      // Only resize the window if the reload hint was previously hidden.
+      this._handleHeightChange(() => this._permissionList.removeChild(container),
+                               this._permissionReloadHint.hasAttribute("hidden"));
+      if (aPermission.inUse &&
+          ["camera", "microphone", "screen"].includes(aPermission.id)) {
+        let windowId = this._sharingState.windowId;
+        if (aPermission.id == "screen") {
+          windowId = "screen:" + windowId;
+        } else {
+          // If we set persistent permissions or the sharing has
+          // started due to existing persistent permissions, we need
+          // to handle removing these even for frames with different hostnames.
+          let uris = browser._devicePermissionURIs || [];
+          for (let uri of uris) {
+            // It's not possible to stop sharing one of camera/microphone
+            // without the other.
+            for (let id of ["camera", "microphone"]) {
+              if (this._sharingState[id]) {
+                let perm = SitePermissions.get(uri, id);
+                if (perm.state == SitePermissions.ALLOW &&
+                    perm.scope == SitePermissions.SCOPE_PERSISTENT) {
+                  SitePermissions.remove(uri, id);
+                }
+              }
+            }
+          }
+        }
+        browser.messageManager.sendAsyncMessage("webrtc:StopSharing", windowId);
+        webrtcUI.forgetActivePermissionsFromBrowser(gBrowser.selectedBrowser);
+      }
+      SitePermissions.remove(gBrowser.currentURI, aPermission.id, browser);
+
+      this._permissionReloadHint.removeAttribute("hidden");
+
+      // Set telemetry values for clearing a permission
+      let histogram = Services.telemetry.getKeyedHistogramById("WEB_PERMISSION_CLEARED");
+
+      let permissionType = 0;
+      if (aPermission.state == SitePermissions.ALLOW &&
+          aPermission.scope == SitePermissions.SCOPE_PERSISTENT) {
+        // 1 : clear permanently allowed permission
+        permissionType = 1;
+      } else if (aPermission.state == SitePermissions.BLOCK &&
+                 aPermission.scope == SitePermissions.SCOPE_PERSISTENT) {
+        // 2 : clear permanently blocked permission
+        permissionType = 2;
+      } else if (aPermission.state == SitePermissions.ALLOW) {
+        // 3 : clear temporary allowed permission
+        permissionType = 3;
+      } else if (aPermission.state == SitePermissions.BLOCK) {
+        // 4 : clear temporary blocked permission
+        permissionType = 4;
+      }
+
+      histogram.add("(all)", permissionType);
+      histogram.add(aPermission.id, permissionType);
+    });
+
+    container.appendChild(img);
+    container.appendChild(nameLabel);
+    container.appendChild(stateLabel);
+    container.appendChild(button);
+
     return container;
   }
 };
@@ -6974,20 +7610,24 @@ function getNotificationBox(aWindow) {
   if (foundBrowser)
     return gBrowser.getNotificationBox(foundBrowser)
   return null;
-};
+}
 
 function getTabModalPromptBox(aWindow) {
   var foundBrowser = gBrowser.getBrowserForDocument(aWindow.document);
   if (foundBrowser)
     return gBrowser.getTabModalPromptBox(foundBrowser);
   return null;
-};
+}
 
 /* DEPRECATED */
-function getBrowser() gBrowser;
-function getNavToolbox() gNavToolbox;
+function getBrowser() {
+  return gBrowser;
+}
+function getNavToolbox() {
+  return gNavToolbox;
+}
 
-let gPrivateBrowsingUI = {
+var gPrivateBrowsingUI = {
   init: function PBUI_init() {
     // Do nothing for normal windows
     if (!PrivateBrowsingUtils.isWindowPrivate(window)) {
@@ -6999,12 +7639,6 @@ let gPrivateBrowsingUI = {
     document.getElementById("Tools:Sanitize").setAttribute("disabled", "true");
 
     if (window.location.href == getBrowserURL()) {
-#ifdef XP_MACOSX
-      if (!PrivateBrowsingUtils.permanentPrivateBrowsing) {
-        document.documentElement.setAttribute("drawintitlebar", true);
-      }
-#endif
-
       // Adjust the window's title
       let docElement = document.documentElement;
       if (!PrivateBrowsingUtils.permanentPrivateBrowsing) {
@@ -7021,7 +7655,6 @@ let gPrivateBrowsingUI = {
         // Adjust the New Window menu entries
         [
           { normal: "menu_newNavigator", private: "menu_newPrivateWindow" },
-          { normal: "appmenu_newNavigator", private: "appmenu_newPrivateWindow" },
         ].forEach(function(menu) {
           let newWindow = document.getElementById(menu.normal);
           let newPrivateWindow = document.getElementById(menu.private);
@@ -7035,18 +7668,43 @@ let gPrivateBrowsingUI = {
       }
     }
 
-    if (gURLBar &&
-        !PrivateBrowsingUtils.permanentPrivateBrowsing) {
-      // Disable switch to tab autocompletion for private windows 
-      // (not for "Always use private browsing" mode)
-      gURLBar.setAttribute("autocompletesearchparam", "");
+    let urlBarSearchParam = gURLBar.getAttribute("autocompletesearchparam") || "";
+    if (!PrivateBrowsingUtils.permanentPrivateBrowsing &&
+        !urlBarSearchParam.includes("disable-private-actions")) {
+      // Disable switch to tab autocompletion for private windows.
+      // We leave it enabled for permanent private browsing mode though.
+      urlBarSearchParam += " disable-private-actions";
     }
+    if (!urlBarSearchParam.includes("private-window")) {
+      urlBarSearchParam += " private-window";
+    }
+    gURLBar.setAttribute("autocompletesearchparam", urlBarSearchParam);
   }
 };
 
+var gRemoteTabsUI = {
+  init() {
+    if (window.location.href != getBrowserURL() &&
+        // Also check hidden window for the Mac no-window case
+        window.location.href != "chrome://browser/content/hiddenWindow.xul") {
+      return;
+    }
+
+    if (AppConstants.platform == "macosx" &&
+        Services.prefs.getBoolPref("layers.acceleration.disabled")) {
+      // On OS X, "Disable Hardware Acceleration" also disables OMTC and forces
+      // a fallback to Basic Layers. This is incompatible with e10s.
+      return;
+    }
+
+    let newNonRemoteWindow = document.getElementById("menu_newNonRemoteWindow");
+    let autostart = Services.appinfo.browserTabsRemoteAutostart;
+    newNonRemoteWindow.hidden = !autostart;
+  }
+};
 
 /**
- * Switch to a tab that has a given URI, and focusses its browser window.
+ * Switch to a tab that has a given URI, and focuses its browser window.
  * If a matching tab is in this window, it will be switched to. Otherwise, other
  * windows will be searched.
  *
@@ -7055,25 +7713,85 @@ let gPrivateBrowsingUI = {
  * @param aOpenNew
  *        True to open a new tab and switch to it, if no existing tab is found.
  *        If no suitable window is found, a new one will be opened.
+ * @param aOpenParams
+ *        If switching to this URI results in us opening a tab, aOpenParams
+ *        will be the parameter object that gets passed to openUILinkIn. Please
+ *        see the documentation for openUILinkIn to see what parameters can be
+ *        passed via this object.
+ *        This object also allows:
+ *        - 'ignoreFragment' property to be set to true to exclude fragment-portion
+ *        matching when comparing URIs.
+ *          If set to "whenComparing", the fragment will be unmodified.
+ *          If set to "whenComparingAndReplace", the fragment will be replaced.
+ *        - 'ignoreQueryString' boolean property to be set to true to exclude query string
+ *        matching when comparing URIs.
+ *        - 'replaceQueryString' boolean property to be set to true to exclude query string
+ *        matching when comparing URIs and overwrite the initial query string with
+ *        the one from the new URI.
  * @return True if an existing tab was found, false otherwise
  */
-function switchToTabHavingURI(aURI, aOpenNew) {
+function switchToTabHavingURI(aURI, aOpenNew, aOpenParams = {}) {
+  // Certain URLs can be switched to irrespective of the source or destination
+  // window being in private browsing mode:
+  const kPrivateBrowsingWhitelist = new Set([
+    "about:addons",
+  ]);
+
+  let ignoreFragment = aOpenParams.ignoreFragment;
+  let ignoreQueryString = aOpenParams.ignoreQueryString;
+  let replaceQueryString = aOpenParams.replaceQueryString;
+
+  // These properties are only used by switchToTabHavingURI and should
+  // not be used as a parameter for the new load.
+  delete aOpenParams.ignoreFragment;
+  delete aOpenParams.ignoreQueryString;
+  delete aOpenParams.replaceQueryString;
+
   // This will switch to the tab in aWindow having aURI, if present.
   function switchIfURIInWindow(aWindow) {
-    // Only switch to the tab if neither the source and desination window are
-    // private and they are not in permanent private borwsing mode
-    if ((PrivateBrowsingUtils.isWindowPrivate(window) ||
-        PrivateBrowsingUtils.isWindowPrivate(aWindow)) &&
+    // Only switch to the tab if neither the source nor the destination window
+    // are private and they are not in permanent private browsing mode
+    if (!kPrivateBrowsingWhitelist.has(aURI.spec) &&
+        (PrivateBrowsingUtils.isWindowPrivate(window) ||
+         PrivateBrowsingUtils.isWindowPrivate(aWindow)) &&
         !PrivateBrowsingUtils.permanentPrivateBrowsing) {
       return false;
     }
 
+    // Remove the query string, fragment, both, or neither from a given url.
+    function cleanURL(url, removeQuery, removeFragment) {
+      let ret = url;
+      if (removeFragment) {
+        ret = ret.split("#")[0];
+        if (removeQuery) {
+          // This removes a query, if present before the fragment.
+          ret = ret.split("?")[0];
+        }
+      } else if (removeQuery) {
+        // This is needed in case there is a fragment after the query.
+        let fragment = ret.split("#")[1];
+        ret = ret.split("?")[0].concat(
+          (fragment != undefined) ? "#".concat(fragment) : "");
+      }
+      return ret;
+    }
+
+    // Need to handle nsSimpleURIs here too (e.g. about:...), which don't
+    // work correctly with URL objects - so treat them as strings
+    let ignoreFragmentWhenComparing = typeof ignoreFragment == "string" &&
+                                      ignoreFragment.startsWith("whenComparing");
+    let requestedCompare = cleanURL(
+        aURI.spec, ignoreQueryString || replaceQueryString, ignoreFragmentWhenComparing);
     let browsers = aWindow.gBrowser.browsers;
     for (let i = 0; i < browsers.length; i++) {
       let browser = browsers[i];
-      if (browser.currentURI.equals(aURI)) {
-        // Focus the matching window & tab
+      let browserCompare = cleanURL(
+          browser.currentURI.spec, ignoreQueryString || replaceQueryString, ignoreFragmentWhenComparing);
+      if (requestedCompare == browserCompare) {
         aWindow.focus();
+        if (ignoreFragment == "whenComparingAndReplace" || replaceQueryString) {
+          browser.loadURI(aURI.spec);
+        }
         aWindow.gBrowser.tabContainer.selectedIndex = i;
         return true;
       }
@@ -7083,7 +7801,7 @@ function switchToTabHavingURI(aURI, aOpenNew) {
 
   // This can be passed either nsIURI or a string.
   if (!(aURI instanceof Ci.nsIURI))
-    aURI = Services.io.newURI(aURI, null, null);
+    aURI = Services.io.newURI(aURI);
 
   let isBrowserWindow = !!window.gBrowser;
 
@@ -7091,9 +7809,7 @@ function switchToTabHavingURI(aURI, aOpenNew) {
   if (isBrowserWindow && switchIfURIInWindow(window))
     return true;
 
-  let winEnum = Services.wm.getEnumerator("navigator:browser");
-  while (winEnum.hasMoreElements()) {
-    let browserWin = winEnum.getNext();
+  for (let browserWin of browserWindows()) {
     // Skip closed (but not yet destroyed) windows,
     // and the current window (which was checked earlier).
     if (browserWin.closed || browserWin == window)
@@ -7105,34 +7821,72 @@ function switchToTabHavingURI(aURI, aOpenNew) {
   // No opened tab has that url.
   if (aOpenNew) {
     if (isBrowserWindow && isTabEmpty(gBrowser.selectedTab))
-      gBrowser.selectedBrowser.loadURI(aURI.spec);
+      openUILinkIn(aURI.spec, "current", aOpenParams);
     else
-      openUILinkIn(aURI.spec, "tab");
+      openUILinkIn(aURI.spec, "tab", aOpenParams);
   }
 
   return false;
 }
 
+var RestoreLastSessionObserver = {
+  init() {
+    if (SessionStore.canRestoreLastSession &&
+        !PrivateBrowsingUtils.isWindowPrivate(window)) {
+      Services.obs.addObserver(this, "sessionstore-last-session-cleared", true);
+      goSetCommandEnabled("Browser:RestoreLastSession", true);
+    }
+  },
+
+  observe() {
+    // The last session can only be restored once so there's
+    // no way we need to re-enable our menu item.
+    Services.obs.removeObserver(this, "sessionstore-last-session-cleared");
+    goSetCommandEnabled("Browser:RestoreLastSession", false);
+  },
+
+  QueryInterface: XPCOMUtils.generateQI([Ci.nsIObserver,
+                                         Ci.nsISupportsWeakReference])
+};
+
 function restoreLastSession() {
-  let ss = Cc["@mozilla.org/browser/sessionstore;1"].
-           getService(Ci.nsISessionStore);
-  ss.restoreLastSession();
+  SessionStore.restoreLastSession();
 }
 
 var TabContextMenu = {
   contextTab: null,
+  _updateToggleMuteMenuItem(aTab, aConditionFn) {
+    ["muted", "soundplaying"].forEach(attr => {
+      if (!aConditionFn || aConditionFn(attr)) {
+        if (aTab.hasAttribute(attr)) {
+          aTab.toggleMuteMenuItem.setAttribute(attr, "true");
+        } else {
+          aTab.toggleMuteMenuItem.removeAttribute(attr);
+        }
+      }
+    });
+  },
   updateContextMenu: function updateContextMenu(aPopupMenu) {
     this.contextTab = aPopupMenu.triggerNode.localName == "tab" ?
                       aPopupMenu.triggerNode : gBrowser.selectedTab;
     let disabled = gBrowser.tabs.length == 1;
 
-    // Enable the "Close Tab" menuitem when the window doesn't close with the last tab.
-    document.getElementById("context_closeTab").disabled =
-      disabled && gBrowser.tabContainer._closeWindowWithLastTab;
-
     var menuItems = aPopupMenu.getElementsByAttribute("tbattr", "tabbrowser-multiple");
     for (let menuItem of menuItems)
       menuItem.disabled = disabled;
+
+    if (this.contextTab.hasAttribute("customizemode"))
+      document.getElementById("context_openTabInWindow").disabled = true;
+
+    if (AppConstants.E10S_TESTING_ONLY) {
+      menuItems = aPopupMenu.getElementsByAttribute("tbattr", "tabbrowser-remote");
+      for (let menuItem of menuItems) {
+        menuItem.hidden = !gMultiProcessBrowser;
+        if (menuItem.id == "context_openNonRemoteWindow") {
+          menuItem.disabled = !!parseInt(this.contextTab.getAttribute("usercontextid"));
+        }
+      }
+    }
 
     disabled = gBrowser.visibleTabs.length == 1;
     menuItems = aPopupMenu.getElementsByAttribute("tbattr", "tabbrowser-multiple-visible");
@@ -7140,15 +7894,8 @@ var TabContextMenu = {
       menuItem.disabled = disabled;
 
     // Session store
-    let ss = Cc["@mozilla.org/browser/sessionstore;1"].
-               getService(Ci.nsISessionStore);
-    let undoCloseTabElement = document.getElementById("context_undoCloseTab");
-    let closedTabCount = ss.getNumberOfTabsClosedLast(window);
-    undoCloseTabElement.disabled = closedTabCount == 0;
-    // Change the label of "Undo Close Tab" to specify if it will undo a batch-close
-    // or a single close.
-    let visibleLabel = closedTabCount <= 1 ? "singletablabel" : "multipletablabel";
-    undoCloseTabElement.setAttribute("label", undoCloseTabElement.getAttribute(visibleLabel));
+    document.getElementById("context_undoCloseTab").disabled =
+      SessionStore.getClosedTabCount(window) == 0;
 
     // Only one of pin/unpin should be visible
     document.getElementById("context_pinTab").hidden = this.contextTab.pinned;
@@ -7173,47 +7920,66 @@ var TabContextMenu = {
     if (!bookmarkAllTabs.hidden)
       PlacesCommandHook.updateBookmarkAllTabsCommand();
 
-    // Hide "Move to Group" if it's a pinned tab.
-    document.getElementById("context_tabViewMenu").hidden =
-      (this.contextTab.pinned || !TabView.firstUseExperienced);
+    // Adjust the state of the toggle mute menu item.
+    let toggleMute = document.getElementById("context_toggleMuteTab");
+    if (this.contextTab.hasAttribute("blocked")) {
+      toggleMute.label = gNavigatorBundle.getString("playTab.label");
+      toggleMute.accessKey = gNavigatorBundle.getString("playTab.accesskey");
+    } else if (this.contextTab.hasAttribute("muted")) {
+      toggleMute.label = gNavigatorBundle.getString("unmuteTab.label");
+      toggleMute.accessKey = gNavigatorBundle.getString("unmuteTab.accesskey");
+    } else {
+      toggleMute.label = gNavigatorBundle.getString("muteTab.label");
+      toggleMute.accessKey = gNavigatorBundle.getString("muteTab.accesskey");
+    }
+
+    this.contextTab.toggleMuteMenuItem = toggleMute;
+    this._updateToggleMuteMenuItem(this.contextTab);
+
+    this.contextTab.addEventListener("TabAttrModified", this);
+    aPopupMenu.addEventListener("popuphiding", this);
+
+    gFxAccounts.updateTabContextMenu(aPopupMenu, this.contextTab);
+  },
+  handleEvent(aEvent) {
+    switch (aEvent.type) {
+      case "popuphiding":
+        gBrowser.removeEventListener("TabAttrModified", this);
+        aEvent.target.removeEventListener("popuphiding", this);
+        break;
+      case "TabAttrModified":
+        let tab = aEvent.target;
+        this._updateToggleMuteMenuItem(tab,
+          attr => aEvent.detail.changed.indexOf(attr) >= 0);
+        break;
+    }
   }
 };
 
-XPCOMUtils.defineLazyModuleGetter(this, "gDevTools",
-                                  "resource:///modules/devtools/gDevTools.jsm");
-
-XPCOMUtils.defineLazyModuleGetter(this, "gDevToolsBrowser",
-                                  "resource:///modules/devtools/gDevTools.jsm");
-
 Object.defineProperty(this, "HUDService", {
   get: function HUDService_getter() {
-    let devtools = Cu.import("resource://gre/modules/devtools/Loader.jsm", {}).devtools;
-    return devtools.require("devtools/webconsole/hudservice");
+    let devtools = Cu.import("resource://devtools/shared/Loader.jsm", {}).devtools;
+    return devtools.require("devtools/client/webconsole/hudservice");
   },
   configurable: true,
   enumerable: true
 });
 
 // Prompt user to restart the browser in safe mode
-function safeModeRestart()
-{
-  // prompt the user to confirm
-  let promptTitle = gNavigatorBundle.getString("safeModeRestartPromptTitle");
-  let promptMessage =
-    gNavigatorBundle.getString("safeModeRestartPromptMessage");
-  let restartText = gNavigatorBundle.getString("safeModeRestartButton");
-  let buttonFlags = (Services.prompt.BUTTON_POS_0 *
-                     Services.prompt.BUTTON_TITLE_IS_STRING) +
-                    (Services.prompt.BUTTON_POS_1 *
-                     Services.prompt.BUTTON_TITLE_CANCEL) +
-                    Services.prompt.BUTTON_POS_0_DEFAULT;
+function safeModeRestart() {
+  if (Services.appinfo.inSafeMode) {
+    let cancelQuit = Cc["@mozilla.org/supports-PRBool;1"].
+                     createInstance(Ci.nsISupportsPRBool);
+    Services.obs.notifyObservers(cancelQuit, "quit-application-requested", "restart");
 
-  let rv = Services.prompt.confirmEx(window, promptTitle, promptMessage,
-                                     buttonFlags, restartText, null, null,
-                                     null, {});
-  if (rv == 0) {
-    Services.startup.restartInSafeMode(Ci.nsIAppStartup.eAttemptQuit);
+    if (cancelQuit.data)
+      return;
+
+    Services.startup.quit(Ci.nsIAppStartup.eRestart | Ci.nsIAppStartup.eAttemptQuit);
+    return;
   }
+
+  Services.obs.notifyObservers(null, "restart-in-safe-mode", "");
 }
 
 /* duplicateTabIn duplicates tab in a place specified by the parameter |where|.
@@ -7227,32 +7993,36 @@ function safeModeRestart()
  * delta is the offset to the history entry that you want to load.
  */
 function duplicateTabIn(aTab, where, delta) {
-  let newTab = Cc['@mozilla.org/browser/sessionstore;1']
-                 .getService(Ci.nsISessionStore)
-                 .duplicateTab(window, aTab, delta);
-
   switch (where) {
     case "window":
-      gBrowser.hideTab(newTab);
-      gBrowser.replaceTabWithWindow(newTab);
+      let otherWin = OpenBrowserWindow();
+      let delayedStartupFinished = (subject, topic) => {
+        if (topic == "browser-delayed-startup-finished" &&
+            subject == otherWin) {
+          Services.obs.removeObserver(delayedStartupFinished, topic);
+          let otherGBrowser = otherWin.gBrowser;
+          let otherTab = otherGBrowser.selectedTab;
+          SessionStore.duplicateTab(otherWin, aTab, delta);
+          otherGBrowser.removeTab(otherTab, { animate: false });
+        }
+      };
+
+      Services.obs.addObserver(delayedStartupFinished,
+                               "browser-delayed-startup-finished",
+                               false);
       break;
     case "tabshifted":
+      SessionStore.duplicateTab(window, aTab, delta);
       // A background tab has been opened, nothing else to do here.
       break;
     case "tab":
+      let newTab = SessionStore.duplicateTab(window, aTab, delta);
       gBrowser.selectedTab = newTab;
       break;
   }
 }
 
-function toggleAddonBar() {
-  let addonBar = document.getElementById("addon-bar");
-  setToolbarVisibility(addonBar, addonBar.collapsed);
-}
-
 var Scratchpad = {
-  prefEnabledName: "devtools.scratchpad.enabled",
-
   openScratchpad: function SP_openScratchpad() {
     return this.ScratchpadManager.openScratchpad();
   }
@@ -7260,7 +8030,7 @@ var Scratchpad = {
 
 XPCOMUtils.defineLazyGetter(Scratchpad, "ScratchpadManager", function() {
   let tmp = {};
-  Cu.import("resource:///modules/devtools/scratchpad-manager.jsm", tmp);
+  Cu.import("resource://devtools/client/scratchpad/scratchpad-manager.jsm", tmp);
   return tmp.ScratchpadManager;
 });
 
@@ -7272,21 +8042,12 @@ var ResponsiveUI = {
 
 XPCOMUtils.defineLazyGetter(ResponsiveUI, "ResponsiveUIManager", function() {
   let tmp = {};
-  Cu.import("resource:///modules/devtools/responsivedesign.jsm", tmp);
+  Cu.import("resource://devtools/client/responsivedesign/responsivedesign.jsm", tmp);
   return tmp.ResponsiveUIManager;
 });
 
-XPCOMUtils.defineLazyGetter(window, "gShowPageResizers", function () {
-#ifdef XP_WIN
-  // Only show resizers on Windows 2000 and XP
-  return parseFloat(Services.sysinfo.getProperty("version")) < 6;
-#else
-  return false;
-#endif
-});
-
 var MousePosTracker = {
-  _listeners: [],
+  _listeners: new Set(),
   _x: 0,
   _y: 0,
   get _windowUtils() {
@@ -7294,30 +8055,26 @@ var MousePosTracker = {
     return this._windowUtils = window.getInterface(Ci.nsIDOMWindowUtils);
   },
 
-  addListener: function (listener) {
-    if (this._listeners.indexOf(listener) >= 0)
+  addListener(listener) {
+    if (this._listeners.has(listener))
       return;
 
     listener._hover = false;
-    this._listeners.push(listener);
+    this._listeners.add(listener);
 
     this._callListener(listener);
   },
 
-  removeListener: function (listener) {
-    var index = this._listeners.indexOf(listener);
-    if (index < 0)
-      return;
-
-    this._listeners.splice(index, 1);
+  removeListener(listener) {
+    this._listeners.delete(listener);
   },
 
-  handleEvent: function (event) {
+  handleEvent(event) {
     var fullZoom = this._windowUtils.fullZoom;
     this._x = event.screenX / fullZoom - window.mozInnerScreenX;
     this._y = event.screenY / fullZoom - window.mozInnerScreenY;
 
-    this._listeners.forEach(function (listener) {
+    this._listeners.forEach(function(listener) {
       try {
         this._callListener(listener);
       } catch (e) {
@@ -7326,7 +8083,7 @@ var MousePosTracker = {
     }, this);
   },
 
-  _callListener: function (listener) {
+  _callListener(listener) {
     let rect = listener.getMouseTargetRect();
     let hover = this._x >= rect.left &&
                 this._x <= rect.right &&
@@ -7341,34 +8098,249 @@ var MousePosTracker = {
     if (hover) {
       if (listener.onMouseEnter)
         listener.onMouseEnter();
-    } else {
-      if (listener.onMouseLeave)
-        listener.onMouseLeave();
+    } else if (listener.onMouseLeave) {
+      listener.onMouseLeave();
     }
   }
 };
 
-function focusNextFrame(event) {
-  let fm = Services.focus;
-  let dir = event.shiftKey ? fm.MOVEFOCUS_BACKWARDDOC : fm.MOVEFOCUS_FORWARDDOC;
-  let element = fm.moveFocus(window, null, dir, fm.FLAG_BYKEY);
-  if (element.ownerDocument == document)
-    focusAndSelectUrlBar();
-}
-let BrowserChromeTest = {
-  _cb: null,
-  _ready: false,
-  markAsReady: function () {
-    this._ready = true;
-    if (this._cb) {
-      this._cb();
-      this._cb = null;
+var ToolbarIconColor = {
+  init() {
+    this._initialized = true;
+
+    window.addEventListener("activate", this);
+    window.addEventListener("deactivate", this);
+    Services.obs.addObserver(this, "lightweight-theme-styling-update", false);
+
+    // If the window isn't active now, we assume that it has never been active
+    // before and will soon become active such that inferFromText will be
+    // called from the initial activate event.
+    if (Services.focus.activeWindow == window)
+      this.inferFromText();
+  },
+
+  uninit() {
+    this._initialized = false;
+
+    window.removeEventListener("activate", this);
+    window.removeEventListener("deactivate", this);
+    Services.obs.removeObserver(this, "lightweight-theme-styling-update");
+  },
+
+  handleEvent(event) {
+    switch (event.type) {
+      case "activate":
+      case "deactivate":
+        this.inferFromText();
+        break;
     }
   },
-  runWhenReady: function (cb) {
-    if (this._ready)
-      cb();
-    else
-      this._cb = cb;
+
+  observe(aSubject, aTopic, aData) {
+    switch (aTopic) {
+      case "lightweight-theme-styling-update":
+        // inferFromText needs to run after LightweightThemeConsumer.jsm's
+        // lightweight-theme-styling-update observer.
+        setTimeout(() => { this.inferFromText(); }, 0);
+        break;
+    }
+  },
+
+  inferFromText() {
+    if (!this._initialized)
+      return;
+
+    function parseRGB(aColorString) {
+      let rgb = aColorString.match(/^rgba?\((\d+), (\d+), (\d+)/);
+      rgb.shift();
+      return rgb.map(x => parseInt(x));
+    }
+
+    let toolbarSelector = "#navigator-toolbox > toolbar:not([collapsed=true]):not(#addon-bar)";
+    if (AppConstants.platform == "macosx")
+      toolbarSelector += ":not([type=menubar])";
+
+    // The getComputedStyle calls and setting the brighttext are separated in
+    // two loops to avoid flushing layout and making it dirty repeatedly.
+
+    let luminances = new Map;
+    for (let toolbar of document.querySelectorAll(toolbarSelector)) {
+      let [r, g, b] = parseRGB(getComputedStyle(toolbar).color);
+      let luminance = 0.2125 * r + 0.7154 * g + 0.0721 * b;
+      luminances.set(toolbar, luminance);
+    }
+
+    for (let [toolbar, luminance] of luminances) {
+      if (luminance <= 110)
+        toolbar.removeAttribute("brighttext");
+      else
+        toolbar.setAttribute("brighttext", "true");
+    }
   }
+}
+
+var PanicButtonNotifier = {
+  init() {
+    this._initialized = true;
+    if (window.PanicButtonNotifierShouldNotify) {
+      delete window.PanicButtonNotifierShouldNotify;
+      this.notify();
+    }
+  },
+  notify() {
+    if (!this._initialized) {
+      window.PanicButtonNotifierShouldNotify = true;
+      return;
+    }
+    // Display notification panel here...
+    try {
+      let popup = document.getElementById("panic-button-success-notification");
+      popup.hidden = false;
+      // To close the popup in 3 seconds after the popup is shown but left uninteracted.
+      let onTimeout = () => {
+        PanicButtonNotifier.close();
+        removeListeners();
+      };
+      popup.addEventListener("popupshown", function() {
+        PanicButtonNotifier.timer = setTimeout(onTimeout, 3000);
+      });
+      // To prevent the popup from closing when user tries to interact with the
+      // popup using mouse or keyboard.
+      let onUserInteractsWithPopup = () => {
+        clearTimeout(PanicButtonNotifier.timer);
+        removeListeners();
+       };
+      popup.addEventListener("mouseover", onUserInteractsWithPopup);
+      window.addEventListener("keydown", onUserInteractsWithPopup);
+      let removeListeners = () => {
+        popup.removeEventListener("mouseover", onUserInteractsWithPopup);
+        window.removeEventListener("keydown", onUserInteractsWithPopup);
+        popup.removeEventListener("popuphidden", removeListeners);
+      };
+      popup.addEventListener("popuphidden", removeListeners);
+
+      let widget = CustomizableUI.getWidget("panic-button").forWindow(window);
+      let anchor = widget.anchor;
+      anchor = document.getAnonymousElementByAttribute(anchor, "class", "toolbarbutton-icon");
+      popup.openPopup(anchor, popup.getAttribute("position"));
+    } catch (ex) {
+      Cu.reportError(ex);
+    }
+  },
+  close() {
+    let popup = document.getElementById("panic-button-success-notification");
+    popup.hidePopup();
+  },
+};
+
+var AboutPrivateBrowsingListener = {
+  init() {
+    window.messageManager.addMessageListener(
+      "AboutPrivateBrowsing:OpenPrivateWindow",
+      msg => {
+        OpenBrowserWindow({private: true});
+    });
+    window.messageManager.addMessageListener(
+      "AboutPrivateBrowsing:ToggleTrackingProtection",
+      msg => {
+        const PREF = "privacy.trackingprotection.pbmode.enabled";
+        Services.prefs.setBoolPref(PREF, !Services.prefs.getBoolPref(PREF));
+    });
+    window.messageManager.addMessageListener(
+      "AboutPrivateBrowsing:DontShowIntroPanelAgain",
+      msg => {
+        TrackingProtection.dontShowIntroPanelAgain();
+    });
+  }
+};
+
+function TabModalPromptBox(browser) {
+  this._weakBrowserRef = Cu.getWeakReference(browser);
+}
+
+TabModalPromptBox.prototype = {
+  _promptCloseCallback(onCloseCallback, principalToAllowFocusFor, allowFocusCheckbox, ...args) {
+    if (principalToAllowFocusFor && allowFocusCheckbox &&
+        allowFocusCheckbox.checked) {
+      Services.perms.addFromPrincipal(principalToAllowFocusFor, "focus-tab-by-prompt",
+                                      Services.perms.ALLOW_ACTION);
+    }
+    onCloseCallback.apply(this, args);
+  },
+
+  appendPrompt(args, onCloseCallback) {
+    const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+    let newPrompt = document.createElementNS(XUL_NS, "tabmodalprompt");
+    let browser = this.browser;
+    browser.parentNode.insertBefore(newPrompt, browser.nextSibling);
+    browser.setAttribute("tabmodalPromptShowing", true);
+
+    newPrompt.clientTop; // style flush to assure binding is attached
+
+    let prompts = this.listPrompts();
+    if (prompts.length > 1) {
+      // Let's hide ourself behind the current prompt.
+      newPrompt.hidden = true;
+    }
+
+    let principalToAllowFocusFor = this._allowTabFocusByPromptPrincipal;
+    delete this._allowTabFocusByPromptPrincipal;
+
+    let allowFocusCheckbox; // Define outside the if block so we can bind it into the callback.
+    let hostForAllowFocusCheckbox = "";
+    try {
+      hostForAllowFocusCheckbox = principalToAllowFocusFor.URI.host;
+    } catch (ex) { /* Ignore exceptions for host-less URIs */ }
+    if (hostForAllowFocusCheckbox) {
+      let allowFocusRow = document.createElementNS(XUL_NS, "row");
+      allowFocusCheckbox = document.createElementNS(XUL_NS, "checkbox");
+      let spacer = document.createElementNS(XUL_NS, "spacer");
+      allowFocusRow.appendChild(spacer);
+      let label = gBrowser.mStringBundle.getFormattedString("tabs.allowTabFocusByPromptForSite",
+                                                            [hostForAllowFocusCheckbox]);
+      allowFocusCheckbox.setAttribute("label", label);
+      allowFocusRow.appendChild(allowFocusCheckbox);
+      newPrompt.appendChild(allowFocusRow);
+    }
+
+    let tab = gBrowser.getTabForBrowser(browser);
+    let closeCB = this._promptCloseCallback.bind(null, onCloseCallback, principalToAllowFocusFor,
+                                                 allowFocusCheckbox);
+    newPrompt.init(args, tab, closeCB);
+    return newPrompt;
+  },
+
+  removePrompt(aPrompt) {
+    let browser = this.browser;
+    browser.parentNode.removeChild(aPrompt);
+
+    let prompts = this.listPrompts();
+    if (prompts.length) {
+      let prompt = prompts[prompts.length - 1];
+      prompt.hidden = false;
+      prompt.Dialog.setDefaultFocus();
+    } else {
+      browser.removeAttribute("tabmodalPromptShowing");
+      browser.focus();
+    }
+  },
+
+  listPrompts(aPrompt) {
+    // Get the nodelist, then return as an array
+    const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+    let els = this.browser.parentNode.getElementsByTagNameNS(XUL_NS, "tabmodalprompt");
+    return Array.from(els);
+  },
+
+  onNextPromptShowAllowFocusCheckboxFor(principal) {
+    this._allowTabFocusByPromptPrincipal = principal;
+  },
+
+  get browser() {
+    let browser = this._weakBrowserRef.get();
+    if (!browser) {
+      throw "Stale promptbox! The associated browser is gone.";
+    }
+    return browser;
+  },
 };
