@@ -65,8 +65,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-function BrowserOpenFileWindow()
-{
+function BrowserOpenFileWindow() {
   // Get filepicker component.
   try {
     const nsIFilePicker = Ci.nsIFilePicker;
