@@ -131,36 +131,11 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   forbidCPOW(aCacheKey, "internalSave", "aCacheKey");
   // Allow aInitiatingDocument to be a CPOW.
 
-  var isSeaMonkey = Cc["@mozilla.org/xre/app-info;1"]
-   .getService(Ci.nsIXULAppInfo).ID == "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
-
   if (aSkipPrompt == undefined)
     aSkipPrompt = false;
 
   if (aCacheKey == undefined)
     aCacheKey = null;
-
-  // We use aSkipPrompt also to convey the saveAllTabs flag.
-  var mafAskSaveArchive = false;
-  var mafPreferSaveArchive = false;
-  var mafSaveTabs = null;
-  if (typeof aSkipPrompt == "object") {
-    if (aSkipPrompt.mafAskSaveArchive) {
-      mafAskSaveArchive = true;
-      mafSaveTabs = aSkipPrompt.mafSaveTabs;
-      // Attempt to save to the default downloads folder automatically if the
-      // host application is SeaMonkey and the associated preference is set.
-      aSkipPrompt = Cc["@mozilla.org/xre/app-info;1"]
-                    .getService(Ci.nsIXULAppInfo).ID ==
-                    "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
-    }
-  } else {
-    // Normal saveDocument calls will save HTML and XHTML documents in archive,
-    // unless we are on SeaMonkey where the save dialog may not be displayed.
-    mafPreferSaveArchive = !isSeaMonkey && aDocument &&
-     (aDocument.contentType == "text/html" ||
-     aDocument.contentType == "application/xhtml+xml");
-  }
 
   // Get a reference to the main content browser, if available in the window.
   var mainBrowser = window.getBrowser && window.getBrowser().selectedBrowser;
@@ -192,12 +167,9 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       fpTitleKey: aFilePickerTitleKey,
       fileInfo,
       contentType: aContentType,
-      // When saving all tabs, only offer the choice of creating an archive.
-      saveMode: mafAskSaveArchive ? MozillaArchiveFormat.SAVEMODE_MAFARCHIVE : saveMode,
-      saveInArchiveFirst: MozillaArchiveFormat.Prefs.saveEnabled &&
-                          (mafAskSaveArchive || mafPreferSaveArchive),
+      saveMode,
       saveBehavior: MozillaArchiveFormat.CompleteSaveBehavior,
-      file: file
+      file
     };
 
     // Find a URI to use for determining last-downloaded-to directory
@@ -218,6 +190,8 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     // Create a custom web browser persist object if required.
     var mafPersistObject = null;
     if (saveBehavior.getPersistObject) {
+      let mafSaveTabs = typeof aSkipPrompt == "object" &&
+                        aSkipPrompt.mafSaveTabs;
       // If the save wasn't initiated from a list of tabs, but the document to be
       // saved is the main document in the browser window, ensure the browser
       // object is passed to the archive persist object, to enable saving the
@@ -282,6 +256,15 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  *        If false, don't save the file automatically to the user's
  *        default download directory, even if the associated preference
  *        is set, but ask for the target explicitly.
+ *        When this function is called indirectly by Mozilla Archive Format to
+ *        ask the user to save an archive, this parameter can also be an object
+ *        with the following properties:
+ *        {
+ *          mafAskSaveArchive:
+ *            True to ask to save archives only.
+ *          mafSaveTabs: [optional]
+ *            Array of browser objects corresponding to the tabs to be saved.
+ *        }
  * @param aRelatedURI
  *        An nsIURI associated with the download. The last used
  *        directory of the picker is retrieved from/stored in the
@@ -291,10 +274,36 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  *          is accepted.
  */
 function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ aRelatedURI) {
+  let document = mafPromiseTargetFile.caller.arguments[1];
   return Task.spawn(function*() {
     let downloadLastDir = new DownloadLastDir(window);
     let prefBranch = Services.prefs.getBranch("browser.download.");
     let useDownloadDir = prefBranch.getBoolPref("useDownloadDir");
+
+    let isSeaMonkey = Cc["@mozilla.org/xre/app-info;1"]
+     .getService(Ci.nsIXULAppInfo).ID == "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
+
+    let mafAskSaveArchive = false;
+    let mafPreferSaveArchive = false;
+    if (typeof aSkipPrompt == "object") {
+      if (aSkipPrompt.mafAskSaveArchive) {
+        mafAskSaveArchive = true;
+        // Attempt to save to the default downloads folder automatically if the
+        // host application is SeaMonkey and the associated preference is set.
+        aSkipPrompt = isSeaMonkey;
+        // When saving all tabs, only offer the choice of creating an archive.
+        aFpP.saveMode = MozillaArchiveFormat.SAVEMODE_MAFARCHIVE;
+      }
+    } else {
+      // Normal saveDocument calls will save HTML and XHTML documents in archive,
+      // unless we are on SeaMonkey where the save dialog may not be displayed.
+      mafPreferSaveArchive = !isSeaMonkey && document &&
+       (document.contentType == "text/html" ||
+       document.contentType == "application/xhtml+xml");
+    }
+
+    aFpP.saveInArchiveFirst = MozillaArchiveFormat.Prefs.saveEnabled &&
+                              (mafAskSaveArchive || mafPreferSaveArchive);
 
     if (!aSkipPrompt)
       useDownloadDir = false;
