@@ -228,6 +228,13 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
       }
       // Create the actual persist object.
       mafPersistObject = saveBehavior.getPersistObject(mafSaveTabs);
+    } else if (MozillaArchiveFormat.Prefs.saveEnabled && aDocument &&
+               saveBehavior.isComplete && !saveBehavior.targetContentType &&
+               (aDocument.contentType == "text/html" ||
+                aDocument.contentType == "application/xhtml+xml")) {
+      // The ExactPersist component can also save XML and SVG, but not as
+      // accurately as the browser's standard save system.
+      mafPersistObject = new MozillaArchiveFormat.ExactPersist();
     }
 
     var useSaveDocument = (aDocument != null) && saveBehavior.isComplete;
@@ -259,113 +266,6 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
 
     // Start the actual save process
     internalPersist(persistArgs);
-  }
-}
-
-/**
- * internalPersist: Creates a 'Persist' object (which will perform the saving
- *  in the background) and then starts it.
- *
- * @param persistArgs.sourceURI
- *        The nsIURI of the document being saved
- * @param persistArgs.sourceCacheKey [optional]
- *        If set will be passed to saveURI
- * @param persistArgs.sourceDocument [optional]
- *        The document to be saved, or null if not saving a complete document
- * @param persistArgs.sourceReferrer
- *        Required and used only when persistArgs.sourceDocument is NOT present,
- *        the nsIURI of the referrer to use, or null if no referrer should be
- *        sent.
- * @param persistArgs.sourcePostData
- *        Required and used only when persistArgs.sourceDocument is NOT present,
- *        represents the POST data to be sent along with the HTTP request, and
- *        must be null if no POST data should be sent.
- * @param persistArgs.targetFile
- *        The nsIFile of the file to create
- * @param persistArgs.targetContentType
- *        Required and used only when persistArgs.sourceDocument is present,
- *        determines the final content type of the saved file, or null to use
- *        the same content type as the source document. Currently only
- *        "text/plain" is meaningful.
- * @param persistArgs.bypassCache
- *        If true, the document will always be refetched from the server
- * @param persistArgs.isPrivate
- *        Indicates whether this is taking place in a private browsing context.
- */
-function mafInternalPersist(persistArgs) {
-  var persist;
-  if (persistArgs.persistObject) {
-    persist = persistArgs.persistObject;
-  } else if (MozillaArchiveFormat.Prefs.saveEnabled &&
-      persistArgs.sourceDocument && !persistArgs.targetContentType &&
-      (persistArgs.sourceDocument.contentType == "text/html" ||
-      persistArgs.sourceDocument.contentType == "application/xhtml+xml")) {
-    // The ExactPersist component can also save XML and SVG, but not as
-    // accurately as the browser's standard save system.
-    persist = new MozillaArchiveFormat.ExactPersist();
-  } else {
-    persist = makeWebBrowserPersist();
-  }
-
-  // Calculate persist flags.
-  const nsIWBP = Components.interfaces.nsIWebBrowserPersist;
-  const flags = nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES |
-                nsIWBP.PERSIST_FLAGS_FORCE_ALLOW_COOKIES;
-  if (persistArgs.bypassCache)
-    persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_BYPASS_CACHE;
-  else
-    persist.persistFlags = flags | nsIWBP.PERSIST_FLAGS_FROM_CACHE;
-
-  // Leave it to WebBrowserPersist to discover the encoding type (or lack thereof):
-  persist.persistFlags |= nsIWBP.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-
-  // Find the URI associated with the target file
-  var targetFileURL = makeFileURI(persistArgs.targetFile);
-
-  // Create download and initiate it (below)
-  var tr = Components.classes["@mozilla.org/transfer;1"].createInstance(Components.interfaces.nsITransfer);
-  tr.init(persistArgs.sourceURI,
-          targetFileURL, "", null, null, null, persist, persistArgs.isPrivate);
-  persist.progressListener = new DownloadListener(window, tr);
-
-  if (persistArgs.sourceDocument) {
-    // Saving a Document, not a URI:
-    var filesFolder = null;
-    if (persistArgs.targetContentType != "text/plain") {
-      // Create the local directory into which to save associated files.
-      filesFolder = persistArgs.targetFile.clone();
-
-      var nameWithoutExtension = getFileBaseName(filesFolder.leafName);
-      var filesFolderLeafName =
-        ContentAreaUtils.stringBundle
-                        .formatStringFromName("filesFolder", [nameWithoutExtension], 1);
-
-      filesFolder.leafName = filesFolderLeafName;
-    }
-
-    var encodingFlags = 0;
-    if (persistArgs.targetContentType == "text/plain") {
-      encodingFlags |= nsIWBP.ENCODE_FLAGS_FORMATTED;
-      encodingFlags |= nsIWBP.ENCODE_FLAGS_ABSOLUTE_LINKS;
-      encodingFlags |= nsIWBP.ENCODE_FLAGS_NOFRAMES_CONTENT;
-    } else {
-      encodingFlags |= nsIWBP.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES;
-    }
-
-    const kWrapColumn = 80;
-    persist.saveDocument(persistArgs.sourceDocument, targetFileURL, filesFolder,
-                         persistArgs.targetContentType, encodingFlags, kWrapColumn);
-  } else {
-    // The REFERRER_POLICY_UNSET constant is not used here to ensure the
-    // compatibility of the behavior with Firefox 45 and earlier versions.
-    persist.savePrivacyAwareURI(persistArgs.sourceURI,
-                                persistArgs.sourceCacheKey,
-                                persistArgs.sourceReferrer,
-                                0, // Components.interfaces.nsIHttpChannel.REFERRER_POLICY_UNSET,
-                                persistArgs.sourcePostData,
-                                null,
-                                targetFileURL,
-                                persistArgs.isPrivate);
   }
 }
 
@@ -620,7 +520,6 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
 if (!Services.appinfo.browserTabsRemoteAutostart) {
   saveBrowser = mafSaveBrowser;
   internalSave = mafInternalSave;
-  internalPersist = mafInternalPersist;
   promiseTargetFile = mafPromiseTargetFile;
 }
 
@@ -665,6 +564,21 @@ function mafAppendFiltersForContentType(aFilePicker, aContentType,
     aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
     aReturnBehaviorArray.push(MozillaArchiveFormat.NormalSaveBehavior);
   }
+}
+
+/**
+ * This function is overridden to use a specific persist object when requested.
+ */
+function makeWebBrowserPersist() {
+  if (makeWebBrowserPersist.caller.name == "internalPersist") {
+    let persistArgs = makeWebBrowserPersist.caller.arguments[0];
+    if (persistArgs.persistObject) {
+      return persistArgs.persistObject;
+    }
+  }
+
+  return Cc["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
+           .createInstance(Ci.nsIWebBrowserPersist);
 }
 
 /**
