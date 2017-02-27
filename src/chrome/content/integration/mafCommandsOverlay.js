@@ -204,7 +204,7 @@ var MafCommandsOverlay = {
    */
   saveTabsInArchive: function() {
     // Ensure all the background tabs are loaded while the selection is made.
-    for (var [, browser] in Iterator(getBrowser().browsers)) {
+    for (let browser of gBrowser.browsers) {
       if (browser.hasAttribute("pending")) {
         browser.reload();
       }
@@ -231,7 +231,7 @@ var MafCommandsOverlay = {
    */
   saveAllTabsInArchive: function() {
     // Ensure all the background tabs are loaded while the selection is made.
-    for (var [, browser] in Iterator(getBrowser().browsers)) {
+    for (let browser of gBrowser.browsers) {
       if (browser.hasAttribute("pending")) {
         browser.reload();
       }
