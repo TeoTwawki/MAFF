@@ -74,7 +74,6 @@ let objectsByFolder = {
     "SaveJob",
   ],
   startup: [
-    "HelperAppsWrapper",
     "StartupEvents",
     "StartupInitializer",
   ],
