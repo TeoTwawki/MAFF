@@ -141,7 +141,7 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
   var mainBrowser = window.getBrowser && window.getBrowser().selectedBrowser;
 
   // Note: aDocument == null when this code is used by save-link-as...
-  var saveMode = mafGetSaveModeForContentType(aContentType, aDocument);
+  var saveMode = GetSaveModeForContentType(aContentType, aDocument);
 
   var file, sourceURI, saveAsType, saveBehavior;
   // Find the URI object for aURL and the FileName/Extension to use when saving.
@@ -218,8 +218,8 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
     // If we should save as a complete page, the saveAsType is kSaveAsType_Complete.
     // If we should save as text, the saveAsType is kSaveAsType_Text.
     var useSaveDocument = aDocument &&
-                          ((saveAsType == kSaveAsType_Complete) ||
-                           (saveAsType == kSaveAsType_Text));
+                          (((saveMode & SAVEMODE_COMPLETE_DOM) && (saveAsType == kSaveAsType_Complete)) ||
+                           ((saveMode & SAVEMODE_COMPLETE_TEXT) && (saveAsType == kSaveAsType_Text)));
     // If we're saving a document, and are saving either in complete mode or
     // as converted text, pass the document to the web browser persist component.
     // If we're just saving the HTML (second option in the list), send only the URI.
@@ -291,16 +291,14 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     let isSeaMonkey = Cc["@mozilla.org/xre/app-info;1"]
      .getService(Ci.nsIXULAppInfo).ID == "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
 
-    let mafAskSaveArchive = false;
+    let saveOnlyInArchive = false;
     let mafPreferSaveArchive = false;
     if (typeof aSkipPrompt == "object") {
       if (aSkipPrompt.mafAskSaveArchive) {
-        mafAskSaveArchive = true;
+        saveOnlyInArchive = true;
         // Attempt to save to the default downloads folder automatically if the
         // host application is SeaMonkey and the associated preference is set.
         aSkipPrompt = isSeaMonkey;
-        // When saving all tabs, only offer the choice of creating an archive.
-        aFpP.saveMode = MozillaArchiveFormat.SAVEMODE_MAFARCHIVE;
       }
     } else {
       // Normal saveDocument calls will save HTML and XHTML documents in archive,
@@ -311,7 +309,7 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     }
 
     aFpP.saveInArchiveFirst = MozillaArchiveFormat.Prefs.saveEnabled &&
-                              (mafAskSaveArchive || mafPreferSaveArchive);
+                              (saveOnlyInArchive || mafPreferSaveArchive);
 
     if (!aSkipPrompt)
       useDownloadDir = false;
@@ -419,15 +417,16 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     var saveBehaviors = [];
     mafAppendFiltersForContentType(fp, aFpP.contentType, aFpP.fileInfo.fileExt,
                                    aFpP.saveMode, saveBehaviors,
-                                   aFpP.saveInArchiveFirst);
+                                   aFpP.saveInArchiveFirst, saveOnlyInArchive,
+                                   document);
 
     // The index of the selected filter is only preserved and restored if there's
     // more than one filter in addition to "All Files".
-    if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
+    if (document) {
       try {
         // In Mozilla Archive Format, use a special preference to store the
         // selected filter if only the archive save filters are shown.
-        if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE) {
+        if (saveOnlyInArchive) {
           fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
         } else if (aFpP.saveInArchiveFirst) {
           let indexHtml = MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml;
@@ -513,10 +512,10 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       }
     } while(shouldShowFilePickerAgain);
 
-    if (aFpP.saveMode != MozillaArchiveFormat.SAVEMODE_SAMEFORMAT) {
+    if (document) {
       // In Mozilla Archive Format, use a special preference to store the
       // selected filter if only the archive save filters are shown.
-      if (aFpP.saveMode == MozillaArchiveFormat.SAVEMODE_MAFARCHIVE) {
+      if (saveOnlyInArchive) {
         MozillaArchiveFormat.DynamicPrefs.saveFilterIndex = fp.filterIndex;
       } else if (aFpP.saveInArchiveFirst) {
         MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml = fp.filterIndex;
@@ -531,6 +530,14 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
 
     // Do not store the last save directory as a pref inside the private browsing mode
     downloadLastDir.setFile(aRelatedURI, fp.file.parent);
+
+    // File types that aren't complete web pages can still be saved in an
+    // archive using the nsIWebBrowserPersist.saveDocument method. To ensure
+    // that this method is called, we have to modify the saveMode so that
+    // internalSave still forwards the document to internalPersist. We can
+    // simply bypass all the checks made by internalSave because saveAsType is
+    // already correct based on the choice in the file picker.
+    aFpP.saveMode.valueOf = () => SAVEMODE_COMPLETE_DOM | SAVEMODE_COMPLETE_TEXT;
 
     return true;
   });
@@ -551,12 +558,14 @@ if (!Services.appinfo.browserTabsRemoteAutostart) {
 function mafAppendFiltersForContentType(aFilePicker, aContentType,
                                         aFileExtension, aSaveMode,
                                         aReturnBehaviorArray,
-                                        aSaveInArchiveFirst)
+                                        aSaveInArchiveFirst, aSaveOnlyInArchive,
+                                        aDocument)
 {
   function appendWhere(aCheckFn) {
     // For every behavior that is valid for the given save mode.
     gInternalSaveBehaviors.forEach(function(saveBehavior) {
-      if(saveBehavior.isValidForSaveMode(aSaveMode) && aCheckFn(saveBehavior)) {
+      if (saveBehavior.isValidForSaveMode(aSaveMode, aDocument) &&
+          aCheckFn(saveBehavior)) {
         // Add the corresponding file filter if one is provided.
         var filter = saveBehavior.getFileFilter(aContentType, aFileExtension);
         if (filter.mask) {
@@ -570,9 +579,11 @@ function mafAppendFiltersForContentType(aFilePicker, aContentType,
     });
   }
 
-  if (aSaveInArchiveFirst) {
-    appendWhere(b => b.mandatoryExtension);
-    appendWhere(b => !b.mandatoryExtension);
+  if (aSaveInArchiveFirst || aSaveOnlyInArchive) {
+    appendWhere(b => b.savesInArchive);
+    if (!aSaveOnlyInArchive) {
+      appendWhere(b => !b.savesInArchive);
+    }
     // When asking to save in an archive, if All Files is selected we will save
     // the file using the default archive format.
     aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
@@ -600,6 +611,12 @@ function makeWebBrowserPersist() {
            .createInstance(Ci.nsIWebBrowserPersist);
 }
 
+{
+  // Allow the save mode to be modified by promiseTargetFile.
+  let originalFn = GetSaveModeForContentType;
+  GetSaveModeForContentType = (...args) => new Number(originalFn(...args));
+}
+
 /**
  * The stateless objects that extend this one represent the possible methods to
  * save a web page or other file locally. Every object based on
@@ -620,7 +637,7 @@ InternalSaveBehavior.prototype = {
   /**
    * Returns true is this filter should be included for the given save mode.
    */
-  isValidForSaveMode: function(aSaveMode) {
+  isValidForSaveMode: function(aSaveMode, aDocument) {
     return true;
   },
 
@@ -720,9 +737,6 @@ InternalSaveBehavior.prototype = {
 
 /** The normal save behavior (also used when All Files is selected) */
 MozillaArchiveFormat.NormalSaveBehavior = new InternalSaveBehavior();
-MozillaArchiveFormat.NormalSaveBehavior.isValidForSaveMode = function(aSaveMode) {
-  return aSaveMode & MozillaArchiveFormat.SAVEMODE_SAMEFORMAT;
-};
 
 /** The "save as complete web page" behavior. */
 MozillaArchiveFormat.CompleteSaveBehavior = new InternalSaveBehavior();
@@ -760,34 +774,6 @@ var gInternalSaveBehaviors = [
   MozillaArchiveFormat.TextOnlySaveBehavior,
 ];
 
-// Special save modes for Mozilla Archive Format.
-MozillaArchiveFormat.SAVEMODE_MAFARCHIVE = 0x100;
-MozillaArchiveFormat.SAVEMODE_SAMEFORMAT = 0x200;
-
-function mafGetSaveModeForContentType(aContentType, aDocument) {
-  // We can only save a complete page if we have a loaded document,
-  // and it's not a CPOW -- nsWebBrowserPersist needs a real document.
-  if (!aDocument || Components.utils.isCrossProcessWrapper(aDocument))
-    return MozillaArchiveFormat.SAVEMODE_SAMEFORMAT;
-
-  // Find the possible save modes using the provided content type
-  var saveMode = MozillaArchiveFormat.SAVEMODE_SAMEFORMAT |
-                 MozillaArchiveFormat.SAVEMODE_MAFARCHIVE;
-  switch (aContentType) {
-  case "text/html":
-  case "application/xhtml+xml":
-  case "image/svg+xml":
-    saveMode |= SAVEMODE_COMPLETE_TEXT;
-    // Fall through
-  case "text/xml":
-  case "application/xml":
-    saveMode |= SAVEMODE_COMPLETE_DOM;
-    break;
-  }
-
-  return saveMode;
-}
-
 var gMafDefaultSaveBehavior;
 var gMafMaffSaveBehavior;
 var gMafMhtmlSaveBehavior;
@@ -798,9 +784,9 @@ MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
   var newSaveBehavior = new InternalSaveBehavior();
   newSaveBehavior.isComplete = true;
   newSaveBehavior.mandatoryExtension = true;
-  newSaveBehavior.isValidForSaveMode = function(aSaveMode) {
-    return MozillaArchiveFormat.Prefs.saveEnabled &&
-     (aSaveMode & MozillaArchiveFormat.SAVEMODE_MAFARCHIVE);
+  newSaveBehavior.savesInArchive = true;
+  newSaveBehavior.isValidForSaveMode = function(aSaveMode, aDocument) {
+    return MozillaArchiveFormat.Prefs.saveEnabled && aDocument;
   }
   newSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
     // Access the current values in the MAF save filter objects array.
