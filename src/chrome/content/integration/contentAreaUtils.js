@@ -56,202 +56,6 @@ function mafSaveBrowser(aBrowser, aSkipPrompt, aOuterWindowID=0)
 }
 
 /**
- * internalSave: Used when saving a document or URL.
- *
- * If aChosenData is null, this method:
- *  - Determines a local target filename to use
- *  - Prompts the user to confirm the destination filename and save mode
- *    (aContentType affects this)
- *  - [Note] This process involves the parameters aURL, aReferrer (to determine
- *    how aURL was encoded), aDocument, aDefaultFileName, aFilePickerTitleKey,
- *    and aSkipPrompt.
- *
- * If aChosenData is non-null, this method:
- *  - Uses the provided source URI and save file name
- *  - Saves the document as complete DOM if possible (aDocument present and
- *    right aContentType)
- *  - [Note] The parameters aURL, aDefaultFileName, aFilePickerTitleKey, and
- *    aSkipPrompt are ignored.
- *
- * In any case, this method:
- *  - Creates a 'Persist' object (which will perform the saving in the
- *    background) and then starts it.
- *  - [Note] This part of the process only involves the parameters aDocument,
- *    aShouldBypassCache and aReferrer. The source, the save name and the save
- *    mode are the ones determined previously.
- *
- * @param aURL
- *        The String representation of the URL of the document being saved
- * @param aDocument
- *        The document to be saved
- * @param aDefaultFileName
- *        The caller-provided suggested filename if we don't
- *        find a better one
- * @param aContentDisposition
- *        The caller-provided content-disposition header to use.
- * @param aContentType
- *        The caller-provided content-type to use
- * @param aShouldBypassCache
- *        If true, the document will always be refetched from the server
- * @param aFilePickerTitleKey
- *        Alternate title for the file picker
- * @param aChosenData
- *        If non-null this contains an instance of object AutoChosen (see below)
- *        which holds pre-determined data so that the user does not need to be
- *        prompted for a target filename.
- * @param aReferrer
- *        the referrer URI object (not URL string) to use, or null
- *        if no referrer should be sent.
- * @param aInitiatingDocument [optional]
- *        The document from which the save was initiated.
- *        If this is omitted then aIsContentWindowPrivate has to be provided.
- * @param aSkipPrompt [optional]
- *        If set to true, we will attempt to save the file to the
- *        default downloads folder without prompting.
- *        When this function is called, directly or indirectly, by Mozilla
- *        Archive Format to ask the user to save an archive, this parameter can
- *        also be an object with the following properties:
- *         - mafAskSaveArchive: True to ask to save archives only.
- *         - mafSaveTabs [optional]: Array of browser objects corresponding to
- *           the tabs to be saved.
- * @param aCacheKey [optional]
- *        If set will be passed to saveURI.  See nsIWebBrowserPersist for
- *        allowed values.
- * @param aIsContentWindowPrivate [optional]
- *        This parameter is provided when the aInitiatingDocument is not a
- *        real document object. Stores whether aInitiatingDocument.defaultView
- *        was private or not.
- */
-function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
-                         aContentType, aShouldBypassCache, aFilePickerTitleKey,
-                         aChosenData, aReferrer, aInitiatingDocument, aSkipPrompt,
-                         aCacheKey, aIsContentWindowPrivate) {
-  forbidCPOW(aURL, "internalSave", "aURL");
-  forbidCPOW(aReferrer, "internalSave", "aReferrer");
-  forbidCPOW(aCacheKey, "internalSave", "aCacheKey");
-  // Allow aInitiatingDocument to be a CPOW.
-
-  if (aSkipPrompt == undefined)
-    aSkipPrompt = false;
-
-  if (aCacheKey == undefined)
-    aCacheKey = null;
-
-  // Get a reference to the main content browser, if available in the window.
-  var mainBrowser = window.getBrowser && window.getBrowser().selectedBrowser;
-
-  // Note: aDocument == null when this code is used by save-link-as...
-  var saveMode = GetSaveModeForContentType(aContentType, aDocument);
-
-  var file, sourceURI, saveAsType, saveBehavior;
-  // Find the URI object for aURL and the FileName/Extension to use when saving.
-  // FileName/Extension will be ignored if aChosenData supplied.
-  if (aChosenData) {
-    file = aChosenData.file;
-    sourceURI = aChosenData.uri;
-    saveAsType = kSaveAsType_Complete;
-    saveBehavior = MozillaArchiveFormat.NormalSaveBehavior;
-
-    continueSave();
-  } else {
-    var charset = null;
-    if (aDocument)
-      charset = aDocument.characterSet;
-    else if (aReferrer)
-      charset = aReferrer.originCharset;
-    var fileInfo = new FileInfo(aDefaultFileName);
-    initFileInfo(fileInfo, aURL, charset, aDocument,
-                 aContentType, aContentDisposition);
-    sourceURI = fileInfo.uri;
-
-    var fpParams = {
-      fpTitleKey: aFilePickerTitleKey,
-      fileInfo,
-      contentType: aContentType,
-      saveMode,
-      saveAsType: kSaveAsType_Complete,
-      saveBehavior: MozillaArchiveFormat.CompleteSaveBehavior,
-      file
-    };
-
-    // Find a URI to use for determining last-downloaded-to directory
-    let relatedURI = aReferrer || sourceURI;
-
-    promiseTargetFile(fpParams, aSkipPrompt, relatedURI).then(aDialogAccepted => {
-      if (!aDialogAccepted)
-        return;
-
-      saveAsType = fpParams.saveAsType;
-      saveBehavior = fpParams.saveBehavior;
-      file = fpParams.file;
-
-      continueSave();
-    }).then(null, Components.utils.reportError);
-  }
-
-  function continueSave() {
-    // Create a custom web browser persist object if required.
-    var mafPersistObject = null;
-    if (saveBehavior.getPersistObject) {
-      let mafSaveTabs = typeof aSkipPrompt == "object" &&
-                        aSkipPrompt.mafSaveTabs;
-      // If the save wasn't initiated from a list of tabs, but the document to be
-      // saved is the main document in the browser window, ensure the browser
-      // object is passed to the archive persist object, to enable saving the
-      // additional metadata.
-      if (!mafSaveTabs && mainBrowser &&
-          (aDocument == mainBrowser.contentDocument)) {
-        mafSaveTabs = [mainBrowser];
-      }
-      // Create the actual persist object.
-      mafPersistObject = saveBehavior.getPersistObject(mafSaveTabs);
-    } else if (MozillaArchiveFormat.Prefs.saveEnabled && aDocument &&
-               saveBehavior.isComplete && !saveBehavior.targetContentType &&
-               (aDocument.contentType == "text/html" ||
-                aDocument.contentType == "application/xhtml+xml")) {
-      // The ExactPersist component can also save XML and SVG, but not as
-      // accurately as the browser's standard save system.
-      mafPersistObject = new MozillaArchiveFormat.ExactPersist();
-    }
-
-    // XXX We depend on the following holding true in appendFiltersForContentType():
-    // If we should save as a complete page, the saveAsType is kSaveAsType_Complete.
-    // If we should save as text, the saveAsType is kSaveAsType_Text.
-    var useSaveDocument = aDocument &&
-                          (((saveMode & SAVEMODE_COMPLETE_DOM) && (saveAsType == kSaveAsType_Complete)) ||
-                           ((saveMode & SAVEMODE_COMPLETE_TEXT) && (saveAsType == kSaveAsType_Text)));
-    // If we're saving a document, and are saving either in complete mode or
-    // as converted text, pass the document to the web browser persist component.
-    // If we're just saving the HTML (second option in the list), send only the URI.
-    let nonCPOWDocument =
-      aDocument && !Components.utils.isCrossProcessWrapper(aDocument);
-
-    let isPrivate = aIsContentWindowPrivate;
-    if (isPrivate === undefined) {
-      isPrivate = aInitiatingDocument instanceof Components.interfaces.nsIDOMDocument
-        ? PrivateBrowsingUtils.isContentWindowPrivate(aInitiatingDocument.defaultView)
-        : aInitiatingDocument.isPrivate;
-    }
-
-    var persistArgs = {
-      sourceURI,
-      sourceReferrer    : aReferrer,
-      sourceDocument    : useSaveDocument ? aDocument : null,
-      targetContentType : (saveAsType == kSaveAsType_Text) ? "text/plain" : null,
-      targetFile        : file,
-      sourceCacheKey    : aCacheKey,
-      sourcePostData    : nonCPOWDocument ? getPostData(aDocument) : null,
-      bypassCache       : aShouldBypassCache,
-      isPrivate,
-      persistObject     : mafPersistObject
-    };
-
-    // Start the actual save process
-    internalPersist(persistArgs);
-  }
-}
-
-/** 
  * Given the Filepicker Parameters (aFpP), show the file picker dialog,
  * prompting the user to confirm (or change) the fileName.
  * @param aFpP
@@ -283,6 +87,17 @@ function mafInternalSave(aURL, aDocument, aDefaultFileName, aContentDisposition,
  */
 function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ aRelatedURI) {
   let document = mafPromiseTargetFile.caller.arguments[1];
+
+  // If the save wasn't initiated from a list of tabs, but the document to be
+  // saved is the main document in the browser window, ensure the browser
+  // object is passed to the archive persist object anyways, to enable saving
+  // the additional metadata.
+  let saveBrowsers = null;
+  let mainBrowser = window.getBrowser && window.getBrowser().selectedBrowser;
+  if (mainBrowser && document == mainBrowser.contentDocument) {
+    saveBrowsers = [mainBrowser];
+  }
+
   return Task.spawn(function*() {
     let downloadLastDir = new DownloadLastDir(window);
     let prefBranch = Services.prefs.getBranch("browser.download.");
@@ -296,10 +111,13 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     if (typeof aSkipPrompt == "object") {
       if (aSkipPrompt.mafAskSaveArchive) {
         saveOnlyInArchive = true;
-        // Attempt to save to the default downloads folder automatically if the
-        // host application is SeaMonkey and the associated preference is set.
-        aSkipPrompt = isSeaMonkey;
       }
+      if (aSkipPrompt.mafSaveTabs) {
+        saveBrowsers = aSkipPrompt.mafSaveTabs;
+      }
+      // Attempt to save to the default downloads folder automatically if the
+      // host application is SeaMonkey and the associated preference is set.
+      aSkipPrompt = isSeaMonkey;
     } else {
       // Normal saveDocument calls will save HTML and XHTML documents in archive,
       // unless we are on SeaMonkey where the save dialog may not be displayed.
@@ -311,6 +129,35 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     aFpP.saveInArchiveFirst = MozillaArchiveFormat.Prefs.saveEnabled &&
                               (saveOnlyInArchive || mafPreferSaveArchive);
 
+    let setPersistObject = function(saveBehavior) {
+      // Create a custom web browser persist object if required.
+      let persistObject = null;
+      if (saveBehavior.getPersistObject) {
+        persistObject = saveBehavior.getPersistObject(saveBrowsers);
+      } else if (MozillaArchiveFormat.Prefs.saveEnabled && document &&
+                 saveBehavior == MozillaArchiveFormat.CompleteSaveBehavior &&
+                 saveBehavior.isValidForSaveMode(aFpP.saveMode) &&
+                 (document.contentType == "text/html" ||
+                  document.contentType == "application/xhtml+xml")) {
+        // The ExactPersist component can also save XML and SVG, but not as
+        // accurately as the browser's standard save system.
+        persistObject = new MozillaArchiveFormat.ExactPersist();
+      }
+
+      // Wrap the persist object for propagation to makeWebBrowserPersist.
+      if (persistObject) {
+        aFpP.file = { persistObject, file: aFpP.file };
+        // File types that aren't complete web pages can still be saved in an
+        // archive using the nsIWebBrowserPersist.saveDocument method. To ensure
+        // that this method is called, we have to modify the saveMode so that
+        // internalSave still forwards the document to internalPersist. We can
+        // simply bypass all the checks made by internalSave because saveAsType
+        // is already correct based on the choice in the file picker.
+        aFpP.saveMode.valueOf = () => SAVEMODE_COMPLETE_DOM |
+                                      SAVEMODE_COMPLETE_TEXT;
+      }
+    };
+
     if (!aSkipPrompt)
       useDownloadDir = false;
 
@@ -321,15 +168,16 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     let dir = new FileUtils.File(dirPath);
 
     if (useDownloadDir && dirExists) {
+      let saveBehavior = MozillaArchiveFormat.CompleteSaveBehavior;
+
       // If we are saving an archive automatically using Mozilla Archive Format,
       // use the archive type selected when asking to save in an archive, and
       // adjust the output file extension accordingly.
       if (aFpP.saveInArchiveFirst) {
-        aFpP.saveBehavior =
-             MozillaArchiveFormat.DynamicPrefs.saveFilterIndex == 1 ?
-             gMafMhtmlSaveBehavior : gMafMaffSaveBehavior;
+        saveBehavior = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex == 1 ?
+                       gMafMhtmlSaveBehavior : gMafMaffSaveBehavior;
         // Use a MAF specific call to retrieve the filter string.
-        var filterString = aFpP.saveBehavior.getFileFilter().extensionstring;
+        var filterString = saveBehavior.getFileFilter().extensionstring;
         // Get the first valid extension for the file type, excluding the initial
         // star and dot ("*.").
         aFpP.fileInfo.fileExt = filterString.split(";")[0].slice(2);
@@ -338,6 +186,7 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       dir.append(getNormalizedLeafName(aFpP.fileInfo.fileName,
                                        aFpP.fileInfo.fileExt));
       aFpP.file = uniqueFile(dir);
+      setPersistObject(saveBehavior);
       return true;
     }
 
@@ -439,7 +288,7 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       }
     }
 
-    var saveBehavior;
+    let saveBehavior;
     do {
       var shouldShowFilePickerAgain = false;
 
@@ -457,10 +306,10 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       fp.defaultString = fp.file.leafName;
       // Check that the file picker filter index is not out of bounds. The
       // nsIFilePicker interface does not guarantee this.
-      aFpP.saveBehavior = saveBehaviors[fp.filterIndex] ?
+      saveBehavior = saveBehaviors[fp.filterIndex] ?
        saveBehaviors[fp.filterIndex] : MozillaArchiveFormat.NormalSaveBehavior;
-      aFpP.saveAsType = aFpP.saveBehavior.targetContentType ? kSaveAsType_Text :
-                        aFpP.saveBehavior.isComplete ? kSaveAsType_Complete : 1;
+      aFpP.saveAsType = saveBehavior.targetContentType ? kSaveAsType_Text :
+                        saveBehavior.isComplete ? kSaveAsType_Complete : 1;
       // Save the selected file object and URL.
       aFpP.file = fp.file;
       aFpP.fileURL = fp.fileURL;
@@ -468,9 +317,9 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       // Archives saved by Mozilla Archive Format cannot be opened unless the
       // correct extension is present. If we are saving an archive, force the
       // extension and check again if the file exists.
-      if (aFpP.saveBehavior.mandatoryExtension) {
+      if (saveBehavior.mandatoryExtension) {
         // Use a MAF specific call to retrieve the filter string again.
-        var filterString = aFpP.saveBehavior.getFileFilter().extensionstring;
+        var filterString = saveBehavior.getFileFilter().extensionstring;
         // Get an array of valid extensions for the file type.
         var possibleExtensions = filterString.split(";").
          map(function(extWithStar) {
@@ -512,6 +361,8 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       }
     } while(shouldShowFilePickerAgain);
 
+    setPersistObject(saveBehavior);
+
     if (document) {
       // In Mozilla Archive Format, use a special preference to store the
       // selected filter if only the archive save filters are shown.
@@ -531,21 +382,12 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     // Do not store the last save directory as a pref inside the private browsing mode
     downloadLastDir.setFile(aRelatedURI, fp.file.parent);
 
-    // File types that aren't complete web pages can still be saved in an
-    // archive using the nsIWebBrowserPersist.saveDocument method. To ensure
-    // that this method is called, we have to modify the saveMode so that
-    // internalSave still forwards the document to internalPersist. We can
-    // simply bypass all the checks made by internalSave because saveAsType is
-    // already correct based on the choice in the file picker.
-    aFpP.saveMode.valueOf = () => SAVEMODE_COMPLETE_DOM | SAVEMODE_COMPLETE_TEXT;
-
     return true;
   });
 }
 
 if (!Services.appinfo.browserTabsRemoteAutostart) {
   saveBrowser = mafSaveBrowser;
-  internalSave = mafInternalSave;
   promiseTargetFile = mafPromiseTargetFile;
 }
 
@@ -602,8 +444,10 @@ function mafAppendFiltersForContentType(aFilePicker, aContentType,
 function makeWebBrowserPersist() {
   if (makeWebBrowserPersist.caller.name == "internalPersist") {
     let persistArgs = makeWebBrowserPersist.caller.arguments[0];
-    if (persistArgs.persistObject) {
-      return persistArgs.persistObject;
+    let maybeWrapped = persistArgs.targetFile;
+    if (maybeWrapped.persistObject) {
+      persistArgs.targetFile = maybeWrapped.file;
+      return maybeWrapped.persistObject;
     }
   }
 
