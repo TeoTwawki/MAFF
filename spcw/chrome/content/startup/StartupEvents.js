@@ -123,19 +123,19 @@ var StartupEvents = {
         // welcome page. The normal welcome page with file associations will be
         // displayed on the next startup if was not shown before.
         browser.loadTabs(
-         ["chrome://maf/content/preferences/updateBetaPage.xhtml"],
+         ["chrome://spcw/content/preferences/updateBetaPage.xhtml"],
          false, false);
         Prefs.otherDisplayUpdateBetaPage = false;
       } else if (Prefs.otherDisplayWelcomePage) {
         // Load the page in foreground.
-        browser.loadTabs(["chrome://maf/content/preferences/welcomePage.xhtml"],
+        browser.loadTabs(["chrome://spcw/content/preferences/welcomePage.xhtml"],
                          false, false);
         Prefs.otherDisplayWelcomePage = false;
       }
       if (Services.appinfo.browserTabsRemoteAutostart &&
        Prefs.otherDisplayWelcomeMultiprocess) {
         browserWindow.openDialog(
-         "chrome://maf/content/preferences/prefsDialog.xul", "",
+         "chrome://spcw/content/preferences/prefsDialog.xul", "",
          "chrome,titlebar,toolbar,centerscreen,modal");
         Prefs.otherDisplayWelcomeMultiprocess = false;
       }

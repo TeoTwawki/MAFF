@@ -63,7 +63,7 @@ var MafInterfaceOverlay = {
     gBrowser.addProgressListener(MafInterfaceOverlay.webProgressListener);
 
     // Register a preference observer to update the visibility of the icons.
-    MozillaArchiveFormat.Prefs.prefBranchForMaf.addObserver(
+    SavedPagesConversionWizard.Prefs.prefBranch.addObserver(
      "interface.info.icon", MafInterfaceOverlay.prefObserver, false);
 
     // Listen for when the browser window closes, to perform shutdown.
@@ -78,7 +78,7 @@ var MafInterfaceOverlay = {
     window.removeEventListener("unload", MafInterfaceOverlay.onUnload, false);
 
     // Remove the preference observer defined in this object.
-    MozillaArchiveFormat.Prefs.prefBranchForMaf.removeObserver(
+    SavedPagesConversionWizard.Prefs.prefBranch.removeObserver(
      "interface.info.icon", MafInterfaceOverlay.prefObserver);
 
     // Remove the web progress listener defined in this object.
@@ -131,7 +131,7 @@ var MafInterfaceOverlay = {
    */
   _refreshCurrentPage: function() {
     // Get a direct reference to the ArchivePage object, or use an empty object.
-    let pageInfo = MozillaArchiveFormat.ArchiveCache.pageFromUri(
+    let pageInfo = SavedPagesConversionWizard.ArchiveCache.pageFromUri(
      gBrowser.currentURI) || {};
     this._currentPageInfo = pageInfo;
 
@@ -174,7 +174,7 @@ var MafInterfaceOverlay = {
    */
   _checkArchiveInfoIcons: function() {
     this._archiveInfoUrlbarButton.hidden = !this._currentPageInfo.hasValues ||
-     !MozillaArchiveFormat.Prefs.interfaceInfoIcon;
+     !SavedPagesConversionWizard.Prefs.interfaceInfoIcon;
   },
 
   /**
@@ -229,8 +229,8 @@ var MafInterfaceOverlay = {
     // Change the label of the widget based on the document type.
     var labelText;
     var contentDocument = getBrowser().selectedBrowser.contentDocument;
-    if (MozillaArchiveFormat.Prefs.saveEnabled &&
-     MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml < 2 && (
+    if (SavedPagesConversionWizard.Prefs.saveEnabled &&
+     SavedPagesConversionWizard.DynamicPrefs.saveFilterIndexHtml < 2 && (
      contentDocument.contentType == "text/html" ||
      contentDocument.contentType == "application/xhtml+xml")) {
       labelText = document.
@@ -248,7 +248,7 @@ var MafInterfaceOverlay = {
   _checkArchiveInfoNotification: function() {
     // Show a notification for the page only if required.
     if (!this._currentPageInfo.hasValues ||
-     !MozillaArchiveFormat.Prefs.interfaceInfoBar) {
+     !SavedPagesConversionWizard.Prefs.interfaceInfoBar) {
       return;
     }
 
@@ -265,7 +265,7 @@ var MafInterfaceOverlay = {
 
     // Create a new notification.
     var notification = notificationBox.appendNotification("",
-     "maf-original-info", "chrome://maf/skin/integration/page-archived.png",
+     "maf-original-info", "chrome://spcw/skin/integration/page-archived.png",
      notificationBox.PRIORITY_WARNING_LOW, null);
 
     // Show the save date only if present.

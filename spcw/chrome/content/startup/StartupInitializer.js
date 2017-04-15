@@ -76,12 +76,12 @@ var StartupInitializer = {
 
     // Register listeners for global messages from the content processes.
     ppmm.addMessageListener(
-     "MozillaArchiveFormat:ComputeDefaultTempFolderPath",
+     "SavedPagesConversionWizard:ComputeDefaultTempFolderPath",
      () => Prefs.computeDefaultTempFolderPath());
 
     // Continue initialization in the parent and all the child processes.
     ppmm.loadProcessScript(`data:,
-      Components.utils.import("chrome://maf/content/MozillaArchiveFormat.jsm");
+      Components.utils.import("chrome://spcw/content/SavedPagesConversionWizard.jsm");
       StartupInitializer.initForEachProcess();
     `, true);
   },
@@ -143,11 +143,11 @@ var StartupInitializer = {
     this._componentRegistrar.registerFactory(
      ContentPolicy.prototype.classID,
      "Saved Pages Conversion Wizard Content Policy",
-     "@amadzone.org/maf/content-policy;1",
+     "@amadzone.org/spcw/content-policy;1",
      ContentPolicy.prototype._xpcom_factory);
     this._addCategoryEntryForSession("content-policy",
-     "MozillaArchiveFormat",
-     "@amadzone.org/maf/content-policy;1");
+     "SavedPagesConversionWizard",
+     "@amadzone.org/spcw/content-policy;1");
 
     // Register this extension's document loader factory, which is used for
     // complex web content in order to display the original location of the
@@ -156,11 +156,11 @@ var StartupInitializer = {
     this._componentRegistrar.registerFactory(
      DocumentLoaderFactory.prototype.classID,
      "Saved Pages Conversion Wizard Document Loader Factory",
-     "@amadzone.org/maf/document-loader-factory;1",
+     "@amadzone.org/spcw/document-loader-factory;1",
      DocumentLoaderFactory.prototype._xpcom_factory);
     this._addCategoryEntryForSession("Gecko-Content-Viewers",
-     "*/preprocessed-web-archive",
-     "@amadzone.org/maf/document-loader-factory;1");
+     "*/preprocessed-web-archive-spcw",
+     "@amadzone.org/spcw/document-loader-factory;1");
 
     // In SeaMonkey, we have to disable the mail document loader factory in
     // order to allow our loading process to occur.

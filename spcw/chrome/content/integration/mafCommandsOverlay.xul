@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://maf/locale/mafCommandsOverlay.dtd">
+<!DOCTYPE overlay SYSTEM "chrome://spcw/locale/mafCommandsOverlay.dtd">
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
    -
@@ -49,13 +49,13 @@
 
   <!-- Overlay machinery -->
   <script type="application/x-javascript"
-          src="chrome://maf/content/integration/browser.js"
+          src="chrome://spcw/content/integration/browser.js"
           />
   <script type="application/x-javascript"
-          src="chrome://maf/content/integration/contentAreaUtils.js"
+          src="chrome://spcw/content/integration/contentAreaUtils.js"
           />
   <script type="application/x-javascript"
-          src="chrome://maf/content/integration/mafCommandsOverlay.js"
+          src="chrome://spcw/content/integration/mafCommandsOverlay.js"
           />
 
   <!-- User interface commands -->

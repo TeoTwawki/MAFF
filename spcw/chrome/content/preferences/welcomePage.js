@@ -37,7 +37,7 @@
 
 const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
-Cu.import("chrome://maf/content/MozillaArchiveFormat.jsm");
+Cu.import("chrome://spcw/content/SavedPagesConversionWizard.jsm");
 
 /**
  * Handles the MAF welcome page.

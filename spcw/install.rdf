@@ -52,11 +52,11 @@
     <em:translator>tr: Ersen Yoldaç</em:translator>
     <em:translator>zh-CN: 虞海</em:translator>
     <em:translator>zh-TW: Samuel Chan C-Y, 虞海</em:translator>
-    <em:homepageURL>http://maf.mozdev.org/</em:homepageURL>
+    <em:homepageURL>http://maf.mozdev.org/?src=spcw</em:homepageURL>
 
     <!-- Front End Integration Hooks (used by Extension Manager)-->
-    <em:optionsURL>chrome://maf/content/preferences/prefsDialog.xul</em:optionsURL>
-    <em:iconURL>chrome://maf-icons/skin/icon.png</em:iconURL>
-    <em:icon64URL>chrome://maf-icons/skin/icon64.png</em:icon64URL>
+    <em:optionsURL>chrome://spcw/content/preferences/prefsDialog.xul</em:optionsURL>
+    <em:iconURL>chrome://spcw-icons/skin/icon.png</em:iconURL>
+    <em:icon64URL>chrome://spcw-icons/skin/icon64.png</em:icon64URL>
   </Description>
 </RDF>

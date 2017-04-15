@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin" type="text/css"?>
-<?xml-stylesheet href="chrome://maf/skin/preferences/prefsDialog.css" type="text/css"?>
-<!DOCTYPE prefwindow SYSTEM "chrome://maf/locale/prefsDialog.dtd">
+<?xml-stylesheet href="chrome://spcw/skin/preferences/prefsDialog.css" type="text/css"?>
+<!DOCTYPE prefwindow SYSTEM "chrome://spcw/locale/prefsDialog.dtd">
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
    -
@@ -63,20 +63,20 @@
             >
     <preferences>
       <preference id=      "prefSaveMethod"
-                  name=    "extensions.maf.save.method"
+                  name=    "extensions.spcw.save.method"
                   type=    "string"
                   onchange="PrefsDialog.onSaveMethodChange();"
                   />
       <preference id=      "prefSaveFormat"
-                  name=    "extensions.maf.current.save.filterindex"
+                  name=    "extensions.spcw.current.save.filterindex"
                   type=    "int"
                   />
       <preference id=      "prefInterfaceInfoIcon"
-                  name=    "extensions.maf.interface.info.icon"
+                  name=    "extensions.spcw.interface.info.icon"
                   type=    "bool"
                   />
       <preference id=      "prefInterfaceInfoBar"
-                  name=    "extensions.maf.interface.info.bar"
+                  name=    "extensions.spcw.interface.info.bar"
                   type=    "bool"
                   />
     </preferences>
@@ -190,7 +190,7 @@
     </vbox>
     <spacer height="10" />
     <label value="&action.visitwebsite.label;"
-           href= "http://maf.mozdev.org/"
+           href= "http://maf.mozdev.org/?src=spcw"
            class="text-link header"
            />
     <description id=   "descVisitWebsite"

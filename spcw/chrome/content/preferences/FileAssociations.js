@@ -122,7 +122,7 @@ FileAssociationsCreator.prototype = {
   // For convenience, we use the strings from the preferences dialog.
   _fileAssociationsStrBundle: Cc["@mozilla.org/intl/stringbundle;1"]
    .getService(Ci.nsIStringBundleService).createBundle(
-   "chrome://maf/locale/fileAssociationsObject.properties"),
+   "chrome://spcw/locale/fileAssociationsObject.properties"),
 
   /**
    * Returns true if the host application is SeaMonkey.

@@ -142,7 +142,7 @@ ArchiveStreamConverter.prototype = {
     // Since we know that the content will be handled by our document loader
     // factory, that does not use the incoming data, just set the content type
     // on the channel and trigger the load, without sending any actual data.
-    originalChannel.contentType = "*/preprocessed-web-archive";
+    originalChannel.contentType = "*/preprocessed-web-archive-spcw";
     this._targetListener.onStartRequest(originalChannel, aContext);
     this._targetListener.onStopRequest(originalChannel, aContext, Cr.NS_OK);
   },

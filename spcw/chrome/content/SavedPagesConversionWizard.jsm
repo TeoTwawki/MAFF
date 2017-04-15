@@ -83,7 +83,7 @@ let EXPORTED_SYMBOLS = [];
 for (let folderName of Object.keys(objectsByFolder)) {
   for (let objectName of objectsByFolder[folderName]) {
     EXPORTED_SYMBOLS.push(objectName);
-    Services.scriptloader.loadSubScript("chrome://maf/content/" + folderName +
+    Services.scriptloader.loadSubScript("chrome://spcw/content/" + folderName +
                                         "/" + objectName + ".js");
   }
 }

@@ -74,7 +74,7 @@ var EmptyStreamListener = {
 function DocumentLoaderFactory() {}
 
 DocumentLoaderFactory.prototype = {
-  classID: Components.ID("{3b2f1177-d918-44ee-91a6-ba95954064bb}"),
+  classID: Components.ID("{62569f9c-50c7-46cd-b94e-cf06472d204c}"),
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIDocumentLoaderFactory]),
   _xpcom_factory: XPCOMUtils.generateSingletonFactory(DocumentLoaderFactory),
 

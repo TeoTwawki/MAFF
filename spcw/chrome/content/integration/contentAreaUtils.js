@@ -42,9 +42,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var MozillaArchiveFormat = {};
-Components.utils.import("chrome://maf/content/MozillaArchiveFormat.jsm",
-                        MozillaArchiveFormat);
+var SavedPagesConversionWizard = {};
+Components.utils.import("chrome://spcw/content/SavedPagesConversionWizard.jsm",
+                        SavedPagesConversionWizard);
 
 /**
  * This function is overridden for compatibility with Firefox 42.
@@ -126,7 +126,7 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
        document.contentType == "application/xhtml+xml");
     }
 
-    aFpP.saveInArchiveFirst = MozillaArchiveFormat.Prefs.saveEnabled &&
+    aFpP.saveInArchiveFirst = SavedPagesConversionWizard.Prefs.saveEnabled &&
                               (saveOnlyInArchive || mafPreferSaveArchive);
 
     let setPersistObject = function(saveBehavior) {
@@ -134,14 +134,14 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       let persistObject = null;
       if (saveBehavior.getPersistObject) {
         persistObject = saveBehavior.getPersistObject(saveBrowsers);
-      } else if (MozillaArchiveFormat.Prefs.saveEnabled && document &&
-                 saveBehavior == MozillaArchiveFormat.CompleteSaveBehavior &&
+      } else if (SavedPagesConversionWizard.Prefs.saveEnabled && document &&
+                 saveBehavior == SavedPagesConversionWizard.CompleteSaveBehavior &&
                  saveBehavior.isValidForSaveMode(aFpP.saveMode) &&
                  (document.contentType == "text/html" ||
                   document.contentType == "application/xhtml+xml")) {
         // The ExactPersist component can also save XML and SVG, but not as
         // accurately as the browser's standard save system.
-        persistObject = new MozillaArchiveFormat.ExactPersist();
+        persistObject = new SavedPagesConversionWizard.ExactPersist();
       }
 
       // Wrap the persist object for propagation to makeWebBrowserPersist.
@@ -168,13 +168,13 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     let dir = new FileUtils.File(dirPath);
 
     if (useDownloadDir && dirExists) {
-      let saveBehavior = MozillaArchiveFormat.CompleteSaveBehavior;
+      let saveBehavior = SavedPagesConversionWizard.CompleteSaveBehavior;
 
       // If we are saving an archive automatically using Mozilla Archive Format,
       // use the archive type selected when asking to save in an archive, and
       // adjust the output file extension accordingly.
       if (aFpP.saveInArchiveFirst) {
-        saveBehavior = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex == 1 ?
+        saveBehavior = SavedPagesConversionWizard.DynamicPrefs.saveFilterIndex == 1 ?
                        gMafMhtmlSaveBehavior : gMafMaffSaveBehavior;
         // Use a MAF specific call to retrieve the filter string.
         var filterString = saveBehavior.getFileFilter().extensionstring;
@@ -276,11 +276,11 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
         // In Mozilla Archive Format, use a special preference to store the
         // selected filter if only the archive save filters are shown.
         if (saveOnlyInArchive) {
-          fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
+          fp.filterIndex = SavedPagesConversionWizard.DynamicPrefs.saveFilterIndex;
         } else if (aFpP.saveInArchiveFirst) {
-          let indexHtml = MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml;
+          let indexHtml = SavedPagesConversionWizard.DynamicPrefs.saveFilterIndexHtml;
           fp.filterIndex = indexHtml >= 2 ? indexHtml :
-           MozillaArchiveFormat.DynamicPrefs.saveFilterIndex;
+           SavedPagesConversionWizard.DynamicPrefs.saveFilterIndex;
         } else {
           fp.filterIndex = prefBranch.getIntPref("save_converter_index");
         }
@@ -307,7 +307,7 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       // Check that the file picker filter index is not out of bounds. The
       // nsIFilePicker interface does not guarantee this.
       saveBehavior = saveBehaviors[fp.filterIndex] ?
-       saveBehaviors[fp.filterIndex] : MozillaArchiveFormat.NormalSaveBehavior;
+       saveBehaviors[fp.filterIndex] : SavedPagesConversionWizard.NormalSaveBehavior;
       aFpP.saveAsType = saveBehavior.targetContentType ? kSaveAsType_Text :
                         saveBehavior.isComplete ? kSaveAsType_Complete : 1;
       // Save the selected file object and URL.
@@ -367,11 +367,11 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       // In Mozilla Archive Format, use a special preference to store the
       // selected filter if only the archive save filters are shown.
       if (saveOnlyInArchive) {
-        MozillaArchiveFormat.DynamicPrefs.saveFilterIndex = fp.filterIndex;
+        SavedPagesConversionWizard.DynamicPrefs.saveFilterIndex = fp.filterIndex;
       } else if (aFpP.saveInArchiveFirst) {
-        MozillaArchiveFormat.DynamicPrefs.saveFilterIndexHtml = fp.filterIndex;
+        SavedPagesConversionWizard.DynamicPrefs.saveFilterIndexHtml = fp.filterIndex;
         if (fp.filterIndex < 2) {
-          MozillaArchiveFormat.DynamicPrefs.saveFilterIndex = fp.filterIndex;
+          SavedPagesConversionWizard.DynamicPrefs.saveFilterIndex = fp.filterIndex;
         }
         MafInterfaceOverlay.updateSavePageButtonLabel();
       } else {
@@ -434,7 +434,7 @@ function mafAppendFiltersForContentType(aFilePicker, aContentType,
     appendWhere(() => true);
     // Always append the all files (*) filter.
     aFilePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
-    aReturnBehaviorArray.push(MozillaArchiveFormat.NormalSaveBehavior);
+    aReturnBehaviorArray.push(SavedPagesConversionWizard.NormalSaveBehavior);
   }
 }
 
@@ -580,15 +580,15 @@ InternalSaveBehavior.prototype = {
 }
 
 /** The normal save behavior (also used when All Files is selected) */
-MozillaArchiveFormat.NormalSaveBehavior = new InternalSaveBehavior();
+SavedPagesConversionWizard.NormalSaveBehavior = new InternalSaveBehavior();
 
 /** The "save as complete web page" behavior. */
-MozillaArchiveFormat.CompleteSaveBehavior = new InternalSaveBehavior();
-MozillaArchiveFormat.CompleteSaveBehavior.isComplete = true;
-MozillaArchiveFormat.CompleteSaveBehavior.isValidForSaveMode = function(aSaveMode) {
+SavedPagesConversionWizard.CompleteSaveBehavior = new InternalSaveBehavior();
+SavedPagesConversionWizard.CompleteSaveBehavior.isComplete = true;
+SavedPagesConversionWizard.CompleteSaveBehavior.isValidForSaveMode = function(aSaveMode) {
   return aSaveMode & SAVEMODE_COMPLETE_DOM;
 };
-MozillaArchiveFormat.CompleteSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
+SavedPagesConversionWizard.CompleteSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
   // Keep the same extensions as the normal behavior, override the description.
   var filter = this.__proto__.getFileFilter(aContentType, aFileExtension);
   filter.title = ContentAreaUtils.stringBundle.GetStringFromName("WebPageCompleteFilter");
@@ -596,13 +596,13 @@ MozillaArchiveFormat.CompleteSaveBehavior.getFileFilter = function(aContentType,
 };
 
 /** The "save as text only" behavior. */
-MozillaArchiveFormat.TextOnlySaveBehavior = new InternalSaveBehavior();
-MozillaArchiveFormat.TextOnlySaveBehavior.isComplete = true;
-MozillaArchiveFormat.TextOnlySaveBehavior.targetContentType = "text/plain";
-MozillaArchiveFormat.TextOnlySaveBehavior.isValidForSaveMode = function(aSaveMode) {
+SavedPagesConversionWizard.TextOnlySaveBehavior = new InternalSaveBehavior();
+SavedPagesConversionWizard.TextOnlySaveBehavior.isComplete = true;
+SavedPagesConversionWizard.TextOnlySaveBehavior.targetContentType = "text/plain";
+SavedPagesConversionWizard.TextOnlySaveBehavior.isValidForSaveMode = function(aSaveMode) {
   return aSaveMode & SAVEMODE_COMPLETE_TEXT;
 };
-MozillaArchiveFormat.TextOnlySaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
+SavedPagesConversionWizard.TextOnlySaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
   return {mask: Components.interfaces.nsIFilePicker.filterText};
 };
 
@@ -613,16 +613,16 @@ MozillaArchiveFormat.TextOnlySaveBehavior.getFileFilter = function(aContentType,
  * offered by Mozilla Archive Format.
  */
 var gInternalSaveBehaviors = [
-  MozillaArchiveFormat.CompleteSaveBehavior,
-  MozillaArchiveFormat.NormalSaveBehavior,
-  MozillaArchiveFormat.TextOnlySaveBehavior,
+  SavedPagesConversionWizard.CompleteSaveBehavior,
+  SavedPagesConversionWizard.NormalSaveBehavior,
+  SavedPagesConversionWizard.TextOnlySaveBehavior,
 ];
 
 var gMafDefaultSaveBehavior;
 var gMafMaffSaveBehavior;
 var gMafMhtmlSaveBehavior;
 
-MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
+SavedPagesConversionWizard.FileFilters.saveFilters.forEach(function(curFilter,
                                                               curFilterIndex) {
   // Create the new save behavior object.
   var newSaveBehavior = new InternalSaveBehavior();
@@ -630,16 +630,16 @@ MozillaArchiveFormat.FileFilters.saveFilters.forEach(function(curFilter,
   newSaveBehavior.mandatoryExtension = true;
   newSaveBehavior.savesInArchive = true;
   newSaveBehavior.isValidForSaveMode = function(aSaveMode, aDocument) {
-    return MozillaArchiveFormat.Prefs.saveEnabled && aDocument;
+    return SavedPagesConversionWizard.Prefs.saveEnabled && aDocument;
   }
   newSaveBehavior.getFileFilter = function(aContentType, aFileExtension) {
     // Access the current values in the MAF save filter objects array.
-    var filter = MozillaArchiveFormat.FileFilters.saveFilters[curFilterIndex];
+    var filter = SavedPagesConversionWizard.FileFilters.saveFilters[curFilterIndex];
     // Return the required values.
     return {title: filter.title, extensionstring: filter.extensionString};
   }
   newSaveBehavior.getPersistObject = function(saveBrowsers) {
-    return new MozillaArchiveFormat.MafArchivePersist(saveBrowsers,
+    return new SavedPagesConversionWizard.MafArchivePersist(saveBrowsers,
                                                       curFilter.mafArchiveType);
   }
 

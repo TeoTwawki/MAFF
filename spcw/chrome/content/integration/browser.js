@@ -85,7 +85,7 @@ function BrowserOpenFileWindow() {
           }
         } catch (ex) {
         }
-        MozillaArchiveFormat.DynamicPrefs.openFilterIndex = fp.filterIndex;
+        SavedPagesConversionWizard.DynamicPrefs.openFilterIndex = fp.filterIndex;
         openUILinkIn(fp.fileURL.spec, "current");
       }
     };
@@ -104,14 +104,14 @@ function BrowserOpenFileWindow() {
     }
 
     // Add filters from Mozilla Archive Format.
-    MozillaArchiveFormat.FileFilters.openFilters.forEach(function(curFilter) {
+    SavedPagesConversionWizard.FileFilters.openFilters.forEach(function(curFilter) {
       fp.appendFilter(curFilter.title, curFilter.extensionString);
     });
 
     fp.appendFilters(nsIFilePicker.filterAll);
 
     // Show the filepicker, and remember the selected file filter.
-    fp.filterIndex = MozillaArchiveFormat.DynamicPrefs.openFilterIndex;
+    fp.filterIndex = SavedPagesConversionWizard.DynamicPrefs.openFilterIndex;
     fp.open(fpCallback);
   } catch (ex) {
   }

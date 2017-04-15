@@ -37,7 +37,7 @@
 
 const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
-Cu.import("chrome://maf/content/MozillaArchiveFormat.jsm");
+Cu.import("chrome://spcw/content/SavedPagesConversionWizard.jsm");
 
 /**
  * Handles the MAF preferences dialog.
@@ -110,7 +110,7 @@ var PrefsDialog = {
     } else {
       // Open a new window to allow the conversion.
       window.open(
-       "chrome://maf/content/convert/convertDialog.xul",
+       "chrome://spcw/content/convert/convertDialog.xul",
        "maf-convertDialog",
        "chrome,titlebar,centerscreen,resizable=yes");
     }
@@ -123,7 +123,7 @@ var PrefsDialog = {
   onActionShowWelcomePageClick: function() {
     // Use the helper function defined either in "utilityOverlay.js" or in
     // "contentAreaUtils.js" depending on the host application.
-    openNewWindowWith("chrome://maf/content/preferences/welcomePage.xhtml");
+    openNewWindowWith("chrome://spcw/content/preferences/welcomePage.xhtml");
   },
 
   /* --- Dialog support functions --- */

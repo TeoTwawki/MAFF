@@ -46,12 +46,12 @@ const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 XPCOMUtils.defineLazyModuleGetter(this, "StartupEvents",
-                                  "chrome://maf/content/MozillaArchiveFormat.jsm");
+                                  "chrome://spcw/content/SavedPagesConversionWizard.jsm");
 
 function Startup() {}
 
 Startup.prototype = {
-  classID:          Components.ID("{37116274-8df3-4d48-8533-00eae60c844c}"),
+  classID:          Components.ID("{989b6346-7623-4926-9e57-add12b944328}"),
   QueryInterface:   XPCOMUtils.generateQI([Ci.nsIObserver]),
 
   // nsIObserver

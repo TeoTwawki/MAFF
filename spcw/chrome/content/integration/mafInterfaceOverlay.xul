@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://maf/skin/integration/mafInterfaceOverlay.css" type="text/css"?>
-<!DOCTYPE overlay SYSTEM "chrome://maf/locale/mafInterfaceOverlay.dtd">
+<?xml-stylesheet href="chrome://spcw/skin/integration/mafInterfaceOverlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://spcw/locale/mafInterfaceOverlay.dtd">
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
    -
@@ -49,7 +49,7 @@
 
   <!-- Overlay machinery -->
   <script type="application/x-javascript"
-          src="chrome://maf/content/integration/mafInterfaceOverlay.js"
+          src="chrome://spcw/content/integration/mafInterfaceOverlay.js"
           />
 
   <!-- Address bar integration -->

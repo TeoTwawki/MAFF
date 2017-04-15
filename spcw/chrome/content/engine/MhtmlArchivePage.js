@@ -206,7 +206,8 @@ MhtmlArchivePage.prototype = {
     // Return the version information, which contains ASCII characters only.
     // Note that the version information might be empty if the save operation
     // was started shortly after application startup.
-    return "Produced By MAF V" + StartupInitializer.addonVersion;
+    return "Produced By Saved Pages Conversion Wizard V" +
+     StartupInitializer.addonVersion;
   },
 
   /**

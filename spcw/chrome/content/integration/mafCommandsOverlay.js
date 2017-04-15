@@ -139,7 +139,7 @@ var MafCommandsOverlay = {
      "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
 
     // Show the menu items only if we have the ability to save web archives.
-    var isVisibleInMenu = MozillaArchiveFormat.Prefs.saveEnabled;
+    var isVisibleInMenu = SavedPagesConversionWizard.Prefs.saveEnabled;
 
     // Now check every menu item and, if it is linked to one of the MAF
     // commands, set its visibility appropriately.
@@ -193,7 +193,7 @@ var MafCommandsOverlay = {
     } else {
       // Open a new window to allow the conversion.
       window.open(
-       "chrome://maf/content/convert/convertDialog.xul",
+       "chrome://spcw/content/convert/convertDialog.xul",
        "maf-convertDialog",
        "chrome,titlebar,centerscreen,resizable=yes");
     }
@@ -213,7 +213,7 @@ var MafCommandsOverlay = {
     // "multiSaveDialog.js" for a description of the dialog arguments.
     var returnValues = {};
     window.openDialog(
-     "chrome://maf/content/integration/multiSaveDialog.xul",
+     "chrome://spcw/content/integration/multiSaveDialog.xul",
      "maf-multiSaveDialog",
      "chrome,titlebar,centerscreen,modal,resizable=yes",
      window,

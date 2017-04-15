@@ -49,7 +49,7 @@ function ContentPolicy() {
 }
 
 ContentPolicy.prototype = {
-  classID: Components.ID("{7380f280-ab36-4a23-b213-35c64f8586a0}"),
+  classID: Components.ID("{21f4d9be-e9db-4957-95e1-e2174bb207c9}"),
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIContentPolicy]),
   _xpcom_factory: XPCOMUtils.generateSingletonFactory(ContentPolicy),
 

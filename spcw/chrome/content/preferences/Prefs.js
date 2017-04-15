@@ -55,20 +55,20 @@ var Prefs = {
    * True if MAFF files should be associated with the host application.
    */
   get associateMaff() {
-    return this.prefBranchForMaf.getBoolPref("associate.maff");
+    return this.prefBranch.getBoolPref("associate.maff");
   },
   set associateMaff(value) {
-    this.prefBranchForMaf.setBoolPref("associate.maff", value);
+    this.prefBranch.setBoolPref("associate.maff", value);
   },
 
   /**
    * True if MHTML files should be associated with the host application.
    */
   get associateMhtml() {
-    return this.prefBranchForMaf.getBoolPref("associate.mhtml");
+    return this.prefBranch.getBoolPref("associate.mhtml");
   },
   set associateMhtml(value) {
-    this.prefBranchForMaf.setBoolPref("associate.mhtml", value);
+    this.prefBranch.setBoolPref("associate.mhtml", value);
   },
 
   /**
@@ -76,7 +76,7 @@ var Prefs = {
    * support data files associated with a complete page saved as HTML.
    */
   get convertDataFolderSuffixes() {
-    return this.prefBranchForMaf.getCharPref("advanced.datafoldersuffixes");
+    return this.prefBranch.getCharPref("advanced.datafoldersuffixes");
   },
 
   /**
@@ -93,7 +93,7 @@ var Prefs = {
    * when an archived page is displayed.
    */
   get interfaceInfoBar() {
-    return this.prefBranchForMaf.getBoolPref("interface.info.bar");
+    return this.prefBranch.getBoolPref("interface.info.bar");
   },
 
   /**
@@ -101,17 +101,17 @@ var Prefs = {
    * page details when an archived page is displayed.
    */
   get interfaceInfoIcon() {
-    return this.prefBranchForMaf.getBoolPref("interface.info.icon");
+    return this.prefBranch.getBoolPref("interface.info.icon");
   },
 
   /**
    * Set to true if a beta version of the add-on has previously been installed.
    */
   get otherBeta() {
-    return this.prefBranchForMaf.getBoolPref("other.beta");
+    return this.prefBranch.getBoolPref("other.beta");
   },
   set otherBeta(aValue) {
-    this.prefBranchForMaf.setBoolPref("other.beta", aValue);
+    this.prefBranch.setBoolPref("other.beta", aValue);
   },
 
   /**
@@ -119,10 +119,10 @@ var Prefs = {
    * displayed on startup.
    */
   get otherDisplayUpdateBetaPage() {
-    return this.prefBranchForMaf.getBoolPref("other.displayupdatebetapage");
+    return this.prefBranch.getBoolPref("other.displayupdatebetapage");
   },
   set otherDisplayUpdateBetaPage(aValue) {
-    this.prefBranchForMaf.setBoolPref("other.displayupdatebetapage", aValue);
+    this.prefBranch.setBoolPref("other.displayupdatebetapage", aValue);
   },
 
   /**
@@ -131,30 +131,30 @@ var Prefs = {
    * changed accordingly.
    */
   get otherDisplayWelcome() {
-    return this.prefBranchForMaf.getBoolPref("other.displaywelcome");
+    return this.prefBranch.getBoolPref("other.displaywelcome");
   },
   set otherDisplayWelcome(aValue) {
-    this.prefBranchForMaf.setBoolPref("other.displaywelcome", aValue);
+    this.prefBranch.setBoolPref("other.displaywelcome", aValue);
   },
 
   /**
    * Returns true if the welcome dialog should be displayed on startup.
    */
   get otherDisplayWelcomePage() {
-    return this.prefBranchForMaf.getBoolPref("other.displaywelcomepage");
+    return this.prefBranch.getBoolPref("other.displaywelcomepage");
   },
   set otherDisplayWelcomePage(aValue) {
-    this.prefBranchForMaf.setBoolPref("other.displaywelcomepage", aValue);
+    this.prefBranch.setBoolPref("other.displaywelcomepage", aValue);
   },
 
   /**
    * Returns true if the multi-process welcome dialog should be displayed.
    */
   get otherDisplayWelcomeMultiprocess() {
-    return this.prefBranchForMaf.getBoolPref("other.displayE10Snotice");
+    return this.prefBranch.getBoolPref("other.displayE10Snotice");
   },
   set otherDisplayWelcomeMultiprocess(aValue) {
-    this.prefBranchForMaf.setBoolPref("other.displayE10Snotice", aValue);
+    this.prefBranch.setBoolPref("other.displayE10Snotice", aValue);
   },
 
   /**
@@ -162,14 +162,14 @@ var Prefs = {
    * and scroll position, must be saved in new archives.
    */
   get saveMetadataExtended() {
-    return this.prefBranchForMaf.getBoolPref("advanced.maff.extendedmetadata");
+    return this.prefBranch.getBoolPref("advanced.maff.extendedmetadata");
   },
 
   /**
    * Returns true if the commands to save web archives should be available.
    */
   get saveEnabled() {
-    return this.prefBranchForMaf.getCharPref("save.method") == "snapshot" &&
+    return this.prefBranch.getCharPref("save.method") == "snapshot" &&
            !Services.appinfo.browserTabsRemoteAutostart;
   },
 
@@ -195,7 +195,7 @@ var Prefs = {
    * This preference is not displayed in the preferences dialog.
    */
   get saveMaffCompression() {
-    return this.prefBranchForMaf.getCharPref("advanced.maff.compression");
+    return this.prefBranch.getCharPref("advanced.maff.compression");
   },
 
   /**
@@ -203,7 +203,7 @@ var Prefs = {
    * in the file filters for the "Save As" dialogs.
    */
   get saveUseMhtmlExtension() {
-    return this.prefBranchForMaf.getBoolPref(
+    return this.prefBranch.getBoolPref(
      "advanced.mhtml.usemhtmlextension");
   },
 
@@ -212,7 +212,7 @@ var Prefs = {
    * instead of being enforced when the page is displayed.
    */
   get openMaffIgnoreCharacterSet() {
-    return this.prefBranchForMaf.getBoolPref(
+    return this.prefBranch.getBoolPref(
      "advanced.maff.ignorecharacterset");
   },
 
@@ -224,7 +224,7 @@ var Prefs = {
    * The "jar:" protocol may be faster but using it may lock the archive file.
    */
   get openUseJarProtocol() {
-    return this.prefBranchForMaf.getBoolPref("advanced.maff.usejarprotocol");
+    return this.prefBranch.getBoolPref("advanced.maff.usejarprotocol");
   },
 
   /**
@@ -232,7 +232,7 @@ var Prefs = {
    */
   get tempFolder() {
     // Get the value as an Unicode string.
-    var tempFolderPath = this.prefBranchForMaf.getComplexValue(
+    var tempFolderPath = this.prefBranch.getComplexValue(
      "advanced.temp.folder", Ci.nsISupportsString).data;
     // If the string is empty, use the default path, that is a subdirectory of
     // the system temporary directory.
@@ -247,7 +247,7 @@ var Prefs = {
    * Returns true if the temporary folder must be cleaned up on exit.
    */
   get tempClearOnExit() {
-    return this.prefBranchForMaf.getBoolPref("advanced.temp.clearonexit");
+    return this.prefBranch.getBoolPref("advanced.temp.clearonexit");
   },
 
   /*
@@ -260,8 +260,8 @@ var Prefs = {
    * <https://developer.mozilla.org/en/Code_snippets/Preferences#Using_preference_observers>
    * (retrieved 2009-08-30).
    */
-  prefBranchForMaf: Cc["@mozilla.org/preferences-service;1"].
-   getService(Ci.nsIPrefService).getBranch("extensions.maf.").
+  prefBranch: Cc["@mozilla.org/preferences-service;1"].
+   getService(Ci.nsIPrefService).getBranch("extensions.spcw.").
    QueryInterface(Ci.nsIPrefBranch2),
 
   /**
@@ -276,7 +276,7 @@ var Prefs = {
     // Do not recalculate the value the second time this property is read.
     delete this._defaultTempFolderPath;
     return (this._defaultTempFolderPath = cpmm.sendSyncMessage(
-     "MozillaArchiveFormat:ComputeDefaultTempFolderPath")[0]);
+     "SavedPagesConversionWizard:ComputeDefaultTempFolderPath")[0]);
   },
 
   /**

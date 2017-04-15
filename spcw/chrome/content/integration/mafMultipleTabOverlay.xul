@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://maf/locale/mafMultipleTabOverlay.dtd">
+<!DOCTYPE overlay SYSTEM "chrome://spcw/locale/mafMultipleTabOverlay.dtd">
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
    -
@@ -48,7 +48,7 @@
 
   <!-- Overlay machinery -->
   <script type="application/x-javascript"
-          src="chrome://maf/content/integration/mafMultipleTabOverlay.js"
+          src="chrome://spcw/content/integration/mafMultipleTabOverlay.js"
           />
 
   <!-- User interface commands -->

@@ -5,7 +5,7 @@ h1 {
 
 #errorPageContainer {
   max-width: 55em;
-  background-image: url("chrome://maf-icons/skin/icon64.png");
+  background-image: url("chrome://spcw-icons/skin/icon64.png");
   background-color: white;
   color: black;
 }

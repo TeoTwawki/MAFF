@@ -100,5 +100,5 @@ var FileFilters = {
 
   _fileFiltersStrBundle: Cc["@mozilla.org/intl/stringbundle;1"]
     .getService(Ci.nsIStringBundleService).createBundle(
-    "chrome://maf/locale/fileFiltersObject.properties"),
+    "chrome://spcw/locale/fileFiltersObject.properties"),
 }
