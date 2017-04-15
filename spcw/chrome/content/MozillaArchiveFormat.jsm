@@ -1,5 +1,5 @@
 /**
- * Exports all the common JavaScript objects for Mozilla Archive Format.
+ * Exports all the common JavaScript objects for the add-on.
  */
 
 const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;

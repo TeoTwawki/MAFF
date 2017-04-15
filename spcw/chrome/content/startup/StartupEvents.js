@@ -84,8 +84,8 @@ var StartupEvents = {
    * the installed extension asynchronously.
    */
   _setAddonVersion: function() {
-    // Get the object with the version information of Mozilla Archive Format.
-    var addonId = "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}";
+    // Get the object with the version information of the add-on.
+    var addonId = "{61ec261d-5aa2-47f6-b6e7-e65efdbaac93}";
     let { AddonManager } =
      Cu.import("resource://gre/modules/AddonManager.jsm", {});
     this._promiseAddonVersion = new Promise(resolve => {

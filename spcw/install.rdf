@@ -4,8 +4,8 @@
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>{7f57cf46-4467-4c2d-adfa-0cba7c507e54}</em:id>
-    <em:version>4.1.0</em:version>
+    <em:id>{61ec261d-5aa2-47f6-b6e7-e65efdbaac93}</em:id>
+    <em:version>1.0.0</em:version>
     <em:type>2</em:type>
     <em:multiprocessCompatible>false</em:multiprocessCompatible>
 
@@ -29,11 +29,9 @@
     </em:targetApplication>
 
     <!-- Front End MetaData -->
-    <em:name>Mozilla Archive Format</em:name>
-    <em:description>Save exactly what you see, in a single file. MAFF (based on ZIP) is compact and exceptional for video and audio. MHT (Internet Explorer's format) allows easy exchange with IE users. Store many tabs, find original, and more!</em:description>
-    <em:creator>Christopher Ottley</em:creator>
-    <em:developer>Paolo Amadini</em:developer>
-    <em:contributor>Ueli Lezzi</em:contributor>
+    <em:name>Saved Pages Conversion Wizard</em:name>
+    <em:description>The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.</em:description>
+    <em:creator>Paolo Amadini</em:creator>
     <!-- Translators using BabelZilla -->
     <em:translator>cs: hooonza</em:translator>
     <em:translator>da: Finn S. Sørensen</em:translator>

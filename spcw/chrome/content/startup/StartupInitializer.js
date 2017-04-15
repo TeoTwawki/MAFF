@@ -142,7 +142,7 @@ var StartupInitializer = {
     // This component detects which resources have been loaded in a document.
     this._componentRegistrar.registerFactory(
      ContentPolicy.prototype.classID,
-     "Mozilla Archive Format Content Policy",
+     "Saved Pages Conversion Wizard Content Policy",
      "@amadzone.org/maf/content-policy;1",
      ContentPolicy.prototype._xpcom_factory);
     this._addCategoryEntryForSession("content-policy",
@@ -155,7 +155,7 @@ var StartupInitializer = {
     // for resolving relative references inside the archive.
     this._componentRegistrar.registerFactory(
      DocumentLoaderFactory.prototype.classID,
-     "Mozilla Archive Format Document Loader Factory",
+     "Saved Pages Conversion Wizard Document Loader Factory",
      "@amadzone.org/maf/document-loader-factory;1",
      DocumentLoaderFactory.prototype._xpcom_factory);
     this._addCategoryEntryForSession("Gecko-Content-Viewers",
@@ -264,7 +264,7 @@ var StartupInitializer = {
     var classID = Cc["@mozilla.org/uuid-generator;1"].
      getService(Ci.nsIUUIDGenerator).generateUUID();
     this._componentRegistrar.registerFactory(classID,
-     "Mozilla Archive Format Stream Converter", aContractID,
+     "Saved Pages Conversion Wizard Stream Converter", aContractID,
      streamConverterFactory);
   },
 
