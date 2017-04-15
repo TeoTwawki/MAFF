@@ -1,0 +1,16 @@
+<!-- Menu items for general Mozilla Archive Format commands -->
+<!ENTITY menuitem.convertsavedpages.label "Փոխարկել պահպանված էջերը…">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
+<!-- Additional menu items for the "Save Tabs In Archive" command -->
+<!ENTITY menuitem.savetabsinarchiveas.label "Պահպանել էջերը արխիվով որպես…">
+<!ENTITY menuitem.savetabsinarchive.label "Պահպանել էջերը արխիվներով…">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "b">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "b">
+<!ENTITY menuitem.savealltabsinarchiveas.label "Պահպանել բոլոր էջերը արխիվներով որպես…">
+<!ENTITY menuitem.savealltabsinarchive.label "Պահպանել բոլոր էջերը արխիվներով…">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!-- Additional menu items for the "Save In Archive" command -->
+<!ENTITY menuitem.savepageinarchiveas.label "Պահպանել էջը արխիվով որպես…">
+<!ENTITY menuitem.savepageinarchive.label.v2 "Պահպանել էջը արխիվով">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">

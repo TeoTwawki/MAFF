@@ -1,0 +1,16 @@
+<!-- Shortcut keys -->
+<!ENTITY menuitem.convertsavedpages.label "保存したページを変換...">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
+<!-- Menu items for general Mozilla Archive Format commands -->
+<!ENTITY menuitem.savetabsinarchiveas.label "名前を付けてタブをアーカイブ...">
+<!ENTITY menuitem.savetabsinarchive.label "タブをアーカイブ...">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "b">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "b">
+<!ENTITY menuitem.savealltabsinarchiveas.label "名前を付けてすべてのタブをアーカイブ...">
+<!ENTITY menuitem.savealltabsinarchive.label "すべてのタブをアーカイブ">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!-- Additional menu items for the "Save Tabs In Archive" command -->
+<!ENTITY menuitem.savepageinarchiveas.label "名前を付けてページをアーカイブ...">
+<!ENTITY menuitem.savepageinarchive.label.v2 "ページをアーカイブ">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">

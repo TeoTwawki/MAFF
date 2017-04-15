@@ -1,0 +1,16 @@
+<!-- Shortcut keys -->
+<!ENTITY menuitem.convertsavedpages.label "Convertir les pages enregistrées…">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
+<!-- Menu items for general Mozilla Archive Format commands -->
+<!ENTITY menuitem.savetabsinarchiveas.label "Enregistrer les onglets dans l'archive sous…">
+<!ENTITY menuitem.savetabsinarchive.label "Enregistrer les onglets dans l'archive…">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "g">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "g">
+<!ENTITY menuitem.savealltabsinarchiveas.label "Enregistrer tous les onglets dans l'archive sous…">
+<!ENTITY menuitem.savealltabsinarchive.label "Enregistrer tous les onglets dans l'archive">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!-- Additional menu items for the "Save As" command -->
+<!ENTITY menuitem.savepageinarchiveas.label "Enregistrer la page dans l'archive sous…">
+<!ENTITY menuitem.savepageinarchive.label.v2 "Enregistrer la page dans l'archive">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">

@@ -1,0 +1,16 @@
+<!-- Menu items for general Mozilla Archive Format commands -->
+<!ENTITY menuitem.convertsavedpages.label "Convertește paginile arhivate…">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
+<!-- Additional menu items for the "Save Tabs In Archive" command -->
+<!ENTITY menuitem.savetabsinarchiveas.label "Salvează filele în arhivă…">
+<!ENTITY menuitem.savetabsinarchive.label "Salvează filele în arhivă…">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "f">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "f">
+<!ENTITY menuitem.savealltabsinarchiveas.label "Salvează toate filele în arhivă ca…">
+<!ENTITY menuitem.savealltabsinarchive.label "Salvează toate filele în arhivă">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!-- Additional menu items for the "Save In Archive" command -->
+<!ENTITY menuitem.savepageinarchiveas.label "Salvează pagina în arhivă ca…">
+<!ENTITY menuitem.savepageinarchive.label.v2 "Salvează filele în arhivă">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">

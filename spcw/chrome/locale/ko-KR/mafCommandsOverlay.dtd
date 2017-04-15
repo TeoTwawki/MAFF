@@ -1,0 +1,16 @@
+<!-- Shortcut keys -->
+<!ENTITY menuitem.convertsavedpages.label "저장된 페이지 변환">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
+<!-- Menu items for general Mozilla Archive Format commands -->
+<!ENTITY menuitem.savetabsinarchiveas.label "탭을 다른 이름의 아카이브로 저장">
+<!ENTITY menuitem.savetabsinarchive.label "탭을 아카이브로 저장">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "b">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "b">
+<!ENTITY menuitem.savealltabsinarchiveas.label "모든 탭을 다른 이름의 아카이브로 저장">
+<!ENTITY menuitem.savealltabsinarchive.label "모든 탭을 아카이브로 저장">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!-- Additional menu items for the "Save As" command -->
+<!ENTITY menuitem.savepageinarchiveas.label "페이지를 다른 이름의 아카이브로 저장">
+<!ENTITY menuitem.savepageinarchive.label.v2 "페이지를 아카이브로 저장">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "g">

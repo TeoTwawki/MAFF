@@ -1,0 +1,64 @@
+﻿<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>{7f57cf46-4467-4c2d-adfa-0cba7c507e54}</em:id>
+    <em:version>4.1.0</em:version>
+    <em:type>2</em:type>
+    <em:multiprocessCompatible>false</em:multiprocessCompatible>
+
+    <!-- Target Application this extension can install into,
+        with minimum and maximum supported versions. -->
+     <!-- Firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>45.0</em:minVersion>
+        <em:maxVersion>45.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+     <!-- SeaMonkey -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
+        <em:minVersion>2.46</em:minVersion>
+        <em:maxVersion>2.46.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Front End MetaData -->
+    <em:name>Mozilla Archive Format</em:name>
+    <em:description>Save exactly what you see, in a single file. MAFF (based on ZIP) is compact and exceptional for video and audio. MHT (Internet Explorer's format) allows easy exchange with IE users. Store many tabs, find original, and more!</em:description>
+    <em:creator>Christopher Ottley</em:creator>
+    <em:developer>Paolo Amadini</em:developer>
+    <em:contributor>Ueli Lezzi</em:contributor>
+    <!-- Translators using BabelZilla -->
+    <em:translator>cs: hooonza</em:translator>
+    <em:translator>da: Finn S. Sørensen</em:translator>
+    <em:translator>de: Lukas Diener, Markus Stadler, o.roth</em:translator>
+    <em:translator>es-ES: Proyecto Nave; http://www.proyectonave.es/</em:translator>
+    <em:translator>fr: Xavier Robin</em:translator>
+    <em:translator>hu: JZsolt</em:translator>
+    <em:translator>hy-AM: Hrant Ohanyan; http://haysoft.org/</em:translator>
+    <em:translator>ja-JP: SATO Kentaro; http://www.ranvis.com/</em:translator>
+    <em:translator>ko-KR: surefx, maybee</em:translator>
+    <em:translator>mk-MK: renegade06</em:translator>
+    <em:translator>pl: Leszek(teo)Życzkowski</em:translator>
+    <em:translator>pt-BR: petruc</em:translator>
+    <em:translator>ro: Cătălin ZAMFIRESCU (x10firefox)</em:translator>
+    <em:translator>ru: Hr. Burunduk</em:translator>
+    <em:translator>sl-SI: Peter Klofutar</em:translator>
+    <em:translator>sv-SE: Mikael Hiort af Ornäs</em:translator>
+    <em:translator>tr: Ersen Yoldaç</em:translator>
+    <em:translator>zh-CN: 虞海</em:translator>
+    <em:translator>zh-TW: Samuel Chan C-Y, 虞海</em:translator>
+    <em:homepageURL>http://maf.mozdev.org/</em:homepageURL>
+
+    <!-- Front End Integration Hooks (used by Extension Manager)-->
+    <em:optionsURL>chrome://maf/content/preferences/prefsDialog.xul</em:optionsURL>
+    <em:iconURL>chrome://maf-icons/skin/icon.png</em:iconURL>
+    <em:icon64URL>chrome://maf-icons/skin/icon64.png</em:icon64URL>
+  </Description>
+</RDF>

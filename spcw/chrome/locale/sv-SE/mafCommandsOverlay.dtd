@@ -1,0 +1,16 @@
+<!-- Shortcut keys -->
+<!ENTITY menuitem.convertsavedpages.label "Konvertera sparade sidor…">
+<!ENTITY menuitem.convertsavedpages.accesskey.filemenu "r">
+<!-- Menu items for general Mozilla Archive Format commands -->
+<!ENTITY menuitem.savetabsinarchiveas.label "Spara flikar i arkiv som…">
+<!ENTITY menuitem.savetabsinarchive.label "Spara flikar i arkiv…">
+<!ENTITY menuitem.savetabsinarchive.accesskey.filemenu "f">
+<!ENTITY menuitem.savetabsinarchive.accesskey.tabscontextmenu "f">
+<!ENTITY menuitem.savealltabsinarchiveas.label "Spara alla flikar i arkiv som…">
+<!ENTITY menuitem.savealltabsinarchive.label "Spara alla flikar i arkiv">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.filemenu "S">
+<!ENTITY menuitem.savealltabsinarchive.accesskey.tabscontextmenu "S">
+<!-- Additional menu items for the "Save As" command -->
+<!ENTITY menuitem.savepageinarchiveas.label "Spara sida i arkiv som…">
+<!ENTITY menuitem.savepageinarchive.label.v2 "Spara sida i arkiv">
+<!ENTITY menuitem.savepageinarchive.accesskey.filemenu "d">
