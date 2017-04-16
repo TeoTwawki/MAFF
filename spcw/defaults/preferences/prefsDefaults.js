@@ -11,8 +11,6 @@ pref("extensions.spcw.associate.maff", true);
 pref("extensions.spcw.associate.mhtml", true);
 pref("extensions.spcw.interface.info.icon", true);
 pref("extensions.spcw.interface.info.bar", true);
-pref("extensions.spcw.other.beta", false);
-pref("extensions.spcw.other.displayupdatebetapage", true);
 pref("extensions.spcw.other.displaywelcome", true);
 pref("extensions.spcw.other.displaywelcomepage", true);
 pref("extensions.spcw.other.displayE10Snotice", true);

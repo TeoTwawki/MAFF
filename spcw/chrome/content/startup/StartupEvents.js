@@ -35,9 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-XPCOMUtils.defineLazyModuleGetter(this, "UpdateUtils",
-                                  "resource://gre/modules/UpdateUtils.jsm");
-
 /**
  * This object handles extension startup and shutdown, and acts as bookkeeper
  * for the related observer registrations. Actual work is delegated to the
@@ -75,11 +72,6 @@ var StartupEvents = {
   },
 
   /**
-   * This promise is resolved with the add-on version when it is known.
-   */
-  _promiseAddonVersion: null,
-
-  /**
    * Populates the StartupInitializer.addonVersion property with the version of
    * the installed extension asynchronously.
    */
@@ -88,11 +80,8 @@ var StartupEvents = {
     var addonId = "{61ec261d-5aa2-47f6-b6e7-e65efdbaac93}";
     let { AddonManager } =
      Cu.import("resource://gre/modules/AddonManager.jsm", {});
-    this._promiseAddonVersion = new Promise(resolve => {
-      AddonManager.getAddonByID(addonId, function (aAddon) {
-        StartupInitializer.addonVersion = aAddon.version;
-        resolve(aAddon.version);
-      });
+    AddonManager.getAddonByID(addonId, function (aAddon) {
+      StartupInitializer.addonVersion = aAddon.version;
     });
   },
 
@@ -109,37 +98,27 @@ var StartupEvents = {
    * Called after all the browser windows have been shown.
    */
   onWindowsRestored: function() {
-    this.shouldUpdateToBeta().then(shouldUpdateToBeta => {
-      let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
-      if (!browserWindow) {
-        // Very rarely, it might happen that at this time all browser windows
-        // have already been closed. In this case, we will attempt to show the
-        // welcome page again on the next startup.
-        return;
-      }
-      let browser = browserWindow.getBrowser();
-      if (shouldUpdateToBeta && Prefs.otherDisplayUpdateBetaPage) {
-        // Display the request to update to the Beta Channel as an alternative
-        // welcome page. The normal welcome page with file associations will be
-        // displayed on the next startup if was not shown before.
-        browser.loadTabs(
-         ["chrome://spcw/content/preferences/updateBetaPage.xhtml"],
-         false, false);
-        Prefs.otherDisplayUpdateBetaPage = false;
-      } else if (Prefs.otherDisplayWelcomePage) {
-        // Load the page in foreground.
-        browser.loadTabs(["chrome://spcw/content/preferences/welcomePage.xhtml"],
-                         false, false);
-        Prefs.otherDisplayWelcomePage = false;
-      }
-      if (Services.appinfo.browserTabsRemoteAutostart &&
-       Prefs.otherDisplayWelcomeMultiprocess) {
-        browserWindow.openDialog(
-         "chrome://spcw/content/preferences/prefsDialog.xul", "",
-         "chrome,titlebar,toolbar,centerscreen,modal");
-        Prefs.otherDisplayWelcomeMultiprocess = false;
-      }
-    }).catch(Cu.reportError);
+    let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
+    if (!browserWindow) {
+      // Very rarely, it might happen that at this time all browser windows
+      // have already been closed. In this case, we will attempt to show the
+      // welcome page again on the next startup.
+      return;
+    }
+    let browser = browserWindow.getBrowser();
+    if (Prefs.otherDisplayWelcomePage) {
+      // Load the page in foreground.
+      browser.loadTabs(["chrome://spcw/content/preferences/welcomePage.xhtml"],
+                       false, false);
+      Prefs.otherDisplayWelcomePage = false;
+    }
+    if (Services.appinfo.browserTabsRemoteAutostart &&
+     Prefs.otherDisplayWelcomeMultiprocess) {
+      browserWindow.openDialog(
+       "chrome://spcw/content/preferences/prefsDialog.xul", "",
+       "chrome,titlebar,toolbar,centerscreen,modal");
+      Prefs.otherDisplayWelcomeMultiprocess = false;
+    }
   },
 
   /**
@@ -147,27 +126,5 @@ var StartupEvents = {
    */
   onAppQuit: function() {
     StartupInitializer.terminate();
-  },
-
-  /**
-   * Returns a promise that resolves to true if the add-on is installed from the
-   * Release channel on a pre-release version of the browser.
-   */
-  shouldUpdateToBeta: function() {
-    return this._promiseAddonVersion.then(version => {
-      try {
-        let isReleaseBrowser = /^(release|esr)($|\-)/.test(
-         UpdateUtils.UpdateChannel);
-        let isBetaAddon = /a|b|rc/.test(version);
-        if (isBetaAddon) {
-          Prefs.otherBeta = true;
-        }
-        return !isReleaseBrowser && !isBetaAddon;
-      } catch (e) {
-        // UpdateUtils.jsm is not available on Firefox 38 ESR, so in case of
-        // exception we assume the browser is a release version.
-        return false;
-      }
-    });
   },
 };
