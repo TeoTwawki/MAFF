@@ -3,7 +3,6 @@ content spcw chrome/content/
 locale spcw en-US chrome/locale/en-US/
 
 locale spcw cs chrome/locale/cs/
-locale spcw da chrome/locale/da/
 locale spcw de chrome/locale/de/
 locale spcw es-ES chrome/locale/es-ES/
 locale spcw fr chrome/locale/fr/
@@ -19,7 +18,6 @@ locale spcw ro chrome/locale/ro/
 locale spcw ru chrome/locale/ru/
 locale spcw sl-SI chrome/locale/sl-SI/
 locale spcw sv-SE chrome/locale/sv-SE/
-locale spcw tr chrome/locale/tr/
 locale spcw zh-CN chrome/locale/zh-CN/
 locale spcw zh-TW chrome/locale/zh-TW/
 
