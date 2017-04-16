@@ -7,4 +7,4 @@ pref("extensions.spcw.advanced.maff.usejarprotocol", false);
 pref("extensions.spcw.advanced.mhtml.usemhtmlextension", false);
 pref("extensions.spcw.advanced.temp.clearonexit", true);
 pref("extensions.spcw.advanced.temp.folder", "");
-pref("extensions.spcw.other.displayE10Snotice", true);
+pref("extensions.spcw.firstRun", false);

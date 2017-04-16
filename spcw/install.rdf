@@ -55,7 +55,7 @@
     <em:homepageURL>http://maf.mozdev.org/?src=spcw</em:homepageURL>
 
     <!-- Front End Integration Hooks (used by Extension Manager)-->
-    <em:optionsURL>chrome://spcw/content/preferences/prefsDialog.xul</em:optionsURL>
+    <em:optionsURL>chrome://spcw/content/convert/convertDialog.xul</em:optionsURL>
     <em:iconURL>chrome://spcw-icons/skin/icon.png</em:iconURL>
     <em:icon64URL>chrome://spcw-icons/skin/icon64.png</em:icon64URL>
   </Description>

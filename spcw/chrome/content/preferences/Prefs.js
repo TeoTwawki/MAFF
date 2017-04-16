@@ -69,13 +69,13 @@ var Prefs = {
   },
 
   /**
-   * Returns true if the multi-process welcome dialog should be displayed.
+   * Returns true if the dialog was already opened on first run.
    */
-  get otherDisplayWelcomeMultiprocess() {
-    return this.prefBranch.getBoolPref("other.displayE10Snotice");
+  get firstRun() {
+    return this.prefBranch.getBoolPref("firstRun");
   },
-  set otherDisplayWelcomeMultiprocess(aValue) {
-    this.prefBranch.setBoolPref("other.displayE10Snotice", aValue);
+  set firstRun(aValue) {
+    this.prefBranch.setBoolPref("firstRun", aValue);
   },
 
   /**

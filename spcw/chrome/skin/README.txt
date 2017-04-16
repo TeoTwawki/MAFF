@@ -11,9 +11,6 @@ The following files were copied from the Mozilla "comm-central" codebase:
   general/cbox-dis.gif
   general/cbox-dis-check.gif
 
-The following files were copied from the Mozilla "mozilla-central" codebase:
-  preferences/Options.png
-
 The files are assumed to be licensed under the tri-license (MPL/GPL/LGPL) used
 throughout the original codebase.
 

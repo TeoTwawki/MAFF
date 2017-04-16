@@ -102,15 +102,14 @@ var StartupEvents = {
     if (!browserWindow) {
       // Very rarely, it might happen that at this time all browser windows
       // have already been closed. In this case, we will attempt to show the
-      // welcome page again on the next startup.
+      // conversion dialog again on the next startup.
       return;
     }
-    if (Services.appinfo.browserTabsRemoteAutostart &&
-     Prefs.otherDisplayWelcomeMultiprocess) {
-      browserWindow.openDialog(
-       "chrome://spcw/content/preferences/prefsDialog.xul", "",
-       "chrome,titlebar,toolbar,centerscreen,modal");
-      Prefs.otherDisplayWelcomeMultiprocess = false;
+    if (!Prefs.firstRun) {
+      browserWindow.open("chrome://spcw/content/convert/convertDialog.xul",
+                         "spcw-convertDialog",
+                         "chrome,titlebar,centerscreen,resizable=yes");
+      Prefs.firstRun = true;
     }
   },
 
