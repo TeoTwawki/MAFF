@@ -51,10 +51,8 @@ var PrefsDialog = {
     Interface.applyBranding(document.getElementById("descVisitWebsite"));
     // The preferences do not apply if multi-process is enabled.
     var isMultiprocess = Services.appinfo.browserTabsRemoteAutostart;
-    document.getElementById("boxMain").hidden = isMultiprocess;
     document.getElementById("boxMultiprocess").hidden = !isMultiprocess;
-    // Updates the status of the dialog controls.
-    this.onSaveMethodChange();
+    this.sizeToContent();
   },
 
   /**
@@ -76,18 +74,6 @@ var PrefsDialog = {
   },
 
   /* --- Interactive dialog functions and events --- */
-
-  /**
-   * Enables other dialog controls depending on the selected save method.
-   */
-  onSaveMethodChange: function() {
-    var enabled = document.getElementById("prefSaveMethod").value == "snapshot";
-    document.getElementById("radioSaveFormatMaff").disabled = !enabled;
-    document.getElementById("radioSaveFormatMhtml").disabled = !enabled;
-    document.getElementById("boxConvertSavedPages").hidden = !enabled ||
-     Services.appinfo.browserTabsRemoteAutostart;
-    this.sizeToContent();
-  },
 
   /**
    * Displays the "Convert saved pages" window.

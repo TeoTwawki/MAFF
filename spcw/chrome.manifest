@@ -31,13 +31,8 @@ contract @amadzone.org/spcw/startup;1 {989b6346-7623-4926-9e57-add12b944328}
 category profile-after-change SavedPagesConversionWizard @amadzone.org/spcw/startup;1
 
 # Integration with the browsing windows
-overlay chrome://browser/content/browser.xul chrome://spcw/content/integration/mafCommandsOverlay.xul
-overlay chrome://browser/content/browser.xul chrome://spcw/content/integration/mafInterfaceOverlay.xul
-overlay chrome://navigator/content/navigator.xul chrome://spcw/content/integration/mafCommandsOverlay.xul
-overlay chrome://navigator/content/navigator.xul chrome://spcw/content/integration/mafInterfaceOverlay.xul
-
-# Integration with the "Multiple Tab Handler" extension
-overlay chrome://multipletab/content/multipletab.xul chrome://spcw/content/integration/mafMultipleTabOverlay.xul
+overlay chrome://browser/content/browser.xul chrome://spcw/content/integration/spcwOverlay.xul
+overlay chrome://navigator/content/navigator.xul chrome://spcw/content/integration/spcwOverlay.xul
 
 # The preferences dialog has a different integration with Firefox and SeaMonkey
 overlay chrome://spcw/content/preferences/prefsDialog.xul chrome://spcw/content/preferences/prefsDialogBrowserOverlay.xul application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}

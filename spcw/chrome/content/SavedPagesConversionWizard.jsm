@@ -44,17 +44,12 @@ let objectsByFolder = {
     "ZipCreator",
     "ZipDirectory",
   ],
-  integration: [
-    "FileFilters",
-    "TabsDataSource",
-  ],
   loading: [
     "ArchiveLoader",
     "ArchiveStreamConverter",
     "DocumentLoaderFactory",
   ],
   preferences: [
-    "DynamicPrefs",
     "Prefs",
   ],
   saving: [

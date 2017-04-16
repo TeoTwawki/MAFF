@@ -69,22 +69,6 @@ var Prefs = {
   },
 
   /**
-   * Returns true if a notification bar with page details should be displayed
-   * when an archived page is displayed.
-   */
-  get interfaceInfoBar() {
-    return this.prefBranch.getBoolPref("interface.info.bar");
-  },
-
-  /**
-   * Returns true if an icon should be displayed in the location bar to access
-   * page details when an archived page is displayed.
-   */
-  get interfaceInfoIcon() {
-    return this.prefBranch.getBoolPref("interface.info.icon");
-  },
-
-  /**
    * Returns true if the multi-process welcome dialog should be displayed.
    */
   get otherDisplayWelcomeMultiprocess() {
@@ -100,14 +84,6 @@ var Prefs = {
    */
   get saveMetadataExtended() {
     return this.prefBranch.getBoolPref("advanced.maff.extendedmetadata");
-  },
-
-  /**
-   * Returns true if the commands to save web archives should be available.
-   */
-  get saveEnabled() {
-    return this.prefBranch.getCharPref("save.method") == "snapshot" &&
-           !Services.appinfo.browserTabsRemoteAutostart;
   },
 
   /** Enumeration for saveMaffCompression */
