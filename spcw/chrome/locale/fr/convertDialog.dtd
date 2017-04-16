@@ -7,7 +7,6 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Bienvenue dans l'assistant de conversion de pages enregistrées">
 <!ENTITY introduction.para1.description "Cet assistant va vous guider à travers la conversion de vos pages web enregistrées dans un format différent.">
-<!ENTITY introduction.para2.description "Cette procédure permet de convertir plusieurs pages d'un seul coup. Si vous voulez convertir une page unique, ouvrez-la dans le navigateur et sauvez-la dans un autre format.">
 <!ENTITY introduction.visitwebsite.description "Bien que le processus de conversion fonctionne correctement dans la majorité des cas, selon le format de fichier sélectionné et les options le résultat peut parfois ne pas être parfaitement fidèle à l'original. De plus, lors de la conversion d'une archive multi-pages vers un format en page unique, seule la première page est conservée. Il est recommandé de conserver une copie des fichiers originaux même après une conversion réussie.">
 <!ENTITY introduction.visitwebsite.label "Pour plus d'informations, lisez la documentation en ligne.">
 <!ENTITY introduction.continue.label "Pour commencer, cliquez sur $1.">

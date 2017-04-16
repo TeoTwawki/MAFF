@@ -7,7 +7,6 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Bem-vindo(a) ao Assistente para conversão de páginas salvas">
 <!ENTITY introduction.para1.description "Esse assistente converte páginas já salvas para outros tipos de arquivo.">
-<!ENTITY introduction.para2.description "Use-o para converter várias páginas de uma só vez. Para converter apenas uma ou poucas páginas, simplesmente a(s) abra no navegador e salve como outro formato.">
 <!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
 <!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
 <!ENTITY introduction.continue.label "Para começar, clique em $1.">

@@ -7,7 +7,6 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "保存ページ変換ウィザードへようこそ">
 <!ENTITY introduction.para1.description "このウィザードで以前に保存した Web ページを別のファイル形式に変換できます。">
-<!ENTITY introduction.para2.description "この手順は多数のページを一度に変換する場合に適しています。ページをひとつだけ変換したい場合は、ブラウザでそのページを開き、別のフォーマットで保存します。">
 <!ENTITY introduction.visitwebsite.description "多くの場合は問題なく変換できますが、ファイル形式やオプションによっては変換結果が完全には忠実にならない場合もあります。さらに、複数ページ形式を単一ページ形式に変換する場合は、最初のページのみが変換されます。変換が成功した場合でも元のファイルは取っておくことをお勧めします。">
 <!ENTITY introduction.visitwebsite.label "詳細をオンラインドキュメントで読む">
 <!ENTITY introduction.continue.label "開始するには $1 をクリックします。">

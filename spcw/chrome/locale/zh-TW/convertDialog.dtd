@@ -7,7 +7,6 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "歡迎來到轉換已存網頁精靈">
 <!ENTITY introduction.para1.description "這個精靈會指導你如何轉換你以前儲存過的網頁到其他檔案格式。">
-<!ENTITY introduction.para2.description "這個程序適合同時間轉換多個網頁。如果你希望只轉換一個網頁，你可以直接用瀏覽器打開它再儲存爲其他檔案格式。">
 <!ENTITY introduction.visitwebsite.description "雖然轉換程序通常會正常無誤，但是視乎檔案格式和儲存選項，有時候轉換結果未必會和原來檔案一模一樣。再者，當轉換多頁的檔案集時，只有首頁會被保留。即使轉換成功，我們會建議你保留一份原來的檔案。">
 <!ENTITY introduction.visitwebsite.label "如需要更多細節，請小心閱讀網上使用說明。">
 <!ENTITY introduction.continue.label "請按 $1 開始。">

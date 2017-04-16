@@ -7,7 +7,6 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "欢迎使用已保存页面转换向导">
 <!ENTITY introduction.para1.description "本向导将引导您完成自已保存的旧页面到新文件格式的转换过程。">
-<!ENTITY introduction.para2.description "本操作适合于一次性转换多个页面。如果您希望一次性转换一个页面，建议将其打开并直接在浏览器中将其另存为新文件格式。">
 <!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
 <!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
 <!ENTITY introduction.continue.label "单击 $1 以开始向导。">

@@ -7,7 +7,6 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Vítejte v průvodci pro konverzi uložených stránek">
 <!ENTITY introduction.para1.description "Průvodce vás provede konverzí vašich dříve uložených webových stránek do jiného formátu.">
-<!ENTITY introduction.para2.description "Tento postup je vhodný pro konverzi více stránek najednou. Pokud chcete převést jednotlivé stránky, stačí je otevřít v prohlížeči a uložit je v jiném formátu.">
 <!ENTITY introduction.visitwebsite.description "Přestože proces převodu pracuje ve většině případů hladce, někdy výsledek není zcela věrný originálu v závislosti na zvoleném formátu souborů a způsobu ukládání. Navíc při převodu vícestránkového archívu do jednostránkového formátu se je ochráněna pouze na první stránka. Doporučujeme, abyste si ponechali kopii původních souborů i po úspěšné konverzi.">
 <!ENTITY introduction.visitwebsite.label "Pro více podrobností čtěte dokumentaci online.">
 <!ENTITY introduction.continue.label "Pokračujte tlačítkem $1.">

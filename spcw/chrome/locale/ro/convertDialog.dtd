@@ -7,7 +7,6 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Bun venit în asistentul pentru conversia paginilor arhivate">
 <!ENTITY introduction.para1.description "Acest asistent vă va îndruma în procesul de conversie într-un nou format a paginilor arhivate anterior.">
-<!ENTITY introduction.para2.description "Această procedură este potrivită pentru conversia simultană a mai multor pagini. Dacă doriți să convertiți pagini individuale, este suficient să le deschideți în navigator și să le salvați într-un alt format.">
 <!ENTITY introduction.visitwebsite.description "Deși procesul de conversie funcționează în cele mai multe cazuri corect, uneori rezultatul conversiei ar putea să nu fie în totalitate asemănător cu originalul, acest lucru depinzând de formatele de fișier selectate și de opțiunile de arhivare. Mai mult, atunci când se convertește o arhivă cu mai multe pagini într-un format cu o singură pagină, numai prima pagină este păstrată. Este recomandat să păstrați o copie a fișierelor originale chiar și după o conversie reușită.">
 <!ENTITY introduction.visitwebsite.label "Pentru detalii, citiți documentația online (în engleză).">
 <!ENTITY introduction.continue.label "Apăsați „$1” pentru a începe.">

@@ -68,9 +68,6 @@
     <description>
       &introduction.para1.description;
     </description>
-    <description>
-      &introduction.para2.description;
-    </description>
     <spacer flex="1" />
     <description>
       &introduction.visitwebsite.description;

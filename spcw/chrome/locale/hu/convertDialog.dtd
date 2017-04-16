@@ -7,7 +7,6 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Üdvözlünk a Mentett Oldalakat Konvertáló Varázslóban">
 <!ENTITY introduction.para1.description "Ez a varázsló végigvezet a korábban elmentett weboldalak más formátumba konvertálásának lépésein.">
-<!ENTITY introduction.para2.description "Ez az eljárás több oldal egyidejű konvertálását teszi lehetővé. Ha egy oldalt kívánsz konvertálni, akkor nyisd meg azt a böngészőben és mentsd el más formátumban.">
 <!ENTITY introduction.visitwebsite.description "Bár az átalakítási eljárás a legtöbb esetben simán működik, a kiválasztott állományformátumoktól és a mentési beállításoktól függően néha nem ad teljesen hű eredményt. Ráadásul, amikor egy több oldalból álló archívumot konvertál egy oldalas formátummá, csak az első oldalt őrzi meg. Ajánlott ezért még sikeres átalakítás után is tartani az eredeti fájlok másolatát.">
 <!ENTITY introduction.visitwebsite.label "A részletekért olvasd az online dokumentációt">
 <!ENTITY introduction.continue.label "A folytatáshoz kattints a $1 gombra.">

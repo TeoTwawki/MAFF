@@ -7,7 +7,6 @@
 <!-- *** Introduction *** -->
 <!ENTITY introduction.pagelabel "Dobrodošli v Čarovnika za pretvorbo shranjenih strani">
 <!ENTITY introduction.para1.description "Ta čarovnik vas bo vodil skozi pretvorbo vaših shranjenih spletnih strani v drugo datotečno obliko.">
-<!ENTITY introduction.para2.description "Ta postopek je primeren za pretvorbo več strani naenkrat. Če želite pretvoriti posamezne strani, jih odprite v brskalniku in shranite v drugi obliki.">
 <!ENTITY introduction.visitwebsite.description "Čeprav postopek pretvarjanja deluje v večini primerov gladko, včasih rezultati niso povsem skladni z izvirnikom, odvisno od izbranih datotečnih oblik in možnosti shranjevanja. Poleg tega je med pretvarjanjem arhiva z več stranmi v obliko ene strani ohranjena samo prva stran. Priporočeno je, da ohranite kopijo izvirnih datotek tudi po uspešni pretvorbi.">
 <!ENTITY introduction.visitwebsite.label "Za podrobnosti si preberite spletno dokumentacijo.">
 <!ENTITY introduction.continue.label "Če želite začeti, kliknite $1.">
