@@ -55,7 +55,6 @@ let objectsByFolder = {
   ],
   preferences: [
     "DynamicPrefs",
-    "FileAssociations",
     "Prefs",
   ],
   saving: [

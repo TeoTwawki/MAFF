@@ -105,13 +105,6 @@ var StartupEvents = {
       // welcome page again on the next startup.
       return;
     }
-    let browser = browserWindow.getBrowser();
-    if (Prefs.otherDisplayWelcomePage) {
-      // Load the page in foreground.
-      browser.loadTabs(["chrome://spcw/content/preferences/welcomePage.xhtml"],
-                       false, false);
-      Prefs.otherDisplayWelcomePage = false;
-    }
     if (Services.appinfo.browserTabsRemoteAutostart &&
      Prefs.otherDisplayWelcomeMultiprocess) {
       browserWindow.openDialog(

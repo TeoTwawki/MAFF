@@ -168,26 +168,6 @@
       </description>
       <spacer height="10" />
     </vbox>
-    <vbox id="boxShowWelcomePage">
-      <label value=  "&action.showwelcomepage.label;"
-             onclick="PrefsDialog.onActionShowWelcomePageClick();"
-             class=  "text-link header"
-             />
-      <description class="indent">
-        &action.showwelcomepage.description;
-      </description>
-    </vbox>
-    <vbox id="boxShowWelcomePageAssociate" hidden="true">
-      <label value=  "&action.showwelcomepageassociate.label;"
-             onclick="PrefsDialog.onActionShowWelcomePageClick();"
-             class=  "text-link header"
-             />
-      <description id=   "descShowWelcomePageAssociate"
-                   class="indent"
-                   >
-        &action.showwelcomepageassociate.description;
-      </description>
-    </vbox>
     <spacer height="10" />
     <label value="&action.visitwebsite.label;"
            href= "http://maf.mozdev.org/?src=spcw"

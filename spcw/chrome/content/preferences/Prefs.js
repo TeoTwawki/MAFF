@@ -52,26 +52,6 @@ var Prefs = {
    */
 
   /**
-   * True if MAFF files should be associated with the host application.
-   */
-  get associateMaff() {
-    return this.prefBranch.getBoolPref("associate.maff");
-  },
-  set associateMaff(value) {
-    this.prefBranch.setBoolPref("associate.maff", value);
-  },
-
-  /**
-   * True if MHTML files should be associated with the host application.
-   */
-  get associateMhtml() {
-    return this.prefBranch.getBoolPref("associate.mhtml");
-  },
-  set associateMhtml(value) {
-    this.prefBranch.setBoolPref("associate.mhtml", value);
-  },
-
-  /**
    * Semicolon-separated list of possible suffixes for the folder containing
    * support data files associated with a complete page saved as HTML.
    */
@@ -102,28 +82,6 @@ var Prefs = {
    */
   get interfaceInfoIcon() {
     return this.prefBranch.getBoolPref("interface.info.icon");
-  },
-
-  /**
-   * Returns false only if a previous version of the extension was installed on
-   * the same profile, indicating that the header of the welcome page should be
-   * changed accordingly.
-   */
-  get otherDisplayWelcome() {
-    return this.prefBranch.getBoolPref("other.displaywelcome");
-  },
-  set otherDisplayWelcome(aValue) {
-    this.prefBranch.setBoolPref("other.displaywelcome", aValue);
-  },
-
-  /**
-   * Returns true if the welcome dialog should be displayed on startup.
-   */
-  get otherDisplayWelcomePage() {
-    return this.prefBranch.getBoolPref("other.displaywelcomepage");
-  },
-  set otherDisplayWelcomePage(aValue) {
-    this.prefBranch.setBoolPref("other.displaywelcomepage", aValue);
   },
 
   /**

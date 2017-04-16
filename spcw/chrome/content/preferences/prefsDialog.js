@@ -48,15 +48,7 @@ var PrefsDialog = {
    */
   onLoadDialog: function() {
     // Apply brand names to the dialog elements.
-    for (var [, elementName] in Iterator(["descVisitWebsite",
-     "descShowWelcomePageAssociate"])) {
-      Interface.applyBranding(document.getElementById(elementName));
-    }
-    // Determines if the welcome page handles file associations.
-    if (this._isOnWindows()) {
-      document.getElementById("boxShowWelcomePage").hidden = true;
-      document.getElementById("boxShowWelcomePageAssociate").hidden = false;
-    }
+    Interface.applyBranding(document.getElementById("descVisitWebsite"));
     // The preferences do not apply if multi-process is enabled.
     var isMultiprocess = Services.appinfo.browserTabsRemoteAutostart;
     document.getElementById("boxMain").hidden = isMultiprocess;
@@ -114,29 +106,5 @@ var PrefsDialog = {
        "maf-convertDialog",
        "chrome,titlebar,centerscreen,resizable=yes");
     }
-  },
-
-  /**
-   * Opens the welcome page in a new browser window. This must be done from code
-   * since labels with the "text-link" class cannot open chrome locations.
-   */
-  onActionShowWelcomePageClick: function() {
-    // Use the helper function defined either in "utilityOverlay.js" or in
-    // "contentAreaUtils.js" depending on the host application.
-    openNewWindowWith("chrome://spcw/content/preferences/welcomePage.xhtml");
-  },
-
-  /* --- Dialog support functions --- */
-
-  /**
-   * Returns true if the application is executing on Windows.
-   */
-  _isOnWindows: function() {
-    // For more information, see
-    // <https://developer.mozilla.org/en/nsIXULRuntime> and
-    // <https://developer.mozilla.org/en/OS_TARGET> (retrieved 2008-11-19).
-    var xulRuntimeOs = Cc["@mozilla.org/xre/app-info;1"]
-     .getService(Ci.nsIXULRuntime).OS;
-    return (xulRuntimeOs == "WINNT");
   },
 }
