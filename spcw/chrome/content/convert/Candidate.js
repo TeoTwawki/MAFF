@@ -502,7 +502,7 @@ Candidate.prototype = {
       persist.saveDocument(
         document,
         NetUtil.newURI(this.location.dest),
-        this.dataFolderLocation.dest,
+        this.dataFolderLocation && this.dataFolderLocation.dest,
         null,
         Ci.nsIWebBrowserPersist.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES,
         80
