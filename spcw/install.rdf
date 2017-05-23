@@ -5,7 +5,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>{61ec261d-5aa2-47f6-b6e7-e65efdbaac93}</em:id>
-    <em:version>1.0.0</em:version>
+    <em:version>1.0.1</em:version>
     <em:type>2</em:type>
     <em:multiprocessCompatible>false</em:multiprocessCompatible>
 
