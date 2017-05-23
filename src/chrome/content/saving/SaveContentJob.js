@@ -60,6 +60,12 @@ SaveContentJob.prototype = {
     Ci.nsIWebProgressListener2,
   ]),
 
+  /**
+   * If set to true, resources that were not originally loaded will be
+   * downloaded and included when saving.
+   */
+  saveWithNotLoadedResources: false,
+
   // Job
   _executeStart: function() {
     let document = this._document;
@@ -123,6 +129,7 @@ SaveContentJob.prototype = {
       persist = new ExactPersist();
       persist.saveWithMedia = this.targetType == "TypeMAFF";
       persist.saveWithContentLocation = this.targetType == "TypeMHTML";
+      persist.saveWithNotLoadedResources = this.saveWithNotLoadedResources;
       // Use the data from the persist object for proper archiving later.
       this._persistObject = persist;
     } else {

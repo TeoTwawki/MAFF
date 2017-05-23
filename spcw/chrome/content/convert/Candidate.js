@@ -481,14 +481,17 @@ Candidate.prototype = {
       let persist;
       if (this.destFormat == "mhtml") {
         persist = new MafArchivePersist(null, "TypeMHTML");
+        persist.saveWithNotLoadedResources = true;
       } else if (this.destFormat == "maff") {
         persist = new MafArchivePersist(null, "TypeMAFF");
+        persist.saveWithNotLoadedResources = true;
       } else if (document.contentType == "text/html" ||
        document.contentType == "application/xhtml+xml") {
         // The ExactPersist component can also save XML and SVG, but not as
         // accurately as the browser's standard save system.
         persist = new ExactPersist();
         persist.saveWithMedia = true;
+        persist.saveWithNotLoadedResources = true;
       } else {
         persist = Cc["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
          .createInstance(Ci.nsIWebBrowserPersist);
