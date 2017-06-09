@@ -37,39 +37,6 @@
   </li>
 </ul>
 
-<h2>Feedback and updates</h2>
-<p>The Mozilla Archive Format interfaces described in this document are not
- finalized, and are likely to change as new versions are published. Extensions
- that use these APIs will need to be updated from time to time to reflect those
- changes. How often depends on the <a href="#stability">stability levels</a> of
- the referenced APIs.</p>  
-<p>All of the internal MAF objects are available to other extensions, but only
- the methods marked as <a href="#status-public">public</a> in this API reference
- are actually checked for backwards compatibility. If you plan to use other
- methods in your extension, please <a href="feedback.html">get in touch</a> and
- those methods will be added to the list of public methods.</p>
-<p>Relevant changes in the interfaces of public methods will be announced on the
- <b>MAF mailing list</b>. If you would like to be notified of updates, please
- see the <a href="feedback.html">feedback page</a> for information on how to
- subscribe and send messages to the mailing list.</p>
-
-<h3>Compatible extensions</h3>
-<p>Some extensions, like
- <a href="https://addons.mozilla.org/firefox/addon/4838">Multiple Tab
- Handler</a>, are particularly suited to work together with the Mozilla Archive
- Format user experience. If you think your extension is in this category, or if
- your extension makes use of the MAF services, feel free to write to the <b>MAF
- mailing list</b>. Your extension will be taken into consideration for inclusion
- into the list of <a href="documentation.html#extensions">compatible
- extensions</a>.</p>
-<p>Compatible extensions are tested periodically with the latest version of MAF,
- in the areas in which they actually work together. For example, the
- <a href="https://addons.mozilla.org/firefox/addon/8051">UnMHT</a> extension
- makes use of the services to add file types to the "Save As" dialog, and
- includes its own copy of the file type identification and MHTML encoding
- routines of MAF. Considering that the encoding routines work separately, the
- areas subject to testing are save integration and MHTML file opening.</p>
-
 <h2><a name="stability"></a>Stability levels</h2>
 <ul>
   <li>
@@ -83,8 +50,7 @@
   <li>
     <p><b><a name="status-public"></a></a>Public</b></p>
     <p>Public methods and techniques are designed for use by other extensions.
-     Changes to the interfaces of these methods will be announced on the <b>MAF
-     mailing list</b> and will appear in the
+     Changes to the interfaces of these methods will appear in the
      <a href="changelog.html">changelog</a>.</p>
     <ul>
       <li>
