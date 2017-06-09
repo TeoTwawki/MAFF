@@ -1,91 +1,32 @@
 <!-- MAIN CONTENT -->
-<div class="maf-column-outer">
-  <div class="maf-column-left">
-    <div class="maf-column-contents">
+<div class="maf-column-contents">
 
-<h2>Mozilla Archive Format</h2>
-<p class="maf-tagline">MAFF and MHT support for your browser, and more.</p>
-<p class="maf-feature-line"><b>If you saved web pages using Internet Explorer
- and can't open them with Firefox</b> <span>the Mozilla Archive Format add-on
- is for you.</span></p>
-<p class="maf-feature-line"><b>If you want to save pages reliably, using a
- durable and universal file format</b> <span>the Mozilla Archive Format add-on
- is for you.</span></p>
-<ul id="maf-feature-overview">
-  <li>
-    <b><span>MAFF</span></b> is a single-file format that contains one or more
-     web pages.
-    <ul>
-      <li><b>Save disk space</b>, since MAFF is based on ZIP</li>
-      <li><b>Include video and audio</b>, WebM, Vorbis, Theora and more</li>
-      <li><b>Be universal</b>, compatible with Linux and other platforms</li>
-      <li><b>Use an open format</b>, with no risk of vendor lock-in</li>
-    </ul>
-    <a href="maff-file-format.html">Learn more...</a>
-  </li>
-  <li><b><span>MHT</span></b> <span>is usually created by <b>Internet
-   Explorer</b> or other browsers. The Mozilla Archive Format add-on can read
-   and create MHT files, with excellent compatibility.</span><br>
-   <a href="http://en.wikipedia.org/wiki/MHTML">Learn more...</a></li>
-  <li><b><span>Faithful Save</span></b> allows all saved pages to appear exactly
-   like the original, regardless of the file format or save command you
-   choose.</li>
-  <li><b><span>Title Save</span></b> is an optional feature that changes the
-   default behavior of the browser, suggesting the document's title in place of
-   the remote file name when saving.</li>
-</ul>
-
-    </div>
-  </div>
-  <div class="maf-column-right">
-    <div class="maf-column-contents">
-
-<h2>Download and install</h2>
-<div class="maf-box">
-  <div class="maf-box-icon">
-    <p class="maf-box-title"><a
-     href="https://addons.mozilla.org/downloads/latest/212/addon-212-latest.xpi?src=external-mozdev-index">Install
-     Mozilla Archive Format</a></p>
-    <p class="maf-box-text">For Firefox and SeaMonkey.</p>
-  </div>
+<h2>About the MAFF file format</h2>
+<div class="maf-icon">
+  <p><a href="maff-file-format.html">MAFF</a> files are <b>standard ZIP
+   files</b> containing <b>one or more</b> web pages, images, or other
+   downloadable content. Additional <b>metadata</b>, like the original page
+   address, is saved along with the content.</p>
 </div>
-<p class="maf-box-after"><a href="installation.html">More downloads, history,
- and Beta Channel...</a></p>
+<p>MAFF, compared to other web archive formats like
+ <a href="http://en.wikipedia.org/wiki/MHTML">MHTML</a> and single-page HTML, is
+ particularly suited to package <b>video and audio</b> together with related web
+ resources. This ability derives from the basic structure of the ZIP container,
+ where <b>compression</b> can be used for web pages, and <b>verbatim storage</b>
+ for content that requires fast streaming access and wouldn't benefit from being
+ re-compressed, like most video and audio.</p>
 
-<h2>Features</h2>
+<h2>About the Mozilla Archive Format add-on</h2>
+<p>MAFF files can be opened using any ZIP extraction utility, and most operating
+ systems can recognize them natively after changing the file extension from
+ <tt>.maff</tt> to <tt>.zip</tt>. Full browser integration, however, is only
+ available in Firefox and SeaMonkey after installing the
+ <a href="installation.html">Mozilla Archive Format</a> add-on, which can handle
+ both MAFF and MHTML files.</p>
 <div class="maf-box maf-features">
-  <p class="maf-box-title"><a href="screenshots.html">Discover All the
-   Features</a></p>
-  <div id="maf-feature-summary">
-    <ul>
-      <li>Save in Single File</li>
-      <li>Create Faithful Snapshot</li>
-      <li>Store Video and Audio</li>
-    </ul>
-    <ul>
-      <li>Link to the Original</li>
-      <li>Convert Saved Pages</li>
-      <li>Open by Clicking Icon</li>
-    </ul>
-    <ul>
-      <li>Simple</li>
-      <li>Performant</li>
-      <li>Compact</li>
-    </ul>
-    <ul>
-      <li>Compatible</li>
-      <li>Open Source</li>
-      <li>Popular</li>
-    </ul>
-    <div></div>
-  </div>
-</div>
-<div class="maf-box maf-features">
-  <p class="maf-box-title"><a href="documentation.html">Read the Online
-   Documentation</a></p>
+  <p class="maf-box-title"><a href="documentation.html">Online Documentation of
+   the Add-on</a></p>
   <p class="maf-box-text">Basic usage, how to convert saved pages, and more.</p>
 </div>
 
-    </div>
-  </div>
 </div>

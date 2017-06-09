@@ -1,143 +1,29 @@
 <!-- MAIN CONTENT -->
-<div class="maf-column-outer">
-  <div class="maf-column-left">
-    <div class="maf-column-contents">
+<div class="maf-column-contents">
 
 <h2>Installation</h2>
-<div class="maf-box">
-  <div class="maf-box-icon">
-    <p class="maf-box-title"><a
-     href="https://addons.mozilla.org/downloads/latest/212/addon-212-latest.xpi?src=external-mozdev-installation">Install
-     Mozilla Archive Format</a></p>
-    <p class="maf-box-text">For Firefox and SeaMonkey.</p>
-  </div>
-</div>
-<p class="maf-box-after">This link downloads the release version available at
- the <a href="https://addons.mozilla.org/addon/212">Mozilla Add-ons</a> website.
- This version is updated less frequently, tested more extensively, and fully
- translated in several languages.</p>
-<div class="maf-box maf-preview">
-  <p class="maf-box-title"><a
-   href="https://addons.mozilla.org/downloads/latest-beta/212/addon-212-latest.xpi?src=external-mozdev-installation">Install
-    from the Beta Channel</a></p>
-  <p class="maf-box-text">You will get new versions as soon as they are
-   available.</p>
-</div>
-<p class="maf-box-after">If you download from this link you will get new
- features sooner, although at first they will be available only in English.</p>
+<p>Visit the <a href="https://addons.mozilla.org/addon/212">Firefox Add-ons</a>
+ website to install Mozilla Archive Format in Firefox or SeaMonkey.</p>
+<p>You can also <a
+ href="https://addons.mozilla.org/downloads/latest-beta/212/addon-212-latest.xpi?src=external-mozdev-installation">install
+ from the Beta Channel</a> to get new versions as soon as they are
+ available.</p>
 
 <h2>Compatibility</h2>
-<p>Mozilla Archive Format, at the time of each release, is tested and verified
- with the most recent browser versions available in the following release
- channels:</p>
-<ul>
-  <li><b>Firefox Beta</b></li>
-  <li><b>Firefox Release</b></li>
-  <li><b>SeaMonkey Beta</b></li>
-  <li><b>SeaMonkey Release</b></li>
-</ul>
-<p>Testing is done under Windows XP, but the add-on is expected to work on all
- the platforms supported by the browser. Note that the add-on is not expected to
- be compatible with the Nightly channel, though partial compatibility might be
- implemented for the Aurora channel.</p>
+<p>The Mozilla Archive Format add-on can be installed on the latest available
+ versions of Firefox, Firefox Extended Support Release (ESR), and SeaMonkey. The
+ most recent version of the add-on is not expected to be compatible with older
+ versions of the browser or with pre-release channels such as Nightly and
+ Beta.</p>
 
-<h3>File format compatibility</h3>
-<p>MAFF files are standard ZIP files that can be extracted and read with any
- browser and operating system. For an overview of browser support for the MHTML
- format, see the <a href="http://en.wikipedia.org/wiki/MHTML">summary on
- Wikipedia</a>.</p>
-
-<h3>Add-on compatibility</h3>
-<p>Mozilla Archive Format is also written to be compatible with the largest
- number of other browser add-ons, with few known exceptions for older or
- unmaintained add-ons. In addition, Mozilla Archive Format is routinely tested
- together with other <a href="documentation.html#extensions">compatible
- extensions</a> on the latest version of Firefox. If you find out a case of
- incompatibility, you can report it through the
- <a href="feedback.html">feedback page.</a></p>
-
-<h2>License and copyright</h2>
-<p>The Mozilla Archive Format extension for Firefox has been created by
- Christopher Ottley and is now actively developed by Paolo Amadini. Mozilla
- Archive Format also includes code from the Save Complete extension, created by
- Stephen Augenstein. The latest version of the add-on is available under a
- <a href="http://www.mozilla.org/MPL/">MPL 1.1+, GPL 2.0+, LGPL 2.1+</a>
- disjunctive tri-license. Previous versions of the add-on and individual source
- files may be available under different Open Source licenses. See the
- <a href="source.html">source code</a> for more information.</p>
-
-    </div>
-  </div>
-  <div class="maf-column-right">
-    <div class="maf-column-contents">
-
-<h2><a name="whatsnew"></a>What's new in the latest version?</h2>
-<p>The following improvements are currently available in the Beta Channel:</p>
-<ul>
-  <li>When multi-process Firefox is enabled, compatibility information is
-   displayed in English in the main pane of the options dialog, and the dialog
-   is shown automatically the first time this condition is detected.</li>
-  <li>Partial compatibility with multi-process Firefox:
-    <ul>
-      <li>Full support for displaying the contents of web archives.</li>
-      <li>The notification bar with information about the original save date and
-       location is not displayed when multi-process Firefox is enabled.</li>
-      <li>Web archives cannot be created when multi-process Firefox is enabled,
-       however it is now possible to use the browser's standard save system to
-       save complete web pages in multiple files, without disabling the add-on
-       first.</li>
-    </ul>
-  </li>
-  <li>Several features have been removed or redesigned in preparation for full
-   compatibility with multi-process Firefox:
-    <ul>
-      <li>Taking an exact snapshot of the page is now required to create web
-       archives, and the browser's standard save system can only be used to save
-       complete web pages in multiple files. All the generated MHTML files are
-       now fully compatible with other browsers, since the option to create
-       partially compatible archives using the browser's standard save system is
-       not available anymore.</li>
-      <li>The separate Archives dialog has been removed.</li>
-      <li>The integrated Save Complete component has been removed.</li>
-      <li>The existing integration with the page context menu, the Tools menu,
-       and the application menu of older versions of Firefox has been removed in
-       favor of the integration with the customizable menu button.</li>
-      <li>The preference to use the page title instead of the default suggested
-       file name in the "Save As" dialog has been removed since this is now the
-       default naming strategy in Firefox.</li>
-    </ul>
-  </li>
-</ul>
-<p><a href="changelog.html#whatwasnew">What was new in the previous
- version?</a></p>
-<h2>Known issues</h2>
-<p>The latest version has the following known issues:</p>
-<ul>
-  <li>In order to open MHTML files when the
-   <a href="https://addons.mozilla.org/firefox/addon/1419">IE Tab</a> extension
-   is installed, the filter <tt>/^file:\/\/\/.*\.(mht|mhtml)$/</tt> must be
-   disabled from the IE Tab options.</li>
-  <li>The <a href="https://addons.mozilla.org/firefox/addon/25">Download
-   Sort</a> extension has a known incompatibility with MAF. The conflict cannot
-   be resolved without proper modifications to both extensions, and Download
-   Sort is not actively maintained at this time.</li>
-  <li>When saving multiple tabs in an archive, the save operation fails if the
-   tabs are closed before the operation is completed.</li>
-  <li>When saving a page in an archive fails, retrying the download from the
-   <b>Downloads</b> window does not achieve the expected result.</li>
-  <li>Opening very long documents contained inside MHTML files may cause the
-   browser to stop responding temporarily.</li>
-</ul>
-
-<h2>Previous versions and source code</h2>
-<p>You can download all the previous versions of MAF from the
- <a href="https://www.mozdev.org/projects/overview/maf/">project page</a>. The
+<h2>License and previous versions</h2>
+<p>The Mozilla Archive Format add-on has been created by Christopher Ottley and
+ developed by Paolo Amadini. The latest version of the add-on is available under
+ an MPL 1.1+, GPL 2.0+, LGPL 2.1+ disjunctive tri-license.
+ <a href="https://www.mozdev.org/projects/overview/maf/">Previous versions</a>
+ of the add-on and <a href="source.html">individual source files</a> may be
+ available under different Open Source licenses. The
  <a href="changelog.html">changelog</a> for all the old versions is also
- available. Source code for the released versions can be found in the XPI
- installation files, and can be read using any ZIP extractor. Source code for
- the development versions of MAF can be accessed from the
- <a href="source.html">source code page</a>.
+ available.</p>
 
-    </div>
-  </div>
 </div>

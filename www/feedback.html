@@ -1,18 +1,26 @@
 <!-- MAIN CONTENT -->
-<div class="maf-column-outer maf-auto">
-  <div class="maf-column-left">
-    <div class="maf-column-contents">
+<div class="maf-column-contents">
 
-<h2>Feedback</h2>
-<p class="maf-feedback-intro">The developers and maintainers of Mozilla Archive
- Format welcome your feedback, that is valuable for the continuous improvement
- of the software. Whether you want to suggest a new feature, report a bug, or
- just ask a question, we'd be glad to hear from you.</p>
+<h2>Known issues with the Mozilla Archive Format add-on</h2>
+<ul>
+  <li>In order to open MHTML files when the
+   <a href="https://addons.mozilla.org/firefox/addon/1419">IE Tab</a> add-on is
+   also installed, the filter <tt>/^file:\/\/\/.*\.(mht|mhtml)$/</tt> must be
+   disabled from the IE Tab options.</li>
+  <li>When saving multiple tabs in an archive, the save operation fails if the
+   tabs are closed before the operation is completed.</li>
+  <li>When saving a page in an archive fails, retrying the download from the
+   <b>Downloads</b> window does not achieve the expected result.</li>
+  <li>Opening very long documents contained inside MHTML files may cause the
+   browser to stop responding temporarily.</li>
+</ul>
+
+<h2>Report other issues</h2>
 <div class="maf-feedback-box">
   <div class="maf-box">
     <p class="maf-box-title"><a
      href="http://bugzilla.mozdev.org/enter_bug.cgi?product=maf">Report bug or
-     feature request</a></p>
+     other issue</a></p>
     <p class="maf-box-text">Requires an account on bugzilla.mozdev.org.</p>
   </div>
 </div>
@@ -24,6 +32,4 @@
   </div>
 </div>
 
-    </div>
-  </div>
 </div>

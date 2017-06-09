@@ -20,6 +20,44 @@
      reloaded correctly when saving multiple tabs in an archive.</li>
   </ul>
   <h2>Changelog for version 4.0</h2>
+  <h3>What was new in version 4.0?</h3>
+  <p>MAF 4.0.2 had the following user-visible improvements over MAF 3.1.0:</p>
+  <ul>
+    <li>When multi-process Firefox is enabled, compatibility information is
+     displayed in English in the main pane of the options dialog, and the dialog
+     is shown automatically the first time this condition is detected.</li>
+    <li>Partial compatibility with multi-process Firefox:
+      <ul>
+        <li>Full support for displaying the contents of web archives.</li>
+        <li>The notification bar with information about the original save date
+         and location is not displayed when multi-process Firefox is
+         enabled.</li>
+        <li>Web archives cannot be created when multi-process Firefox is
+         enabled, however it is now possible to use the browser's standard save
+         system to save complete web pages in multiple files, without disabling
+         the add-on first.</li>
+      </ul>
+    </li>
+    <li>Several features have been removed or redesigned in preparation for full
+     compatibility with multi-process Firefox:
+      <ul>
+        <li>Taking an exact snapshot of the page is now required to create web
+         archives, and the browser's standard save system can only be used to
+         save complete web pages in multiple files. All the generated MHTML
+         files are now fully compatible with other browsers, since the option to
+         create partially compatible archives using the browser's standard save
+         system is not available anymore.</li>
+        <li>The separate Archives dialog has been removed.</li>
+        <li>The integrated Save Complete component has been removed.</li>
+        <li>The existing integration with the page context menu, the Tools menu,
+         and the application menu of older versions of Firefox has been removed
+         in favor of the integration with the customizable menu button.</li>
+        <li>The preference to use the page title instead of the default
+         suggested file name in the "Save As" dialog has been removed since this
+         is now the default naming strategy in Firefox.</li>
+      </ul>
+    </li>
+  </ul>
   <h3>Changes from 4.0.1 to 4.0.2</h3>
   <ul>
     <li><b>Change:</b> This version is now marked as incompatible with
@@ -77,7 +115,7 @@
      that integrate with Mozilla Archive Format using internal methods.</li>
   </ul>
   <h2>Changelog for version 3.0</h2>
-  <h3><a name="whatwasnew"></a>What was new in version 3.0?</h3>
+  <h3>What was new in version 3.0?</h3>
   <p>MAF 3.0.3 had the following user-visible improvements over MAF 2.0.6:</p>
   <ul>
     <li>Improved compactness when saving complete web pages:
