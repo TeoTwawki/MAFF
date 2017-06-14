@@ -1,555 +1,321 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
-<h2>User Manual</h2>
-<p>Mozilla Archive Format is an add-on for the Firefox and SeaMonkey
-browsers that adds the ability to open and save <i>web archives</i>, and
-provides several improvements to the standard browser's save system.</p>
-<p>For a quick overview, see the <a href="screenshots.html">features
-page</a>.</p>
-<p><b>Note:</b> This manual covers the <a href="installation.html">latest
-version</a> of Mozilla Archive Format. Some features may not be available in the
-version from the Firefox Add-ons website.</p>
+
+<h2>Add-on documentation</h2>
+<p>The Mozilla Archive Format add-on is an independently developed program that
+ can be installed on the Firefox and SeaMonkey browsers to open and save MAFF
+ and MHTML archives.</p>
+<div class="maf-box-warning">
+  <p>Firefox add-on technology is modernizing, and traditional add-ons like
+   Mozilla Archive Format will stop working soon. The announced cut-off date is
+   <b>November 14, 2017</b>.</p>
+</div>
+
+<h2>Alternatives</h2>
+<p><b>This add-on uses legacy technology that will not be supported by future
+ versions of Firefox.</b> In order to access pages saved by this add-on, you can
+ use one of the following alternatives:</p>
 <ul>
-  <li><a href="#introduction">Introduction</a>
-  <ul>
-    <li><a href="#saving">Saving web archives</a></li>
-    <li><a href="#metadata">Additional information saved in web
-    archives</a></li>
-    <li><a href="#opening">Opening web archives</a></li>
-    <li><a href="#fileassociations">Creating file associations</a></li>
-    <li><a href="#archiveinfo">Viewing information about archived pages</a></li>
-  </ul>
-  </li>
-  <li><a href="#extensions">Integration with other extensions</a></li>
-  <li><a href="#converting">Converting previously saved pages to other
-  file formats</a>
-  <ul>
-    <li><a href="#convertingonepage">Converting single pages</a></li>
-    <li><a href="#convertingmorepages">Converting multiple pages</a></li>
-    <li><a href="#selectfiles">Selecting which files to convert</a></li>
-    <li><a href="#convertfiles">Completing the conversion</a></li>
-  </ul>
-  </li>
-  <li><a href="#preferences">Options</a>
-  <ul>
-    <li><a href="#main">Main</a></li>
-    <li><a href="#interface">Interface</a></li>
-    <li><a href="#actions">Actions</a></li>
-  </ul>
-  </li>
-  <li><a href="#internalsettings">Internal configuration settings</a></li>
-  <li><a href="#moredocumentation">More documentation</a></li>
+  <li>The <a href="#converting">Saved Pages Conversion Wizard</a> can be used to
+   convert your saved pages to a different file format. This is recommended for
+   most situations, and future updates to the add-on will provide a guided path
+   through this conversion process.</li>
+  <li><b>MAFF</b> files can be opened using any <b>ZIP extraction utility</b>,
+   and most operating systems can recognize them natively after renaming the
+   file extension from <tt>.maff</tt> to <tt>.zip</tt>.</li>
+  <li><b>MHTML</b> files can be opened using <b>Microsoft Internet Explorer</b>
+   on Windows, and on other operating systems using <b>Google Chrome</b>.</li>
+  <li>Compatibility with SeaMonkey and with Firefox Extended Support Release
+   (ESR) will be maintained until June 2018, but support for either browser
+   beyond this date is not planned.</li>
+  <li>Independent solutions for Windows, Mac, and Linux may become available in
+   the future.</li>
 </ul>
-<h2><a name="introduction"></a>Introduction</h2>
-<p>Web archives are a convenient means to preserve web pages. They store all
-the text, images, and other resources of a web page in a single file. When a web
-archive is moved or renamed, the saved pages are unchanged.</p>
-<h3><a name="saving"></a>Saving web archives</h3>
-<p>Mozilla Archive Format provides two new options of file type in the <i>Save
-As</i> dialog box:</p>
-<img src="images/saveAsDialog.png" alt="">
+
+<h2><a name="converting"></a>Converting previously saved pages to other file
+ formats</h2>
+<p>The Saved Pages Conversion Wizard automates the process of opening the web
+ pages you stored on your computer one by one and saving them again in a
+ different file format. While the pages saved by this process usually look like
+ the originals, in some cases the styling might not be replicated accurately.
+ Because of this, the procedure never deletes the original files.</p>
+<h3>Before you begin</h3>
+<ul>
+  <li><b>You should always keep a backup copy of the originals.</b></li>
+  <li>If your pages were originally saved by the Mozilla Archive Format add-on,
+   the conversion will generally be more accurate. If you used other programs or
+   the standard Firefox save system, there is a higher chance that the converted
+   pages will be different.</li>
+  <li>If you saved more than one page in a single MAFF archive, you should first
+   extract the archive using an ordinary ZIP utility. The resulting complete web
+   pages can then be converted to MHTML using this procedure.</li>
+  <li>If you are converting from a web archive format, ensure you have enough
+   free space in your temporary folder, since the archives are normally
+   extracted to the temporary folder before conversion. If you need to convert
+   many pages and don't have enough free space, you may want to convert only
+   some of them at a time, and restart the browser between each conversion
+   batch.</li>
+  <li>In some cases the automatic conversion may fail. If this happens, the
+   pages whose conversion failed can still be opened and re-saved manually.</li>
+  <li>The Saved Pages Conversion Wizard is under active development, and future
+   versions may be able to convert more pages than the current version.</li>
+</ul>
+<p>The guided procedure can be started from the <b>File &raquo; Convert Saved
+ Pages</b> menu item after
+ <a href="https://addons.mozilla.org/addon/212">installing the Mozilla Archive
+ Format add-on.</a></p>
+<h3>Choosing a file format</h3>
+<img src="images/convertDialog-pageFormats.png" alt="">
 <dl>
-  <dt>Web Archive, MAFF zipped</dt>
+  <dt>Complete web pages (with support folders for data files)</dt>
   <dd>
-  <p>This option saves one or more pages inside a single <a
-    href="maff-file-format.html">MAFF</a> archive. MAFF archives are compressed
-  using the universal, cross-platform ZIP specification for saving multiple
-  files in one archive.</p>
-  <p>MAFF archives can be opened in the browser. If multiple tabs were
-  saved, opening a MAFF archive opens all the tabs, exactly the way they were
-  when they were saved.</p>
-  <p>It is possible to view the original location from which the page was
-  saved. The contents of the archive, including any embedded media files, can be
-  inspected and extracted using any ZIP utility.</p>
-  <p>The Mozilla Archive Format extension generates MAFF archives using the
-  fast, native ZIP implementation embedded in the Mozilla browser. The resulting
-  files are usually smaller than the equivalent MHTML archives, and opening this
-  kind of file is faster.</p>
-  <p>However, Microsoft Internet Explorer cannot open MAFF files natively.</p>
+  <p>This file format is used by default in Firefox. Web pages are stored as
+   file&nbsp;/&nbsp;folder pairs, for example <tt>Page.html</tt> and
+   <tt>Page_files</tt>.</p>
+  <p><b>This format provides the best compatibility</b> because it can be opened
+   in any browser without installing additional software. It can also include
+   large video and audio files efficiently.</p>
+  <p>However, <b>the name of the folder cannot be changed</b> after the page is
+   saved. The page may also become unreadable if the support folder is separated
+   from the associated file, or if the file&nbsp;/&nbsp;folder pair is moved to
+   a different file system where special characters, accented characters, or
+   long file names may be lost. Backups may be significantly slower because the
+   support folder often contains many small files.</p>
   </dd>
-  <dt>Web Archive, MHTML</dt>
+  <dt>MHTML archives</dt>
   <dd>
-  <p>This web archive format, also known as MHT, is used by Microsoft's
-  Internet Explorer browser. This option saves a single page inside a MIME HTML
-  file, or MHTML archive.</p>
-  <p>MHTML files are encoded, not compressed. The encoding usually increases
-  the size of the saved media files compared to the original. At present, the
-  contents of an MHTML archive can be decoded by only a limited number of web
-  browsers, or by using special utilities. However, MHTML archive format has the
-  advantage that it can be shared with those who use only Internet Explorer.</p>
+  <p>This file format was originally implemented by Microsoft Internet Explorer,
+   and solves the issues with file&nbsp;/&nbsp;folder pairs because the entire
+   web page is stored in a single file.</p>
+  <p>However, MHTML files use more disk space and are not suitable for saving
+   large video and audio files. MHTML files including such content would become
+   very slow to load.</p>
+  <p>This format provides generally good compatibility because it can be opened
+   by Microsoft Internet Explorer and Google Chrome. On the other hand,
+   <b>Firefox cannot open MHTML files</b> without installing an add-on. One
+   compatible with future versions of Firefox does not currently exist, and
+   additional external software would be required to open these files directly
+   from the operating system's file manager.</p>
+  </dd>
+  <dt>MAFF archives</dt>
+  <dd>
+  <p>This file format was originally implemented by the Mozilla Archive Format
+   add-on. MAFF files are standard ZIP files, and they can store multiple pages
+   in a single archive.</p>
+  <p>Since these archives are compressed, they are usually smaller than the
+   equivalent MHTML archives or file&nbsp;/&nbsp;folder pairs, and can still
+   include large video and audio files efficiently.</p>
+  <p>However, browser support for this format is limited. While future versions
+   of Firefox will still support the <tt>jar:</tt> protocol for reading the
+   contents of MAFF files without installing an add-on, additional external
+   software would be required to open these files directly from the operating
+   system's file manager.</p>
   </dd>
 </dl>
-<h4><a name="metadata"></a>Additional information saved in web archives</h4>
-<p>When you save a page as a web archive, the following additional
-information about the tab or tabs saved is stored in the archive:</p>
+<h3>Selecting which files to convert</h3>
+<img src="images/convertDialog-pageFoldersSource.png" alt="">
+<p>When looking for files to convert, MAFF and MHTML archives are recognized by
+ their extension, respectively <tt>.maff</tt> and either <tt>.mht</tt> or
+ <tt>.mhtml</tt>. Complete web pages are recognized because they have an
+ associated support folder, for example <tt>Page.html</tt> and
+ <tt>Page_files</tt>, but also <tt>Page</tt> (without extension) and
+ <tt>Page_files</tt>. Web pages saved as single files, without support folders,
+ are recognized by their extension only.</p>
+<p>Depending on how many files are present in the source folder, building the
+ list of files to convert may require some time. If you are working with large
+ folder trees, you may want to repeat the procedure multiple times, converting
+ one sub-folder at a time.</p>
+<p>If you are using your browser in a language other than English, the
+ recognition of additional support folder suffixes will be enabled. For example,
+ if you are using your browser in French, a support folder named
+ <tt>Page_fichiers</tt> is recognized, in addition to the English
+ <tt>Page_files</tt>.</p>
+<p>If you previously saved pages using a browser in a different language than
+ the current one, the support folder names may not be recognized correctly, and
+ you might have to adjust the list of recognized suffixes in the <a
+ href="#internalsettings">internal configuration settings</a>.</p>
+<img src="images/convertDialog-pageFoldersDest.png" alt="">
+<p>You may want to place the converted files in a different folder from the
+ originals if you are converting from a read-only source such as a CD-ROM or a
+ DVD. The original folder structure is always preserved, so that if a source
+ file is located in a sub-folder of the original folder, the converted file will
+ be located in a sub-folder of the destination folder.</p>
+<p>If the contents of the source folder can be modified, you can also choose to
+ move the originals to a separate archival folder after they have been converted
+ successfully.</p>
+<p>The converted files will be named according to the destination format. The
+ extension in the source file name, if present, is always replaced with the
+ correct extension for the file type. For MHTML, the <a
+ href="#internalsettings">internal configuration settings</a> determine whether
+ the <tt>.mht</tt> or <tt>.mhtml</tt> extension is used.</p>
+<img src="images/convertDialog-pageCandidates-select.png" alt="">
+<p>You can exclude individual files from the conversion before the actual
+ process begins. The list of files can be sorted by source file name, support
+ folder name, and sub-folder. You can also enable additional columns to display
+ the full paths.</p>
+<p>If the destination file or support folder is already present, or if a file or
+ support folder is already present in the archival folder where the source file
+ would be moved after conversion, the source file name will appear in the list,
+ but the selection checkbox will be disabled. This often indicates that the page
+ was already converted successfully.</p>
+<h3>Completing the conversion</h3>
+<img src="images/convertDialog-pageCandidates-results.png" alt="">
+<p>Click the <b>Finish</b> button to start the conversion. While the process is
+ running, you can use the <b>Back</b> button or close the window to cancel.</p>
+<p>When the operation is finished, you can see the count of how many files have
+ been successfully converted and how many conversions failed. The icon near each
+ file name indicates its current status: <img src="images/cbox-dis.gif" alt="">
+ not selected, <img src="images/cbox-dis-check.gif" alt=""> already converted,
+ <img src="images/cbox-status-enqueued.gif" alt=""> waiting for conversion, <img
+ src="images/cbox-status-working.gif" alt=""> currently converting, <img
+ src="images/cbox-status-failure.gif" alt=""> conversion failed, or <img
+ src="images/cbox-status-success.gif" alt=""> conversion succeeded. You can
+ click the <b>Finish</b> button again to close the window, or use the
+ <b>Back</b> button to retry the conversion with different settings.</p>
+<p>Detailed information about the reasons for conversion failures is available
+ in the Browser Console, accessible from the <b>Tools &raquo; Web Developer
+ &raquo; Browser Console</b> menu item.</p>
+
+<h2>Opening web archives</h2>
+<p>After installing the Mozilla Archive Format add-on, MAFF and MHTML archives
+ can be displayed in the browser like any other saved page. On Windows, file
+ associations are created so that archives can be opened from the operating
+ system's file manager.</p>
+<p>File associations can be controlled from the welcome page that is displayed
+ when the add-on is installed for the first time. You can display this page
+ again using the <b>Refresh File Associations</b> link in the <b>Actions</b>
+ pane of the add-on options.</p>
+<p>File associations are always created explicitly for the current user of
+ the system. In addition, if the browser is running with administration
+ privileges, default file associations for all users are also created. File
+ associations are not removed when uninstalling.</p>
+<p>When you display an archived page, an information bar shows the <b>original
+ location</b> from which the page was saved, as well as the <b>date and
+ time</b> of the save operation. You can click the original location to open it,
+ and use key combinations to open the link in a new tab or window.</p>
+
+<h2>Saving web archives</h2>
+<img src="images/saveAsDialog.png" alt="">
+<p>After installing the Mozilla Archive Format add-on, you can choose MAFF and
+ MHTML as file types in the <i>Save As</i> dialog box. When you save in one of
+ these formats, the following additional information is stored:</p>
 <ul>
-  <li>The <b>original location</b> from which the page was saved. This
-  normally matches what is displayed in the address bar of the browser.</li>
+  <li>The <b>original location</b> from which the page was saved.</li>
   <li>The <b>date and time</b> the page was saved.</li>
   <li>The <b>title</b> of the page, if present.</li>
-  <li>The <b>character set</b> in effect at the time the page was saved.
-  <p>If the character set was changed manually using the <b>View &raquo;
-  Character Encoding</b> menu item, the custom choice is remembered. This allows the
-  document to be displayed correctly when it is reopened from the archive, even
-  if it contains international characters.</p>
+  <li>The <b>character set</b> in effect at the time the page was saved. If this
+   was changed manually using the <b>View &raquo; Text Encoding</b> menu item,
+   the custom choice is remembered, allowing the document to be displayed
+   correctly when it is reopened from the archive, even if it contains
+   international characters.</p>
   </li>
 </ul>
-<p>If you re-save an already archived page to a different file, the date and
-time saved, and the location of the original archive, are preserved.</p>
-<h3><a name="opening"></a>Opening web archives</h3>
-<p>After Mozilla Archive Format is installed, web archives can be opened as
-with any saved web page.</p>
-<h3><a name="fileassociations"></a>Creating file associations</h3>
-<p>On Windows, Mozilla Archive Format can create file associations to open
-web archives by double-clicking the file names in Windows Explorer.</p>
-<p>File associations can be controlled from the welcome page that is
-displayed when the extension is installed for the first time, or when the <b>Refresh
-File Associations</b> link is selected from the <b>Actions</b> options pane.</p>
-<p>In the welcome page, you can choose whether file associations are
-created, for the MAFF and MHTML formats separately.</p>
-<p>File associations are always created explicitly for the current user of
-the system. In addition, if the current user has administration privileges,
-default file associations for all users are also created.</p>
-<p>File associations are <i>not</i> removed when uninstalling the add-on or
-the browser itself.</p>
-<h3><a name="archiveinfo"></a>Viewing information about archived pages: Web
-page information panel</h3>
-<img src="images/viewArchive.png" alt="">
-<p>When you display an archived page, an additional icon appears in the
-address bar of the browser (default operation). To display information about
-each saved web page, first choose a tab, if more than one page was saved. Then
-left-click on the icon to display the following information about that page:</p>
+<p>This information is also preserved if you save an already archived page to a
+ different file. If the original file is not a web archive, the following
+ information is still preserved:</p>
 <ul>
-  <li>The <b>original location</b> the archived page was saved from, if
-  available.</li>
-  <li>The <b>date and time</b> of the save operation, if available.</li>
+  <li>The <b>date and time</b> of the save operation is obtained from the last
+   modification time.</li>
+  <li>The <b>original location</b> may be available if the page was saved with
+   Internet Explorer. If the page was saved using Firefox or SeaMonkey, the
+   original location is not available, and the local file address will be stored
+   in the archive instead.</p>
+  </li>
 </ul>
-<p>The original location is a link. You can left-click it to open the
-original page in the same tab, or you can use the appropriate key combinations
-to open the link in a new tab or a new window.</p>
-<p>From the web page information panel you can choose <i>Browse Open
-Archives</i>. The <i>Archives</i> dialog provides additional information about all
-the web pages in the archive. The information displayed can be selected with the
-mouse and copied to the clipboard.</p>
-<p>Display the icon in the lower right-hand corner of the status bar by
-choosing that add-on option. You can also control the visibility and position of
-the icon from the <a href="#interface">interface options</a>.</p>
-<h2><a name="extensions"></a>Integration with other extensions</h2>
-<p>One of the key features of Mozilla Archive Format is that it integrates
-not only with the browser but with other extensions also.</p>
-<p>Some of the other extensions, like UnMHT, must be installed separately.
-Other extensions, like Save Complete, are embedded and updated together with
-Mozilla Archive Format. Here is a list of extensions that inter-operate with the
-Mozilla Archive Format extension:</p>
+<p>You can save multiple tabs in an archive using the standard context menu on
+ the tab strip or the context menu provided by the <a
+ href="https://addons.mozilla.org/firefox/addon/4838">Multiple Tab Handler</a>
+ add-on. For MHTML archives, multiple files are created, while for MAFF archives
+ all the tabs are saved in a single file.</p>
+
+<h2>Options</h2>
 <dl>
-  <dt><a href="https://addons.mozilla.org/firefox/addon/4838">Multiple
-  Tab Handler</a>, by Shimoda Hiroshi</dt>
-  <dd>
-  <p>This extension adds a multiple selection interface and a new context
-  menu to the Firefox tab bar.</p>
-  <p>Mozilla Archive Format integrates with the tab selection context menu
-  and adds an entry to save the selected tabs in an archive. For MHTML archives,
-  multiple files are created, while for MAFF archives all the tabs are saved in
-  a single file.</p>
-  </dd>
-  <dt><a href="https://addons.mozilla.org/firefox/addon/4723">Save
-  Complete</a>, by Stephen Augenstein</dt>
-  <dd>
-  <p>The Save Complete extension is integrated with Mozilla Archive Format,
-  but must be <a href="#savecomplete">enabled from the internal configuration
-  settings</a>.</p>
-  <p>This extension replaces the system used by the browser to save complete
-  web pages. The new system correctly handles style sheets referencing image
-  files, that otherwise would not be saved, causing some pages to appear
-  differently.</p>
-  </dd>
-  <dt><a href="https://addons.mozilla.org/firefox/addon/834">File Title</a>,
-  by Pavel Cvrcek</dt>
-  <dd>
-  <p>The functionality of the File Title extension is also available from
-  the Mozilla Archive Format <a href="#main">options</a>.</p>
-  <p>This extension replaces the default file name suggested in the <i>Save
-  As</i> dialog box with the title of the page being saved.</p>
-  </dd>
-  <dt><a href="https://addons.mozilla.org/firefox/addon/712">Title Save</a>,
-  by gm</dt>
-  <dd>
-  <p>This extension is similar to File Title, but does not affect the
-  default behavior. It adds a new item in the <b>File</b> menu to use the title
-  of the page, instead of the file name, in the <i>Save As</i> dialog box.</p>
-  <p>You can use the new command to save MAFF and MHTML archives too.</p>
-  <p>You may install this extension if you want to selectively use the page
-  title instead of the original file name. In this case, ensure that the
-  browser's default naming strategy is selected in the <a href="#main">options</a>,
-  otherwise the title of the page might be used in all cases.</p>
-  </dd>
-  <dt><a href="https://addons.mozilla.org/firefox/addon/8051">UnMHT</a>, by
-  Arai</dt>
-  <dd>
-  <p>This extension adds new options in the <b>File</b> menu to save MHTML
-  archives, providing other advanced features also.</p>
-  <p>If UnMHT is installed, you can continue to use Mozilla Archive Format
-  to create and open MAFF archives, while MHTML archives are opened with UnMHT.</p>
-  </dd>
-</dl>
-<h2><a name="converting"></a>Converting previously saved pages to other
-file formats</h2>
-<p>You probably already have some web pages saved among your local files.
-These pages are often stored as file&nbsp;/&nbsp;folder pairs (like <tt>Page.html</tt>
-and <tt>Page_files</tt>), and you may want to convert them to a web archive
-format for easier maintenance as a single file.</p>
-<p>You may also want to convert saved pages from one web archive format to
-another, for example from MHTML to MAFF to save disk space, or from MAFF to
-MHTML to achieve compatibility with Internet Explorer.</p>
-<h3><a name="convertingonepage"></a>Converting single pages</h3>
-<p>Converting a single page that was previously saved locally is easy. Just
-open the page in the browser and re-save it in another file format. The Mozilla
-Archive Format extension handles the details of the conversion process, and
-preserves the information about the original source, if available.</p>
-<p>When converting a web page that is not stored in an archive, the
-following information is preserved:</p>
-<ul>
-  <li>The <b>date and time</b> of the original save operation is obtained
-  from the local file's last modification time.</li>
-  <li>The <b>original location</b> is obtained from the special comment
-  some browsers embed in the page when they save it. If not available, the local
-  address is used.
-  <p>If the page was saved with Internet Explorer, the original location is
-  stored like <code>&lt;!-- saved from url=(0023)http://www.example.org/
-  --&gt;</code>.</p>
-  <p>If the page was saved using the standalone or the integrated Save
-  Complete extension for Firefox, the original location is stored like <code>&lt;!--
-  Source is http://www.example.org/ --&gt;</code>.</p>
-  <p>If the page was saved using SeaMonkey or Firefox without the Save
-  Complete extension, the original location is not available.</p>
-  </li>
-</ul>
-<p>When converting a web archive to another archive format, all the
-information that is supported by the destination file format is preserved.</p>
-<p>When saving an archived page as a complete page outside of an archive, if
-the integrated Save Complete extension is enabled, the original source location
-is stored in a comment inside the saved page.</p>
-<h3><a name="convertingmorepages"></a>Converting multiple pages</h3>
-<p>If you have many saved pages that you want to convert to another file
-format, you can use the <i>Saved Pages Conversion Wizard</i>. You can start the
-wizard using the <b>Tools &raquo; Mozilla Archive Format &raquo; Convert
-Saved Pages</b> menu item. If the <b>Mozilla Archive Format</b> sub-menu is hidden,
-you must first enable it from the <a href="#interface">interface options</a>.</p>
-<p><b>Important considerations:</b> The wizard allows you to convert all the
-pages located in one folder, optionally including all its sub-folders. The
-wizard automates the manual tasks of opening each page and saving them using
-another file format. When using the conversion wizard, the following information
-must be considered:</p>
-<ul>
-  <li>The wizard operates on multiple files, but the results for each file
-  are equivalent to <a href="#convertingonepage">converting a single page</a> by
-  opening and saving it manually. The information about the original location is
-  preserved, and the faithfulness of the resulting converted pages depends on
-  the destination file formats and the current <a href="#main">options</a>.</li>
-  <li>If you want to convert from MHTML to another file format, like MAFF,
-  and you have installed the <a
-    href="https://addons.mozilla.org/firefox/addon/8051">UnMHT</a> extension,
-  you must disable it for the duration of the conversion process.</li>
-  <li>The wizard only operates on one page for each file. If you want to
-  convert from a multi-page MAFF archive to another file format, you should
-  extract the archive first, using an ordinary ZIP utility. If you want, you can
-  then convert the resulting complete web pages to MHTML using the conversion
-  wizard.</li>
-  <li>If you are converting from a web archive format, ensure you have
-  enough free space in your temporary folder, since the archives are normally
-  extracted to the temporary folder before conversion.
-  <p>If you need to convert many pages and don't have enough free space, you
-  may want to convert only some of them at a time, and restart the browser
-  between each conversion batch.</p>
-  </li>
-  <li>In some cases, the automatic conversion of complex web pages may
-  fail. These pages may need manual conversion.</li>
-</ul>
-<h4><a name="selectfiles"></a>Selecting which files to convert</h4>
-<img src="images/convertDialog-pageFormats.png" alt="" vspace="2"> <img
-  src="images/convertDialog-pageFoldersSource.png" alt="" vspace="2">
-<p><b>First select the source and destination file formats.</b> Then select
-the folder in which the source files are located. You can decide to look in
-sub-folders of the selected folder, or you can convert only the files that are
-placed directly inside the selected folder.</p>
-<p>The selected source format determines how the wizard will look for source
-files. The MAFF and MHTML web archive formats are recognized by their extension,
-respectively <code class="maf-file-ext">.maff</code> and either <code
-  class="maf-file-ext">.mht</code> or <code class="maf-file-ext">.mhtml</code>.
-Complete web pages are recognized because they have an associated support
-folder, for example <tt>Page.html</tt> and <tt>Page_files</tt>, but also <tt>Page</tt>
-(without extension) and <tt>Page_files</tt>. Web pages saved as single files,
-without support folders, are recognized by their extension only.</p>
-<p>If you are using your browser in a language other than English, the
-recognition of additional support folder suffixes will be enabled. For example,
-if you are using your browser in French, a support folder named <tt>Page_fichiers</tt>
-is recognized, in addition to the English <tt>Page_files</tt>.</p>
-<p>If you previously saved pages using a browser in a different language
-than the current one, the support folder names may not be recognized correctly,
-and you might have to adjust the list of recognized suffixes in the <a
-  href="#internalsettings">internal configuration settings</a>.</p>
-<p>The selected destination format determines how the wizard will assign the
-output file names. The extension in the source file name, if present, is always
-replaced with the correct extension for the destination file format. For MHTML,
-the <a href="#internalsettings">internal configuration settings</a> determine
-whether the <code class="maf-file-ext">.mht</code> or <code class="maf-file-ext">.mhtml</code>
-extension is used.</p>
-<img src="images/convertDialog-pageFoldersDest.png" alt="">
-<p><b>Then select the destination folder.</b> You may want to place the
-converted files in a different folder from the original files; that option is
-particularly useful if you are converting from a read-only source, such as a
-CD-ROM or a DVD. The original folder structure is always preserved, so that if a
-source file is located in a sub-folder of the original folder, the converted
-file will be located in a sub-folder in the destination folder with the same
-name as the sub-folder in the original folder.</p>
-<p>You may also choose to place the converted files in the same folder as
-the original files. Each converted file will be placed in the same folder as its
-original, with the same file name but with a different extension. In that case,
-after conversion you may want to move the originals manually, by selecting a
-folder that will be used as a bin for the original files that have been
-successfully converted.</p>
-<p>If you are converting from the MAFF file format and use of the "jar:"
-protocol is enabled in the <a href="#internalsettings">internal
-configuration settings</a>, you will not be able to move the source files to another
-folder, since the browser will lock the files in place until it is closed. If
-you want to move the source files when converting from MAFF to another format,
-you should disable the use of the "jar:" protocol for the duration of the
-conversion process.</p>
-<p>The conversion wizard will never delete or overwrite the source files.
-Since in unusual cases the converted pages may not be entirely faithful to the
-original, you should always keep a backup of your source files, even after a
-successful conversion.</p>
-<img src="images/convertDialog-pageCandidates-select.png" alt="">
-<p><b>Finally, the source folder is scanned to locate the original
-files.</b> Depending on how many files are present in the source, this operation may
-require some time. If you are working with large folder trees, you may want to
-repeat the wizard multiple times, converting one sub-folder at a time.</p>
-<p>Before the actual conversion begins, you have the option of fine-tuning
-your selection. You can also verify that the source files have been identified
-correctly. In addition to the source file name, support folder name, and
-sub-folder in the list of files, you may display other columns like the full
-source, destination, and bin paths.</p>
-<p>If for any reason the destination file or support folder is already
-present, or if a file or support folder is already present in the folder where
-the source file would be moved after conversion, the source file name will
-appear in the list, but the selection checkbox will be disabled. This often
-indicates that the source file was converted successfully during a previous run
-of the wizard.</p>
-<h4><a name="convertfiles"></a>Completing the conversion</h4>
-<img src="images/convertDialog-pageCandidates-results.png" alt="">
-<p>After you have selected the files to be converted, click the <b>Finish</b>
-button to start the conversion process. Depending on the number of files, this
-process may require some time.</p>
-<p>You can cancel the conversion at any time by closing the wizard or by
-using the <b>Back</b> button. Canceling the operation may require some time.</p>
-<p>When the operation is finished, you can see the count of how many files
-have been successfully converted and how many conversions failed. The icon near
-each file name indicates its current status: <img src="images/cbox-dis.gif"
-  alt=""> not selected, <img src="images/cbox-dis-check.gif" alt="">
-already converted, <img src="images/cbox-status-enqueued.gif" alt="">
-waiting for conversion, <img src="images/cbox-status-working.gif" alt="">
-currently converting, <img src="images/cbox-status-failure.gif" alt="">
-conversion failed, or <img src="images/cbox-status-success.gif" alt="">
-conversion succeeded.</p>
-<p>Detailed information about the reasons for conversion failures is
-available in the <i>Error Console</i>, accessible from the <b>Tools &raquo;
-Error Console</b> menu item.</p>
-<p>If you are satisfied with the results, click the <b>Finish</b> button to
-close the window. You may also use the <b>Back</b> button to retry the
-conversion process with the same or different settings.</p>
-<h2><a name="preferences"></a>Options</h2>
-<h3><a name="main"></a><a name="exactpersist"></a>Main</h3>
-<img src="images/prefsDialog-paneMain.png" alt="">
-<dl>
-  <dt>Default format when saving in a single file:</dt>
-  <dd>
-  <p>This option controls the default file type selected in the <i>Save In
-   Archive As</i> dialog box. The file type can also be changed at any time in
-   the dialog itself.</p>
-  <p>The file type specified in the standard <i>Save As</i> dialog box is not
-   affected by this option.</p>
-  </dd>
   <dt>When saving complete web page contents:</dt>
   <dd>
-  <p>This option controls which method is used to find all the web resources
-  (images, styles, sub-frames, ...) that are included in the web page being
-  saved.</p>
-  <ol>
-    <li><b>Take an exact snapshot.</b> (default) This option provides the most
-    accurate save mode. It captures the current state of the page and creates
-    an exact replica, including the current values of form fields and video and
-    audio embedded in the page. This save mode works especially well for pages
-    that make extensive use of scripts or use dynamic technologies like AJAX.
-    <p>The resulting page will be static, as scripts are disabled by the
-    save operation to preserve the integrity of the result when it is displayed
-    again. If you need to keep scripts, you can enable the intergated Save
-    Complete component from the <a href="#internalsettings">internal
-    configuration settings</a>.</p>
-    </li>
-    <li><b>Use browser's standard save system.</b> With this setting, the
-    web pages are saved by the browser. How much of the web page is actually
-    saved depends on the version of the browser being used.
-    <p>When this option is enabled, Mozilla Archive Format will not be able to
-    create MHTML files according to the original specification. Other browsers
-    will not be able to display a properly formatted page, in particular if the
-    saved page contains nested CSS style sheets or inner frames.</p>
-    </li>
-  </ol>
-  <p>Note that the selected method of saving is used not only when saving
-  archives, but also when saving complete pages using the <b>Web Page,
-  complete</b> file type.</p>
+  <p>This option can be used to disable the integration with the <i>Save As</i>
+   dialog. Normally, the integration is enabled and saved pages will always
+   include all the images, styles, and sub-frames that are visible at the time
+   the page is saved, including the current values of form fields. The page will
+   be static, as scripts are disabled by the save operation.</p>
+  <p>If <b>use browser's standard save system</b> is selected, the integration
+   is disabled and how much of the web page is saved depends on the version of
+   the browser being used.</p>
   </dd>
-  <dt>For the suggested file name:</dt>
+  <dt>Default format when saving in a single file:</dt>
   <dd>
-  <p>This preference controls which method is used to select the default
-  file name in the <i>Save As</i> and <i>Save In Archive As</i> dialog
-  boxes.</p>
-  <ol>
-    <li><b>Use the title of the page.</b> (default) With this setting, the
-    title of the page is preferred to the original file name. This is done for
-    all HTML and XHTML pages, unless the server from which you are downloading
-    the page explicitly asked the browser to use a specific file name. Note
-    that if <a href="#extensions">other extensions</a> affecting this behavior
-    are installed, this setting may not work as expected.</li>
-    <li><b>Use browser's standard naming strategy.</b> With this setting,
-    the Mozilla Archive Format extension does not alter the current behavior,
-    which is determined by the browser or by <a href="#extensions">other
-    installed extensions</a>. If no other extension affecting this behavior is
-    installed, the original name of the file is suggested instead of the title
-    of the page.</li>
-  </ol>
+  <p>This option reflects the current file type choice in the <b>Save As</b>
+   dialog.</p>
   </dd>
-</dl>
-<h3><a name="interface"></a>Interface</h3>
-<img src="images/prefsDialog-paneInterface.png" alt="">
-<dl>
   <dt>When an archived page is opened:</dt>
   <dd>
-  <p>You can control which notifications are displayed to access additional
-   information about an archived page.</p>
-  <ol>
-    <li><b>Show icon in the location bar</b>&nbsp; When viewing a page that is
-    saved in an archive, an icon in the location bar will appear, allowing an
-    information panel to be opened. The icon is hidden during normal
-    browsing.</li>
-    <li><b>Display an information bar</b>&nbsp; Every time an archived page is
-    opened, an information bar will appear showing the original location, as
-    well as the date and time the page was saved. The information bar can be
-    closed, and it will not reappear until the page is reloaded.</li>
-  </ol>
-  </dd>
-  <dt>Show Mozilla Archive Format menu items in:</dt>
-  <dd>
-  <p>You can select which menus will display the Mozilla Archive Format
-  items. These items open a special <i>Save In Archive As</i> dialog. They are
-  useful if you routinely use the standard <i>Save As</i> dialog to save only
-  the text of a page, and need a separate option to save a page in an archive
-  without changing the selection in the file type drop down list.</p>
+  <p>This option allows disabling the information bar and the icon in the
+   location bar that are normally displayed when viewing an archived page.</p>
   </dd>
 </dl>
-<h3><a name="actions"></a>Actions</h3>
-<img src="images/prefsDialog-paneActions.png" alt="">
-<p>You can use the links in this options pane to launch the <a
-  href="#convertingmorepages">Saved Pages Conversion Wizard</a>, to <a
-  href="#fileassociations">refresh file associations</a> on Windows, or to visit
-the official web site.</p>
+
 <h2><a name="internalsettings"></a>Internal configuration settings</h2>
-<p>These configuration settings are not available from the options dialog.
-To access them, put <tt>about:config</tt> into the browser's address bar and
-press the Enter key. Type <tt>maf</tt> into the filter field; that will show
-only the settings that apply to Mozilla Archive Format. Normally don't change
-the settings unless the reason is clearly understood. Non-default settings may
-adversely impact functionality or performance.</p>
-<p><b>Note:</b> In previous versions of the add-on, the same internal settings
-were available with slightly different names. If you customized the settings
-using the old names, they will still appear in <tt>about:config</tt>, but they
-will have no effect on newer versions. You have to customize the settings again,
-using their new names, for them to take effect. However, this is rarely required
-because new versions are designed to work optimally without the need to
-customize the settings.</p>
+<p>These settings are only available from the internal configuration page of the
+ browser, and normally don't need to be changed.</p>
 <dl>
   <dt><tt>extensions.maf.advanced.datafoldersuffixes</tt></dt>
   <dd>
-  <p>This option influences the Saved Pages Conversion Wizard when <a
-    href="#selectfiles">selecting which files to convert</a>.</p>
-  <p>Complete web pages are recognized because they have an associated
-  support folder, with the same base name as the main file and a different
-  suffix, for example <tt>Page.html</tt> and <tt>Page_files</tt>.</p>
-  <p>This option displays a comma-separated list of the recognized suffixes.
-  An additional suffix that depends on the current browser language may also be
-  recognized without it being explicitly listed in this option.</p>
+  <p>Complete web pages are recognized by the Saved Pages Conversion Wizard
+   because they have an associated support folder, with the same base name as
+   the main file and a different suffix, for example <tt>Page.html</tt> and
+   <tt>Page_files</tt>.</p>
+  <p>This option contains a comma-separated list of the recognized suffixes. An
+   additional suffix that depends on the current browser language may also be
+   recognized without it being explicitly listed.</p>
   </dd>
   <dt><tt>extensions.maf.advanced.maff.compression</tt></dt>
   <dd>
-  <p>Controls the compression level used when saving files in a MAFF
-  archive.</p>
-  <ol>
-    <li><b><tt>dynamic</tt></b> (default)&nbsp; Use maximum compression for
-    all files, but do not re-compress media files.</li>
-    <li><b><tt>best</tt></b> &nbsp; Use maximum compression for all files.</li>
-    <li><b><tt>none</tt></b> &nbsp; Store all the files uncompressed.</li>
-  </ol>
+  <p>Controls the compression level used when saving files in a MAFF archive.
+   This can be <tt>best</tt> to use maximum compression for all files,
+   <tt>dynamic</tt> to avoid re-compressing media files, and <tt>none</tt> to
+   store all the files uncompressed.</p>
   </dd>
   <dt><tt>extensions.maf.advanced.maff.extendedmetadata</tt></dt>
   <dd>
-  <p>With this preference enabled, history, text zoom, and scroll position
-  is saved for each page. At present this additional information is ignored when
-  the archive is opened.</p>
+  <p>With this preference enabled, history, text zoom, and scroll position are
+   saved for each page. This additional information is ignored when the archive
+   is opened.</p>
   </dd>
   <dt><tt>extensions.maf.advanced.maff.ignorecharacterset</tt></dt>
   <dd>
-  <p>When this setting is enabled, the character set specified for pages
-  saved inside MAFF archives is ignored. Enabling this option may be useful for
-  troubleshooting problems with internationalization. <b>This option will
-  cause saved pages to be displayed incorrectly in most cases.</b></p>
+  <p>When this setting is enabled, the character set specified for pages saved
+   inside MAFF archives is ignored. Enabling this option may be useful for
+   troubleshooting problems with internationalization, but will cause saved
+   pages to be displayed incorrectly in most cases.</p>
   </dd>
   <dt><tt>extensions.maf.advanced.maff.usejarprotocol</tt></dt>
   <dd>
-  <p>If this preference is enabled, when you open a MAFF archive its
-  contents will be accessed directly using the "jar:" protocol, without being
-  extracted.</p>
+  <p>If this preference is enabled, when you open a MAFF archive its contents
+   will be accessed directly using the "jar:" protocol, without being
+   extracted.</p>
   <p>However, if you enable this option, the archive files you open will be
-  locked, and you will be unable to move, rename or delete them until the
-  browser is closed.</p>
+   locked, and you will be unable to move, rename or delete them until the
+   browser is closed.</p>
   </dd>
   <dt><tt>extensions.maf.advanced.mhtml.usemhtmlextension</tt></dt>
   <dd>
   <p>If this option is selected, and you do not type a file extension in the
-  <i>Save As</i> dialog box, or file extensions are hidden, the complete <code
-    class="maf-file-ext">.mhtml</code> extension will be appended to the file
-  name of MHTML archives, instead of the more common <code class="maf-file-ext">.mht</code>
-  extension.</p>
+   <i>Save As</i> dialog, or file extensions are hidden, the complete
+   <tt>.mhtml</tt> extension will be appended to the file name of MHTML
+   archives, instead of the more common <tt>.mht</tt> extension.</p>
   </dd>
   <dt><tt>extensions.maf.advanced.temp.clearonexit</tt></dt>
   <dd>
   <p>This option is enabled by default. If disabled, the contents of the
-  temporary directory are preserved after the browser exits, and must be emptied
-  manually.</p>
+   temporary directory are preserved after the browser exits, and must be
+   emptied manually.</p>
   </dd>
   <dt><tt>extensions.maf.advanced.temp.folder</tt></dt>
   <dd>
-  <p>Use this preference to choose the location of the temporary files
-  required to open and save the web archives. <b>The contents of this folder
-  will be lost if <tt>extensions.maf.advanced.temp.clearonexit</tt> is
-  <tt>true</tt></b>.</p>
+  <p>Use this preference to choose the location of the temporary files required
+   to open and save the web archives. The contents of this folder will be lost
+   if <tt>extensions.maf.advanced.temp.clearonexit</tt> is <tt>true</tt>.</p>
   <p>If not specified, this location defaults to a sub-folder of the system
-  temporary folder, which is different for every browser profile.</p>
-  <p>If customized, the absolute path to the specified location is
-  remembered, regardless of the system temporary folder path.</p>
-  </dd>
-  <dt><a name="savecomplete"></a><tt>extensions.maf.save.keepscripts</tt></dt>
-  <dd>
-  <p>When this setting is enabled, and the option to take an exact snapshot of
-  the page is also enabled, the integrated Save Complete component written by
-  Stephen Augenstein will be enabled. This will attempt to preserve the dynamic
-  features of the page by keeping all the scripts and the original page source
-  code. However, content generated by scripts may be missing from the resulting
-  page.</p>
+   temporary folder, which is different for every browser profile.</p>
   </dd>
 </dl>
-<h2><a name="moredocumentation"></a>More documentation</h2>
-<p>This document provides only user documentation for the add-on. Technical
-documentation about the internals of Mozilla Archive Format and the MAFF file
-format are available in separate documents, the <a href="dev-documentation.html">API
-documentation</a> and the <a href="maff-specification.html">MAFF specification</a>.</p>
 </div>

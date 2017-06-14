@@ -10,68 +10,51 @@
   </li>
   <li>
     <p><b>Store multiple independent pages in the same archive</b></p>
-    <p>For example, Firefox with the MAF extension is able to save all the
-     open tabs in a single file.</p>
+    <p>For example, all the open tabs can be saved in a single file.</p>
   </li>
   <li>
     <p><b>Based on the ordinary ZIP / JAR format</b></p>
     <p>The ZIP format is supported natively on many modern operating systems.
-     The contents of MAFF archives can be extracted using any ZIP extractor.
-     The single files that are saved along with the main web page can be easily
-     separated and inspected, in their original form, while preserving the
-     advantages of storing the related content in a single file.</p>
+     The contents of MAFF archives can be accessed using any ZIP extraction
+     utility. The support files that are saved along with the main web page can
+     be easily separated and inspected, in their original form, while preserving
+     the advantages of storing the related content in a single archive.</p>
     <p>Web pages in MAFF files are compressed, not encoded, with the result of
      the archive being often much smaller than the original web content.</p>
   </li>
   <li>
     <p><b>Suited for video and audio files</b></p>
-    <p>Since compression is used for web pages but not for already compressed
-     content, most multimedia formats stored in MAFF files can be opened without
-     the requirement of uncompressing the entire file. For example, this enables
+    <p>Compression can be used selectively for text files but not for already
+     compressed content. This allows most multimedia formats to be opened
+     without uncompressing the entire file first. For example, this enables
      seeking instantly to the middle of a video, either stored locally or
      remotely available through a streaming source.</p>
   </li>
   <li>
     <p><b>View using the jar: protocol</b></p>
-    <p>Even without the MAF extension, Mozilla browsers are able to display the
-     contents of MAFF archives natively, using the jar: protocol.</p>
+    <p>Even without add-ons, browsers based on Mozilla technology are able to
+     display the contents of MAFF archives natively, using the <tt>jar:</tt>
+     protocol.</p>
   </li>
   <li>
     <p><b>Store metadata about the saved resources</b></p>
-    <p>MAFF archives contain metadata like the original URL the page was saved
-     from and the date/time of the save operation. The presence of this
-     additional data is indifferent to ordinary ZIP extractors, but for
-     example allows the Firefox browser with the MAF extension to perform
-     operations like:</p>
+    <p>MAFF archives contain metadata like the original location from which the
+     page was saved, as well as the date and time of the save operation. The
+     presence of this additional data is indifferent to ordinary ZIP extractors,
+     but may allow the browser to perform operations like:</p>
     <ul>
       <li>Opening the original page instead of the archived copy while
        on-line</li>
       <li>Enabling off-line navigation between pages in different archives</li>
-      <li>Refreshing the archive contents with the latest on-line version
-       <i>(not implemented in MAF at present)</i></li>
-      <li>Asking web services like the Internet Archive about how the page
-       appeared at the time it was saved <i>(not implemented in MAF at
-       present)</i></li>
+      <li>Refreshing the archive contents with the latest on-line version</li>
+      <li>Asking web services like the Internet Archive about the page at the
+       time it was saved</li>
     </ul>
   </li>
   <li>
     <p><b>Store arbitrary extended metadata</b></p>
-    <p>Extended metadata may include the browser's scroll position in the
-     page, text zoom level, and more. The MAF extension for Mozilla browsers has
-     an option to store this kind of data, even though the current version is
-     not able to read it.</p>
-  </li>
-  <li>
-    <p><b>Supported by Open Source products</b></p>
-    <p>The MAF add-on enables Mozilla-based browsers to handle MAFF archives
-     intelligently. The latest version is distributed under a choice of several
-     Open Source and Free Software licenses: the Mozilla Public License 1.1, the
-     GNU General Public License 2.0, the GNU Lesser General Public License 2.1,
-     or any later version of these licenses. This means that the add-on will
-     always remain available under one of these licenses in the future.</p>
-    <p>There is no risk of vendor lock-in not only because of the open file
-     format, but also because the MAF extension allows batch conversion of
-     already saved MAFF files to other web archive formats at any time.</p>
+    <p>Archives may include the browser's scroll position in the page, text zoom
+     level, and more.</p>
   </li>
 </ul>
 

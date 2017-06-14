@@ -97,7 +97,7 @@ ul.maf-navigation > li span {
   background-position: 7px 7px;
 }
 
-/* Column layout*/
+/* Column layout */
 
 .maf-column-outer {
   float: left;
@@ -151,12 +151,6 @@ dd p,
 li p {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
-}
-
-/* Inline text */
-
-code.maf-file-ext {
-  font-weight: bold;
 }
 
 /* Code blocks */
@@ -219,6 +213,18 @@ pre.code code {
 .maf-box-after {
   width: 35em;
   margin: 1em 31px 3em;
+}
+
+.maf-box-warning {
+  background: #FFA;
+  border: 1px solid #880;
+  padding: 0 1.2em;
+  color: #550;
+  font-weight: bold;
+}
+
+.maf-box-warning b {
+  color: black;
 }
 
 /* Home page */

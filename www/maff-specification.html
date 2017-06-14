@@ -9,12 +9,6 @@
 <p>In this stage of development, this document describes the essential aspects
  of the file format and is updated to reflect actual technical questions or
  foreseen implementation issues.</p>
-<p>The <a href="index.html">Mozilla Archive Format</a> extension for Firefox
- currently implements the MAFF specification at the
- <a href="#level-basic">basic</a> conformance level. Eventually, the MAF
- extension will be updated to the <a href="#level-normal">normal</a>
- conformance level, when the related aspects of the specification are
- stabilized.</p>
 
 <h2><a name="feedback"></a>Introduction</h2>
 
@@ -68,7 +62,7 @@
      example, when fetching the content from its original location for updating
      an archive, user agents should not mix portions of the saved page and
      portions of the updated content.</p>
-    <p>It sould be possible to render the contents of a MAFF file consistently
+    <p>It should be possible to render the contents of a MAFF file consistently
      after it has been extracted to a local file system and metadata has been
      removed.</p>
   </li>
@@ -96,9 +90,9 @@
     <p>The file format previously referred to as <i>MAFF version 1</i> provides
      the baseline for all the future enhancements of the MAFF specification.
      This format is defined on the basis of the implementation of the Mozilla
-     Archive Format extension version 0.6.3, for Firefox 2 and Mozilla 1.7-1.8,
-     and version 0.8.0, for Firefox 3.0. Different versions of the extension are
-     not considered.</p>
+     Archive Format add-on version 0.6.3, for Firefox 2 and Mozilla 1.7-1.8, and
+     version 0.8.0, for Firefox 3.0. Different versions of the add-on are not
+     considered.</p>
     <p>The MAFF format will be extended while ensuring that all implementations
      will still be able to read MAFF archives created with version 0.6.3 and
      0.8.0 of Mozilla Archive Format.</p>
@@ -197,20 +191,19 @@
 </dl>
 
 <h2>File extension and type</h2>
-<p>MAFF files should be saved using the <code class="maf-file-ext">.maff</code>
- file extension (lowercase is recommended), even on systems where file
- extensions are not normally used to identify file types. [Conformance level:
- <a href="#level-elementary">elementary</a>]</p>
-<p>Implementations should treat files with the
- <code class="maf-file-ext">.maff</code> file extension (case insensitive)
- as MAFF files, even on systems where file extensions are not normally used to
- identify file types. [Conformance level: <a href="#level-basic">basic</a>]</p>
-<p>Internally, the Mozilla Archive Format extension for Firefox registers the
- MIME type <code class="maf-mime-type">application/x-maff</code> for files with
- the <code class="maf-file-ext">.maff</code> extension, unless there is already
- another MIME type association in the system. However, this MIME type is not
- advertised outside of Firefox, for example when the file type is registered
- with the operating system on Windows. [Information]</p>
+<p>MAFF files should be saved using the <tt>.maff</tt> file extension (lowercase
+ is recommended), even on systems where file extensions are not normally used to
+ identify file types. [Conformance level: <a
+ href="#level-elementary">elementary</a>]</p>
+<p>Implementations should treat files with the <tt>.maff</tt> file extension
+ (case insensitive) as MAFF files, even on systems where file extensions are not
+ normally used to identify file types. [Conformance level: <a
+ href="#level-basic">basic</a>]</p>
+<p>Internally, the Mozilla Archive Format add-on for Firefox registers the MIME
+ type <tt>application/x-maff</tt> for files with the <tt>.maff</tt> extension,
+ unless there is already another MIME type association in the system. However,
+ this MIME type is not advertised outside of Firefox, for example when the file
+ type is registered with the operating system on Windows. [Information]</p>
 
 <h2>ZIP implementation</h2>
 <p>The ZIP implementation must be based on
@@ -313,8 +306,8 @@
  from the metadata, while a web browser might ignore this field and only display
  the title resulting from parsing the main document. [Information]</p>
 <p>When the title of the page is not available, some versions of the Mozilla
- Archive Format extension for Firefox write the literal English string
- "Unknown", even though the field should be omitted. [Information]</p>
+ Archive Format add-on for Firefox write the literal English string "Unknown",
+ even though the field should be omitted. [Information]</p>
 
 <h3>Character set</h3>
 <p>The character set declared in the MAFF archive should be used when parsing
@@ -365,7 +358,7 @@
 
 <h2>Test cases</h2>
 <p>Web archives demonstrating the features of the file format are available in
- this directory on the web site of the MAF project:</p>
+ this directory:</p>
 <blockquote>
   <tt><a href="maff-test-cases/">http://maf.mozdev.org/maff-test-cases/</a></tt>
 </blockquote>
