@@ -63,6 +63,31 @@ var StartupEvents = {
    * Called when a user profile has fully loaded.
    */
   afterProfileChange: function() {
+    try {
+      if (!Prefs.otherRestartingAsWorkaround) {
+        // Multi-process should have been disabled automatically on Release, but
+        // because of bug 1374653 it may remain enabled after installation until
+        // the browser is restarted again. In this case, we apply a workaround.
+        let isReleaseBrowser = /^(release|default)($|\-)/.test(
+         UpdateUtils.UpdateChannel);
+        if (isReleaseBrowser && Services.appinfo.browserTabsRemoteAutostart) {
+          // Only attempt this workaround once. If it fails, or if the user has
+          // just enabled multi-process manually from internal preferences, the
+          // multi-process welcome dialog will show relevant instructions.
+          Prefs.otherRestartingAsWorkaround = true;
+          Cc["@mozilla.org/toolkit/app-startup;1"].getService(Ci.nsIAppStartup)
+           .quit(Ci.nsIAppStartup.eForceQuit | Ci.nsIAppStartup.eRestart);
+          return;
+        }
+      } else if (!Services.appinfo.browserTabsRemoteAutostart) {
+        // The workaround was effective, reset the preference so we can use the
+        // workaround again if the add-on is uninstalled and reinstalled.
+        Prefs.otherRestartingAsWorkaround = false;
+      }
+    } catch (e) {
+      // Just continue with normal initialization in case any error occurs.
+    }
+
     for (let topic of this._notificationTopics) {
       Services.obs.addObserver(this, topic, false);
     }

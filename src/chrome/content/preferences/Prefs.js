@@ -158,6 +158,17 @@ var Prefs = {
   },
 
   /**
+   * Returns true if the browser was already restarted as a workaround for
+   * multi-process being erroneously enabled on the Firefox Release channel.
+   */
+  get otherRestartingAsWorkaround() {
+    return this.prefBranchForMaf.getBoolPref("other.restartingasworkaround");
+  },
+  set otherRestartingAsWorkaround(aValue) {
+    this.prefBranchForMaf.setBoolPref("other.restartingasworkaround", aValue);
+  },
+
+  /**
    * Returns true if extended metadata, like the browser's current text zoom
    * and scroll position, must be saved in new archives.
    */

@@ -16,4 +16,5 @@ pref("extensions.maf.other.displayupdatebetapage", true);
 pref("extensions.maf.other.displaywelcome", true);
 pref("extensions.maf.other.displaywelcomepage", true);
 pref("extensions.maf.other.displayE10Snotice", true);
+pref("extensions.maf.other.restartingasworkaround", false);
 pref("extensions.maf.save.method", "snapshot");
