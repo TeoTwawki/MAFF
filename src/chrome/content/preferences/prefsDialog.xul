@@ -132,24 +132,18 @@
     </vbox>
     <vbox id="boxMultiprocess">
     <spacer height="10" />
-    <label value="Read-only access to web archives" class="header"/>
+    <label value="Disable multi-process to use the Mozilla Archive Format add-on"
+           class="header"/>
     <description>
-      Multi-process is only partially supported by this version of the Mozilla
-      Archive Format add-on.
+      Multi-process mode should have been disabled automatically when the add-on
+      was installed. This did not happen, probably because you are using a
+      pre-release version of the browser or you have configured multi-process to
+      be always enabled. To continue using the add-on, ensure multi-process is
+      disabled.
     </description>
     <spacer height="20" />
     <description>
-      You can read your saved web archives, but in order to create new archives
-      or view the original location and save date, you have to
-      <span style="font-weight: bold;">disable multi-process from the browser
-      options</span>.
-    </description>
-    <spacer height="20" />
-    <description>
-      This is only required until a compatible version of the add-on is
-      released. If you have automatic add-on updates enabled, the save
-      functionality for multi-process will be restored as soon as a compatible
-      version is available.
+      Read-only access to web archives is possible if sandboxing is disabled.
     </description>
     </vbox>
   </prefpane>
