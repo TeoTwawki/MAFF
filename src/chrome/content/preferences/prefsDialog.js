@@ -49,13 +49,12 @@ var PrefsDialog = {
   onLoadDialog: function() {
     // Apply brand names to the dialog elements.
     for (var [, elementName] in Iterator(["descVisitWebsite",
-     "descShowWelcomePageAssociate"])) {
+     "lblAssociate"])) {
       Interface.applyBranding(document.getElementById(elementName));
     }
-    // Determines if the welcome page handles file associations.
-    if (this._isOnWindows()) {
-      document.getElementById("boxShowWelcomePage").hidden = true;
-      document.getElementById("boxShowWelcomePageAssociate").hidden = false;
+    // Determines if we should handle file associations.
+    if (!this._isOnWindows()) {
+      document.getElementById("boxAssociate").hidden = true;
     }
     // The preferences do not apply if multi-process is enabled.
     var isMultiprocess = Services.appinfo.browserTabsRemoteAutostart;
@@ -63,6 +62,26 @@ var PrefsDialog = {
     document.getElementById("boxMultiprocess").hidden = !isMultiprocess;
     // Updates the status of the dialog controls.
     this.onSaveMethodChange();
+  },
+
+  /**
+   * Applies the file association options on Windows.
+   */
+  onDialogAccept: function() {
+    if (!this._isOnWindows()) {
+      return;
+    }
+
+    try {
+      if (Prefs.associateMaff) {
+        FileAssociations.createAssociationsForMAFF();
+      }
+      if (Prefs.associateMhtml) {
+        FileAssociations.createAssociationsForMHTML();
+      }
+    } catch (e) {
+      Cu.reportError(e);
+    }
   },
 
   /**

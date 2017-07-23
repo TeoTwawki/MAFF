@@ -66,6 +66,10 @@ var Interface = {
       // This is a control with a label attribute.
       aElement.setAttribute("label", this.replaceBrandShortName(aElement.
        getAttribute("label")));
+    } else if (aElement.hasAttribute("value")) {
+      // This is a control with a value attribute.
+      aElement.setAttribute("value", this.replaceBrandShortName(aElement.
+       getAttribute("value")));
     } else {
       // Assume this is a XUL description control containing a single text node.
       var textNode = aElement.firstChild;

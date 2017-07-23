@@ -48,13 +48,14 @@
    -->
 
 <prefwindow
- id=        "prefsDialog"
- title=     "&window.title.v2;"
- windowtype="Maf:Prefs"
- buttons=   "accept,cancel"
- xmlns=     "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
- persist=   "lastSelected screenX screenY"
- onload=    "PrefsDialog.onLoadDialog();"
+ id=            "prefsDialog"
+ title=         "&window.title.v2;"
+ windowtype=    "Maf:Prefs"
+ buttons=       "accept,cancel"
+ xmlns=         "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ persist=       "lastSelected screenX screenY"
+ onload=        "PrefsDialog.onLoadDialog();"
+ ondialogaccept="PrefsDialog.onDialogAccept();"
  >
 
   <!-- Main pane -->
@@ -62,6 +63,14 @@
             label="&pane.main.label;"
             >
     <preferences>
+      <preference id=      "prefAssociateMAFF"
+                  name=    "extensions.maf.associate.maff"
+                  type=    "bool"
+                  />
+      <preference id=      "prefAssociateMHTML"
+                  name=    "extensions.maf.associate.mhtml"
+                  type=    "bool"
+                  />
       <preference id=      "prefSaveMethod"
                   name=    "extensions.maf.save.method"
                   type=    "string"
@@ -81,6 +90,19 @@
                   />
     </preferences>
     <vbox id="boxMain">
+    <vbox id="boxAssociate">
+    <label id=   "lblAssociate"
+           value="&associate.grouplabel;"
+           class="header"
+           />
+    <checkbox preference="prefAssociateMAFF" 
+              label=     "&associate.maff.label;"
+              />
+    <checkbox preference="prefAssociateMHTML" 
+              label=     "&associate.mhtml.label;"
+              />
+    <spacer height="10" />
+    </vbox>
     <label control="rgrSaveMethods"
            value=  "&save.method.grouplabel;"
            class=  "header"
@@ -163,17 +185,6 @@
              />
       <description class="indent">
         &action.showwelcomepage.description;
-      </description>
-    </vbox>
-    <vbox id="boxShowWelcomePageAssociate" hidden="true">
-      <label value=  "&action.showwelcomepageassociate.label;"
-             onclick="PrefsDialog.onActionShowWelcomePageClick();"
-             class=  "text-link header"
-             />
-      <description id=   "descShowWelcomePageAssociate"
-                   class="indent"
-                   >
-        &action.showwelcomepageassociate.description;
       </description>
     </vbox>
     <spacer height="10" />

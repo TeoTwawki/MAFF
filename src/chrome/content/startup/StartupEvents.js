@@ -152,6 +152,20 @@ var StartupEvents = {
          false, false);
         Prefs.otherDisplayUpdateBetaPage = false;
       } else if (Prefs.otherDisplayWelcomePage) {
+        // This is either the first installation or an update from a very old
+        // version that didn't reset the preference above. On Windows, we should
+        // create the file associations for MAFF archives now, unless the user
+        // disabled the option in the old version. The associations for MHTML
+        // archives can be added later from the preferences dialog.
+        if (this._isOnWindows() && Prefs.associateMaff) {
+          try {
+            FileAssociations.createAssociationsForMAFF();
+          } catch (e) {
+            Cu.reportError(e);
+          }
+        }
+        // Preselect the "All Files" open filter.
+        DynamicPrefs.openFilterIndex = 4 + FileFilters.openFilters.length;
         // Load the page in foreground.
         browser.loadTabs(["chrome://maf/content/preferences/welcomePage.xhtml"],
                          false, false);
@@ -194,5 +208,13 @@ var StartupEvents = {
         return false;
       }
     });
+  },
+
+  /**
+   * Returns true if the application is executing on Windows.
+   */
+  _isOnWindows: function() {
+    return Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS ==
+     "WINNT";
   },
 };
