@@ -8,7 +8,7 @@ pref("extensions.maf.advanced.mhtml.usemhtmlextension", false);
 pref("extensions.maf.advanced.temp.clearonexit", true);
 pref("extensions.maf.advanced.temp.folder", "");
 pref("extensions.maf.associate.maff", true);
-pref("extensions.maf.associate.mhtml", true);
+pref("extensions.maf.associate.mhtml", false);
 pref("extensions.maf.interface.info.icon", true);
 pref("extensions.maf.interface.info.bar", true);
 pref("extensions.maf.other.beta", false);
