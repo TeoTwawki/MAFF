@@ -126,13 +126,6 @@ var StartupEvents = {
    * Called after all the browser windows have been shown.
    */
   onWindowsRestored: function() {
-    let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
-    if (!browserWindow) {
-      // Very rarely, it might happen that at this time all browser windows
-      // have already been closed. In this case, we will attempt to show the
-      // welcome page again on the next startup.
-      return;
-    }
     if (Prefs.otherDisplayWelcomePage) {
       // This is either the first installation or an update from a very old
       // version that didn't reset the preference above. On Windows, we should
@@ -149,13 +142,6 @@ var StartupEvents = {
       // Preselect the "All Files" open filter.
       DynamicPrefs.openFilterIndex = 4 + FileFilters.openFilters.length;
       Prefs.otherDisplayWelcomePage = false;
-    }
-    if (Services.appinfo.browserTabsRemoteAutostart &&
-     Prefs.otherDisplayWelcomeMultiprocess) {
-      browserWindow.openDialog(
-       "chrome://maf/content/preferences/prefsDialog.xul", "",
-       "chrome,titlebar,toolbar,centerscreen,modal");
-      Prefs.otherDisplayWelcomeMultiprocess = false;
     }
   },
 

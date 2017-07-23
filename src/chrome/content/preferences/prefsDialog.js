@@ -56,10 +56,6 @@ var PrefsDialog = {
     if (!this._isOnWindows()) {
       document.getElementById("boxAssociate").hidden = true;
     }
-    // The preferences do not apply if multi-process is enabled.
-    var isMultiprocess = Services.appinfo.browserTabsRemoteAutostart;
-    document.getElementById("boxMain").hidden = isMultiprocess;
-    document.getElementById("boxMultiprocess").hidden = !isMultiprocess;
     // Updates the status of the dialog controls.
     this.onSaveMethodChange();
   },

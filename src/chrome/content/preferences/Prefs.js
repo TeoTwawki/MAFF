@@ -116,16 +116,6 @@ var Prefs = {
   },
 
   /**
-   * Returns true if the multi-process welcome dialog should be displayed.
-   */
-  get otherDisplayWelcomeMultiprocess() {
-    return this.prefBranchForMaf.getBoolPref("other.displayE10Snotice");
-  },
-  set otherDisplayWelcomeMultiprocess(aValue) {
-    this.prefBranchForMaf.setBoolPref("other.displayE10Snotice", aValue);
-  },
-
-  /**
    * Returns true if the browser was already restarted as a workaround for
    * multi-process being erroneously enabled on the Firefox Release channel.
    */

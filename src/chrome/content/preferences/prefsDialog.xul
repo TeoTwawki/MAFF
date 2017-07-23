@@ -89,7 +89,6 @@
                   type=    "bool"
                   />
     </preferences>
-    <vbox id="boxMain">
     <vbox id="boxAssociate">
     <label id=   "lblAssociate"
            value="&associate.grouplabel;"
@@ -145,23 +144,6 @@
     <checkbox preference="prefInterfaceInfoBar" 
               label=     "&info.bar.label;"
               />
-    </vbox>
-    <vbox id="boxMultiprocess">
-    <spacer height="10" />
-    <label value="Disable multi-process to use the Mozilla Archive Format add-on"
-           class="header"/>
-    <description>
-      Multi-process mode should have been disabled automatically when the add-on
-      was installed. This did not happen, probably because you are using a
-      pre-release version of the browser or you have configured multi-process to
-      be always enabled. To continue using the add-on, ensure multi-process is
-      disabled.
-    </description>
-    <spacer height="20" />
-    <description>
-      Read-only access to web archives is possible if sandboxing is disabled.
-    </description>
-    </vbox>
   </prefpane>
 
   <!-- Actions pane -->

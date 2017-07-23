@@ -12,6 +12,5 @@ pref("extensions.maf.associate.mhtml", false);
 pref("extensions.maf.interface.info.icon", true);
 pref("extensions.maf.interface.info.bar", true);
 pref("extensions.maf.other.displaywelcomepage", true);
-pref("extensions.maf.other.displayE10Snotice", true);
 pref("extensions.maf.other.restartingasworkaround", false);
 pref("extensions.maf.save.method", "snapshot");
