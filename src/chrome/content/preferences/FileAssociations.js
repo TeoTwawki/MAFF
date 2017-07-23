@@ -43,51 +43,6 @@ var FileAssociations = {
    * Creates file associations for the MAFF file format.
    */
   createAssociationsForMAFF: function() {
-    // First, create an explicit file association for the current user. This
-    // operation does not require administrator privileges, but should be done
-    // also for administrators, to ensure that no user-specific settings will
-    // take priority over the association for all users.
-    new FileAssociationsCreator(true).createAssociationsForMAFF();
-    // Create a file association for all other users, but ignore errors if the
-    // current user does not have administrator privileges.
-    new FileAssociationsCreator(false).createAssociationsForMAFF();
-  },
-
-  /**
-   * Creates file associations for the MHTML file format.
-   */
-  createAssociationsForMHTML: function() {
-    // First, create an explicit file association for the current user. This
-    // operation does not require administrator privileges, but should be done
-    // also for administrators, to ensure that no user-specific settings will
-    // take priority over the association for all users.
-    new FileAssociationsCreator(true).createAssociationsForMHTML();
-    // Create a file association for all other users, but ignore errors if the
-    // current user does not have administrator privileges.
-    new FileAssociationsCreator(false).createAssociationsForMHTML();
-  }
-}
-
-/**
- * This object allows the creation of file association entries in the Windows
- * registry, either for the current user or for all users in the system.
- *
- * @param aForCurrentUser
- *        If true, creates entries for the current user. If false, creates
- *        entries for all users, but ignores errors caused by lack of
- *        privileges.
- */
-function FileAssociationsCreator(aForCurrentUser) {
-  this._forCurrentUser = aForCurrentUser;
-}
-
-FileAssociationsCreator.prototype = {
-  _forCurrentUser: false,
-
-  /**
-   * Creates file associations for the MAFF file format.
-   */
-  createAssociationsForMAFF: function() {
     // Determine the ProgID name based on the host application.
     var maffProgID = this._isOnSeaMonkey() ? "SeaMonkeyMAFF" : "FirefoxMAFF";
     // Create a new ProgID for the MAFF format.
@@ -133,14 +88,6 @@ FileAssociationsCreator.prototype = {
   },
 
   /**
-   * Returns the appropriate root key to use based on this object settings.
-   */
-  get _rootKey() {
-    return this._forCurrentUser ? Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER :
-                                  Ci.nsIWindowsRegKey.ROOT_KEY_LOCAL_MACHINE;
-  },
-
-  /**
    * Creates a global Windows file type, under HKEY_CLASSES_ROOT, associating
    * the given ProgID with the browser's executable file.
    */
@@ -183,16 +130,10 @@ FileAssociationsCreator.prototype = {
     // Create or open the key of the given ProgID.
     var keyProgID = Cc["@mozilla.org/windows-registry-key;1"]
      .createInstance(Ci.nsIWindowsRegKey);
-    try {
-      keyProgID.create(
-       this._rootKey,
-       "Software\\Classes\\" + aProgID,
-       keyProgID.ACCESS_WRITE);
-    } catch (e if !this._forCurrentUser) {
-      // If we are creating a file type for all users in the system, but opening
-      // or creating the first key failed, we ignore the error.
-      return;
-    }
+    keyProgID.create(
+     Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
+     "Software\\Classes\\" + aProgID,
+     keyProgID.ACCESS_WRITE);
     // Continue with the newly opened key.
     try {
       // Set the display name shown in the Windows file association GUI.
@@ -247,7 +188,7 @@ FileAssociationsCreator.prototype = {
      .createInstance(Ci.nsIWindowsRegKey);
     try {
       keyExtension.create(
-       this._rootKey,
+       Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
        "Software\\Classes\\" + aFileExtension,
        keyExtension.ACCESS_WRITE);
     } catch (e if !this._forCurrentUser) {
