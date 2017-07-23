@@ -100,11 +100,6 @@ var StartupEvents = {
   },
 
   /**
-   * This promise is resolved with the add-on version when it is known.
-   */
-  _promiseAddonVersion: null,
-
-  /**
    * Populates the StartupInitializer.addonVersion property with the version of
    * the installed extension asynchronously.
    */
@@ -113,11 +108,8 @@ var StartupEvents = {
     var addonId = "{7f57cf46-4467-4c2d-adfa-0cba7c507e54}";
     let { AddonManager } =
      Cu.import("resource://gre/modules/AddonManager.jsm", {});
-    this._promiseAddonVersion = new Promise(resolve => {
-      AddonManager.getAddonByID(addonId, function (aAddon) {
-        StartupInitializer.addonVersion = aAddon.version;
-        resolve(aAddon.version);
-      });
+    AddonManager.getAddonByID(addonId, function (aAddon) {
+      StartupInitializer.addonVersion = aAddon.version;
     });
   },
 
@@ -134,48 +126,37 @@ var StartupEvents = {
    * Called after all the browser windows have been shown.
    */
   onWindowsRestored: function() {
-    this.shouldUpdateToBeta().then(shouldUpdateToBeta => {
-      let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
-      if (!browserWindow) {
-        // Very rarely, it might happen that at this time all browser windows
-        // have already been closed. In this case, we will attempt to show the
-        // welcome page again on the next startup.
-        return;
-      }
-      let browser = browserWindow.getBrowser();
-      if (shouldUpdateToBeta && Prefs.otherDisplayUpdateBetaPage) {
-        // Display the request to update to the Beta Channel as an alternative
-        // welcome page. The normal welcome page with file associations will be
-        // displayed on the next startup if was not shown before.
-        browser.loadTabs(
-         ["chrome://maf/content/preferences/updateBetaPage.xhtml"],
-         false, false);
-        Prefs.otherDisplayUpdateBetaPage = false;
-      } else if (Prefs.otherDisplayWelcomePage) {
-        // This is either the first installation or an update from a very old
-        // version that didn't reset the preference above. On Windows, we should
-        // create the file associations for MAFF archives now, unless the user
-        // disabled the option in the old version. The associations for MHTML
-        // archives can be added later from the preferences dialog.
-        if (this._isOnWindows() && Prefs.associateMaff) {
-          try {
-            FileAssociations.createAssociationsForMAFF();
-          } catch (e) {
-            Cu.reportError(e);
-          }
+    let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
+    if (!browserWindow) {
+      // Very rarely, it might happen that at this time all browser windows
+      // have already been closed. In this case, we will attempt to show the
+      // welcome page again on the next startup.
+      return;
+    }
+    if (Prefs.otherDisplayWelcomePage) {
+      // This is either the first installation or an update from a very old
+      // version that didn't reset the preference above. On Windows, we should
+      // create the file associations for MAFF archives now, unless the user
+      // disabled the option in the old version. The associations for MHTML
+      // archives can be added later from the preferences dialog.
+      if (this._isOnWindows() && Prefs.associateMaff) {
+        try {
+          FileAssociations.createAssociationsForMAFF();
+        } catch (e) {
+          Cu.reportError(e);
         }
-        // Preselect the "All Files" open filter.
-        DynamicPrefs.openFilterIndex = 4 + FileFilters.openFilters.length;
-        Prefs.otherDisplayWelcomePage = false;
       }
-      if (Services.appinfo.browserTabsRemoteAutostart &&
-       Prefs.otherDisplayWelcomeMultiprocess) {
-        browserWindow.openDialog(
-         "chrome://maf/content/preferences/prefsDialog.xul", "",
-         "chrome,titlebar,toolbar,centerscreen,modal");
-        Prefs.otherDisplayWelcomeMultiprocess = false;
-      }
-    }).catch(Cu.reportError);
+      // Preselect the "All Files" open filter.
+      DynamicPrefs.openFilterIndex = 4 + FileFilters.openFilters.length;
+      Prefs.otherDisplayWelcomePage = false;
+    }
+    if (Services.appinfo.browserTabsRemoteAutostart &&
+     Prefs.otherDisplayWelcomeMultiprocess) {
+      browserWindow.openDialog(
+       "chrome://maf/content/preferences/prefsDialog.xul", "",
+       "chrome,titlebar,toolbar,centerscreen,modal");
+      Prefs.otherDisplayWelcomeMultiprocess = false;
+    }
   },
 
   /**
@@ -183,28 +164,6 @@ var StartupEvents = {
    */
   onAppQuit: function() {
     StartupInitializer.terminate();
-  },
-
-  /**
-   * Returns a promise that resolves to true if the add-on is installed from the
-   * Release channel on a pre-release version of the browser.
-   */
-  shouldUpdateToBeta: function() {
-    return this._promiseAddonVersion.then(version => {
-      try {
-        let isReleaseBrowser = /^(release|esr)($|\-)/.test(
-         UpdateUtils.UpdateChannel);
-        let isBetaAddon = /a|b|rc/.test(version);
-        if (isBetaAddon) {
-          Prefs.otherBeta = true;
-        }
-        return !isReleaseBrowser && !isBetaAddon;
-      } catch (e) {
-        // UpdateUtils.jsm is not available on Firefox 38 ESR, so in case of
-        // exception we assume the browser is a release version.
-        return false;
-      }
-    });
   },
 
   /**
