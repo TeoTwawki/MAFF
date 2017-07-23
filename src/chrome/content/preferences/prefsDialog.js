@@ -47,13 +47,10 @@ var PrefsDialog = {
    * Initializes the controls when the dialog is displayed.
    */
   onLoadDialog: function() {
-    // Apply brand names to the dialog elements.
-    for (var [, elementName] in Iterator(["descVisitWebsite",
-     "lblAssociate"])) {
-      Interface.applyBranding(document.getElementById(elementName));
-    }
     // Determines if we should handle file associations.
-    if (!this._isOnWindows()) {
+    if (this._isOnWindows()) {
+      Interface.applyBranding(document.getElementById("lblAssociate"));
+    } else {
       document.getElementById("boxAssociate").hidden = true;
     }
     // Updates the status of the dialog controls.

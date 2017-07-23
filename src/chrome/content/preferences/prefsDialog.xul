@@ -160,15 +160,6 @@
       </description>
       <spacer height="10" />
     </vbox>
-    <label value="&action.visitwebsite.label;"
-           href= "http://maf.mozdev.org/"
-           class="text-link header"
-           />
-    <description id=   "descVisitWebsite"
-                 class="indent"
-                 >
-      &action.visitwebsite.description;
-    </description>
   </prefpane>
 
   <!--
