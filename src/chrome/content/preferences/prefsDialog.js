@@ -104,8 +104,7 @@ var PrefsDialog = {
     var enabled = document.getElementById("prefSaveMethod").value == "snapshot";
     document.getElementById("radioSaveFormatMaff").disabled = !enabled;
     document.getElementById("radioSaveFormatMhtml").disabled = !enabled;
-    document.getElementById("boxConvertSavedPages").hidden = !enabled ||
-     Services.appinfo.browserTabsRemoteAutostart;
+    document.getElementById("boxConvertSavedPages").hidden = !enabled;
     this.sizeToContent();
   },
 

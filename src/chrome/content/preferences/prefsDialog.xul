@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin" type="text/css"?>
-<?xml-stylesheet href="chrome://maf/skin/preferences/prefsDialog.css" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://maf/locale/prefsDialog.dtd">
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -57,11 +56,7 @@
  onload=        "PrefsDialog.onLoadDialog();"
  ondialogaccept="PrefsDialog.onDialogAccept();"
  >
-
-  <!-- Main pane -->
-  <prefpane id=   "paneMain"
-            label="&pane.main.label;"
-            >
+  <prefpane>
     <preferences>
       <preference id=      "prefAssociateMAFF"
                   name=    "extensions.maf.associate.maff"
@@ -144,21 +139,15 @@
     <checkbox preference="prefInterfaceInfoBar" 
               label=     "&info.bar.label;"
               />
-  </prefpane>
-
-  <!-- Actions pane -->
-  <prefpane id=   "paneActions"
-            label="&pane.actions.label;"
-            >
     <vbox id="boxConvertSavedPages">
-      <label value=    "&action.convertsavedpages.label;"
-             onclick=  "PrefsDialog.onActionConvertSavedPagesClick();"
-             class=    "text-link header"
-             />
-      <description class="indent">
-        &action.convertsavedpages.description;
-      </description>
-      <spacer height="10" />
+    <spacer height="10" />
+    <label value=  "&action.convertsavedpages.label;"
+           onclick="PrefsDialog.onActionConvertSavedPagesClick();"
+           class=  "text-link header"
+           />
+    <description style="width: 30em;">
+      &action.convertsavedpages.description;
+    </description>
     </vbox>
   </prefpane>
 
