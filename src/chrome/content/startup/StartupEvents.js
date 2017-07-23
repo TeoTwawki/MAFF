@@ -166,9 +166,6 @@ var StartupEvents = {
         }
         // Preselect the "All Files" open filter.
         DynamicPrefs.openFilterIndex = 4 + FileFilters.openFilters.length;
-        // Load the page in foreground.
-        browser.loadTabs(["chrome://maf/content/preferences/welcomePage.xhtml"],
-                         false, false);
         Prefs.otherDisplayWelcomePage = false;
       }
       if (Services.appinfo.browserTabsRemoteAutostart &&

@@ -135,16 +135,6 @@ var PrefsDialog = {
     }
   },
 
-  /**
-   * Opens the welcome page in a new browser window. This must be done from code
-   * since labels with the "text-link" class cannot open chrome locations.
-   */
-  onActionShowWelcomePageClick: function() {
-    // Use the helper function defined either in "utilityOverlay.js" or in
-    // "contentAreaUtils.js" depending on the host application.
-    openNewWindowWith("chrome://maf/content/preferences/welcomePage.xhtml");
-  },
-
   /* --- Dialog support functions --- */
 
   /**
