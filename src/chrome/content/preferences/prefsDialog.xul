@@ -88,13 +88,11 @@
     <radiogroup id=        "rgrSaveMethods"
                 preference="prefSaveMethod"
                 >
-      <radio value=    "snapshot"
-             label=    "&save.method.snapshot.label;"
-             accesskey="&save.method.snapshot.accesskey;"
+      <radio value="snapshot"
+             label="&save.method.snapshot.label;"
              />
-      <radio value=    "standard"
-             label=    "&save.method.standard.label;"
-             accesskey="&save.method.standard.accesskey;"
+      <radio value="standard"
+             label="&save.method.standard.label;"
              />
     </radiogroup>
     <spacer height="10" />
@@ -105,15 +103,13 @@
     <radiogroup id=        "rgrSaveFormats"
                 preference="prefSaveFormat"
                 >
-      <radio id=       "radioSaveFormatMaff"
-             value=    "0"
-             label=    "&save.format.maff.label;"
-             accesskey="&save.format.maff.accesskey;"
+      <radio id=   "radioSaveFormatMaff"
+             value="0"
+             label="&save.format.maff.label;"
              />
-      <radio id=       "radioSaveFormatMhtml"
-             value=    "1"
-             label=    "&save.format.mhtml.full.label;"
-             accesskey="&save.format.mhtml.accesskey;"
+      <radio id=   "radioSaveFormatMhtml"
+             value="1"
+             label="&save.format.mhtml.full.label;"
              />
     </radiogroup>
     <spacer height="10" />
@@ -123,11 +119,9 @@
            />
     <checkbox preference="prefInterfaceInfoIcon" 
               label=     "&info.icon.label;"
-              accesskey= "&info.icon.accesskey;"
               />
     <checkbox preference="prefInterfaceInfoBar" 
               label=     "&info.bar.label;"
-              accesskey= "&info.bar.accesskey;"
               />
     </vbox>
     <vbox id="boxMultiprocess">
