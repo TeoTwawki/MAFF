@@ -11,7 +11,6 @@
 <!ENTITY save.method.snapshot.label "Take an exact snapshot">
 <!ENTITY save.method.standard.label "Use browser's standard save system">
 <!ENTITY info.grouplabel "When an archived page is opened:">
-<!ENTITY info.icon.label "Show icon in the location bar">
 <!ENTITY info.bar.label "Display an information bar">
 <!ENTITY action.convertsavedpages.label "Convert Saved Pages">
 <!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">

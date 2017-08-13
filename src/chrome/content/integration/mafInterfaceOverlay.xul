@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://maf/skin/integration/mafInterfaceOverlay.css" type="text/css"?>
 <!DOCTYPE overlay SYSTEM "chrome://maf/locale/mafInterfaceOverlay.dtd">
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -52,55 +51,11 @@
           src="chrome://maf/content/integration/mafInterfaceOverlay.js"
           />
 
-  <!-- Address bar integration -->
-  <hbox id="urlbar-icons">
-    <image id=     "mafArchiveInfoUrlbarButton"
-           class=  "urlbar-icon"
-           hidden= "true"
-           onclick="MafInterfaceOverlay.onUrlbarButtonClick(event);"
+  <popupset>
+    <label id=               "mafLabels"
+           hidden=           "true"
+           originalurlvalue= "&archiveinfo.maforiginalurl.label;"
+           datearchivedvalue="&archiveinfo.mafdatearchived.label;" 
            />
-  </hbox>
-
-  <popupset id="mainPopupSet">
-    <!-- Archive information popup -->
-    <panel id=   "mafArchiveInfoPopup"
-           type= "arrow"
-           align="center"
-           >
-      <image id="mafArchiveInfoPopupIcon" />
-      <vbox flex="1">
-        <label id=           "mafPageStatusLabel"
-               normalvalue=  "&archiveinfo.status.normal.label;"
-               archivedvalue="&archiveinfo.status.archived.label;"
-               />
-        <grid id=    "mafArchiveInfoDetails"
-              hidden="true"
-              >
-          <columns>
-            <column />
-            <column flex="1" />
-          </columns>
-          <rows>
-            <row>
-              <label id=   "mafOriginalUrlDescription"
-                     value="&archiveinfo.maforiginalurl.label;" />
-              <label id=          "mafOriginalUrlLabel"
-                     class=       "text-link"
-                     crop=        "center"
-                     onclick=     "MafInterfaceOverlay.onOriginalUrlClick(event);"
-                     missingvalue="&archiveinfo.maforiginalurl.missing.label;"
-                     />
-            </row>
-            <row>
-              <label id=   "mafDateArchivedDescription"
-                     value="&archiveinfo.mafdatearchived.label;" />
-              <label id=          "mafDateArchivedLabel"
-                     missingvalue="&archiveinfo.mafdatearchived.missing.label;"
-                     />
-            </row>
-          </rows>
-        </grid>
-      </vbox>
-    </panel>
   </popupset>
 </overlay>

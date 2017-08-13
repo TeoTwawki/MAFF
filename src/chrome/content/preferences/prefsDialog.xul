@@ -75,10 +75,6 @@
                   name=    "extensions.maf.current.save.filterindex"
                   type=    "int"
                   />
-      <preference id=      "prefInterfaceInfoIcon"
-                  name=    "extensions.maf.interface.info.icon"
-                  type=    "bool"
-                  />
       <preference id=      "prefInterfaceInfoBar"
                   name=    "extensions.maf.interface.info.bar"
                   type=    "bool"
@@ -133,9 +129,6 @@
            value=  "&info.grouplabel;"
            class=  "header"
            />
-    <checkbox preference="prefInterfaceInfoIcon" 
-              label=     "&info.icon.label;"
-              />
     <checkbox preference="prefInterfaceInfoBar" 
               label=     "&info.bar.label;"
               />

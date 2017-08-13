@@ -97,14 +97,6 @@ var Prefs = {
   },
 
   /**
-   * Returns true if an icon should be displayed in the location bar to access
-   * page details when an archived page is displayed.
-   */
-  get interfaceInfoIcon() {
-    return this.prefBranchForMaf.getBoolPref("interface.info.icon");
-  },
-
-  /**
    * Returns true if this is either the first run of the add-on or an update
    * from a very old version that didn't reset the preference.
    */

@@ -52,8 +52,11 @@ var MafInterfaceOverlay = {
     // Remove the previously added event listener.
     window.removeEventListener("load", MafInterfaceOverlay.onLoad, false);
 
-    // Get references to some of the elements of the MAF user interface.
-    MafInterfaceOverlay._initElementReferences();
+    // Get references to some of the labels for the user interface.
+    MafInterfaceOverlay._originalUrlDescriptionValue = document.getElementById(
+     "mafLabels").getAttribute("originalurlvalue");
+    MafInterfaceOverlay._dateArchivedDescriptionValue = document.getElementById(
+     "mafLabels").getAttribute("datearchivedvalue");
 
     // Ensure the initial state of the interface for new windows is consistent.
     MafInterfaceOverlay._updateArchiveInfo();
@@ -61,10 +64,6 @@ var MafInterfaceOverlay = {
     // Register the web progress listener defined in this object, and receive
     // only the onLocationChange notifications.
     gBrowser.addProgressListener(MafInterfaceOverlay.webProgressListener);
-
-    // Register a preference observer to update the visibility of the icons.
-    MozillaArchiveFormat.Prefs.prefBranchForMaf.addObserver(
-     "interface.info.icon", MafInterfaceOverlay.prefObserver, false);
 
     // Listen for when the browser window closes, to perform shutdown.
     window.addEventListener("unload", MafInterfaceOverlay.onUnload, false);
@@ -77,33 +76,8 @@ var MafInterfaceOverlay = {
     // Remove the previously added event listener.
     window.removeEventListener("unload", MafInterfaceOverlay.onUnload, false);
 
-    // Remove the preference observer defined in this object.
-    MozillaArchiveFormat.Prefs.prefBranchForMaf.removeObserver(
-     "interface.info.icon", MafInterfaceOverlay.prefObserver);
-
     // Remove the web progress listener defined in this object.
     gBrowser.removeProgressListener(MafInterfaceOverlay.webProgressListener);
-  },
-
-  /**
-   * Displays the archive information popup, anchored to the address bar icon,
-   * when the user clicks it with the left mouse button.
-   */
-  onUrlbarButtonClick: function(aEvent) {
-    // Ensure that any type of click isn't handled by the outer textbox.
-    aEvent.stopPropagation();
-
-    // Handle only left clicks in the address bar.
-    if (aEvent.button != 0)
-      return;
-
-    // Make sure that clicking outside the popup cannot reopen it accidentally.
-    this._archiveInfoPopup.popupBoxObject.
-     setConsumeRollupEvent(Ci.nsIPopupBoxObject.ROLLUP_CONSUME);
-
-    // Open the popup near the address bar icon.
-    this._archiveInfoPopup.openPopup(this._archiveInfoUrlbarButton,
-                                     "bottomcenter topright");
   },
 
   /**
@@ -114,8 +88,6 @@ var MafInterfaceOverlay = {
     // Determine if the original address is present.
     var href = this._currentPageInfo && this._currentPageInfo.originalUrl;
     if (href) {
-      // Hide the popup before opening the new address.
-      this._archiveInfoPopup.hidePopup();
       // Open the link appropriately, depending on the applied modifiers.
       openUILink(href, aEvent);
     }
@@ -165,53 +137,6 @@ var MafInterfaceOverlay = {
        dateValue.getFullYear(), dateValue.getMonth() + 1, dateValue.getDate(),
        dateValue.getHours(), dateValue.getMinutes(), dateValue.getSeconds());
       pageInfo.hasValues = true;
-    }
-  },
-
-  /**
-   * Updates the visibility and appearance of the MAF icons in the browser
-   * window, based on the current page state and the current preferences.
-   */
-  _checkArchiveInfoIcons: function() {
-    this._archiveInfoUrlbarButton.hidden = !this._currentPageInfo.hasValues ||
-     !MozillaArchiveFormat.Prefs.interfaceInfoIcon;
-  },
-
-  /**
-   * Updates the contents of the archive information popup, based on the
-   * current page state.
-   */
-  _checkArchiveInfoPopup: function() {
-    // Update the value of the page status label.
-    var pageStatusAttributeName = this._currentPageInfo.hasValues ?
-     "archivedvalue" : "normalvalue";
-    document.getElementById("mafPageStatusLabel").setAttribute("value",
-     document.getElementById("mafPageStatusLabel").getAttribute(
-     pageStatusAttributeName));
-    // Show or hide the page details grid.
-    document.getElementById("mafArchiveInfoDetails").hidden =
-     !this._currentPageInfo.hasValues;
-    // Update the contents of the page details grid if required.
-    if (this._currentPageInfo.hasValues) {
-      // Get the original address the page was saved from.
-      var originalUrlLabel = document.getElementById("mafOriginalUrlLabel");
-      var originalUrl = this._currentPageInfo.originalUrlForDisplay;
-      // If the original address is present.
-      if (originalUrl) {
-        // Display the label as a link.
-        originalUrlLabel.setAttribute("class", "text-link");
-        originalUrlLabel.setAttribute("value", originalUrl);
-      } else {
-        // Display the placeholder for missing values.
-        originalUrlLabel.setAttribute("class", "");
-        originalUrlLabel.setAttribute("value", document.
-         getElementById("mafOriginalUrlLabel").getAttribute("missingvalue"));
-      }
-      // Get the save date and display it, or a placeholder for missing values.
-      var dateArchived = this._currentPageInfo.dateArchivedForDisplay;
-      document.getElementById("mafDateArchivedLabel").setAttribute("value",
-       dateArchived || document.getElementById("mafDateArchivedLabel").
-       getAttribute("missingvalue"));
     }
   },
 
@@ -313,10 +238,6 @@ var MafInterfaceOverlay = {
   _updateArchiveInfo: function() {
     // Use the latest information available for the current page.
     this._refreshCurrentPage();
-    // Update the state of the icons.
-    this._checkArchiveInfoIcons();
-    // Update the contents of the popup.
-    this._checkArchiveInfoPopup();
     // Update the save page button label.
     this.updateSavePageButtonLabel();
     // Update the contents of the notification. We must delay this operation to
@@ -326,24 +247,8 @@ var MafInterfaceOverlay = {
      Ci.nsIThread.DISPATCH_NORMAL);
   },
 
-  _archiveInfoPopup: null,
-  _archiveInfoUrlbarButton: null,
   _originalUrlDescriptionValue: null,
   _dateArchivedDescriptionValue: null,
-
-  /**
-   * Gets references to some of the XUL elements of the MAF user interface.
-   */
-  _initElementReferences: function() {
-    this._archiveInfoPopup =
-     document.getElementById("mafArchiveInfoPopup");
-    this._archiveInfoUrlbarButton =
-     document.getElementById("mafArchiveInfoUrlbarButton");
-    this._originalUrlDescriptionValue = document.getElementById(
-     "mafOriginalUrlDescription").getAttribute("value");
-    this._dateArchivedDescriptionValue = document.getElementById(
-     "mafDateArchivedDescription").getAttribute("value");
-  },
 
   /**
    * Prepends a label with the given attributes to the provided notification.
@@ -378,20 +283,6 @@ var MafInterfaceOverlay = {
     },
     onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) { },
     onSecurityChange: function(aWebProgress, aRequest, aState) { },
-  },
-
-  /**
-   * This preference observer detects changes that affect the display of the MAF
-   * interface elements in the main browser window.
-   */
-  prefObserver: {
-    QueryInterface: XPCOMUtils.generateQI([
-      Ci.nsIObserver,
-    ]),
-    observe: function(aSubject, aTopic, aData) {
-      // Refresh the visibility of the icons.
-      MafInterfaceOverlay._checkArchiveInfoIcons();
-    },
   },
 };
 
