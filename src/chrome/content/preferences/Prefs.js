@@ -108,6 +108,17 @@ var Prefs = {
   },
 
   /**
+   * Returns true if we haven't already displayed a welcome page with
+   * information on compatibility and file format conversion.
+   */
+  get otherDisplayConvertPage() {
+    return this.prefBranchForMaf.getBoolPref("other.displayconvertpage");
+  },
+  set otherDisplayConvertPage(aValue) {
+    this.prefBranchForMaf.setBoolPref("other.displayconvertpage", aValue);
+  },
+
+  /**
    * Returns true if the browser was already restarted as a workaround for
    * multi-process being erroneously enabled on the Firefox Release channel.
    */

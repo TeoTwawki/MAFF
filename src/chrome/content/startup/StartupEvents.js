@@ -142,6 +142,18 @@ var StartupEvents = {
       // Preselect the "All Files" open filter.
       DynamicPrefs.openFilterIndex = 4 + FileFilters.openFilters.length;
       Prefs.otherDisplayWelcomePage = false;
+      Prefs.otherDisplayConvertPage = false;
+    } else if (Prefs.otherDisplayConvertPage) {
+      // If this is an update, likely the user has already saved web pages using
+      // the MAFF or MHTML formats, and we should display a welcome page with
+      // information on compatibility if we haven't displayed it before.
+      let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
+      if (browserWindow) {
+        browserWindow.getBrowser().loadTabs(
+         ["chrome://maf/content/integration/convertPage.xhtml"],
+         false, false);
+        Prefs.otherDisplayConvertPage = false;
+      }
     }
   },
 
