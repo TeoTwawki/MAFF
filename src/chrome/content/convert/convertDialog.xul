@@ -96,13 +96,10 @@
                 oncommand="ConvertDialog.checkFormatsControls();"
                 >
       <radio value="complete"   label=    "&formats.source.complete.label;"
-                                accesskey="&formats.source.complete.accesskey;"
                                 />
       <radio value="mhtml"      label=    "&formats.source.mhtml.label;"
-                                accesskey="&formats.source.mhtml.accesskey;"
                                 />
       <radio value="maff"       label=    "&formats.source.maff.label;"
-                                accesskey="&formats.source.maff.accesskey;"
                                 />
     </radiogroup>
     <spacer height="15" />
@@ -111,13 +108,10 @@
                 oncommand="ConvertDialog.checkFormatsControls();"
                 >
       <radio value="maff"       label=    "&formats.dest.maff.label;"
-                                accesskey="&formats.dest.maff.accesskey;"
                                 />
       <radio value="mhtml"      label=    "&formats.dest.mhtml.label;"
-                                accesskey="&formats.dest.mhtml.accesskey;"
                                 />
       <radio value="complete"   label=    "&formats.dest.complete.label;"
-                                accesskey="&formats.dest.complete.accesskey;"
                                 />
     </radiogroup>
 
@@ -137,7 +131,6 @@
               >
     <label control=  "txtFoldersSource"
            value=    "&folders.source.label;"
-           accesskey="&folders.source.accesskey;"
            />
     <hbox align="center">
       <textbox id=     "txtFoldersSource"
@@ -152,7 +145,6 @@
     <checkbox id=       "chkFoldersSourceSubfolders"
               checked=  "true"
               label=    "&folders.source.subfolders.label;"
-              accesskey="&folders.source.subfolders.accesskey;"
               oncommand="ConvertDialog.checkFoldersSourceControls();"
               />
 
@@ -175,10 +167,8 @@
                 oncommand="ConvertDialog.checkFoldersDestControls();"
                 >
       <radio value="original"   label=    "&folders.dest.original.label;"
-                                accesskey="&folders.dest.original.accesskey;"
                                 />
       <radio value="folder"     label=    "&folders.dest.folder.label;"
-                                accesskey="&folders.dest.folder.accesskey;"
                                 />
       <hbox align="center"
             class="indent"
@@ -200,10 +190,8 @@
                 oncommand="ConvertDialog.checkFoldersDestControls();"
                 >
       <radio value="original"   label=    "&folders.bin.original.label;"
-                                accesskey="&folders.bin.original.accesskey;"
                                 />
       <radio value="folder"     label=    "&folders.bin.folder.label;"
-                                accesskey="&folders.bin.folder.accesskey;"
                                 />
       <hbox align="center"
             class="indent"

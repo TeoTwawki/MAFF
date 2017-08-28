@@ -24,19 +24,13 @@
 
 <!ENTITY formats.source.grouplabel "Convert from:">
 <!ENTITY formats.source.complete.label "Complete web pages (with support folders for data files)">
-<!ENTITY formats.source.complete.accesskey "o">
 <!ENTITY formats.source.mhtml.label "MHTML archives">
-<!ENTITY formats.source.mhtml.accesskey "M">
 <!ENTITY formats.source.maff.label "MAFF archives">
-<!ENTITY formats.source.maff.accesskey "F">
 
 <!ENTITY formats.dest.grouplabel "Convert to:">
 <!ENTITY formats.dest.maff.label "MAFF archives">
-<!ENTITY formats.dest.maff.accesskey "r">
 <!ENTITY formats.dest.mhtml.label "MHTML archives">
-<!ENTITY formats.dest.mhtml.accesskey "H">
 <!ENTITY formats.dest.complete.label "Complete web pages (with support folders if required)">
-<!ENTITY formats.dest.complete.accesskey "p">
 
 <!ENTITY formats.invalid.label "Please select two different file formats.">
 
@@ -45,9 +39,7 @@
 <!ENTITY folders.source.pagelabel "Source Folder">
 
 <!ENTITY folders.source.label "Search this folder for source files:">
-<!ENTITY folders.source.accesskey "e">
 <!ENTITY folders.source.subfolders.label "Include subfolders">
-<!ENTITY folders.source.subfolders.accesskey "s">
 
 <!ENTITY folders.source.invalid.label "Please select an existing source folder.">
 
@@ -57,15 +49,11 @@
 
 <!ENTITY folders.dest.grouplabel "Place converted files:">
 <!ENTITY folders.dest.original.label "In the same folder as the original files">
-<!ENTITY folders.dest.original.accesskey "s">
 <!ENTITY folders.dest.folder.label "In this folder (preserving relative paths):">
-<!ENTITY folders.dest.folder.accesskey "t">
 
 <!ENTITY folders.bin.grouplabel "After a successful conversion:">
 <!ENTITY folders.bin.original.label "Leave the originals in place">
-<!ENTITY folders.bin.original.accesskey "L">
 <!ENTITY folders.bin.folder.label "Move the originals to this folder (preserving relative paths):">
-<!ENTITY folders.bin.folder.accesskey "M">
 
 <!ENTITY folders.dest.invalid.label "Please specify the complete folder name.">
 
