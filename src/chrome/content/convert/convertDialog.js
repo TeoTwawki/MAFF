@@ -123,6 +123,10 @@ var ConvertDialog = {
     // Hide the "Cancel" button to streamline the user interface.
     this._wizard.getButton("cancel").hidden = true;
 
+    // Apply brand names to the dialog elements.
+    Interface.applyBranding(document.getElementById("descFormatMhtml"));
+    Interface.applyBranding(document.getElementById("descFormatMaff"));
+
     // Update the description in the introduction page and initialize the rest
     // of the wizard based on the initial default.
     let textNode = document.getElementById("descCompatible").firstChild;
@@ -197,14 +201,16 @@ var ConvertDialog = {
   checkIntroductionControls: function() {
     var page = this._wizard.getPageById("introduction");
     if (document.getElementById("rgrIntroduction").value == "compatible") {
-      document.getElementById("rgrFormatsSource").value = "maff";
-      document.getElementById("rgrFormatsDest").value = "complete";
-      this.checkFormatsControls();
+      document.getElementById("rgrFormat").value = "complete";
+      this.checkFormatControls();
 
       document.getElementById("txtFoldersSource").value =
        Services.downloads.userDownloadsDirectory.path;
       document.getElementById("chkFoldersSourceSubfolders").checked = true;
-      this.checkFoldersSourceControls();
+      document.getElementById("chkFormatSourceComplete").checked = true;
+      document.getElementById("chkFormatSourceMhtml").checked = true;
+      document.getElementById("chkFormatSourceMaff").checked = true;
+      this.checkSourceControls();
 
       document.getElementById("rgrFoldersDest").value = "original"; 
       document.getElementById("txtFoldersDest").value = ""; 
@@ -215,7 +221,7 @@ var ConvertDialog = {
 
       page.next = "candidates";
     } else {
-      page.next = "formats";
+      page.next = "format";
     }
     this._wizard.canAdvance = true;
   },
@@ -225,19 +231,17 @@ var ConvertDialog = {
    * worker object, and prevents advancing to the next page if the data is
    * invalid.
    */
-  checkFormatsControls: function() {
+  checkFormatControls: function() {
     // Copy the data from the controls to the worker object.
-    this._finder.sourceFormat =
-     document.getElementById("rgrFormatsSource").value;
-    this._finder.destFormat =
-     document.getElementById("rgrFormatsDest").value;
-
-    // Ask the worker object if the data is valid.
-    var pageIsValid = this._finder.validateFormats();
-
-    // Show the appropriate controls based on the validation results.
-    document.getElementById("lblFormatsInvalid").hidden = pageIsValid;
-    this._wizard.canAdvance = pageIsValid;
+    let destFormat = document.getElementById("rgrFormat").value;
+    this._finder.destFormat = destFormat;
+    document.getElementById("chkFormatSourceComplete").hidden =
+     destFormat == "complete";
+    document.getElementById("chkFormatSourceMhtml").hidden =
+     destFormat == "mhtml";
+    document.getElementById("chkFormatSourceMaff").hidden =
+     destFormat == "maff";
+    this._wizard.canAdvance = true;
   },
 
   /**
@@ -245,7 +249,7 @@ var ConvertDialog = {
    * the worker object, and prevents advancing to the next page if the data is
    * invalid.
    */
-  checkFoldersSourceControls: function() {
+  checkSourceControls: function() {
     // Validate the data from the controls and copy it to the worker object.
     var pageIsValid = true;
     try {
@@ -259,9 +263,20 @@ var ConvertDialog = {
     this._finder.sourceIncludeSubfolders =
      document.getElementById("chkFoldersSourceSubfolders").checked;
 
+    // Require at least one source format to be selected.
+    this._finder.sourceFormats = [];
+    for (let format of ["Complete", "Mhtml", "Maff"]) {
+      let element = document.getElementById("chkFormatSource" + format);
+      if (element.checked && !element.hidden) {
+        this._finder.sourceFormats.push(format.toLowerCase());
+      }
+    }
+    var formatIsValid = !!this._finder.sourceFormats.length;
+
     // Show the appropriate controls based on the validation results.
     document.getElementById("lblFoldersSourceInvalid").hidden = pageIsValid;
-    this._wizard.canAdvance = pageIsValid;
+    document.getElementById("lblFormatSourceInvalid").hidden = formatIsValid;
+    this._wizard.canAdvance = pageIsValid && formatIsValid;
   },
 
   /**

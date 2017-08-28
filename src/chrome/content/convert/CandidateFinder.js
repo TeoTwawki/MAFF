@@ -42,6 +42,7 @@
 function CandidateFinder() {
   // Initialize the contained objects.
   this.location = new CandidateLocation();
+  this.sourceFormats = [];
   // Initialize the list of valid suffixes for the support folders.
   this.sourceDataFolderSuffixes = Prefs.convertDataFolderSuffixesArray;
   // Add the files folder suffix for the current locale, if not the default.
@@ -56,14 +57,14 @@ function CandidateFinder() {
 
 CandidateFinder.prototype = {
   /**
-   * String representing the source format of the files to be converted.
+   * Array representing the source formats of the files to be converted.
    *
    * Possible values:
    *   "complete"   - Complete web page, only if a support folder is present.
    *   "mhtml"      - MHTML archive.
    *   "maff"       - MAFF archive.
    */
-  sourceFormat: "complete",
+  sourceFormats: null,
 
   /**
    * String representing the destination format of the converted files.
@@ -91,14 +92,6 @@ CandidateFinder.prototype = {
    * the source tree, for example "_files".
    */
   sourceDataFolderSuffixes: [],
-
-  /**
-   * Returns true if the values in the "sourceFormat" and "destFormat"
-   * properties are consistent.
-   */
-  validateFormats: function() {
-    return this.sourceFormat != this.destFormat;
-  },
 
   /**
    * This iterator yields the Candidate objects corresponding to the convertible
@@ -161,12 +154,12 @@ CandidateFinder.prototype = {
       var name = this._isSupportFolderName(subdirName, filesList);
       if (name) {
         // If the search should include web pages among the source files
-        if (this.sourceFormat == "complete") {
+        if (this.sourceFormats.includes("complete")) {
           // Check that the associated source file has not been already used
           // together with another support folder.
           if (files[name]) {
             // Generate a new candidate for conversion.
-            yield this._newCandidate(aLocation, name, subdirName);
+            yield this._newCandidate("complete", aLocation, name, subdirName);
             // Ensure that the file will not be used again as a candidate later.
             delete files[name];
           }
@@ -187,9 +180,10 @@ CandidateFinder.prototype = {
       // Ensure that the enumeration result is a JavaScript string.
       fileName = "" + fileName;
       // If the file name matches the criteria
-      if (this._isSourceFileName(fileName)) {
+      let sourceFormat = this._formatFromFileName(fileName);
+      if (this.sourceFormats.includes(sourceFormat)) {
         // Generate a new candidate for conversion.
-        yield this._newCandidate(aLocation, fileName);
+        yield this._newCandidate(sourceFormat, aLocation, fileName);
       }
     }
   },
@@ -197,10 +191,11 @@ CandidateFinder.prototype = {
   /**
    * Creates a new candidate with the given properties.
    */
-  _newCandidate: function(aParentLocation, aLeafName, aDataFolderLeafName) {
+  _newCandidate: function(aSourceFormat, aParentLocation, aLeafName,
+   aDataFolderLeafName) {
     // Create a Candidate object for the requested file formats.
     var candidate = new Candidate();
-    candidate.sourceFormat = this.sourceFormat;
+    candidate.sourceFormat = aSourceFormat;
     candidate.destFormat = this.destFormat;
     // Set the actual file names based on the file formats.
     candidate.setLocation(aParentLocation, aLeafName, aDataFolderLeafName);
@@ -211,19 +206,12 @@ CandidateFinder.prototype = {
   },
 
   /**
-   * Checks the extension in the given file name and returns true if it matches
-   * the selected source format.
+   * Checks the extension in the given file name and returns a format name.
    */
-  _isSourceFileName: function(aLeafName) {
+  _formatFromFileName: function(aLeafName) {
     // Checks the extension case-insensitively.
-    switch (this.sourceFormat) {
-      case "mhtml":
-        return /\.mht(ml)?$/i.test(aLeafName);
-      case "maff":
-        return /\.maff$/i.test(aLeafName);
-      default:
-        return false;
-    }
+    return /\.mht(ml)?$/i.test(aLeafName) ? "mhtml" :
+     /\.maff$/i.test(aLeafName) ? "maff" : "";
   },
 
   /**

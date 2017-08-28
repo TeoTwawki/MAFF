@@ -21,28 +21,29 @@
 
 <!-- *** File format selection *** -->
 
-<!ENTITY formats.pagelabel "Input and Output Formats">
+<!ENTITY format.pagelabel "Destination File Format">
 
-<!ENTITY formats.source.grouplabel "Convert from:">
-<!ENTITY formats.source.complete.label "Complete web pages (with support folders for data files)">
-<!ENTITY formats.source.mhtml.label "MHTML archives">
-<!ENTITY formats.source.maff.label "MAFF archives">
+<!ENTITY format.complete.label "HTML with support folder for data files">
+<!ENTITY format.complete.description "Provides the best compatibility as it can be opened with any browser without additional software, but the page name cannot be changed afterwards.">
 
-<!ENTITY formats.dest.grouplabel "Convert to:">
-<!ENTITY formats.dest.maff.label "MAFF archives">
-<!ENTITY formats.dest.mhtml.label "MHTML archives">
-<!ENTITY formats.dest.complete.label "Complete web pages (with support folders if required)">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "Compatible with Microsoft Internet Explorer and Google Chrome, but not suitable for video and audio, and incompatible with future versions of $brandShortName.">
 
-<!ENTITY formats.invalid.label "Please select two different file formats.">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "Based on the ZIP container, uses less disk space but cannot be opened with future versions of $brandShortName without extracting the archive manually.">
 
-<!-- *** Source folder selection *** -->
+<!-- *** Source selection *** -->
 
-<!ENTITY folders.source.pagelabel "Source Folder">
+<!ENTITY source.pagelabel "Source Folder and File Formats">
 
 <!ENTITY folders.source.label "Search this folder for source files:">
 <!ENTITY folders.source.subfolders.label "Include subfolders">
 
 <!ENTITY folders.source.invalid.label "Please select an existing source folder.">
+
+<!ENTITY format.source.label "Search for source files in these formats:">
+
+<!ENTITY format.source.invalid.label "Please select at least one format to search for.">
 
 <!-- *** Destination folder selection *** -->
 

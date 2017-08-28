@@ -65,7 +65,7 @@
   <!-- Introduction -->
   <wizardpage pageid="introduction"
               label= "&introduction.pagelabel;"
-              next=  "formats"
+              next=  "format"
               >
     <radiogroup id=       "rgrIntroduction"
                 oncommand="ConvertDialog.checkIntroductionControls();"
@@ -89,47 +89,42 @@
     </description>
   </wizardpage>
 
-  <!-- Source and destination format selection -->
-  <wizardpage pageid=    "formats"
-              label=     "&formats.pagelabel;"
-              onpageshow="ConvertDialog.checkFormatsControls();"
-              next=      "folderssource"
+  <!-- Destination format selection -->
+  <wizardpage pageid=    "format"
+              label=     "&format.pagelabel;"
+              onpageshow="ConvertDialog.checkFormatControls();"
+              next=      "source"
               >
-    <label value="&formats.source.grouplabel;" />
-    <radiogroup id=       "rgrFormatsSource"
-                oncommand="ConvertDialog.checkFormatsControls();"
+    <radiogroup id=       "rgrFormat"
+                oncommand="ConvertDialog.checkFormatControls();"
                 >
-      <radio value="complete"   label=    "&formats.source.complete.label;"
-                                />
-      <radio value="mhtml"      label=    "&formats.source.mhtml.label;"
-                                />
-      <radio value="maff"       label=    "&formats.source.maff.label;"
-                                />
+      <radio value="complete"
+             label="&format.complete.label;"
+             />
+      <description>
+        &format.complete.description;
+      </description>
+      <spacer height="15" />
+      <radio value="mhtml"
+             label="&format.mhtml.label;"
+             />
+      <description id="descFormatMhtml">
+        &format.mhtml.description;
+      </description>
+      <spacer height="15" />
+      <radio value="maff"
+             label="&format.maff.label;"
+             />
+      <description id="descFormatMaff">
+        &format.maff.description;
+      </description>
     </radiogroup>
-    <spacer height="15" />
-    <label value="&formats.dest.grouplabel;" />
-    <radiogroup id=       "rgrFormatsDest"
-                oncommand="ConvertDialog.checkFormatsControls();"
-                >
-      <radio value="maff"       label=    "&formats.dest.maff.label;"
-                                />
-      <radio value="mhtml"      label=    "&formats.dest.mhtml.label;"
-                                />
-      <radio value="complete"   label=    "&formats.dest.complete.label;"
-                                />
-    </radiogroup>
-
-    <!-- Page footer -->
-    <spacer flex="1" />
-    <label id=   "lblFormatsInvalid"
-           value="&formats.invalid.label;"
-           />
   </wizardpage>
 
   <!-- Source folder selection -->
-  <wizardpage pageid=    "folderssource"
-              label=     "&folders.source.pagelabel;"
-              onpageshow="ConvertDialog.checkFoldersSourceControls();"
+  <wizardpage pageid=    "source"
+              label=     "&source.pagelabel;"
+              onpageshow="ConvertDialog.checkSourceControls();"
               next=      "foldersdest"
               >
     <label control=  "txtFoldersSource"
@@ -138,7 +133,7 @@
     <hbox align="center">
       <textbox id=     "txtFoldersSource"
                flex=   "1"
-               oninput="ConvertDialog.checkFoldersSourceControls();"
+               oninput="ConvertDialog.checkSourceControls();"
                />
       <button control=  "txtFoldersSource"
               label=    "&browsebutton.label;"
@@ -148,13 +143,33 @@
     <checkbox id=       "chkFoldersSourceSubfolders"
               checked=  "true"
               label=    "&folders.source.subfolders.label;"
-              oncommand="ConvertDialog.checkFoldersSourceControls();"
+              oncommand="ConvertDialog.checkSourceControls();"
+              />
+    <spacer height="30" />
+    <label value="&format.source.label;" />
+    <checkbox id=       "chkFormatSourceComplete"
+              checked=  "true"
+              label=    "&format.complete.label;"
+              oncommand="ConvertDialog.checkSourceControls();"
+              />
+    <checkbox id=       "chkFormatSourceMhtml"
+              checked=  "true"
+              label=    "&format.mhtml.label;"
+              oncommand="ConvertDialog.checkSourceControls();"
+              />
+    <checkbox id=       "chkFormatSourceMaff"
+              checked=  "true"
+              label=    "&format.maff.label;"
+              oncommand="ConvertDialog.checkSourceControls();"
               />
 
     <!-- Page footer -->
     <spacer flex="1" />
     <label id=   "lblFoldersSourceInvalid"
            value="&folders.source.invalid.label;"
+           />
+    <label id=   "lblFormatSourceInvalid"
+           value="&format.source.invalid.label;"
            />
   </wizardpage>
 
