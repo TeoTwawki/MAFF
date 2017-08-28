@@ -106,6 +106,12 @@ var ConvertDialog = {
   _currentCandidate: null,
 
   /**
+   * Set to true when the conversion process is not needed and the window can be
+   * closed using the finish button.
+   */
+  _noActionNeeded: false,
+
+  /**
    * Set to true when the conversion process has finished. In this case,
    * clicking the finish button will close the window.
    */
@@ -139,15 +145,12 @@ var ConvertDialog = {
     // the actual text of the wizard buttons depends on the current platform,
     // the text is retrieved dynamically and replaced in all the labels that
     // require it.
-    for (var [, [labelName, buttonName]] in Iterator([
-     ["lblCandidatesNone",          "back"],
-     ["lblCandidatesFinish",        "finish"],
-    ])) {
-      // Replace "$1" with the current label of the correct wizard button.
-      var labelElement = document.getElementById(labelName);
-      labelElement.value = labelElement.value.replace(/\$1/g,
-       this._getWizardButtonLabel(buttonName));
-    }
+    let labelElement = document.getElementById("lblCandidatesFinish");
+    labelElement.value = labelElement.value
+     .replace("$1", this._getWizardButtonLabel("finish"));
+    textNode = document.getElementById("descCandidatesNone").firstChild;
+    textNode.data = textNode.data
+     .replace("$1", this._getWizardButtonLabel("finish"));
 
     // Retrieve the text of some controls and store it for later use.
     this._searchingCountsText = document.
@@ -352,11 +355,15 @@ var ConvertDialog = {
 
     // Show the appropriate controls based on the current state.
     for (var [, [labelName, visible]] in Iterator([
+     ["descCandidates",         counts.total                                  ],
+     ["treeCandidates",         counts.total                                  ],
+     ["descCandidatesCounts",   counts.total                                  ],
      ["lblCandidatesSearching", searching                                     ],
-     ["lblCandidatesConverting",converting                                    ],
-     ["lblCandidatesNone",      selecting && !selectableCount                 ],
+     ["descCandidatesNone",     selecting && !counts.total                    ],
+     ["lblCandidatesObstructed",selecting && counts.total && !selectableCount ],
      ["lblCandidatesInvalid",   selecting && selectableCount && !selectedCount],
      ["lblCandidatesConvert",   selecting && selectedCount                    ],
+     ["lblCandidatesConverting",converting                                    ],
      ["lblCandidatesFinish",    finished                                      ],
     ])) {
       document.getElementById(labelName).hidden = !visible;
@@ -364,19 +371,21 @@ var ConvertDialog = {
 
     // Set the appropriate label for the Finish button.
     var finishButton = this._wizard.getButton("finish");
-    if (searching || selecting) {
+    this._noActionNeeded = selecting && !selectableCount;
+    if (this._noActionNeeded || converting || finished) {
+      finishButton.label = this._wizardFinishLabel;
+      finishButton.setAttribute("accesskey", this._wizardFinishAccessKey);
+    } else {
       var convertButton = document.getElementById("btnCandidatesConvert");
       finishButton.label = convertButton.label;
       finishButton.setAttribute("accesskey",
         convertButton.getAttribute("accesskey"));
-    } else {
-      finishButton.label = this._wizardFinishLabel;
-      finishButton.setAttribute("accesskey", this._wizardFinishAccessKey);
     }
 
-    // Disable the finish button unless conversion is ready or finished.
-    this._wizard.getButton("finish").disabled =
-     !((selecting && selectedCount) || finished);
+    // Disable the finish button when busy or when no selection is made, but
+    // enable it to close the window if there is no action needed.
+    this._wizard.getButton("finish").disabled = searching || converting ||
+     (selecting && selectableCount && !selectedCount);
   },
 
   /**
@@ -399,8 +408,8 @@ var ConvertDialog = {
     // Rebuild the tree contents from scratch.
     tree.builder.rebuild();
     // Ensure that the root container is open.
-    if (!tree.view.isContainerOpen(0)) {
-      tree.view.toggleOpenState(0);
+    if (!this._candidatesTreeView.isContainerOpen(0)) {
+      this._candidatesTreeView.toggleOpenState(0);
     }
 
     // Indicate that a new conversion process is starting.
@@ -481,8 +490,8 @@ var ConvertDialog = {
       return false;
     }
 
-    // If the conversion process finished, close the window and exit now.
-    if (this._conversionFinished) {
+    // If the conversion process is finished or not needed, close the window.
+    if (this._conversionFinished || this._noActionNeeded) {
       return true;
     }
 

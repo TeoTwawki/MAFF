@@ -78,7 +78,8 @@
 <!ENTITY candidates.convertingcounts.label "$1 total, $2 already converted, $3 selected, $4 successfully converted, $5 failed">
 
 <!ENTITY candidates.searching.label "Searching for source files...">
-<!ENTITY candidates.none.label "No convertible files found. To modify the search parameters, click $1.">
+<!ENTITY candidates.none.description "The specified folder has been searched for files to be converted, and none were found. This may indicate that you don't have any files that need to be converted, or that all the files have been already converted. You can click $1 to close the window.">
+<!ENTITY candidates.obstructed.label "All the files have been already converted previously.">
 <!ENTITY candidates.invalid.label "Please select at least one file to convert.">
 <!ENTITY candidates.convert.label "Click Convert to convert your files.">
 <!ENTITY candidates.converting.label "Converting your files...">

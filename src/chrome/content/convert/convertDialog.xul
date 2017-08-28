@@ -238,7 +238,7 @@
               onpageshow=   "ConvertDialog.onCandidatesPageShow();"
               onpagerewound="ConvertDialog.onCandidatesPageRewound();"
               >
-    <description>
+    <description id="descCandidates">
       &candidates.description;
     </description>
 
@@ -501,8 +501,11 @@
     <label id=   "lblCandidatesSearching"
            value="&candidates.searching.label;"
            />
-    <label id=   "lblCandidatesNone"
-           value="&candidates.none.label;"
+    <description id="descCandidatesNone">
+      &candidates.none.description;
+    </description>
+    <label id=   "lblCandidatesObstructed"
+           value="&candidates.obstructed.label;"
            />
     <label id=   "lblCandidatesInvalid"
            value="&candidates.invalid.label;"
@@ -516,7 +519,6 @@
     <label id=   "lblCandidatesFinish"
            value="&candidates.finish.label;"
            />
-
     <!-- Hidden button that replaces the standard Finish button -->
     <button id=       "btnCandidatesConvert"
             label=    "&candidates.convertbutton.label;"
