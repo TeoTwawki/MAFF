@@ -126,10 +126,6 @@ var ConvertDialog = {
     // the text is retrieved dynamically and replaced in all the labels that
     // require it.
     for (var [, [labelName, buttonName]] in Iterator([
-     ["lblIntroductionContinue",    "next"],
-     ["lblFormatsContinue",         "next"],
-     ["lblFoldersSourceContinue",   "next"],
-     ["lblFoldersDestContinue",     "next"],
      ["lblCandidatesNone",          "back"],
      ["lblCandidatesFinish",        "finish"],
     ])) {
@@ -211,7 +207,6 @@ var ConvertDialog = {
 
     // Show the appropriate controls based on the validation results.
     document.getElementById("lblFormatsInvalid").hidden = pageIsValid;
-    document.getElementById("lblFormatsContinue").hidden = !pageIsValid;
     this._wizard.canAdvance = pageIsValid;
   },
 
@@ -236,7 +231,6 @@ var ConvertDialog = {
 
     // Show the appropriate controls based on the validation results.
     document.getElementById("lblFoldersSourceInvalid").hidden = pageIsValid;
-    document.getElementById("lblFoldersSourceContinue").hidden = !pageIsValid;
     this._wizard.canAdvance = pageIsValid;
   },
 
@@ -274,7 +268,6 @@ var ConvertDialog = {
 
     // Show the appropriate controls based on the validation results.
     document.getElementById("lblFoldersDestInvalid").hidden = pageIsValid;
-    document.getElementById("lblFoldersDestContinue").hidden = !pageIsValid;
     this._wizard.canAdvance = pageIsValid;
   },
 

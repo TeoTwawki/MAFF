@@ -79,12 +79,6 @@
            href= "http://maf.mozdev.org/"
            class="text-link header"
            />
-
-    <!-- Page footer -->
-    <spacer flex="1" />
-    <label id=   "lblIntroductionContinue"
-           value="&introduction.continue.label;"
-           />
   </wizardpage>
 
   <!-- Source and destination format selection -->
@@ -120,9 +114,6 @@
     <label id=   "lblFormatsInvalid"
            value="&formats.invalid.label;"
            />
-    <label id=   "lblFormatsContinue"
-           value="&continue.label;"
-           />
   </wizardpage>
 
   <!-- Source folder selection -->
@@ -152,9 +143,6 @@
     <spacer flex="1" />
     <label id=   "lblFoldersSourceInvalid"
            value="&folders.source.invalid.label;"
-           />
-    <label id=   "lblFoldersSourceContinue"
-           value="&continue.label;"
            />
   </wizardpage>
 
@@ -212,9 +200,6 @@
     <spacer flex="1" />
     <label id=   "lblFoldersDestInvalid"
            value="&folders.dest.invalid.label;"
-           />
-    <label id=   "lblFoldersDestContinue"
-           value="&continue.label;"
            />
   </wizardpage>
 
