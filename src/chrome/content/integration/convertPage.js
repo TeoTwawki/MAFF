@@ -50,7 +50,7 @@ var ConvertPage = {
     window.open(
      "chrome://maf/content/convert/convertDialog.xul",
      "maf-convertDialog",
-     "chrome,titlebar,centerscreen,resizable=yes");
+     "chrome,centerscreen,dialog,minimizable,resizable,alwaysRaised");
     window.close();
   },
 };

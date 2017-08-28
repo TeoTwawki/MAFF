@@ -118,6 +118,9 @@ var ConvertDialog = {
     this._candidatesTree = document.getElementById("treeCandidates");
     this._finder = new CandidateFinder();
 
+    // Hide the "Cancel" button to streamline the user interface.
+    this._wizard.getButton("cancel").hidden = true;
+
     // The main form contains some labels that mention the wizard buttons. Since
     // the actual text of the wizard buttons depends on the current platform,
     // the text is retrieved dynamically and replaced in all the labels that

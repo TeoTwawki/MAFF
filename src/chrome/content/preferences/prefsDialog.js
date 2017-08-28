@@ -38,6 +38,7 @@
 const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
 Cu.import("chrome://maf/content/MozillaArchiveFormat.jsm");
+Cu.import("resource://gre/modules/Services.jsm");
 
 /**
  * Handles the MAF preferences dialog.
@@ -120,10 +121,10 @@ var PrefsDialog = {
       convertDialog.focus();
     } else {
       // Open a new window to allow the conversion.
-      window.open(
+      Services.ww.openWindow(null,
        "chrome://maf/content/convert/convertDialog.xul",
        "maf-convertDialog",
-       "chrome,titlebar,centerscreen,resizable=yes");
+       "chrome,centerscreen,dialog,minimizable,resizable,alwaysRaised", null);
     }
   },
 
