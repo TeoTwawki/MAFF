@@ -5,15 +5,19 @@
 <!ENTITY window.title "Saved Pages Conversion Wizard">
 <!ENTITY browsebutton.label "Browse...">
 
+<!-- *** This folder is created under Desktop to keep a copy of the originals *** -->
+<!ENTITY oldsavedpages.folder.name "Old Saved Pages">
+
 <!-- *** Introduction *** -->
 
 <!ENTITY introduction.pagelabel "Welcome to the Saved Pages Conversion Wizard">
 
-<!ENTITY introduction.para1.description "This wizard will guide you through the conversion of your previously saved web pages to a different file format.">
-<!ENTITY introduction.para2.description "This procedure is suitable for converting many pages at a time. If you wish to convert single pages, just open them in the browser and save them in another format.">
+<!ENTITY introduction.mode.compatible.label "Search for archived pages and ensure they can be opened in the future">
+<!ENTITY introduction.mode.compatible.description "This will search the &quot;$1&quot; folder for pages that were saved in an archive, convert them to use separate folders for data files, and move the original archives to the &quot;$2&quot; folder on your desktop.">
 
-<!ENTITY introduction.visitwebsite.description "Although the conversion process works smoothly in most cases, sometimes the result may not be completely faithful to the original, depending on the selected file formats and save options. In addition, when converting a multi-page archive to a single-page format, only the first page is preserved. It is recommended that you keep a copy of your original files even after a successful conversion.">
-<!ENTITY introduction.visitwebsite.label "Read the online documentation for details.">
+<!ENTITY introduction.mode.choose.label "Choose which file formats and folders to use">
+
+<!ENTITY introduction.description "You should always keep a copy of the original files because in some cases the conversion process may not replicate them accurately.">
 
 <!-- *** File format selection *** -->
 

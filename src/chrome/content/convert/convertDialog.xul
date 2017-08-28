@@ -57,33 +57,43 @@
  onload=        "ConvertDialog.onLoadDialog();"
  onwizardfinish="return ConvertDialog.onWizardFinish();"
  onwizardcancel="return ConvertDialog.onWizardCancel();"
+ oldsavedpages= "&oldsavedpages.folder.name;"
  >
   <!-- Dialog machinery -->
   <script type="application/x-javascript" src="convertDialog.js" />
 
   <!-- Introduction -->
-  <wizardpage label=     "&introduction.pagelabel;"
-              onpageshow="ConvertDialog.checkIntroductionControls();"
+  <wizardpage pageid="introduction"
+              label= "&introduction.pagelabel;"
+              next=  "formats"
               >
-    <description>
-      &introduction.para1.description;
-    </description>
-    <description>
-      &introduction.para2.description;
-    </description>
+    <radiogroup id=       "rgrIntroduction"
+                oncommand="ConvertDialog.checkIntroductionControls();"
+                >
+      <radio value="compatible"
+             label="&introduction.mode.compatible.label;"
+             />
+      <description id="descCompatible">
+        &introduction.mode.compatible.description;
+      </description>
+      <spacer height="15" />
+      <radio value="choose"
+             label="&introduction.mode.choose.label;"
+             />
+    </radiogroup>
+
+    <!-- Page footer -->
     <spacer flex="1" />
     <description>
-      &introduction.visitwebsite.description;
+      &introduction.description;
     </description>
-    <label value="&introduction.visitwebsite.label;"
-           href= "http://maf.mozdev.org/"
-           class="text-link header"
-           />
   </wizardpage>
 
   <!-- Source and destination format selection -->
-  <wizardpage label=     "&formats.pagelabel;"
+  <wizardpage pageid=    "formats"
+              label=     "&formats.pagelabel;"
               onpageshow="ConvertDialog.checkFormatsControls();"
+              next=      "folderssource"
               >
     <label value="&formats.source.grouplabel;" />
     <radiogroup id=       "rgrFormatsSource"
@@ -117,8 +127,10 @@
   </wizardpage>
 
   <!-- Source folder selection -->
-  <wizardpage label=     "&folders.source.pagelabel;"
+  <wizardpage pageid=    "folderssource"
+              label=     "&folders.source.pagelabel;"
               onpageshow="ConvertDialog.checkFoldersSourceControls();"
+              next=      "foldersdest"
               >
     <label control=  "txtFoldersSource"
            value=    "&folders.source.label;"
@@ -147,8 +159,10 @@
   </wizardpage>
 
   <!-- Destination folder selection -->
-  <wizardpage label=     "&folders.dest.pagelabel;"
+  <wizardpage pageid=    "foldersdest"
+              label=     "&folders.dest.pagelabel;"
               onpageshow="ConvertDialog.checkFoldersDestControls();"
+              next=      "candidates"
               >
     <label value="&folders.dest.grouplabel;" />
     <radiogroup id=       "rgrFoldersDest"
@@ -204,7 +218,8 @@
   </wizardpage>
 
   <!-- Candidates selection -->
-  <wizardpage label=        "&candidates.pagelabel;"
+  <wizardpage pageid=       "candidates"
+              label=        "&candidates.pagelabel;"
               onpageshow=   "ConvertDialog.onCandidatesPageShow();"
               onpagerewound="ConvertDialog.onCandidatesPageRewound();"
               >

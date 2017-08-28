@@ -38,6 +38,8 @@
 const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
 Cu.import("chrome://maf/content/MozillaArchiveFormat.jsm");
+Cu.import("resource://gre/modules/FileUtils.jsm");
+Cu.import("resource://gre/modules/Services.jsm");
 
 /**
  * Handles the saved pages conversion dialog.
@@ -121,6 +123,14 @@ var ConvertDialog = {
     // Hide the "Cancel" button to streamline the user interface.
     this._wizard.getButton("cancel").hidden = true;
 
+    // Update the description in the introduction page and initialize the rest
+    // of the wizard based on the initial default.
+    let textNode = document.getElementById("descCompatible").firstChild;
+    textNode.data = textNode.data
+     .replace("$1", Services.downloads.userDownloadsDirectory.leafName)
+     .replace("$2", this._wizard.getAttribute("oldsavedpages"));
+    this.checkIntroductionControls();
+
     // The main form contains some labels that mention the wizard buttons. Since
     // the actual text of the wizard buttons depends on the current platform,
     // the text is retrieved dynamically and replaced in all the labels that
@@ -182,12 +192,32 @@ var ConvertDialog = {
   },
 
   /**
-   * On the introduction page, the button to advance to the next page is always
-   * enabled, and is selected instead of the website link.
+   * Checks the controls on the introduction page to set default values.
    */
   checkIntroductionControls: function() {
-    document.getElementById("convertDialog").canAdvance = true;
-    document.getElementById("convertDialog").getButton("next").focus();
+    var page = this._wizard.getPageById("introduction");
+    if (document.getElementById("rgrIntroduction").value == "compatible") {
+      document.getElementById("rgrFormatsSource").value = "maff";
+      document.getElementById("rgrFormatsDest").value = "complete";
+      this.checkFormatsControls();
+
+      document.getElementById("txtFoldersSource").value =
+       Services.downloads.userDownloadsDirectory.path;
+      document.getElementById("chkFoldersSourceSubfolders").checked = true;
+      this.checkFoldersSourceControls();
+
+      document.getElementById("rgrFoldersDest").value = "original"; 
+      document.getElementById("txtFoldersDest").value = ""; 
+      document.getElementById("rgrFoldersBin").value = "folder";
+      document.getElementById("txtFoldersBin").value = FileUtils.getFile(
+       "Desk", [this._wizard.getAttribute("oldsavedpages")]).path;
+      this.checkFoldersDestControls();
+
+      page.next = "candidates";
+    } else {
+      page.next = "formats";
+    }
+    this._wizard.canAdvance = true;
   },
 
   /**
