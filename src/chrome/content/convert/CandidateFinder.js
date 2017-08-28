@@ -60,7 +60,6 @@ CandidateFinder.prototype = {
    *
    * Possible values:
    *   "complete"   - Complete web page, only if a support folder is present.
-   *   "plain"      - Any web page, with or without a support folder.
    *   "mhtml"      - MHTML archive.
    *   "maff"       - MAFF archive.
    */
@@ -98,10 +97,7 @@ CandidateFinder.prototype = {
    * properties are consistent.
    */
   validateFormats: function() {
-    // The "plain" and "complete" values indicate the same file format.
-    var effectiveSourceFormat =
-     (this.sourceFormat == "plain" ? "complete" : this.sourceFormat);
-    return (effectiveSourceFormat != this.destFormat);
+    return this.sourceFormat != this.destFormat;
   },
 
   /**
@@ -165,7 +161,7 @@ CandidateFinder.prototype = {
       var name = this._isSupportFolderName(subdirName, filesList);
       if (name) {
         // If the search should include web pages among the source files
-        if (this.sourceFormat == "complete" || this.sourceFormat == "plain") {
+        if (this.sourceFormat == "complete") {
           // Check that the associated source file has not been already used
           // together with another support folder.
           if (files[name]) {
@@ -221,8 +217,6 @@ CandidateFinder.prototype = {
   _isSourceFileName: function(aLeafName) {
     // Checks the extension case-insensitively.
     switch (this.sourceFormat) {
-      case "plain":
-        return /\.(x?html|xht|htm|xml|svgz?)$/i.test(aLeafName);
       case "mhtml":
         return /\.mht(ml)?$/i.test(aLeafName);
       case "maff":

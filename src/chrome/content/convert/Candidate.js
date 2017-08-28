@@ -54,7 +54,6 @@ Candidate.prototype = {
    *
    * Possible values:
    *   "complete"   - Complete web page, only if a support folder is present.
-   *   "plain"      - Any web page, with or without a support folder.
    *   "mhtml"      - MHTML archive.
    *   "maff"       - MAFF archive.
    */

@@ -98,9 +98,6 @@
       <radio value="complete"   label=    "&formats.source.complete.label;"
                                 accesskey="&formats.source.complete.accesskey;"
                                 />
-      <radio value="plain"      label=    "&formats.source.plain.label;"
-                                accesskey="&formats.source.plain.accesskey;"
-                                />
       <radio value="mhtml"      label=    "&formats.source.mhtml.label;"
                                 accesskey="&formats.source.mhtml.accesskey;"
                                 />
