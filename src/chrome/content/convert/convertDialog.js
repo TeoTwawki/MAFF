@@ -188,14 +188,6 @@ var ConvertDialog = {
         self.checkCandidatesControls();
       }
     };
-
-    // In order to prevent the conversion process from blocking, disable the
-    // content features that may cause dialogs to be displayed, for example
-    // message boxes put up by embedded JavaScript.
-    var conversionDocShell = document.getElementById("frmConvert").docShell;
-    conversionDocShell.allowAuth = false;
-    conversionDocShell.allowJavascript = false;
-    conversionDocShell.allowPlugins = false;
   },
 
   /**
@@ -532,7 +524,6 @@ var ConvertDialog = {
         self.checkCandidatesControls();
         // Set the required references to use this window for conversion.
         candidate.conversionWindow = window;
-        candidate.conversionFrame = document.getElementById("frmConvert");
         // Stop the enumeration temporarily and start the conversion process.
         self._conversionEnumerator.pause();
         self._currentCandidate = candidate;

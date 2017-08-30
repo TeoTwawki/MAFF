@@ -490,12 +490,6 @@
       This text node will be replaced with the value to be displayed.
     </description>
 
-    <!-- Hidden frame used for conversion -->
-    <iframe id=    "frmConvert"
-            type=  "content"
-            hidden="true"
-            />
-
     <!-- Page footer -->
     <spacer height="10" />
     <label id=   "lblCandidatesSearching"

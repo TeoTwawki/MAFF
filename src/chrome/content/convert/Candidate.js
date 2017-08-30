@@ -198,11 +198,6 @@ Candidate.prototype = {
   conversionWindow: null,
 
   /**
-   * Reference to the "iframe" element to be used for the conversion.
-   */
-  conversionFrame: null,
-
-  /**
    * Starts the actual conversion process. When the process is finished, the
    * given function is called, passing true if the operation succeeded, or false
    * if the operation failed.
@@ -240,9 +235,37 @@ Candidate.prototype = {
     // Check the destination location for obstruction before starting.
     this._checkDestination();
 
+    // Create a new frame to load the source document.
+    var conversionFrame = this.conversionWindow.document.
+     createElement("iframe");
+    conversionFrame.setAttribute("type", "content");
+    conversionFrame.setAttribute("hidden", "true");
+
+    // Place the frame in the conversion window, and remove it when finished.
+    this.conversionWindow.document.documentElement.appendChild(conversionFrame);
+    try {
+      // In order to prevent the conversion process from blocking, disable the
+      // content features that may cause dialogs to be displayed, for example
+      // message boxes put up by embedded JavaScript.
+      conversionFrame.docShell.allowAuth = false;
+      conversionFrame.docShell.allowJavascript = false;
+      conversionFrame.docShell.allowPlugins = false;
+      yield new Promise(resolve => this._mainThread.dispatch(() => resolve(),
+       Ci.nsIThread.DISPATCH_NORMAL));
+
+      yield this._convertFrameTask(conversionFrame);
+    } finally {
+      conversionFrame.remove();
+    }
+  }),
+
+  /**
+   * Asynchronous function that continues the conversion in the provided frame.
+   */
+  _convertFrameTask: Task.async(function (conversionFrame) {
     // Register the load listeners.
-    var promiseLoad = this._promiseLoad(this.conversionFrame);
-    var webProgress = this.conversionFrame.docShell.
+    var promiseLoad = this._promiseLoad(conversionFrame);
+    var webProgress = conversionFrame.docShell.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebProgress);
     var promiseLoadNetworkStop = this._promiseNetworkStop(
       listener => webProgress.addProgressListener(listener,
@@ -253,8 +276,7 @@ Candidate.prototype = {
     // Load the URL associated with the source file in the conversion frame.
     var sourceUrl = Cc["@mozilla.org/network/io-service;1"].
      getService(Ci.nsIIOService).newFileURI(this.location.source);
-    this.conversionFrame.webNavigation.loadURI(sourceUrl.spec, 0, null, null,
-     null);
+    conversionFrame.webNavigation.loadURI(sourceUrl.spec, 0, null, null, null);
 
     yield promiseLoadNetworkStop;
     yield promiseLoad;
@@ -289,7 +311,7 @@ Candidate.prototype = {
       this.location.dest.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
     }
 
-    var document = this.conversionFrame.contentDocument;
+    var document = conversionFrame.contentDocument;
 
     var persist;
     if (this.destFormat == "mhtml") {
@@ -413,6 +435,10 @@ Candidate.prototype = {
           Ci.nsISupportsWeakReference,
         ]),
         onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
+          if (aRequest instanceof Ci.nsIChannel &&
+              aRequest.URI.spec == "about:blank") {
+            return;
+          }
           if (aStatus != Cr.NS_OK) {
             removeListener(this);
             reject(new Components.Exception("Operation failed", aStatus));
