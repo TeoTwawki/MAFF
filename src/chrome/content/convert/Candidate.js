@@ -43,12 +43,6 @@ function Candidate() {
 }
 
 Candidate.prototype = {
-  QueryInterface: XPCOMUtils.generateQI([
-    Ci.nsIWebProgressListener,
-    Ci.nsIWebProgressListener2,
-    Ci.nsISupportsWeakReference,
-  ]),
-
   /**
    * String representing the source format of the file to be converted.
    *
@@ -214,22 +208,16 @@ Candidate.prototype = {
    * if the operation failed.
    */
   convert: function(aCompleteFn) {
-    // Store a reference to the function to be called when finished.
-    this._onComplete = aCompleteFn;
-    try {
-      // Check the destination location for obstruction before starting.
-      this._checkDestination();
-      // Register the load listeners.
-      this._addLoadListeners();
-      // Load the URL associated with the source file in the conversion frame.
-      var sourceUrl = Cc["@mozilla.org/network/io-service;1"].
-       getService(Ci.nsIIOService).newFileURI(this.location.source);
-      this.conversionFrame.webNavigation.loadURI(sourceUrl.spec, 0, null, null,
-       null);
-    } catch (e) {
-      // Report the error and notify the caller.
-      this._onFailure(e);
-    }
+    this._convertTask().then(() => {
+      if (!this._canceled) {
+        aCompleteFn(true);
+      }
+    }, ex => {
+      this._reportConversionError(ex);
+      if (!this._canceled) {
+        aCompleteFn(false);
+      }
+    }).catch(Cu.reportError);
   },
 
   /**
@@ -237,96 +225,8 @@ Candidate.prototype = {
    * callback function will not be called in this case.
    */
   cancelConversion: function() {
-    // Remember that the conversion was canceled.
     this._canceled = true;
-    // Ensure that all the event listeners are removed immediately.
-    this._removeLoadListeners();
   },
-
-  // nsIWebProgressListener
-  onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
-    // Remember if at least one failure notification was received while loading
-    // or saving. This will cause the load or save to fail when finished.
-    if (aStatus != Cr.NS_OK) {
-      this._listeningException = new Components.Exception("Operation failed",
-       aStatus);
-    }
-    // Detect when the current load or save operation is finished.
-    if ((aStateFlags & Ci.nsIWebProgressListener.STATE_STOP) &&
-     (aStateFlags & Ci.nsIWebProgressListener.STATE_IS_NETWORK)) {
-      // Notify the appropriate function based on the current state.
-      if (this._isListeningForLoad) {
-        // Notify that the network activity for the current load stopped.
-        this._loadNetworkDone = true;
-        this._onLoadCompleted();
-      } else if (this._isListeningForSave) {
-        // Notify that the save operation completed.
-        this._onSaveCompleted();
-      }
-    }
-  },
-
-  // nsIWebProgressListener
-  onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress,
-   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
-
-  // nsIWebProgressListener
-  onLocationChange: function(aWebProgress, aRequest, aLocation) { },
-
-  // nsIWebProgressListener
-  onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) { },
-
-  // nsIWebProgressListener
-  onSecurityChange: function(aWebProgress, aRequest, aState) { },
-
-  // nsIWebProgressListener2
-  onProgressChange64: function(aWebProgress, aRequest, aCurSelfProgress,
-   aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) { },
-
-  // nsIWebProgressListener2
-  onRefreshAttempted: function(aWebProgress, aRefreshURI, aMillis,
-   aSameURI) { },
-
-  /**
-   * Reference to the callback function to be called on completion.
-   */
-  _onComplete: null,
-
-  /**
-   * nsIWebProgress interface associated with the conversion frame.
-   */
-  _webProgress: null,
-
-  /**
-   * True while the load operation is in progress.
-   */
-  _isListeningForLoad: false,
-
-  /**
-   * Dynamically-generated listener function for the "load" event.
-   */
-  _loadListener: null,
-
-  /**
-   * True if the "load" event was fired for the conversion frame.
-   */
-  _loadContentDone: false,
-
-  /**
-   * True if the network activity for the current load stopped.
-   */
-  _loadNetworkDone: false,
-
-  /**
-   * True while the save operation is in progress.
-   */
-  _isListeningForSave: false,
-
-  /**
-   * Excpetion object representing an error that occurred during the load or
-   * save operations, or null if no error occurred.
-   */
-  _listeningException: null,
 
   /**
    * True if the operation was explicitly canceled.
@@ -334,220 +234,107 @@ Candidate.prototype = {
   _canceled: false,
 
   /**
-   * Registers the required load listeners.
+   * Asynchronous function that executes the conversion.
    */
-  _addLoadListeners: function() {
-    // Get a reference to the interface to add and remove web progress
-    // listeners.
-    this._webProgress = this.conversionFrame.docShell.
+  _convertTask: Task.async(function () {
+    // Check the destination location for obstruction before starting.
+    this._checkDestination();
+
+    // Register the load listeners.
+    var promiseLoad = this._promiseLoad(this.conversionFrame);
+    var webProgress = this.conversionFrame.docShell.
      QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebProgress);
-    // Build the event listener for the "load" event on the frame.
-    var self = this;
-    this._loadListener = function(aEvent) {
-      // If the current "load" event is for a subframe, ignore it.
-      if (aEvent.target != self.conversionFrame.contentDocument) {
-        return;
+    var promiseLoadNetworkStop = this._promiseNetworkStop(
+      listener => webProgress.addProgressListener(listener,
+       Ci.nsIWebProgress.NOTIFY_STATE_NETWORK),
+      listener => webProgress.removeProgressListener(listener)
+    );
+
+    // Load the URL associated with the source file in the conversion frame.
+    var sourceUrl = Cc["@mozilla.org/network/io-service;1"].
+     getService(Ci.nsIIOService).newFileURI(this.location.source);
+    this.conversionFrame.webNavigation.loadURI(sourceUrl.spec, 0, null, null,
+     null);
+
+    yield promiseLoadNetworkStop;
+    yield promiseLoad;
+
+    // We must wait for all events to be processed before continuing,
+    // otherwise the conversion of some pages might fail because some elements
+    // in the page are not available for saving, or the current load can
+    // interfere with subsequent loads in the same frame.
+    var timeLimit = Date.now() + 5000;
+    while (this._mainThread.hasPendingEvents()) {
+      yield new Promise(resolve => this._mainThread.dispatch(() => resolve(),
+       Ci.nsIThread.DISPATCH_NORMAL));
+
+      if (Date.now() > timeLimit) {
+        // On timeout, continue even though not all events have been processed.
+        this._reportConversionError("Unable to process all events generated" +
+         " by the source page in a timely manner. Your computer might be" +
+         " busy. The conversion operation will be tried anyway.");
+        break;
       }
-      // Notify only if appropriate based on the current state.
-      if (self._isListeningForLoad) {
-        // Notify that the "load" event was fired.
-        self._loadContentDone = true;
-        self._onLoadCompleted();
-      }
-    };
-    // Register the web progress listener defined in this object.
-    this._webProgress.addProgressListener(this,
-     Ci.nsIWebProgress.NOTIFY_STATE_NETWORK);
-    // Register the load event listener defined in this object.
-    this.conversionFrame.addEventListener("load", this._loadListener, true);
-    // Set the state variables appropriately.
-    this._listeningException = null;
-    this._isListeningForLoad = true;
-  },
-
-  /**
-   * Removes the load listeners registered previously, if necessary.
-   */
-  _removeLoadListeners: function() {
-    // Check the current state before continuing.
-    if (!this._isListeningForLoad) {
-      return;
     }
-    // Remove the web progress listener defined in this object.
-    this._webProgress.removeProgressListener(this);
-    // Remove the load event listener defined in this object.
-    this.conversionFrame.removeEventListener("load", this._loadListener, true);
-    // Set the state variables appropriately.
-    this._isListeningForLoad = false;
-  },
 
-  /**
-   * Called when the source page has been loaded.
-   */
-  _onLoadCompleted: function() {
-    // Wait for both triggering conditions be true.
-    if (!this._loadNetworkDone || !this._loadContentDone) {
-      return;
-    }
-    try {
-      // Remove the load listeners first.
-      this._removeLoadListeners();
-
-      // Report any error that occurred while loading, and stop the operation.
-      if (this._listeningException) {
-        throw this._listeningException;
-      }
-
-      // We must wait for all events to be processed before continuing,
-      // otherwise the conversion of some pages might fail because some elements
-      // in the page are not available for saving, or the current load can
-      // interfere with subsequent loads in the same frame.
-      this._waitForAllEventsStart = Date.now();
-      this._waitForAllEvents();
-    } catch (e) {
-      // Report the error and notify the caller.
-      this._onFailure(e);
-    }
-  },
-
-  /**
-   * Point in time when the current wait for all events started.
-   */
-  _waitForAllEventsStart: null,
-
-  /**
-   * Wait for pending events to be dispatched before continuing.
-   */
-  _waitForAllEvents: function() {
-    if (Date.now() > this._waitForAllEventsStart + 5000) {
-      // On timeout, continue even though not all events have been processed.
-      this._reportConversionError("Unable to process all events generated by" +
-       " the source page in a timely manner. Your computer might be busy." +
-       " The conversion operation will be tried anyway.");
-      this._afterLoadCompleted();
+    // Check if the operation was canceled while processing the events.
+    if (this._canceled) {
       return;
     }
 
-    // If there are pending events, process them and retry later.
-    if (this._mainThread.hasPendingEvents())
-    {
-      var self = this;
-      this._mainThread.dispatch(
-       { run: function() self._waitForAllEvents.apply(self) },
-       Ci.nsIThread.DISPATCH_NORMAL);
-      return;
+    // Check the destination location for obstruction again.
+    this._checkDestination();
+    // Ensure that the destination folder exists, and create it if required.
+    if (!this.location.dest.parent.exists()) {
+      this.location.dest.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
     }
 
-    // All events have been processed, end waiting.
-    this._afterLoadCompleted();
-  },
+    var document = this.conversionFrame.contentDocument;
 
-  /**
-   * Called after the source page has been loaded and events processed.
-   */
-  _afterLoadCompleted: function() {
-    try {
-      // Check if the operation was canceled while processing the events.
-      if (this._canceled) {
-        return;
-      }
-
-      // Check the destination location for obstruction again.
-      this._checkDestination();
-      // Ensure that the destination folder exists, and create it if required.
-      if (!this.location.dest.parent.exists()) {
-        this.location.dest.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
-      }
-
-      // Start the save operation.
-      this._startSaving();
-    } catch (e) {
-      // Report the error and notify the caller.
-      this._onFailure(e);
+    var persist;
+    if (this.destFormat == "mhtml") {
+      persist = new MafArchivePersist(null, "TypeMHTML");
+      persist.saveWithNotLoadedResources = true;
+    } else if (this.destFormat == "maff") {
+      persist = new MafArchivePersist(null, "TypeMAFF");
+      persist.saveWithNotLoadedResources = true;
+    } else if (document.contentType == "text/html" ||
+     document.contentType == "application/xhtml+xml") {
+      // The ExactPersist component can also save XML and SVG, but not as
+      // accurately as the browser's standard save system.
+      persist = new ExactPersist();
+      persist.saveWithMedia = true;
+      persist.saveWithNotLoadedResources = true;
+    } else {
+      persist = Cc["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
+       .createInstance(Ci.nsIWebBrowserPersist);
     }
-  },
+    var promiseSaveNetworkStop = this._promiseNetworkStop(
+     listener => persist.progressListener = listener);
+    persist.persistFlags =
+     Ci.nsIWebBrowserPersist.PERSIST_FLAGS_REPLACE_EXISTING_FILES |
+     Ci.nsIWebBrowserPersist.PERSIST_FLAGS_FORCE_ALLOW_COOKIES |
+     Ci.nsIWebBrowserPersist.PERSIST_FLAGS_FROM_CACHE |
+     Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+    persist.saveDocument(
+      document,
+      NetUtil.newURI(this.location.dest),
+      this.dataFolderLocation && this.dataFolderLocation.dest,
+      null,
+      Ci.nsIWebBrowserPersist.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES,
+      80
+    );
 
-  /**
-   * Starts the save operation, which is the second step of the conversion.
-   */
-  _startSaving: function() {
-    // Set the state variables appropriately before starting the save operation.
-    this._listeningException = null;
-    this._isListeningForSave = true;
-    try {
-      let document = this.conversionFrame.contentDocument;
+    // This throws an exception if the save operation failed.
+    yield promiseSaveNetworkStop;
 
-      let persist;
-      if (this.destFormat == "mhtml") {
-        persist = new MafArchivePersist(null, "TypeMHTML");
-        persist.saveWithNotLoadedResources = true;
-      } else if (this.destFormat == "maff") {
-        persist = new MafArchivePersist(null, "TypeMAFF");
-        persist.saveWithNotLoadedResources = true;
-      } else if (document.contentType == "text/html" ||
-       document.contentType == "application/xhtml+xml") {
-        // The ExactPersist component can also save XML and SVG, but not as
-        // accurately as the browser's standard save system.
-        persist = new ExactPersist();
-        persist.saveWithMedia = true;
-        persist.saveWithNotLoadedResources = true;
-      } else {
-        persist = Cc["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
-         .createInstance(Ci.nsIWebBrowserPersist);
-      }
-      persist.progressListener = this;
-      persist.persistFlags =
-       Ci.nsIWebBrowserPersist.PERSIST_FLAGS_REPLACE_EXISTING_FILES |
-       Ci.nsIWebBrowserPersist.PERSIST_FLAGS_FORCE_ALLOW_COOKIES |
-       Ci.nsIWebBrowserPersist.PERSIST_FLAGS_FROM_CACHE |
-       Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-      persist.saveDocument(
-        document,
-        NetUtil.newURI(this.location.dest),
-        this.dataFolderLocation && this.dataFolderLocation.dest,
-        null,
-        Ci.nsIWebBrowserPersist.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES,
-        80
-      );
-    } catch (e) {
-      // If the operation failed before starting, reset the listening state.
-      this._isListeningForSave = false;
-      throw e;
-    }
-  },
+    // Change the last modified time of the destination to match the source.
+    this.location.dest.lastModifiedTime =
+     this.location.source.lastModifiedTime;
 
-  /**
-   * Called when the source page has been saved.
-   */
-  _onSaveCompleted: function() {
-    try {
-      // Indicate that the save notification has been processed.
-      this._isListeningForSave = false;
-
-      // Check if the operation was canceled while saving.
-      if (this._canceled) {
-        return;
-      }
-
-      // Report any error that occurred while saving, and stop the operation.
-      if (this._listeningException) {
-        throw this._listeningException;
-      }
-
-      // Change the last modified time of the destination to match the source.
-      this.location.dest.lastModifiedTime =
-       this.location.source.lastModifiedTime;
-
-      // Conversion completed successfully, move the source to the bin folder.
-      this._moveToBin();
-    } catch (e) {
-      // Report the error and notify the caller, then exit.
-      this._onFailure(e);
-      return;
-    }
-    // Report that the conversion was successful.
-    this._onComplete(true);
-  },
+    // Conversion completed successfully, move the source to the bin folder.
+    this._moveToBin();
+  }),
 
   /**
    * Throws an exception if the destination location is obstructed.
@@ -598,21 +385,51 @@ Candidate.prototype = {
   },
 
   /**
-   * Reports the given exception that occurred during the conversion of this
-   * candidate, and notifies the appropriate object that the operation failed.
+   * Resolves the returned promise when a frame reports the "load" event.
    */
-  _onFailure: function(aException) {
-    try {
-      // Clean up all the possible registered listeners.
-      this._removeLoadListeners();
-    } catch (e) {
-      // Ignore errors during the cleanup phase.
-      Cu.reportError(e);
-    }
-    // Report the error message.
-    this._reportConversionError(aException);
-    // Report that the conversion of this candidate failed.
-    this._onComplete(false);
+  _promiseLoad: function(frame) {
+    return new Promise((resolve, reject) => {
+      frame.addEventListener("load", function loadListener(event) {
+        // If the current "load" event is for a subframe, ignore it.
+        if (event.target == frame.contentDocument) {
+          frame.removeEventListener("load", loadListener, true);
+          resolve();
+        }
+      }, true);
+    });
+  },
+
+  /**
+   * Creates a web progress listener that resolves the returned promise when the
+   * network stop event is received, and rejects the promise in case of errors.
+   * The listener is passed to the provided functions for registration.
+   */
+  _promiseNetworkStop: function(addListener, removeListener = () => {}) {
+    return new Promise((resolve, reject) => {
+      addListener({
+        QueryInterface: XPCOMUtils.generateQI([
+          Ci.nsIWebProgressListener,
+          Ci.nsIWebProgressListener2,
+          Ci.nsISupportsWeakReference,
+        ]),
+        onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
+          if (aStatus != Cr.NS_OK) {
+            removeListener(this);
+            reject(new Components.Exception("Operation failed", aStatus));
+          } else if ((aStateFlags & Ci.nsIWebProgressListener.STATE_STOP) &&
+           (aStateFlags & Ci.nsIWebProgressListener.STATE_IS_NETWORK)) {
+            removeListener(this);
+            resolve();
+          }
+        },
+        onProgressChange() {},
+        onLocationChange() {},
+        onStatusChange() {},
+        onSecurityChange() {},
+        onProgressChange64() {},
+        onRefreshAttempted() {},
+      });
+    });
   },
 
   /**
