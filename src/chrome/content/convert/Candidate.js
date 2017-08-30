@@ -235,6 +235,30 @@ Candidate.prototype = {
     // Check the destination location for obstruction before starting.
     this._checkDestination();
 
+    // Preload the archive in order to detect any errors with the format, then
+    // remove the temporary files that have been created for the extraction.
+    if (this.sourceFormat != "complete") {
+      var archive = ArchiveLoader.extractAndRegister(this.location.source);
+      try {
+        yield this._createAndConvertFrameTask();
+      } finally {
+        try {
+          ArchiveCache.unregisterArchive(archive);
+          archive._tempDir.remove(true);
+        } catch (e) {
+          Cu.reportError(e);
+        }
+      }
+    } else {
+      // There are no temporary files when loading complete web pages. 
+      yield this._createAndConvertFrameTask();
+    }
+  }),
+
+  /**
+   * Asynchronous function creating the frame where the conversion continues.
+   */
+  _createAndConvertFrameTask: Task.async(function () {
     // Create a new frame to load the source document.
     var conversionFrame = this.conversionWindow.document.
      createElement("iframe");
