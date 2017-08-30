@@ -123,8 +123,10 @@ MaffArchive.prototype = {
           if (!destFile.parent.exists()) {
             destFile.parent.create(Ci.nsIFile.DIRECTORY_TYPE, 0755);
           }
-          // Extract the file in the temporary directory.
+          // Extract the file in the temporary directory and make sure it can be
+          // deleted regardless of the permissions stored in the archive.
           zipReader.extract(zipEntry, destFile);
+          destFile.permissions = 0o600;
         }
       }
     } finally {
