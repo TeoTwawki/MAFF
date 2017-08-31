@@ -179,11 +179,27 @@ CandidateFinder.prototype = {
     for (var [fileName] in Iterator(files)) {
       // Ensure that the enumeration result is a JavaScript string.
       fileName = "" + fileName;
-      // If the file name matches the criteria
+      // Continue if the file name matches the criteria.
       let sourceFormat = this._formatFromFileName(fileName);
-      if (this.sourceFormats.includes(sourceFormat)) {
-        // Generate a new candidate for conversion.
-        yield this._newCandidate(sourceFormat, aLocation, fileName);
+      if (!this.sourceFormats.includes(sourceFormat)) {
+        continue;
+      }
+      // Try to detect multipage archives.
+      var pageCount = 1;
+      if (sourceFormat == "maff") {
+        try {
+          var archiveFile = aLocation.source.clone();
+          archiveFile.append(fileName);
+          pageCount = new MaffArchive(archiveFile).countPages();
+        } catch (ex) {
+          Cu.reportError(ex);
+        }
+      }
+      // Generate new candidates for conversion.
+      var binCountdown = pageCount <= 1 ? null : { count: pageCount };
+      for (var pageIndex = 0; pageIndex < pageCount; pageIndex++) {
+        yield this._newCandidate(sourceFormat, aLocation, fileName, null,
+         pageIndex, binCountdown);
       }
     }
   },
@@ -192,11 +208,13 @@ CandidateFinder.prototype = {
    * Creates a new candidate with the given properties.
    */
   _newCandidate: function(aSourceFormat, aParentLocation, aLeafName,
-   aDataFolderLeafName) {
+   aDataFolderLeafName, aPageIndex, aBinCountdown) {
     // Create a Candidate object for the requested file formats.
     var candidate = new Candidate();
     candidate.sourceFormat = aSourceFormat;
     candidate.destFormat = this.destFormat;
+    candidate.binCountdown = aBinCountdown;
+    candidate.pageIndex = aPageIndex || 0;
     // Set the actual file names based on the file formats.
     candidate.setLocation(aParentLocation, aLeafName, aDataFolderLeafName);
     // Check if the destination or bin files already exist.

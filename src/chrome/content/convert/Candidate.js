@@ -80,9 +80,20 @@ Candidate.prototype = {
   dataFolderLocation: null,
 
   /**
+   * Zero-based index of the page to be converted in a multi-page archive.
+   */
+  pageIndex: 0,
+
+  /**
    * True if one of the destination files or support folders already exists.
    */
   obstructed: false,
+
+  /**
+   * Reference to an object containing a countdown of the number of pages that
+   * need to be converted before the source file can be moved to the bin path.
+   */
+  binCountdown: null,
 
   /**
    * Identifier of the candidate in the candidates data source.
@@ -136,7 +147,8 @@ Candidate.prototype = {
     }
 
     // Determine the base name from the provided source leaf name.
-    var leafNameWithoutExtension = aLeafName.replace(/\.[^.]*$/, "");
+    var leafNameWithoutExtension = aLeafName.replace(/\.[^.]*$/, "") +
+     (this.pageIndex ? "-" + (this.pageIndex + 1) : "");
 
     // Modify the destination location with the correct file name.
     var destLeafName = leafNameWithoutExtension + "." + destExtension;
@@ -167,12 +179,14 @@ Candidate.prototype = {
   checkObstructed: function() {
     // Assume that the destination is obstructed.
     this.obstructed = true;
-    // Check if the destination file already exists.
-    if (this.location.dest.exists()) {
-      return;
-    }
-    // Check if the bin file already exists.
-    if (this.location.bin && this.location.bin.exists()) {
+    // Check if the destination or bin files already exist.
+    if (this.location.dest.exists() ||
+        (this.location.bin && this.location.bin.exists())) {
+      // This candidate should be ignored when determining when the source file
+      // should be moved to the bin folder.
+      if (this.binCountdown) {
+        this.binCountdown.count--;
+      }
       return;
     }
     // If no support folder for data files is present, exit now.
@@ -238,27 +252,37 @@ Candidate.prototype = {
     // Preload the archive in order to detect any errors with the format, then
     // remove the temporary files that have been created for the extraction.
     if (this.sourceFormat != "complete") {
-      var archive = ArchiveLoader.extractAndRegister(this.location.source);
+      var archive = ArchiveCache.archiveFromUri(NetUtil.newURI(
+       this.location.source));
+      if (!archive) {
+        archive = ArchiveLoader.extractAndRegister(this.location.source);
+      }
       try {
-        yield this._createAndConvertFrameTask();
+        yield this._createAndConvertFrameTask(archive);
       } finally {
-        try {
-          ArchiveCache.unregisterArchive(archive);
-          archive._tempDir.remove(true);
-        } catch (e) {
-          Cu.reportError(e);
+        // Do not remove the archive from the cache if it is possible that we
+        // will convert other pages from the same archive. This means we will
+        // keep around the temporary files for archives where at least one page
+        // was deselected or failed the conversion.
+        if (!this.binCountdown || this.binCountdown.count == 0) {
+          try {
+            ArchiveCache.unregisterArchive(archive);
+            archive._tempDir.remove(true);
+          } catch (e) {
+            Cu.reportError(e);
+          }
         }
       }
     } else {
       // There are no temporary files when loading complete web pages. 
-      yield this._createAndConvertFrameTask();
+      yield this._createAndConvertFrameTask(null);
     }
   }),
 
   /**
    * Asynchronous function creating the frame where the conversion continues.
    */
-  _createAndConvertFrameTask: Task.async(function () {
+  _createAndConvertFrameTask: Task.async(function (archive) {
     // Create a new frame to load the source document.
     var conversionFrame = this.conversionWindow.document.
      createElement("iframe");
@@ -277,7 +301,7 @@ Candidate.prototype = {
       yield new Promise(resolve => this._mainThread.dispatch(() => resolve(),
        Ci.nsIThread.DISPATCH_NORMAL));
 
-      yield this._convertFrameTask(conversionFrame);
+      yield this._convertFrameTask(archive, conversionFrame);
     } finally {
       conversionFrame.remove();
     }
@@ -286,7 +310,7 @@ Candidate.prototype = {
   /**
    * Asynchronous function that continues the conversion in the provided frame.
    */
-  _convertFrameTask: Task.async(function (conversionFrame) {
+  _convertFrameTask: Task.async(function (archive, conversionFrame) {
     // Register the load listeners.
     var promiseLoad = this._promiseLoad(conversionFrame);
     var webProgress = conversionFrame.docShell.
@@ -298,7 +322,8 @@ Candidate.prototype = {
     );
 
     // Load the URL associated with the source file in the conversion frame.
-    var sourceUrl = Cc["@mozilla.org/network/io-service;1"].
+    var sourceUrl = archive ? archive.pages[this.pageIndex].archiveUri :
+     Cc["@mozilla.org/network/io-service;1"].
      getService(Ci.nsIIOService).newFileURI(this.location.source);
     conversionFrame.webNavigation.loadURI(sourceUrl.spec, 0, null, null, null);
 
@@ -403,6 +428,13 @@ Candidate.prototype = {
    * Moves the source file and support folder to the bin folder, if required.
    */
   _moveToBin: function() {
+    // If this is a multipage archive and we have not yet converted all the
+    // selectable pages, we don't move the source file to the bin folder.
+    if (this.binCountdown) {
+      if (--this.binCountdown.count > 0) {
+        return;
+      }
+    }
     // Move the source file to the bin folder.
     if (this.location.bin) {
       // Ensure that the destination does not exist.

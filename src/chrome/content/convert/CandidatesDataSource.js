@@ -218,7 +218,9 @@ CandidatesDataSource.prototype = {
 
     // Set the candidate properties as RDF literals.
     ds.Assert(candidateResource, res.sourceName,
-     this._rdf.GetLiteral(aCandidate.location.source.leafName), true);
+     this._rdf.GetLiteral(aCandidate.location.source.leafName +
+     (aCandidate.pageIndex ? " (" + (aCandidate.pageIndex + 1) + ")" : "")),
+     true);
     if (aCandidate.dataFolderLocation && aCandidate.dataFolderLocation.source) {
       ds.Assert(candidateResource, res.sourceDataFolderName,
        this._rdf.GetLiteral(aCandidate.dataFolderLocation.source.leafName),

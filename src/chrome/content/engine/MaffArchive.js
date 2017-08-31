@@ -160,6 +160,33 @@ MaffArchive.prototype = {
   },
 
   /**
+   * Determines how many pages are present in the archive without extracting
+   * them. This is used during batch conversions.
+   */
+  countPages: function() {
+    var pageCount = 0;
+    var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].
+     createInstance(Ci.nsIZipReader);
+    zipReader.open(this.file);
+    try {
+      var zipEntries = zipReader.findEntries(null);
+      while (zipEntries.hasMore()) {
+        var zipEntry = zipEntries.getNext();
+        // Consider every first-level folder contained in the archive. Since
+        // synthetic directory entries are created by the ZIP reader if they are
+        // not explicitly stored in the archive, all the pages in the archive
+        // will be detected.
+        if (/^[^/]+\/$/.test(zipEntry)) {
+          pageCount++;
+        }
+      }
+    } finally {
+      zipReader.close();
+    }
+    return pageCount;
+  },
+
+  /**
    * Returns a new nsIFile pointing to the location indicated by the given ZIP
    * entry, relative to the temporary directory for this archive.
    *
