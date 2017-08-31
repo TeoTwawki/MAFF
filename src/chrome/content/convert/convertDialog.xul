@@ -52,7 +52,7 @@
  title=         "&window.title;"
  windowtype=    "Maf:Convert"
  xmlns=         "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
- style=         "width: 45em; height: 32em;"
+ style=         "width: 48em; height: 35em;"
  persist=       "screenX screenY width height"
  onload=        "ConvertDialog.onLoadDialog();"
  onwizardfinish="return ConvertDialog.onWizardFinish();"
@@ -287,6 +287,7 @@
                  flex="1"
                  label="&candidates.sourcedatafoldername.header;"
                  sort="urn:maf:vocabulary#sourceDataFolderName"
+                 hidden="true"
                  persist="width ordinal hidden sortActive sortDirection" />
         <splitter class="tree-splitter" />
         <treecol id="tcRelativePath"
