@@ -45,6 +45,9 @@
 
 <!ENTITY format.source.invalid.label "Please select at least one format to search for.">
 
+<!ENTITY allowdownload.label "Download missing parts of the page when necessary">
+<!ENTITY allowdownload.description "This may slow down the conversion, but can repair saved pages that are incomplete and can only be viewed correctly when connected to the Internet.">
+
 <!-- *** Destination folder selection *** -->
 
 <!ENTITY folders.dest.pagelabel "Destination Folders">

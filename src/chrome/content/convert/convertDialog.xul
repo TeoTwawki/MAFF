@@ -145,7 +145,7 @@
               label=    "&folders.source.subfolders.label;"
               oncommand="ConvertDialog.checkSourceControls();"
               />
-    <spacer height="30" />
+    <spacer height="15" />
     <label value="&format.source.label;" />
     <checkbox id=       "chkFormatSourceComplete"
               checked=  "true"
@@ -162,6 +162,14 @@
               label=    "&format.maff.label;"
               oncommand="ConvertDialog.checkSourceControls();"
               />
+    <spacer height="15" />
+    <checkbox id=       "chkAllowDownload"
+              label=    "&allowdownload.label;"
+              oncommand="ConvertDialog.checkSourceControls();"
+              />
+    <description>
+      &allowdownload.description;
+    </description>
 
     <!-- Page footer -->
     <spacer flex="1" />

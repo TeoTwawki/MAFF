@@ -118,6 +118,16 @@ var ConvertDialog = {
   _conversionFinished: false,
 
   /**
+   * True to allow downloading remote resources referenced by source files.
+   */
+  _allowDownload: false,
+
+  /**
+   * True if the browser was offline when the conversion started.
+   */
+  _wasOffline: false,
+
+  /**
    * Create the elements to be displayed.
    */
   onLoadDialog: function() {
@@ -205,6 +215,7 @@ var ConvertDialog = {
       document.getElementById("chkFormatSourceComplete").checked = true;
       document.getElementById("chkFormatSourceMhtml").checked = true;
       document.getElementById("chkFormatSourceMaff").checked = true;
+      document.getElementById("chkAllowDownload").checked = false;
       this.checkSourceControls();
 
       document.getElementById("rgrFoldersDest").value = "original"; 
@@ -267,6 +278,9 @@ var ConvertDialog = {
       }
     }
     var formatIsValid = !!this._finder.sourceFormats.length;
+
+    // Copy the other data from the controls to this object.
+    this._allowDownload = document.getElementById("chkAllowDownload").checked;
 
     // Show the appropriate controls based on the validation results.
     document.getElementById("lblFoldersSourceInvalid").hidden = pageIsValid;
@@ -469,6 +483,8 @@ var ConvertDialog = {
     if (conversionEnumerator) {
       this._conversionEnumerator = null;
       conversionEnumerator.stop();
+      // Restore the offline mode to the previous state.
+      Services.io.offline = this._wasOffline;
     }
   },
 
@@ -508,6 +524,9 @@ var ConvertDialog = {
       }
     }
 
+    // Remember the current offline state, so we can restore it later.
+    this._wasOffline = Services.io.offline;
+
     // Prepare the asynchronous enumerator to convert the candidates.
     var self = this;
     this._conversionEnumerator = new AsyncEnumerator(
@@ -527,6 +546,8 @@ var ConvertDialog = {
         // Stop the enumeration temporarily and start the conversion process.
         self._conversionEnumerator.pause();
         self._currentCandidate = candidate;
+        // Update the offline state before processing each candidate.
+        Services.io.offline = !self._allowDownload;
         candidate.convert(function(aSuccess) {
           // Indicate that the candidate conversion finished.
           self._currentCandidate = null;
@@ -554,6 +575,8 @@ var ConvertDialog = {
         }
         // Update the controls based on the current state.
         self.checkCandidatesControls();
+        // Restore the offline mode to the previous state.
+        Services.io.offline = self._wasOffline;
       }
     );
 
