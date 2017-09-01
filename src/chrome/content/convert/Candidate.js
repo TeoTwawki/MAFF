@@ -330,10 +330,12 @@ Candidate.prototype = {
     yield promiseLoadNetworkStop;
     yield promiseLoad;
 
-    // We must wait for all events to be processed before continuing,
+    // Wait for a short timeout to ensure the page is loaded.
+    yield new Promise(resolve => this.conversionWindow.setTimeout(resolve, 99));
+
+    // We must also wait for all events to be processed before continuing,
     // otherwise the conversion of some pages might fail because some elements
-    // in the page are not available for saving, or the current load can
-    // interfere with subsequent loads in the same frame.
+    // in the page are not available for saving.
     var timeLimit = Date.now() + 5000;
     while (this._mainThread.hasPendingEvents()) {
       yield new Promise(resolve => this._mainThread.dispatch(() => resolve(),
