@@ -70,6 +70,10 @@
                   name=    "extensions.maf.interface.info.bar"
                   type=    "bool"
                   />
+      <preference id=      "prefSaveEnabled"
+                  name=    "extensions.maf.save.enabled"
+                  type=    "bool"
+                  />
     </preferences>
     <vbox id="boxAssociate">
     <label id=   "lblAssociate"
@@ -86,16 +90,24 @@
     <checkbox preference="prefInterfaceInfoBar" 
               label=     "&infobar.label;"
               />
-    <vbox id="boxConvertSavedPages">
     <spacer height="10" />
-    <label value=  "&action.convertsavedpages.label;"
-           onclick="PrefsDialog.onActionConvertSavedPagesClick();"
-           class=  "text-link header"
-           />
-    <description style="width: 30em;">
-      &action.convertsavedpages.description;
+    <vbox id="boxLegacy">
+    <description id="descLegacy"
+                 class="header"
+                 style="width: 31em;"
+                 >
+      &legacy.description;
+    </description>
+    <checkbox preference="prefSaveEnabled" 
+              label=     "&save.enabled.label;"
+              />
+    <description style="width: 31em;">
+      &convert.description;
     </description>
     </vbox>
+    <button label=    "&convert.label;"
+            oncommand="PrefsDialog.onActionConvertSavedPagesClick();"
+            />
   </prefpane>
 
   <!--

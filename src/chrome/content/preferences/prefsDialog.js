@@ -48,13 +48,20 @@ var PrefsDialog = {
    * Initializes the controls when the dialog is displayed.
    */
   onLoadDialog: function() {
+    // Show the legacy add-on warning on Firefox 55 and above.
+    if (Services.appinfo.ID == "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}" &&
+        Services.vc.compare(Services.appinfo.version, "55") > 0) {
+      Interface.applyBranding(document.getElementById("descLegacy"));
+    } else {
+      document.getElementById("boxLegacy").hidden = true;
+    }
     // Determines if we should handle file associations.
     if (this._isOnWindows()) {
       Interface.applyBranding(document.getElementById("lblAssociate"));
     } else {
       document.getElementById("boxAssociate").hidden = true;
     }
-    this.sizeToContent();
+    Promise.resolve().then(() => this.sizeToContent());
   },
 
   /**
