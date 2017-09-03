@@ -4,9 +4,6 @@
 <!ENTITY associate.grouplabel "Open with $brandShortName:">
 <!ENTITY associate.maff.label "MAFF (.maff file extension)">
 <!ENTITY associate.mhtml.label "MHTML (.mht and .mhtml file extensions)">
-<!ENTITY save.format.grouplabel "Default format when saving in a single file:">
-<!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
-<!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
 <!ENTITY info.grouplabel "When an archived page is opened:">
 <!ENTITY info.bar.label "Display an information bar">
 <!ENTITY action.convertsavedpages.label "Convert Saved Pages">
