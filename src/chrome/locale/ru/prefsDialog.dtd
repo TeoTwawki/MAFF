@@ -1,29 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Настройки Mozilla Archive Format">
-<!-- Main pane -->
-<!ENTITY pane.main.label "Основные">
-<!ENTITY save.format.grouplabel "Формат по умолчанию для сохранения в единственном файле:">
-<!ENTITY save.format.maff.label "MAFF (основан на ZIP, поддерживает видео и аудио)">
-<!ENTITY save.format.maff.accesskey "M">
-<!ENTITY save.format.mhtml.full.label "MHTML (можно открыть в некоторых других браузерах)">
-<!ENTITY save.format.mhtml.accesskey "H">
-<!ENTITY save.method.grouplabel "При сохранении веб-страницы полностью:">
-<!ENTITY save.method.snapshot.label "Создать точное отображение страницы">
-<!ENTITY save.method.snapshot.accesskey "т">
-<!ENTITY save.method.standard.label "Использовать стандартную систему сохранения браузера">
-<!ENTITY save.method.standard.accesskey "с">
-<!ENTITY info.grouplabel "Когда открыта архивная страница:">
-<!ENTITY info.icon.label "Показать значок в адресной строке">
-<!ENTITY info.icon.accesskey "а">
-<!ENTITY info.bar.label "Показать информационную панель">
-<!ENTITY info.bar.accesskey "п">
-<!-- Interface pane -->
-<!ENTITY pane.actions.label "Действия">
-<!ENTITY action.convertsavedpages.label "Преобразовать сохраненные страницы">
-<!ENTITY action.convertsavedpages.description "Мастер преобразования сохраненных страниц поможет вам пересохранить имеющиеся архивы в другом файловом формате.">
-<!ENTITY action.showwelcomepage.label "Показать страницу приветствия">
-<!ENTITY action.showwelcomepage.description "Страница приветствия показывается после первой установки дополнения и содержит обзор его функций.">
-<!ENTITY action.showwelcomepageassociate.label "Обновить файловые ассоциации">
-<!ENTITY action.showwelcomepageassociate.description "На странице приветствия можно выбрать, какие типы веб-архивов будут открываться с помощью $brandShortName, и восстановить файловые ассоциации, если они были изменены другим приложением.">
-<!ENTITY action.visitwebsite.label "Посетить домашнюю страницу MAF">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format тесно взаимодействует с $brandShortName и вносит, помимо наиболее заметных, целый ряд других улучшений. Полный список функций, а также документацию по файловому формату MAFF и дополнительным настройкам вы можете найти на официальном веб-сайте (на английском).">
+<!ENTITY associate.grouplabel "Open with $brandShortName:">
+<!ENTITY associate.maff.label "MAFF (.maff file extension)">
+<!ENTITY associate.mhtml.label "MHTML (.mht and .mhtml file extensions)">
+<!ENTITY infobar.label "Show the original location and save date of archived pages">
+<!ENTITY legacy.description "$brandShortName add-on technology is modernizing. Mozilla Archive Format is a legacy add-on that will not be compatible with future versions of the browser.">
+<!ENTITY save.enabled.label "Enable the &quot;Save Page In Archive&quot; functionality anyways">
+<!ENTITY convert.description "If you saved web pages in an archive, you can convert your files to a more compatible format to ensure they can be opened in the future.">
+<!ENTITY convert.label "Convert Saved Pages">

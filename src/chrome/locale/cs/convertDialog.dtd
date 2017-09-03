@@ -3,52 +3,39 @@
 <!-- *** General window controls *** -->
 <!ENTITY window.title "Průvodce konverzí uložených stránek">
 <!ENTITY browsebutton.label "Hledat...">
-<!ENTITY continue.label "Pokračujte tlačítkem $1.">
 <!-- *** Introduction *** -->
-<!ENTITY introduction.pagelabel "Vítejte v průvodci pro konverzi uložených stránek">
-<!ENTITY introduction.para1.description "Průvodce vás provede konverzí vašich dříve uložených webových stránek do jiného formátu.">
-<!ENTITY introduction.para2.description "Tento postup je vhodný pro konverzi více stránek najednou. Pokud chcete převést jednotlivé stránky, stačí je otevřít v prohlížeči a uložit je v jiném formátu.">
-<!ENTITY introduction.visitwebsite.description "Přestože proces převodu pracuje ve většině případů hladce, někdy výsledek není zcela věrný originálu v závislosti na zvoleném formátu souborů a způsobu ukládání. Navíc při převodu vícestránkového archívu do jednostránkového formátu se je ochráněna pouze na první stránka. Doporučujeme, abyste si ponechali kopii původních souborů i po úspěšné konverzi.">
-<!ENTITY introduction.visitwebsite.label "Pro více podrobností čtěte dokumentaci online.">
-<!ENTITY introduction.continue.label "Pokračujte tlačítkem $1.">
+<!ENTITY oldsavedpages.folder.name "Old Saved Pages">
 <!-- *** File format selection *** -->
-<!ENTITY formats.pagelabel "Vstupní a výstupní formáty">
-<!ENTITY formats.source.grouplabel "Konvertovat z:">
-<!ENTITY formats.source.complete.label "Úplné webové stránky (se souvisejícími složkami pro data)">
-<!ENTITY formats.source.complete.accesskey "p">
-<!ENTITY formats.source.plain.label "Všechny webové stránky (se souvisejícími složkami pro data nebo bez nich)">
-<!ENTITY formats.source.plain.accesskey "V">
-<!ENTITY formats.source.mhtml.label "Archivy MHTML">
-<!ENTITY formats.source.mhtml.accesskey "M">
-<!ENTITY formats.source.maff.label "Archivy MAFF">
-<!ENTITY formats.source.maff.accesskey "F">
-<!ENTITY formats.dest.grouplabel "konvertovat na:">
-<!ENTITY formats.dest.maff.label "Archivy MAFF">
-<!ENTITY formats.dest.maff.accesskey "A">
-<!ENTITY formats.dest.mhtml.label "Archivy MHTML">
-<!ENTITY formats.dest.mhtml.accesskey "L">
-<!ENTITY formats.dest.complete.label "Úplné webové stránky (se souvisejícími složkami pro data v případě potřeby)">
-<!ENTITY formats.dest.complete.accesskey "n">
-<!ENTITY formats.invalid.label "Zvolte 2 rozdílné souborové formáty prosím.">
+<!ENTITY introduction.pagelabel "Vítejte v průvodci pro konverzi uložených stránek">
+<!ENTITY introduction.mode.compatible.label "Search for archived pages and ensure they can be opened in the future">
+<!ENTITY introduction.mode.compatible.description "This will search the &quot;$1&quot; folder for pages that were saved in an archive, convert them to use separate folders for data files, and move the original archives to the &quot;$2&quot; folder on your desktop.">
+<!ENTITY introduction.mode.choose.label "Choose which file formats and folders to use">
+<!ENTITY introduction.description "You should always keep a copy of the original files because in some cases the conversion process may not replicate them accurately.">
 <!-- *** Source folder selection *** -->
-<!ENTITY folders.source.pagelabel "Složka se soubory ke konverzi">
-<!ENTITY folders.source.label "Vyhledat soubory ke konverzi v této složce:">
-<!ENTITY folders.source.accesskey "V">
-<!ENTITY folders.source.subfolders.label "Zahrnout i podsložky">
-<!ENTITY folders.source.subfolders.accesskey "Z">
-<!ENTITY folders.source.invalid.label "Vyberte existující složku se soubory ke konverzi">
+<!ENTITY format.pagelabel "Destination File Format">
+<!ENTITY format.complete.label "HTML with support folder for data files">
+<!ENTITY format.complete.description "Provides the best compatibility as it can be opened with any browser without additional software, but the page name cannot be changed afterwards.">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "Compatible with Microsoft Internet Explorer and Google Chrome, but not suitable for video and audio, and incompatible with future versions of $brandShortName.">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "Based on the ZIP container, uses less disk space but cannot be opened with future versions of $brandShortName without extracting the archive manually.">
 <!-- *** Destination folder selection *** -->
+<!ENTITY source.pagelabel "Source Folder and File Formats">
+<!ENTITY folders.source.label "Vyhledat soubory ke konverzi v této složce:">
+<!ENTITY folders.source.subfolders.label "Zahrnout i podsložky">
+<!ENTITY folders.source.invalid.label "Vyberte existující složku se soubory ke konverzi">
+<!ENTITY format.source.label "Search for source files in these formats:">
+<!ENTITY format.source.invalid.label "Please select at least one format to search for.">
+<!ENTITY allowdownload.label "Download missing parts of the page when necessary">
+<!ENTITY allowdownload.description "This may slow down the conversion, but can repair saved pages that are incomplete and can only be viewed correctly when connected to the Internet.">
+<!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "Cílové složky">
 <!ENTITY folders.dest.grouplabel "Konvertované soubory uložit:">
 <!ENTITY folders.dest.original.label "Do stejné složky jako originály">
-<!ENTITY folders.dest.original.accesskey "S">
 <!ENTITY folders.dest.folder.label "Do této složky (zachová relativní cesty):">
-<!ENTITY folders.dest.folder.accesskey "T">
 <!ENTITY folders.bin.grouplabel "Po úspěšné konverzi:">
 <!ENTITY folders.bin.original.label "Ponechat původní soubory na místě">
-<!ENTITY folders.bin.original.accesskey "P">
 <!ENTITY folders.bin.folder.label "Přemístit původní soubory do složky (zachová relativní cesty):">
-<!ENTITY folders.bin.folder.accesskey "m">
 <!ENTITY folders.dest.invalid.label "Určete složku pro dokončení.">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY candidates.pagelabel "Konverze">
@@ -63,7 +50,8 @@
 <!ENTITY candidates.searchingcounts.label "Celkem $1, již konvertováno $2, vybrány $3">
 <!ENTITY candidates.convertingcounts.label "Celkem $1, již konvertováno $2, vybrány $3, úspěšně konvertovány $4, selhalo $5">
 <!ENTITY candidates.searching.label "Vyhledání zdrojových souborů...">
-<!ENTITY candidates.none.label "Nenalezeny soubory ke konverzi. Parametry pro vyhledávání změníte tlačítkem $1.">
+<!ENTITY candidates.none.description "The specified folder has been searched for files to be converted, and none were found. This may indicate that you don't have any files that need to be converted, or that all the files have been already converted. You can click $1 to close the window.">
+<!ENTITY candidates.obstructed.label "All the files have been already converted previously.">
 <!ENTITY candidates.invalid.label "Vyberte aspoň 1 soubor ke konverzi prosím.">
 <!ENTITY candidates.convert.label "Pro konverzi klikněte na tlačítko Konvertovat.">
 <!ENTITY candidates.converting.label "Soubory jsou konvertovány...">
