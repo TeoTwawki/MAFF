@@ -11,7 +11,7 @@ pref("extensions.maf.associate.maff", true);
 pref("extensions.maf.associate.mhtml", false);
 pref("extensions.maf.interface.info.bar", true);
 pref("extensions.maf.other.displaywelcomepage", true);
-pref("extensions.maf.other.displayconvertpage", true);
+pref("extensions.maf.other.displayconvertpage", false);
 pref("extensions.maf.other.restartingasworkaround", false);
 pref("extensions.maf.save.enabled", true);
 pref("extensions.maf.save.snapshot", true);
