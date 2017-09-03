@@ -46,6 +46,12 @@ var MozillaArchiveFormat = {};
 Components.utils.import("chrome://maf/content/MozillaArchiveFormat.jsm",
                         MozillaArchiveFormat);
 
+// Import the modules for compatibility with Firefox 56.
+Components.utils.import("resource://gre/modules/Promise.jsm",
+                        MozillaArchiveFormat);
+Components.utils.import("resource://gre/modules/Task.jsm",
+                        MozillaArchiveFormat);
+
 /**
  * This function is overridden for compatibility with Firefox 42.
  */
@@ -98,7 +104,7 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     saveBrowsers = [mainBrowser];
   }
 
-  return Task.spawn(function*() {
+  return MozillaArchiveFormat.Task.spawn(function*() {
     let downloadLastDir = new DownloadLastDir(window);
     let prefBranch = Services.prefs.getBranch("browser.download.");
     let useDownloadDir = prefBranch.getBoolPref("useDownloadDir");
@@ -192,7 +198,7 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
 
     // We must prompt for the file name explicitly.
     // If we must prompt because we were asked to...
-    let deferred = window.Promise.defer();
+    let deferred = MozillaArchiveFormat.Promise.defer();
     if (useDownloadDir) {
       // Keep async behavior in both branches
       Services.tm.mainThread.dispatch(function() {
@@ -292,7 +298,7 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
     do {
       var shouldShowFilePickerAgain = false;
 
-      let deferComplete = window.Promise.defer();
+      let deferComplete = MozillaArchiveFormat.Promise.defer();
       fp.open(function(aResult) {
         deferComplete.resolve(aResult);
       });
