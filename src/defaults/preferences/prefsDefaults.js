@@ -13,4 +13,5 @@ pref("extensions.maf.interface.info.bar", true);
 pref("extensions.maf.other.displaywelcomepage", true);
 pref("extensions.maf.other.displayconvertpage", true);
 pref("extensions.maf.other.restartingasworkaround", false);
-pref("extensions.maf.save.method", "snapshot");
+pref("extensions.maf.save.enabled", true);
+pref("extensions.maf.save.snapshot", true);

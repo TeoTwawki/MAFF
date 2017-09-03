@@ -141,8 +141,14 @@ var Prefs = {
    * Returns true if the commands to save web archives should be available.
    */
   get saveEnabled() {
-    return this.prefBranchForMaf.getCharPref("save.method") == "snapshot" &&
-           !Services.appinfo.browserTabsRemoteAutostart;
+    return this.prefBranchForMaf.getBoolPref("save.enabled");
+  },
+
+  /**
+   * Returns true if all pages should be saved using the ExactPersist component.
+   */
+  get saveSnapshot() {
+    return this.prefBranchForMaf.getBoolPref("save.snapshot");
   },
 
   /** Enumeration for saveMaffCompression */

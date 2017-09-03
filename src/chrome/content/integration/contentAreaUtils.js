@@ -134,7 +134,7 @@ function mafPromiseTargetFile(aFpP, /* optional */ aSkipPrompt, /* optional */ a
       let persistObject = null;
       if (saveBehavior.getPersistObject) {
         persistObject = saveBehavior.getPersistObject(saveBrowsers);
-      } else if (MozillaArchiveFormat.Prefs.saveEnabled && document &&
+      } else if (MozillaArchiveFormat.Prefs.saveSnapshot && document &&
                  saveBehavior == MozillaArchiveFormat.CompleteSaveBehavior &&
                  saveBehavior.isValidForSaveMode(aFpP.saveMode) &&
                  (document.contentType == "text/html" ||

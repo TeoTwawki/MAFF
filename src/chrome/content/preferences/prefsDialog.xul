@@ -66,11 +66,6 @@
                   name=    "extensions.maf.associate.mhtml"
                   type=    "bool"
                   />
-      <preference id=      "prefSaveMethod"
-                  name=    "extensions.maf.save.method"
-                  type=    "string"
-                  onchange="PrefsDialog.onSaveMethodChange();"
-                  />
       <preference id=      "prefSaveFormat"
                   name=    "extensions.maf.current.save.filterindex"
                   type=    "int"
@@ -93,21 +88,6 @@
               />
     <spacer height="10" />
     </vbox>
-    <label control="rgrSaveMethods"
-           value=  "&save.method.grouplabel;"
-           class=  "header"
-           />
-    <radiogroup id=        "rgrSaveMethods"
-                preference="prefSaveMethod"
-                >
-      <radio value="snapshot"
-             label="&save.method.snapshot.label;"
-             />
-      <radio value="standard"
-             label="&save.method.standard.label;"
-             />
-    </radiogroup>
-    <spacer height="10" />
     <label control="rgrSaveFormats"
            value=  "&save.format.grouplabel;"
            class=  "header"

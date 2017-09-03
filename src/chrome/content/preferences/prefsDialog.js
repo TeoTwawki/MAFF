@@ -54,8 +54,7 @@ var PrefsDialog = {
     } else {
       document.getElementById("boxAssociate").hidden = true;
     }
-    // Updates the status of the dialog controls.
-    this.onSaveMethodChange();
+    this.sizeToContent();
   },
 
   /**
@@ -97,17 +96,6 @@ var PrefsDialog = {
   },
 
   /* --- Interactive dialog functions and events --- */
-
-  /**
-   * Enables other dialog controls depending on the selected save method.
-   */
-  onSaveMethodChange: function() {
-    var enabled = document.getElementById("prefSaveMethod").value == "snapshot";
-    document.getElementById("radioSaveFormatMaff").disabled = !enabled;
-    document.getElementById("radioSaveFormatMhtml").disabled = !enabled;
-    document.getElementById("boxConvertSavedPages").hidden = !enabled;
-    this.sizeToContent();
-  },
 
   /**
    * Displays the "Convert saved pages" window.

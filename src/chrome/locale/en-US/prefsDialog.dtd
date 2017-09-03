@@ -7,9 +7,6 @@
 <!ENTITY save.format.grouplabel "Default format when saving in a single file:">
 <!ENTITY save.format.maff.label "MAFF (based on ZIP, supports video and audio)">
 <!ENTITY save.format.mhtml.full.label "MHTML (can be opened directly by some other browsers)">
-<!ENTITY save.method.grouplabel "When saving a complete page:">
-<!ENTITY save.method.snapshot.label "Take an exact snapshot">
-<!ENTITY save.method.standard.label "Use browser's standard save system">
 <!ENTITY info.grouplabel "When an archived page is opened:">
 <!ENTITY info.bar.label "Display an information bar">
 <!ENTITY action.convertsavedpages.label "Convert Saved Pages">
