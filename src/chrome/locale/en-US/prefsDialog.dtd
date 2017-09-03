@@ -4,7 +4,6 @@
 <!ENTITY associate.grouplabel "Open with $brandShortName:">
 <!ENTITY associate.maff.label "MAFF (.maff file extension)">
 <!ENTITY associate.mhtml.label "MHTML (.mht and .mhtml file extensions)">
-<!ENTITY info.grouplabel "When an archived page is opened:">
-<!ENTITY info.bar.label "Display an information bar">
+<!ENTITY infobar.label "Show the original location and save date of archived pages">
 <!ENTITY action.convertsavedpages.label "Convert Saved Pages">
 <!ENTITY action.convertsavedpages.description "The Saved Pages Conversion Wizard will guide you through the conversion of your previously saved web pages to a different file format.">

@@ -82,14 +82,9 @@
     <checkbox preference="prefAssociateMHTML" 
               label=     "&associate.mhtml.label;"
               />
-    <spacer height="10" />
     </vbox>
-    <label control="rgrInterfaceInfo"
-           value=  "&info.grouplabel;"
-           class=  "header"
-           />
     <checkbox preference="prefInterfaceInfoBar" 
-              label=     "&info.bar.label;"
+              label=     "&infobar.label;"
               />
     <vbox id="boxConvertSavedPages">
     <spacer height="10" />
