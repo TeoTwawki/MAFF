@@ -148,7 +148,8 @@ var MafCommandsOverlay = {
 
       // Determine which class of MAF menu item we are handling.
       var command = element.getAttribute("command");
-      if (command.slice(0, "mafCmd".length) == "mafCmd") {
+      if (command.startsWith("mafCmd") &&
+          command != "mafCmdConvertSavedPages") {
 
         // If the element has a different label based on whether the page will
         // be saved automatically, change the label accordingly.
@@ -167,10 +168,7 @@ var MafCommandsOverlay = {
     Array.forEach(aEvent.target.getElementsByTagNameNS(
      aEvent.target.namespaceURI, "menuseparator"), function(element) {
 
-      // Filter out unrelated separators.
-      if (["mafMenuSaveSeparator_fileMenu",
-       "mafMenuConvertSeparator_fileMenu",
-       "mafMenuSaveSeparator_tabsContextMenu"].indexOf(element.id) >= 0) {
+      if (element.id == "mafMenuSaveSeparator_tabsContextMenu") {
         // Set visibility assuming that at least one MAF item is visible in the
         // menus that actually have a separator, if the user preference for
         // showing items in the menu is enabled.
