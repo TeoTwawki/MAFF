@@ -1,6 +1,2 @@
-<!ENTITY archiveinfo.status.normal.label "Ця сторінка не знаходиться в архіву.">
-<!ENTITY archiveinfo.status.archived.label "Це заархівована сторінка.">
 <!ENTITY archiveinfo.maforiginalurl.label "Збережені від:">
-<!ENTITY archiveinfo.maforiginalurl.missing.label "(не доступно)">
 <!ENTITY archiveinfo.mafdatearchived.label "Збережені на:">
-<!ENTITY archiveinfo.mafdatearchived.missing.label "(не доступно)">

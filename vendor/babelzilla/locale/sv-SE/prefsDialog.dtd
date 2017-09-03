@@ -1,14 +1,2 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Inställningar för Mozilla Archive Format">
-<!-- Main pane -->
-<!ENTITY pane.main.label "Allmänt">
-<!-- Interface pane -->
-<!ENTITY pane.actions.label "Åtgärder">
-<!ENTITY action.convertsavedpages.label "Konvertera sparade sidor">
-<!ENTITY action.convertsavedpages.description "&quot;Konverteringsguiden för sparade sidor&quot; guidar dig igenom konverteringen av dina tidigare sparade webbsidor till ett annat filformat.">
-<!ENTITY action.showwelcomepage.label "Visa välkomstsidan">
-<!ENTITY action.showwelcomepage.description "Välkomstsidan visas den första gången som det här tillägget installeras och ger en överblick över dess funktioner. Att visa sidan igen är framför allt användbart för översättare som vill kontrollera kvaliteten på sitt arbete.">
-<!ENTITY action.showwelcomepageassociate.label "Uppdatera filassociationer">
-<!ENTITY action.showwelcomepageassociate.description "Från välkomstsidan kan du välja vilka webbarkivfiltyper som du vill öppna med $brandShortName, och uppdatera filassociationerna ifall de har ändrats av ett annat program.">
-<!ENTITY action.visitwebsite.label "Besök webbplatsen">
-<!ENTITY action.visitwebsite.description "Mozilla Archive Format integreras sömlöst med $brandShortName och tillhandahåller ett flertal förbättringar utöver de mest synliga funktionerna. För en genomgripande beskrivning av funktionerna, information om filformatet MAFF och dokumentation över avancerade konfigurationsalternativ, kan du gå till den officiella webbplatsen.">

@@ -1,6 +1,2 @@
-<!ENTITY archiveinfo.status.normal.label "Această pagină nu este conținută în arhivă.">
-<!ENTITY archiveinfo.status.archived.label "Această pagină este arhivată.">
 <!ENTITY archiveinfo.maforiginalurl.label "Adresă originală:">
-<!ENTITY archiveinfo.maforiginalurl.missing.label "(indisponibilă)">
 <!ENTITY archiveinfo.mafdatearchived.label "Moment arhivare:">
-<!ENTITY archiveinfo.mafdatearchived.missing.label "(indisponibil)">

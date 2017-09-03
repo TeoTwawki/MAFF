@@ -1,6 +1,2 @@
-<!ENTITY archiveinfo.status.normal.label "Այս էջում չկան արխիվներ։">
-<!ENTITY archiveinfo.status.archived.label "Սա արխիվացված էջ է։">
 <!ENTITY archiveinfo.maforiginalurl.label "Պահպանվել է՝">
-<!ENTITY archiveinfo.maforiginalurl.missing.label "(հասանելի չէ)">
 <!ENTITY archiveinfo.mafdatearchived.label "Պահպանել՝">
-<!ENTITY archiveinfo.mafdatearchived.missing.label "(հասանելի չէ)">
