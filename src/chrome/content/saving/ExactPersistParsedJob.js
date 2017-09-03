@@ -885,7 +885,8 @@ ExactPersistParsedJob.prototype = {
     }
 
     // Remove the attributes that may prevent URLs to be resolved correctly.
-    if ((aNode instanceof Ci.nsIDOMHTMLAppletElement) ||
+    if ((Ci.nsIDOMHTMLAppletElement &&
+     (aNode instanceof Ci.nsIDOMHTMLAppletElement)) ||
      (aNode instanceof Ci.nsIDOMHTMLObjectElement)) {
       // Remove the "codebase" attribute on applets and objects.
       newNode.removeAttribute("codebase");
