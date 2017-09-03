@@ -4,8 +4,36 @@
   <h3>What's new in version 5.0?</h3>
   <p>MAF 5.0 has the following user-visible improvements over MAF 4.1.3:</p>
   <ul>
-    <li>Improved compatibility of saved MHTML files with recent versions of
-     Internet Explorer.</li>
+    <li><a href="documentation.html">This add-on will not work in future
+     versions of Firefox.</a> Several changes have been made to help the
+     transition to alternative solutions for archiving web pages locally:
+      <ul>
+        <li>On the latest version of Firefox, the options dialog now warns that
+         the add-on will not work in the future, and allows the <b>Save In
+         Archive</b> commands to be disabled while keeping the ability to open
+         existing archives.</li>
+        <li>On Windows, file associations for MHTML are not created by default
+         anymore, while MAFF files are still associated with the browser. The
+         associations are now created for the current user only, even if the
+         browser is executed with administration privileges.</li>
+        <li>The Saved Pages Conversion Wizard has been redesigned so that by
+         default it will search the <b>Downloads</b> folder for web archives and
+         convert them to complete web pages with separate folders for data
+         files.</li>
+        <li>The reliability and speed of the conversion has been improved, and
+         the browser will now work offline during the process by default.</li>
+        <li>Multi-page MAFF archives can now be converted to individual MHTML
+         archives or to complete web pages with separate folders for data
+         files.</li>
+        <li>Saving a complete web page now always takes an exact snapshot even
+         if the <b>Save In Archive</b> commands are disabled.</li>
+      </ul>
+    </li>
+    <li>The compatibility of saved MHTML files with recent versions of Internet
+     Explorer has been improved.</li>
+    <li>The welcome page is not displayed at startup anymore. Future versions of
+     the add-on will display a new welcome page with information on compatiblity
+     and file format conversion.</li>
   </ul>
   <h2>Changelog for version 4.1</h2>
   <h3>Changes from 4.1.2 to 4.1.3</h3>
