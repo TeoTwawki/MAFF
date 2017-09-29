@@ -4,13 +4,30 @@
 <!ENTITY window.title "保存ページ変換ウィザード">
 <!ENTITY browsebutton.label "選択...">
 <!-- *** Introduction *** -->
+<!ENTITY oldsavedpages.folder.name "古い保存ページ">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "保存ページ変換ウィザードへようこそ">
+<!ENTITY introduction.mode.compatible.label "アーカイブしたページを検索して将来も開けるように変換する">
+<!ENTITY introduction.mode.compatible.description "&quot;$1&quot; フォルダにあるページを保存したアーカイブを検索し、データファイルに独立したフォルダを使用する形式に変換します。元のアーカイブファイルはデスクトップの &quot;$2&quot; フォルダに移動されます。">
+<!ENTITY introduction.mode.choose.label "ファイル形式とフォルダを選択する">
+<!ENTITY introduction.description "変換処理では正確にオリジナルを再現できない場合があるため、元のファイルは残しておくべきです。">
 <!-- *** Source folder selection *** -->
+<!ENTITY format.pagelabel "変換先のファイル形式">
+<!ENTITY format.complete.label "HTML とデータファイルのための補助フォルダ">
+<!ENTITY format.complete.description "どんなブラウザでも追加のソフトウェアなしで開けるため最大限の互換性がありますが、名前を後から変更できません。">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "Microsoft Internet Explorer や Google Chrome と互換性がありますが、動画や音声には適しておらず、$brandShortName の将来のバージョンと互換性がありません。">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "ZIP コンテナベースでディスク容量を節約できますが、$brandShortName の将来のバージョンで開くためにはアーカイブを手動で展開する必要があります。">
 <!-- *** Destination folder selection *** -->
+<!ENTITY source.pagelabel "変換元フォルダとファイル形式">
 <!ENTITY folders.source.label "変換元ファイルを探すフォルダ:">
 <!ENTITY folders.source.subfolders.label "下層フォルダを含む">
 <!ENTITY folders.source.invalid.label "存在するフォルダを選択してください。">
+<!ENTITY format.source.label "次のファイル形式のファイルを検索する:">
+<!ENTITY format.source.invalid.label "少なくとも 1 つの検索するファイル形式を選択してください。">
+<!ENTITY allowdownload.label "必要な時にページの抜けている部分をダウンロードする">
+<!ENTITY allowdownload.description "変換処理が遅くなる可能性がありますが、インターネットに接続しているときにのみ保存したページの不完全な部分を修復して表示できます。">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "変換先フォルダ">
 <!ENTITY folders.dest.grouplabel "変換したファイルの保存場所:">
@@ -32,6 +49,8 @@
 <!ENTITY candidates.searchingcounts.label "合計 $1 項目、$2 項目が変換済み、$3 項目を選択中">
 <!ENTITY candidates.convertingcounts.label "合計 $1 項目、$2 項目が変換済み、$3 項目を選択中、$4 項目が成功、$5 項目が失敗">
 <!ENTITY candidates.searching.label "元ファイルを検索中...">
+<!ENTITY candidates.none.description "指定されたフォルダ内の変換するファイルを検索しましたが、見つかりませんでした。変換すべきファイルが存在しないか、すべてのファイルが変換済みの可能性があります。$1 をクリックするとウインドウを閉じます。">
+<!ENTITY candidates.obstructed.label "すべてのファイルは以前にすでに変換されています。">
 <!ENTITY candidates.invalid.label "変換するファイルを選択してください。">
 <!ENTITY candidates.convert.label "変換 をクリックしてファイルを変換します。">
 <!ENTITY candidates.converting.label "Converting your files...">

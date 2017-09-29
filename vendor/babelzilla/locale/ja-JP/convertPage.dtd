@@ -1,0 +1,7 @@
+<!ENTITY page.title "重要">
+<!ENTITY convert.label "$brandShortName の将来のバージョンで閲覧できるように保存したページを変換してください。">
+<!ENTITY convert.description "&quot;ページをアーカイブに保存&quot; 機能を使ってウェブページを単一のファイルに保存したならば、この手順に従ってファイルをより互換性のある形式に変換する必要があります。">
+<!ENTITY convert.reason.description "これは $brandShortName のアドオン技術が近代化しており、古い技術を使った Mozilla Archive Format や似た機能のアドオンが動作しなくなるためです。">
+<!ENTITY convert.button.label "この手続きを今開始する">
+<!ENTITY convert.later.description "この手続きは後で Mozilla Archive Format アドオンのオプションから開始できます。">
+<!ENTITY convert.link.label "詳しい情報や他のオプションについてはウェブサイトを参照してください。">

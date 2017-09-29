@@ -4,13 +4,30 @@
 <!ENTITY window.title "Mentett Oldalakat Konvertáló Varázsló">
 <!ENTITY browsebutton.label "Tallózás...">
 <!-- *** Introduction *** -->
+<!ENTITY oldsavedpages.folder.name "Régi mentett oldalak">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "Üdvözlünk a Mentett Oldalakat Konvertáló Varázslóban">
+<!ENTITY introduction.mode.compatible.label "Oldalarchívumok keresése és a későbbi megnyithatóság biztosítása">
+<!ENTITY introduction.mode.compatible.description "Ez megkeresi a(z) &quot;$1&quot; mappába mentett weboldalakat tartalmazó archívumokat, külön mappákat használva konvertálja az adatfájloknak, áthelyezve az eredeti archívumokat a számítógép &quot;$2&quot; mappájába.">
+<!ENTITY introduction.mode.choose.label "Válaszd ki a használni kívánt fájlformátumot és mappát">
+<!ENTITY introduction.description "Mindig érdemes megtartani egy másolatot az eredeti fájlból, mert néha a konverzió nem sikerül tökéletesre.">
 <!-- *** Source folder selection *** -->
+<!ENTITY format.pagelabel "Fájlformátum leírása">
+<!ENTITY format.complete.label "HTML segédmappába mentett adatfájlokkal">
+<!ENTITY format.complete.description "Biztosítja a legjobb kompatibilitást, hogy bármilyen böngészővel megnyitható további szoftver nélkül, de az oldal neve később nem módosítható.">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "Kompatibilis a Microsoft Internet Explorer-rel és a Google Chrome-mal, de nem kompatibilis a jövőbeli $brandShortName. verziókkal és nem ment video és audio tartalmat.">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "ZIP-en alapuló, kis tárhelyigényű, de nem nyitható meg a $brandShortName jövőbeli verzióiban kézi kitömörítés nélkül.">
 <!-- *** Destination folder selection *** -->
+<!ENTITY source.pagelabel "Forrásmappák és fájlformátumok">
 <!ENTITY folders.source.label "Ebben a mappában keresse a forrásfájlokat:">
 <!ENTITY folders.source.subfolders.label "Almappákban is">
 <!ENTITY folders.source.invalid.label "Kérlek válassz egy létező forrásmappát.">
+<!ENTITY format.source.label "Forrásfájlok keresése ebben a formátumban:">
+<!ENTITY format.source.invalid.label "Kérlek válassz legalább egy keresendő formátumot.">
+<!ENTITY allowdownload.label "Az oldal hiányzó részeinek letöltése, ha szükséges">
+<!ENTITY allowdownload.description "Ez lassíthatja a konverziót, de képes megjavítani a félbemaradt oldalmentéseket, amelyek nem teljesek, és csak akkor jelennek meg helyesen, ha csatlakozik az Internetre.">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "Célmappa kiválasztása">
 <!ENTITY folders.dest.grouplabel "Konvertált fájlok helye:">
@@ -32,6 +49,8 @@
 <!ENTITY candidates.searchingcounts.label "Összes elem $1, már konvertálva $2, kiválasztva $3.">
 <!ENTITY candidates.convertingcounts.label "Összes elem $1, már konvertálva $2, kiválasztva $3, sikeresen konvertálva $4, hibás $5.">
 <!ENTITY candidates.searching.label "Forrásfájlok keresése...">
+<!ENTITY candidates.none.description "A megadott mappában nem található konvertálandó fájl. Ez azt jelezheti, hogy nincs konvertálandó fájl, vagy az összes fájl már át van konvertálva. Az ablak bezárásához kattints a(z) $1 gombra.">
+<!ENTITY candidates.obstructed.label "Az összes fájl korábban már át lett konvertálva.">
 <!ENTITY candidates.invalid.label "Kérlek válassz ki legalább egy fájlt a konvertáláshoz.">
 <!ENTITY candidates.convert.label "Kattints a Konvertálás gombra a feladat elvégzéséhez.">
 <!ENTITY candidates.converting.label "Fájlok konvertálása...">

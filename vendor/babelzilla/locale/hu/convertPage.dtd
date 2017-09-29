@@ -1,0 +1,7 @@
+<!ENTITY page.title "Fontos">
+<!ENTITY convert.label "Alakítsd át a mentett oldalakat, hogy megnézhesd a $brandShortName. jövőbeli verzióban is.">
+<!ENTITY convert.description "Ha használod az &quot;Oldal mentése&quot; menüpontot, akkor a weboldal egyetlen fájlban tárolódik, a folyamat során konvertálódva egy sokkal jobb kompatibilitású formátumba.">
+<!ENTITY convert.reason.description "Erre ezért van szükség, mert a $brandShortName kiegészítőinek technológiája korszerűsödött és a hagyományos kiegészítők, mint az eddigi Mozilla Archive Format működését megszűntetik.">
+<!ENTITY convert.button.label "Induljon a folyamat most">
+<!ENTITY convert.later.description "Ezt a folyamatot később is elindíthatod a Mozilla Archive Format kiegészítőből is.">
+<!ENTITY convert.link.label "További információkért látogass el a honlapunkra.">

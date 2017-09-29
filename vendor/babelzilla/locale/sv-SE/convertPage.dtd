@@ -1,0 +1,7 @@
+<!ENTITY page.title "Viktig">
+<!ENTITY convert.label "Konvertera dina sparades sidor för att visa dem i framtida versioner av $brandShortName.">
+<!ENTITY convert.description "Om du använde &quot;Save Page In Archive&quot; för att lagra webbsidor i en enda fil, du kan nu följa denna procedur för att konvertera dina filer till ett mer kompatibelt format.">
+<!ENTITY convert.reason.description "Detta är nödvändigt eftersom tilläggstekniken för $brandShortName moderniseras och äldre tillägg som Mozilla Archive Format och andra som erbjuder liknande funktionalitet kommer att sluta fungera.">
+<!ENTITY convert.button.label "Starta denna guidade procedur nu">
+<!ENTITY convert.later.description "Du kan starta denna procedur senare från alternativen för tillägget Mozilla Archive Format.">
+<!ENTITY convert.link.label "Besök webbplatsen för mer information och andra alternativ.">

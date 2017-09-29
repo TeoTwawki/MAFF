@@ -1,2 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Mozilla Archív Formátum beállítások">
+<!ENTITY associate.grouplabel "Megnyitás $brandShortName-ban:">
+<!ENTITY associate.maff.label "MAFF (.maff fájlformátum)">
+<!ENTITY associate.mhtml.label "MHTML (.mht és .mhtml fájlformátum)">
+<!ENTITY infobar.label "Megjeleníti az eredeti weboldal címét és az archivált oldalak mentési időpontját">
+<!ENTITY legacy.description "a $brandShortName kiegészítőinek technológiája modernizálódik. A Mozilla Archive Formátum egy hagyományos kiegészítő, amely nem kompatibilis a böngésző jövőbeni verzióival.">
+<!ENTITY save.enabled.label "Engedélyezett az &quot;Oldal mentése archívumba&quot; is">
+<!ENTITY convert.description "Ha a weboldalak archívumba mentettek, akkor a fájlokat egy kompatibilis formátumba konvertálhatók annak érdekében, hogy a jövőben megnyithatók legyenek.">
+<!ENTITY convert.label "Mentett oldalak konvertálása">

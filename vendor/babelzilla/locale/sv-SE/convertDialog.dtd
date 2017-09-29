@@ -4,13 +4,30 @@
 <!ENTITY window.title "Konverteringsguiden för sparade sidor">
 <!ENTITY browsebutton.label "Bläddra...">
 <!-- *** Introduction *** -->
+<!ENTITY oldsavedpages.folder.name "Gamla sparade sidor">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "Välkommen till konverteringsguiden för sparade sidor">
+<!ENTITY introduction.mode.compatible.label "Sök efter arkiverade sidor och se till att de kan öppnas i framtiden">
+<!ENTITY introduction.mode.compatible.description "Detta kommer att söka i mappen &quot;$1&quot; efter sidor som sparades i ett arkiv, konvertera dem för att använda separata mappar för datafiler och flytta originalarkiven till mappen &quot;$2&quot; på ditt skrivbord.">
+<!ENTITY introduction.mode.choose.label "Välj vilka filformat och mappar att använda">
+<!ENTITY introduction.description "Du bör alltid ha en kopia av originalfiler eftersom konverteringsprocessen kanske inte i vissa fall kan replikera dem på rätt sätt.">
 <!-- *** Source folder selection *** -->
+<!ENTITY format.pagelabel "Destinationens filformat">
+<!ENTITY format.complete.label "HTML med stödmapp för datafiler">
+<!ENTITY format.complete.description "Tillhandahåller den bästa kompatibiliteten då den kan öppnas med alla webbläsare utan någon ytterligare programvara, men sidnamnet kan inte ändras efteråt.">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "Kompatibel med Microsoft Internet Explorer och Google Chrome, men inte lämplig för video och ljud, och inkompatibel med framtida versioner av $brandShortName.">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "Baserat på ZIP-behållaren, använder mindre diskutrymme men kan inte öppnas med framtida $brandShortName utan att extrahera arkivet manuellt.">
 <!-- *** Destination folder selection *** -->
+<!ENTITY source.pagelabel "Källmapp och filformat">
 <!ENTITY folders.source.label "Sök i den här mappen efter källfiler:">
 <!ENTITY folders.source.subfolders.label "Inkludera undermappar">
 <!ENTITY folders.source.invalid.label "Var vänlig välj en befintlig källmapp.">
+<!ENTITY format.source.label "Sök efter källfiler i dessa format:">
+<!ENTITY format.source.invalid.label "Välj minst ett format att söka efter.">
+<!ENTITY allowdownload.label "Ladda ned saknade delar av sidan vid behov">
+<!ENTITY allowdownload.description "Detta kan sakta ned konverteringen, men kan reparera sparade sidor som är inkompatibla och kan visas på rätt sätt när en Internetanslutning finns.">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "Målmappar">
 <!ENTITY folders.dest.grouplabel "Placera konverterade filer:">
@@ -32,6 +49,8 @@
 <!ENTITY candidates.searchingcounts.label "Totalt $1: $2 redan konverterade, $3 markerade">
 <!ENTITY candidates.convertingcounts.label "Totalt $1: $2 redan konverterade, $3 markerade, $4 felfritt konverterade, $5 misslyckade">
 <!ENTITY candidates.searching.label "Söker efter källfiler...">
+<!ENTITY candidates.none.description "Den angivna mappen har sökts genom efter filer att konvertera och ingen hittades. Detta kan betyda att du inte har några filer som behöver konverteras, eller att alla filer redan har konverterats. Du kan klicka på $1 för att stänga fönstret.">
+<!ENTITY candidates.obstructed.label "Alla filer har redan tidigare konverterats.">
 <!ENTITY candidates.invalid.label "Du måste markera åtminstone en fil för att kunna konvertera.">
 <!ENTITY candidates.convert.label "Klicka på Konvertera för att konvertera dina filer.">
 <!ENTITY candidates.converting.label "Konverterar dina filer...">

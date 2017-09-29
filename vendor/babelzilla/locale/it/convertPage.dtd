@@ -1,0 +1,7 @@
+<!ENTITY page.title "Importante">
+<!ENTITY convert.label "È necessario convertire le proprie pagine salvate per visualizzarle in versioni future di $brandShortName.">
+<!ENTITY convert.description "Se si è utilizzata la funzionalità &quot;Salva pagina in archivio&quot; per salvare le pagine web in un file unico, è necessario seguire questa procedura per convertire i propri file in un formato più compatibile.">
+<!ENTITY convert.reason.description "Questo è necessario perché la tecnologia dei componenti aggiuntivi di $brandShortName si sta rinnovando, e i componenti aggiuntivi obsoleti come Mozilla Archive Format e altri che forniscono funzionalità simili smetteranno di funzionare.">
+<!ENTITY convert.button.label "Inizia questa procedura guidata adesso">
+<!ENTITY convert.later.description "Si può iniziare questa procedura più tardi tramite le opzioni del componente aggiuntivo Mozilla Archive Format.">
+<!ENTITY convert.link.label "Visitare il sito web per ulteriori informazioni e altre opzioni.">

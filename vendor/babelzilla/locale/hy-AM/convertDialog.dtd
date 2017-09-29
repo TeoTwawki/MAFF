@@ -1,9 +1,26 @@
 <!ENTITY window.title "Պահպանված էջի Փոխարկման Վարպետ">
 <!ENTITY browsebutton.label "Ընտրել…">
+<!ENTITY oldsavedpages.folder.name "Պահպանած հին էջեր">
 <!ENTITY introduction.pagelabel "Բարի Գալուստ Փոխարկման Վարպետ">
+<!ENTITY introduction.mode.compatible.label "Փնտրել արխիվացված էջեր և համոզվել, որ դրանք հնարավոր կլինի հետագայում բացել:">
+<!ENTITY introduction.mode.compatible.description "Դա կորոնոի &quot;$1&quot; թղթապանակում այն էջերը, որոնք պահպանվել են արխիվով, մեկ այլ թղթապանակում կփոխարկի դրանք տվյալների ֆայլերի և կտեղափոխի այդ արխիվները &quot;$2&quot; թղթապանակ ձեր աշխատասեղանին:">
+<!ENTITY introduction.mode.choose.label "Ընտրեք, թե ֆայլի որ ձևաչափերը ու թղթապանակներն եք օգտագործելու">
+<!ENTITY introduction.description "Դուք միշտ պետք է պահեք սկզբնական ֆայլերի պատճենները, եթե հանկարծ փոխարկումը հաջող չընթանա:">
+<!ENTITY format.pagelabel "Նպատակակետ ֆայլի ձևաչափ">
+<!ENTITY format.complete.label "HTML՝ թղթապանակի աջակցումով տվյալների ֆայլերի համար">
+<!ENTITY format.complete.description "Տրամադրում է ամենալավ համատեղելիությունը, քանի որ այն կարելի է բացել ցանկացած դիտարկիչով, բայց էջի անունը հնարավոր չի լինի փոխել:">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "Համատեղելի է Microsoft Internet Explorer-ի ու Google Chrome-ի հետ, բայց  համապատասխան չէ տեսանյութերի ու ձայնանյուերի համար և համատեղելի չէ $brandShortName-ի հետագա տարբերակների հետ:">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "ZIP պարունակի հիման վրա, օգտագործում է քիչ տեղ, բայց հնարավոր չի լինի բացել $brandShortName-ի հետագա տարբերակներում՝ առանց արխիվը ձեռքով դուրս բերելու:">
+<!ENTITY source.pagelabel "Սկզբնական թղթապանակ և ֆայլի ձևաչափ">
 <!ENTITY folders.source.label "Փնտրել աղբյու ֆայլերում.">
 <!ENTITY folders.source.subfolders.label "Նաև ենթաթղթապանակներում">
 <!ENTITY folders.source.invalid.label "Նշեք աղբյուր-թղթապանակը։">
+<!ENTITY format.source.label "Որոնել սկզբնական ֆայլեր հետևյալ ձևաչափով՝">
+<!ENTITY format.source.invalid.label "Ընտրեք առնվազն մեկ ձևաչափ:">
+<!ENTITY allowdownload.label "Անհրաժեշտության դեպքում ներբեռնել էջի բացակայող մասերը">
+<!ENTITY allowdownload.description "Դա կարող է դանդաղեցնել փոխարկումը, բայց կարող է նորոգել պահպանված էջերը, որոնք անհամատեղելի են և կարող են ճիշտ դիտվել միայն համացանցային կապակցման դեպքում:">
 <!ENTITY folders.dest.pagelabel "Արդյունքը">
 <!ENTITY folders.dest.grouplabel "Փոխարկված ֆայլերի տեղը.">
 <!ENTITY folders.dest.original.label "Թողնել նույն թղթապանակում">
@@ -24,6 +41,8 @@
 <!ENTITY candidates.searchingcounts.label "Ընդամենը $1, $2-ը արդեն փոխարկվել են, ընտրված են $3-ը">
 <!ENTITY candidates.convertingcounts.label "Ընդամենը $1, $2-ը արդեն փոխարկվել են, ընտրված են $3-ը, $4-ը հաջողությամբ փոխարկվել են, $5-ը ձախողվել են">
 <!ENTITY candidates.searching.label "Փնտրվում է աղբյուրը...">
+<!ENTITY candidates.none.description "Հատկորոշված թղթապանակը որոնվել է փոխարկելի ֆայլերի համար և ոչինչ չի գտնվել: Դա կարող է նշանակել, որ դուք չունեք որևէ ֆայլ, որը պետք է փոխարկել կամ բոլոր ֆայլերը արդեն փոխարկված են: Կարող եք սեղմել $1՝ պատուհանը փակելու համար:">
+<!ENTITY candidates.obstructed.label "Բոլոր ֆայլերը արդեն փոխարկվել են նախկինում:">
 <!ENTITY candidates.invalid.label "Ընտրեք գոնե մեկ ֆայլ։">
 <!ENTITY candidates.convert.label "Սեղմեք Փոխարկել՝ սկսելու համար">
 <!ENTITY candidates.converting.label "Ֆայլերը փոխարկվում են...">

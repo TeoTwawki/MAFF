@@ -1,1 +1,9 @@
 <!ENTITY window.title.v2 "Mozilla Archive Format-ի կարգավորումները">
+<!ENTITY associate.grouplabel "Բացել $brandShortName-ով.">
+<!ENTITY associate.maff.label "MAFF (.maff ֆայլի ընդլայնում)">
+<!ENTITY associate.mhtml.label "MHTML (.mht և .mhtml ֆայլի ընդլայնումներ)">
+<!ENTITY infobar.label "Ցուցադրել արխիվացված էջերի սկզբնական տեղադրությունը և պահպանման ամսաթիվը">
+<!ENTITY legacy.description "$brandShortName-ի հավելումների տեխնոլոգիան արդիացվել է: Mozilla Archive Format-ը ժառանգված հավելում է, որը համատեղելի չի լինի դիտարկիչի հետագա տարբերակներում:">
+<!ENTITY save.enabled.label "Միացնել &quot;Պահպանել էջը արխիվով&quot; գործառությունը միշտ">
+<!ENTITY convert.description "Եթե պահպանել եք վեբ էջերը արխիվով, ապա կարող եք փոխարկել ձեր ֆայլերը ավելի համատեղելի ձևաչափի՝ համոզվելու, որ դրանք հետագայում հնարավոր կլինի բացել:">
+<!ENTITY convert.label "Փոխարկել պահպանված էջերը">

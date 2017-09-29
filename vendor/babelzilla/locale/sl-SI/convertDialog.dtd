@@ -1,9 +1,26 @@
 <!ENTITY window.title "Čarovnik za pretvorbo shranjenih strani">
 <!ENTITY browsebutton.label "Brskaj ...">
+<!ENTITY oldsavedpages.folder.name "Stare shranjene strani">
 <!ENTITY introduction.pagelabel "Dobrodošli v Čarovnika za pretvorbo shranjenih strani">
-<!ENTITY folders.source.label "Preišči to mapo za izvirne datoteke:">
+<!ENTITY introduction.mode.compatible.label "Poišči arhivirane strani in zagotovi, da jih bo mogoče v prihodnosti odpreti">
+<!ENTITY introduction.mode.compatible.description "To bo iskalo v mapi &quot;$1&quot; za arhivirane strani, jih pretvorilo, da bodo za podatkovne datoteke uporabljale ločene mape in izvirne arhive premaknilo v mapo &quot;$2&quot; na namizju.">
+<!ENTITY introduction.mode.choose.label "Izberite, katere oblike datotek in map naj se uporabijo">
+<!ENTITY introduction.description "Vedno obdržite kopijo izvirnih datotek, ker v nekaterih primerih postopek pretvorbe morda ne bo ustvaril natančnih kopij.">
+<!ENTITY format.pagelabel "Ciljna oblika datotek">
+<!ENTITY format.complete.label "HTML s podporno mapo za podatkovne datoteke">
+<!ENTITY format.complete.description "Omogoča najboljšo združljivost, ker se jo lahko odpira s katerimkoli brskalnikom brez dodatne programske opreme, vendar kasneje ne boste mogli spreminjati imena strani.">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "Združljiva z Microsoftovim Internet Explorerjem in Googlom Chrome, vendar ni primerna za videoposnetke in zvok in ni združljiva s prihodnjimi različicami brskalnika $brandShortName.">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "Osnovana na vsebniku ZIP, ki uporablja manj prostora na disku, vendar je ni mogoče odpreti s prihodnjimi različicami brskalnika $brandShortName brez ročnega razširjanja arhiva.">
+<!ENTITY source.pagelabel "Izvorna mapa in oblike datotek">
+<!ENTITY folders.source.label "Preišči to mapo za izvorne datoteke:">
 <!ENTITY folders.source.subfolders.label "Vključi podmape">
-<!ENTITY folders.source.invalid.label "Izberite obstoječo izvirno mapo.">
+<!ENTITY folders.source.invalid.label "Izberite obstoječo izvorno mapo.">
+<!ENTITY format.source.label "Poišči izvorne datoteke v teh oblikah:">
+<!ENTITY format.source.invalid.label "Izberite vsaj eno obliko za iskanje.">
+<!ENTITY allowdownload.label "Prenesi manjkajoče dele strani, ko je to potrebno.">
+<!ENTITY allowdownload.description "To lahko upočasni pretvorbo, vendar lahko popravi shranjene strani, ki niso popolne in si jih je mogoče pravilno ogledati samo ob povezavi z internetom.">
 <!ENTITY folders.dest.pagelabel "Ciljne mape">
 <!ENTITY folders.dest.grouplabel "Vstavi pretvorjene datoteke:">
 <!ENTITY folders.dest.original.label "V isto mapo kot izvirnik">
@@ -23,10 +40,12 @@
 <!ENTITY candidates.all.label "Vse datoteke">
 <!ENTITY candidates.searchingcounts.label "Skupno $1, že pretvorjeno $2, izbrano $3">
 <!ENTITY candidates.convertingcounts.label "Skupno $1, že pretvorjeno $2, izbrano $3, uspešno pretvorjeno $4, spodletelo $5">
-<!ENTITY candidates.searching.label "Iskanje izvirnih datotek ...">
+<!ENTITY candidates.searching.label "Iskanje izvornih datotek ...">
+<!ENTITY candidates.none.description "Izbrana mapa je bila preiskana za datoteke, ki naj se jih pretvori, vendar ni bilo mogoče najti nobene. To lahko nakazuje, da nimate datotek, ki jih je treba pretvoriti ali da so bile vse datotek že pretvorjene. Kliknete lahko $1, da zaprete okno.">
+<!ENTITY candidates.obstructed.label "Vse datoteke so bile že pretvorjene.">
 <!ENTITY candidates.invalid.label "Izberite vsaj eno datoteke za pretvorbo.">
 <!ENTITY candidates.convert.label "Kliknite Pretvori za pretvorbo vaših datotek.">
-<!ENTITY candidates.converting.label "Pretvorba vaših datotek ...">
+<!ENTITY candidates.converting.label "Pretvarjanje datotek ...">
 <!ENTITY candidates.finish.label "Oglejte si rezultate pretvorbe in potem kliknite $1 za zapiranje okna.">
 <!ENTITY candidates.convertbutton.label "Pretvori">
 <!ENTITY candidates.convertbutton.accesskey "P">

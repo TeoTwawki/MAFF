@@ -1,2 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Mozilla Archive Format オプション">
+<!ENTITY associate.grouplabel "$brandShortName で開く:">
+<!ENTITY associate.maff.label "MAFF (拡張子 .maff)">
+<!ENTITY associate.mhtml.label "MHTML (拡張子 .mht と .mhtml)">
+<!ENTITY infobar.label "アーカイブしたページの元の場所と保存日時を表示">
+<!ENTITY legacy.description "$brandShortName アドオンは近代化しています。Mozilla Archive Format は古い仕組みのアドオンでブラウザの将来のバージョンと互換性がありません。">
+<!ENTITY save.enabled.label "それでも &quot;ページをアーカイブ&quot; 機能を有効にする">
+<!ENTITY convert.description "すでにウェブページをアーカイブに保存してあるならば、将来も開けるようにアーカイブファイルをより互換性のある形式に変換できます。">
+<!ENTITY convert.label "アーカイブ保存したページを変換する">

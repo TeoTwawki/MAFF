@@ -1,1 +1,9 @@
 <!ENTITY window.title.v2 "Možnosti dodatka Mozilla Archive Format">
+<!ENTITY associate.grouplabel "Odpri z brskalnikom $brandShortName:">
+<!ENTITY associate.maff.label "MAFF (končnica datoteke .maff)">
+<!ENTITY associate.mhtml.label "MHTML (končnici datoteke.mht in .mhtml)">
+<!ENTITY infobar.label "Prikaži izvirno mesto in shrani datum arhiviranih strani">
+<!ENTITY legacy.description "Tehnologija dodatkov brskalnika $brandShortName se posodablja. Mozilla Archive Format je zastarel dodatek, ki ne bo združljiv s prihodnjimi različicami brskalnika.">
+<!ENTITY save.enabled.label "Vseeno omogoči možnost &quot;Shrani stran v arhiv&quot;">
+<!ENTITY convert.description "Če ste spletne strani shranili v arhive, jih lahko pretvorite v bolj združljivo obliko, da v prihodnosti zagotovite njihovo odpiranje.">
+<!ENTITY convert.label "Pretvori shranjene strani">

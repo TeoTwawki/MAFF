@@ -1,2 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Inställningar för Mozilla Archive Format">
+<!ENTITY associate.grouplabel "Öppna med $brandShortName:">
+<!ENTITY associate.maff.label "MAFF (filändelse .maff)">
+<!ENTITY associate.mhtml.label "MHTML (filändelserna .mht och .mhtml)">
+<!ENTITY infobar.label "Visa originalplatsen och spardatumet för arkiverade sidor">
+<!ENTITY legacy.description "Tilläggstekniken för $brandShortName moderniseras. Mozilla Archive Format är ett gammalt tillägg som inte kommer att vara kompatibelt med framtida versioner av webbläsaren.">
+<!ENTITY save.enabled.label "Aktivera funktionaliteten &quot;Spara sida i arkiv&quot; ändå">
+<!ENTITY convert.description "Om du sparade webbsidor i ett arkiv kan du konvertera dina filer till ett mer kompatibelt format för att se till att de kan öppnas i framtiden.">
+<!ENTITY convert.label "Konvertera sparade sidor">

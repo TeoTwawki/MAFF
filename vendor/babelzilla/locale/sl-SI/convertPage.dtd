@@ -1,0 +1,7 @@
+<!ENTITY page.title "Pomembno">
+<!ENTITY convert.label "Pretvorite svoje shranjene strani, da si jih boste lahko ogledali v prihodnjih različicah brskalnika $brandShortName.">
+<!ENTITY convert.description "Če ste uporabili možnost &quot;Shrani stran v arhiv&quot; za shranjevanje spletnih strani v eno datoteko, sledite tem navodilom, da jih pretvorite v bolj združljivo obliko.">
+<!ENTITY convert.reason.description "To je potrebno, ker se tehnologija brskalnika $brandShortName posodablja in bodo zastareli dodatki, kot je Mozilla Archive Format in drugi, ki ponujajo podobno funkcionalnost, nehali delovati.">
+<!ENTITY convert.button.label "Zaženi ta voden postopek zdaj">
+<!ENTITY convert.later.description "Ta postopek lahko zaženete kasneje v možnostih dodatka Mozilla Archive Format.">
+<!ENTITY convert.link.label "Za več informacij in druge možnosti obiščite spletno stran.">
