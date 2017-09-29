@@ -1,10 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Mozilla Archive Format-ի կարգավորումները">
-<!ENTITY associate.grouplabel "Open with $brandShortName:">
-<!ENTITY associate.maff.label "MAFF (.maff file extension)">
-<!ENTITY associate.mhtml.label "MHTML (.mht and .mhtml file extensions)">
-<!ENTITY infobar.label "Show the original location and save date of archived pages">
-<!ENTITY legacy.description "$brandShortName add-on technology is modernizing. Mozilla Archive Format is a legacy add-on that will not be compatible with future versions of the browser.">
-<!ENTITY save.enabled.label "Enable the &quot;Save Page In Archive&quot; functionality anyways">
-<!ENTITY convert.description "If you saved web pages in an archive, you can convert your files to a more compatible format to ensure they can be opened in the future.">
-<!ENTITY convert.label "Convert Saved Pages">
+<!ENTITY associate.grouplabel "Բացել $brandShortName-ով.">
+<!ENTITY associate.maff.label "MAFF (.maff ֆայլի ընդլայնում)">
+<!ENTITY associate.mhtml.label "MHTML (.mht և .mhtml ֆայլի ընդլայնումներ)">
+<!ENTITY infobar.label "Ցուցադրել արխիվացված էջերի սկզբնական տեղադրությունը և պահպանման ամսաթիվը">
+<!ENTITY legacy.description "$brandShortName-ի հավելումների տեխնոլոգիան արդիացվել է: Mozilla Archive Format-ը ժառանգված հավելում է, որը համատեղելի չի լինի դիտարկիչի հետագա տարբերակներում:">
+<!ENTITY save.enabled.label "Միացնել &quot;Պահպանել էջը արխիվով&quot; գործառությունը միշտ">
+<!ENTITY convert.description "Եթե պահպանել եք վեբ էջերը արխիվով, ապա կարող եք փոխարկել ձեր ֆայլերը ավելի համատեղելի ձևաչափի՝ համոզվելու, որ դրանք հետագայում հնարավոր կլինի բացել:">
+<!ENTITY convert.label "Փոխարկել պահպանված էջերը">

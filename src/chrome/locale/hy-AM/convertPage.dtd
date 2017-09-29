@@ -1,8 +1,8 @@
 <!-- *** This page is displayed when conversion of saved pages is necessary. *** -->
-<!ENTITY page.title "Important">
-<!ENTITY convert.label "Convert your saved pages to view them in future versions of $brandShortName.">
-<!ENTITY convert.description "If you used the &quot;Save Page In Archive&quot; functionality to store web pages in a single file, you should now follow this procedure to convert your files to a more compatible format.">
-<!ENTITY convert.reason.description "This is necessary because $brandShortName add-on technology is modernizing, and legacy add-ons like Mozilla Archive Format and others providing similar functionality will stop working.">
-<!ENTITY convert.button.label "Start this guided procedure now">
-<!ENTITY convert.later.description "You can start this procedure later from the options of the Mozilla Archive Format add-on.">
-<!ENTITY convert.link.label "Visit the website for more information and other options.">
+<!ENTITY page.title "Կարևոր">
+<!ENTITY convert.label "Փոխարկեք ձեր պահպանած էջերը՝ $brandShortName-ի հետագա տարբերակներում դիտելու համար:">
+<!ENTITY convert.description "Եթե օգտագործել եք &quot;Պահպանել էջը արխիվի ձևաչափով&quot; գործառությունը՝ վեբ էջերը մեկ ֆայլում պահպանելու համար, դուք պետք է կատարեք այս գործողությունները՝ ձեր ֆայլերը փոխարկելու համար ավելի համատեղելի ձևաչափի:">
+<!ENTITY convert.reason.description "Սա անհրաժեշտ է, քանի որ $brandShortName-ը փոխել է հավելումների իր տեխնոլոգիան և ժառանգված հավելումները, ինչպիսին է նաև Mozilla Archive Format-ը և ուրիշներ, որոնք տրամադրում են նմանատեսակ գործառություններ, այլևս չեն աշխատի:">
+<!ENTITY convert.button.label "Սկսել հիմա">
+<!ENTITY convert.later.description "Կարող եք սկսել այս գործընթացը ավելի ուշ՝ Mozilla Archive Format-ի ընտրանքներից:">
+<!ENTITY convert.link.label "Այցելեք կայքը՝ լրացուցիչ տեղեկությունների և այլ ընտրանքների համար:">

@@ -1,8 +1,8 @@
 <!-- *** This page is displayed when conversion of saved pages is necessary. *** -->
-<!ENTITY page.title "Important">
-<!ENTITY convert.label "Convert your saved pages to view them in future versions of $brandShortName.">
-<!ENTITY convert.description "If you used the &quot;Save Page In Archive&quot; functionality to store web pages in a single file, you should now follow this procedure to convert your files to a more compatible format.">
-<!ENTITY convert.reason.description "This is necessary because $brandShortName add-on technology is modernizing, and legacy add-ons like Mozilla Archive Format and others providing similar functionality will stop working.">
-<!ENTITY convert.button.label "Start this guided procedure now">
-<!ENTITY convert.later.description "You can start this procedure later from the options of the Mozilla Archive Format add-on.">
-<!ENTITY convert.link.label "Visit the website for more information and other options.">
+<!ENTITY page.title "Viktig">
+<!ENTITY convert.label "Konvertera dina sparades sidor för att visa dem i framtida versioner av $brandShortName.">
+<!ENTITY convert.description "Om du använde &quot;Save Page In Archive&quot; för att lagra webbsidor i en enda fil, du kan nu följa denna procedur för att konvertera dina filer till ett mer kompatibelt format.">
+<!ENTITY convert.reason.description "Detta är nödvändigt eftersom tilläggstekniken för $brandShortName moderniseras och äldre tillägg som Mozilla Archive Format och andra som erbjuder liknande funktionalitet kommer att sluta fungera.">
+<!ENTITY convert.button.label "Starta denna guidade procedur nu">
+<!ENTITY convert.later.description "Du kan starta denna procedur senare från alternativen för tillägget Mozilla Archive Format.">
+<!ENTITY convert.link.label "Besök webbplatsen för mer information och andra alternativ.">

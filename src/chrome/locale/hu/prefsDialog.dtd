@@ -1,10 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Mozilla Archív Formátum beállítások">
-<!ENTITY associate.grouplabel "Open with $brandShortName:">
-<!ENTITY associate.maff.label "MAFF (.maff file extension)">
-<!ENTITY associate.mhtml.label "MHTML (.mht and .mhtml file extensions)">
-<!ENTITY infobar.label "Show the original location and save date of archived pages">
-<!ENTITY legacy.description "$brandShortName add-on technology is modernizing. Mozilla Archive Format is a legacy add-on that will not be compatible with future versions of the browser.">
-<!ENTITY save.enabled.label "Enable the &quot;Save Page In Archive&quot; functionality anyways">
-<!ENTITY convert.description "If you saved web pages in an archive, you can convert your files to a more compatible format to ensure they can be opened in the future.">
-<!ENTITY convert.label "Convert Saved Pages">
+<!ENTITY associate.grouplabel "Megnyitás $brandShortName-ban:">
+<!ENTITY associate.maff.label "MAFF (.maff fájlformátum)">
+<!ENTITY associate.mhtml.label "MHTML (.mht és .mhtml fájlformátum)">
+<!ENTITY infobar.label "Megjeleníti az eredeti weboldal címét és az archivált oldalak mentési időpontját">
+<!ENTITY legacy.description "a $brandShortName kiegészítőinek technológiája modernizálódik. A Mozilla Archive Formátum egy hagyományos kiegészítő, amely nem kompatibilis a böngésző jövőbeni verzióival.">
+<!ENTITY save.enabled.label "Engedélyezett az &quot;Oldal mentése archívumba&quot; is">
+<!ENTITY convert.description "Ha a weboldalak archívumba mentettek, akkor a fájlokat egy kompatibilis formátumba konvertálhatók annak érdekében, hogy a jövőben megnyithatók legyenek.">
+<!ENTITY convert.label "Mentett oldalak konvertálása">

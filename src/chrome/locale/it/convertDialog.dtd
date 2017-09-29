@@ -4,30 +4,30 @@
 <!ENTITY window.title "Conversione guidata pagine salvate">
 <!ENTITY browsebutton.label "Sfoglia...">
 <!-- *** Introduction *** -->
-<!ENTITY oldsavedpages.folder.name "Old Saved Pages">
+<!ENTITY oldsavedpages.folder.name "Pagine salvate in precedenza">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "Benvenuti nella conversione guidata pagine salvate">
-<!ENTITY introduction.mode.compatible.label "Search for archived pages and ensure they can be opened in the future">
-<!ENTITY introduction.mode.compatible.description "This will search the &quot;$1&quot; folder for pages that were saved in an archive, convert them to use separate folders for data files, and move the original archives to the &quot;$2&quot; folder on your desktop.">
-<!ENTITY introduction.mode.choose.label "Choose which file formats and folders to use">
-<!ENTITY introduction.description "You should always keep a copy of the original files because in some cases the conversion process may not replicate them accurately.">
+<!ENTITY introduction.mode.compatible.label "Cerca le pagine archiviate per assicurarsi che possano essere aperte in futuro">
+<!ENTITY introduction.mode.compatible.description "Questo cercherà le pagine salvate in archivio nella cartella &quot;$1&quot;, le convertirà per usare cartelle separate per i file di dati, e sposterà gli archivi originali nella cartella &quot;$2&quot; sulla scrivania.">
+<!ENTITY introduction.mode.choose.label "Scegli quali formati di file e quali cartelle usare">
+<!ENTITY introduction.description "È sempre necessario conservare una copia dei file originali perché in alcuni casi il processo di conversione potrebbe non replicarli con precisione.">
 <!-- *** Source folder selection *** -->
-<!ENTITY format.pagelabel "Destination File Format">
-<!ENTITY format.complete.label "HTML with support folder for data files">
-<!ENTITY format.complete.description "Provides the best compatibility as it can be opened with any browser without additional software, but the page name cannot be changed afterwards.">
+<!ENTITY format.pagelabel "Formato di file di destinazione">
+<!ENTITY format.complete.label "HTML con certella di supporto per i file di dati">
+<!ENTITY format.complete.description "Fornisce la compatibilità migliore poiché può essere aperto con qualsiasi browser senza software aggiuntivo, ma il nome della pagina non può essere cambiato successivamente.">
 <!ENTITY format.mhtml.label "MHTML">
-<!ENTITY format.mhtml.description "Compatible with Microsoft Internet Explorer and Google Chrome, but not suitable for video and audio, and incompatible with future versions of $brandShortName.">
+<!ENTITY format.mhtml.description "Compatibile con Microsoft Internet Explorer e Google Chrome, ma non adatto per video e audio, e incompatibile con versioni future di $brandShortName.">
 <!ENTITY format.maff.label "MAFF">
-<!ENTITY format.maff.description "Based on the ZIP container, uses less disk space but cannot be opened with future versions of $brandShortName without extracting the archive manually.">
+<!ENTITY format.maff.description "Basato sul contenitore ZIP, usa meno spazio su disco ma non può essere aperto con versioni future di $brandShortName senza estrarre l'archivio manualmente.">
 <!-- *** Destination folder selection *** -->
-<!ENTITY source.pagelabel "Source Folder and File Formats">
+<!ENTITY source.pagelabel "Cartella di origine e formati di file">
 <!ENTITY folders.source.label "Ricerca i file di origine in questa cartella:">
 <!ENTITY folders.source.subfolders.label "Includi sottocartelle">
 <!ENTITY folders.source.invalid.label "Selezionare una cartella di origine esistente.">
-<!ENTITY format.source.label "Search for source files in these formats:">
-<!ENTITY format.source.invalid.label "Please select at least one format to search for.">
-<!ENTITY allowdownload.label "Download missing parts of the page when necessary">
-<!ENTITY allowdownload.description "This may slow down the conversion, but can repair saved pages that are incomplete and can only be viewed correctly when connected to the Internet.">
+<!ENTITY format.source.label "Ricerca i file di origine in questi formati:">
+<!ENTITY format.source.invalid.label "Selezionare almeno un formato da ricercare.">
+<!ENTITY allowdownload.label "Scarica le parti mancanti della pagina quando necessario">
+<!ENTITY allowdownload.description "Questo può rallentare la conversione, ma può riparare alcune pagine salvate incomplete che possono essere visualizzate correttamente solo se si è connessi a Internet.">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "Cartelle di destinazione">
 <!ENTITY folders.dest.grouplabel "Metti i file convertiti:">
@@ -50,8 +50,8 @@
 <!ENTITY candidates.searchingcounts.label "$1 totali, $2 già convertiti, $3 selezionati">
 <!ENTITY candidates.convertingcounts.label "$1 totali, $2 già convertiti, $3 selezionati, $4 convertiti correttamente, $5 non riusciti">
 <!ENTITY candidates.searching.label "Ricerca dei file di origine in corso...">
-<!ENTITY candidates.none.description "The specified folder has been searched for files to be converted, and none were found. This may indicate that you don't have any files that need to be converted, or that all the files have been already converted. You can click $1 to close the window.">
-<!ENTITY candidates.obstructed.label "All the files have been already converted previously.">
+<!ENTITY candidates.none.description "Nessun file da convertire è stato trovato nella cartella specificata. Questo può indicare che non ci sono file che hanno bisogno di conversione, o che tutti i file sono già stati convertiti. Si può fare clic su $1 per chiudere la finestra.">
+<!ENTITY candidates.obstructed.label "Tutti i file sono già stati convertiti in precedenza.">
 <!ENTITY candidates.invalid.label "Selezionare almeno un file da convertire.">
 <!ENTITY candidates.convert.label "Fare clic su Converti per convertire i file.">
 <!ENTITY candidates.converting.label "Conversione dei file in corso...">
