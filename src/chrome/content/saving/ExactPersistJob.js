@@ -273,6 +273,10 @@ ExactPersistJob.prototype = {
       var textToSubUri = this._textToSubURI;
       aResource.contentLocation = aUriSpec.replace(/[^%#;\/?:@&=+$,\[\]]+/g,
        function(aPart) textToSubUri.ConvertAndEscape("utf-8", aPart));
+      // Don't use file URIs in MHTML for compatibility with Google Chrome.
+      if (aResource.contentLocation.startsWith("file:")) {
+        aResource.contentLocation = "urn:" + aResource.contentLocation;
+      }
     } else {
       // Additional escaping is not required.
       aResource.contentLocation = aUriSpec;
