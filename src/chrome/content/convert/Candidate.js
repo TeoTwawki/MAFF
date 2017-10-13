@@ -297,6 +297,7 @@ Candidate.prototype = {
       // message boxes put up by embedded JavaScript.
       conversionFrame.docShell.allowAuth = false;
       conversionFrame.docShell.allowJavascript = false;
+      conversionFrame.docShell.allowMetaRedirects = false;
       conversionFrame.docShell.allowPlugins = false;
       yield new Promise(resolve => this._mainThread.dispatch(() => resolve(),
        Ci.nsIThread.DISPATCH_NORMAL));
