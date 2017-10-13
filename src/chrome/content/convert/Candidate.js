@@ -328,8 +328,14 @@ Candidate.prototype = {
      getService(Ci.nsIIOService).newFileURI(this.location.source);
     conversionFrame.webNavigation.loadURI(sourceUrl.spec, 0, null, null, null);
 
-    yield promiseLoadNetworkStop;
-    yield promiseLoad;
+    // Stop waiting for load after a timeout that depends on whether we are
+    // trying to recover remote resources.
+    var loadTimeout = new Promise(resolve => this.conversionWindow.setTimeout(
+     resolve, Services.io.offline ? 15000 : 60000));
+    yield Promise.race([
+      loadTimeout,
+      Promise.all([promiseLoadNetworkStop, promiseLoad]),
+    ]);
 
     // Wait for a short timeout to ensure the page is loaded.
     yield new Promise(resolve => this.conversionWindow.setTimeout(resolve, 99));
