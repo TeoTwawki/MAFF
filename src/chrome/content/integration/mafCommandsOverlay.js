@@ -202,9 +202,9 @@ var MafCommandsOverlay = {
    */
   saveTabsInArchive: function() {
     // Ensure all the background tabs are loaded while the selection is made.
-    for (let browser of gBrowser.browsers) {
-      if (browser.hasAttribute("pending")) {
-        browser.reload();
+    for (let tab of gBrowser.tabs) {
+      if (tab.hasAttribute("pending")) {
+        tab.linkedBrowser.reload();
       }
     }
     // Open a dialog that lets the user select which tabs will be saved. See
