@@ -57,7 +57,7 @@ MhtmlArchive.prototype = {
   __proto__: Archive.prototype,
 
   // Archive
-  extractAll: function() {
+  extractAll: function(aMetadataOnly) {
     // Create and initialize the single page object for the archive.
     var page = this.addPage();
     page.tempDir = this._tempDir;
@@ -69,7 +69,8 @@ MhtmlArchive.prototype = {
     page.setMetadataFromMimePart(part);
     // Prepare the extraction of the resources from the archive.
     this._persistBundle = new PersistBundle();
-    this._persistFolder = new PersistFolder(this._tempDir);
+    this._persistFolder = new PersistFolder(this._tempDir ||
+     new FileUtils.File(Prefs.tempFolder));
     // For MAF-specific MHMTL archives.
     if (part.headersByLowercaseName["x-maf"] && part.parts) {
       // Archives with the "X-MAF" header are either composed by one content
@@ -93,8 +94,10 @@ MhtmlArchive.prototype = {
       // Convert all the URIs in the content that reference resources that are
       // available in the MHTML file, and resolve relative URIs based on the
       // original locations of the saved files.
-      this._indexResourceLocations();
-      this._replaceContentUris();
+      if (!aMetadataOnly) {
+        this._indexResourceLocations();
+        this._replaceContentUris();
+      }
     }
     // Set the metadata about the root resource.
     var resource = this._persistBundle.resources[0];
@@ -106,7 +109,9 @@ MhtmlArchive.prototype = {
       page.originalUrl = resource.contentLocation;
     }
     // Save the resources locally.
-    this._persistBundle.writeAll();
+    if (!aMetadataOnly) {
+      this._persistBundle.writeAll();
+    }
   },
 
   // Archive
@@ -132,8 +137,8 @@ MhtmlArchive.prototype = {
    */
   _collectResourcesFromMafPart: function(aMimePart) {
     // Find the local file URL associated with the temporary directory.
-    var folderUrl = this._ioService.newFileURI(this._tempDir).
-     QueryInterface(Ci.nsIURL);
+    var folderUrl = this._ioService.newFileURI(this._tempDir ||
+     new FileUtils.File(Prefs.tempFolder)).QueryInterface(Ci.nsIURL);
     // Ensure that the local URL points to a directory.
     if (folderUrl.path.slice(-1) !== "/") {
       folderUrl.path += "/";

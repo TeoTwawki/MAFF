@@ -125,9 +125,13 @@ Archive.prototype = {
   /**
    * Extracts all the pages from the archive file.
    *
+   * @param aMetadataOnly
+   *        True if the archive should be examined but the actual files should
+   *        not be extracted. This is used during batch conversions.
+   *       
    * This method must be implemented by derived objects.
    */
-  extractAll: function() {
+  extractAll: function(aMetadataOnly) {
     throw Cr.NS_ERROR_NOT_IMPLEMENTED;
   },
 

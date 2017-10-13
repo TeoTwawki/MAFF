@@ -63,7 +63,7 @@ MaffArchive.prototype = {
   },
 
   // Archive
-  extractAll: function() {
+  extractAll: function(aMetadataOnly) {
     // Determine if the data files should be extracted.
     this._useDirectAccess = Prefs.openUseJarProtocol;
     // Prepare a list of all the page folders available in the archive.
@@ -92,11 +92,14 @@ MaffArchive.prototype = {
           // If the current entry is the name of a file directly contained in a
           // page folder, having a base name of "index" and a simple extension,
           // use the first of these files alphabetically as the suggested
-          // default document name for the page.
+          // default document name for the page. Always ignore the metadata
+          // file "index.rdf" if there are other index files in the folder.
           zipEntry.replace(/^([^/]+)\/(index\.[^/.]+)$/i,
             function(aAll, aPageFolderName, aIndexFileName) {
               if (!(aPageFolderName in indexLeafNames) ||
-               indexLeafNames[aPageFolderName] > aIndexFileName) {
+               indexLeafNames[aPageFolderName].toLowerCase() == "index.rdf" ||
+               (indexLeafNames[aPageFolderName] > aIndexFileName &&
+               aIndexFileName.toLowerCase() != "index.rdf")) {
                 indexLeafNames[aPageFolderName] = aIndexFileName;
               }
             }
@@ -105,7 +108,12 @@ MaffArchive.prototype = {
 
         // If the archive should be opened using direct access to the files.
         var shouldExtract;
-        if (this._useDirectAccess) {
+        if (aMetadataOnly) {
+          // For speed during batch conversions, we don't extract the metadata
+          // files, and we use the general rule for determining the index file
+          // name. This should work correctly with virtually all archives.
+          shouldExtract = false;
+        } else if (this._useDirectAccess) {
           // Extract only the metadata files "index.rdf" and "history.rdf". The
           // file names are compared case insensitively, even though their names
           // in the archive should always be lowercase.
@@ -141,9 +149,12 @@ MaffArchive.prototype = {
     for (var [, pageFolderName] in Iterator(pageFolderNames)) {
       // Add a new page object to the archive and set its temporary directory.
       var newPage = this.addPage();
+      newPage.indexLeafName = indexLeafNames[pageFolderName] || "";
+      if (aMetadataOnly) {
+        continue;
+      }
       newPage.tempDir = this._tempDir.clone();
       newPage.tempDir.append(pageFolderName);
-      newPage.indexLeafName = indexLeafNames[pageFolderName] || "";
       // Load the metadata for the page. This overrides the autodetected value
       // of the indexLeafName property if necessary.
       try {
@@ -157,33 +168,6 @@ MaffArchive.prototype = {
   // Archive
   _newPage: function() {
     return new MaffArchivePage(this);
-  },
-
-  /**
-   * Determines how many pages are present in the archive without extracting
-   * them. This is used during batch conversions.
-   */
-  countPages: function() {
-    var pageCount = 0;
-    var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].
-     createInstance(Ci.nsIZipReader);
-    zipReader.open(this.file);
-    try {
-      var zipEntries = zipReader.findEntries(null);
-      while (zipEntries.hasMore()) {
-        var zipEntry = zipEntries.getNext();
-        // Consider every first-level folder contained in the archive. Since
-        // synthetic directory entries are created by the ZIP reader if they are
-        // not explicitly stored in the archive, all the pages in the archive
-        // will be detected.
-        if (/^[^/]+\/$/.test(zipEntry)) {
-          pageCount++;
-        }
-      }
-    } finally {
-      zipReader.close();
-    }
-    return pageCount;
   },
 
   /**

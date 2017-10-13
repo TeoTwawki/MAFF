@@ -85,6 +85,14 @@ Candidate.prototype = {
   pageIndex: 0,
 
   /**
+   * If the source is contained in an archive and the destination is a complete
+   * web page, the extension of this file name will be used to determine the
+   * extension of the output file, and the conversion of single file types will
+   * try to copy the file directly from the archive.
+   */
+  indexLeafName: "",
+
+  /**
    * True if one of the destination files or support folders already exists.
    */
   obstructed: false,
@@ -138,8 +146,8 @@ Candidate.prototype = {
         switch (this.sourceFormat) {
           case "mhtml":
           case "maff":
-            // TODO: Open the source archive and determine the extension.
-            destExtension = "html";
+            var matchResult = /\.([^.]+)$/.exec(this.indexLeafName);
+            destExtension = matchResult ? matchResult[1] : "html";
             break;
           default:
             throw "Unexpected combination of file formats for conversion";
@@ -258,7 +266,24 @@ Candidate.prototype = {
         archive = ArchiveLoader.extractAndRegister(this.location.source);
       }
       try {
-        yield this._createAndConvertFrameTask(archive);
+        // Determine the content type of the main resource in the archive.
+        var archivePage = archive.pages[this.pageIndex];
+        var indexFile = archivePage.tempDir.clone();
+        indexFile.append(archivePage.indexLeafName);
+        var resource = new PersistResource();
+        resource.initFromFile(indexFile);
+        // If the file type may include multiple resources or we are creating an
+        // archive, use the conversion frame to load the page. Otherwise, we can
+        // copy the index file directly to the destination.
+        if (this.destFormat != "complete" ||
+            ["application/xhtml+xml", "application/xml",
+             "application/vnd.mozilla.xul+xml", "image/svg+xml", "text/html",
+             "text/xml"].includes(resource.mimeType)) {
+          yield this._createAndConvertFrameTask(archive);
+        } else {
+          indexFile.copyTo(this.location.dest.parent,
+                           this.location.dest.leafName);
+        }
       } finally {
         // Do not remove the archive from the cache if it is possible that we
         // will convert other pages from the same archive. This means we will
@@ -277,6 +302,13 @@ Candidate.prototype = {
       // There are no temporary files when loading complete web pages. 
       yield this._createAndConvertFrameTask(null);
     }
+
+    // Change the last modified time of the destination to match the source.
+    this.location.dest.lastModifiedTime =
+     this.location.source.lastModifiedTime;
+
+    // Conversion completed successfully, move the source to the bin folder.
+    this._moveToBin();
   }),
 
   /**
@@ -407,13 +439,6 @@ Candidate.prototype = {
 
     // This throws an exception if the save operation failed.
     yield promiseSaveNetworkStop;
-
-    // Change the last modified time of the destination to match the source.
-    this.location.dest.lastModifiedTime =
-     this.location.source.lastModifiedTime;
-
-    // Conversion completed successfully, move the source to the bin folder.
-    this._moveToBin();
   }),
 
   /**

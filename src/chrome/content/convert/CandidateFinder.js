@@ -184,22 +184,28 @@ CandidateFinder.prototype = {
       if (!this.sourceFormats.includes(sourceFormat)) {
         continue;
       }
-      // Try to detect multipage archives.
-      var pageCount = 1;
-      if (sourceFormat == "maff") {
-        try {
-          var archiveFile = aLocation.source.clone();
-          archiveFile.append(fileName);
-          pageCount = new MaffArchive(archiveFile).countPages();
-        } catch (ex) {
-          Cu.reportError(ex);
-        }
+      // Complete web pages are always converted without reading any metadata.
+      if (sourceFormat == "complete") {
+        yield this._newCandidate(sourceFormat, aLocation, fileName);
+        continue;
       }
-      // Generate new candidates for conversion.
-      var binCountdown = pageCount <= 1 ? null : { count: pageCount };
-      for (var pageIndex = 0; pageIndex < pageCount; pageIndex++) {
-        yield this._newCandidate(sourceFormat, aLocation, fileName, null,
-         pageIndex, binCountdown);
+      try {
+        // Refresh the user interface just before opening the archive.
+        yield null;
+        // Extract only the metadata from the archive.
+        var archiveFile = aLocation.source.clone();
+        archiveFile.append(fileName);
+        var archive = sourceFormat == "maff" ? new MaffArchive(archiveFile) :
+         new MhtmlArchive(archiveFile);
+        archive.extractAll(true);
+        // Generate new candidates for conversion.
+        var binCountdown = { count: archive.pages.length };
+        for (var i = 0; i < archive.pages.length; i++) {
+          yield this._newCandidate(sourceFormat, aLocation, fileName, null, i,
+           binCountdown, archive.pages[i].indexLeafName);
+        }
+      } catch (ex) {
+        Cu.reportError(ex);
       }
     }
   },
@@ -208,13 +214,14 @@ CandidateFinder.prototype = {
    * Creates a new candidate with the given properties.
    */
   _newCandidate: function(aSourceFormat, aParentLocation, aLeafName,
-   aDataFolderLeafName, aPageIndex, aBinCountdown) {
+   aDataFolderLeafName, aPageIndex, aBinCountdown, aIndexLeafName) {
     // Create a Candidate object for the requested file formats.
     var candidate = new Candidate();
     candidate.sourceFormat = aSourceFormat;
     candidate.destFormat = this.destFormat;
     candidate.binCountdown = aBinCountdown;
     candidate.pageIndex = aPageIndex || 0;
+    candidate.indexLeafName = aIndexLeafName || "";
     // Set the actual file names based on the file formats.
     candidate.setLocation(aParentLocation, aLeafName, aDataFolderLeafName);
     // Check if the destination or bin files already exist.
