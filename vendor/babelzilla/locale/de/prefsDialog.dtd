@@ -1,2 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Mozilla Archiv Format - Einstellungen">
+<!ENTITY associate.grouplabel "Mit $brandShortName öffnen:">
+<!ENTITY associate.maff.label "MAFF (.maff Dateierweiterung)">
+<!ENTITY associate.mhtml.label "MHTML (.mht und .mhtml Dateierweiterung)">
+<!ENTITY infobar.label "Zeige den Originalspeicherort und speicher das Datum der archivierten Seiten">
+<!ENTITY legacy.description "Die Add-On Schnittstelle von $brandShortName wird modernisiert. Mozilla Archive Format basiert auf der bisherigen Add-on Schnittstelle und wird daher leider mit zukünftigen Versionen des Browsers nicht mehr funktionieren.">
+<!ENTITY save.enabled.label "Aktiviere die &quot;Seite archivieren&quot; Funktionalität trotzdem">
+<!ENTITY convert.description "Wenn Sie Webseiten archiviert haben, können diese in ein kompatibleres Format konvertiert werden um diese auch in Zukunft öffnen zu können.">
+<!ENTITY convert.label "Konvertiere archivierte Webseiten">

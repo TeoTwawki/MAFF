@@ -4,13 +4,30 @@
 <!ENTITY window.title "Assistant de conversion de pages enregistrées">
 <!ENTITY browsebutton.label "Parcourir">
 <!-- *** Introduction *** -->
+<!ENTITY oldsavedpages.folder.name "Pages enregistrées auparavant">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "Bienvenue dans l'assistant de conversion de pages enregistrées">
+<!ENTITY introduction.mode.compatible.label "Rechercher dans les pages archivées pour vérifier qu'elles pourront être accessibles par la suite">
+<!ENTITY introduction.mode.compatible.description "Recherchera dans le dossier &quot;$1&quot; les pages qui ont été enregistrées dans une archive, les convertira en utilisant des dossiers distincts pour les fichiers de données, et déplacera les archives originales vers le dossier &quot;$2&quot; de votre ordinateur.">
+<!ENTITY introduction.mode.choose.label "Choisissez quels formats et quels dossiers vous souhaitez utiliser">
+<!ENTITY introduction.description "Vous devriez toujours avoir une copie des fichiers originaux car dans certains cas le processus de conversion risque de ne pas les reproduire avec exactitude.">
 <!-- *** Source folder selection *** -->
+<!ENTITY format.pagelabel "Format du fichier de destination">
+<!ENTITY format.complete.label "HTML avec un dossier particulier pour les fichiers de données">
+<!ENTITY format.complete.description "Donne la meilleure compatibilité possible car on peut ouvrir le fichier avec n'importe quel navigateur sans avoir besoin d'un logiciel supplémentaire, mais le nom de ma page ne peut pas être modifié par la suite.">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "Compatible avec Microsoft Internet Explorer et Google Chrome, mais ne convient pas pour les fichiers vidéo et audio, et incompatible avec les versions à venir de $brandShortName.">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "Repose sur un conteneur ZIP, utilise moins d'espace disque mais ne pourra pas être ouvert avec les versions futures de $brandShortName sauf en extrayant manuellement l'archive.">
 <!-- *** Destination folder selection *** -->
+<!ENTITY source.pagelabel "Dossier source et formats de fichiers">
 <!ENTITY folders.source.label "Rechercher des fichiers source dans ce dossier">
 <!ENTITY folders.source.subfolders.label "Inclure les sous-dossiers">
 <!ENTITY folders.source.invalid.label "Merci de sélectionner un dossier source existant">
+<!ENTITY format.source.label "Rechercher les fichiers sources avec ces formats :">
+<!ENTITY format.source.invalid.label "Veuillez sélectionner au moins un format à rechercher.">
+<!ENTITY allowdownload.label "Télécharger les parties manquantes de la page si nécessaire">
+<!ENTITY allowdownload.description "La conversion peut en être ralentie, mais cela peut réparer les pages enregistrées qui sont incomplètes et ne peuvent être vues correctement quand on est connecté à Internet.">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "Dossier de destination">
 <!ENTITY folders.dest.grouplabel "Placer les fichiers convertis :">
@@ -32,6 +49,8 @@
 <!ENTITY candidates.searchingcounts.label "$1 total, $2 déjà convertis, $3 sélectionnés">
 <!ENTITY candidates.convertingcounts.label "$1 total, $2 déjà convertis, $3 sélectionnés, $4 convertis avec succès, $5 échoués">
 <!ENTITY candidates.searching.label "Recherche de fichiers source…">
+<!ENTITY candidates.none.description "Ce dossier particulier a été parcouru pour y trouver des fichiers à convertir, mais aucun n'a été trouvé. Cela signifie peut-être que vous n'avez aucun fichier à convertir ou bien que tous les fichiers sont déjà convertis. Vous pouvez cliquer sur $1 pour fermer cette fenêtre.">
+<!ENTITY candidates.obstructed.label "Tous les fichiers ont déjà été convertis auparavant.">
 <!ENTITY candidates.invalid.label "Merci de sélectionner au moins un fichier à convertir">
 <!ENTITY candidates.convert.label "Cliquez pour convertir vos fichiers">
 <!ENTITY candidates.converting.label "Conversion de vos fichiers…">

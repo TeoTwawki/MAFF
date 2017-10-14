@@ -4,13 +4,30 @@
 <!ENTITY window.title "已保存页面转换向导">
 <!ENTITY browsebutton.label "浏览…">
 <!-- *** Introduction *** -->
+<!ENTITY oldsavedpages.folder.name "旧的储存页面">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "欢迎使用已保存页面转换向导">
+<!ENTITY introduction.mode.compatible.label "搜寻已存档的页面并确保将来可以打开它们。">
+<!ENTITY introduction.mode.compatible.description "这将搜寻“$1”资料夹中已封存的页面，将其转换且储存在个别的资料夹中，并将原始封存挡移动到桌面的“$2”资料夹中。">
+<!ENTITY introduction.mode.choose.label "选择要使用的文件格式与资料夹">
+<!ENTITY introduction.description "您应该尽量保存一份原始档案的副本，因为在某些情况下，转换过程可能无法精准地复制。">
 <!-- *** Source folder selection *** -->
+<!ENTITY format.pagelabel "目的文件格式">
+<!ENTITY format.complete.label "HTML 伴随的资料夹">
+<!ENTITY format.complete.description "提供最佳的相容性并在任何的浏览器中不需要额外的软体也能开启，但页面名称在未来不能修改">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "与 Microsoft Internet Explorer 和 Google Chrome 相容，但不适用于影像与声音，并且不相容未来版本的 $brandShortName 。">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "ZIP 的格式可减少磁碟空间的使用，但无法在不手动解压缩的情况下，在未来的 $brandShortName 中打开。">
 <!-- *** Destination folder selection *** -->
+<!ENTITY source.pagelabel "来源资料夹与档案格式">
 <!ENTITY folders.source.label "自此文件夹搜寻原始文件 (e)：">
 <!ENTITY folders.source.subfolders.label "包含子文件夹 (s)">
 <!ENTITY folders.source.invalid.label "请选择包含原始文件的文件夹。">
+<!ENTITY format.source.label "搜寻以下格式的来源档案：">
+<!ENTITY format.source.invalid.label "请选择至少一种格式进行搜寻。">
+<!ENTITY allowdownload.label "必要时下载遗失的页面">
+<!ENTITY allowdownload.description "这可能会拖慢转换速度，但可以修复不完整但已储存的页面，并且只能在已连上网际网路的情况下正确被检视。">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "目标文件夹">
 <!ENTITY folders.dest.grouplabel "放置转换后的文件：">
@@ -32,6 +49,8 @@
 <!ENTITY candidates.searchingcounts.label "共找到$1个网页，$2个已转换，$3个被选择（待转换）">
 <!ENTITY candidates.convertingcounts.label "共$1个网页，$2个以前已转换，$3个被选择本次转换，其中$4个成功，$5个失败">
 <!ENTITY candidates.searching.label "正在查找待转换文件…">
+<!ENTITY candidates.none.description "没有在这资料夹中搜寻到已转换的档案。这可能表示你没有任何需要转换的档案或是所有档案已转换完成。你可以点击“$1”关闭这个视窗。">
+<!ENTITY candidates.obstructed.label "所有的文件都已经被转换了。">
 <!ENTITY candidates.invalid.label "请至少选择一个文件以便转换。">
 <!ENTITY candidates.convert.label "单击转换按钮以转换上面的文件。">
 <!ENTITY candidates.converting.label "转换中，请稍候……">

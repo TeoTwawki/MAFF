@@ -4,13 +4,30 @@
 <!ENTITY window.title "Мастер преобразования сохраненных страниц">
 <!ENTITY browsebutton.label "Обзор...">
 <!-- *** Introduction *** -->
+<!ENTITY oldsavedpages.folder.name "Старые сохраненные страницы">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "Вас приветствует Мастер преобразования сохраненных страниц">
+<!ENTITY introduction.mode.compatible.label "Найдите архивированные страницы и обеспечьте возможность их открытия в будущем">
+<!ENTITY introduction.mode.compatible.description "Этот мастер будет искать сохраненные в архив страницы в папке &quot;$1&quot;, преобразует их в файлы с отдельными папками для вспомогательных элементов и переместит оригинальные архивы в папку &quot;$2&quot; на вашем рабочем столе.">
+<!ENTITY introduction.mode.choose.label "Выберите, какие файловые форматы и папки использовать">
+<!ENTITY introduction.description "Вам следует всегда сохранять резервные копии оригинальных файлов, потому что в некоторых случаях процесс преобразования может быть недостаточно точным.">
 <!-- *** Source folder selection *** -->
+<!ENTITY format.pagelabel "Целевой файловый формат">
+<!ENTITY format.complete.label "HTML с отдельной папкой для вспомогательных файлов">
+<!ENTITY format.complete.description "Обеспечивает наилучшую совместимость, так как открывается в любом браузере без дополнительных программ, но переименовывать такой файл нужно вместе с папкой.">
+<!ENTITY format.mhtml.label "MHTML">
+<!ENTITY format.mhtml.description "Совместим с Microsoft Internet Explorer и Google Chrome, но не подходит для аудио и видео, не совместим с будущими версиями $brandShortName.">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "Основан на формате ZIP, Занимает меньше места на диске, но не будет открываться в будущих версиях $brandShortName без предварительной распаковки (для ручной распаковки можно заменить расширение .maff на .zip и использовать любую программу, умеющую открывать ZIP-файлы).">
 <!-- *** Destination folder selection *** -->
+<!ENTITY source.pagelabel "Папка-источник и исходные файловые форматы">
 <!ENTITY folders.source.label "Искать файлы в папке:">
 <!ENTITY folders.source.subfolders.label "Включая подпапки">
 <!ENTITY folders.source.invalid.label "Пожалуйста, выберите существующую папку.">
+<!ENTITY format.source.label "Искать исходные файлы этих форматов:">
+<!ENTITY format.source.invalid.label "Пожалуйста, выберите хотя бы один формат для поиска.">
+<!ENTITY allowdownload.label "По необходимости загружать недостающие части страниц">
+<!ENTITY allowdownload.description "Это может замедлить преобразование, но может исправить неполные страницы, которые иначе невозможно было бы нормально просматривать без подключения к Интернету.">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "Выходные данные">
 <!ENTITY folders.dest.grouplabel "Поместить преобразованные файлы:">
@@ -20,6 +37,7 @@
 <!ENTITY folders.bin.original.label "оставить оригиналы на месте">
 <!ENTITY folders.bin.folder.label "переместить оригиналы в эту папку (сохраняя относительные пути):">
 <!ENTITY folders.dest.invalid.label "Пожалуйста, укажите полное имя папки.">
+<!-- *** Candidates selection and conversion *** -->
 <!ENTITY candidates.pagelabel "Преобразование">
 <!ENTITY candidates.description "Пожалуйста, выберите из списка файлы для преобразования.">
 <!ENTITY candidates.sourcename.header "Исходный файл">
@@ -32,6 +50,8 @@
 <!ENTITY candidates.searchingcounts.label "$1 всего, $2 уже обработано, $3 выбрано">
 <!ENTITY candidates.convertingcounts.label "$1 всего, $2 уже обработано, $3 выбрано, $4 преобразовано успешно, $5 преобразовать не удалось">
 <!ENTITY candidates.searching.label "Поиск исходных файлов...">
+<!ENTITY candidates.none.description "В указанной папке не обнаружено ни одного файла для преобразования. Возможно, они находятся в другой папке или уже были преобразованы ранее. Щелкните $1, чтобы закрыть окно.">
+<!ENTITY candidates.obstructed.label "Все файлы уже были преобразованы ранее.">
 <!ENTITY candidates.invalid.label "Выберите хотя бы один файл для преобразования.">
 <!ENTITY candidates.convert.label "Щелкните Преобразовать, чтобы начать преобразование.">
 <!ENTITY candidates.converting.label "Преобразование файлов...">

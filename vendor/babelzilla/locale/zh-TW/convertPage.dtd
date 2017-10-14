@@ -1,0 +1,7 @@
+<!ENTITY page.title "重要">
+<!ENTITY convert.label "轉換已儲存的頁面，並在未來的 $brandShortName 版本中檢視。">
+<!ENTITY convert.description "如果您已使用「封存頁面」功能將網頁儲存在單一檔案中，則應該按照此步驟將文件轉換為相容性更好的格式。">
+<!ENTITY convert.reason.description "這是必要的，因為 $brandShortName 附加元件技術正朝向更現代化的方向前進，而舊有的附加元件，例如：Mozilla Archive Format 和其他提供類似功能的附加元件將停止運作。">
+<!ENTITY convert.button.label "現在開始進行導覽">
+<!ENTITY convert.later.description "你可以稍後從 Mozilla Archive Format 的附加元件選項中啟動這項流程。">
+<!ENTITY convert.link.label "瀏覽網站了解更多資訊與其他選項。">

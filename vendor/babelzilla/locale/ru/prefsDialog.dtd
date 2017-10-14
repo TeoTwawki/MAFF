@@ -1,2 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Настройки Mozilla Archive Format">
+<!ENTITY associate.grouplabel "Открывать в $brandShortName:">
+<!ENTITY associate.maff.label "MAFF (файлы с расширением .maff)">
+<!ENTITY associate.mhtml.label "MHTML (файлы с расширением .mht and .mhtml)">
+<!ENTITY infobar.label "Показывать адрес оригинала и дату сохранения архивированных страниц">
+<!ENTITY legacy.description "$brandShortName меняет технологию работы дополнений. Mozilla Archive Format — дополнение старого типа и будет несовместимым с будущими версиями браузера.">
+<!ENTITY save.enabled.label "Все равно включить функцию &quot;Сохранить страницу в архив&quot;">
+<!ENTITY convert.description "Если вы сохранили веб-страницы в архив, их можно преобразовать в более совместимый формат, чтобы обеспечить возможность открывать их в будущем.">
+<!ENTITY convert.label "Преобразовать сохраненные страницы">

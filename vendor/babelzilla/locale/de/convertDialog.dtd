@@ -4,13 +4,30 @@
 <!ENTITY window.title "Archivkonverter-Assistent">
 <!ENTITY browsebutton.label "Durchsuchen…">
 <!-- *** Introduction *** -->
+<!ENTITY oldsavedpages.folder.name "Kopie der Origiinalarchive">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "Willkommen beim Archivkonverter-Assistenten">
+<!ENTITY introduction.mode.compatible.label "Nach Webseiten-Archiven suchen und sicherstellen, dass diese auch in Zukunft noch geöffnet werden können">
+<!ENTITY introduction.mode.compatible.description "Auswahl des &quot;$1&quot; Ordners mit den zu konvertierenden Archiven, konvertierung dieser in separate Ordner für die enthaltenen Dateien und Backup der Originalarchive im &quot;$1&quot; Ordner auf dem Desktop.">
+<!ENTITY introduction.mode.choose.label "Wähle das zu verwendende Dateiformat und welche Ordner verwendet werden sollen.">
+<!ENTITY introduction.description "Es sollte immer eine Kopie des Originalarchives erhalten bleiben, da durch den Konvertierungsprozess unter Umständen Daten verloren gehen können.">
 <!-- *** Source folder selection *** -->
+<!ENTITY format.pagelabel "Zielformat">
+<!ENTITY format.complete.label "HTML mit zusätzlichem Ordner für Bilder etc.">
+<!ENTITY format.complete.description "Vorteil: Beste Kompatibiliät da es mit jedem Browser geöffnet werden kann. Nachteil: Name der Webseite kann nicht mehr geändert werden.">
+<!ENTITY format.mhtml.label "MTHML">
+<!ENTITY format.mhtml.description "Vorteil: Kompatibel mit IE und Google Chrome. Nur eine Datei. Nachteil: Verlust von Video- &amp; Audiodateien und inkompatibel mit zukünftigen Versionen von $brandShortName.">
+<!ENTITY format.maff.label "MAFF">
+<!ENTITY format.maff.description "Webseitenarchiv mit ZIP-Komprimierung. Nachteil: Kann nicht mehr mit zukünftigen Versionen von $brandShortName geöffnet werden ohne manuelles Entpacken des Archives.">
 <!-- *** Destination folder selection *** -->
+<!ENTITY source.pagelabel "Quellordner und Dateiformate">
 <!ENTITY folders.source.label "Diesen Ordner nach Quelldateien durchsuchen:">
 <!ENTITY folders.source.subfolders.label "Unterordner einbeziehen">
 <!ENTITY folders.source.invalid.label "Bitte einen existierenden Quellordner angeben.">
+<!ENTITY format.source.label "Nach Webarchiven dieses Formates suchen:">
+<!ENTITY format.source.invalid.label "Bitte wählen Sie mindestens ein Format aus, nach dem gesucht werden soll.">
+<!ENTITY allowdownload.label "Falls Notwendig, lade fehlende Teile der Webseite nach">
+<!ENTITY allowdownload.description "Dies kann zu einem langsameren Konversationsprozess führen, erhöht aber die Offline-Kompatibilität des Webarchives.">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "Zielordner">
 <!ENTITY folders.dest.grouplabel "Konvertierte Dateien speichern:">
@@ -32,6 +49,8 @@
 <!ENTITY candidates.searchingcounts.label "$1 total, $2 bereits konvertiert, $3 ausgewählt">
 <!ENTITY candidates.convertingcounts.label "$1 total, $2 bereits konvertiert, $3 ausgewählt, $4 erfolgreich konvertiert, $5 fehlgeschlagen">
 <!ENTITY candidates.searching.label "Es wird nach Quelldateien gesucht…">
+<!ENTITY candidates.none.description "Der Ordner wurde nach konvertierbaren Webarchiven durchsucht, es wurden aber leider keine gefunden. Dies rührt entweder daher, dass keine Archive einer Konvertierung bedürfen, oder das die Archive bereits konvertiert worden sind. Bitte mit $1 schließen.">
+<!ENTITY candidates.obstructed.label "Diese Dateien wurden bereits konvertiert.">
 <!ENTITY candidates.invalid.label "Bitte mindestens eine Datei zum Konvertieren auswählen.">
 <!ENTITY candidates.convert.label "„Konvertieren“ klicken um zu starten.">
 <!ENTITY candidates.converting.label "Dateien werden konvertiert…">

@@ -1,0 +1,7 @@
+<!ENTITY page.title "Important">
+<!ENTITY convert.label "Convertissez vos pages enregistrées pour les voir s'afficher dans les futures versions de $brandShortName.">
+<!ENTITY convert.description "Si vous avez utilisé la fonction &quot;Enregistrer la page dans l'archive&quot; pour stocker les pages web en un seul fichier, vous devriez suivre maintenant cette procédure pour convertir vos fichiers en un format plus compatible.">
+<!ENTITY convert.reason.description "C'est nécessaire car la technologie des extensions de $brandShortName a évolué, et les extensions anciennes comme Mozilla Archive Format et autres qui donnent les mêmes fonctinnalités vont cesser de fonctionner.">
+<!ENTITY convert.button.label "Commencer la procédure guidée maintenant">
+<!ENTITY convert.later.description "Vous pourrez commencer la procédure par la suite dans les options de l'extension Mozilla Archive Format.">
+<!ENTITY convert.link.label "Visitez le site web pour davantage d'informations sur les options disponibles.">

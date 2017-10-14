@@ -1,2 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Mozilla Archive Format - Opciones">
+<!ENTITY associate.grouplabel "Abrir con $brandShortName:">
+<!ENTITY associate.maff.label "MAFF (extensión de archivo .maff)">
+<!ENTITY associate.mhtml.label "MHTML (extensiones de archivo .mht y .mhtml)">
+<!ENTITY infobar.label "Mostrar la ubicación original y guardar la fecha de las páginas archivadas.">
+<!ENTITY legacy.description "La tecnología complementaria de $brandShortName se está modernizando. Mozilla Archive Format es un complemento heredado que no será compatible con futuras versiones del navegador.">
+<!ENTITY save.enabled.label "Habilite la función &quot;Guardar página en archivo&quot; de todos modos">
+<!ENTITY convert.description "Si guardó páginas web en un archivo, puede convertir sus archivos a un formato más compatible para garantizar que puedan abrirse en el futuro.">
+<!ENTITY convert.label "Convertir páginas guardadas">

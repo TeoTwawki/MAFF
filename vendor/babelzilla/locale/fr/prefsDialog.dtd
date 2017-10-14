@@ -1,2 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Options de Mozilla Archive Format">
+<!ENTITY associate.grouplabel "Ouvrir avec $brandShortName:">
+<!ENTITY associate.maff.label "MAFF (extension de fichier.maff)">
+<!ENTITY associate.mhtml.label "MHTML (extensions de fichier .mht et .mhtml)">
+<!ENTITY infobar.label "Afficher l'emplacement d'origine et la date d'enregistrement des pages archivées">
+<!ENTITY legacy.description "La technologie des extensions pour $brandShortName a évolué. Mozilla Archive Format est une extension ancienne qui ne sera pas compatible à l'avenir avec les futures versions de votre navigateur.">
+<!ENTITY save.enabled.label "Activer tout de même la fonction &quot;Enregistrer la page dans une archive&quot;">
+<!ENTITY convert.description "Si vous avez enregistré des pages dans une archive, vous pouvez convertir vos fichiers dans un format plus compatible pour être certain⋅e de pouvoir les ouvrir à l'avenir.">
+<!ENTITY convert.label "Convertir les pages enregistrées">

@@ -1,2 +1,10 @@
 <!-- General window controls -->
 <!ENTITY window.title.v2 "Mozilla Archive Format 選項">
+<!ENTITY associate.grouplabel "使用 $brandShortName 打開：">
+<!ENTITY associate.maff.label "MAFF （.maff 副檔名）">
+<!ENTITY associate.mhtml.label "MHTML （.mht 和 .mhtml 副檔名）">
+<!ENTITY infobar.label "顯示封存資料的原始位置與儲存日期">
+<!ENTITY legacy.description "$brandShortName 附加元件技術正在朝向更現代化的方向前進，然而 Mozilla Archive Format 是一個舊的附加元件並不能在未來的瀏覽器中相容。">
+<!ENTITY save.enabled.label "啟動「將頁面封存」的功能">
+<!ENTITY convert.description "如果您將網頁封存，你可以將這些檔案轉換成為相容性更佳的格式並確保在未來能開啟它們。">
+<!ENTITY convert.label "轉換已儲存的頁面">

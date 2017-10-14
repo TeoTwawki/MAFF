@@ -1,0 +1,7 @@
+<!ENTITY page.title "Ważny">
+<!ENTITY convert.label "Konwertuj zapisane strony w celu wyświetlenia ich w przyszłych wersjach Firefoksa.">
+<!ENTITY convert.description "Jeśli używasz funkcji &quot;Zapisz stronę w archiwum&quot;, aby przechowywać strony internetowe w jednym pliku, należy wykonać poniższą procedurę, aby przekonwertować pliki na bardziej kompatybilny format.">
+<!ENTITY convert.reason.description "Jest to konieczne, ponieważ technologia dodatków Firefoksa ulega modernizacji, a starsze dodatki, takie jak Mozilla Archive Format i inne, oferujące podobne funkcje, przestaną działać.">
+<!ENTITY convert.button.label "Uruchom teraz tę procedurę">
+<!ENTITY convert.later.description "Procedurę tę można uruchomić później z opcji dodatku Mozilla Archive Format.">
+<!ENTITY convert.link.label "Odwiedź stronę internetową, aby uzyskać więcej informacji i innych opcji.">
