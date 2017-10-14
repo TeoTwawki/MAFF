@@ -261,7 +261,6 @@ CandidateFinder.prototype = {
       }
       // Look into the provided list of file names to find the associated file.
       var endPosition = 0;
-      var foundFileName = false;
       while (true) {
         // Search case-sensitively for a file name that begins with the base
         // name obtained from the support folder name.
@@ -274,20 +273,14 @@ CandidateFinder.prototype = {
         endPosition = aFilesList.indexOf("::", startPosition);
         var fileName = aFilesList.slice(startPosition, endPosition);
         var lastPart = fileName.slice(basePart.length);
-        // Ensure that the base name is the entire name or is followed by a dot.
-        if (lastPart && lastPart[0] != ".") {
-          continue;
-        }
-        // A file name that can be associated with the folder was found.
-        foundFileName = fileName;
-        // Give priority to names that match one of the known extensions.
-        if (/\.(x?html|xht|htm|xml|svgz?)$/i.test(lastPart)) {
-          return foundFileName;
+        // Match names without extension or with one of the known extensions.
+        if (!lastPart || /\.(x?html|xht|htm|xml|svgz?)$/i.test(lastPart)) {
+          return fileName;
         }
       }
       // Either a comaptible file name was not found, or a file name that does
       // not match one of the known extensions was found.
-      return foundFileName;
+      return false;
     }
     // The given name is not one of a support folder.
     return false;
