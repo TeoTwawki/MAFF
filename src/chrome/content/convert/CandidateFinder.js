@@ -133,7 +133,10 @@ CandidateFinder.prototype = {
       try {
         // Add the entry to the appropriate lists.
         if (dirEntry.isDirectory()) {
-          subdirs[dirEntry.leafName] = true;
+          // Exclude the bin folder when it is a subfolder of the source.
+          if (!this.location.bin || !dirEntry.equals(this.location.bin)) {
+            subdirs[dirEntry.leafName] = true;
+          }
         } else {
           files[dirEntry.leafName] = true;
           filesList += dirEntry.leafName + "::";
