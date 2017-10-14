@@ -4,30 +4,30 @@
 <!ENTITY window.title "Asistente de conversión de páginas guardadas">
 <!ENTITY browsebutton.label "Seleccionar...">
 <!-- *** Introduction *** -->
-<!ENTITY oldsavedpages.folder.name "Old Saved Pages">
+<!ENTITY oldsavedpages.folder.name "Páginas guardadas previamente">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "Bienvenido al asistente de conversión de páginas guardadas">
-<!ENTITY introduction.mode.compatible.label "Search for archived pages and ensure they can be opened in the future">
-<!ENTITY introduction.mode.compatible.description "This will search the &quot;$1&quot; folder for pages that were saved in an archive, convert them to use separate folders for data files, and move the original archives to the &quot;$2&quot; folder on your desktop.">
-<!ENTITY introduction.mode.choose.label "Choose which file formats and folders to use">
-<!ENTITY introduction.description "You should always keep a copy of the original files because in some cases the conversion process may not replicate them accurately.">
+<!ENTITY introduction.mode.compatible.label "Busque páginas archivadas y asegúrese de que puedan abrirse en el futuro">
+<!ENTITY introduction.mode.compatible.description "Esto buscará en la carpeta &quot;$1&quot; las páginas que se guardaron en un archivo, las convertirá para usar carpetas separadas para archivos de datos y moverá los archivos originales a la carpeta &quot;$2&quot; en su escritorio.">
+<!ENTITY introduction.mode.choose.label "Elija qué formatos de archivo y carpetas usar">
+<!ENTITY introduction.description "Siempre debe conservar una copia de los archivos originales porque, en algunos casos, el proceso de conversión puede no replicarlos con precisión.">
 <!-- *** Source folder selection *** -->
-<!ENTITY format.pagelabel "Destination File Format">
-<!ENTITY format.complete.label "HTML with support folder for data files">
-<!ENTITY format.complete.description "Provides the best compatibility as it can be opened with any browser without additional software, but the page name cannot be changed afterwards.">
+<!ENTITY format.pagelabel "Formato de archivo de destino">
+<!ENTITY format.complete.label "HTML con la carpeta de soporte para archivos de datos">
+<!ENTITY format.complete.description "Ofrece la mejor compatibilidad, ya que puede abrirse con cualquier navegador sin software adicional, pero el nombre de la página no se puede cambiar posteriormente.">
 <!ENTITY format.mhtml.label "MHTML">
-<!ENTITY format.mhtml.description "Compatible with Microsoft Internet Explorer and Google Chrome, but not suitable for video and audio, and incompatible with future versions of $brandShortName.">
+<!ENTITY format.mhtml.description "Compatible con Microsoft Internet Explorer y Google Chrome, pero no es adecuado para video y audio, e incompatible con futuras versiones de $brandShortName.">
 <!ENTITY format.maff.label "MAFF">
-<!ENTITY format.maff.description "Based on the ZIP container, uses less disk space but cannot be opened with future versions of $brandShortName without extracting the archive manually.">
+<!ENTITY format.maff.description "Basado en el contenedor ZIP, usa menos espacio en disco pero no se puede abrir con futuras versiones de $brandShortName sin extraer el archivo manualmente.">
 <!-- *** Destination folder selection *** -->
-<!ENTITY source.pagelabel "Source Folder and File Formats">
+<!ENTITY source.pagelabel "Carpeta de origen y formatos de archivo">
 <!ENTITY folders.source.label "Buscar en esta carpeta los archivos origen:">
 <!ENTITY folders.source.subfolders.label "Incluir subcarpetas">
 <!ENTITY folders.source.invalid.label "Por favor, seleccione una carpeta fuente existente.">
-<!ENTITY format.source.label "Search for source files in these formats:">
-<!ENTITY format.source.invalid.label "Please select at least one format to search for.">
-<!ENTITY allowdownload.label "Download missing parts of the page when necessary">
-<!ENTITY allowdownload.description "This may slow down the conversion, but can repair saved pages that are incomplete and can only be viewed correctly when connected to the Internet.">
+<!ENTITY format.source.label "Busque archivos fuente en estos formatos:">
+<!ENTITY format.source.invalid.label "Seleccione al menos un formato para buscar.">
+<!ENTITY allowdownload.label "Descargue las partes faltantes de la página cuando sea necesario.">
+<!ENTITY allowdownload.description "Esto puede ralentizar la conversión, pero puede reparar las páginas guardadas que están incompletas y solo se pueden ver correctamente cuando se conectan a Internet.">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "Carpeta destino">
 <!ENTITY folders.dest.grouplabel "Colocar los archivos convertidos:">
@@ -50,8 +50,8 @@
 <!ENTITY candidates.searchingcounts.label "$1 total, $2 ya convertidos, $3 seleccionados">
 <!ENTITY candidates.convertingcounts.label "$1 total, $2 ya convertidos, $3 seleccionados, $4 convertidos correctamente, $5 fallidos">
 <!ENTITY candidates.searching.label "Buscando archivos fuente...">
-<!ENTITY candidates.none.description "The specified folder has been searched for files to be converted, and none were found. This may indicate that you don't have any files that need to be converted, or that all the files have been already converted. You can click $1 to close the window.">
-<!ENTITY candidates.obstructed.label "All the files have been already converted previously.">
+<!ENTITY candidates.none.description "Se ha buscado la carpeta especificada para los archivos que se convertirán y no se encontraron ninguno. Esto puede indicar que no tiene ningún archivo que deba convertirse, o que todos los archivos ya se han convertido. Puede hacer clic en Finalizar para cerrar la ventana.">
+<!ENTITY candidates.obstructed.label "Todos los archivos ya se han convertido previamente.">
 <!ENTITY candidates.invalid.label "Por favor, seleccione al menos un archivo para convertir.">
 <!ENTITY candidates.convert.label "Pulse en convertir para convertir sus archivos.">
 <!ENTITY candidates.converting.label "Convirtiendo sus archivos...">

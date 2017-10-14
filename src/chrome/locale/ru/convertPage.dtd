@@ -1,8 +1,8 @@
 <!-- *** This page is displayed when conversion of saved pages is necessary. *** -->
-<!ENTITY page.title "Important">
-<!ENTITY convert.label "Convert your saved pages to view them in future versions of $brandShortName.">
-<!ENTITY convert.description "If you used the &quot;Save Page In Archive&quot; functionality to store web pages in a single file, you should now follow this procedure to convert your files to a more compatible format.">
-<!ENTITY convert.reason.description "This is necessary because $brandShortName add-on technology is modernizing, and legacy add-ons like Mozilla Archive Format and others providing similar functionality will stop working.">
-<!ENTITY convert.button.label "Start this guided procedure now">
-<!ENTITY convert.later.description "You can start this procedure later from the options of the Mozilla Archive Format add-on.">
-<!ENTITY convert.link.label "Visit the website for more information and other options.">
+<!ENTITY page.title "Важно">
+<!ENTITY convert.label "Преобразуйте ваши сохраненные страницы, чтобы их можно было просматривать в будущих версиях $brandShortName">
+<!ENTITY convert.description "Если вы использовали &quot;Сохранить страницу в архив&quot; для сохранения веб-страниц одним файлом с расширением .maff, вам следует теперь преобразовать их в более совместимый формат.">
+<!ENTITY convert.reason.description "Это необходимо, так как $brandShortName переходит на использование дополнений нового типа и расширения старого образца, такие как Mozilla Archive Format и другие с похожей функциональностью,скоро перестанут работать.">
+<!ENTITY convert.button.label "Запустить мастер преобразования страниц сейчас">
+<!ENTITY convert.later.description "Вы можете преобразовать страницы позже, запустив мастер преобразования из настроек расширения Mozilla Archive Format">
+<!ENTITY convert.link.label "Посетите веб-сайт расширения для получения дополнительной информации (на английском).">

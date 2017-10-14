@@ -1,8 +1,8 @@
 <!-- *** This page is displayed when conversion of saved pages is necessary. *** -->
-<!ENTITY page.title "Important">
-<!ENTITY convert.label "Convert your saved pages to view them in future versions of $brandShortName.">
-<!ENTITY convert.description "If you used the &quot;Save Page In Archive&quot; functionality to store web pages in a single file, you should now follow this procedure to convert your files to a more compatible format.">
-<!ENTITY convert.reason.description "This is necessary because $brandShortName add-on technology is modernizing, and legacy add-ons like Mozilla Archive Format and others providing similar functionality will stop working.">
-<!ENTITY convert.button.label "Start this guided procedure now">
-<!ENTITY convert.later.description "You can start this procedure later from the options of the Mozilla Archive Format add-on.">
-<!ENTITY convert.link.label "Visit the website for more information and other options.">
+<!ENTITY page.title "重要">
+<!ENTITY convert.label "转换已储存的页面，并在未来的 $brandShortName 版本中检视。">
+<!ENTITY convert.description "如果您已使用“封存页面”功能将网页储存在单一档案中，则应该按照此步骤将文件转换为相容性更好的格式。">
+<!ENTITY convert.reason.description "这是必要的，因为 $brandShortName 附加元件技术正朝向更现代化的方向前进，而旧有的附加元件，例如：Mozilla Archive Format 和其他提供类似功能的附加元件将停止运作。">
+<!ENTITY convert.button.label "现在开始进行导览">
+<!ENTITY convert.later.description "你可以稍后从 Mozilla Archive Format 的附加元件选项中启动这项流程。">
+<!ENTITY convert.link.label "浏览网站了解更多资讯与其他选项。">

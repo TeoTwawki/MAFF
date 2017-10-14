@@ -4,30 +4,30 @@
 <!ENTITY window.title "轉換已存網頁精靈">
 <!ENTITY browsebutton.label "瀏覽…">
 <!-- *** Introduction *** -->
-<!ENTITY oldsavedpages.folder.name "Old Saved Pages">
+<!ENTITY oldsavedpages.folder.name "舊的儲存頁面">
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "歡迎來到轉換已存網頁精靈">
-<!ENTITY introduction.mode.compatible.label "Search for archived pages and ensure they can be opened in the future">
-<!ENTITY introduction.mode.compatible.description "This will search the &quot;$1&quot; folder for pages that were saved in an archive, convert them to use separate folders for data files, and move the original archives to the &quot;$2&quot; folder on your desktop.">
-<!ENTITY introduction.mode.choose.label "Choose which file formats and folders to use">
-<!ENTITY introduction.description "You should always keep a copy of the original files because in some cases the conversion process may not replicate them accurately.">
+<!ENTITY introduction.mode.compatible.label "搜尋已存檔的頁面並確保將來可以打開它們。">
+<!ENTITY introduction.mode.compatible.description "這將搜尋「$1」資料夾中已封存的頁面，將其轉換且儲存在個別的資料夾中，並將原始封存擋移動到桌面的「$2」資料夾中。">
+<!ENTITY introduction.mode.choose.label "選擇要使用的文件格式與資料夾">
+<!ENTITY introduction.description "您應該盡量保存一份原始檔案的副本，因為在某些情況下，轉換過程可能無法精準地複製。">
 <!-- *** Source folder selection *** -->
-<!ENTITY format.pagelabel "Destination File Format">
-<!ENTITY format.complete.label "HTML with support folder for data files">
-<!ENTITY format.complete.description "Provides the best compatibility as it can be opened with any browser without additional software, but the page name cannot be changed afterwards.">
+<!ENTITY format.pagelabel "目的文件格式">
+<!ENTITY format.complete.label "HTML 伴隨的資料夾">
+<!ENTITY format.complete.description "提供最佳的相容性並在任何的瀏覽器中不需要額外的軟體也能開啟，但頁面名稱在未來不能修改">
 <!ENTITY format.mhtml.label "MHTML">
-<!ENTITY format.mhtml.description "Compatible with Microsoft Internet Explorer and Google Chrome, but not suitable for video and audio, and incompatible with future versions of $brandShortName.">
+<!ENTITY format.mhtml.description "與 Microsoft Internet Explorer 和 Google Chrome 相容，但不適用於影像與聲音，並且不相容未來版本的 $brandShortName 。">
 <!ENTITY format.maff.label "MAFF">
-<!ENTITY format.maff.description "Based on the ZIP container, uses less disk space but cannot be opened with future versions of $brandShortName without extracting the archive manually.">
+<!ENTITY format.maff.description "ZIP 的格式可減少磁碟空間的使用，但無法在不手動解壓縮的情況下，在未來的 $brandShortName 中打開。">
 <!-- *** Destination folder selection *** -->
-<!ENTITY source.pagelabel "Source Folder and File Formats">
+<!ENTITY source.pagelabel "來源資料夾與檔案格式">
 <!ENTITY folders.source.label "在這個資料夾尋找原來檔案：">
 <!ENTITY folders.source.subfolders.label "包括子資料夾">
 <!ENTITY folders.source.invalid.label "請選擇有效的原來資料夾。">
-<!ENTITY format.source.label "Search for source files in these formats:">
-<!ENTITY format.source.invalid.label "Please select at least one format to search for.">
-<!ENTITY allowdownload.label "Download missing parts of the page when necessary">
-<!ENTITY allowdownload.description "This may slow down the conversion, but can repair saved pages that are incomplete and can only be viewed correctly when connected to the Internet.">
+<!ENTITY format.source.label "搜尋以下格式的來源檔案：">
+<!ENTITY format.source.invalid.label "請選擇至少一種格式進行搜尋。">
+<!ENTITY allowdownload.label "必要時下載遺失的頁面">
+<!ENTITY allowdownload.description "這可能會拖慢轉換速度，但可以修復不完整但已儲存的頁面，並且只能在已連上網際網路的情況下正確被檢視。">
 <!-- *** Candidates selection and conversion *** -->
 <!ENTITY folders.dest.pagelabel "目標資料夾">
 <!ENTITY folders.dest.grouplabel "把轉換檔案放置到：">
@@ -50,8 +50,8 @@
 <!ENTITY candidates.searchingcounts.label "總共 $1 個，已轉換 $2 個，已選 $3 個">
 <!ENTITY candidates.convertingcounts.label "總共 $1 個，已轉換 $2 個，已選 $3 個，成功轉換 $4 個，$5 個轉換失敗">
 <!ENTITY candidates.searching.label "正在尋找原來檔案…">
-<!ENTITY candidates.none.description "The specified folder has been searched for files to be converted, and none were found. This may indicate that you don't have any files that need to be converted, or that all the files have been already converted. You can click $1 to close the window.">
-<!ENTITY candidates.obstructed.label "All the files have been already converted previously.">
+<!ENTITY candidates.none.description "沒有在這資料夾中搜尋到已轉換的檔案。這可能表示你沒有任何需要轉換的檔案或是所有檔案已轉換完成。你可以點擊「$1」關閉這個視窗。">
+<!ENTITY candidates.obstructed.label "所有的文件都已經被轉換了。">
 <!ENTITY candidates.invalid.label "請選擇最少一個檔案來轉換。">
 <!ENTITY candidates.convert.label "請按「轉換」來轉換你的檔案。">
 <!ENTITY candidates.converting.label "正在轉換你的檔案…">

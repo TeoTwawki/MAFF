@@ -1,8 +1,8 @@
 <!-- *** This page is displayed when conversion of saved pages is necessary. *** -->
 <!ENTITY page.title "Important">
-<!ENTITY convert.label "Convert your saved pages to view them in future versions of $brandShortName.">
-<!ENTITY convert.description "If you used the &quot;Save Page In Archive&quot; functionality to store web pages in a single file, you should now follow this procedure to convert your files to a more compatible format.">
-<!ENTITY convert.reason.description "This is necessary because $brandShortName add-on technology is modernizing, and legacy add-ons like Mozilla Archive Format and others providing similar functionality will stop working.">
-<!ENTITY convert.button.label "Start this guided procedure now">
-<!ENTITY convert.later.description "You can start this procedure later from the options of the Mozilla Archive Format add-on.">
-<!ENTITY convert.link.label "Visit the website for more information and other options.">
+<!ENTITY convert.label "Convertissez vos pages enregistrées pour les voir s'afficher dans les futures versions de $brandShortName.">
+<!ENTITY convert.description "Si vous avez utilisé la fonction &quot;Enregistrer la page dans l'archive&quot; pour stocker les pages web en un seul fichier, vous devriez suivre maintenant cette procédure pour convertir vos fichiers en un format plus compatible.">
+<!ENTITY convert.reason.description "C'est nécessaire car la technologie des extensions de $brandShortName a évolué, et les extensions anciennes comme Mozilla Archive Format et autres qui donnent les mêmes fonctinnalités vont cesser de fonctionner.">
+<!ENTITY convert.button.label "Commencer la procédure guidée maintenant">
+<!ENTITY convert.later.description "Vous pourrez commencer la procédure par la suite dans les options de l'extension Mozilla Archive Format.">
+<!ENTITY convert.link.label "Visitez le site web pour davantage d'informations sur les options disponibles.">
