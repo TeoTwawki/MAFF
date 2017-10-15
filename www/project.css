@@ -185,14 +185,9 @@ pre.code code {
   background: -moz-linear-gradient(lightgreen, #3D3);
 }
 
-.maf-box.maf-features,
 .maf-box.maf-alternative {
   background-color: #CFF;
   background: -moz-linear-gradient(#EFF, #DEF);
-}
-
-.maf-box.maf-features {
-  width: 40em;
 }
 
 .maf-box a {
