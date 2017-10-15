@@ -1,40 +1,8 @@
 <!-- *** Note *** -->
 <!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Волшебник за конвертирање на зачуваните страници">
-<!ENTITY browsebutton.label "Прелистај...">
 <!-- *** Introduction *** -->
 <!-- *** File format selection *** -->
-<!ENTITY introduction.pagelabel "Добредојдовте во Волшебникот за конвертирање на зачуваните страници">
 <!-- *** Source folder selection *** -->
 <!-- *** Destination folder selection *** -->
-<!ENTITY folders.source.label "Пребарај ја оваа папка за изворни датотеки:">
-<!ENTITY folders.source.subfolders.label "Вклучи ги потпапките">
-<!ENTITY folders.source.invalid.label "Ве молиме изберете постоечка изворна папка.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY folders.dest.pagelabel "Одредишни папки">
-<!ENTITY folders.dest.grouplabel "Стави ги претворените датотеки:">
-<!ENTITY folders.dest.original.label "Во истата папка како и оригиналните датотеки">
-<!ENTITY folders.dest.folder.label "Во оваа папка (зачувувајќи ги релативните патеки):">
-<!ENTITY folders.bin.grouplabel "После успешно претворање:">
-<!ENTITY folders.bin.original.label "Остави ги оригиналите на место">
-<!ENTITY folders.bin.folder.label "Премести ги оригиналите во оваа папка (зачувувајќи ги релативните патеки):">
-<!ENTITY folders.dest.invalid.label "Ве молиме наведете го целосното име на папката.">
-<!ENTITY candidates.pagelabel "Конверзија">
-<!ENTITY candidates.description "Ве молиме прегледајте ја листата подолу и изберете ги датотеките кои сакате да ги конвентирате">
-<!ENTITY candidates.sourcename.header "Име на изворната датотека">
-<!ENTITY candidates.sourcedatafoldername.header "Име на папката за поддршка">
-<!ENTITY candidates.relativepath.header "Потпапка">
-<!ENTITY candidates.sourcepath.header "Изворна патека">
-<!ENTITY candidates.destpath.header "Одредишна патека">
-<!ENTITY candidates.binpath.header "Премести во патеката">
-<!ENTITY candidates.all.label "Сите датотеки">
-<!ENTITY candidates.searchingcounts.label "$1 вкупно, $2 веќе конвентирани, $3 избрани">
-<!ENTITY candidates.convertingcounts.label "$1 вкупно, $2 веќе конвентирани, $3 избрани, $4 успешно конвентирани, $5 неуспешно">
-<!ENTITY candidates.searching.label "Пребарување за изворни датотеки...">
-<!ENTITY candidates.invalid.label "Ве молиме изберете најмалку една датотека за конвентирани.">
-<!ENTITY candidates.convert.label "Кликнете Претвори за да ги конвентирани вашите датотеки.">
-<!ENTITY candidates.converting.label "конвентирани на вашите датотеки...">
-<!ENTITY candidates.finish.label "Ве молиме прегледајте ги резултатите од конверзијата, потоа кликнете $1 за да го затворите прозорецот.">
-<!ENTITY candidates.convertbutton.label "Претвори">
-<!ENTITY candidates.convertbutton.accesskey "П">

@@ -1,40 +1,8 @@
 <!-- *** Note *** -->
 <!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Saved Pages Conversion Wizard">
-<!ENTITY browsebutton.label "Browse...">
 <!-- *** Introduction *** -->
 <!-- *** File format selection *** -->
-<!ENTITY introduction.pagelabel "Welcome to the Saved Pages Conversion Wizard">
 <!-- *** Source folder selection *** -->
 <!-- *** Destination folder selection *** -->
-<!ENTITY folders.source.label "Search this folder for source files:">
-<!ENTITY folders.source.subfolders.label "Include subfolders">
-<!ENTITY folders.source.invalid.label "Please select an existing source folder.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY folders.dest.pagelabel "Destination Folders">
-<!ENTITY folders.dest.grouplabel "Place converted files:">
-<!ENTITY folders.dest.original.label "In the same folder as the original files">
-<!ENTITY folders.dest.folder.label "In this folder (preserving relative paths):">
-<!ENTITY folders.bin.grouplabel "After a successful conversion:">
-<!ENTITY folders.bin.original.label "Leave the originals in place">
-<!ENTITY folders.bin.folder.label "Move the originals to this folder (preserving relative paths):">
-<!ENTITY folders.dest.invalid.label "Please specify the complete folder name.">
-<!ENTITY candidates.pagelabel "Conversion">
-<!ENTITY candidates.description "Please review the list below, and select the files you wish to convert.">
-<!ENTITY candidates.sourcename.header "Source file name">
-<!ENTITY candidates.sourcedatafoldername.header "Support folder name">
-<!ENTITY candidates.relativepath.header "Subfolder">
-<!ENTITY candidates.sourcepath.header "Source path">
-<!ENTITY candidates.destpath.header "Destination path">
-<!ENTITY candidates.binpath.header "Move to path">
-<!ENTITY candidates.all.label "All files">
-<!ENTITY candidates.searchingcounts.label "$1 total, $2 already converted, $3 selected">
-<!ENTITY candidates.convertingcounts.label "$1 total, $2 already converted, $3 selected, $4 successfully converted, $5 failed">
-<!ENTITY candidates.searching.label "Searching for source files...">
-<!ENTITY candidates.invalid.label "Please select at least one file to convert.">
-<!ENTITY candidates.convert.label "Click Convert to convert your files.">
-<!ENTITY candidates.converting.label "Converting your files...">
-<!ENTITY candidates.finish.label "Please review the conversion results, then click $1 to close the window.">
-<!ENTITY candidates.convertbutton.label "Convert">
-<!ENTITY candidates.convertbutton.accesskey "C">

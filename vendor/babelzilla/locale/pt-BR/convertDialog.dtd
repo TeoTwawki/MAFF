@@ -1,40 +1,8 @@
 <!-- *** Note *** -->
 <!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Assistente para conversão de páginas salvas">
-<!ENTITY browsebutton.label "Procurar...">
 <!-- *** Introduction *** -->
 <!-- *** File format selection *** -->
-<!ENTITY introduction.pagelabel "Bem-vindo(a) ao Assistente para conversão de páginas salvas">
 <!-- *** Source folder selection *** -->
 <!-- *** Destination folder selection *** -->
-<!ENTITY folders.source.label "Local dos arquivos a serem convertidos:">
-<!ENTITY folders.source.subfolders.label "Incluir subpastas">
-<!ENTITY folders.source.invalid.label "Por favor, selecione uma pasta existente.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY folders.dest.pagelabel "Pasta de destino">
-<!ENTITY folders.dest.grouplabel "Salvar os arquivos convertidos:">
-<!ENTITY folders.dest.original.label "na mesma pasta dos originais">
-<!ENTITY folders.dest.folder.label "nesta pasta (preservando caminhos relativos):">
-<!ENTITY folders.bin.grouplabel "Após uma conversão bem sucedida:">
-<!ENTITY folders.bin.original.label "manter os originais onde estão">
-<!ENTITY folders.bin.folder.label "mover os originais para esta pasta (preservando caminhos relativos):">
-<!ENTITY folders.dest.invalid.label "Por favor, especifique o caminho completo das pastas.">
-<!ENTITY candidates.pagelabel "Conversão">
-<!ENTITY candidates.description "Por favor, confira a lista abaixo e selecione os arquivos que deseja converter.">
-<!ENTITY candidates.sourcename.header "Arquivo">
-<!ENTITY candidates.sourcedatafoldername.header "_arquivos">
-<!ENTITY candidates.relativepath.header "Subpasta">
-<!ENTITY candidates.sourcepath.header "Origem">
-<!ENTITY candidates.destpath.header "Destino">
-<!ENTITY candidates.binpath.header "Novo local do original">
-<!ENTITY candidates.all.label "Todos os arquivos">
-<!ENTITY candidates.searchingcounts.label "$1 total, $2 já convertidos, $3 selecionados.">
-<!ENTITY candidates.convertingcounts.label "$1 total, $2 já convertidos, $3 selecionados, $4 convertidos com sucesso, $5 falharam.">
-<!ENTITY candidates.searching.label "Procurando por arquivos a serem convertidos...">
-<!ENTITY candidates.invalid.label "Por favor, selecione pelo menos um arquivo para ser convertido.">
-<!ENTITY candidates.convert.label "Clique em Converter para iniciar a conversão.">
-<!ENTITY candidates.converting.label "Convertendo seus arquivos...">
-<!ENTITY candidates.finish.label "Por favor, verifique os resultados acima e clique em $1 para sair do assistente.">
-<!ENTITY candidates.convertbutton.label "Converter">
-<!ENTITY candidates.convertbutton.accesskey "C">

@@ -1,40 +1,8 @@
 <!-- *** Note *** -->
 <!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Průvodce konverzí uložených stránek">
-<!ENTITY browsebutton.label "Hledat...">
 <!-- *** Introduction *** -->
 <!-- *** File format selection *** -->
-<!ENTITY introduction.pagelabel "Vítejte v průvodci pro konverzi uložených stránek">
 <!-- *** Source folder selection *** -->
 <!-- *** Destination folder selection *** -->
-<!ENTITY folders.source.label "Vyhledat soubory ke konverzi v této složce:">
-<!ENTITY folders.source.subfolders.label "Zahrnout i podsložky">
-<!ENTITY folders.source.invalid.label "Vyberte existující složku se soubory ke konverzi">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY folders.dest.pagelabel "Cílové složky">
-<!ENTITY folders.dest.grouplabel "Konvertované soubory uložit:">
-<!ENTITY folders.dest.original.label "Do stejné složky jako originály">
-<!ENTITY folders.dest.folder.label "Do této složky (zachová relativní cesty):">
-<!ENTITY folders.bin.grouplabel "Po úspěšné konverzi:">
-<!ENTITY folders.bin.original.label "Ponechat původní soubory na místě">
-<!ENTITY folders.bin.folder.label "Přemístit původní soubory do složky (zachová relativní cesty):">
-<!ENTITY folders.dest.invalid.label "Určete složku pro dokončení.">
-<!ENTITY candidates.pagelabel "Konverze">
-<!ENTITY candidates.description "Prohlédněte si prosím níže uvedený seznamu a vyberte soubory, které chcete převést.">
-<!ENTITY candidates.sourcename.header "Název zdrojového souboru">
-<!ENTITY candidates.sourcedatafoldername.header "Název složky pro data">
-<!ENTITY candidates.relativepath.header "Podsložka">
-<!ENTITY candidates.sourcepath.header "Cesta ke zdroji">
-<!ENTITY candidates.destpath.header "Cílová cesta">
-<!ENTITY candidates.binpath.header "Cesta k přesunu">
-<!ENTITY candidates.all.label "Všechny soubory">
-<!ENTITY candidates.searchingcounts.label "Celkem $1, již konvertováno $2, vybrány $3">
-<!ENTITY candidates.convertingcounts.label "Celkem $1, již konvertováno $2, vybrány $3, úspěšně konvertovány $4, selhalo $5">
-<!ENTITY candidates.searching.label "Vyhledání zdrojových souborů...">
-<!ENTITY candidates.invalid.label "Vyberte aspoň 1 soubor ke konverzi prosím.">
-<!ENTITY candidates.convert.label "Pro konverzi klikněte na tlačítko Konvertovat.">
-<!ENTITY candidates.converting.label "Soubory jsou konvertovány...">
-<!ENTITY candidates.finish.label "Zkontrolujte si prosím výsledky konverze, pak klepnutím na $1 na zavřete okno.">
-<!ENTITY candidates.convertbutton.label "Konvertovat">
-<!ENTITY candidates.convertbutton.accesskey "K">
