@@ -1,5 +1,5 @@
 <!-- General window controls -->
-<!ENTITY window.title.v2 "Opțiuni Mozilla Archive Format">
+<!ENTITY window.title.v2 "Mozilla Archive Format Options">
 <!ENTITY associate.grouplabel "Open with $brandShortName:">
 <!ENTITY associate.maff.label "MAFF (.maff file extension)">
 <!ENTITY associate.mhtml.label "MHTML (.mht and .mhtml file extensions)">

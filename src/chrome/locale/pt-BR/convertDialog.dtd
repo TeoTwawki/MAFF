@@ -1,12 +1,12 @@
 <!-- *** Note *** -->
 <!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Assistente para conversão de páginas salvas">
-<!ENTITY browsebutton.label "Procurar...">
+<!ENTITY window.title "Saved Pages Conversion Wizard">
+<!ENTITY browsebutton.label "Browse...">
 <!-- *** Introduction *** -->
 <!ENTITY oldsavedpages.folder.name "Old Saved Pages">
 <!-- *** File format selection *** -->
-<!ENTITY introduction.pagelabel "Bem-vindo(a) ao Assistente para conversão de páginas salvas">
+<!ENTITY introduction.pagelabel "Welcome to the Saved Pages Conversion Wizard">
 <!ENTITY introduction.mode.compatible.label "Search for archived pages and ensure they can be opened in the future">
 <!ENTITY introduction.mode.compatible.description "This will search the &quot;$1&quot; folder for pages that were saved in an archive, convert them to use separate folders for data files, and move the original archives to the &quot;$2&quot; folder on your desktop.">
 <!ENTITY introduction.mode.choose.label "Choose which file formats and folders to use">
@@ -21,40 +21,40 @@
 <!ENTITY format.maff.description "Based on the ZIP container, uses less disk space but cannot be opened with future versions of $brandShortName without extracting the archive manually.">
 <!-- *** Destination folder selection *** -->
 <!ENTITY source.pagelabel "Source Folder and File Formats">
-<!ENTITY folders.source.label "Local dos arquivos a serem convertidos:">
-<!ENTITY folders.source.subfolders.label "Incluir subpastas">
-<!ENTITY folders.source.invalid.label "Por favor, selecione uma pasta existente.">
+<!ENTITY folders.source.label "Search this folder for source files:">
+<!ENTITY folders.source.subfolders.label "Include subfolders">
+<!ENTITY folders.source.invalid.label "Please select an existing source folder.">
 <!ENTITY format.source.label "Search for source files in these formats:">
 <!ENTITY format.source.invalid.label "Please select at least one format to search for.">
 <!ENTITY allowdownload.label "Download missing parts of the page when necessary">
 <!ENTITY allowdownload.description "This may slow down the conversion, but can repair saved pages that are incomplete and can only be viewed correctly when connected to the Internet.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY folders.dest.pagelabel "Pasta de destino">
-<!ENTITY folders.dest.grouplabel "Salvar os arquivos convertidos:">
-<!ENTITY folders.dest.original.label "na mesma pasta dos originais">
-<!ENTITY folders.dest.folder.label "nesta pasta (preservando caminhos relativos):">
-<!ENTITY folders.bin.grouplabel "Após uma conversão bem sucedida:">
-<!ENTITY folders.bin.original.label "manter os originais onde estão">
-<!ENTITY folders.bin.folder.label "mover os originais para esta pasta (preservando caminhos relativos):">
-<!ENTITY folders.dest.invalid.label "Por favor, especifique o caminho completo das pastas.">
+<!ENTITY folders.dest.pagelabel "Destination Folders">
+<!ENTITY folders.dest.grouplabel "Place converted files:">
+<!ENTITY folders.dest.original.label "In the same folder as the original files">
+<!ENTITY folders.dest.folder.label "In this folder (preserving relative paths):">
+<!ENTITY folders.bin.grouplabel "After a successful conversion:">
+<!ENTITY folders.bin.original.label "Leave the originals in place">
+<!ENTITY folders.bin.folder.label "Move the originals to this folder (preserving relative paths):">
+<!ENTITY folders.dest.invalid.label "Please specify the complete folder name.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY candidates.pagelabel "Conversão">
-<!ENTITY candidates.description "Por favor, confira a lista abaixo e selecione os arquivos que deseja converter.">
-<!ENTITY candidates.sourcename.header "Arquivo">
-<!ENTITY candidates.sourcedatafoldername.header "_arquivos">
-<!ENTITY candidates.relativepath.header "Subpasta">
-<!ENTITY candidates.sourcepath.header "Origem">
-<!ENTITY candidates.destpath.header "Destino">
-<!ENTITY candidates.binpath.header "Novo local do original">
-<!ENTITY candidates.all.label "Todos os arquivos">
-<!ENTITY candidates.searchingcounts.label "$1 total, $2 já convertidos, $3 selecionados.">
-<!ENTITY candidates.convertingcounts.label "$1 total, $2 já convertidos, $3 selecionados, $4 convertidos com sucesso, $5 falharam.">
-<!ENTITY candidates.searching.label "Procurando por arquivos a serem convertidos...">
+<!ENTITY candidates.pagelabel "Conversion">
+<!ENTITY candidates.description "Please review the list below, and select the files you wish to convert.">
+<!ENTITY candidates.sourcename.header "Source file name">
+<!ENTITY candidates.sourcedatafoldername.header "Support folder name">
+<!ENTITY candidates.relativepath.header "Subfolder">
+<!ENTITY candidates.sourcepath.header "Source path">
+<!ENTITY candidates.destpath.header "Destination path">
+<!ENTITY candidates.binpath.header "Move to path">
+<!ENTITY candidates.all.label "All files">
+<!ENTITY candidates.searchingcounts.label "$1 total, $2 already converted, $3 selected">
+<!ENTITY candidates.convertingcounts.label "$1 total, $2 already converted, $3 selected, $4 successfully converted, $5 failed">
+<!ENTITY candidates.searching.label "Searching for source files...">
 <!ENTITY candidates.none.description "The specified folder has been searched for files to be converted, and none were found. This may indicate that you don't have any files that need to be converted, or that all the files have been already converted. You can click $1 to close the window.">
 <!ENTITY candidates.obstructed.label "All the files have been already converted previously.">
-<!ENTITY candidates.invalid.label "Por favor, selecione pelo menos um arquivo para ser convertido.">
-<!ENTITY candidates.convert.label "Clique em Converter para iniciar a conversão.">
-<!ENTITY candidates.converting.label "Convertendo seus arquivos...">
-<!ENTITY candidates.finish.label "Por favor, verifique os resultados acima e clique em $1 para sair do assistente.">
-<!ENTITY candidates.convertbutton.label "Converter">
+<!ENTITY candidates.invalid.label "Please select at least one file to convert.">
+<!ENTITY candidates.convert.label "Click Convert to convert your files.">
+<!ENTITY candidates.converting.label "Converting your files...">
+<!ENTITY candidates.finish.label "Please review the conversion results, then click $1 to close the window.">
+<!ENTITY candidates.convertbutton.label "Convert">
 <!ENTITY candidates.convertbutton.accesskey "C">

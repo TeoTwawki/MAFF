@@ -1,12 +1,12 @@
 <!-- *** Note *** -->
 <!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
 <!-- *** General window controls *** -->
-<!ENTITY window.title "저장된 페이지 변환 마법사">
-<!ENTITY browsebutton.label "찾아보기">
+<!ENTITY window.title "Saved Pages Conversion Wizard">
+<!ENTITY browsebutton.label "Browse...">
 <!-- *** Introduction *** -->
 <!ENTITY oldsavedpages.folder.name "Old Saved Pages">
 <!-- *** File format selection *** -->
-<!ENTITY introduction.pagelabel "저장된 페이지 변환 마법사에 오신 것을 환영합니다">
+<!ENTITY introduction.pagelabel "Welcome to the Saved Pages Conversion Wizard">
 <!ENTITY introduction.mode.compatible.label "Search for archived pages and ensure they can be opened in the future">
 <!ENTITY introduction.mode.compatible.description "This will search the &quot;$1&quot; folder for pages that were saved in an archive, convert them to use separate folders for data files, and move the original archives to the &quot;$2&quot; folder on your desktop.">
 <!ENTITY introduction.mode.choose.label "Choose which file formats and folders to use">
@@ -21,40 +21,40 @@
 <!ENTITY format.maff.description "Based on the ZIP container, uses less disk space but cannot be opened with future versions of $brandShortName without extracting the archive manually.">
 <!-- *** Destination folder selection *** -->
 <!ENTITY source.pagelabel "Source Folder and File Formats">
-<!ENTITY folders.source.label "변환하려는 파일이 있는 폴더를 선택하십시오:">
-<!ENTITY folders.source.subfolders.label "하위 폴더 포함">
-<!ENTITY folders.source.invalid.label "존재하는 폴더를 선택해 주세요.">
+<!ENTITY folders.source.label "Search this folder for source files:">
+<!ENTITY folders.source.subfolders.label "Include subfolders">
+<!ENTITY folders.source.invalid.label "Please select an existing source folder.">
 <!ENTITY format.source.label "Search for source files in these formats:">
 <!ENTITY format.source.invalid.label "Please select at least one format to search for.">
 <!ENTITY allowdownload.label "Download missing parts of the page when necessary">
 <!ENTITY allowdownload.description "This may slow down the conversion, but can repair saved pages that are incomplete and can only be viewed correctly when connected to the Internet.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY folders.dest.pagelabel "출력 폴더">
-<!ENTITY folders.dest.grouplabel "변환된 파일들의 위치:">
-<!ENTITY folders.dest.original.label "원본 파일들과 같은 폴더에">
-<!ENTITY folders.dest.folder.label "지정된 폴더에 (상대 경로 유지):">
-<!ENTITY folders.bin.grouplabel "변환 성공 후:">
-<!ENTITY folders.bin.original.label "원본을 같은 위치에 유지합니다">
-<!ENTITY folders.bin.folder.label "원본을 지정된 폴더로 이동합니다 (상대 경로 유지):">
-<!ENTITY folders.dest.invalid.label "완전한 폴더 경로를 지정해 주십시오.">
+<!ENTITY folders.dest.pagelabel "Destination Folders">
+<!ENTITY folders.dest.grouplabel "Place converted files:">
+<!ENTITY folders.dest.original.label "In the same folder as the original files">
+<!ENTITY folders.dest.folder.label "In this folder (preserving relative paths):">
+<!ENTITY folders.bin.grouplabel "After a successful conversion:">
+<!ENTITY folders.bin.original.label "Leave the originals in place">
+<!ENTITY folders.bin.folder.label "Move the originals to this folder (preserving relative paths):">
+<!ENTITY folders.dest.invalid.label "Please specify the complete folder name.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY candidates.pagelabel "변환">
-<!ENTITY candidates.description "아래의 목록을 검토하고 변환하길 원하는 파일을 선택하십시오.">
-<!ENTITY candidates.sourcename.header "원본 파일 이름">
-<!ENTITY candidates.sourcedatafoldername.header "보조 폴더 이름">
-<!ENTITY candidates.relativepath.header "하위 폴더">
-<!ENTITY candidates.sourcepath.header "원본 경로">
-<!ENTITY candidates.destpath.header "출력 경로">
-<!ENTITY candidates.binpath.header "이동할 경로">
-<!ENTITY candidates.all.label "모든 파일들">
-<!ENTITY candidates.searchingcounts.label "$1 전체, $2 이미 변환됨, $3 선택됨">
-<!ENTITY candidates.convertingcounts.label "$1 전체, $2 이미 변환됨, $3 선택됨, $4 성공적으로 변환됨, $5 실패함">
-<!ENTITY candidates.searching.label "원본 파일들을 찾고 있습니다...">
+<!ENTITY candidates.pagelabel "Conversion">
+<!ENTITY candidates.description "Please review the list below, and select the files you wish to convert.">
+<!ENTITY candidates.sourcename.header "Source file name">
+<!ENTITY candidates.sourcedatafoldername.header "Support folder name">
+<!ENTITY candidates.relativepath.header "Subfolder">
+<!ENTITY candidates.sourcepath.header "Source path">
+<!ENTITY candidates.destpath.header "Destination path">
+<!ENTITY candidates.binpath.header "Move to path">
+<!ENTITY candidates.all.label "All files">
+<!ENTITY candidates.searchingcounts.label "$1 total, $2 already converted, $3 selected">
+<!ENTITY candidates.convertingcounts.label "$1 total, $2 already converted, $3 selected, $4 successfully converted, $5 failed">
+<!ENTITY candidates.searching.label "Searching for source files...">
 <!ENTITY candidates.none.description "The specified folder has been searched for files to be converted, and none were found. This may indicate that you don't have any files that need to be converted, or that all the files have been already converted. You can click $1 to close the window.">
 <!ENTITY candidates.obstructed.label "All the files have been already converted previously.">
-<!ENTITY candidates.invalid.label "변환하려는 파일을 선택하십시오.">
-<!ENTITY candidates.convert.label "변환을 클릭하면 석택한 파일들을 변환합니다.">
-<!ENTITY candidates.converting.label "선택한 파일들을 변환 중입니다...">
-<!ENTITY candidates.finish.label "변환 결과를 검토해 주세요. '$1'을 클릭하면 창이 닫힙니다.">
-<!ENTITY candidates.convertbutton.label "변환">
+<!ENTITY candidates.invalid.label "Please select at least one file to convert.">
+<!ENTITY candidates.convert.label "Click Convert to convert your files.">
+<!ENTITY candidates.converting.label "Converting your files...">
+<!ENTITY candidates.finish.label "Please review the conversion results, then click $1 to close the window.">
+<!ENTITY candidates.convertbutton.label "Convert">
 <!ENTITY candidates.convertbutton.accesskey "C">

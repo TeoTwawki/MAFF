@@ -1,12 +1,12 @@
 <!-- *** Note *** -->
 <!-- This page is a wizard. When assigning access keys, pay attention to the possible conflicts with the default access keys for the Back, Next, Continue and Finish buttons. -->
 <!-- *** General window controls *** -->
-<!ENTITY window.title "Волшебник за конвертирање на зачуваните страници">
-<!ENTITY browsebutton.label "Прелистај...">
+<!ENTITY window.title "Saved Pages Conversion Wizard">
+<!ENTITY browsebutton.label "Browse...">
 <!-- *** Introduction *** -->
 <!ENTITY oldsavedpages.folder.name "Old Saved Pages">
 <!-- *** File format selection *** -->
-<!ENTITY introduction.pagelabel "Добредојдовте во Волшебникот за конвертирање на зачуваните страници">
+<!ENTITY introduction.pagelabel "Welcome to the Saved Pages Conversion Wizard">
 <!ENTITY introduction.mode.compatible.label "Search for archived pages and ensure they can be opened in the future">
 <!ENTITY introduction.mode.compatible.description "This will search the &quot;$1&quot; folder for pages that were saved in an archive, convert them to use separate folders for data files, and move the original archives to the &quot;$2&quot; folder on your desktop.">
 <!ENTITY introduction.mode.choose.label "Choose which file formats and folders to use">
@@ -21,40 +21,40 @@
 <!ENTITY format.maff.description "Based on the ZIP container, uses less disk space but cannot be opened with future versions of $brandShortName without extracting the archive manually.">
 <!-- *** Destination folder selection *** -->
 <!ENTITY source.pagelabel "Source Folder and File Formats">
-<!ENTITY folders.source.label "Пребарај ја оваа папка за изворни датотеки:">
-<!ENTITY folders.source.subfolders.label "Вклучи ги потпапките">
-<!ENTITY folders.source.invalid.label "Ве молиме изберете постоечка изворна папка.">
+<!ENTITY folders.source.label "Search this folder for source files:">
+<!ENTITY folders.source.subfolders.label "Include subfolders">
+<!ENTITY folders.source.invalid.label "Please select an existing source folder.">
 <!ENTITY format.source.label "Search for source files in these formats:">
 <!ENTITY format.source.invalid.label "Please select at least one format to search for.">
 <!ENTITY allowdownload.label "Download missing parts of the page when necessary">
 <!ENTITY allowdownload.description "This may slow down the conversion, but can repair saved pages that are incomplete and can only be viewed correctly when connected to the Internet.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY folders.dest.pagelabel "Одредишни папки">
-<!ENTITY folders.dest.grouplabel "Стави ги претворените датотеки:">
-<!ENTITY folders.dest.original.label "Во истата папка како и оригиналните датотеки">
-<!ENTITY folders.dest.folder.label "Во оваа папка (зачувувајќи ги релативните патеки):">
-<!ENTITY folders.bin.grouplabel "После успешно претворање:">
-<!ENTITY folders.bin.original.label "Остави ги оригиналите на место">
-<!ENTITY folders.bin.folder.label "Премести ги оригиналите во оваа папка (зачувувајќи ги релативните патеки):">
-<!ENTITY folders.dest.invalid.label "Ве молиме наведете го целосното име на папката.">
+<!ENTITY folders.dest.pagelabel "Destination Folders">
+<!ENTITY folders.dest.grouplabel "Place converted files:">
+<!ENTITY folders.dest.original.label "In the same folder as the original files">
+<!ENTITY folders.dest.folder.label "In this folder (preserving relative paths):">
+<!ENTITY folders.bin.grouplabel "After a successful conversion:">
+<!ENTITY folders.bin.original.label "Leave the originals in place">
+<!ENTITY folders.bin.folder.label "Move the originals to this folder (preserving relative paths):">
+<!ENTITY folders.dest.invalid.label "Please specify the complete folder name.">
 <!-- *** Candidates selection and conversion *** -->
-<!ENTITY candidates.pagelabel "Конверзија">
-<!ENTITY candidates.description "Ве молиме прегледајте ја листата подолу и изберете ги датотеките кои сакате да ги конвентирате">
-<!ENTITY candidates.sourcename.header "Име на изворната датотека">
-<!ENTITY candidates.sourcedatafoldername.header "Име на папката за поддршка">
-<!ENTITY candidates.relativepath.header "Потпапка">
-<!ENTITY candidates.sourcepath.header "Изворна патека">
-<!ENTITY candidates.destpath.header "Одредишна патека">
-<!ENTITY candidates.binpath.header "Премести во патеката">
-<!ENTITY candidates.all.label "Сите датотеки">
-<!ENTITY candidates.searchingcounts.label "$1 вкупно, $2 веќе конвентирани, $3 избрани">
-<!ENTITY candidates.convertingcounts.label "$1 вкупно, $2 веќе конвентирани, $3 избрани, $4 успешно конвентирани, $5 неуспешно">
-<!ENTITY candidates.searching.label "Пребарување за изворни датотеки...">
+<!ENTITY candidates.pagelabel "Conversion">
+<!ENTITY candidates.description "Please review the list below, and select the files you wish to convert.">
+<!ENTITY candidates.sourcename.header "Source file name">
+<!ENTITY candidates.sourcedatafoldername.header "Support folder name">
+<!ENTITY candidates.relativepath.header "Subfolder">
+<!ENTITY candidates.sourcepath.header "Source path">
+<!ENTITY candidates.destpath.header "Destination path">
+<!ENTITY candidates.binpath.header "Move to path">
+<!ENTITY candidates.all.label "All files">
+<!ENTITY candidates.searchingcounts.label "$1 total, $2 already converted, $3 selected">
+<!ENTITY candidates.convertingcounts.label "$1 total, $2 already converted, $3 selected, $4 successfully converted, $5 failed">
+<!ENTITY candidates.searching.label "Searching for source files...">
 <!ENTITY candidates.none.description "The specified folder has been searched for files to be converted, and none were found. This may indicate that you don't have any files that need to be converted, or that all the files have been already converted. You can click $1 to close the window.">
 <!ENTITY candidates.obstructed.label "All the files have been already converted previously.">
-<!ENTITY candidates.invalid.label "Ве молиме изберете најмалку една датотека за конвентирани.">
-<!ENTITY candidates.convert.label "Кликнете Претвори за да ги конвентирани вашите датотеки.">
-<!ENTITY candidates.converting.label "конвентирани на вашите датотеки...">
-<!ENTITY candidates.finish.label "Ве молиме прегледајте ги резултатите од конверзијата, потоа кликнете $1 за да го затворите прозорецот.">
-<!ENTITY candidates.convertbutton.label "Претвори">
-<!ENTITY candidates.convertbutton.accesskey "П">
+<!ENTITY candidates.invalid.label "Please select at least one file to convert.">
+<!ENTITY candidates.convert.label "Click Convert to convert your files.">
+<!ENTITY candidates.converting.label "Converting your files...">
+<!ENTITY candidates.finish.label "Please review the conversion results, then click $1 to close the window.">
+<!ENTITY candidates.convertbutton.label "Convert">
+<!ENTITY candidates.convertbutton.accesskey "C">
