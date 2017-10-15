@@ -143,16 +143,25 @@ var StartupEvents = {
       DynamicPrefs.openFilterIndex = 4 + FileFilters.openFilters.length;
       Prefs.otherDisplayWelcomePage = false;
       Prefs.otherDisplayConvertPage = false;
-    } else if (Prefs.otherDisplayConvertPage) {
+      // For new installations on Firefox, the commands to save web archives are
+      // disabled by default and can be re-enabled later from the preferences.
+      if (Services.appinfo.ID == "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}") {
+        Prefs.saveEnabled = false;
+      }
+    } else if (Prefs.otherDisplayConvertPage &&
+     Services.appinfo.ID == "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}" &&
+     Services.vc.compare(Services.appinfo.version, "55") > 0) {
       // If this is an update, likely the user has already saved web pages using
-      // the MAFF or MHTML formats, and we should display a welcome page with
-      // information on compatibility if we haven't displayed it before.
+      // the MAFF or MHTML formats, and on Firefox 55 and above we should
+      // display a welcome page with information on compatibility.
       let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
       if (browserWindow) {
         browserWindow.getBrowser().loadTabs(
          ["chrome://maf/content/integration/convertPage.xhtml"],
          false, false);
         Prefs.otherDisplayConvertPage = false;
+        // Disable the commands to save web archives after showing the page.
+        Prefs.saveEnabled = false;
       }
     }
   },

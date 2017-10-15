@@ -143,6 +143,9 @@ var Prefs = {
   get saveEnabled() {
     return this.prefBranchForMaf.getBoolPref("save.enabled");
   },
+  set saveEnabled(aValue) {
+    this.prefBranchForMaf.setBoolPref("save.enabled", aValue);
+  },
 
   /**
    * Returns true if all pages should be saved using the ExactPersist component.
