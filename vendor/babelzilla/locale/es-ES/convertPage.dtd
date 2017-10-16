@@ -1,7 +1,7 @@
 <!ENTITY page.title "Importante">
 <!ENTITY convert.label "Convierta sus páginas guardadas para verlas en futuras versiones de $brandShortName.">
-<!ENTITY convert.description "Si usó la funcionalidad &quot;Guardar página en archivo&quot; para almacenar páginas web en un solo archivo, debería seguir este procedimiento para convertir sus archivos a un formato más compatible.">
-<!ENTITY convert.reason.description "Esto es necesario porque la tecnología complementaria de $brandShortName se está modernizando, y los complementos heredados como Mozilla Archive Format y otros que ofrecen funciones similares dejarán de funcionar.">
-<!ENTITY convert.button.label "Comience este procedimiento guiado ahora">
-<!ENTITY convert.later.description "Puede iniciar este procedimiento más adelante desde las opciones del complemento Mozilla Archive Format.">
-<!ENTITY convert.link.label "Visite el sitio web para obtener más información y otras opciones.">
+<!ENTITY convert.description "Si utilizó la funcionalidad &quot;Guardar página en archivo&quot; para guardar páginas web en un solo archivo, debería seguir este procedimiento para convertir sus archivos a un formato más compatible.">
+<!ENTITY convert.reason.description "Esto es necesario porque la tecnología de complementos de $brandShortName se está modernizando y complementos antiguos como Mozilla Archive Format y otros que proporcionan funcionalidades similar dejarán de funcionar.">
+<!ENTITY convert.button.label "Iniciar este proceso guiado ahora">
+<!ENTITY convert.later.description "Puede iniciar este proceso más adelante desde las opciones del complemento Mozilla Archive Format.">
+<!ENTITY convert.link.label "Visite la página web para obtener más información y otras opciones.">
