@@ -10,7 +10,7 @@
 <!ENTITY introduction.mode.compatible.label "Busque páginas archivadas y asegúrese de que puedan abrirse en el futuro">
 <!ENTITY introduction.mode.compatible.description "Esto buscará en la carpeta &quot;$1&quot; las páginas que se guardaron en un archivo, las convertirá para usar carpetas separadas para archivos de datos y moverá los archivos originales a la carpeta &quot;$2&quot; en su escritorio.">
 <!ENTITY introduction.mode.choose.label "Elija qué formatos de archivo y carpetas usar">
-<!ENTITY introduction.description "Siempre debe conservar una copia de los archivos originales porque, en algunos casos, el proceso de conversión puede no replicarlos con precisión.">
+<!ENTITY introduction.description "Es recomendable conservar una copia de los archivos originales, porque en algunos casos el proceso de conversión puede no replicarlos con precisión.">
 <!-- *** Source folder selection *** -->
 <!ENTITY format.pagelabel "Formato de archivo de destino">
 <!ENTITY format.complete.label "HTML con la carpeta de soporte para archivos de datos">
@@ -24,7 +24,7 @@
 <!ENTITY folders.source.label "Buscar en esta carpeta los archivos origen:">
 <!ENTITY folders.source.subfolders.label "Incluir subcarpetas">
 <!ENTITY folders.source.invalid.label "Por favor, seleccione una carpeta fuente existente.">
-<!ENTITY format.source.label "Busque archivos fuente en estos formatos:">
+<!ENTITY format.source.label "Buscar archivos de origen en estos formatos:">
 <!ENTITY format.source.invalid.label "Seleccione al menos un formato para buscar.">
 <!ENTITY allowdownload.label "Descargue las partes faltantes de la página cuando sea necesario.">
 <!ENTITY allowdownload.description "Esto puede ralentizar la conversión, pero puede reparar las páginas guardadas que están incompletas y solo se pueden ver correctamente cuando se conectan a Internet.">
@@ -50,7 +50,7 @@
 <!ENTITY candidates.searchingcounts.label "$1 total, $2 ya convertidos, $3 seleccionados">
 <!ENTITY candidates.convertingcounts.label "$1 total, $2 ya convertidos, $3 seleccionados, $4 convertidos correctamente, $5 fallidos">
 <!ENTITY candidates.searching.label "Buscando archivos fuente...">
-<!ENTITY candidates.none.description "Se ha buscado la carpeta especificada para los archivos que se convertirán y no se encontraron ninguno. Esto puede indicar que no tiene ningún archivo que deba convertirse, o que todos los archivos ya se han convertido. Puede hacer clic en Finalizar para cerrar la ventana.">
+<!ENTITY candidates.none.description "Se han buscado archivos a convertir en la carpeta especificada, y no se encontró ninguno. Esto puede indicar que no tiene archivos que necesitan convertirse o que todos los archivos ya se han convertido. Puede hacer clic en $1 para cerrar la ventana.">
 <!ENTITY candidates.obstructed.label "Todos los archivos ya se han convertido previamente.">
 <!ENTITY candidates.invalid.label "Por favor, seleccione al menos un archivo para convertir.">
 <!ENTITY candidates.convert.label "Pulse en convertir para convertir sus archivos.">
