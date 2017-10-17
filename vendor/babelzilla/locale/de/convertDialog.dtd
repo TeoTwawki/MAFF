@@ -8,9 +8,9 @@
 <!-- *** File format selection *** -->
 <!ENTITY introduction.pagelabel "Willkommen beim Archivkonverter-Assistenten">
 <!ENTITY introduction.mode.compatible.label "Nach Webseiten-Archiven suchen und sicherstellen, dass diese auch in Zukunft noch geöffnet werden können">
-<!ENTITY introduction.mode.compatible.description "Auswahl des &quot;$1&quot; Ordners mit den zu konvertierenden Archiven, konvertierung dieser in separate Ordner für die enthaltenen Dateien und Backup der Originalarchive im &quot;$1&quot; Ordner auf dem Desktop.">
+<!ENTITY introduction.mode.compatible.description "Auswahl des &quot;$1&quot;-Ordners mit den zu konvertierenden Archiven, Konvertierung dieser in separate Ordner für die enthaltenen Dateien und Backup der Originalarchive im &quot;$2&quot; Ordner auf dem Desktop.">
 <!ENTITY introduction.mode.choose.label "Wähle das zu verwendende Dateiformat und welche Ordner verwendet werden sollen.">
-<!ENTITY introduction.description "Es sollte immer eine Kopie des Originalarchives erhalten bleiben, da durch den Konvertierungsprozess unter Umständen Daten verloren gehen können.">
+<!ENTITY introduction.description "Es sollte immer eine Kopie des Originalarchives vorgehalten werden, da durch den Konvertierungsprozess unter Umständen Daten verloren gehen können.">
 <!-- *** Source folder selection *** -->
 <!ENTITY format.pagelabel "Zielformat">
 <!ENTITY format.complete.label "HTML mit zusätzlichem Ordner für Bilder etc.">
