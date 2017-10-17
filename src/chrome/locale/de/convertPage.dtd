@@ -1,8 +1,8 @@
 <!-- *** This page is displayed when conversion of saved pages is necessary. *** -->
 <!ENTITY page.title "Wichtig!">
-<!ENTITY convert.label "Ihre Webseiten-Archive müssen konvertiert werden um sie auch in zukünftigen Versionen von $brandShortName öffnen zu können.">
-<!ENTITY convert.description "Wenn Sie die &quot;Seite archivieren als ...&quot; Funktion (zum Speichern von Webseiten als eine Datei - MAFF) verwendet haben, dann sollten Sie nun diese in ein zukunftsfähigeres Format konvertieren.">
-<!ENTITY convert.reason.description "Dies ist leider nötig, da $brandShortName seine Add-On Schnittstelel moderniesiert und alte Add-Ons wie das Mozilla Archive Format Add-on daher in Kürze nicht mehr unterstützt werden.">
-<!ENTITY convert.button.label "Starten Sie diesen Konvertierungs-Assistenten nun">
-<!ENTITY convert.later.description "Sie können die Konvertierung auch später noch über die Optionen des Mozilla Archive Format Add-Ons durchführen.">
-<!ENTITY convert.link.label "Besuchen sie die Webseite für weiterführende Informationen.">
+<!ENTITY convert.label "Ihre Webseiten-Archive müssen konvertiert werden, um sie auch in zukünftigen Versionen von $brandShortName öffnen zu können.">
+<!ENTITY convert.description "Wenn Sie die &quot;Seite archivieren als ...&quot;-Funktion (zum Speichern von Webseiten als eine Datei - MAFF) verwendet haben, dann sollten Sie nun diese Archive in ein zukunftsfähigeres Format konvertieren.">
+<!ENTITY convert.reason.description "Dies ist leider nötig, da $brandShortName seine Add-On Schnittstelle moderniesiert und alte Add-Ons wie das &quot;Mozilla Archive Format Add-on&quot; daher in $brandShortName in Kürze nicht mehr unterstützt werden.">
+<!ENTITY convert.button.label "Konvertierungs-Assistenten starten &gt;">
+<!ENTITY convert.later.description "Sie können die Konvertierung auch später noch über die Optionen des &quot;Mozilla Archive Format Add-Ons&quot; durchführen.">
+<!ENTITY convert.link.label "Besuchen sie die Webseite des MAFF-Formats für weitergehende Informationen...">
