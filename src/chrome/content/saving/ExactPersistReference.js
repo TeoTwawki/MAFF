@@ -216,11 +216,11 @@ ExactPersistReference.prototype = {
       // Use a different URI for the case where the resource was not included
       // in the saved page because it was not needed to display it.
       if (this.originalResourceNotLoaded) {
-        return "urn:not-loaded:" + this.targetUri.spec;
+        return this._addPrefix(this.targetUri.spec, "not-loaded");
       }
       // Use a different URI for the case where a download error occurred.
       if (this.resource && this.resource.statusCode) {
-        return "urn:download-error:" + this.targetUri.spec;
+        return this._addPrefix(this.targetUri.spec, "download-error");
       }
       // The resource was not downloaded because it wasn't required.
       return this.targetUri.spec;
@@ -244,6 +244,23 @@ ExactPersistReference.prototype = {
     }
     // Create the relative URI that points to the file and return it.
     return this._parsedJob.resource.fileUrl.getRelativeSpec(localFileUrl);
+  },
+
+  /**
+   * Generates a new URI by prepending a random prefix to the original one, for
+   * example "urn:download-error:http://www.example.com/". If the URI points to
+   * a local file, only the file name is preserved, for example
+   * "urn:not-loaded:file:///index.txt".
+   */
+  _addPrefix: function(aUriSpec, aPrefixType) {
+    var prefix = "urn:" + aPrefixType + ":";
+    if (aUriSpec.startsWith("file:")) {
+      var matchResult = /\/([^\/]+)$/.exec(aUriSpec);
+      if (matchResult) {
+        return prefix + "file:///" + matchResult[1];
+      }
+    }
+    return prefix + aUriSpec;
   },
 
   _parsedJob: null,
