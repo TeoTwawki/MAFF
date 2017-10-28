@@ -778,6 +778,7 @@ ExactPersistParsedJob.prototype = {
     try {
       // If this save job is associated with a DOM document
       if (this._document) {
+        this._ensureOriginalUrlComment();
         this._ensureMetaUACompatible();
         try {
           // Create a document encoder for the appropriate content type.
@@ -803,7 +804,7 @@ ExactPersistParsedJob.prototype = {
           // automatically converted to an HTML numeric character entity.
           encoder.encodeToStream(outputStream);
         } finally {
-          this._revertMetaUACompatible();
+          this._revertDocumentChanges();
         }
       } else {
         // This save job contains generated content stored in memory as an
@@ -929,10 +930,38 @@ ExactPersistParsedJob.prototype = {
   },
 
   /**
-   * Reference to the newly added <head> and <meta> nodes for "X-UA-Compatible".
+   * Reference to the newly added <head> and <meta> nodes for "X-UA-Compatible"
+   * and to the comment for the original location.
    */
+  _addedComment: null,
   _addedHead: null,
   _addedMeta: null,
+
+  /**
+   * Ensures that the saved document contains the comment indicating the
+   * original location, only when saving complete web pages.
+   */
+  _ensureOriginalUrlComment: function() {
+    try {
+      if (this.resource.includeOriginalUrl &&
+       (this._document instanceof Ci.nsIDOMHTMLDocument)) {
+        // Remove the original comment permanently, if present.
+        var firstCommentNode = this._document.evaluate('//comment()',
+         this._document, null, Ci.nsIDOMXPathResult.FIRST_ORDERED_NODE_TYPE,
+         null).singleNodeValue;
+        if (firstCommentNode && /^\s*(saved from url=|Source is )\S+\s*$/.
+         test(firstCommentNode.nodeValue)) {
+          firstCommentNode.remove();
+        }
+        // Add the new comment temporarily.
+        this._addedComment = this._document.createComment(" Source is " +
+         this.resource.contentLocation + " ");
+        this._document.documentElement.before(this._addedComment);
+      }
+    } catch (ex) {
+      Cu.reportError(ex);
+    }
+  },
 
   /**
    * Ensures that the saved document conatins the "X-UA-Compatible" metadata for
@@ -969,12 +998,15 @@ ExactPersistParsedJob.prototype = {
   /**
    * Reverts the changes made by "_ensureMetaUACompatible".
    */
-  _revertMetaUACompatible: function() {
+  _revertDocumentChanges: function() {
     if (this._addedMeta) {
       this._addedMeta.remove();
     }
     if (this._addedHead) {
       this._addedHead.remove();
+    }
+    if (this._addedComment) {
+      this._addedComment.remove();
     }
   },
 

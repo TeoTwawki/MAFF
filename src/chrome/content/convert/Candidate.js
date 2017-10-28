@@ -279,7 +279,7 @@ Candidate.prototype = {
             ["application/xhtml+xml", "application/xml",
              "application/vnd.mozilla.xul+xml", "image/svg+xml", "text/html",
              "text/xml"].includes(resource.mimeType)) {
-          yield this._createAndConvertFrameTask(archive);
+          yield this._createAndConvertFrameTask(archivePage);
         } else {
           indexFile.copyTo(this.location.dest.parent,
                            this.location.dest.leafName);
@@ -319,7 +319,7 @@ Candidate.prototype = {
   /**
    * Asynchronous function creating the frame where the conversion continues.
    */
-  _createAndConvertFrameTask: Task.async(function (archive) {
+  _createAndConvertFrameTask: Task.async(function (archivePage) {
     // Create a new frame to load the source document.
     var conversionFrame = this.conversionWindow.document.
      createElement("iframe");
@@ -339,7 +339,7 @@ Candidate.prototype = {
       yield new Promise(resolve => this._mainThread.dispatch(() => resolve(),
        Ci.nsIThread.DISPATCH_NORMAL));
 
-      yield this._convertFrameTask(archive, conversionFrame);
+      yield this._convertFrameTask(archivePage, conversionFrame);
     } finally {
       conversionFrame.remove();
     }
@@ -348,7 +348,7 @@ Candidate.prototype = {
   /**
    * Asynchronous function that continues the conversion in the provided frame.
    */
-  _convertFrameTask: Task.async(function (archive, conversionFrame) {
+  _convertFrameTask: Task.async(function (archivePage, conversionFrame) {
     // Register the load listeners.
     var promiseLoad = this._promiseLoad(conversionFrame);
     var webProgress = conversionFrame.docShell.
@@ -360,7 +360,7 @@ Candidate.prototype = {
     );
 
     // Load the URL associated with the source file in the conversion frame.
-    var sourceUrl = archive ? archive.pages[this.pageIndex].archiveUri :
+    var sourceUrl = archivePage ? archivePage.archiveUri :
      Cc["@mozilla.org/network/io-service;1"].
      getService(Ci.nsIIOService).newFileURI(this.location.source);
     conversionFrame.webNavigation.loadURI(sourceUrl.spec, 0, null, null, null);
@@ -422,6 +422,9 @@ Candidate.prototype = {
       persist = new ExactPersist();
       persist.saveWithMedia = true;
       persist.saveWithNotLoadedResources = true;
+      if (archivePage && archivePage.originalUrl) {
+        persist.includeOriginalUrl = true;
+      }
     } else {
       persist = Cc["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
        .createInstance(Ci.nsIWebBrowserPersist);
