@@ -149,11 +149,15 @@ var StartupEvents = {
         Prefs.saveEnabled = false;
       }
     } else if (Prefs.otherDisplayConvertPage &&
-     Services.appinfo.ID == "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}" &&
-     Services.vc.compare(Services.appinfo.version, "55") > 0) {
-      // If this is an update, likely the user has already saved web pages using
-      // the MAFF or MHTML formats, and on Firefox 55 and above we should
-      // display a welcome page with information on compatibility.
+     Services.appinfo.ID == "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}") {
+      // Don't prompt if the commands to save web archives are already disabled.
+      if (!Prefs.saveEnabled) {
+        Prefs.otherDisplayConvertPage = false;
+        return;
+      }
+      // If this is an update and the commands to save web archives are enabled,
+      // likely the user has already saved web pages using the MAFF or MHTML
+      // formats, and we should display a page with additional information.
       let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
       if (browserWindow) {
         browserWindow.getBrowser().loadTabs(
