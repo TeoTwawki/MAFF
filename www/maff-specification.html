@@ -2,17 +2,6 @@
 <div class="maf-column-contents">
 
 <h2>The MAFF specification</h2>
-<p>This document is a <b>working draft</b> aimed at providing a detailed
- specification for the <a href="maff-file-format.html">MAFF file format</a>,
- with the goal of ensuring the interoperability between different
- implementations.</p>
-<p>In this stage of development, this document describes the essential aspects
- of the file format and is updated to reflect actual technical questions or
- foreseen implementation issues.</p>
-
-<h2><a name="feedback"></a>Introduction</h2>
-
-<h3>Purpose</h3>
 <p>MAFF is meant to be a <b>simple</b> format for <b>archiving</b> a copy of
  some <b>web content</b> in a <b>single file</b>.</p>
 <ul>
@@ -84,18 +73,6 @@
     <p>Custom solutions may be appropriate if they are much more easy to
      implement compared to an existing specification, and the benefits of the
      existing specification do not apply to the particular use case.</p>
-  </li>
-  <li>
-    <p><b>Compatible with the original MAFF format</b></p>
-    <p>The file format previously referred to as <i>MAFF version 1</i> provides
-     the baseline for all the future enhancements of the MAFF specification.
-     This format is defined on the basis of the implementation of the Mozilla
-     Archive Format add-on version 0.6.3, for Firefox 2 and Mozilla 1.7-1.8, and
-     version 0.8.0, for Firefox 3.0. Different versions of the add-on are not
-     considered.</p>
-    <p>The MAFF format will be extended while ensuring that all implementations
-     will still be able to read MAFF archives created with version 0.6.3 and
-     0.8.0 of Mozilla Archive Format.</p>
   </li>
 </ul>
 
@@ -199,11 +176,8 @@
  (case insensitive) as MAFF files, even on systems where file extensions are not
  normally used to identify file types. [Conformance level: <a
  href="#level-basic">basic</a>]</p>
-<p>Internally, the Mozilla Archive Format add-on for Firefox registers the MIME
- type <tt>application/x-maff</tt> for files with the <tt>.maff</tt> extension,
- unless there is already another MIME type association in the system. However,
- this MIME type is not advertised outside of Firefox, for example when the file
- type is registered with the operating system on Windows. [Information]</p>
+<p>The MIME type <tt>application/x-maff</tt> is suggested for files with the
+ <tt>.maff</tt> extension. [Information]</p>
 
 <h2>ZIP implementation</h2>
 <p>The ZIP implementation must be based on
@@ -212,7 +186,6 @@
  <a href="#level-elementary">elementary</a>].</p>
 <p>File and directory names must be stored using UTF-8 [Conformance level:
  <a href="#level-basic">basic</a>].</p>
-<p><i>This section needs expansion.</i></p>
 
 <h2>Directory structure</h2>
 <p>The root directory of the archive must be empty. [Conformance level:
@@ -232,7 +205,6 @@
  folder as the <tt>index.rdf</tt> file. This file must be named <tt>index</tt>,
  with a file extension based on the content type, unless the file type is RDF.
  [Conformance level: <a href="#level-basic">basic</a>]</p>
-<p><i>This section needs expansion.</i></p>
 
 <h3>Matching file extensions with MIME media types</h3>
 <p>Assignment of MIME type to individual files is implemented by ensuring that
@@ -286,7 +258,6 @@
   <li>The <b>character set</b> to use when parsing files that are part of the
    page.</li>
 </ul>
-<p><i>This section needs expansion.</i></p>
 
 <h3>Date and time</h3>
 <p>The date and time of the save operation should be stored using the format
@@ -305,9 +276,6 @@
  parser. For example, an extension for a file manager might only use the title
  from the metadata, while a web browser might ignore this field and only display
  the title resulting from parsing the main document. [Information]</p>
-<p>When the title of the page is not available, some versions of the Mozilla
- Archive Format add-on for Firefox write the literal English string "Unknown",
- even though the field should be omitted. [Information]</p>
 
 <h3>Character set</h3>
 <p>The character set declared in the MAFF archive should be used when parsing

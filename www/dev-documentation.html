@@ -1,6 +1,11 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
 
+<div class="maf-box-warning">
+  <p>The Mozilla Archive Format add-on is no longer maintained since
+   <b>September 5, 2018</b>.</p>
+</div>
+
 <h2>Developing with Mozilla Archive Format</h2>
 <p>This document is a <b>reference for add-on developers</b>, describing the
  services that Mozilla Archive Format offers to other extensions installed on
@@ -130,9 +135,7 @@ gInternalSaveBehaviors.splice(2, 0, newSaveBehavior);</code></pre>
   <li>
     <p>Implement the <tt>nsIWebBrowserPersist</tt> XPCOM interface in
      <tt>MyPersistObject</tt>. You can find an example of a JavaScript
-     implementation in the
-     <a href="http://hg.mozdev.org/maf/file/c31112db19e5/src/chrome/content/saving/mafArchivePersistObject.js">MAF
-     source code</a>.</p>
+     implementation in the MAF source code.</p>
   </li>
 </ol>
 

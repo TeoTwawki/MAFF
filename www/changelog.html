@@ -1,12 +1,17 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
+  <div class="maf-box-warning">
+    <p>The Mozilla Archive Format add-on is no longer maintained since
+     <b>September 5, 2018</b>.</p>
+  </div>
+
   <h2>Changelog for version 5.2</h2>
   <h3>What's new in version 5.2?</h3>
   <p>MAF 5.2 has the following user-visible improvements over MAF 5.1.2:</p>
   <ul>
-    <li><a href="index.html">This add-on will not work in future versions of
-     Firefox.</a> Several changes have been made to help the transition to
-     alternative solutions for archiving web pages locally:
+    <li>This add-on will not work in future versions of Firefox. Several changes
+     have been made to help the transition to alternative solutions for
+     archiving web pages locally:
       <ul>
         <li>The original location is now preserved in a source code comment when
          saving complete web pages, despite this information will not be
@@ -258,9 +263,8 @@
     <li><b>Change:</b> Saving pages in archives by default can now be prevented
      by changing the file type in the "Save As" dialog in Firefox 29 and later
      versions.</li>
-    <li><b>Fix:</b> The toolbar button of the <a
-     href="https://addons.mozilla.org/addon/work-offline/">Work Offline</a>
-     add-on was corrupted in Firefox 28.</li>
+    <li><b>Fix:</b> The toolbar button of the Work Offline add-on was corrupted
+     in Firefox 28.</li>
   </ul>
   <h3>Changes from 3.0.0 to 3.0.1</h3>
   <ul>
@@ -330,18 +334,16 @@
     </li>
     <li>A notification bar with information about the original save date and
      location is now displayed for all archived pages.</li>
-    <li>Updating to the new version makes sure that all the customized
-     <a href="documentation.html#internalsettings">internal configuration
-     settings</a> are reset to their default value, resolving problems caused
-     by old settings that, starting with version 1.0, could be changed only from
-     the <tt>about:config</tt> page. There is usually no need to customize those
-     settings anymore.</li>
+    <li>Updating to the new version makes sure that all the customized internal
+     configuration settings are reset to their default value, resolving problems
+     caused by old settings that, starting with version 1.0, could be changed
+     only from the <tt>about:config</tt> page. There is usually no need to
+     customize those settings anymore.</li>
     <li>Now it is possible to link to a specific section inside an archived
      page, appending a fragment or hash part to the URI of the archived
      page.</li>
-    <li>The integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     component is now able to save framesets.</li>
+    <li>The integrated Save Complete component is now able to save
+     framesets.</li>
     <li>The Saved Pages Conversion Wizard is now able to recognize complete web
      pages saved using Firefox or SeaMonkey in several languages other than
      English and the current browser language.</li>
@@ -368,10 +370,8 @@
      was selected.</li>
     <li><b>Fix:</b> The edited content of form fields wasn't saved if the
      original web page didn't specify the type of field correctly.</li>
-    <li><b>Fix:</b> When using the
-     <a href="https://addons.mozilla.org/addon/more-tools-menu/">More Tools
-     Menu</a> add-on, the visibility of the Mozilla Archive Format menu items
-     wasn't always updated correctly.</li>
+    <li><b>Fix:</b> When using the More Tools Menu add-on, the visibility of the
+     Mozilla Archive Format menu items wasn't always updated correctly.</li>
   </ul>
   <h3>Changes from 2.0.3 to 2.0.4</h3>
   <ul>
@@ -402,9 +402,8 @@
   </ul>
   <h3>Changes from 2.0.0 to 2.0.1</h3>
   <ul>
-    <li><b>Fix:</b> The integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     component didn't work on Firefox 6 and later versions.</li>
+    <li><b>Fix:</b> The integrated Save Complete component didn't work on
+     Firefox 6 and later versions.</li>
   </ul>
   <h3>Changes from 2.0a1 to 2.0.0</h3>
   <ul>
@@ -419,8 +418,8 @@
   <ul>
     <li>Compatibility with the latest versions of Firefox and SeaMonkey.</li>
     <li>MAFF archives are now generated and read with stricter compliance to
-     the <a href="maff-specification.html">MAFF specification</a> draft,
-     improving compatibility with other applications.</li>
+     the MAFF specification draft, improving compatibility with other
+     applications.</li>
     <li>Modified user interface elements:
       <ul>
         <li>The welcome dialog has been replaced by a welcome page that is
@@ -521,10 +520,9 @@
     <li>Now the Saved Pages Conversion Wizard propagates the modification time
      of the original files to the destination files.</li>
     <li>The welcome dialog does not block startup anymore.</li>
-    <li>The integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     component is now able to save XHTML documents served with a content type
-     of <tt>application/xhtml+xml</tt>.</li>
+    <li>The integrated Save Complete component is now able to save XHTML
+     documents served with a content type of
+     <tt>application/xhtml+xml</tt>.</li>
   </ul>
   <h3>Changes from 0.19.5 to 0.19.7</h3>
   <ul>
@@ -558,10 +556,9 @@
   </ul>
   <h3>Changes from 0.19.1 to 0.19.2</h3>
   <ul>
-    <li><b>New:</b> The integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     component is now able to save XHTML documents served with a content type
-     of <tt>application/xhtml+xml</tt>.</li>
+    <li><b>New:</b> The integrated Save Complete component is now able to save
+     XHTML documents served with a content type of
+     <tt>application/xhtml+xml</tt>.</li>
     <li><b>Change:</b> MAF is now able to open non-standard MHTML files saved by
      the Opera web browser.</li>
     <li><b>Change:</b> Now remote archives must be downloaded explicitly if the
@@ -593,10 +590,8 @@
     <li>Greatly improved fidelity of the archived pages, thanks to a new save
      component that takes a faithful snapshot of the page exactly as it appears
      at the time it is saved. The new component is activated automatically if
-     the
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     component was selected in a previous version. See the related documentation
-     for details.</li>
+     the Save Complete component was selected in a previous version. See the
+     related documentation for details.</li>
     <li>MAFF archives whose content used international characters in file names
      are now opened correctly.</li>
   </ul>
@@ -623,10 +618,8 @@
     <li>Now the <b>Save All Tabs As</b> menu command works again, while
      previously only the <b>Save Tabs As</b> command worked for saving all
      tabs.</li>
-    <li>The integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     component is now able to save web pages in some cases where it previously
-     failed.</li>
+    <li>The integrated Save Complete component is now able to save web pages in
+     some cases where it previously failed.</li>
     <li>Improved performance of MHTML extraction.</li>
     <li>MHTML compatibility improvements:
       <ul>
@@ -656,14 +649,10 @@
   <p>MAF 0.16.4 had the following user-visible improvements over MAF 0.15.1:</p>
   <ul>
     <li>A new dialog for conversion of previously saved pages is now available.
-     See the related <a href="documentation.html#converting">documentation</a>
-     for details.</li>
+     See the related documentation for details.</li>
     <li>New preference to use the page title instead of the default suggested
      file name in the "Save As" dialog. Enabling this preference provides
-     functionality comparable to the
-     <a href="https://addons.mozilla.org/firefox/addon/834">File Title</a> and
-     <a href="https://addons.mozilla.org/firefox/addon/712">Title Save</a>
-     extensions.</li>
+     functionality comparable to the File Title and Title Save extensions.</li>
     <li>The order of the tabs is now preserved when opening and saving
      multi-page MAFF archives.</li>
     <li>Now the character set specified in MAFF archives is always enforced, and
@@ -672,9 +661,7 @@
      some languages other than English.</li>
     <li>In the multiple tab selection dialog, occasionally it was not possible
      to change the current selection after some time passed.</li>
-    <li>Improvements to the integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     extension:
+    <li>Improvements to the integrated Save Complete extension:
       <ul>
         <li>Improved performance when saving pages containing many images or
          other content.</li>
@@ -748,9 +735,7 @@
      the default extension for "All Files" is set appropriately on Windows.</li>
     <li>An error occurred when opening for the first time any archived page with
      no information on the original location the page was saved from.</li>
-    <li>Improvements to the integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     extension:
+    <li>Improvements to the integrated Save Complete extension:
       <ul>
         <li>When saving a complete web page outside of an archive, now the name
          of the directory containing the additional files is properly
@@ -781,9 +766,8 @@
   <h2>Changelog for version 0.14</h2>
   <h3>What was new in version 0.14?</h3>
   <ul>
-    <li>The integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     extension has been updated to version <b>1.1pre</b>.</li>
+    <li>The integrated Save Complete extension has been updated to version
+     <b>1.1pre</b>.</li>
     <li>Improvements related to Save Complete 1.1pre:
       <ul>
         <li>Support for saving media files referenced by HTML 5 <tt>video</tt>
@@ -919,9 +903,8 @@
   <h3>What was new in version 0.11?</h3>
   <p>MAF 0.11.2 had the following user-visible improvements over MAF 0.10.2:</p>
   <ul>
-    <li>The integrated
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     extension has been updated to version <b>1.0.1pre</b>.</li>
+    <li>The integrated Save Complete extension has been updated to version
+     <b>1.0.1pre</b>.</li>
     <li>Improvements in Save Complete 1.0.0:
       <ul>
         <li>Relative links in the page being saved are now converted to absolute
@@ -952,9 +935,7 @@
   <h3>What was new in version 0.10?</h3>
   <p>MAF 0.10.2 had the following user-visible improvements over MAF 0.9.1:</p>
   <ul>
-    <li>Integration with the
-     <a href="https://addons.mozilla.org/firefox/addon/4838">Multiple Tab
-     Handler</a> extension.</li>
+    <li>Integration with the Multiple Tab Handler extension.</li>
     <li>Now a single frame can be saved in an archive, and in this case the
      extended metadata is not included.</li>
     <li>New preference to use the <code>jar:</code> protocol to access
@@ -997,15 +978,9 @@
   <h3>What was new in version 0.9?</h3>
   <p>MAF 0.9.1 had the following user-visible improvements over MAF 0.8.7:</p>
   <ul>
-    <li>Integration with the
-     <a href="https://addons.mozilla.org/firefox/addon/4723">Save Complete</a>
-     extension.</li>
-    <li>Compatibility with the
-     <a href="https://addons.mozilla.org/firefox/addon/8051">UnMHT</a>
-     extension version 5.1.1 and later.</li>
-    <li>Compatibility with the
-     <a href="https://addons.mozilla.org/firefox/addon/712">Title Save</a>
-     extension.</li>
+    <li>Integration with the Save Complete extension.</li>
+    <li>Compatibility with the UnMHT extension version 5.1.1 and later.</li>
+    <li>Compatibility with the Title Save extension.</li>
     <li>Improved browser integration when loading and saving archives:
       <ul>
         <li>The download progress is displayed in the standard <b>Downloads</b>

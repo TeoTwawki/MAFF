@@ -1,6 +1,6 @@
 @import url("http://www.mozdev.org/project.css");
 
-/* Navigation links, inline version for Internet Explorer 6 */
+/* Navigation links */
 
 .maf-navigation-container {
   display: table;
@@ -8,62 +8,21 @@
 }
 
 ul.maf-navigation,
-ul.maf-navigation li,
-ul.maf-navigation div,
-ul.maf-navigation ul {
+ul.maf-navigation > li {
   /* Treat all the navigation elements as plain inline content */
   display: inline;
   padding: 0px !important;
   margin: 0px !important;
 }
 
-ul.maf-navigation li {
+ul.maf-navigation > li {
   /* Treat all the navigation elements as plain inline content */
   list-style-type: none;
-}
-
-ul.maf-navigation span {
-  /* Hide elements that are used as top level menu items */
-  display: none;
-}
-
-ul.maf-navigation a {
-  /* Ensure that each navigation link is not split across multiple lines */
-  white-space: nowrap;
-  /* Separate each link from the next one */
-  padding-right: 0.5em !important;
-  border-right: 1px solid black;
-  margin-right: 0.5em !important;
-}
-
-/* Navigation links, dropdown menu version for modern browsers */
-
-ul.maf-navigation > li {
   /* The top level items are aligned together on the left */
   float: left;
 }
 
-ul.maf-navigation > li > div {
-  /* This item is empty and only serves as a reference for the dropdown */
-  position: relative;
-}
-
-ul.maf-navigation > li > div > ul {
-  /* This dropdown is not part of the normal flow of the page */
-  position: absolute;
-  /* The dropdown must appear above other elements in case of overlapping */
-  z-index: 1;
-  /* Hide the dropdown when the mouse is not over the top level item */
-  display: none;
-}
-
-ul.maf-navigation > li:hover > div > ul {
-  /* Display the dropdown when the mouse is over the top level item */
-  display: block;
-}
-
-ul.maf-navigation > li a,
-ul.maf-navigation > li span {
+ul.maf-navigation > li > a {
   /* Effective style for all menu items */
   display: block;
   padding: 1px 8px !important;
@@ -73,17 +32,12 @@ ul.maf-navigation > li span {
   color: #900;
   font-weight: bold;
   text-decoration: none;
+  white-space: nowrap;
 }
 
-ul.maf-navigation > li a:hover,
-ul.maf-navigation > li:hover span {
+ul.maf-navigation > li > a:hover {
   /* Effective style for all menu items when the mouse is over them */
   background-color: #EFF;
-}
-
-ul.maf-navigation > li span {
-  /* For top level elements that cannot be selected, always use the arrow */
-  cursor: default;
 }
 
 /* Boxes around the navigation links */
@@ -174,43 +128,8 @@ pre.code code {
 
 /* Boxes */
 
-.maf-box {
-  width: 35em;
-  margin: 1em 10px;
-  border: 1px solid grey;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  padding: 10px 20px;
-  background-color: lightgreen;
-  background: -moz-linear-gradient(lightgreen, #3D3);
-}
-
-.maf-box.maf-alternative {
-  background-color: #CFF;
-  background: -moz-linear-gradient(#EFF, #DEF);
-}
-
-.maf-box a {
-  color: #900;
-}
-
-.maf-box-title {
-  margin: 0px;
-  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
-  font-size: x-large;
-  white-space: nowrap;
-}
-
-.maf-box-text {
-  margin: 0px;
-}
-
-.maf-box-after {
-  width: 35em;
-  margin: 1em 31px 3em;
-}
-
 .maf-box-warning {
+  margin-top: 1em;
   background: #FFA;
   border: 1px solid #880;
   padding: 0 1.2em;
@@ -286,19 +205,6 @@ pre.code code {
 .maf-feature-list img.maf-center {
   display: block;
   margin: 1em auto 0px auto;
-}
-
-/* Feedback page */
-
-.maf-feedback-box {
-  clear: left;
-  float: left;
-  padding: 0px;
-  margin: 10px 0px;
-}
-
-.maf-feedback-box .maf-box {
-  width: 28em;
 }
 
 /* Footer */

@@ -1,39 +1,15 @@
 <!-- MAIN CONTENT -->
 <div class="maf-column-contents">
 
-<h2>Known issues with the Mozilla Archive Format add-on</h2>
-<ul>
-  <li><a href="index.html">This add-on is only supported on Firefox ESR until
-   September 5, 2018.</a></li>
-  <li>The performance of the browser may be reduced after this add-on is
-   installed because the optimized multi-process mode will be disabled.</li>
-  <li>In order to open MHTML files when the
-   <a href="https://addons.mozilla.org/firefox/addon/1419">IE Tab</a> add-on is
-   also installed, the filter <tt>/^file:\/\/\/.*\.(mht|mhtml)$/</tt> must be
-   disabled from the IE Tab options.</li>
-  <li>When saving multiple tabs in an archive, the save operation fails if the
-   tabs are closed before the operation is completed.</li>
-  <li>When saving a page in an archive fails, retrying the download from the
-   <b>Downloads</b> window does not achieve the expected result.</li>
-  <li>Opening very long documents contained inside MHTML files may cause the
-   browser to stop responding temporarily.</li>
-</ul>
+<div class="maf-box-warning">
+  <p>The Mozilla Archive Format add-on is no longer maintained since
+   <b>September 5, 2018</b>.</p>
+</div>
 
-<h2>Report other issues</h2>
-<div class="maf-feedback-box">
-  <div class="maf-box">
-    <p class="maf-box-title"><a
-     href="http://bugzilla.mozdev.org/enter_bug.cgi?product=maf">Report bug or
-     other issue</a></p>
-    <p class="maf-box-text">Requires an account on bugzilla.mozdev.org.</p>
-  </div>
-</div>
-<div class="maf-feedback-box">
-  <div class="maf-box maf-alternative">
-    <p class="maf-box-title">Send Direct Email</p>
-    <script type="text/javascript" src="//www.mozdev.org/js/lib/email_obfuscated.js"></script>
-    <p class="maf-box-text">To <span class="email_obfuscated" title="Paolo Amadini">paolo-DOT-01-DOT-prg*AT*amadzone-DOT-org</span>.</p>
-  </div>
-</div>
+<p>MAFF files can be opened using any ZIP extraction utility, and most operating
+ systems can recognize them natively after changing the file extension from
+ <tt>.maff</tt> to <tt>.zip</tt>. The original Mozilla Archive Format add-on
+ also provided a procedure to convert MAFF files to other file formats, see the
+ <a href="installation.html">archive</a> for details.</p>
 
 </div>
